@@ -1,8 +1,6 @@
 *.svg -diff -text
 *.psd -diff -text
 *.ai -diff -text
-
-*.tag linguist-language=HTML
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.xcf filter=lfs diff=lfs merge=lfs -text
 *.ai filter=lfs diff=lfs merge=lfs -text
