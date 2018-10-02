@@ -3,6 +3,7 @@
 *.ai -diff -text
 yarn.lock -diff -text
 package-lock.json -diff -text
+*.json5 linguist-language=JavaScript
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.xcf filter=lfs diff=lfs merge=lfs -text
 *.ai filter=lfs diff=lfs merge=lfs -text
