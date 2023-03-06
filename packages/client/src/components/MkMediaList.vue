@@ -332,6 +332,7 @@ const previewableCount = props.mediaList.filter((media) =>
 	overflow-x: clip;
 	overflow-y: auto;
 	overscroll-behavior: contain;
+	white-space: pre-line;
 }
 
 .pwsp__alt-text:empty {
