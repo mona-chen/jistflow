@@ -44,6 +44,7 @@ const props = defineProps<{
 	antenna?: string;
 	channel?: string;
 	sound?: boolean;
+	fileId?: string;
 }>();
 
 const queue = ref(0);
@@ -195,6 +196,11 @@ if (props.src === "antenna") {
 		channelId: props.channel,
 	});
 	connection.on("note", prepend);
+} else if (props.src === "file") {
+	endpoint = "drive/files/attached-notes";
+	query = {
+		fileId: props.fileId,
+	};
 }
 
 function closeHint() {
