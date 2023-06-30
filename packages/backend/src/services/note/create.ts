@@ -40,7 +40,7 @@ import {
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { App } from "@/models/entities/app.js";
 import { Not, In, IsNull } from "typeorm";
-import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
+import { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
 import { genId } from "@/misc/gen-id.js";
 import {
 	notesChart,
@@ -461,16 +461,16 @@ export default async (
 			}
 
 			if (!dontFederateInitially) {
-				if (!note.userHost) {
+				if (Users.isLocalUser(user)) {
 					// Publish if the post is local
 					publishNotesStream(note);
 				} else {
 					const relays = await getCachedRelays();
 					// Some relays (e.g., aode-relay) deliver posts by boosting them as
 					// Announce activities. In that case, user is the relay's actor.
-					const boostedByRelay = relays
-						.map((relay) => new URL(relay.inbox).host)
-						.includes(note.userHost);
+					const boostedByRelay =
+						!!user.inbox &&
+						relays.map((relay) => relay.inbox).includes(user.inbox);
 
 					if (boostedByRelay && data.renote && data.renote.userHost) {
 						/* A relay boosted a remote post. */
