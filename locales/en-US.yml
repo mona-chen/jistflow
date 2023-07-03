@@ -1300,7 +1300,7 @@ _aboutMisskey:
   morePatrons:
     "We also appreciate the support of many other helpers not listed here.
     Thank you! 🥰"
-  patrons: "Calckey patrons"
+  patrons: "Jistflow patrons"
   patronsList: "Listed chronologically, not by donation size. Donate with the link above to get your name on here!"
 _nsfw:
   respect: "Hide NSFW media"
@@ -1315,7 +1315,7 @@ _mfm:
   intro:
     "MFM is a markup language used on Misskey, Jistflow, Calckey, Akkoma, and more that
     can be used in many places. Here you can view a list of all available MFM syntax."
-  dummy: "Calckey expands the world of the Fediverse"
+  dummy: "Jistflow expands the world of the Fediverse"
   advanced: "Advanced MFM"
   advancedDescription: "If disabled, only allows for basic markup unless animated MFM is playing"
   mention: "Mention"
