@@ -63,8 +63,8 @@
 					>
 					<small
 						>Powered by
-						<a href="https://calckey.org/" target="_blank"
-							>Calckey</a
+						<a href="https://jistflow.com/" target="_blank"
+							>Jistflow</a
 						></small
 					>
 				</div>

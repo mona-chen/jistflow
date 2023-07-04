@@ -68,9 +68,9 @@
 							><MkA to="/">{{ host }}</MkA></b
 						>
 						<small
-							>Powered by
-							<a href="https://calckey.org/" target="_blank"
-								>Calckey</a
+						>Powered by
+						<a href="https://jistflow.com/" target="_blank"
+							>Jistflow</a
 							></small
 						>
 					</div>
