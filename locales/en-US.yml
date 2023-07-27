@@ -843,7 +843,6 @@ sendErrorReportsDescription:
   "When turned on, detailed error information will be shared
   with Jistflow when a problem occurs, helping to improve the quality of Jistflow.\n
   This will include information such the version of your OS, what browser you're using,
-  your activity in Firefish, etc."
   your activity in Jistflow, etc."
 myTheme: "My theme"
 backgroundColor: "Background color"
