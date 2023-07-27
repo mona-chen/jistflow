@@ -173,7 +173,6 @@ flagAsBot: "Mark this account as a bot"
 flagAsBotDescription:
   "Enable this option if this account is controlled by a program.
   If enabled, it will act as a flag for other developers to prevent endless interaction
-  chains with other bots and adjust Firefish's internal systems to treat this account
   chains with other bots and adjust Jistflow's internal systems to treat this account
   as a bot."
 flagAsCat: "Are you a cat? 😺"
@@ -460,8 +459,7 @@ exploreFediverse: "Explore the Fediverse"
 popularTags: "Popular tags"
 userList: "Lists"
 about: "About"
-aboutFirefish: "About Firefish"
-aboutMisskey: "About Jistflow"
+aboutFirefish: "About Jistflow"
 administrator: "Administrator"
 token: "Token"
 twoStepAuthentication: "Two-factor authentication"
@@ -1303,23 +1301,23 @@ _registry:
   keys: "Keys"
   domain: "Domain"
   createKey: "Create key"
-_aboutMisskey:
-  about: "Jistflow is a fork of Calckey made by Mona, which has been in
+_aboutFirefish:
+  about:
+    "Jistflow is a fork of Misskey made by ThatOneCalculator, which has been in
     development since 2022."
   contributors: "Main contributors"
   allContributors: "All contributors"
   source: "Source code"
   translation: "Translate Jistflow"
   donate: "Donate to Jistflow"
-  morePatrons:
-    "We also appreciate the support of many other helpers not listed here.
-  translation: "Translate Jistflow"
   donateTitle: "Enjoying Jistflow?"
   pleaseDonateToFirefish: "Please consider donating to Jistflow to support its development."
   pleaseDonateToHost: "Please also consider donating to your home server, {host}, to help support its operation costs."
   donateHost: "Donate to {host}"
-  morePatrons: "We also appreciate the support of many other helpers not listed here.
+  morePatrons:
+    "We also appreciate the support of many other helpers not listed here.
     Thank you! 🥰"
+  sponsors: "Jistflow sponsors"
   patrons: "Jistflow patrons"
   patronsList: "Listed chronologically, not by donation size. Donate with the link above to get your name on here!"
 _nsfw:
@@ -1333,7 +1331,7 @@ _mfm:
   alwaysPlay: "Always autoplay all animated MFM"
   cheatSheet: "MFM Cheatsheet"
   intro:
-    "MFM is a markup language used on Misskey, Jistflow, Calckey, Akkoma, and more that
+    "MFM is a markup language used on Misskey, Jistflow, Akkoma, and more that
     can be used in many places. Here you can view a list of all available MFM syntax."
   dummy: "Jistflow expands the world of the Fediverse"
   advanced: "Advanced MFM"
