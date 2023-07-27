@@ -84,7 +84,7 @@ watch(
 			antennaId: props.antennaId,
 		});
 	},
-	{ immediate: true }
+	{ immediate: true },
 );
 
 const headerActions = $computed(() =>
@@ -100,13 +100,13 @@ const headerActions = $computed(() =>
 					text: i18n.ts.settings,
 					handler: settings,
 				},
-				{
-					icon: "ph-check ph-bold ph-lg",
-					text: i18n.ts.markAllAsRead,
-					handler: markRead,
-				},
+				// {
+				// 	icon: "ph-check ph-bold ph-lg",
+				// 	text: i18n.ts.markAllAsRead,
+				// 	handler: markRead,
+				// },
 		  ]
-		: []
+		: [],
 );
 
 const headerTabs = $computed(() => []);
@@ -118,8 +118,8 @@ definePageMetadata(
 					title: antenna.name,
 					icon: "ph-flying-saucer ph-bold ph-lg",
 			  }
-			: null
-	)
+			: null,
+	),
 );
 </script>
 

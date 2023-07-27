@@ -15,7 +15,7 @@
 				<div class="about">
 					<div
 						class="desc"
-						v-html="meta.description || i18n.ts.headlineMisskey"
+						v-html="meta.description || i18n.ts.headlineFirefish"
 					></div>
 				</div>
 				<div class="action">
@@ -130,7 +130,7 @@ export default defineComponent({
 					autoSet: true,
 				},
 				{},
-				"closed"
+				"closed",
 			);
 		},
 
@@ -141,7 +141,7 @@ export default defineComponent({
 					autoSet: true,
 				},
 				{},
-				"closed"
+				"closed",
 			);
 		},
 
@@ -156,10 +156,10 @@ export default defineComponent({
 						},
 					},
 					{
-						text: i18n.ts.aboutMisskey,
+						text: i18n.ts.aboutFirefish,
 						icon: "ph-info ph-bold ph-lg",
 						action: () => {
-							os.pageWindow("/about-calckey");
+							os.pageWindow("/about-firefish");
 						},
 					},
 					null,
@@ -169,12 +169,12 @@ export default defineComponent({
 						action: () => {
 							window.open(
 								`https://misskey-hub.net/help.md`,
-								"_blank"
+								"_blank",
 							);
 						},
 					},
 				],
-				ev.currentTarget ?? ev.target
+				ev.currentTarget ?? ev.target,
 			);
 		},
 

@@ -4,8 +4,8 @@
 		:plain="plain"
 		:nowrap="nowrap"
 		:author="author"
-		:customEmojis="customEmojis"
-		:isNote="isNote"
+		:custom-emojis="customEmojis"
+		:is-note="isNote"
 		class="mfm-object"
 		:class="{
 			nowrap,
@@ -34,7 +34,7 @@ const props = withDefaults(
 		nowrap: false,
 		author: null,
 		isNote: true,
-	}
+	},
 );
 </script>
 

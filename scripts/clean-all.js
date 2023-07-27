@@ -38,11 +38,19 @@ const { join } = require("node:path");
 		recursive: true,
 		force: true,
 	});
-	fs.rmSync(join(__dirname, "/../packages/calckey-js/built"), {
+	fs.rmSync(join(__dirname, "/../packages/firefish-js/built"), {
 		recursive: true,
 		force: true,
 	});
-	fs.rmSync(join(__dirname, "/../packages/calckey-js/node_modules"), {
+	fs.rmSync(join(__dirname, "/../packages/firefish-js/node_modules"), {
+		recursive: true,
+		force: true,
+	});
+	fs.rmSync(join(__dirname, "/../packages/megalodon/lib"), {
+		recursive: true,
+		force: true,
+	});
+	fs.rmSync(join(__dirname, "/../packages/megalodon/node_modules"), {
 		recursive: true,
 		force: true,
 	});

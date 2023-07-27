@@ -30,7 +30,7 @@
 							<div
 								class="desc"
 								v-html="
-									meta.description || i18n.ts.headlineMisskey
+									meta.description || i18n.ts.headlineFirefish
 								"
 							></div>
 						</div>
@@ -156,7 +156,7 @@ export default defineComponent({
 					autoSet: true,
 				},
 				{},
-				"closed"
+				"closed",
 			);
 		},
 
@@ -167,7 +167,7 @@ export default defineComponent({
 					autoSet: true,
 				},
 				{},
-				"closed"
+				"closed",
 			);
 		},
 
@@ -182,14 +182,14 @@ export default defineComponent({
 						},
 					},
 					{
-						text: i18n.ts.aboutMisskey,
+						text: i18n.ts.aboutFirefish,
 						icon: "ph-info ph-bold ph-lg",
 						action: () => {
-							os.pageWindow("/about-calckey");
+							os.pageWindow("/about-firefish");
 						},
 					},
 				],
-				ev.currentTarget ?? ev.target
+				ev.currentTarget ?? ev.target,
 			);
 		},
 		number,

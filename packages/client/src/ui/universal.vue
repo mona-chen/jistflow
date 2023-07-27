@@ -169,10 +169,10 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, computed, ref } from "vue";
-import XCommon from "./_common_/common.vue";
-import * as Acct from "calckey-js/built/acct";
+import { computed, defineAsyncComponent, onMounted, provide, ref } from "vue";
+import * as Acct from "firefish-js/built/acct";
 import type { ComputedRef } from "vue";
+import XCommon from "./_common_/common.vue";
 import type { PageMetadata } from "@/scripts/page-metadata";
 import { instanceName, ui } from "@/config";
 import XDrawerMenu from "@/ui/_common_/navbar-for-mobile.vue";
@@ -191,7 +191,7 @@ import { deviceKind } from "@/scripts/device-kind";
 
 const XWidgets = defineAsyncComponent(() => import("./universal.widgets.vue"));
 const XStatusBars = defineAsyncComponent(
-	() => import("@/ui/_common_/statusbars.vue")
+	() => import("@/ui/_common_/statusbars.vue"),
 );
 
 const DESKTOP_THRESHOLD = 1100;
@@ -200,7 +200,7 @@ const MOBILE_THRESHOLD = 500;
 // デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
 const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
 const isMobile = ref(
-	deviceKind === "smartphone" || window.innerWidth <= MOBILE_THRESHOLD
+	deviceKind === "smartphone" || window.innerWidth <= MOBILE_THRESHOLD,
 );
 window.addEventListener("resize", () => {
 	isMobile.value =
@@ -232,7 +232,7 @@ const menuIndicated = computed(() => {
 });
 
 function updateButtonState(): void {
-	let routerState = window.location.pathname;
+	const routerState = window.location.pathname;
 	if (routerState === "/") {
 		buttonAnimIndex.value = 0;
 		return;
@@ -246,7 +246,6 @@ function updateButtonState(): void {
 		return;
 	}
 	buttonAnimIndex.value = 3;
-	return;
 }
 
 updateButtonState();
@@ -304,7 +303,7 @@ function messagingStart(ev) {
 				},
 			},
 		],
-		ev.currentTarget ?? ev.target
+		ev.currentTarget ?? ev.target,
 	);
 }
 
@@ -339,7 +338,7 @@ async function startGroup(): void {
 onMounted(() => {
 	if (!isDesktop.value) {
 		matchMedia(`(min-width: ${DESKTOP_THRESHOLD - 1}px)`).onchange = (
-			mql
+			mql,
 		) => {
 			if (mql.matches) isDesktop.value = true;
 		};
@@ -356,9 +355,9 @@ const onContextmenu = (ev: MouseEvent) => {
 	if (isLink(ev.target)) return;
 	if (
 		["INPUT", "TEXTAREA", "IMG", "VIDEO", "CANVAS"].includes(
-			ev.target.tagName
+			ev.target.tagName,
 		) ||
-		ev.target.attributes["contenteditable"]
+		ev.target.attributes.contenteditable
 	)
 		return;
 	if (window.getSelection()?.toString() !== "") return;
@@ -377,7 +376,7 @@ const onContextmenu = (ev: MouseEvent) => {
 				},
 			},
 		],
-		ev
+		ev,
 	);
 };
 
@@ -391,7 +390,7 @@ const attachSticky = (el: any) => {
 				lastScrollTop = window.scrollY;
 			});
 		},
-		{ passive: true }
+		{ passive: true },
 	);
 	widgetsEl.classList.add("hide-scrollbar");
 	widgetsEl.onmouseenter = () => {
@@ -416,7 +415,8 @@ console.log(mainRouter.currentRoute.value.name);
 .widgetsDrawer-leave-active {
 	opacity: 1;
 	transform: translateX(0);
-	transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1),
+	transition:
+		transform 300ms cubic-bezier(0.23, 1, 0.32, 1),
 		opacity 300ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 .widgetsDrawer-enter-from,
@@ -439,7 +439,8 @@ console.log(mainRouter.currentRoute.value.name);
 .menuDrawer-leave-active {
 	opacity: 1;
 	transform: translateX(0);
-	transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1),
+	transition:
+		transform 300ms cubic-bezier(0.23, 1, 0.32, 1),
 		opacity 300ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 .menuDrawer-enter-from,
@@ -488,6 +489,7 @@ console.log(mainRouter.currentRoute.value.name);
 				background: var(--bg);
 				border-radius: calc((2.85rem / 2) + 5px);
 				opacity: 1;
+				z-index: -3;
 			}
 			> ._button:last-child {
 				margin-bottom: 0 !important;

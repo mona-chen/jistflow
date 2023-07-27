@@ -143,7 +143,7 @@ export class Meta {
 	@Column("varchar", {
 		length: 512,
 		array: true,
-		default: "{/featured,/channels,/explore,/pages,/about-calckey}",
+		default: "{/featured,/channels,/explore,/pages,/about-firefish}",
 	})
 	public pinnedPages: string[];
 
@@ -326,13 +326,13 @@ export class Meta {
 	public smtpPort: number | null;
 
 	@Column("varchar", {
-		length: 128,
+		length: 1024,
 		nullable: true,
 	})
 	public smtpUser: string | null;
 
 	@Column("varchar", {
-		length: 128,
+		length: 1024,
 		nullable: true,
 	})
 	public smtpPass: string | null;
@@ -436,14 +436,14 @@ export class Meta {
 
 	@Column("varchar", {
 		length: 512,
-		default: "https://codeberg.org/calckey/calckey",
+		default: "https://git.joinfirefish.org/firefish/firefish",
 		nullable: false,
 	})
 	public repositoryUrl: string;
 
 	@Column("varchar", {
 		length: 512,
-		default: "https://codeberg.org/calckey/calckey/issues/new",
+		default: "https://git.joinfirefish.org/firefish/firefish/issues/new",
 		nullable: true,
 	})
 	public feedbackUrl: string | null;
@@ -556,4 +556,10 @@ export class Meta {
 		default: true,
 	})
 	public enableIdenticonGeneration: boolean;
+
+	@Column("varchar", {
+		length: 256,
+		nullable: true,
+	})
+	public donationLink: string | null;
 }

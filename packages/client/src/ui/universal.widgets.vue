@@ -39,8 +39,8 @@ const emit = defineEmits<{
 	(ev: "mounted", el: Element): void;
 }>();
 
-let editMode = $ref(false);
-let rootEl = $ref<HTMLDivElement>();
+const editMode = $ref(false);
+const rootEl = $ref<HTMLDivElement>();
 
 onMounted(() => {
 	emit("mounted", rootEl);
@@ -59,7 +59,7 @@ function addWidget(widget) {
 function removeWidget(widget) {
 	defaultStore.set(
 		"widgets",
-		defaultStore.state.widgets.filter((w) => w.id !== widget.id)
+		defaultStore.state.widgets.filter((w) => w.id !== widget.id),
 	);
 }
 
@@ -72,8 +72,8 @@ function updateWidget({ id, data }) {
 						...w,
 						data,
 				  }
-				: w
-		)
+				: w,
+		),
 	);
 }
 

@@ -23,7 +23,7 @@
 				</FormSplit>
 			</div>
 			<div
-				v-if="username != '' || host != ''"
+				v-if="username != ''"
 				class="result"
 				:class="{ hit: users.length > 0 }"
 			>
@@ -54,7 +54,7 @@
 					<span>{{ i18n.ts.noUsers }}</span>
 				</div>
 			</div>
-			<div v-if="username == '' && host == ''" class="recent">
+			<div v-if="username == ''" class="recent">
 				<div class="users">
 					<div
 						v-for="user in recentUsers"
@@ -85,7 +85,7 @@
 
 <script lang="ts" setup>
 import { nextTick, onMounted } from "vue";
-import * as misskey from "calckey-js";
+import * as misskey from "firefish-js";
 import MkInput from "@/components/form/input.vue";
 import FormSplit from "@/components/form/split.vue";
 import XModalWindow from "@/components/MkModalWindow.vue";
@@ -100,20 +100,19 @@ const emit = defineEmits<{
 }>();
 
 let username = $ref("");
-let host = $ref("");
 let users: misskey.entities.UserDetailed[] = $ref([]);
 let recentUsers: misskey.entities.UserDetailed[] = $ref([]);
 let selected: misskey.entities.UserDetailed | null = $ref(null);
 let dialogEl = $ref();
 
 const search = () => {
-	if (username === "" && host === "") {
+	if (username === "") {
 		users = [];
 		return;
 	}
-	os.api("users/search-by-username-and-host", {
-		username: username,
-		host: null,
+	os.api("users/search", {
+		query: username,
+		origin: "local",
 		limit: 10,
 		detail: false,
 	}).then((_users) => {

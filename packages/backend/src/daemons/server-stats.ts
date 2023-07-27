@@ -21,8 +21,9 @@ export default function () {
 		ev.emit(`serverStatsLog:${x.id}`, log.slice(0, x.length || 50));
 	});
 
-	const meta = fetchMeta();
-	if (!meta.enableServerMachineStats) return;
+	fetchMeta().then((meta) => {
+		if (!meta.enableServerMachineStats) return;
+	});
 
 	async function tick() {
 		const cpu = await cpuUsage();
@@ -36,6 +37,7 @@ export default function () {
 			mem: {
 				used: round(memStats.used - memStats.buffers - memStats.cached),
 				active: round(memStats.active),
+				total: round(memStats.total),
 			},
 			net: {
 				rx: round(Math.max(0, netStats.rx_sec)),

@@ -1,7 +1,7 @@
 <template>
 	<div
-		v-if="chosen && chosen.length > 0 && defaultStore.state.showAds"
 		v-for="chosenItem in chosen"
+		v-if="chosen && chosen.length > 0 && defaultStore.state.showAds"
 		class="qiivuoyo"
 	>
 		<div v-if="!showMenu" class="main" :class="chosenItem.place">
@@ -70,7 +70,7 @@ const choseAd = (): Ad | null => {
 					...ad,
 					ratio: 0,
 			  }
-			: ad
+			: ad,
 	);
 
 	let ads = allAds.filter((ad) => props.prefer.includes(ad.place));

@@ -41,7 +41,7 @@
 					<MkInfo v-if="updateAvailable" warn class="info"
 						>{{ i18n.ts.updateAvailable }}
 						<a
-							href="https://codeberg.org/calckey/calckey/releases"
+							href="https://git.joinfirefish.org/firefish/firefish/releases"
 							target="_bank"
 							class="_link"
 							>{{ i18n.ts.check }}</a
@@ -264,7 +264,7 @@ const menuDef = $computed(() => [
 							active: currentPage?.route.name === "security",
 						},
 						{
-							icon: "ph-flow-arrow ph-bold ph-lg",
+							icon: "ph-arrows-merge ph-bold ph-lg",
 							text: i18n.ts.relays,
 							to: "/admin/relays",
 							active: currentPage?.route.name === "relays",
@@ -379,7 +379,7 @@ async function lookupNote() {
 		"notes/show",
 		q.startsWith("http://") || q.startsWith("https://")
 			? { url: q.trim() }
-			: { noteId: q.trim() }
+			: { noteId: q.trim() },
 	)
 		.then((note) => {
 			os.pageWindow(`/notes/${note.id}`);
@@ -426,7 +426,7 @@ const lookup = (ev) => {
 				},
 			},
 		],
-		ev.currentTarget ?? ev.target
+		ev.currentTarget ?? ev.target,
 	);
 };
 
@@ -478,7 +478,6 @@ defineExpose({
 					display: block;
 					margin: auto;
 					height: 42px;
-					border-radius: 8px;
 				}
 			}
 		}

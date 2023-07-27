@@ -1,6 +1,6 @@
 ## Install dev and compilation dependencies, build files
 FROM alpine:3.18 as build
-WORKDIR /calckey
+WORKDIR /firefish
 
 # Install compilation dependencies
 RUN apk add --no-cache --no-progress git alpine-sdk python3 nodejs-current npm rust cargo vips
@@ -13,14 +13,15 @@ COPY packages/backend/native-utils/migration/Cargo.toml packages/backend/native-
 COPY packages/backend/native-utils/migration/src/lib.rs packages/backend/native-utils/migration/src/
 
 # Install cargo dependencies
-RUN cargo fetch --locked --manifest-path /calckey/packages/backend/native-utils/Cargo.toml
+RUN cargo fetch --locked --manifest-path /firefish/packages/backend/native-utils/Cargo.toml
 
 # Copy only the dependency-related files first, to cache efficiently
 COPY package.json pnpm*.yaml ./
 COPY packages/backend/package.json packages/backend/package.json
 COPY packages/client/package.json packages/client/package.json
 COPY packages/sw/package.json packages/sw/package.json
-COPY packages/calckey-js/package.json packages/calckey-js/package.json
+COPY packages/firefish-js/package.json packages/firefish-js/package.json
+COPY packages/megalodon/package.json packages/megalodon/package.json
 COPY packages/backend/native-utils/package.json packages/backend/native-utils/package.json
 COPY packages/backend/native-utils/npm/linux-x64-musl/package.json packages/backend/native-utils/npm/linux-x64-musl/package.json
 COPY packages/backend/native-utils/npm/linux-arm64-musl/package.json packages/backend/native-utils/npm/linux-arm64-musl/package.json
@@ -29,10 +30,7 @@ COPY packages/backend/native-utils/npm/linux-arm64-musl/package.json packages/ba
 RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm i --frozen-lockfile
 
 # Copy in the rest of the native-utils rust files
-COPY packages/backend/native-utils/.cargo packages/backend/native-utils/.cargo
-COPY packages/backend/native-utils/build.rs packages/backend/native-utils/
-COPY packages/backend/native-utils/src packages/backend/native-utils/src/
-COPY packages/backend/native-utils/migration/src packages/backend/native-utils/migration/src/
+COPY packages/backend/native-utils packages/backend/native-utils/
 
 # Compile native-utils
 RUN pnpm run --filter native-utils build
@@ -46,28 +44,30 @@ RUN pnpm i --prod --frozen-lockfile
 
 ## Runtime container
 FROM alpine:3.18
-WORKDIR /calckey
+WORKDIR /firefish
 
 # Install runtime dependencies
 RUN apk add --no-cache --no-progress tini ffmpeg vips-dev zip unzip nodejs-current
 
 COPY . ./
 
+COPY --from=build /firefish/packages/megalodon /firefish/packages/megalodon
+
 # Copy node modules
-COPY --from=build /calckey/node_modules /calckey/node_modules
-COPY --from=build /calckey/packages/backend/node_modules /calckey/packages/backend/node_modules
-COPY --from=build /calckey/packages/sw/node_modules /calckey/packages/sw/node_modules
-COPY --from=build /calckey/packages/client/node_modules /calckey/packages/client/node_modules
-COPY --from=build /calckey/packages/calckey-js/node_modules /calckey/packages/calckey-js/node_modules
+COPY --from=build /firefish/node_modules /firefish/node_modules
+COPY --from=build /firefish/packages/backend/node_modules /firefish/packages/backend/node_modules
+COPY --from=build /firefish/packages/sw/node_modules /firefish/packages/sw/node_modules
+COPY --from=build /firefish/packages/client/node_modules /firefish/packages/client/node_modules
+COPY --from=build /firefish/packages/firefish-js/node_modules /firefish/packages/firefish-js/node_modules
 
 # Copy the finished compiled files
-COPY --from=build /calckey/built /calckey/built
-COPY --from=build /calckey/packages/backend/built /calckey/packages/backend/built
-COPY --from=build /calckey/packages/backend/assets/instance.css /calckey/packages/backend/assets/instance.css
-COPY --from=build /calckey/packages/backend/native-utils/built /calckey/packages/backend/native-utils/built
+COPY --from=build /firefish/built /firefish/built
+COPY --from=build /firefish/packages/backend/built /firefish/packages/backend/built
+COPY --from=build /firefish/packages/backend/assets/instance.css /firefish/packages/backend/assets/instance.css
+COPY --from=build /firefish/packages/backend/native-utils/built /firefish/packages/backend/native-utils/built
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 ENV NODE_ENV=production
-VOLUME "/calckey/files"
+VOLUME "/firefish/files"
 ENTRYPOINT [ "/sbin/tini", "--" ]
 CMD [ "pnpm", "run", "migrateandstart" ]

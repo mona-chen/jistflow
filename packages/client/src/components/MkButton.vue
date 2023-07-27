@@ -49,8 +49,8 @@ const emit = defineEmits<{
 	(ev: "click", payload: MouseEvent): void;
 }>();
 
-let el = $ref<HTMLElement | null>(null);
-let ripples = $ref<HTMLElement | null>(null);
+const el = $ref<HTMLElement | null>(null);
+const ripples = $ref<HTMLElement | null>(null);
 
 onMounted(() => {
 	if (props.autofocus) {
@@ -90,7 +90,7 @@ function onMousedown(evt: MouseEvent): void {
 		target.clientWidth,
 		target.clientHeight,
 		circleCenterX,
-		circleCenterY
+		circleCenterY,
 	);
 
 	window.setTimeout(() => {

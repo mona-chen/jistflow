@@ -5,19 +5,24 @@
 		v-tooltip.noDelay.bottom="i18n.ts.renote"
 		class="button _button canRenote"
 		:class="{ renoted: hasRenotedBefore }"
-		@click="renote(false, $event)"
+		@click.stop="renote(false, $event)"
 	>
 		<i class="ph-repeat ph-bold ph-lg"></i>
 		<p v-if="count > 0 && !detailedView" class="count">{{ count }}</p>
 	</button>
-	<button v-else class="eddddedb _button">
-		<i class="ph-prohibit ph-bold ph-lg"></i>
+	<button
+		v-else
+		class="eddddedb _button"
+		disabled="true"
+		v-tooltip.noDelay.bottom="i18n.ts.disabled"
+	>
+		<i class="ph-repeat ph-bold ph-lg"></i>
 	</button>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type * as misskey from "calckey-js";
+import type * as misskey from "firefish-js";
 import Ripple from "@/components/MkRipple.vue";
 import XDetails from "@/components/MkUsersTooltip.vue";
 import { pleaseLogin } from "@/scripts/please-login";
@@ -39,7 +44,7 @@ const buttonRef = ref<HTMLElement>();
 const canRenote = computed(
 	() =>
 		["public", "home"].includes(props.note.visibility) ||
-		props.note.userId === $i.id
+		props.note.userId === $i.id,
 );
 
 useTooltip(buttonRef, async (showing) => {
@@ -61,7 +66,7 @@ useTooltip(buttonRef, async (showing) => {
 			targetElement: buttonRef.value,
 		},
 		{},
-		"closed"
+		"closed",
 	);
 });
 
@@ -205,7 +210,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 								renoteId: props.note.id,
 								visibility: props.note.visibility,
 								localOnly: true,
-						  }
+						  },
 				);
 				hasRenotedBefore = true;
 				const el =

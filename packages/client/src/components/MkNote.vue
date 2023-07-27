@@ -128,8 +128,15 @@
 						</div>
 					</div>
 				</div>
-				<div v-if="detailedView" class="info">
-					<MkA class="created-at" :to="notePage(appearNote)">
+				<div
+					v-if="detailedView || (appearNote.channel && !inChannel)"
+					class="info"
+				>
+					<MkA
+						v-if="detailedView"
+						class="created-at"
+						:to="notePage(appearNote)"
+					>
 						<MkTime :time="appearNote.createdAt" mode="absolute" />
 					</MkA>
 					<MkA
@@ -137,11 +144,11 @@
 						class="channel"
 						:to="`/channels/${appearNote.channel.id}`"
 						@click.stop
-						><i class="ph-television ph-bold ph-lg"></i>
+						><i class="ph-television ph-bold"></i>
 						{{ appearNote.channel.name }}</MkA
 					>
 				</div>
-				<footer ref="footerEl" class="footer" @click.stop tabindex="-1">
+				<footer ref="footerEl" class="footer" tabindex="-1">
 					<XReactionsViewer
 						v-if="enableEmojiReactions"
 						ref="reactionsViewer"
@@ -150,7 +157,7 @@
 					<button
 						v-tooltip.noDelay.bottom="i18n.ts.reply"
 						class="button _button"
-						@click="reply()"
+						@click.stop="reply()"
 					>
 						<i class="ph-arrow-u-up-left ph-bold ph-lg"></i>
 						<template
@@ -173,7 +180,7 @@
 						:count="
 							Object.values(appearNote.reactions).reduce(
 								(partialSum, val) => partialSum + val,
-								0
+								0,
 							)
 						"
 						:reacted="appearNote.myReaction != null"
@@ -195,7 +202,7 @@
 						ref="reactButton"
 						v-tooltip.noDelay.bottom="i18n.ts.reaction"
 						class="button _button"
-						@click="react()"
+						@click.stop="react()"
 					>
 						<i class="ph-smiley ph-bold ph-lg"></i>
 					</button>
@@ -206,7 +213,7 @@
 						"
 						ref="reactButton"
 						class="button _button reacted"
-						@click="undoReact(appearNote)"
+						@click.stop="undoReact(appearNote)"
 						v-tooltip.noDelay.bottom="i18n.ts.removeReaction"
 					>
 						<i class="ph-minus ph-bold ph-lg"></i>
@@ -216,7 +223,7 @@
 						ref="menuButton"
 						v-tooltip.noDelay.bottom="i18n.ts.more"
 						class="button _button"
-						@click="menu()"
+						@click.stop="menu()"
 					>
 						<i class="ph-dots-three-outline ph-bold ph-lg"></i>
 					</button>
@@ -251,7 +258,7 @@
 import { computed, inject, onMounted, onUnmounted, reactive, ref } from "vue";
 import * as mfm from "mfm-js";
 import type { Ref } from "vue";
-import type * as misskey from "calckey-js";
+import type * as misskey from "firefish-js";
 import MkNoteSub from "@/components/MkNoteSub.vue";
 import MkSubNoteContent from "./MkSubNoteContent.vue";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
@@ -332,7 +339,7 @@ const renoteButton = ref<InstanceType<typeof XRenoteButton>>();
 const renoteTime = ref<HTMLElement>();
 const reactButton = ref<HTMLElement>();
 let appearNote = $computed(() =>
-	isRenote ? (note.renote as misskey.entities.Note) : note
+	isRenote ? (note.renote as misskey.entities.Note) : note,
 );
 const isMyRenote = $i && $i.id === note.userId;
 const showContent = ref(false);
@@ -369,7 +376,7 @@ function reply(viaKeyboard = false): void {
 		},
 		() => {
 			focus();
-		}
+		},
 	);
 }
 
@@ -386,7 +393,7 @@ function react(viaKeyboard = false): void {
 		},
 		() => {
 			focus();
-		}
+		},
 	);
 }
 
@@ -400,7 +407,7 @@ function undoReact(note): void {
 
 const currentClipPage = inject<Ref<misskey.entities.Clip> | null>(
 	"currentClipPage",
-	null
+	null,
 );
 
 function onContextmenu(ev: MouseEvent): void {
@@ -466,7 +473,7 @@ function onContextmenu(ev: MouseEvent): void {
 					  }
 					: undefined,
 			],
-			ev
+			ev,
 		);
 	}
 }
@@ -484,7 +491,7 @@ function menu(viaKeyboard = false): void {
 		menuButton.value,
 		{
 			viaKeyboard,
-		}
+		},
 	).then(focus);
 }
 
@@ -507,7 +514,7 @@ function showRenoteMenu(viaKeyboard = false): void {
 		renoteTime.value,
 		{
 			viaKeyboard: viaKeyboard,
-		}
+		},
 	);
 }
 
@@ -855,18 +862,19 @@ defineExpose({
 				z-index: 2;
 				display: flex;
 				flex-wrap: wrap;
-				pointer-events: none; // Allow clicking anything w/out pointer-events: all; to open post
 				margin-top: 0.4em;
 				> :deep(.button) {
 					position: relative;
 					margin: 0;
 					padding: 8px;
 					opacity: 0.7;
+					&:disabled {
+						opacity: 0.5 !important;
+					}
 					flex-grow: 1;
 					max-width: 3.5em;
 					width: max-content;
 					min-width: max-content;
-					pointer-events: all;
 					height: auto;
 					transition: opacity 0.2s;
 					&::before {

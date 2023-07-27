@@ -16,7 +16,7 @@
 				<div v-if="meta" class="about">
 					<div
 						class="desc"
-						v-html="meta.description || i18n.ts.introMisskey"
+						v-html="meta.description || i18n.ts.introFirefish"
 					></div>
 				</div>
 				<div class="action">
@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent } from "vue";
+import { defineAsyncComponent, defineComponent } from "vue";
 import XHeader from "./header.vue";
 import { host, instanceName } from "@/config";
 import { search } from "@/scripts/search";
@@ -140,7 +140,7 @@ export default defineComponent({
 					if (window.innerWidth >= DESKTOP_THRESHOLD)
 						this.isDesktop = true;
 				},
-				{ passive: true }
+				{ passive: true },
 			);
 		}
 	},

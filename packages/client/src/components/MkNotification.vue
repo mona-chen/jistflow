@@ -73,7 +73,7 @@
 						notification.reaction
 							? notification.reaction.replace(
 									/^:(\w+):$/,
-									':$1@.:'
+									':$1@.:',
 							  )
 							: notification.reaction
 					"
@@ -274,7 +274,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watch } from "vue";
-import * as misskey from "calckey-js";
+import * as misskey from "firefish-js";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import MkFollowButton from "@/components/MkFollowButton.vue";
 import XReactionTooltip from "@/components/MkReactionTooltip.vue";
@@ -297,7 +297,7 @@ const props = withDefaults(
 	{
 		withTime: false,
 		full: false,
-	}
+	},
 );
 
 const elRef = ref<HTMLElement>(null);
@@ -378,7 +378,7 @@ useTooltip(reactionRef, (showing) => {
 			targetElement: reactionRef.value.$el,
 		},
 		{},
-		"closed"
+		"closed",
 	);
 });
 </script>

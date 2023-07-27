@@ -1,7 +1,7 @@
 _lang_: "Español"
-headlineMisskey: "¡Un proyecto de código abierto y una plataforma de medios de comunicación
+headlineFirefish: "¡Un proyecto de código abierto y una plataforma de medios de comunicación
   descentralizada que es gratis para siempre! 🚀"
-introMisskey: "¡Bienvenido! ¡Calckey es un proyecto de código abierto, plataforma
+introFirefish: "¡Bienvenido! ¡Firefish es un proyecto de código abierto, plataforma
   descentralizado medios de comunicación social que es gratis para siempre! 🚀"
 monthAndDay: "{day}/{month}"
 search: "Buscar"
@@ -150,7 +150,7 @@ cacheRemoteFilesDescription: "Si desactiva esta configuración, los archivos rem
 flagAsBot: "Esta cuenta es un bot"
 flagAsBotDescription: "En caso de que esta cuenta fuera usada por un programa, active
   esta opción. Al hacerlo, esta opción servirá para otros desarrolladores para evitar
-  cadenas infinitas de reacciones, y ajustará los sistemas internos de Calckey para
+  cadenas infinitas de reacciones, y ajustará los sistemas internos de Firefish para
   que trate a esta cuenta como un bot."
 flagAsCat: "Esta cuenta es un gato"
 flagAsCatDescription: "Vas a tener orejas de gato y hablar como un gato!"
@@ -218,7 +218,7 @@ noUsers: "No hay usuarios"
 editProfile: "Editar perfil"
 noteDeleteConfirm: "¿Desea borrar esta publicación?"
 pinLimitExceeded: "Ya no se pueden fijar más publicaciones"
-intro: "¡La instalación de Calckey ha terminado! Crea el usuario administrador."
+intro: "¡La instalación de Firefish ha terminado! Crea el usuario administrador."
 done: "Terminado"
 processing: "Procesando"
 preview: "Vista previa"
@@ -406,7 +406,7 @@ exploreFediverse: "Explorar fediverso"
 popularTags: "Etiquetas populares"
 userList: "Lista"
 about: "Información"
-aboutMisskey: "Sobre Calckey"
+aboutFirefish: "Sobre Firefish"
 administrator: "Administrador"
 token: "Token"
 twoStepAuthentication: "Autenticación de dos factores"
@@ -564,7 +564,7 @@ ascendingOrder: "Ascendente"
 descendingOrder: "Descendente"
 scratchpad: "Scratch pad"
 scratchpadDescription: "Scratchpad proporciona un entorno experimental para AiScript.
-  Puede escribir, ejecutar y verificar los resultados que interactúan con Calckey."
+  Puede escribir, ejecutar y verificar los resultados que interactúan con Firefish."
 output: "Salida"
 script: "Script"
 disablePagesScript: "Deshabilitar AiScript en Páginas"
@@ -642,7 +642,7 @@ wordMute: "Silenciar palabras"
 regexpError: "Error de la expresión regular"
 regexpErrorDescription: "Ocurrió un error en la expresión regular en la linea {line}
   de las palabras muteadas {tab}"
-instanceMute: "Instancias silenciadas"
+instanceMute: "Servidores silenciados"
 userSaysSomething: "{name} dijo algo"
 makeActive: "Activar"
 display: "Apariencia"
@@ -671,14 +671,14 @@ sample: "Muestra"
 abuseReports: "Reportes"
 reportAbuse: "Reportar"
 reportAbuseOf: "Reportar a {name}"
-fillAbuseReportDescription: "Ingrese los detalles del reporte. Si hay una nota en
-  particular, ingrese la URL de esta."
+fillAbuseReportDescription: "Ingrese los detalles del reporte. Si hay una publicación
+  en particular, ingrese la URL de esta."
 abuseReported: "Se ha enviado el reporte. Muchas gracias."
 reporter: "Reportador"
 reporteeOrigin: "Reportar a"
 reporterOrigin: "Origen del reporte"
-forwardReport: "Transferir un informe a una instancia remota"
-forwardReportIsAnonymous: "No puede ver su información de la instancia remota y aparecerá
+forwardReport: "Transferir reporte a un servidor remoto"
+forwardReportIsAnonymous: "No puede ver su información del servidor remoto y aparecerá
   como una cuenta anónima del sistema"
 send: "Enviar"
 abuseMarkAsResolved: "Marcar reporte como resuelto"
@@ -686,7 +686,7 @@ openInNewTab: "Abrir en una Nueva Pestaña"
 openInSideView: "Abrir en una vista al costado"
 defaultNavigationBehaviour: "Navegación por defecto"
 editTheseSettingsMayBreakAccount: "Editar estas configuraciones puede dañar su cuenta."
-instanceTicker: "Información de notas de la instancia"
+instanceTicker: "Información de publicaciones de el servidor"
 waitingFor: "Esperando a {x}"
 random: "Aleatorio"
 system: "Sistema"
@@ -697,14 +697,14 @@ createNew: "Crear"
 optional: "Opcional"
 createNewClip: "Crear clip nuevo"
 unclip: "Quitar clip"
-confirmToUnclipAlreadyClippedNote: "Esta nota ya está incluida en el clip \"{name}\"\
-  . ¿Quiere quitar la nota del clip?"
+confirmToUnclipAlreadyClippedNote: "Esta publicación ya está incluida en el clip \"\
+  {name}\". ¿Quiere quitar la nota del clip?"
 public: "Público"
-i18nInfo: "Calckey está siendo traducido a varios idiomas gracias a voluntarios. Se
+i18nInfo: "Firefish está siendo traducido a varios idiomas gracias a voluntarios. Se
   puede colaborar traduciendo en {link}"
 manageAccessTokens: "Administrar tokens de acceso"
 accountInfo: "Información de la Cuenta"
-notesCount: "Cantidad de notas"
+notesCount: "Cantidad de publicaciones"
 repliesCount: "Cantidad de respuestas hechas"
 renotesCount: "Cantidad de renotas hechas"
 repliedCount: "Cantidad de respuestas recibidas"
@@ -720,7 +720,7 @@ no: "No"
 driveFilesCount: "Cantidad de archivos en el drive"
 driveUsage: "Uso del drive"
 noCrawle: "Rechazar indexación del crawler"
-noCrawleDescription: "Pedir a los motores de búsqueda que no indexen tu perfil, notas,
+noCrawleDescription: "Pedir a los motores de búsqueda que no indexen tu perfil, publicaciones,
   páginas, etc."
 lockedAccountInfo: "A menos que configures la visibilidad de tus notas como \"Sólo
   seguidores\", tus notas serán visibles para cualquiera, incluso si requieres que
@@ -734,7 +734,7 @@ verificationEmailSent: "Se le ha enviado un correo electrónico de confirmación
   configuración."
 notSet: "Sin especificar"
 emailVerified: "Su dirección de correo electrónico ha sido verificada."
-noteFavoritesCount: "Número de notas favoritas"
+noteFavoritesCount: "Número de publicaciones favoritas"
 pageLikesCount: "Número de favoritos en la página"
 pageLikedCount: "Número de favoritos de su página"
 contact: "Contacto"
@@ -761,9 +761,9 @@ nUsers: "{n} Usuarios"
 nNotes: "{n} Notas"
 sendErrorReports: "Envíar informe de errores"
 sendErrorReportsDescription: "Si habilita esta opción, los detalles de los errores
-  serán compartidos con Calckey cuando ocurra un problema, lo que ayudará a mejorar
-  la calidad de Calckey. \nEsto incluye información como la versión del sistema operativo,
-  el tipo de navegador que está utilizando y su historial en Calckey, entre otros
+  serán compartidos con Firefish cuando ocurra un problema, lo que ayudará a mejorar
+  la calidad de Firefish. \nEsto incluye información como la versión del sistema operativo,
+  el tipo de navegador que está utilizando y su historial en Firefish, entre otros
   datos."
 myTheme: "Mi Tema"
 backgroundColor: "Fondo"
@@ -859,7 +859,7 @@ hashtags: "Hashtag"
 troubleshooting: "Solución de problemas"
 useBlurEffect: "Utilizar efecto de desenfoque en la interfaz de usuario"
 learnMore: "Ver más"
-misskeyUpdated: "¡Calckey ha sido actualizado!"
+misskeyUpdated: "¡Firefish ha sido actualizado!"
 whatIsNew: "Mostrar cambios"
 translate: "Traducir"
 translatedFrom: "Traducido de {x}"
@@ -975,7 +975,7 @@ shuffle: "Aleatorio"
 account: "Cuentas"
 move: "Mover"
 _sensitiveMediaDetection:
-  description: "Reduce el esfuerzo de la moderación el el servidor a través del reconocimiento
+  description: "Reduce el esfuerzo de la moderación de el servidor a través del reconocimiento
     automático de contenido NSFW usando 'Machine Learning'. Esto puede incrementar
     ligeramente la carga en el servidor."
   sensitivity: "Sensibilidad de detección"
@@ -1062,17 +1062,17 @@ _registry:
   keys: "Clave"
   domain: "Dominio"
   createKey: "Crear una llave"
-_aboutMisskey:
-  about: "Calckey es una bifurcación de Misskey creada por ThatOneCalculator, que
+_aboutFirefish:
+  about: "Firefish es una bifurcación de Misskey creada por ThatOneCalculator, que
     ha estado en desarrollo desde el 2022."
   contributors: "Principales colaboradores"
   allContributors: "Todos los colaboradores"
   source: "Código fuente"
-  translation: "Traducir Calckey"
-  donate: "Donar a Calckey"
+  translation: "Traducir Firefish"
+  donate: "Donar a Firefish"
   morePatrons: "También apreciamos el apoyo de muchos más que no están enlistados
     aquí. ¡Gracias! 🥰"
-  patrons: "Mecenas de Calckey"
+  patrons: "Mecenas de Firefish"
 _nsfw:
   respect: "Ocultar medios NSFW"
   ignore: "No esconder medios NSFW "
@@ -1080,9 +1080,9 @@ _nsfw:
 _mfm:
   cheatSheet: "Hoja de referencia de MFM"
   intro: "MFM es un lenguaje de marcado dedicado que se puede usar en varios lugares
-    dentro de Misskey, Calckey, Akkoma, y mucho más. Aquí puede ver una lista de sintaxis
+    dentro de Misskey, Firefish, Akkoma, y mucho más. Aquí puede ver una lista de sintaxis
     disponibles en MFM."
-  dummy: "Calckey expande el mundo de la Fediverso"
+  dummy: "Firefish expande el mundo de la Fediverso"
   mention: "Menciones"
   mentionDescription: "El signo @ seguido de un nombre de usuario se puede utilizar
     para notificar a un usuario en particular."
@@ -1293,9 +1293,9 @@ _time:
   hour: "Horas"
   day: "Días"
 _tutorial:
-  title: "Cómo usar Calckey"
+  title: "Cómo usar Firefish"
   step1_1: "¡Bienvenido!"
-  step1_2: "Vamos a configurarte. Estarás listo y funcionando en poco tiempo"
+  step1_2: "Vamos a configurarte. ¡Estarás listo y funcionando en poco tiempo!"
   step2_1: "En primer lugar, rellena tu perfil"
   step2_2: "Proporcionar algo de información sobre quién eres hará que sea más fácil
     para los demás saber si quieren ver tus notas o seguirte."
@@ -1319,10 +1319,10 @@ _tutorial:
   step5_7: "La línea de tiempo Global {icon} es donde puedes ver las publicaciones
     de todas las demás instancias conectadas."
   step6_1: "Entonces, ¿qué es este lugar?"
-  step6_2: "Bueno, no sólo te has unido a Calckey. Te has unido a un portal del Fediverso,
+  step6_2: "Bueno, no sólo te has unido a Firefish. Te has unido a un portal del Fediverso,
     una red interconectada de miles de servidores, llamada \"instancias\""
   step6_3: "Cada servidor funciona de forma diferente, y no todos los servidores ejecutan
-    Calckey. Sin embargo, ¡éste lo hace! Es un poco complicado, pero le cogerás el
+    Firefish. Sin embargo, ¡éste lo hace! Es un poco complicado, pero le cogerás el
     tranquillo enseguida"
   step6_4: "¡Ahora ve, explora y diviértete!"
 _2fa:
@@ -1475,7 +1475,7 @@ _profile:
   youCanIncludeHashtags: "Puedes añadir hashtags"
   metadata: "información adicional"
   metadataEdit: "Editar información adicional"
-  metadataDescription: "Muestra la información adicional en el perfil"
+  metadataDescription: "Muestra la información adicional en el perfil. ¡Puede agregar una etiqueta {a} o una etiqueta {l} con {rel} para verificar el enlace en su perfil!"
   metadataLabel: "Etiqueta"
   metadataContent: "Contenido"
   changeAvatar: "Cambiar avatar"
@@ -1789,7 +1789,7 @@ _pages:
       splitStrByLine: "Separar texto en lineas"
       _splitStrByLine:
         arg1: "Texto"
-      ref: "Variables"
+      ref: "Variable"
       aiScriptVar: "Variable de AiScript"
       fn: "funciones"
       _fn:
@@ -1800,8 +1800,8 @@ _pages:
       _for:
         arg1: "Cantidad de repeticiones"
         arg2: "Acción"
-    typeError: "El slot {slot} acepta el tipo {expect} pero fue ingresado el tipo
-      {actual}"
+    typeError: "El slot {slot} acepta el tipo \"{expect}\" pero fue ingresado el tipo
+      \"{actual}\""
     thereIsEmptySlot: "El slot {slot} está vacío"
     types:
       string: "Texto"
@@ -1924,7 +1924,7 @@ silenceThisInstance: Silenciar este servidor
 findOtherInstance: Buscar otro servidor
 userSaysSomethingReasonRenote: '{name} impulsó una publicación que contiene {reason]'
 enableRecommendedTimeline: Habilitar línea de tiempo "Recomendado"
-searchPlaceholder: Buscar en Calckey
+searchPlaceholder: Buscar en Firefish
 listsDesc: Las listas te permiten crear líneas de tiempo con usuarios específicos.
   Puedes acceder a ellas desde la pestaña "Línea de tiempo".
 removeReaction: Quitar tu reacción

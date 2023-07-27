@@ -45,7 +45,9 @@
 					<div class="about">
 						<div
 							class="desc"
-							v-html="meta.description || i18n.ts.headlineMisskey"
+							v-html="
+								meta.description || i18n.ts.headlineFirefish
+							"
 						></div>
 					</div>
 					<div class="action">
@@ -151,7 +153,7 @@ function signin() {
 			autoSet: true,
 		},
 		{},
-		"closed"
+		"closed",
 	);
 }
 
@@ -162,7 +164,7 @@ function signup() {
 			autoSet: true,
 		},
 		{},
-		"closed"
+		"closed",
 	);
 }
 
@@ -177,14 +179,14 @@ function showMenu(ev) {
 				},
 			},
 			{
-				text: i18n.ts.aboutMisskey,
+				text: i18n.ts.aboutFirefish,
 				icon: "ph-info ph-bold ph-lg",
 				action: () => {
-					os.pageWindow("/about-calckey");
+					os.pageWindow("/about-firefish");
 				},
 			},
 		],
-		ev.currentTarget ?? ev.target
+		ev.currentTarget ?? ev.target,
 	);
 }
 </script>
@@ -296,7 +298,6 @@ function showMenu(ev) {
 			> .icon {
 				width: 85px;
 				margin-top: -47px;
-				border-radius: 100%;
 				vertical-align: bottom;
 			}
 

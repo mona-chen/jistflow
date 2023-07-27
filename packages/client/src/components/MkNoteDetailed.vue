@@ -159,7 +159,7 @@ import {
 	reactive,
 	ref,
 } from "vue";
-import * as misskey from "calckey-js";
+import * as misskey from "firefish-js";
 import MkTab from "@/components/MkTab.vue";
 import MkNote from "@/components/MkNote.vue";
 import MkNoteSub from "@/components/MkNoteSub.vue";
@@ -180,7 +180,7 @@ import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { deepClone } from "@/scripts/clone";
 import { stream } from "@/stream";
-import { NoteUpdatedEvent } from "calckey-js/built/streaming.types";
+import { NoteUpdatedEvent } from "firefish-js/built/streaming.types";
 import appear from "@/directives/appear";
 
 const props = defineProps<{
@@ -233,7 +233,7 @@ let isScrolling;
 
 const reactionsCount = Object.values(props.note.reactions).reduce(
 	(x, y) => x + y,
-	0
+	0,
 );
 
 const keymap = {
@@ -274,7 +274,7 @@ function react(viaKeyboard = false): void {
 		},
 		() => {
 			focus();
-		}
+		},
 	);
 }
 
@@ -308,7 +308,7 @@ function onContextmenu(ev: MouseEvent): void {
 				menuButton,
 				isDeleted,
 			}),
-			ev
+			ev,
 		).then(focus);
 	}
 }
@@ -325,7 +325,7 @@ function menu(viaKeyboard = false): void {
 		menuButton.value,
 		{
 			viaKeyboard,
-		}
+		},
 	).then(focus);
 }
 
@@ -551,7 +551,9 @@ onUnmounted(() => {
 			background: var(--panelHighlight);
 			border-radius: var(--radius);
 			opacity: 0;
-			transition: opacity 0.2s, background 0.2s;
+			transition:
+				opacity 0.2s,
+				background 0.2s;
 			z-index: -1;
 		}
 		&.reply-to {

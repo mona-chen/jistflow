@@ -1,9 +1,11 @@
-import { Entity } from "@calckey/megalodon";
+import { Entity } from "megalodon";
 import { convertId, IdType } from "../index.js";
 
 function simpleConvert(data: any) {
-	data.id = convertId(data.id, IdType.MastodonId);
-	return data;
+	// copy the object to bypass weird pass by reference bugs
+	const result = Object.assign({}, data);
+	result.id = convertId(data.id, IdType.MastodonId);
+	return result;
 }
 
 export function convertAccount(account: Entity.Account) {
@@ -21,17 +23,28 @@ export function convertFilter(filter: Entity.Filter) {
 export function convertList(list: Entity.List) {
 	return simpleConvert(list);
 }
+export function convertFeaturedTag(tag: Entity.FeaturedTag) {
+	return simpleConvert(tag);
+}
 
 export function convertNotification(notification: Entity.Notification) {
 	notification.account = convertAccount(notification.account);
 	notification.id = convertId(notification.id, IdType.MastodonId);
 	if (notification.status)
 		notification.status = convertStatus(notification.status);
+	if (notification.reaction)
+		notification.reaction = convertReaction(notification.reaction);
 	return notification;
 }
 
 export function convertPoll(poll: Entity.Poll) {
 	return simpleConvert(poll);
+}
+export function convertReaction(reaction: Entity.Reaction) {
+	if (reaction.accounts) {
+		reaction.accounts = reaction.accounts.map(convertAccount);
+	}
+	return reaction;
 }
 export function convertRelationship(relationship: Entity.Relationship) {
 	return simpleConvert(relationship);
@@ -56,6 +69,8 @@ export function convertStatus(status: Entity.Status) {
 	}));
 	if (status.poll) status.poll = convertPoll(status.poll);
 	if (status.reblog) status.reblog = convertStatus(status.reblog);
+	if (status.quote) status.quote = convertStatus(status.quote);
+	status.reactions = status.reactions.map(convertReaction);
 
 	return status;
 }

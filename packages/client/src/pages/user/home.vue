@@ -26,6 +26,13 @@
 								class="banner"
 								:style="{
 									backgroundImage: `url('${user.bannerUrl}')`,
+									'--backgroundImageStatic':
+										defaultStore.state.useBlurEffect &&
+										user.bannerUrl
+											? `url('${getStaticImageUrl(
+													user.bannerUrl,
+											  )}')`
+											: null,
 								}"
 							></div>
 							<div class="fade"></div>
@@ -107,7 +114,7 @@
 											patrons?.includes(
 												`@${user.username}@${
 													user.host || host
-												}`
+												}`,
 											)
 										"
 										v-tooltip.noDelay="i18n.ts.isPatron"
@@ -199,7 +206,7 @@
 										patrons?.includes(
 											`@${user.username}@${
 												user.host || host
-											}`
+											}`,
 										)
 									"
 									v-tooltip.noDelay="i18n.ts.isPatron"
@@ -271,7 +278,7 @@
 								<dd class="value">
 									{{
 										new Date(
-											user.createdAt
+											user.createdAt,
 										).toLocaleString()
 									}}
 									(<MkTime :time="user.createdAt" />)
@@ -281,10 +288,17 @@
 						<div v-if="user.fields.length > 0" class="fields">
 							<dl
 								v-for="(field, i) in user.fields"
+								:class="field.verified ? 'verified' : ''"
 								:key="i"
 								class="field"
 							>
 								<dt class="name">
+									<i
+										v-if="field.verified"
+										class="ph-bold ph-seal-check ph-lg ph-fw"
+										style="padding: 5px"
+										v-tooltip="i18n.ts.verifiedLink"
+									></i>
 									<Mfm
 										:text="field.name"
 										:plain="true"
@@ -349,11 +363,11 @@
 					>
 					<template v-if="narrow">
 						<XPhotos :key="user.id" :user="user" />
-						<XActivity
+						<!-- <XActivity
 							:key="user.id"
 							:user="user"
 							style="margin-top: var(--margin)"
-						/>
+						/> -->
 					</template>
 				</div>
 				<div>
@@ -377,15 +391,17 @@ import { defineAsyncComponent, onMounted, onUnmounted } from "vue";
 import calcAge from "s-age";
 import cityTimezones from "city-timezones";
 import XUserTimeline from "./index.timeline.vue";
-import type * as misskey from "calckey-js";
+import type * as misskey from "firefish-js";
 import XNote from "@/components/MkNote.vue";
 import MkFollowButton from "@/components/MkFollowButton.vue";
 import MkRemoteCaution from "@/components/MkRemoteCaution.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import MkMoved from "@/components/MkMoved.vue";
 import { getScrollPosition } from "@/scripts/scroll";
+import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import number from "@/filters/number";
 import { userPage } from "@/filters/user";
+import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { $i } from "@/account";
@@ -399,7 +415,7 @@ const props = withDefaults(
 	defineProps<{
 		user: misskey.entities.UserDetailed;
 	}>(),
-	{}
+	{},
 );
 
 let parallaxAnimationId = $ref<null | number>(null);
@@ -417,16 +433,16 @@ const timeForThem = $computed(() => {
 		props.user
 			.location!.replace(
 				/[^A-Za-z0-9ÁĆÉǴÍḰĹḾŃÓṔŔŚÚÝŹáćéǵíḱĺḿńóṕŕśúýź\-\'\.\s].*/,
-				""
+				"",
 			)
 			.trim(),
 		props.user.location!.replace(
 			/[^A-Za-zÁĆÉǴÍḰĹḾŃÓṔŔŚÚÝŹáćéǵíḱĺḿńóṕŕśúýź\-\'\.].*/,
-			""
+			"",
 		),
 		props.user.location!.replace(
 			/[^A-Za-zÁĆÉǴÍḰĹḾŃÓṔŔŚÚÝŹáćéǵíḱĺḿńóṕŕśúýź].*/,
-			""
+			"",
 		),
 	];
 
@@ -452,11 +468,8 @@ const timeForThem = $computed(() => {
 });
 
 let patrons = [];
-try {
-	patrons = await os.api("patrons");
-} catch {
-	console.error("Codeberg's down.");
-}
+const patronsResp = await os.api("patrons");
+patrons = patronsResp.patrons;
 
 function parallaxLoop() {
 	parallaxAnimationId = window.requestAnimationFrame(parallaxLoop);
@@ -513,7 +526,7 @@ onUnmounted(() => {
 							content: "";
 							position: fixed;
 							inset: 0;
-							background: var(--blur, inherit);
+							background: var(--backgroundImageStatic);
 							background-size: cover;
 							background-position: center;
 							pointer-events: none;
@@ -740,6 +753,12 @@ onUnmounted(() => {
 
 						&:not(:last-child) {
 							margin-bottom: 8px;
+						}
+
+						&.verified {
+							background-color: var(--hover);
+							border-radius: 10px;
+							color: var(--badge) !important;
 						}
 
 						> .name {

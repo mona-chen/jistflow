@@ -18,7 +18,7 @@ pub struct App {
     pub is_authorized: Option<bool>,
 }
 
-/// This represents `permissions` in `packages/calckey-js/src/consts.ts`.
+/// This represents `permissions` in `packages/firefish-js/src/consts.ts`.
 #[derive(Clone, Debug, PartialEq, Eq, JsonSchema, ToSchema)]
 pub enum AppPermission {
     #[serde(rename = "read:account")]
@@ -91,7 +91,7 @@ pub enum AppPermission {
 
 impl Schema<Self> for App {}
 
-pub static VALIDATOR: Lazy<JSONSchema> = Lazy::new(|| App::validator());
+pub static VALIDATOR: Lazy<JSONSchema> = Lazy::new(App::validator);
 
 #[cfg(test)]
 mod unit_test {
@@ -105,9 +105,9 @@ mod unit_test {
 
     #[test]
     fn app_valid() {
-        init_id(12, "");
+        init_id(16, "");
         let instance = json!({
-            "id": create_id().unwrap(),
+            "id": create_id(0).unwrap(),
             "name": "Test App",
             "secret": gen_string(24),
             "callbackUrl": "urn:ietf:wg:oauth:2.0:oob",
@@ -119,9 +119,9 @@ mod unit_test {
 
     #[test]
     fn app_invalid() {
-        init_id(12, "");
+        init_id(16, "");
         let instance = json!({
-            "id": create_id().unwrap(),
+            "id": create_id(0).unwrap(),
             // "name" is required
             "name": null,
             // "permission" must be one of the app permissions

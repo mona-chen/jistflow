@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import { length } from "stringz";
-import * as misskey from "calckey-js";
+import type * as misskey from "firefish-js";
 import { concat } from "@/scripts/array";
 import { i18n } from "@/i18n";
 
@@ -63,7 +63,9 @@ defineExpose({
 	> span {
 		background: var(--cwBg) !important;
 		color: var(--cwFg);
-		transition: background 0.2s, color 0.2s;
+		transition:
+			background 0.2s,
+			color 0.2s;
 		> span {
 			font-weight: 500;
 			&::before {

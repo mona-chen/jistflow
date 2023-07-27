@@ -14,7 +14,7 @@
 			<div ref="gallery" @click.stop>
 				<XMedia
 					v-for="media in mediaList.filter((media) =>
-						previewable(media)
+						previewable(media),
 					)"
 					:key="media.id"
 					:class="{ image: media.type.startsWith('image') }"
@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import * as misskey from "calckey-js";
+import * as misskey from "firefish-js";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import PhotoSwipe from "photoswipe";
 import "photoswipe/style.css";
@@ -177,7 +177,7 @@ const previewable = (file: misskey.entities.DriveFile): boolean => {
 	);
 };
 const previewableCount = props.mediaList.filter((media) =>
-	previewable(media)
+	previewable(media),
 ).length;
 </script>
 

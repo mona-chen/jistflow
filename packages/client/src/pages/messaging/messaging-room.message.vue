@@ -84,7 +84,7 @@
 <script lang="ts" setup>
 import {} from "vue";
 import * as mfm from "mfm-js";
-import type * as Misskey from "calckey-js";
+import type * as Misskey from "firefish-js";
 import XMediaList from "@/components/MkMediaList.vue";
 import { extractUrlFromMfm } from "@/scripts/extract-url-from-mfm";
 import MkUrlPreview from "@/components/MkUrlPreview.vue";
@@ -99,7 +99,7 @@ const props = defineProps<{
 
 const isMe = $computed(() => props.message.userId === $i?.id);
 const urls = $computed(() =>
-	props.message.text ? extractUrlFromMfm(mfm.parse(props.message.text)) : []
+	props.message.text ? extractUrlFromMfm(mfm.parse(props.message.text)) : [],
 );
 
 function del(): void {

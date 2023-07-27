@@ -1,5 +1,9 @@
 <template>
-	<div ref="reactionsEl" class="reactions-list tdflqwzn" :class="{ isMe }">
+	<div
+		ref="reactionsEl"
+		class="reactions-list swiper-no-swiping tdflqwzn"
+		:class="{ isMe }"
+	>
 		<XReaction
 			v-for="(count, reaction) in note.reactions"
 			:key="reaction"
@@ -14,7 +18,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import * as misskey from "calckey-js";
+import * as misskey from "firefish-js";
 import { $i } from "@/account";
 import XReaction from "@/components/MkReactionsViewer.reaction.vue";
 
@@ -50,6 +54,11 @@ const isMe = computed(() => $i && $i.id === props.note.userId);
 		transparent
 	);
 	scrollbar-width: none;
+	pointer-events: none;
+	:deep(*) {
+		pointer-events: all;
+	}
+
 	&::-webkit-scrollbar {
 		display: none;
 	}

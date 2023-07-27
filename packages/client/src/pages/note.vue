@@ -70,7 +70,7 @@
 
 <script lang="ts" setup>
 import { computed, defineComponent, watch } from "vue";
-import * as misskey from "calckey-js";
+import * as misskey from "firefish-js";
 import XNoteDetailed from "@/components/MkNoteDetailed.vue";
 import XNotes from "@/components/MkNotes.vue";
 import MkRemoteCaution from "@/components/MkRemoteCaution.vue";
@@ -101,7 +101,7 @@ const prevPagination = {
 					userId: appearNote.userId,
 					untilId: appearNote.id,
 			  }
-			: null
+			: null,
 	),
 };
 
@@ -115,7 +115,7 @@ const nextPagination = {
 					userId: appearNote.userId,
 					sinceId: appearNote.id,
 			  }
-			: null
+			: null,
 	),
 };
 
@@ -187,8 +187,8 @@ definePageMetadata(
 						text: appearNote.text,
 					},
 			  }
-			: null
-	)
+			: null,
+	),
 );
 </script>
 
@@ -203,7 +203,7 @@ definePageMetadata(
 }
 
 .fcuexfpr {
-	#calckey_app > :not(.wallpaper) & {
+	#firefish_app > :not(.wallpaper) & {
 		background: var(--bg);
 	}
 

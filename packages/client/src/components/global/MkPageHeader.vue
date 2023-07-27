@@ -11,10 +11,10 @@
 			<div class="buttons">
 				<button
 					v-if="displayBackButton"
+					v-tooltip.noDelay="i18n.ts.goBack"
 					class="_buttonIcon button icon backButton"
 					@click.stop="goBack()"
 					@touchstart="preventDrag"
-					v-tooltip.noDelay="i18n.ts.goBack"
 				>
 					<i class="ph-caret-left ph-bold ph-lg"></i>
 				</button>
@@ -23,7 +23,7 @@
 					class="avatar button"
 					:user="$i"
 					:disable-preview="true"
-					disableLink
+					disable-link
 					@click.stop="openAccountMenu"
 				/>
 			</div>
@@ -68,8 +68,8 @@
 		</div>
 		<template v-if="metadata">
 			<nav
-				ref="tabsEl"
 				v-if="hasTabs"
+				ref="tabsEl"
 				class="tabs"
 				:class="{ collapse: hasTabs && tabs.length > 3 }"
 			>
@@ -123,14 +123,14 @@
 <script lang="ts" setup>
 import {
 	computed,
+	inject,
+	nextTick,
 	onMounted,
 	onUnmounted,
-	ref,
-	inject,
-	watch,
-	shallowReactive,
-	nextTick,
 	reactive,
+	ref,
+	shallowReactive,
+	watch,
 } from "vue";
 import MkFollowButton from "@/components/MkFollowButton.vue";
 import { popupMenu } from "@/os";
@@ -140,13 +140,13 @@ import { injectPageMetadata } from "@/scripts/page-metadata";
 import { $i, openAccountMenu as openAccountMenu_ } from "@/account";
 import { i18n } from "@/i18n";
 
-type Tab = {
+interface Tab {
 	key?: string | null;
 	title: string;
 	icon?: string;
 	iconOnly?: boolean;
 	onClick?: (ev: MouseEvent) => void;
-};
+}
 
 const props = defineProps<{
 	tabs?: Tab[];
@@ -194,7 +194,7 @@ const openAccountMenu = (ev: MouseEvent) => {
 		{
 			withExtraOperation: true,
 		},
-		ev
+		ev,
 	);
 };
 
@@ -278,7 +278,7 @@ onMounted(() => {
 		},
 		{
 			immediate: true,
-		}
+		},
 	);
 
 	if (el && el.parentElement) {
@@ -533,7 +533,11 @@ onUnmounted(() => {
 			font-weight: normal;
 			opacity: 0.7;
 			overflow: hidden;
-			transition: color 0.2s, opacity 0.2s, width 0.2s, min-width 0.2s;
+			transition:
+				color 0.2s,
+				opacity 0.2s,
+				width 0.2s,
+				min-width 0.2s;
 			--width: 38px;
 
 			&:hover {
@@ -562,7 +566,9 @@ onUnmounted(() => {
 			height: 3px;
 			background: var(--accent);
 			border-radius: 999px;
-			transition: width 0.2s, transform 0.2s;
+			transition:
+				width 0.2s,
+				transform 0.2s;
 			transition-timing-function: cubic-bezier(0, 0, 0, 1.2);
 			pointer-events: none;
 		}

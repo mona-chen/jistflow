@@ -23,10 +23,10 @@
 							v-tooltip.noDelay="
 								i18n.t('edited', {
 									date: new Date(
-										note.updatedAt
+										note.updatedAt,
 									).toLocaleDateString(),
 									time: new Date(
-										note.updatedAt
+										note.updatedAt,
 									).toLocaleTimeString(),
 								})
 							"
@@ -48,7 +48,7 @@
 
 <script lang="ts" setup>
 import {} from "vue";
-import type * as misskey from "calckey-js";
+import type * as misskey from "firefish-js";
 import { defaultStore, noteViewInterruptors } from "@/store";
 import MkVisibility from "@/components/MkVisibility.vue";
 import MkInstanceTicker from "@/components/MkInstanceTicker.vue";

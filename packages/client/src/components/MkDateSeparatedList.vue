@@ -1,5 +1,6 @@
 <script lang="ts">
-import { defineComponent, h, PropType, TransitionGroup } from "vue";
+import type { PropType } from "vue";
+import { TransitionGroup, defineComponent, h } from "vue";
 import MkAd from "@/components/global/MkAd.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
@@ -51,7 +52,7 @@ export default defineComponent({
 				if (!slots || !slots.default) return;
 
 				const el = slots.default({
-					item: item,
+					item,
 				})[0];
 				if (el.key == null && item.id) el.key = item.id;
 
@@ -84,8 +85,8 @@ export default defineComponent({
 										class: "ph-caret-down ph-bold ph-lg icon",
 									}),
 								]),
-							]
-						)
+							],
+						),
 					);
 
 					return [el, separator];
@@ -119,7 +120,7 @@ export default defineComponent({
 					: {
 							class: "sqadhkmv" + (props.noGap ? " noGap" : ""),
 					  },
-				{ default: renderChildren }
+				{ default: renderChildren },
 			);
 	},
 });
@@ -140,7 +141,8 @@ export default defineComponent({
 	}
 
 	> .list-enter-active {
-		transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+		transition:
+			transform 0.7s cubic-bezier(0.23, 1, 0.32, 1),
 			opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 	}
 
