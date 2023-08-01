@@ -1124,7 +1124,6 @@ privateModeInfo: Etkinleştirildiğinde, yalnızca beyaz listedeki sunucular sun
 itsOff: Etkinsizleştirilmiş
 ffVisibilityDescription: Kimleri takip ettiğinizi ve kimlerin sizi takip ettiğini
   kimlerin görebileceğini yapılandırmanıza izin verir.
-welcomeBackWithName: Tekrar hoş geldin {name}
 themeColor: Sunucu Kayan Yazı Rengi
 audio: Ses
 recentNHours: Son {n} saat

@@ -946,7 +946,6 @@ voteConfirm: Vahvista äänesi vaihtoehdolle "{choice}"?
 hide: Piilota
 leaveGroup: Poistu ryhmästä
 leaveGroupConfirm: Oletko varma, että haluat poistua ryhmästä "{name}"?
-welcomeBackWithName: Tervetuloa takaisin, {name}
 clickToFinishEmailVerification: Klikkaa [{ok}] viimeistelläksesi sähköpostivahvistuksen.
 overridedDeviceKind: Laitetyyppi
 tablet: Tabletti

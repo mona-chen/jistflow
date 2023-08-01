@@ -1808,7 +1808,6 @@ filter: Filtre
 slow: Lenta
 useDrawerReactionPickerForMobile: Mostra el selector de reaccions com a calaix al
   mòbil
-welcomeBackWithName: Benvingut de nou, {name}
 showLocalPosts: 'Mostra les notes locals a:'
 homeTimeline: Línea de temps Inicial
 socialTimeline: Línea de temps Social

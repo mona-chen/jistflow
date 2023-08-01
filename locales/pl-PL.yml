@@ -863,7 +863,6 @@ leaveGroup: "Opuść grupę"
 leaveGroupConfirm: "Czy na pewno chcesz opuścić \"{name}\"?"
 useDrawerReactionPickerForMobile: "Wyświetlaj wybornik reakcji jako szufladę na urządzeniach
   mobilnych"
-welcomeBackWithName: "Witaj z powrotem, {name}"
 clickToFinishEmailVerification: "Kliknij [{ok}], aby zakończyć weryfikację e-mail."
 overridedDeviceKind: "Typ urządzenia"
 smartphone: "Smartfon"

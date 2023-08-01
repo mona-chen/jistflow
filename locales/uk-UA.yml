@@ -1791,7 +1791,6 @@ useDrawerReactionPickerForMobile: Відображати вибирач реак
 leaveGroupConfirm: Ви впевнені, що хочете залишити "{name}"?
 clickToFinishEmailVerification: Будь ласка, натисніть [{ok}], щоб завершити перевірку
   електронної пошти.
-welcomeBackWithName: Ласкаво просимо назад, {name}
 overridedDeviceKind: Тип пристрою
 themeColor: Колір теми серверу
 oneDay: Один день

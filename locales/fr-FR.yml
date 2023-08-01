@@ -906,7 +906,6 @@ leaveGroup: "Quitter le groupe"
 leaveGroupConfirm: "Êtes vous sûr de vouloir quitter \"{name}\" ?"
 useDrawerReactionPickerForMobile: "Afficher le sélecteur de réactions en tant que
   panneau sur mobile"
-welcomeBackWithName: "Heureux de vous revoir, {name}"
 clickToFinishEmailVerification: "Veuillez cliquer sur [{ok}] afin de compléter la
   vérification par courriel."
 overridedDeviceKind: "Type d’appareil"
