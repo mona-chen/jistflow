@@ -258,20 +258,14 @@ mainRouter.on("change", () => {
 if (defaultStore.state.widgets.length === 0) {
 	defaultStore.set("widgets", [
 		{
-			name: "calendar",
+			name: "notifications",
 			id: "a",
 			place: "right",
 			data: {},
 		},
 		{
-			name: "notifications",
-			id: "b",
-			place: "right",
-			data: {},
-		},
-		{
 			name: "trends",
-			id: "c",
+			id: "b",
 			place: "right",
 			data: {},
 		},
