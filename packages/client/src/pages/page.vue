@@ -315,7 +315,7 @@ definePageMetadata(
 						title: page.title || page.name,
 						text: page.summary,
 					},
-			  }
+				}
 			: null,
 	),
 );
@@ -401,7 +401,7 @@ definePageMetadata(
 			> .like {
 				> .button {
 					--accent: #eb6f92;
-					--X8: #eb6f92;
+					--accentLightenLess: #eb6f92;
 					--buttonBg: rgb(216 71 106 / 5%);
 					--buttonHoverBg: rgb(216 71 106 / 10%);
 					color: #eb6f92;

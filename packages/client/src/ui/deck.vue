@@ -30,7 +30,7 @@
 													)
 													.map((c) => c.width),
 											) + 'px',
-								  }
+									}
 						"
 						@wheel.self="onWheel"
 					>
@@ -58,7 +58,7 @@
 											columns.find(
 												(c) => c.id === ids[0],
 											)!.width + 'px',
-								  }
+									}
 						"
 						@parent-focus="moveFocus(ids[0], $event)"
 						@headerWheel="onWheel"
@@ -558,7 +558,7 @@ async function deleteProfile() {
 			}
 
 			&:hover {
-				background: var(--X2);
+				background: var(--buttonHoverBg);
 			}
 
 			> .indicator {

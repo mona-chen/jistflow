@@ -724,7 +724,7 @@ function noteClick(e) {
 		}
 		// &::after {
 		// 	content: "";
-		// 	border-top: 1px solid var(--X13);
+		// 	border-top: 1px solid var(--dividerHovered);
 		// 	position: absolute;
 		// 	bottom: 0;
 		// 	margin-left: calc(var(--avatarSize) + 12px);

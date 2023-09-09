@@ -274,7 +274,7 @@ export default defineComponent({
 						background: linear-gradient(
 							0deg,
 							var(--panel),
-							var(--X15)
+							var(--panelFade)
 						);
 					}
 				}

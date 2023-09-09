@@ -214,7 +214,7 @@ defineExpose<WidgetComponentExpose>({
 			> .meter {
 				width: 100%;
 				overflow: hidden;
-				background: var(--X11);
+				background: var(--calendarInfoMeterBg);
 				border-radius: 8px;
 
 				> .val {

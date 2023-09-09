@@ -184,7 +184,7 @@ onMounted(() => {
 				font-size: 14px;
 
 				&:hover {
-					background: var(--X7);
+					background: var(--interactiveElementHovered);
 				}
 
 				&.selected {

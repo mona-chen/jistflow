@@ -150,11 +150,11 @@ function onMousedown(evt: MouseEvent): void {
 		background: var(--accent);
 
 		&:not(:disabled):hover {
-			background: var(--X8);
+			background: var(--accentLightenLess);
 		}
 
 		&:not(:disabled):active {
-			background: var(--X8);
+			background: var(--accentLightenLess);
 		}
 	}
 
@@ -168,11 +168,11 @@ function onMousedown(evt: MouseEvent): void {
 		);
 
 		&:not(:disabled):hover {
-			background: linear-gradient(90deg, var(--X8), var(--X8));
+			background: var(--accentLightenLess);
 		}
 
 		&:not(:disabled):active {
-			background: linear-gradient(90deg, var(--X8), var(--X8));
+			background: var(--accentLightenLess);
 		}
 	}
 

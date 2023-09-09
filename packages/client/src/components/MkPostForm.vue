@@ -1187,7 +1187,7 @@ onMounted(() => {
 					margin: 0.3rem;
 					padding: 4px 0 4px 4px;
 					border-radius: 999px;
-					background: var(--X3);
+					background: var(--interactiveElementHovered);
 
 					> button {
 						padding: 4px 8px;
@@ -1260,7 +1260,7 @@ onMounted(() => {
 				border-radius: 6px;
 
 				&:hover {
-					background: var(--X5);
+					background: var(--postFormButtonHoverBg);
 				}
 
 				&.active {

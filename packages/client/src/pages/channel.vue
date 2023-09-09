@@ -143,7 +143,7 @@ const headerActions = $computed(() => [
 					text: i18n.ts.edit,
 					handler: edit,
 				},
-		  ]
+			]
 		: []),
 ]);
 
@@ -155,7 +155,7 @@ definePageMetadata(
 			? {
 					title: channel.name,
 					icon: "ph-television ph-bold ph-lg",
-			  }
+				}
 			: null,
 	),
 );
@@ -201,7 +201,7 @@ definePageMetadata(
 			left: 0;
 			width: 100%;
 			height: 64px;
-			background: linear-gradient(0deg, var(--panel), var(--X15));
+			background: linear-gradient(0deg, var(--panel), var(--panelFade));
 		}
 
 		> .status {

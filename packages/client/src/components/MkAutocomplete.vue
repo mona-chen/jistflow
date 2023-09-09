@@ -497,7 +497,7 @@ onBeforeUnmount(() => {
 			}
 
 			&:hover {
-				background: var(--X3);
+				background: var(--interactiveElementHovered);
 			}
 
 			&[data-selected="true"] {

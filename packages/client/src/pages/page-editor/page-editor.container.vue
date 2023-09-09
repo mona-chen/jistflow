@@ -93,11 +93,11 @@ export default defineComponent({
 	position: relative;
 	overflow: hidden;
 	background: var(--panel);
-	border: solid 2px var(--X12);
+	border: solid 2px var(--divider);
 	border-radius: 6px;
 
 	&:hover {
-		border: solid 2px var(--X13);
+		border: solid 2px var(--dividerHovered);
 	}
 
 	&.warn {

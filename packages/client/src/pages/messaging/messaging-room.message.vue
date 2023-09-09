@@ -261,7 +261,7 @@ function del(): void {
 			padding-right: 32px;
 
 			> .balloon {
-				$color: var(--X4);
+				$color: var(--messagingIsNotMe);
 				background: $color;
 
 				&.noText {

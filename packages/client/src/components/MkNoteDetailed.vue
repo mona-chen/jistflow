@@ -583,7 +583,7 @@ onUnmounted(() => {
 		// @media (pointer: coarse) {
 		// 	&:has(.button:focus-within) {
 		// 		z-index: 2;
-		// 		--X13: transparent;
+		// 		--dividerHovered: transparent;
 		// 		&::after {
 		// 			opacity: 1;
 		// 			backdrop-filter: var(--modalBgFilter);
