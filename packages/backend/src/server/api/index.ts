@@ -91,7 +91,7 @@ mastoFileRouter.post("/v1/media", upload.single("file"), async (ctx) => {
 			return;
 		}
 		const data = await client.uploadMedia(multipartData);
-		ctx.body = convertAttachment(data.data as Entity.Attachment);
+		ctx.body = convertAttachment(data.data as MastodonEntity.Attachment);
 	} catch (e: any) {
 		console.error(e);
 		ctx.status = 401;
@@ -110,7 +110,7 @@ mastoFileRouter.post("/v2/media", upload.single("file"), async (ctx) => {
 			return;
 		}
 		const data = await client.uploadMedia(multipartData, ctx.request.body);
-		ctx.body = convertAttachment(data.data as Entity.Attachment);
+		ctx.body = convertAttachment(data.data as MastodonEntity.Attachment);
 	} catch (e: any) {
 		console.error(e);
 		ctx.status = 401;

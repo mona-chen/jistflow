@@ -12,6 +12,10 @@ import {
 	convertPoll,
 	convertStatus,
 } from "../converters.js";
+import {NoteConverter} from "@/server/api/mastodon/converters/note.js";
+import {getNote} from "@/server/api/common/getters.js";
+import authenticate from "@/server/api/authenticate.js";
+import {Notes} from "@/models";
 
 function normalizeQuery(data: any) {
 	const str = querystring.stringify(data);
@@ -147,14 +151,25 @@ export function apiStatusMastodon(router: Router): void {
 		}
 	});
 	router.get<{ Params: { id: string } }>("/v1/statuses/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.getStatus(
-				convertId(ctx.params.id, IdType.IceshrimpId),
-			);
-			ctx.body = convertStatus(data.data);
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0];
+
+			if (!auth || !user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const noteId = convertId(ctx.params.id, IdType.IceshrimpId);
+			const note = await getNote(noteId, user).then(n => n).catch(() => null);
+
+			if (!note) {
+				ctx.status = 404;
+				return;
+			}
+
+			const status = await NoteConverter.encode(note, user);
+			ctx.body = convertStatus(status);
 		} catch (e: any) {
 			console.error(e);
 			ctx.status = ctx.status == 404 ? 404 : 401;
