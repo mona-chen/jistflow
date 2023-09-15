@@ -108,4 +108,9 @@ export class NoteConverter {
             quote: note.renote && note.text ? await this.encode(note.renote, user) : null,
         };
     }
+
+	public static async encodeMany(notes: Note[], user?: ILocalUser): Promise<MastodonEntity.Status[]> {
+		const encoded = notes.map(n => this.encode(n, user));
+		return Promise.all(encoded);
+	}
 }

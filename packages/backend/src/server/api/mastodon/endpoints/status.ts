@@ -10,6 +10,7 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { getNote } from "@/server/api/common/getters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
+import { Note } from "@/models/entities/note.js";
 
 function normalizeQuery(data: any) {
 	const str = querystring.stringify(data);
@@ -64,7 +65,7 @@ export function apiStatusMastodon(router: Router): void {
 					convertId(p, IdType.IceshrimpId),
 				);
 			}
-			const { sensitive } = body;
+			const {sensitive} = body;
 			body.sensitive =
 				typeof sensitive === "string" ? sensitive === "true" : sensitive;
 
@@ -114,7 +115,7 @@ export function apiStatusMastodon(router: Router): void {
 					convertId(p, IdType.IceshrimpId),
 				);
 			}
-			const { sensitive } = body;
+			const {sensitive} = body;
 			body.sensitive =
 				typeof sensitive === "string" ? sensitive === "true" : sensitive;
 
@@ -180,12 +181,14 @@ export function apiStatusMastodon(router: Router): void {
 			ctx.body = e.response.data;
 		}
 	});
+
 	interface IReaction {
 		id: string;
 		createdAt: string;
 		user: MisskeyEntity.User;
 		type: string;
 	}
+
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/context",
 		async (ctx) => {
@@ -203,11 +206,11 @@ export function apiStatusMastodon(router: Router): void {
 					}
 				}
 
-				let ancestors = await NoteHelpers.getNoteAncestors(note, user, user ? 4096 : 60);
-				let children = await NoteHelpers.getNoteChildren(note, user, user ? 4096 : 40, user ? 4096 : 20);
+				const ancestors = await NoteHelpers.getNoteAncestors(note, user, user ? 4096 : 60);
+				const children = await NoteHelpers.getNoteChildren(note, user, user ? 4096 : 40, user ? 4096 : 20);
 				ctx.body = {
-					ancestors: (await Promise.all(ancestors.map(n => NoteConverter.encode(n, user)))).map(s => convertStatus(s)),
-					descendants: (await Promise.all(children.map(n => NoteConverter.encode(n, user)))).map(s => convertStatus(s)),
+					ancestors: (await NoteConverter.encodeMany(ancestors, user)).map((s: MastodonEntity.Status) => convertStatus(s)),
+					descendants:  (await NoteConverter.encodeMany(children, user)).map((s: MastodonEntity.Status) => convertStatus(s)),
 				};
 			} catch (e: any) {
 				console.error(e);
