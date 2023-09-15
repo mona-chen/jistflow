@@ -13,33 +13,10 @@ import { generateMutedUserRenotesQueryForNotes } from "@/server/api/common/gener
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { ApiError } from "@/server/api/error.js";
 import { meta } from "@/server/api/endpoints/notes/global-timeline.js";
+import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 
 export class TimelineHelpers {
-	private static async execQuery(query: SelectQueryBuilder<Note>, limit: number): Promise<Note[]> {
-		// We fetch more than requested because some may be filtered out, and if there's less than
-		// requested, the pagination stops.
-		const found = [];
-		const take = Math.floor(limit * 1.5);
-		let skip = 0;
-		try {
-			while (found.length < limit) {
-				const notes = await query.take(take).skip(skip).getMany();
-				found.push(...notes);
-				skip += take;
-				if (notes.length < take) break;
-			}
-		} catch (error) {
-			return [];
-		}
-
-		if (found.length > limit) {
-			found.length = limit;
-		}
-
-		return found;
-	}
-
-	public static async getHomeTimeline(user: ILocalUser, maxId?: string, sinceId?: string, minId?: string, limit: number = 20): Promise<Note[]> {
+	public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
 		if (limit > 40) limit = 40;
 
 		const hasFollowing =
@@ -90,10 +67,10 @@ export class TimelineHelpers {
 
 		query.andWhere("note.visibility != 'hidden'");
 
-		return this.execQuery(query, limit);
+		return NoteHelpers.execQuery(query, limit);
 	}
 
-	public static async getPublicTimeline(user: ILocalUser, maxId?: string, sinceId?: string, minId?: string, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<Note[]> {
+	public static async getPublicTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<Note[]> {
 		if (limit > 40) limit = 40;
 
 		const m = await fetchMeta();
@@ -144,6 +121,6 @@ export class TimelineHelpers {
 
 		query.andWhere("note.visibility != 'hidden'");
 
-		return this.execQuery(query, limit);
+		return NoteHelpers.execQuery(query, limit);
 	}
 }

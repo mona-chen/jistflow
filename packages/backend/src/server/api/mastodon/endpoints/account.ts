@@ -3,7 +3,7 @@ import { resolveUser } from "@/remote/resolve-user.js";
 import Router from "@koa/router";
 import { FindOptionsWhere, IsNull } from "typeorm";
 import { getClient } from "../ApiMastodonCompatibleService.js";
-import { argsToBools, convertTimelinesArgsId, limitToInt } from "./timeline.js";
+import { argsToBools, convertTimelinesArgsId, limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { convertId, IdType } from "../../index.js";
 import {
 	convertAccount,
@@ -14,6 +14,10 @@ import {
 } from "../converters.js";
 import { getNote, getUser } from "@/server/api/common/getters.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
+import authenticate from "@/server/api/authenticate.js";
+import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
+import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 
 const relationshipModel = {
 	id: "",
@@ -147,15 +151,21 @@ export function apiAccountMastodon(router: Router): void {
 	router.get<{ Params: { id: string } }>(
 		"/v1/accounts/:id/statuses",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.getAccountStatuses(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-					convertTimelinesArgsId(argsToBools(limitToInt(ctx.query as any))),
-				);
-				ctx.body = data.data.map((status) => convertStatus(status));
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? undefined;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const userId = convertId(ctx.params.id, IdType.IceshrimpId);
+				const args = normalizeUrlQuery(convertTimelinesArgsId(argsToBools(limitToInt(ctx.query))));
+				const tl = await UserHelpers.getUserStatuses(userId, user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.exclude_replies, args.exclude_reblogs, args.pinned, args.tagged)
+					.then(n => NoteConverter.encodeMany(n, user));
+
+				ctx.body = tl.map(s => convertStatus(s));
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);

@@ -7,6 +7,7 @@ import { Note } from "@/models/entities/note.js";
 import { ILocalUser } from "@/models/entities/user.js";
 import querystring from "node:querystring";
 import { getNote } from "@/server/api/common/getters.js";
+import { SelectQueryBuilder } from "typeorm";
 
 export class NoteHelpers {
 	public static async getNoteDescendants(note: Note | string, user: ILocalUser | null, limit: number = 10, depth: number = 2): Promise<Note[]> {
@@ -43,5 +44,29 @@ export class NoteHelpers {
 		}
 
 		return notes;
+	}
+
+	public static async execQuery(query: SelectQueryBuilder<Note>, limit: number): Promise<Note[]> {
+		// We fetch more than requested because some may be filtered out, and if there's less than
+		// requested, the pagination stops.
+		const found = [];
+		const take = Math.floor(limit * 1.5);
+		let skip = 0;
+		try {
+			while (found.length < limit) {
+				const notes = await query.take(take).skip(skip).getMany();
+				found.push(...notes);
+				skip += take;
+				if (notes.length < take) break;
+			}
+		} catch (error) {
+			return [];
+		}
+
+		if (found.length > limit) {
+			found.length = limit;
+		}
+
+		return found;
 	}
 }
