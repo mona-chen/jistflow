@@ -68,6 +68,11 @@ export class NoteConverter {
 
 				const files = await DriveFiles.packMany(note.fileIds);
 
+				const mentions = note.mentions.map(async p =>
+					await getUser(p)
+						.then(u => MentionConverter.encode(u))
+						.catch(() => null));
+
 				// FIXME use await-all
 
         return {
@@ -95,7 +100,7 @@ export class NoteConverter {
             spoiler_text: note.cw ? note.cw : "",
             visibility: VisibilityConverter.encode(note.visibility),
             media_attachments: files.length > 0 ? files.map((f) => FileConverter.encode(f)) : [],
-            mentions: await Promise.all(note.mentions.map(async p => MentionConverter.encode(await getUser(p)))),
+            mentions: (await Promise.all(mentions)).filter(p => p) as MastodonEntity.Mention[],
             tags: [], //FIXME
             card: null, //FIXME
             poll: note.hasPoll ? PollConverter.encode(await populatePoll(note, user?.id ?? null), note.id) : null,
