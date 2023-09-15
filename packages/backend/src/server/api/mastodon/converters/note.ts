@@ -17,10 +17,10 @@ import { populatePoll } from "@/models/repositories/note.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 
 export class NoteConverter {
-    public static async encode(note: Note, user: ILocalUser): Promise<MastodonEntity.Status> {
+    public static async encode(note: Note, user?: ILocalUser): Promise<MastodonEntity.Status> {
         const noteUser = note.user ?? await getUser(note.userId);
 
-				if (!await Notes.isVisibleForMe(note, user.id ?? null))
+				if (!await Notes.isVisibleForMe(note, user?.id ?? null))
 					throw new Error();
 
 				const host = note.user?.host ?? null;
@@ -49,22 +49,22 @@ export class NoteConverter {
 					}
 				}) : null;
 
-				const reply = note.reply ?? (note.replyId ? await getNote(note.replyId, user) : null);
+				const reply = note.reply ?? (note.replyId ? await getNote(note.replyId, user ?? null) : null);
 
-				const isBookmarked = await NoteFavorites.exist({
+				const isBookmarked = user ? await NoteFavorites.exist({
 					where: {
 						userId: user.id,
 						noteId: note.id,
 					},
 					take: 1,
-				});
+				}) : false;
 
-				const isMuted = await NoteThreadMutings.exist({
+				const isMuted = user ? await NoteThreadMutings.exist({
 					where: {
 						userId: user.id,
 						threadId: note.threadId || note.id,
 					}
-				});
+				}) : false;
 
 				const files = await DriveFiles.packMany(note.fileIds);
 
@@ -98,7 +98,7 @@ export class NoteConverter {
             mentions: await Promise.all(note.mentions.map(async p => MentionConverter.encode(await getUser(p)))),
             tags: [], //FIXME
             card: null, //FIXME
-            poll: note.hasPoll ? PollConverter.encode(await populatePoll(note, user.id), note.id) : null,
+            poll: note.hasPoll ? PollConverter.encode(await populatePoll(note, user?.id ?? null), note.id) : null,
             application: null, //FIXME
             language: null, //FIXME
             pinned: null, //FIXME

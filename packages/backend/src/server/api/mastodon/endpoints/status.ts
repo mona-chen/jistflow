@@ -4,18 +4,12 @@ import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
 import axios from "axios";
 import querystring from "node:querystring";
 import qs from "qs";
-import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
 import { convertId, IdType } from "../../index.js";
-import {
-	convertAccount,
-	convertAttachment,
-	convertPoll,
-	convertStatus,
-} from "../converters.js";
+import { convertAccount, convertAttachment, convertPoll, convertStatus, } from "../converters.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { getNote } from "@/server/api/common/getters.js";
 import authenticate from "@/server/api/authenticate.js";
-import {Notes} from "@/models";
+import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 
 function normalizeQuery(data: any) {
 	const str = querystring.stringify(data);
@@ -153,15 +147,10 @@ export function apiStatusMastodon(router: Router): void {
 	router.get<{ Params: { id: string } }>("/v1/statuses/:id", async (ctx) => {
 		try {
 			const auth = await authenticate(ctx.headers.authorization, null);
-			const user = auth[0];
-
-			if (!auth || !user) {
-				ctx.status = 401;
-				return;
-			}
+			const user = auth[0] ?? undefined;
 
 			const noteId = convertId(ctx.params.id, IdType.IceshrimpId);
-			const note = await getNote(noteId, user).then(n => n).catch(() => null);
+			const note = await getNote(noteId, user ?? null).then(n => n).catch(() => null);
 
 			if (!note) {
 				ctx.status = 404;
@@ -200,23 +189,26 @@ export function apiStatusMastodon(router: Router): void {
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/context",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const id = convertId(ctx.params.id, IdType.IceshrimpId);
-				const data = await client.getStatusContext(
-					id,
-					convertTimelinesArgsId(limitToInt(ctx.query as any)),
-				);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? undefined;
 
-				data.data.ancestors = data.data.ancestors.map((status) =>
-					convertStatus(status),
-				);
-				data.data.descendants = data.data.descendants.map((status) =>
-					convertStatus(status),
-				);
-				ctx.body = data.data;
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user ?? null).then(n => n).catch(() => null);
+				if (!note) {
+					if (!note) {
+						ctx.status = 404;
+						return;
+					}
+				}
+
+				let ancestors = await NoteHelpers.getNoteAncestors(note, user, user ? 4096 : 60);
+				let children = await NoteHelpers.getNoteChildren(note, user, user ? 4096 : 40, user ? 4096 : 20);
+				ctx.body = {
+					ancestors: (await Promise.all(ancestors.map(n => NoteConverter.encode(n, user)))).map(s => convertStatus(s)),
+					descendants: (await Promise.all(children.map(n => NoteConverter.encode(n, user)))).map(s => convertStatus(s)),
+				};
 			} catch (e: any) {
 				console.error(e);
 				ctx.status = 401;
