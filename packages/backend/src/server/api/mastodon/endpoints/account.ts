@@ -161,8 +161,9 @@ export function apiAccountMastodon(router: Router): void {
 				}
 
 				const userId = convertId(ctx.params.id, IdType.IceshrimpId);
+				const query = await getUser(userId);
 				const args = normalizeUrlQuery(convertTimelinesArgsId(argsToBools(limitToInt(ctx.query))));
-				const tl = await UserHelpers.getUserStatuses(userId, user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.exclude_replies, args.exclude_reblogs, args.pinned, args.tagged)
+				const tl = await UserHelpers.getUserStatuses(query, user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.exclude_replies, args.exclude_reblogs, args.pinned, args.tagged)
 					.then(n => NoteConverter.encodeMany(n, user));
 
 				ctx.body = tl.map(s => convertStatus(s));

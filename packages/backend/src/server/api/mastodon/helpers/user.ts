@@ -1,4 +1,5 @@
 import { Note } from "@/models/entities/note.js";
+import { User } from "@/models/entities/user.js";
 import { ILocalUser } from "@/models/entities/user.js";
 import { Followings, Notes } from "@/models/index.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
@@ -16,7 +17,7 @@ import { meta } from "@/server/api/endpoints/notes/global-timeline.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 
 export class UserHelpers {
-	public static async getUserStatuses(userId: string, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {
+	public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {
 		if (limit > 40) limit = 40;
 
 		if (pinned) {
@@ -35,7 +36,7 @@ export class UserHelpers {
 			sinceId ?? minId,
 			maxId,
 		)
-			.andWhere("note.userId = :userId", { userId });
+			.andWhere("note.userId = :userId", { userId: user.id });
 
 		if (excludeReblogs) query.andWhere("(note.renoteId IS NOT NULL) OR (note.text IS NOT NULL)");
 
@@ -52,13 +53,12 @@ export class UserHelpers {
 			.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
 			.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner");
 
+		//FIXME this doesn't exclude replies to your own reply to someone else's post
 		generateRepliesQuery(query, !excludeReplies, localUser);
 		generateVisibilityQuery(query, localUser);
 		if (localUser) {
-			generateMutedUserQuery(query, localUser);
-			generateMutedNoteQuery(query, localUser);
+			generateMutedUserQuery(query, localUser, user);
 			generateBlockedUserQuery(query, localUser);
-			generateMutedUserRenotesQueryForNotes(query, localUser);
 		}
 
 		if (onlyMedia) query.andWhere("note.fileIds != '{}'");
