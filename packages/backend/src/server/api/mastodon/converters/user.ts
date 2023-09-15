@@ -1,6 +1,6 @@
 import { User } from "@/models/entities/user.js";
 import config from "@/config/index.js";
-import { UserProfiles, Users } from "@/models/index.js";
+import { DriveFiles, UserProfiles, Users } from "@/models/index.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
 import { toHtml } from "@/mfm/to-html.js";
@@ -24,6 +24,14 @@ export class UserConverter {
 		}
 		const profile = UserProfiles.findOneBy({userId: u.id});
 		const bio = profile.then(profile => toHtml(mfm.parse(profile?.description ?? "")) ?? escapeMFM(profile?.description ?? ""));
+		const avatar = u.avatarId
+			? (DriveFiles.findOneBy({ id: u.avatarId }))
+				.then(p => p?.url ?? Users.getIdenticonUrl(u.id))
+			: Users.getIdenticonUrl(u.id);
+		const banner = u.bannerId
+			? (DriveFiles.findOneBy({ id: u.bannerId }))
+				.then(p => p?.url ?? `${config.url}/static-assets/transparent.png`)
+			: `${config.url}/static-assets/transparent.png`;
 
 		return awaitAll({
 			id: u.id,
@@ -37,10 +45,10 @@ export class UserConverter {
 			statuses_count: u.notesCount,
 			note: bio,
 			url: u.uri ?? acctUrl,
-			avatar: u.avatar?.url ?? Users.getIdenticonUrl(u.id),
-			avatar_static: u.avatar?.url ?? Users.getIdenticonUrl(u.id),
-			header: u.banner?.url ?? `${config.url}/static-assets/transparent.png`,
-			header_static: u.banner?.url ?? `${config.url}/static-assets/transparent.png`,
+			avatar: avatar,
+			avatar_static: avatar,
+			header: banner,
+			header_static: banner,
 			emojis: populateEmojis(u.emojis, u.host).then(emoji => emoji.map((e) => EmojiConverter.encode(e))),
 			moved: null, //FIXME
 			fields: profile.then(profile => profile?.fields.map(p => this.encodeField(p)) ?? []),
