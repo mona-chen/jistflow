@@ -61,7 +61,7 @@ export function convertTimelinesArgsId(q: ParsedUrlQuery) {
 export function normalizeUrlQuery(q: ParsedUrlQuery): any {
 	const dict: any = {};
 
-	for (const k in Object.keys(q)) {
+	for (const k in q) {
 		dict[k] = Array.isArray(q[k]) ? q[k]?.at(-1) : q[k];
 	}
 
