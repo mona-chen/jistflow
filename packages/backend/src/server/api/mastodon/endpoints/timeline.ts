@@ -45,6 +45,8 @@ export function argsToBools(q: ParsedUrlQuery) {
 		if (typeof q.pinned === "string") object.pinned = toBoolean(q.pinned);
 	if (q.local)
 		if (typeof q.local === "string") object.local = toBoolean(q.local);
+	if (q.remote)
+		if (typeof q.local === "string") object.local = toBoolean(q.local);
 	return q;
 }
 
@@ -70,20 +72,20 @@ export function normalizeUrlQuery(q: ParsedUrlQuery): any {
 
 export function apiTimelineMastodon(router: Router): void {
 	router.get("/v1/timelines/public", async (ctx, reply) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const query: any = ctx.query;
-			const data =
-				query.local === "true"
-					? await client.getLocalTimeline(
-							convertTimelinesArgsId(argsToBools(limitToInt(query))),
-					  )
-					: await client.getPublicTimeline(
-							convertTimelinesArgsId(argsToBools(limitToInt(query))),
-					  );
-			ctx.body = data.data.map((status) => convertStatus(status));
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? undefined;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+			
+			const args = normalizeUrlQuery(convertTimelinesArgsId(argsToBools(limitToInt(ctx.query))));
+			const tl = await TimelineHelpers.getPublicTimeline(user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote)
+				.then(n => NoteConverter.encodeMany(n, user));
+
+			ctx.body = tl.map(s => convertStatus(s));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
