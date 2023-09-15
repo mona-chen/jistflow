@@ -73,7 +73,7 @@ export class NoteConverter {
 
 				const mentions = Promise.all(note.mentions.map(p =>
 					getUser(p)
-						.then(u => MentionConverter.encode(u))
+						.then(u => MentionConverter.encode(u, JSON.parse(note.mentionedRemoteUsers)))
 						.catch(() => null)))
 					.then(p => p.filter(m => m)) as Promise<MastodonEntity.Mention[]>;
 
