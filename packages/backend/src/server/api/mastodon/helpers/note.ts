@@ -9,7 +9,7 @@ import querystring from "node:querystring";
 import { getNote } from "@/server/api/common/getters.js";
 
 export class NoteHelpers {
-	public static async getNoteChildren(note: Note | string, user?: ILocalUser, limit: number = 10, depth: number = 2): Promise<Note[]> {
+	public static async getNoteDescendants(note: Note | string, user?: ILocalUser, limit: number = 10, depth: number = 2): Promise<Note[]> {
 		const noteId = typeof note === "string" ? note : note.id;
 		const query = makePaginationQuery(Notes.createQueryBuilder("note"))
 			.andWhere(

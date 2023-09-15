@@ -206,11 +206,16 @@ export function apiStatusMastodon(router: Router): void {
 					}
 				}
 
-				const ancestors = await NoteHelpers.getNoteAncestors(note, user, user ? 4096 : 60);
-				const children = await NoteHelpers.getNoteChildren(note, user, user ? 4096 : 40, user ? 4096 : 20);
+				const ancestors = await NoteHelpers.getNoteAncestors(note, user, user ? 4096 : 60)
+					.then(n => NoteConverter.encodeMany(n))
+					.then(n => n.map(s => convertStatus(s)));
+				const descendants = await NoteHelpers.getNoteDescendants(note, user, user ? 4096 : 40, user ? 4096 : 20)
+					.then(n => NoteConverter.encodeMany(n))
+					.then(n => n.map(s => convertStatus(s)));
+
 				ctx.body = {
-					ancestors: (await NoteConverter.encodeMany(ancestors, user)).map((s: MastodonEntity.Status) => convertStatus(s)),
-					descendants:  (await NoteConverter.encodeMany(children, user)).map((s: MastodonEntity.Status) => convertStatus(s)),
+					ancestors,
+					descendants,
 				};
 			} catch (e: any) {
 				console.error(e);
