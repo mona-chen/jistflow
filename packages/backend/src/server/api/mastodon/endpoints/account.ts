@@ -13,7 +13,7 @@ import {
 	convertStatus,
 } from "../converters.js";
 import { getNote, getUser } from "@/server/api/common/getters.js";
-import { convertUser } from "@/server/api/mastodon/converters/user.js";
+import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 
 const relationshipModel = {
 	id: "",
@@ -135,7 +135,7 @@ export function apiAccountMastodon(router: Router): void {
 	router.get<{ Params: { id: string } }>("/v1/accounts/:id", async (ctx) => {
 		try {
 			const userId = convertId(ctx.params.id, IdType.IceshrimpId);
-			const account = await convertUser(await getUser(userId));
+			const account = await UserConverter.encode(await getUser(userId));
 			ctx.body = convertAccount(account);
 		} catch (e: any) {
 			console.error(e);

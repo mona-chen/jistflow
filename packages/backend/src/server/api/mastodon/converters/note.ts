@@ -4,14 +4,14 @@ import { Note } from "@/models/entities/note.js";
 import config from "@/config/index.js";
 import mfm from "mfm-js";
 import { toHtml } from "@/mfm/to-html.js";
-import { convertUser } from "@/server/api/mastodon/converters/user.js";
-import { Visibility } from "@/server/api/mastodon/converters/visibility.js";
+import { UserConverter } from "@/server/api/mastodon/converters/user.js";
+import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { DriveFiles, NoteFavorites, NoteReactions, Notes, NoteThreadMutings } from "@/models/index.js";
 import { decodeReaction } from "@/misc/reaction-lib.js";
-import { convertMention } from "@/server/api/mastodon/converters/mention.js";
+import { MentionConverter } from "@/server/api/mastodon/converters/mention.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
 import { populatePoll } from "@/models/repositories/note.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
@@ -74,7 +74,7 @@ export class NoteConverter {
             id: note.id,
             uri: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
             url: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
-            account: await convertUser(noteUser),
+            account: await UserConverter.encode(noteUser),
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: reply?.userId ?? null,
             reblog: note.renote ? await this.encode(note.renote, user) : null,
@@ -93,9 +93,9 @@ export class NoteConverter {
             muted: isMuted,
             sensitive: files.length > 0 ? files.some((f) => f.isSensitive) : false,
             spoiler_text: note.cw ? note.cw : "",
-            visibility: Visibility.encode(note.visibility),
+            visibility: VisibilityConverter.encode(note.visibility),
             media_attachments: files.length > 0 ? files.map((f) => FileConverter.encode(f)) : [],
-            mentions: await Promise.all(note.mentions.map(async p => convertMention(await getUser(p)))),
+            mentions: await Promise.all(note.mentions.map(async p => MentionConverter.encode(await getUser(p)))),
             tags: [], //FIXME
             card: null, //FIXME
             poll: note.hasPoll ? PollConverter.encode(await populatePoll(note, user.id), note.id) : null,

@@ -12,8 +12,8 @@ import {
 	convertPoll,
 	convertStatus,
 } from "../converters.js";
-import {NoteConverter} from "@/server/api/mastodon/converters/note.js";
-import {getNote} from "@/server/api/common/getters.js";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
+import { getNote } from "@/server/api/common/getters.js";
 import authenticate from "@/server/api/authenticate.js";
 import {Notes} from "@/models";
 

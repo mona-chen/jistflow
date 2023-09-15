@@ -1,7 +1,7 @@
 type IceshrimpVisibility = "public" | "home" | "followers" | "specified" | "hidden";
 type MastodonVisibility = "public" | "unlisted" | "private" | "direct";
 
-export class Visibility {
+export class VisibilityConverter {
     public static encode (v: IceshrimpVisibility): MastodonVisibility {
         switch (v) {
             case "public":
