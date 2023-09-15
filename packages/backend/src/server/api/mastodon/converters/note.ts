@@ -43,6 +43,8 @@ export class NoteConverter {
 					noteId: note.id,
 				}) : null;
 
+				const isFavorited = Promise.resolve(reaction).then(p => !!p);
+
 				const isReblogged = user ? Notes.exist({
 					where: {
 						userId: user.id,
@@ -98,7 +100,7 @@ export class NoteConverter {
             reblogs_count: note.renoteCount,
             favourites_count: reactionCount,
             reblogged: isReblogged,
-            favourited: !!reaction,
+            favourited: isFavorited,
             muted: isMuted,
             sensitive: files.then(files => files.length > 0 ? files.some((f) => f.isSensitive) : false),
             spoiler_text: note.cw ? note.cw : "",
