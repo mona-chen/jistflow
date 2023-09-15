@@ -148,7 +148,7 @@ export function apiStatusMastodon(router: Router): void {
 	router.get<{ Params: { id: string } }>("/v1/statuses/:id", async (ctx) => {
 		try {
 			const auth = await authenticate(ctx.headers.authorization, null);
-			const user = auth[0] ?? undefined;
+			const user = auth[0] ?? null;
 
 			const noteId = convertId(ctx.params.id, IdType.IceshrimpId);
 			const note = await getNote(noteId, user ?? null).then(n => n).catch(() => null);
@@ -195,7 +195,7 @@ export function apiStatusMastodon(router: Router): void {
 			const accessTokens = ctx.headers.authorization;
 			try {
 				const auth = await authenticate(ctx.headers.authorization, null);
-				const user = auth[0] ?? undefined;
+				const user = auth[0] ?? null;
 
 				const id = convertId(ctx.params.id, IdType.IceshrimpId);
 				const note = await getNote(id, user ?? null).then(n => n).catch(() => null);
@@ -207,10 +207,10 @@ export function apiStatusMastodon(router: Router): void {
 				}
 
 				const ancestors = await NoteHelpers.getNoteAncestors(note, user, user ? 4096 : 60)
-					.then(n => NoteConverter.encodeMany(n))
+					.then(n => NoteConverter.encodeMany(n, user))
 					.then(n => n.map(s => convertStatus(s)));
 				const descendants = await NoteHelpers.getNoteDescendants(note, user, user ? 4096 : 40, user ? 4096 : 20)
-					.then(n => NoteConverter.encodeMany(n))
+					.then(n => NoteConverter.encodeMany(n, user))
 					.then(n => n.map(s => convertStatus(s)));
 
 				ctx.body = {

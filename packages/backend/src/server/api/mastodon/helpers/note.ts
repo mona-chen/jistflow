@@ -9,7 +9,7 @@ import querystring from "node:querystring";
 import { getNote } from "@/server/api/common/getters.js";
 
 export class NoteHelpers {
-	public static async getNoteDescendants(note: Note | string, user?: ILocalUser, limit: number = 10, depth: number = 2): Promise<Note[]> {
+	public static async getNoteDescendants(note: Note | string, user: ILocalUser | null, limit: number = 10, depth: number = 2): Promise<Note[]> {
 		const noteId = typeof note === "string" ? note : note.id;
 		const query = makePaginationQuery(Notes.createQueryBuilder("note"))
 			.andWhere(
@@ -29,16 +29,16 @@ export class NoteHelpers {
 		return query.getMany();
 	}
 
-	public static async getNoteAncestors(rootNote: Note, user?: ILocalUser, limit: number = 10): Promise<Note[]> {
+	public static async getNoteAncestors(rootNote: Note, user: ILocalUser | null, limit: number = 10): Promise<Note[]> {
 		const notes = new Array<Note>;
 		for (let i = 0; i < limit; i++) {
 			const currentNote = notes.at(-1) ?? rootNote;
 			if (!currentNote.replyId) break;
-			const nextNote = await getNote(currentNote.replyId, user ?? null).catch((e) => {
+			const nextNote = await getNote(currentNote.replyId, user).catch((e) => {
 				if (e.id === "9725d0ce-ba28-4dde-95a7-2cbb2c15de24") return null;
 				throw e;
 			});
-			if (nextNote) notes.push(nextNote);
+			if (nextNote && await Notes.isVisibleForMe(nextNote, user?.id ?? null)) notes.push(nextNote);
 			else break;
 		}
 

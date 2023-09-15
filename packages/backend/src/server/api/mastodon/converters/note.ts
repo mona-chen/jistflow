@@ -17,11 +17,11 @@ import { populatePoll } from "@/models/repositories/note.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 
 export class NoteConverter {
-    public static async encode(note: Note, user?: ILocalUser): Promise<MastodonEntity.Status> {
+    public static async encode(note: Note, user: ILocalUser | null): Promise<MastodonEntity.Status> {
         const noteUser = note.user ?? await getUser(note.userId);
 
 				if (!await Notes.isVisibleForMe(note, user?.id ?? null))
-					throw new Error();
+					throw new Error('Cannot encode note not visible for user');
 
 				const host = note.user?.host ?? null;
 
@@ -49,7 +49,7 @@ export class NoteConverter {
 					}
 				}) : null;
 
-				const reply = note.reply ?? (note.replyId ? await getNote(note.replyId, user ?? null) : null);
+				const reply = note.reply ?? (note.replyId ? await getNote(note.replyId, user) : null);
 
 				const isBookmarked = user ? await NoteFavorites.exist({
 					where: {
@@ -109,7 +109,7 @@ export class NoteConverter {
         };
     }
 
-	public static async encodeMany(notes: Note[], user?: ILocalUser): Promise<MastodonEntity.Status[]> {
+	public static async encodeMany(notes: Note[], user: ILocalUser | null): Promise<MastodonEntity.Status[]> {
 		const encoded = notes.map(n => this.encode(n, user));
 		return Promise.all(encoded);
 	}
