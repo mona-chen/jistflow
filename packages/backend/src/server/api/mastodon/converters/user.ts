@@ -6,6 +6,7 @@ import { populateEmojis } from "@/misc/populate-emojis.js";
 import { toHtml } from "@/mfm/to-html.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import mfm from "mfm-js";
+import { awaitAll } from "@/prelude/await-all.js";
 
 type Field = {
 	name: string;
@@ -21,10 +22,10 @@ export class UserConverter {
 			acct = `${u.username}@${u.host}`;
 			acctUrl = `https://${u.host}/@${u.username}`;
 		}
-		const profile = await UserProfiles.findOneBy({userId: u.id});
-		const bio = toHtml(mfm.parse(profile?.description ?? "")) ?? escapeMFM(profile?.description ?? "");
+		const profile = UserProfiles.findOneBy({userId: u.id});
+		const bio = profile.then(profile => toHtml(mfm.parse(profile?.description ?? "")) ?? escapeMFM(profile?.description ?? ""));
 
-		return {
+		return awaitAll({
 			id: u.id,
 			username: u.username,
 			acct: acct,
@@ -40,11 +41,11 @@ export class UserConverter {
 			avatar_static: u.avatar?.url ?? Users.getIdenticonUrl(u.id),
 			header: u.banner?.url ?? `${config.url}/static-assets/transparent.png`,
 			header_static: u.banner?.url ?? `${config.url}/static-assets/transparent.png`,
-			emojis: (await populateEmojis(u.emojis, u.host)).map((e) => EmojiConverter.encode(e)),
+			emojis: populateEmojis(u.emojis, u.host).then(emoji => emoji.map((e) => EmojiConverter.encode(e))),
 			moved: null, //FIXME
-			fields: profile?.fields.map(p => this.encodeField(p)) ?? [],
+			fields: profile.then(profile => profile?.fields.map(p => this.encodeField(p)) ?? []),
 			bot: u.isBot
-		};
+		});
 	}
 
 	private static encodeField(f: Field): MastodonEntity.Field {

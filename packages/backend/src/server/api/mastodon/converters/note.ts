@@ -15,10 +15,11 @@ import { MentionConverter } from "@/server/api/mastodon/converters/mention.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
 import { populatePoll } from "@/models/repositories/note.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
+import { awaitAll } from "@/prelude/await-all.js";
 
 export class NoteConverter {
     public static async encode(note: Note, user: ILocalUser | null): Promise<MastodonEntity.Status> {
-        const noteUser = note.user ?? await getUser(note.userId);
+        const noteUser = note.user ?? getUser(note.userId);
 
 				if (!await Notes.isVisibleForMe(note, user?.id ?? null))
 					throw new Error('Cannot encode note not visible for user');
@@ -30,28 +31,28 @@ export class NoteConverter {
 					.map((x) => decodeReaction(x).reaction)
 					.map((x) => x.replace(/:/g, ""));
 
-				const noteEmoji = await populateEmojis(
+				const noteEmoji = populateEmojis(
 					note.emojis.concat(reactionEmojiNames),
 					host,
 				);
 
-				const reactionCount = await NoteReactions.countBy({id: note.id});
+				const reactionCount = NoteReactions.countBy({id: note.id});
 
-				const reaction = user ? await NoteReactions.findOneBy({
+				const reaction = user ? NoteReactions.findOneBy({
 					userId: user.id,
 					noteId: note.id,
 				}) : null;
 
-				const isReblogged = user ? await Notes.exist({
+				const isReblogged = user ? Notes.exist({
 					where: {
 						userId: user.id,
 						renoteId: note.id
 					}
 				}) : null;
 
-				const reply = note.reply ?? (note.replyId ? await getNote(note.replyId, user) : null);
+				const reply = note.reply ?? (note.replyId ? getNote(note.replyId, user) : null);
 
-				const isBookmarked = user ? await NoteFavorites.exist({
+				const isBookmarked = user ? NoteFavorites.exist({
 					where: {
 						userId: user.id,
 						noteId: note.id,
@@ -59,59 +60,62 @@ export class NoteConverter {
 					take: 1,
 				}) : false;
 
-				const isMuted = user ? await NoteThreadMutings.exist({
+				const isMuted = user ? NoteThreadMutings.exist({
 					where: {
 						userId: user.id,
 						threadId: note.threadId || note.id,
 					}
 				}) : false;
 
-				const files = await DriveFiles.packMany(note.fileIds);
+				const files = DriveFiles.packMany(note.fileIds);
 
-				const mentions = note.mentions.map(async p =>
-					await getUser(p)
+				const mentions = Promise.all(note.mentions.map(p =>
+					getUser(p)
 						.then(u => MentionConverter.encode(u))
-						.catch(() => null));
+						.catch(() => null)))
+					.then(p => p.filter(m => m)) as Promise<MastodonEntity.Mention[]>;
 
 				// FIXME use await-all
 
-        return {
+        // noinspection ES6MissingAwait
+				return await awaitAll({
             id: note.id,
             uri: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
             url: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
-            account: await UserConverter.encode(noteUser),
+            account: Promise.resolve(noteUser).then(p => UserConverter.encode(p)),
             in_reply_to_id: note.replyId,
-            in_reply_to_account_id: reply?.userId ?? null,
-            reblog: note.renote ? await this.encode(note.renote, user) : null,
+            in_reply_to_account_id: Promise.resolve(reply).then(reply => reply?.userId ?? null),
+            reblog: note.renote ? this.encode(note.renote, user) : null,
             content: note.text ? toHtml(mfm.parse(note.text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(note.text) : "",
             text: note.text ? note.text : null,
             created_at: note.createdAt.toISOString(),
             // Remove reaction emojis with names containing @ from the emojis list.
             emojis: noteEmoji
+							.then(noteEmoji => noteEmoji
                 .filter((e) => e.name.indexOf("@") === -1)
-                .map((e) => EmojiConverter.encode(e)),
+                .map((e) => EmojiConverter.encode(e))),
             replies_count: note.repliesCount,
             reblogs_count: note.renoteCount,
             favourites_count: reactionCount,
             reblogged: isReblogged,
             favourited: !!reaction,
             muted: isMuted,
-            sensitive: files.length > 0 ? files.some((f) => f.isSensitive) : false,
+            sensitive: files.then(files => files.length > 0 ? files.some((f) => f.isSensitive) : false),
             spoiler_text: note.cw ? note.cw : "",
             visibility: VisibilityConverter.encode(note.visibility),
-            media_attachments: files.length > 0 ? files.map((f) => FileConverter.encode(f)) : [],
-            mentions: (await Promise.all(mentions)).filter(p => p) as MastodonEntity.Mention[],
+            media_attachments: files.then(files => files.length > 0 ? files.map((f) => FileConverter.encode(f)) : []),
+            mentions: mentions,
             tags: [], //FIXME
             card: null, //FIXME
-            poll: note.hasPoll ? PollConverter.encode(await populatePoll(note, user?.id ?? null), note.id) : null,
+            poll: note.hasPoll ? populatePoll(note, user?.id ?? null).then(p => PollConverter.encode(p, note.id)) : null,
             application: null, //FIXME
             language: null, //FIXME
             pinned: null, //FIXME
             // Use emojis list to provide URLs for emoji reactions.
             reactions: [], //FIXME: this.mapReactions(n.emojis, n.reactions, n.myReaction),
             bookmarked: isBookmarked,
-            quote: note.renote && note.text ? await this.encode(note.renote, user) : null,
-        };
+            quote: note.renote && note.text ? this.encode(note.renote, user) : null,
+        });
     }
 
 	public static async encodeMany(notes: Note[], user: ILocalUser | null): Promise<MastodonEntity.Status[]> {
