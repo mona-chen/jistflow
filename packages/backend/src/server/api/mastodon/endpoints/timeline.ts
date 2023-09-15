@@ -8,6 +8,10 @@ import {
 	convertStatus,
 } from "../converters.js";
 import { convertId, IdType } from "../../index.js";
+import authenticate from "@/server/api/authenticate.js";
+import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
+import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 
 export function limitToInt(q: ParsedUrlQuery) {
 	let object: any = q;
@@ -54,6 +58,16 @@ export function convertTimelinesArgsId(q: ParsedUrlQuery) {
 	return q;
 }
 
+export function normalizeUrlQuery(q: ParsedUrlQuery): any {
+	const dict: any = {};
+
+	for (const k in Object.keys(q)) {
+		dict[k] = Array.isArray(q[k]) ? q[k]?.at(-1) : q[k];
+	}
+
+	return dict;
+}
+
 export function apiTimelineMastodon(router: Router): void {
 	router.get("/v1/timelines/public", async (ctx, reply) => {
 		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
@@ -98,14 +112,20 @@ export function apiTimelineMastodon(router: Router): void {
 		},
 	);
 	router.get("/v1/timelines/home", async (ctx, reply) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.getHomeTimeline(
-				convertTimelinesArgsId(limitToInt(ctx.query)),
-			);
-			ctx.body = data.data.map((status) => convertStatus(status));
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? undefined;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query)));
+			const tl = await TimelineHelpers.getHomeTimeline(user, args.max_id, args.since_id, args.min_id, args.limit)
+				.then(n => NoteConverter.encodeMany(n, user));
+
+			ctx.body = tl.map(s => convertStatus(s));
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);

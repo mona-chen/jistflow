@@ -176,7 +176,7 @@ export function apiStatusMastodon(router: Router): void {
 			);
 			ctx.body = data.data;
 		} catch (e: any) {
-			console.error(e.response.data, request.params.id);
+			console.error(e.response.data, ctx.params.id);
 			ctx.status = 401;
 			ctx.body = e.response.data;
 		}
@@ -192,7 +192,6 @@ export function apiStatusMastodon(router: Router): void {
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/context",
 		async (ctx) => {
-			const accessTokens = ctx.headers.authorization;
 			try {
 				const auth = await authenticate(ctx.headers.authorization, null);
 				const user = auth[0] ?? null;
