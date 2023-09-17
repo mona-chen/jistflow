@@ -36,7 +36,7 @@ export class NoteConverter {
 					host,
 				);
 
-				const reactionCount = NoteReactions.countBy({id: note.id});
+				const reactionCount = NoteReactions.countBy({noteId: note.id});
 
 				const reaction = user ? NoteReactions.findOneBy({
 					userId: user.id,
