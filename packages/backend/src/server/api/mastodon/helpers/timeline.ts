@@ -31,11 +31,11 @@ export class TimelineHelpers {
 			.select("following.followeeId")
 			.where("following.followerId = :followerId", {followerId: user.id});
 
-		//FIXME respect minId
-		const query = makePaginationQuery(
+		const query = NoteHelpers.makePaginationQuery(
 			Notes.createQueryBuilder("note"),
-			sinceId ?? minId,
+			sinceId,
 			maxId,
+			minId
 		)
 			.andWhere(
 				new Brackets((qb) => {
@@ -67,7 +67,7 @@ export class TimelineHelpers {
 
 		query.andWhere("note.visibility != 'hidden'");
 
-		return NoteHelpers.execQuery(query, limit);
+		return NoteHelpers.execQuery(query, limit, minId !== undefined);
 	}
 
 	public static async getPublicTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<Note[]> {
@@ -84,11 +84,11 @@ export class TimelineHelpers {
 			throw new Error("local and remote are mutually exclusive options");
 		}
 
-		//FIXME respect minId
-		const query = makePaginationQuery(
+		const query = NoteHelpers.makePaginationQuery(
 			Notes.createQueryBuilder("note"),
-			sinceId ?? minId,
+			sinceId,
 			maxId,
+			minId
 		)
 			.andWhere("note.visibility = 'public'");
 
@@ -121,6 +121,6 @@ export class TimelineHelpers {
 
 		query.andWhere("note.visibility != 'hidden'");
 
-		return NoteHelpers.execQuery(query, limit);
+		return NoteHelpers.execQuery(query, limit, minId !== undefined);
 	}
 }

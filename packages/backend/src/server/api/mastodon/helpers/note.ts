@@ -7,7 +7,7 @@ import { Note } from "@/models/entities/note.js";
 import { ILocalUser } from "@/models/entities/user.js";
 import querystring from "node:querystring";
 import { getNote } from "@/server/api/common/getters.js";
-import { SelectQueryBuilder } from "typeorm";
+import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
 export class NoteHelpers {
 	public static async getNoteDescendants(note: Note | string, user: ILocalUser | null, limit: number = 10, depth: number = 2): Promise<Note[]> {
@@ -46,7 +46,44 @@ export class NoteHelpers {
 		return notes;
 	}
 
-	public static async execQuery(query: SelectQueryBuilder<Note>, limit: number): Promise<Note[]> {
+	public static makePaginationQuery<T extends ObjectLiteral>(
+		q: SelectQueryBuilder<T>,
+		sinceId?: string,
+		maxId?: string,
+		minId?: string
+	) {
+		if (sinceId && minId) throw new Error("Can't user both sinceId and minId params");
+
+		if (sinceId && maxId) {
+			q.andWhere(`${q.alias}.id > :sinceId`, { sinceId: sinceId });
+			q.andWhere(`${q.alias}.id < :maxId`, { maxId: maxId });
+			q.orderBy(`${q.alias}.id`, "DESC");
+		} if (minId && maxId) {
+			q.andWhere(`${q.alias}.id > :minId`, { minId: minId });
+			q.andWhere(`${q.alias}.id < :maxId`, { maxId: maxId });
+			q.orderBy(`${q.alias}.id`, "ASC");
+		} else if (sinceId) {
+			q.andWhere(`${q.alias}.id > :sinceId`, { sinceId: sinceId });
+			q.orderBy(`${q.alias}.id`, "DESC");
+		} else if (minId) {
+			q.andWhere(`${q.alias}.id > :minId`, { minId: minId });
+			q.orderBy(`${q.alias}.id`, "ASC");
+		} else if (maxId) {
+			q.andWhere(`${q.alias}.id < :maxId`, { maxId: maxId });
+			q.orderBy(`${q.alias}.id`, "DESC");
+		} else {
+			q.orderBy(`${q.alias}.id`, "DESC");
+		}
+		return q;
+	}
+
+	/**
+	 *
+	 * @param query
+	 * @param limit
+	 * @param reverse whether the result needs to be .reverse()'d. Set this to true when the parameter minId is not undefined in the original request.
+	 */
+	public static async execQuery(query: SelectQueryBuilder<Note>, limit: number, reverse: boolean): Promise<Note[]> {
 		// We fetch more than requested because some may be filtered out, and if there's less than
 		// requested, the pagination stops.
 		const found = [];
@@ -67,6 +104,6 @@ export class NoteHelpers {
 			found.length = limit;
 		}
 
-		return found;
+		return reverse ? found.reverse() : found;
 	}
 }

@@ -31,11 +31,11 @@ export class UserHelpers {
 			return [];
 		}
 
-		//FIXME respect minId
-		const query = makePaginationQuery(
+		const query = NoteHelpers.makePaginationQuery(
 			Notes.createQueryBuilder("note"),
-			sinceId ?? minId,
+			sinceId,
 			maxId,
+			minId
 		)
 			.andWhere("note.userId = :userId", { userId: user.id });
 
@@ -66,7 +66,7 @@ export class UserHelpers {
 
 		query.andWhere("note.visibility != 'hidden'");
 
-		return NoteHelpers.execQuery(query, limit);
+		return NoteHelpers.execQuery(query, limit, minId !== undefined);
 	}
 
 	public static async getUserCached(id: string, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<User> {
