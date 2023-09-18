@@ -2213,3 +2213,5 @@ indexableDescription: Der integrierten Suche erlauben, Ihre öffentlichen Beitr�
   anzuzeigen
 indexable: Indexierbar
 languageForTranslation: Übersetzungssprache veröffentlichen
+openServerInfo: Anzeigen von Serverinformationen durch Anklicken des Server-Tickers
+  in einem Beitrag
