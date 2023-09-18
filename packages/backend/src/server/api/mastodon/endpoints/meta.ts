@@ -1,19 +1,13 @@
 import { Entity } from "megalodon";
 import config from "@/config/index.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import { Users, Notes } from "@/models/index.js";
-import { IsNull } from "typeorm";
 import { MAX_NOTE_TEXT_LENGTH, FILE_TYPE_BROWSERSAFE } from "@/const.js";
 
 export async function getInstance(
 	response: Entity.Instance,
 	contact: Entity.Account,
 ) {
-	const [meta, totalUsers, totalStatuses] = await Promise.all([
-		fetchMeta(true),
-		Users.count({ where: { host: IsNull() } }),
-		Notes.count({ where: { userHost: IsNull() } }),
-	]);
+	const meta = await fetchMeta(true);
 
 	return {
 		uri: response.uri,
@@ -27,8 +21,8 @@ export async function getInstance(
 		version: `3.0.0 (compatible; Firefish ${config.version})`,
 		urls: response.urls,
 		stats: {
-			user_count: await totalUsers,
-			status_count: await totalStatuses,
+			user_count: response.stats.user_count,
+			status_count: response.stats.status_count,
 			domain_count: response.stats.domain_count,
 		},
 		thumbnail: response.thumbnail || "/static-assets/transparent.png",
