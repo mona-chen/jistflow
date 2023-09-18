@@ -1,20 +1,21 @@
 import { Note } from "@/models/entities/note.js";
-import { User } from "@/models/entities/user.js";
-import { ILocalUser } from "@/models/entities/user.js";
-import { Followings, Notes } from "@/models/index.js";
+import { ILocalUser, User } from "@/models/entities/user.js";
+import { Notes } from "@/models/index.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import { Brackets, SelectQueryBuilder } from "typeorm";
-import { generateChannelQuery } from "@/server/api/common/generate-channel-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
-import { generateMutedNoteQuery } from "@/server/api/common/generate-muted-note-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
-import { generateMutedUserRenotesQueryForNotes } from "@/server/api/common/generated-muted-renote-query.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { ApiError } from "@/server/api/error.js";
-import { meta } from "@/server/api/endpoints/notes/global-timeline.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
+import Entity from "megalodon/src/entity.js";
+import AsyncLock from "async-lock";
+import { getUser } from "@/server/api/common/getters.js";
+
+export type AccountCache = {
+	locks: AsyncLock;
+	accounts: Entity.Account[];
+	users: User[];
+};
 
 export class UserHelpers {
 	public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {
@@ -66,5 +67,24 @@ export class UserHelpers {
 		query.andWhere("note.visibility != 'hidden'");
 
 		return NoteHelpers.execQuery(query, limit);
+	}
+
+	public static async getUserCached(id: string, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<User> {
+		return cache.locks.acquire(id, async () => {
+			const cacheHit = cache.users.find(p => p.id == id);
+			if (cacheHit) return cacheHit;
+			return getUser(id).then(p => {
+				cache.users.push(p);
+				return p;
+			});
+		});
+	}
+
+	public static getFreshAccountCache(): AccountCache {
+		return {
+			locks: new AsyncLock(),
+			accounts: [],
+			users: [],
+		};
 	}
 }

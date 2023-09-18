@@ -11,6 +11,7 @@ import { getNote } from "@/server/api/common/getters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import { Note } from "@/models/entities/note.js";
+import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 
 function normalizeQuery(data: any) {
 	const str = querystring.stringify(data);
@@ -197,6 +198,7 @@ export function apiStatusMastodon(router: Router): void {
 				const user = auth[0] ?? null;
 
 				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const cache = UserHelpers.getFreshAccountCache();
 				const note = await getNote(id, user ?? null).then(n => n).catch(() => null);
 				if (!note) {
 					if (!note) {
@@ -206,10 +208,10 @@ export function apiStatusMastodon(router: Router): void {
 				}
 
 				const ancestors = await NoteHelpers.getNoteAncestors(note, user, user ? 4096 : 60)
-					.then(n => NoteConverter.encodeMany(n, user))
+					.then(n => NoteConverter.encodeMany(n, user, cache))
 					.then(n => n.map(s => convertStatus(s)));
 				const descendants = await NoteHelpers.getNoteDescendants(note, user, user ? 4096 : 40, user ? 4096 : 20)
-					.then(n => NoteConverter.encodeMany(n, user))
+					.then(n => NoteConverter.encodeMany(n, user, cache))
 					.then(n => n.map(s => convertStatus(s)));
 
 				ctx.body = {

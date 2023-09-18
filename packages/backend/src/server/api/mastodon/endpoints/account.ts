@@ -161,10 +161,11 @@ export function apiAccountMastodon(router: Router): void {
 				}
 
 				const userId = convertId(ctx.params.id, IdType.IceshrimpId);
-				const query = await getUser(userId);
+				const cache = UserHelpers.getFreshAccountCache();
+				const query = await UserHelpers.getUserCached(userId, cache);
 				const args = normalizeUrlQuery(convertTimelinesArgsId(argsToBools(limitToInt(ctx.query))));
 				const tl = await UserHelpers.getUserStatuses(query, user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.exclude_replies, args.exclude_reblogs, args.pinned, args.tagged)
-					.then(n => NoteConverter.encodeMany(n, user));
+					.then(n => NoteConverter.encodeMany(n, user, cache));
 
 				ctx.body = tl.map(s => convertStatus(s));
 			} catch (e: any) {

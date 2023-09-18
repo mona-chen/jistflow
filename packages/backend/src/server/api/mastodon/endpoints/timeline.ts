@@ -12,6 +12,7 @@ import authenticate from "@/server/api/authenticate.js";
 import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
+import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 
 export function limitToInt(q: ParsedUrlQuery) {
 	let object: any = q;
@@ -82,8 +83,9 @@ export function apiTimelineMastodon(router: Router): void {
 			}
 			
 			const args = normalizeUrlQuery(convertTimelinesArgsId(argsToBools(limitToInt(ctx.query))));
+			const cache = UserHelpers.getFreshAccountCache();
 			const tl = await TimelineHelpers.getPublicTimeline(user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote)
-				.then(n => NoteConverter.encodeMany(n, user));
+				.then(n => NoteConverter.encodeMany(n, user, cache));
 
 			ctx.body = tl.map(s => convertStatus(s));
 		} catch (e: any) {
@@ -124,8 +126,9 @@ export function apiTimelineMastodon(router: Router): void {
 			}
 
 			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query)));
+			const cache = UserHelpers.getFreshAccountCache();
 			const tl = await TimelineHelpers.getHomeTimeline(user, args.max_id, args.since_id, args.min_id, args.limit)
-				.then(n => NoteConverter.encodeMany(n, user));
+				.then(n => NoteConverter.encodeMany(n, user, cache));
 
 			ctx.body = tl.map(s => convertStatus(s));
 		} catch (e: any) {

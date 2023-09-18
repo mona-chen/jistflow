@@ -16,10 +16,11 @@ import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
 import { populatePoll } from "@/models/repositories/note.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { awaitAll } from "@/prelude/await-all.js";
+import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 
 export class NoteConverter {
-    public static async encode(note: Note, user: ILocalUser | null): Promise<MastodonEntity.Status> {
-        const noteUser = note.user ?? getUser(note.userId);
+    public static async encode(note: Note, user: ILocalUser | null, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Status> {
+        const noteUser = note.user ?? UserHelpers.getUserCached(note.userId, cache);
 
 				if (!await Notes.isVisibleForMe(note, user?.id ?? null))
 					throw new Error('Cannot encode note not visible for user');
@@ -72,22 +73,20 @@ export class NoteConverter {
 				const files = DriveFiles.packMany(note.fileIds);
 
 				const mentions = Promise.all(note.mentions.map(p =>
-					getUser(p)
+					UserHelpers.getUserCached(p, cache)
 						.then(u => MentionConverter.encode(u, JSON.parse(note.mentionedRemoteUsers)))
 						.catch(() => null)))
 					.then(p => p.filter(m => m)) as Promise<MastodonEntity.Mention[]>;
-
-				// FIXME use await-all
 
         // noinspection ES6MissingAwait
 				return await awaitAll({
             id: note.id,
             uri: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
             url: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
-            account: Promise.resolve(noteUser).then(p => UserConverter.encode(p)),
+            account: Promise.resolve(noteUser).then(p => UserConverter.encode(p, cache)),
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: Promise.resolve(reply).then(reply => reply?.userId ?? null),
-            reblog: note.renote ? this.encode(note.renote, user) : null,
+            reblog: note.renote ? this.encode(note.renote, user, cache) : null,
             content: note.text ? toHtml(mfm.parse(note.text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(note.text) : "",
             text: note.text ? note.text : null,
             created_at: note.createdAt.toISOString(),
@@ -116,12 +115,12 @@ export class NoteConverter {
             // Use emojis list to provide URLs for emoji reactions.
             reactions: [], //FIXME: this.mapReactions(n.emojis, n.reactions, n.myReaction),
             bookmarked: isBookmarked,
-            quote: note.renote && note.text ? this.encode(note.renote, user) : null,
+            quote: note.renote && note.text ? this.encode(note.renote, user, cache) : null,
         });
     }
 
-	public static async encodeMany(notes: Note[], user: ILocalUser | null): Promise<MastodonEntity.Status[]> {
-		const encoded = notes.map(n => this.encode(n, user));
+	public static async encodeMany(notes: Note[], user: ILocalUser | null, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Status[]> {
+		const encoded = notes.map(n => this.encode(n, user, cache));
 		return Promise.all(encoded);
 	}
 }

@@ -14960,6 +14960,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@tensorflow/tfjs-core", "npm:4.9.0"],\
             ["@tensorflow/tfjs-node", "npm:3.21.1"],\
             ["@types/adm-zip", "npm:0.5.0"],\
+            ["@types/async-lock", "npm:1.4.0"],\
             ["@types/bcryptjs", "npm:2.4.2"],\
             ["@types/cbor", "npm:6.0.0"],\
             ["@types/escape-regexp", "npm:0.0.1"],\
@@ -15006,6 +15007,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ajv", "npm:8.12.0"],\
             ["archiver", "npm:5.3.1"],\
             ["argon2", "npm:0.30.3"],\
+            ["async-lock", "npm:1.4.0"],\
             ["autolinker", "npm:4.0.0"],\
             ["autwh", "npm:0.1.0"],\
             ["aws-sdk", "npm:2.1413.0"],\
