@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4-beta31] - 2023-09-20
+
+### Bug Fixes
+
+- Fix: :ambulance: downgrade swc to v1.3.78
+
+
 ## [1.0.4-beta3] - 2023-09-20
 
 ### Bug Fixes
