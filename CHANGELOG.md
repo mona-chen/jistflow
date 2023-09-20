@@ -1,5 +1,337 @@
 # Changelog
 
+## [1.0.4-beta3] - 2023-09-20
+
+### Bug Fixes
+
+- Fix: :ambulance: incorrect end tag
+
+- Fix: :bug: smaller maskable icon
+
+- Fix: release redis locks
+
+- Fix: require credentials in the notes/translate endpoint
+
+- Fix mfm import
+
+- Fix: don't show translate button if signed out
+
+- Fix (minor): noteId is not a number
+
+- Fix: follow requests pagination looping bug
+https://astolfo.social/notes/9jeibgm1wyfk9oha
+
+- Fix?: speakAsCat not being federated
+
+- Fix: "show replies in timeline" refactoring was not backward compatible
+
+- Fix: change local icon to users to fit the style of the existing tab
+
+### Documentation
+
+- Docs: :lock: robots.txt asset
+
+Closes #10640, #10608
+
+- Docs: :memo: merge request co-authored-by
+
+
+### Features
+
+- Feat: :sparkles: `indexable` User property
+
+- Feat: sticky drive header
+This makes it easy to get files out of a folder to the parent directory.
+- Feat: open server info by clicking the ticker
+
+- Feat: vibration
+
+- Add vibration to new post button
+
+- Language filter
+
+- Selectable language for post translations 
+
+- Translate button on posts not in your prefered language
+
+### Miscellaneous Tasks
+
+- Chore: Translated using Weblate (French)
+
+Currently translated at 100.0% (1850 of 1850 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/fr/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: :arrow_up: up photoswipe
+
+- Chore: Translated using Weblate (Spanish)
+
+Currently translated at 99.4% (1839 of 1850 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/es/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: :art: format
+
+- Chore: update docs/MR template
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 99.8% (1848 of 1850 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: add biome binaries to dev dependencies
+
+- Chore: Translated using Weblate (Catalan)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ca/
+
+- Chore: Translated using Weblate (German)
+
+Currently translated at 99.9% (1853 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/de/
+
+- Chore: Translated using Weblate (French)
+
+Currently translated at 99.7% (1849 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/fr/
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: Translated using Weblate (Japanese (Kansai))
+
+Currently translated at 69.7% (1293 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja_KS/
+
+- Chore: Translated using Weblate (Norwegian Bokmål)
+
+Currently translated at 88.9% (1649 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/nb_NO/
+
+- Chore: Translated using Weblate (Swedish)
+
+Currently translated at 37.6% (698 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/sv/
+
+- Chore: Translated using Weblate (Turkish)
+
+Currently translated at 99.9% (1853 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/tr/
+
+- Chore: Translated using Weblate (Chinese (Simplified))
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hans/
+
+- Chore: Translated using Weblate (Korean)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ko/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Norwegian Bokmål)
+
+Currently translated at 89.0% (1651 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/nb_NO/
+
+- Chore: Translated using Weblate (Norwegian Bokmål)
+
+Currently translated at 89.4% (1658 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/nb_NO/
+
+- Chore: Translated using Weblate (Norwegian Bokmål)
+
+Currently translated at 90.2% (1674 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/nb_NO/
+
+- Chore: Translated using Weblate (Japanese (Kansai))
+
+Currently translated at 69.7% (1294 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja_KS/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: round down elapsed time
+- Chore: Translated using Weblate (German)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/de/
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Japanese)
+
+Currently translated at 99.7% (1850 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja/
+
+- Chore: Translated using Weblate (Japanese (Kansai))
+
+Currently translated at 70.4% (1307 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja_KS/
+
+- Chore: Translated using Weblate (Turkish)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/tr/
+
+- Chore: Translated using Weblate (Chinese (Traditional))
+
+Currently translated at 97.7% (1813 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hant/
+
+- Chore: Translated using Weblate (Galician)
+
+Currently translated at 17.5% (326 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/gl/
+
+- Chore: Translated using Weblate (Bulgarian (bul_BG))
+
+Currently translated at 23.5% (436 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/bul_BG/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Catalan)
+
+Currently translated at 100.0% (1855 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ca/
+
+- Chore: Translated using Weblate (German)
+
+Currently translated at 100.0% (1855 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/de/
+
+- Chore: Translated using Weblate (French)
+
+Currently translated at 99.9% (1854 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/fr/
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1855 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 100.0% (1855 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: Translated using Weblate (Japanese)
+
+Currently translated at 99.7% (1851 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja/
+
+- Chore: Translated using Weblate (Chinese (Traditional))
+
+Currently translated at 98.1% (1820 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hant/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+
+### Performance
+
+- Perf: :zap: seperate web and queue workers
+
+Co-authored-by: Johann150 <johann@qwertqwefsday.eu>
+
+- Perf: :zap: Replace JSDOM with Happy DOM
+
+- Perf: :zap: use existing response
+
+
+### Refactor
+
+- Refactor: :recycle: Migrate auth.vue to composition API
+
+
+### Styling
+
+- Style
+
+
 ## [1.0.4-beta2] - 2023-09-02
 
 ### Bug Fixes
@@ -15,6 +347,8 @@
 - Fix: :bug: revert last part of c0eac56355a0c40ac4d9c0bae82917506e011dc3 to properly paginate antennas/notes query
 
 - Fix: :bug: make admin users page properly direct user cards to about page
+
+- Fix?
 
 - Fix: :globe_with_meridians: copying origin: "remote" -> "origin"
 
@@ -104,6 +438,12 @@ Closes #10581
 
 - Fix: :busts_in_silhouette: naskya is fullstack
 
+- Fix locale
+
+- Fix
+
+- Fix: :green_heart: Docker env for CI
+
 - Fix: :green_heart: Docker env for CI
 
 - Fix: :green_heart: docker service alias
@@ -123,6 +463,9 @@ Closes #10581
 - Fix: :bug: offline html responsive viewport
 
 - Fix: building re2 in Dockerfile
+- Fix: :ambulance: proper conditional
+
+I need sleep... or coffee
 
 - Fix: :children_crossing: make importing emoji packs clearer
 
@@ -171,6 +514,29 @@ fixes chrome mobile rotating screen even when device rotation is off
 
 - Fix: :lipstick: Announcement padding/margins
 
+- Fix: :ambulance: incorrect end tag
+
+
+### Documentation
+
+- Docs: :memo: repo move
+
+- Docs: :memo: fix link
+
+- Docs: :memo: 1.0.3 changelog
+
+- Docs: :memo: 1.0.3 changelog
+
+- Docs: :memo: Add explicit FoundKey commits to CHANGELOG
+
+- Docs: :memo: AUR package
+
+- Docs: :memo: remove links to FIREFISH.md
+
+Closes #10601
+
+- Docs: :memo: 1.0.4-beta changelog
+
 
 ### Features
 
@@ -201,6 +567,8 @@ Co-authored-by: Acid Chicken (硫酸鶏) <root@acid-chiken.com>
 - Feat: Fetch total posts of users on create/update
 
 - Feat: post translation in Traditional Chinese
+
+- Feat: :bookmark: 1.0.4-beta2
 
 
 ### Miscellaneous Tasks
