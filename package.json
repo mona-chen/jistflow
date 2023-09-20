@@ -1,12 +1,12 @@
 {
 	"name": "firefish",
-	"version": "1.0.4-beta2",
+	"version": "1.0.4-beta3",
 	"codename": "aqua",
 	"repository": {
 		"type": "git",
 		"url": "https://git.joinfirefish.org/firefish/firefish.git"
 	},
-	"packageManager": "pnpm@8.7.1",
+	"packageManager": "pnpm@8.7.6",
 	"private": true,
 	"scripts": {
 		"rebuild": "pnpm run clean && ./scripts/build-greet.sh && pnpm -r --parallel run build && pnpm run gulp",
@@ -47,6 +47,10 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.0.0",
+		"@biomejs/cli-darwin-arm64": "^1.0.0",
+		"@biomejs/cli-darwin-x64": "^1.0.0",
+		"@biomejs/cli-linux-arm64": "^1.0.0",
+		"@biomejs/cli-linux-x64": "^1.0.0",
 		"@types/gulp": "4.0.13",
 		"@types/gulp-rename": "2.0.2",
 		"@types/node": "20.5.8",

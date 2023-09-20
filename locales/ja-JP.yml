@@ -66,7 +66,7 @@ import: "インポート"
 export: "エクスポート"
 files: "ファイル"
 download: "ダウンロード"
-driveFileDeleteConfirm: "ファイル「{name}」を削除しますか？これにより、このファイルが添付されている投稿も削除されます。"
+driveFileDeleteConfirm: "ファイル「{name}」を削除しますか？これにより、添付ファイルとして含まれているすべての投稿から削除されます。"
 unfollowConfirm: "{name}さんのフォローを解除しますか？"
 exportRequested: "エクスポートをリクエストしました。これには時間がかかる場合があります。エクスポートが終わると、「ドライブ」に追加されます。"
 importRequested: "インポートをリクエストしました。これには時間がかかる場合があります。"
@@ -988,6 +988,8 @@ youHaveUnreadAnnouncements: "未読のお知らせがあります"
 neverShow: "今後表示しない"
 remindMeLater: "また後で"
 addRe: "閲覧注意の投稿への返信で、注釈の先頭に\"re:\"を追加する"
+languageForTranslation: "投稿翻訳に使用する言語"
+detectPostLanguage: "投稿の言語を自動検出し、外国語の投稿に翻訳ボタンを表示する"
 
 _sensitiveMediaDetection:
   description: "機械学習を使って自動でセンシティブなメディアを検出し、モデレーションに役立てられます。サーバーの負荷が少し増えます。"
@@ -1198,11 +1200,16 @@ _menuDisplay:
   hide: "隠す"
 _wordMute:
   muteWords: "ミュートするワード"
+  muteLangs: "ミュートされた言語"
   muteWordsDescription: "スペースで区切るとAND指定になり、改行で区切るとOR指定になります。"
   muteWordsDescription2: "キーワードをスラッシュで囲むと正規表現になります。"
+  muteLangsDescription: "OR 条件の場合はスペースまたは改行で区切ります。"
+  muteLangsDescription2: "言語コードを使用します。例: en, fr, ja, zh."
   softDescription: "指定した条件の投稿をタイムラインから隠します。"
+  langDescription: "設定した言語に一致する投稿をタイムラインから非表示にします。"
   hardDescription: "指定した条件の投稿をタイムラインに追加しないようにします。追加されなかった投稿は、条件を変更しても除外されたままになります。"
   soft: "ソフト"
+  lang: "言語"
   hard: "ハード"
   mutedNotes: "ミュートされた投稿"
 _instanceMute:
@@ -1970,7 +1977,7 @@ _feeds:
   rss: RSS
   jsonFeed: JSONフィード
   copyFeed: フィードのURLをコピー
-origin: 起源
+origin: 元のサーバー
 delete2fa: 2要素認証を無効化
 deletePasskeys: パスキーを削除
 delete2faConfirm: これで、このアカウントの2要素認証は完全に削除されます。続行しますか?
@@ -1980,3 +1987,4 @@ importZip: ZIPをインポート
 emojiPackCreator: 絵文字パックの作者
 confirm: 確認
 exportZip: ZIPをエクスポート
+openServerInfo: "投稿内のサーバー名をクリックでサーバー情報を開く"

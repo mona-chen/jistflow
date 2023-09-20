@@ -6,6 +6,7 @@
 		ref="el"
 		v-hotkey="keymap"
 		v-size="{ max: [500, 350] }"
+		v-vibrate="5"
 		:aria-label="accessibleLabel"
 		class="tkcbzcuz note-container"
 		:tabindex="!isDeleted ? '-1' : null"
@@ -111,7 +112,7 @@
 					></MkSubNoteContent>
 					<div v-if="translating || translation" class="translation">
 						<MkLoading v-if="translating" mini />
-						<div v-else class="translated">
+						<div v-else-if="translation != null" class="translated">
 							<b
 								>{{
 									i18n.t("translatedFrom", {
@@ -220,6 +221,18 @@
 					</button>
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
+						v-if="
+							$i != null &&
+							isForeignLanguage &&
+							translation == null
+						"
+						v-tooltip.noDelay.bottom="i18n.ts.translate"
+						class="button _button"
+						@click.stop="translate"
+					>
+						<i class="ph-translate ph-bold ph-lg"></i>
+					</button>
+					<button
 						ref="menuButton"
 						v-tooltip.noDelay.bottom="i18n.ts.more"
 						class="button _button"
@@ -259,6 +272,7 @@ import { computed, inject, onMounted, ref } from "vue";
 import * as mfm from "mfm-js";
 import type { Ref } from "vue";
 import type * as misskey from "firefish-js";
+import { detect as detectLanguage_ } from "tinyld";
 import MkSubNoteContent from "./MkSubNoteContent.vue";
 import MkNoteSub from "@/components/MkNoteSub.vue";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
@@ -340,12 +354,68 @@ const isMyRenote = $i && $i.id === note.value.userId;
 const showContent = ref(false);
 const isDeleted = ref(false);
 const muted = ref(
-	getWordSoftMute(note.value, $i, defaultStore.state.mutedWords),
+	getWordSoftMute(
+		note.value,
+		$i,
+		defaultStore.state.mutedWords,
+		defaultStore.state.mutedLangs,
+	),
 );
 const translation = ref(null);
 const translating = ref(false);
 const enableEmojiReactions = defaultStore.state.enableEmojiReactions;
 const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
+const lang = localStorage.getItem("lang");
+const translateLang = localStorage.getItem("translateLang");
+
+function detectLanguage(text: string) {
+	const nodes = mfm.parse(text);
+	const filtered = mfm.extract(nodes, (node) => {
+		return node.type === "text" || node.type === "quote";
+	});
+	const purified = mfm.toString(filtered);
+	return detectLanguage_(purified);
+}
+
+const isForeignLanguage: boolean =
+	defaultStore.state.detectPostLanguage &&
+	appearNote.value.text != null &&
+	(() => {
+		const targetLang = (translateLang || lang || navigator.language)?.slice(
+			0,
+			2,
+		);
+		const postLang = detectLanguage(appearNote.value.text);
+		return postLang !== "" && postLang !== targetLang;
+	})();
+
+async function translate_(noteId, targetLang: string) {
+	return await os.api("notes/translate", {
+		noteId,
+		targetLang,
+	});
+}
+
+async function translate() {
+	if (translation.value != null) return;
+	translating.value = true;
+	translation.value = await translate_(
+		appearNote.value.id,
+		translateLang || lang || navigator.language,
+	);
+
+	// use UI language as the second translation language
+	if (
+		translateLang != null &&
+		lang != null &&
+		translateLang !== lang &&
+		(!translation.value ||
+			translation.value.sourceLang.toLowerCase() ===
+				translateLang.slice(0, 2))
+	)
+		translation.value = await translate_(appearNote.value.id, lang);
+	translating.value = false;
+}
 
 const keymap = {
 	r: () => reply(true),

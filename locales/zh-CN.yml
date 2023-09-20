@@ -673,7 +673,7 @@ no: "否"
 driveFilesCount: "网盘的文件数"
 driveUsage: "网盘的空间用量"
 noCrawle: "要求搜索引擎不索引该用户"
-noCrawleDescription: "要求搜索引擎不要收录（索引）您的用户页面，帖子，页面等。"
+noCrawleDescription: "要求外部搜索引擎不收录（索引）您的内容。"
 lockedAccountInfo: "即使通过了关注请求，只要您不将帖子可见范围设置成“关注者”，任何人都可以看到您的帖子。"
 alwaysMarkSensitive: "默认将媒体文件标记为敏感内容"
 loadRawImages: "加载原始图像而不是显示缩略图"
@@ -1110,11 +1110,16 @@ _menuDisplay:
   hide: "隐藏"
 _wordMute:
   muteWords: "过滤词"
+  muteLangs: "过滤语言"
   muteWordsDescription: "AND 条件用空格分隔，OR 条件用换行符分隔。"
   muteWordsDescription2: "将关键字用斜线括起来表示正则表达式。"
+  muteLangsDescription: "OR 条件用空格，换行符分隔"
+  muteLangsDescription2: "使用语言代码。例: en, fr, ja, zh."
   softDescription: "隐藏时间线中指定条件的帖子。"
+  langDescription: "从时间线中隐藏与设置语言匹配的帖子。"
   hardDescription: "防止将具有指定条件的帖子添加到时间线。 即使您更改条件，原先未添加的帖文也会被排除在外。"
   soft: "软过滤"
+  lang: "语言"
   hard: "硬过滤"
   mutedNotes: "已过滤的帖子"
 _instanceMute:
@@ -1980,3 +1985,7 @@ inputNotMatch: 输入不匹配
 deletePasskeys: 删除通行密钥
 delete2faConfirm: 这将不可逆转地删除此账户上的 2FA。是否继续？
 addRe: 在回复有内容警告的帖子时，在评论开头添加 "re:"
+detectPostLanguage: 自动检测语言，并显示外文帖子的翻译按钮
+indexableDescription: 允许内置搜索显示您的公开帖子
+indexable: 可索引的
+languageForTranslation: 帖子翻译语言

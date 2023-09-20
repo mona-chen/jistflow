@@ -309,11 +309,11 @@ emptyDrive: "Le Drive est vide"
 emptyFolder: "Le dossier est vide"
 unableToDelete: "Suppression impossible"
 inputNewFileName: "Entrez un nouveau nom de fichier"
-inputNewDescription: "Veuillez entrer une nouvelle description"
+inputNewDescription: "Veuillez entrer une nouvelle description au fichier"
 inputNewFolderName: "Entrez un nouveau nom de dossier"
 circularReferenceFolder: "Le dossier de destination est un sous-dossier du dossier
   que vous souhaitez déplacer."
-hasChildFilesOrFolders: "Impossible de supprimer ce dossier car il n'est pas vide."
+hasChildFilesOrFolders: "Impossible de supprimer ce dossier, car il n'est pas vide."
 copyUrl: "Copier l’URL"
 rename: "Renommer"
 avatar: "Avatar"
@@ -605,7 +605,7 @@ disablePlayer: "Fermer le lecteur vidéo"
 expandTweet: "Étendre le tweet"
 themeEditor: "Éditeur de thèmes"
 description: "Description"
-describeFile: "Ajouter une description d'image"
+describeFile: "Ajouter une description"
 enterFileDescription: "Saisissez une description"
 author: "Auteur·rice"
 leaveConfirm: "Vous avez des modifications non-sauvegardées. Voulez-vous les ignorer
@@ -683,7 +683,7 @@ fillAbuseReportDescription: "Veuillez expliquer les raisons du signalement. S'il
   d'une publication en particulier, veuillez inclure le lien."
 abuseReported: "Le rapport est envoyé. Merci."
 reporter: "Signalé par"
-reporteeOrigin: "Origine du signalement"
+reporteeOrigin: "Origine du signalé"
 reporterOrigin: "Origine du signalement"
 forwardReport: "Transférer le signalement à l’instance distante"
 send: "Envoyer"
@@ -724,8 +724,8 @@ no: "Non"
 driveFilesCount: "Nombre de fichiers dans le Drive"
 driveUsage: "Utilisation du Drive"
 noCrawle: "Refuser l'indexation par les robots"
-noCrawleDescription: "Demandez aux moteurs de recherche de ne pas indexer votre page
-  de profil, vos publications, vos pages, etc."
+noCrawleDescription: "Demandez aux moteurs de recherche externes de ne pas indexer
+  votre contenu."
 lockedAccountInfo: "À moins que vous ne définissiez la visibilité de votre publication
   sur \"Abonné-e-s\", vos publications sont visibles par tous, même si vous exigez
   que les demandes d'abonnement soient approuvées manuellement."
@@ -2085,7 +2085,7 @@ silenceThisInstance: Masquer ce serveur
 silencedInstances: Serveurs masqués
 silenced: Masqué
 deleted: Effacé
-editNote: Modifier publication
+editNote: Modifier la publication
 edited: 'Modifié à {date} {time}'
 flagShowTimelineRepliesDescription: Si activé, affiche dans le fil les réponses des
   utilisatieur·rice·s aux publications des autres.
@@ -2209,4 +2209,12 @@ addRe: Ajouter "re:" au début d’un avertissement de contenu (CW) en réponse 
 confirm: Confirmer
 importZip: Importer ZIP
 exportZip: Exporter ZIP
-emojiPackCreator: Créateur de pack d’emoji
+emojiPackCreator: Créateur de pack d’émoji
+detectPostLanguage: Détecte automatiquement le langage et affiche un bouton de traduction
+  pour les langues étrangères
+indexableDescription: Permettre à la recherche interne d’afficher vos publications
+  publiques
+openServerInfo: Afficher les informations du serveur en cliquant sur le bandeau de
+  serveur d’une publication
+indexable: Indexable
+languageForTranslation: Langage post-traduction

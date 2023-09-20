@@ -17,6 +17,15 @@
 			</template>
 		</FormSelect>
 
+		<FormSelect v-model="translateLang" class="_formBlock">
+			<template #label>
+				{{ i18n.ts.languageForTranslation }}
+			</template>
+			<option v-for="x in langs" :key="x[0]" :value="x[0]">
+				{{ x[1] }}
+			</option>
+		</FormSelect>
+
 		<FormRadios v-model="overridedDeviceKind" class="_formBlock">
 			<template #label>{{ i18n.ts.overridedDeviceKind }}</template>
 			<option :value="null">{{ i18n.ts.auto }}</option>
@@ -71,6 +80,12 @@
 					{{ i18n.ts.reflectMayTakeTime }}</template
 				></FormSwitch
 			>
+			<FormSwitch v-model="detectPostLanguage" class="_formBlock">{{
+				i18n.ts.detectPostLanguage
+			}}</FormSwitch>
+			<FormSwitch v-model="openServerInfo" class="_formBlock">{{
+				i18n.ts.openServerInfo
+			}}</FormSwitch>
 
 			<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
@@ -121,6 +136,12 @@
 				class="_formBlock"
 				>{{ i18n.ts.disableShowingAnimatedImages }}</FormSwitch
 			>
+			<FormSwitch
+				v-model="vibrate"
+				class="_formBlock"
+				@click="demoVibrate"
+				>{{ i18n.ts.vibrate }}
+			</FormSwitch>
 			<FormRadios v-model="fontSize" class="_formBlock">
 				<template #label>{{ i18n.ts.fontSize }}</template>
 				<option :value="null">
@@ -258,7 +279,7 @@ import FormSection from "@/components/form/section.vue";
 import FormLink from "@/components/form/link.vue";
 import MkLink from "@/components/MkLink.vue";
 import { langs } from "@/config";
-import { defaultStore } from "@/store";
+import { ColdDeviceStorage, defaultStore } from "@/store";
 import * as os from "@/os";
 import { unisonReload } from "@/scripts/unison-reload";
 import { i18n } from "@/i18n";
@@ -266,6 +287,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
 
 const lang = ref(localStorage.getItem("lang"));
+const translateLang = ref(localStorage.getItem("translateLang"));
 const fontSize = ref(localStorage.getItem("fontSize"));
 const useSystemFont = ref(localStorage.getItem("useSystemFont") != null);
 
@@ -277,6 +299,10 @@ async function reloadAsk() {
 	if (canceled) return;
 
 	unisonReload();
+}
+
+function demoVibrate() {
+	window.navigator.vibrate(100);
 }
 
 const overridedDeviceKind = computed(
@@ -315,6 +341,7 @@ const disableDrawer = computed(defaultStore.makeGetterSetter("disableDrawer"));
 const disableShowingAnimatedImages = computed(
 	defaultStore.makeGetterSetter("disableShowingAnimatedImages"),
 );
+const vibrate = computed(ColdDeviceStorage.makeGetterSetter("vibrate"));
 const loadRawImages = computed(defaultStore.makeGetterSetter("loadRawImages"));
 const imageNewTab = computed(defaultStore.makeGetterSetter("imageNewTab"));
 const nsfw = computed(defaultStore.makeGetterSetter("nsfw"));
@@ -357,6 +384,12 @@ const showAdminUpdates = computed(
 const showTimelineReplies = computed(
 	defaultStore.makeGetterSetter("showTimelineReplies"),
 );
+const detectPostLanguage = computed(
+	defaultStore.makeGetterSetter("detectPostLanguage"),
+);
+const openServerInfo = computed(
+	defaultStore.makeGetterSetter("openServerInfo"),
+);
 
 watch(swipeOnDesktop, () => {
 	defaultStore.set("swipeOnMobile", true);
@@ -365,6 +398,10 @@ watch(swipeOnDesktop, () => {
 watch(lang, () => {
 	localStorage.setItem("lang", lang.value as string);
 	localStorage.removeItem("locale");
+});
+
+watch(translateLang, () => {
+	localStorage.setItem("translateLang", translateLang.value as string);
 });
 
 watch(fontSize, () => {
@@ -386,6 +423,7 @@ watch(useSystemFont, () => {
 watch(
 	[
 		lang,
+		translateLang,
 		fontSize,
 		useSystemFont,
 		enableInfiniteScroll,

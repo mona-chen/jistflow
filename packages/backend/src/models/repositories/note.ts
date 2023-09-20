@@ -27,6 +27,7 @@ import {
 } from "@/misc/populate-emojis.js";
 import { db } from "@/db/postgre.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
+import { detect as detectLanguage_ } from "tinyld";
 
 export async function populatePoll(note: Note, meId: User["id"] | null) {
 	const poll = await Polls.findOneByOrFail({ noteId: note.id });
@@ -201,6 +202,8 @@ export const NoteRepository = db.getRepository(Note).extend({
 			note.emojis.concat(reactionEmojiNames),
 			host,
 		);
+
+		const lang = detectLanguage_(`${note.cw ?? ''}\n${note.text ?? ''}`) ?? "unknown"
 		const reactionEmoji = await populateEmojis(reactionEmojiNames, host);
 		const packed: Packed<"Note"> = await awaitAll({
 			id: note.id,
@@ -260,6 +263,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 							: undefined,
 				  }
 				: {}),
+			lang: lang,
 		});
 
 		if (packed.user.isCat && packed.user.speakAsCat && packed.text) {
