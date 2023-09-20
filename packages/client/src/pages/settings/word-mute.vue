@@ -17,6 +17,17 @@
 						}}</template
 					>
 				</FormTextarea>
+				<MkInfo class="_formBlock">{{
+					i18n.ts._wordMute.langDescription
+				}}</MkInfo>
+				<FormTextarea v-model="softMutedLangs" class="_formBlock">
+					<span>{{ i18n.ts._wordMute.muteLangs }}</span>
+					<template #caption
+						>{{ i18n.ts._wordMute.muteLangsDescription }}<br />{{
+							i18n.ts._wordMute.muteLangsDescription2
+						}}</template
+					>
+				</FormTextarea>
 			</div>
 			<div v-show="tab === 'hard'">
 				<MkInfo class="_formBlock"
@@ -76,6 +87,7 @@ const render = (mutedWords) =>
 
 const tab = ref("soft");
 const softMutedWords = ref(render(defaultStore.state.mutedWords));
+const softMutedLangs = ref(render(defaultStore.state.mutedLangs));
 const hardMutedWords = ref(render($i!.mutedWords));
 const hardWordMutedNotesCount = ref(null);
 const changed = ref(false);
@@ -85,6 +97,10 @@ os.api("i/get-word-muted-notes-count", {}).then((response) => {
 });
 
 watch(softMutedWords, () => {
+	changed.value = true;
+});
+
+watch(softMutedLangs, () => {
 	changed.value = true;
 });
 
@@ -134,9 +150,10 @@ async function save() {
 		return lines;
 	};
 
-	let softMutes, hardMutes;
+	let softMutes, softMLangs, hardMutes;
 	try {
 		softMutes = parseMutes(softMutedWords.value, i18n.ts._wordMute.soft);
+		softMLangs = parseMutes(softMutedLangs.value, i18n.ts._wordMute.lang);
 		hardMutes = parseMutes(hardMutedWords.value, i18n.ts._wordMute.hard);
 	} catch (err) {
 		// already displayed error message in parseMutes
@@ -144,6 +161,7 @@ async function save() {
 	}
 
 	defaultStore.set("mutedWords", softMutes);
+	defaultStore.set("mutedLangs", softMLangs);
 	await os.api("i/update", {
 		mutedWords: hardMutes,
 	});
