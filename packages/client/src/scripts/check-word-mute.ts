@@ -6,6 +6,19 @@ export interface Muted {
 
 const NotMuted = { muted: false, matched: [] };
 
+function checkLangMute(
+	note: NoteLike,
+	mutedLangs: Array<string | string[]>,
+): Muted {
+	const mutedLangList = new Set(
+		mutedLangs.reduce((arr, x) => [...arr, ...(Array.isArray(x) ? x : [x])]),
+	);
+	if (mutedLangList.has((note.lang?.[0]?.lang || "").split("-")[0])) {
+		return { muted: true, matched: [note.lang?.[0]?.lang] };
+	}
+	return NotMuted;
+}
+
 function checkWordMute(
 	note: NoteLike,
 	mutedWords: Array<string | string[]>,
@@ -62,6 +75,7 @@ export function getWordSoftMute(
 	note: Record<string, any>,
 	me: Record<string, any> | null | undefined,
 	mutedWords: Array<string | string[]>,
+	mutedLangs: Array<string | string[]>,
 ): Muted {
 	// 自分自身
 	if (me && note.userId === me.id) {
@@ -88,6 +102,29 @@ export function getWordSoftMute(
 			if (replyMuted.muted) {
 				replyMuted.what = "reply";
 				return replyMuted;
+			}
+		}
+	}
+	if (mutedLangs.length > 0) {
+		let noteLangMuted = checkLangMute(note, mutedLangs);
+		if (noteLangMuted.muted) {
+			noteLangMuted.what = "note";
+			return noteLangMuted;
+		}
+
+		if (note.renote) {
+			let renoteLangMuted = checkLangMute(note, mutedLangs);
+			if (renoteLangMuted.muted) {
+				renoteLangMuted.what = note.text == null ? "renote" : "quote";
+				return renoteLangMuted;
+			}
+		}
+
+		if (note.reply) {
+			let replyLangMuted = checkLangMute(note, mutedLangs);
+			if (replyLangMuted.muted) {
+				replyLangMuted.what = "reply";
+				return replyLangMuted;
 			}
 		}
 	}

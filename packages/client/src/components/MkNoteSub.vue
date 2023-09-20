@@ -266,7 +266,12 @@ const appearNote = computed(() =>
 );
 const isDeleted = ref(false);
 const muted = ref(
-	getWordSoftMute(note.value, $i, defaultStore.state.mutedWords),
+	getWordSoftMute(
+		note.value,
+		$i,
+		defaultStore.state.mutedWords,
+		defaultStore.state.mutedLangs,
+	),
 );
 const translation = ref(null);
 const translating = ref(false);

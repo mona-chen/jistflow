@@ -101,6 +101,10 @@ export const defaultStore = markRaw(
 			where: "account",
 			default: [],
 		},
+		mutedLangs: {
+			where: "account",
+			default: [],
+		},
 		mutedAds: {
 			where: "account",
 			default: [] as string[],

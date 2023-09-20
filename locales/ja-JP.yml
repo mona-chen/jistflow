@@ -1200,11 +1200,16 @@ _menuDisplay:
   hide: "隠す"
 _wordMute:
   muteWords: "ミュートするワード"
+  muteLangs: "ミュートされた言語"
   muteWordsDescription: "スペースで区切るとAND指定になり、改行で区切るとOR指定になります。"
   muteWordsDescription2: "キーワードをスラッシュで囲むと正規表現になります。"
+  muteLangsDescription: "OR 条件の場合はスペースまたは改行で区切ります。"
+  muteLangsDescription2: "言語コードを使用します。例: en, fr, ja, zh."
   softDescription: "指定した条件の投稿をタイムラインから隠します。"
+  langDescription: "設定した言語に一致する投稿をタイムラインから非表示にします。"
   hardDescription: "指定した条件の投稿をタイムラインに追加しないようにします。追加されなかった投稿は、条件を変更しても除外されたままになります。"
   soft: "ソフト"
+  lang: "言語"
   hard: "ハード"
   mutedNotes: "ミュートされた投稿"
 _instanceMute:
