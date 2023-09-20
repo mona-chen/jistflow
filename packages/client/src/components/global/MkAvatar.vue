@@ -89,7 +89,7 @@ watch(
 
 <style lang="scss" scoped>
 @keyframes earwiggleleft {
-	from {
+	0% {
 		transform: rotate(37.6deg) skew(30deg);
 	}
 	25% {
@@ -101,13 +101,13 @@ watch(
 	75% {
 		transform: rotate(0deg) skew(30deg);
 	}
-	to {
+	100% {
 		transform: rotate(37.6deg) skew(30deg);
 	}
 }
 
 @keyframes earwiggleright {
-	from {
+	0% {
 		transform: rotate(-37.6deg) skew(-30deg);
 	}
 	30% {
@@ -119,7 +119,7 @@ watch(
 	75% {
 		transform: rotate(0deg) skew(-30deg);
 	}
-	to {
+	100% {
 		transform: rotate(-37.6deg) skew(-30deg);
 	}
 }

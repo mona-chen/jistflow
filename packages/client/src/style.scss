@@ -745,7 +745,7 @@ hr {
 }
 
 @keyframes tada {
-	from {
+	0% {
 		transform: scale3d(1, 1, 1);
 	}
 
@@ -767,14 +767,14 @@ hr {
 		transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
 	}
 
-	to {
+	100% {
 		transform: scale3d(1, 1, 1);
 	}
 }
 
 @media (prefers-reduced-motion) {
 	@keyframes tada {
-		from {
+		0% {
 			transform: scale3d(1, 1, 1);
 		}
 
@@ -782,7 +782,7 @@ hr {
 			transform: scale3d(1.1, 1.1, 1.1);
 		}
 
-		to {
+		100% {
 			transform: scale3d(1, 1, 1);
 		}
 	}
@@ -937,7 +937,7 @@ hr {
 // }
 
 @keyframes reset {
-	to {
+	100% {
 		transform: none;
 		opacity: 1;
 	}
@@ -948,13 +948,13 @@ hr {
 
 @media (prefers-reduced-motion: no-preference) {
 	@keyframes scaleIn {
-		from {
+		0% {
 			transform: scale(0);
 			opacity: 0;
 		}
 	}
 	@keyframes scaleInSmall {
-		from {
+		0% {
 			transform: scale(0.8);
 			opacity: 0;
 		}
