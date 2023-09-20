@@ -1375,14 +1375,19 @@ _menuDisplay:
   hide: "Hide"
 _wordMute:
   muteWords: "Muted words"
+  muteLangs: "Muted Languages"
   muteWordsDescription: "Separate with spaces for an AND condition or with line breaks
     for an OR condition."
   muteWordsDescription2: "Surround keywords with slashes to use regular expressions."
+  muteLangsDescription: "Separate with spaces or line breaks for an OR condition."
+  muteLangsDescription2: "Use language code e.g. en, fr, ja, zh."
   softDescription: "Hide posts that fulfil the set conditions from the timeline."
+  langDescription: "Hide posts that match set language from the timeline."
   hardDescription: "Prevents posts fulfilling the set conditions from being added
     to the timeline. In addition, these posts will not be added to the timeline even
     if the conditions are changed."
   soft: "Soft"
+  lang: "Language"
   hard: "Hard"
   mutedNotes: "Muted posts"
 _instanceMute:
