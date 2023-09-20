@@ -27,7 +27,7 @@ import {
 } from "@/misc/populate-emojis.js";
 import { db } from "@/db/postgre.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
-import cld from "cld";
+import { detect as detectLanguage_ } from "tinyld";
 import { detect } from "langdetect";
 
 export async function populatePoll(note: Note, meId: User["id"] | null) {
@@ -206,7 +206,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 
 		let lang;
 		try {
-			lang = (await cld.detect((note.text || "") + (note.cw || "")))
+			lang = (detectLanguage_((note.text || "") + (note.cw || "")))
 				.languages[0].code;
 		} catch (e) {
 			lang =
