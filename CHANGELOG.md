@@ -38,7 +38,7 @@ Closes #10640, #10608
 
 ### Features
 
-- Feat: :sparkles: `indexable` User property
+- Feat: :sparkles: federated `indexable` User property
 
 - Feat: sticky drive header
 This makes it easy to get files out of a folder to the parent directory.
@@ -52,7 +52,7 @@ This makes it easy to get files out of a folder to the parent directory.
 
 - Selectable language for post translations 
 
-- Translate button on posts not in your prefered language
+- Translate button on posts not in your preferred language
 
 ### Miscellaneous Tasks
 
