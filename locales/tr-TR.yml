@@ -285,7 +285,7 @@ pinnedPagesDescription: Bu sunucunun üst kısmına sabitlemek istediğiniz Sayf
   yollarını satır sonundan ayırarak girin.
 enableHcaptcha: hCaptcha'yı Aktif Et
 notifyAntenna: Yeni gönderileri bildir
-recentlyUpdatedUsers: En son aktif kullanıcılar
+recentlyUpdatedUsers: En son aktif olan kullanıcılar
 about: Hakkında
 twoStepAuthentication: İki-adımlı doğrulama
 securityKeyName: Anahtar ismi
