@@ -279,9 +279,6 @@ importers:
       koa-views:
         specifier: 7.0.2
         version: 7.0.2(@types/koa@2.13.8)(ejs@3.1.9)(pug@3.0.2)
-      langdetect:
-        specifier: 0.2.1
-        version: 0.2.1
       megalodon:
         specifier: workspace:*
         version: link:../megalodon
@@ -12971,12 +12968,6 @@ packages:
     engines: {node: '>=14.16'}
     dev: false
 
-  /langdetect@0.2.1:
-    resolution: {integrity: sha512-vWK2xz8Urp6J0RFwnrR8+d0DQ2yIGjCOqAxBoXNMVFv4ZDmFsbCcNEtwuVnaQ5+ltwZ4Z5rTtuTwHSaEWFdw+A==}
-    dependencies:
-      unicode-9.0.0: 0.7.0
-    dev: false
-
   /last-run@1.1.1:
     resolution: {integrity: sha512-U/VxvpX4N/rFvPzr3qG5EtLKEnNI0emvIQB3/ecEwv+8GHaUKbIB8vxv1Oai5FAF0d0r7LXHhLLe5K/yChm5GQ==}
     engines: {node: '>= 0.10'}
@@ -18041,11 +18032,6 @@ packages:
     engines: {node: '>=14.0'}
     dependencies:
       busboy: 1.6.0
-    dev: false
-
-  /unicode-9.0.0@0.7.0:
-    resolution: {integrity: sha512-aqL0GQ3LB2nC3ZEKBZ93hfn7QY80sVGk+OT9Sc6lTxl4wRiwzUBRlAjJB9Fe4+5XydXOV+tb8udp5oRBoED5Tw==}
-    deprecated: Use @unicode/unicode-9.0.0 instead.
     dev: false
 
   /unicode-emoji-json@0.4.0:
