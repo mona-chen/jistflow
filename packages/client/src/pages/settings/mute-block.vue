@@ -9,7 +9,7 @@
 				<template #empty
 					><FormInfo>{{ i18n.ts.noUsers }}</FormInfo></template
 				>
-				<template #default="{ items }">
+				<template #default="{ items }" class="_formlinks">
 					<FormLink
 						v-for="mute in items"
 						:key="mute.id"
@@ -25,7 +25,7 @@
 				<template #empty
 					><FormInfo>{{ i18n.ts.noUsers }}</FormInfo></template
 				>
-				<template #default="{ items }">
+				<template #default="{ items }" class="_formlinks">
 					<FormLink
 						v-for="block in items"
 						:key="block.id"

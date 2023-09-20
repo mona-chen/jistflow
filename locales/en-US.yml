@@ -675,7 +675,7 @@ emptyToDisableSmtpAuth: "Leave username and password empty to disable SMTP verif
 smtpSecure: "Use implicit SSL/TLS for SMTP connections"
 smtpSecureInfo: "Turn this off when using STARTTLS"
 testEmail: "Test email delivery"
-wordMute: "Word mute"
+wordMute: "Word and language mutes"
 regexpError: "Regular Expression error"
 regexpErrorDescription: "An error occurred in the regular expression on line {line}
   of your {tab} word mutes:"
