@@ -2190,3 +2190,5 @@ detectPostLanguage: Detecta l'idioma automàticament i mostra un botó per els a
 indexableDescription: Permet al cercador intern mostrar els missatges públics
 indexable: Indexable
 languageForTranslation: Idioma de traducció d'articles
+openServerInfo: Mostra la informació del servidor fent clic al símbol del servidor
+  en un missatge

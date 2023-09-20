@@ -2173,3 +2173,5 @@ detectPostLanguage: Deteksi bahasa secara otomatis dan tampilkan tombol terjemah
 indexableDescription: Perbolehkan pencarian di sini untuk menampilkan kiriman publikmu
 indexable: Dapat diindeks
 languageForTranslation: Bahasa terjemahan kiriman
+openServerInfo: Tampilkan informasi server dengan mengeklik ticker server di sebuah
+  kiriman

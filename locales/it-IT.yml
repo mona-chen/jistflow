@@ -2162,3 +2162,5 @@ detectPostLanguage: Riconosci la lingua automaticamente e mostra il bottone per 
 indexableDescription: Mostra i tuoi post pubblici tramite il sistema di ricerca
 indexable: Indicizzabile
 languageForTranslation: Linguaggio di traduzione dei post
+openServerInfo: Mostra informazioni sul server cliccando sul riquadro del server in
+  un post

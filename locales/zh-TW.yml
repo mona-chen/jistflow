@@ -292,7 +292,7 @@ inputNewFileName: "輸入檔案名稱"
 inputNewDescription: "請輸入新標題"
 inputNewFolderName: "輸入新資料夾的名稱"
 circularReferenceFolder: "目標文件夾是您要移動的文件夾的子文件夾。"
-hasChildFilesOrFolders: "此文件夾不是空的，無法刪除。"
+hasChildFilesOrFolders: "此資料夾不是空的，無法刪除。"
 copyUrl: "複製網址"
 rename: "重新命名"
 avatar: "大頭貼"
@@ -773,7 +773,7 @@ gallery: "相簿"
 recentPosts: "最新貼文"
 popularPosts: "熱門的貼文"
 shareWithNote: "在貼文中分享"
-ads: "廣告"
+ads: "社群橫幅"
 expiration: "期限"
 memo: "備忘錄"
 priority: "優先級"
@@ -1823,13 +1823,13 @@ adminCustomCssWarn: 除非你知道它的作用，否則請不要使用此設定
   CSS 正常工作。
 showUpdates: Firefish 更新時顯示彈出視窗
 recommendedInstances: 建議的伺服器
-caption: 自動字幕
+caption: 自動加上替代文字(alt)
 enterSendsMessage: 在 Messaging 中按 Return 發送消息 (如關閉則是 Ctrl + Return)
 migrationConfirm: "您確定要將你的帳戶遷移到 {account} 嗎？ 一旦這樣做，你將無法復原，而你將無法再次正常使用您的帳戶。\n另外，請確保你已將此當前帳戶設置為您要遷移的帳戶。"
 customSplashIconsDescription: 每次用戶加載/重新加載頁面時，以換行符號分隔的自定啟動畫面圖標的網址將隨機顯示。請確保圖片位於靜態網址上，最好所有圖片解析度調整為
   192x192。
 accountMoved: '該使用者已遷移至新帳戶:'
-showAds: 顯示廣告
+showAds: 顯示社群橫幅
 noThankYou: 不用了，謝謝
 selectInstance: 選擇伺服器
 enableRecommendedTimeline: 啟用推薦時間線

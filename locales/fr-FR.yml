@@ -724,8 +724,8 @@ no: "Non"
 driveFilesCount: "Nombre de fichiers dans le Drive"
 driveUsage: "Utilisation du Drive"
 noCrawle: "Refuser l'indexation par les robots"
-noCrawleDescription: "Demandez aux moteurs de recherche de ne pas indexer votre page
-  de profil, vos publications, vos pages, etc."
+noCrawleDescription: "Demandez aux moteurs de recherche externes de ne pas indexer
+  votre contenu."
 lockedAccountInfo: "À moins que vous ne définissiez la visibilité de votre publication
   sur \"Abonné-e-s\", vos publications sont visibles par tous, même si vous exigez
   que les demandes d'abonnement soient approuvées manuellement."
@@ -2210,3 +2210,11 @@ confirm: Confirmer
 importZip: Importer ZIP
 exportZip: Exporter ZIP
 emojiPackCreator: Créateur de pack d’émoji
+detectPostLanguage: Détecte automatiquement le langage et affiche un bouton de traduction
+  pour les langues étrangères
+indexableDescription: Permettre à la recherche interne d’afficher vos publications
+  publiques
+openServerInfo: Afficher les informations du serveur en cliquant sur le bandeau de
+  serveur d’une publication
+indexable: Indexable
+languageForTranslation: Langage post-traduction
