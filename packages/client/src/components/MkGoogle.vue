@@ -22,7 +22,7 @@ const props = defineProps<{
 const query = ref(props.q);
 
 const search = () => {
-	router.push(`/search/${query.value}`);
+	router.push(`/search?q=${query.value}`);
 };
 </script>
 
