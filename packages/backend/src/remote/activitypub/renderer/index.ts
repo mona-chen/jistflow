@@ -35,10 +35,11 @@ export const renderActivity = (x: any): IActivity | null => {
 					schema: "http://schema.org#",
 					PropertyValue: "schema:PropertyValue",
 					value: "schema:value",
+					// Firefish
+					firefish: "https://joinfirefish.org/ns#",
+					speakLikeCat: "firefish:speakLikeCat",
 					// Misskey
 					misskey: "https://misskey-hub.net/ns#",
-					_misskey_reaction: "misskey:_misskey_reaction",
-					_misskey_votes: "misskey:_misskey_votes",
 					_misskey_talk: "misskey:_misskey_talk",
 					isCat: "misskey:isCat",
 					// Fedibird
