@@ -17,6 +17,20 @@ const menuOptions = [
 	"search",
 ];
 
+export const defaultReactions = [
+	"⭐",
+	"❤️",
+	"😆",
+	"🤔",
+	"😮",
+	"🎉",
+	"💢",
+	"😥",
+	"😇",
+	"🥴",
+	"🍮",
+];
+
 // TODO: それぞれいちいちwhereとかdefaultというキーを付けなきゃいけないの冗長なのでなんとかする(ただ型定義が面倒になりそう)
 //       あと、現行の定義の仕方なら「whereが何であるかに関わらずキー名の重複不可」という制約を付けられるメリットもあるからそのメリットを引き継ぐ方法も考えないといけない
 export const defaultStore = markRaw(
@@ -83,19 +97,7 @@ export const defaultStore = markRaw(
 		},
 		reactions: {
 			where: "account",
-			default: [
-				"⭐",
-				"❤️",
-				"😆",
-				"🤔",
-				"😮",
-				"🎉",
-				"💢",
-				"😥",
-				"😇",
-				"🥴",
-				"🍮",
-			],
+			default: defaultReactions,
 		},
 		mutedWords: {
 			where: "account",

@@ -7,17 +7,12 @@
 			<div class="shape2"></div>
 			<img src="/client-assets/misskey.svg" class="misskey" />
 			<div class="emojis">
-				<MkEmoji :normal="true" :no-style="true" emoji="⭐" />
-				<MkEmoji :normal="true" :no-style="true" emoji="❤️" />
-				<MkEmoji :normal="true" :no-style="true" emoji="😆" />
-				<MkEmoji :normal="true" :no-style="true" emoji="🤔" />
-				<MkEmoji :normal="true" :no-style="true" emoji="😮" />
-				<MkEmoji :normal="true" :no-style="true" emoji="🎉" />
-				<MkEmoji :normal="true" :no-style="true" emoji="💢" />
-				<MkEmoji :normal="true" :no-style="true" emoji="😥" />
-				<MkEmoji :normal="true" :no-style="true" emoji="😇" />
-				<MkEmoji :normal="true" :no-style="true" emoji="🥴" />
-				<MkEmoji :normal="true" :no-style="true" emoji="🍮" />
+				<MkEmoji
+					v-for="reaction in defaultReactions"
+					:normal="true"
+					:no-style="true"
+					:emoji="reaction"
+				/>
 			</div>
 			<div class="main">
 				<img
@@ -112,6 +107,7 @@ import { instanceName } from "@/config";
 import * as os from "@/os";
 import { instance } from "@/instance";
 import { i18n } from "@/i18n";
+import { defaultReactions } from "@/store";
 
 const meta = ref();
 const stats = ref();
@@ -184,13 +180,15 @@ function showMenu(ev) {
 					os.pageWindow("/about-firefish");
 				},
 			},
-			instance.tosUrl ? {
-				text: i18n.ts.tos,
-				icon: "ph-scroll ph-bold ph-lg",
-				action: () => {
-					window.open(instance.tosUrl, "_blank");
-				},
-			} : null,
+			instance.tosUrl
+				? {
+						text: i18n.ts.tos,
+						icon: "ph-scroll ph-bold ph-lg",
+						action: () => {
+							window.open(instance.tosUrl, "_blank");
+						},
+				  }
+				: null,
 		],
 		ev.currentTarget ?? ev.target,
 	);
