@@ -24,14 +24,14 @@ export function openHelpMenu_(ev: MouseEvent) {
 				icon: "ph-lightbulb ph-bold ph-lg",
 				to: "/about-firefish",
 			},
-			{
+			instance.tosUrl ? {
 				type: "button",
 				text: i18n.ts.tos,
 				icon: "ph-scroll ph-bold ph-lg",
 				action: () => {
 					window.open(instance.tosUrl, "_blank");
 				},
-			},
+			} : null,
 			{
 				type: "button",
 				text: i18n.ts.apps,
