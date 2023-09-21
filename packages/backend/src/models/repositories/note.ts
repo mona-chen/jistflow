@@ -15,8 +15,8 @@ import type { Packed } from "@/misc/schema.js";
 import { nyaize } from "@/misc/nyaize.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import {
-	convertLegacyReaction,
-	convertLegacyReactions,
+	convertToDecoded,
+	convertReactions,
 	decodeReaction,
 } from "@/misc/reaction-lib.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";
@@ -77,7 +77,7 @@ async function populateMyReaction(
 	if (_hint_?.myReactions) {
 		const reaction = _hint_.myReactions.get(note.id);
 		if (reaction) {
-			return convertLegacyReaction(reaction.reaction);
+			return convertToDecoded(reaction.reaction);
 		} else if (reaction === null) {
 			return undefined;
 		}
@@ -90,7 +90,7 @@ async function populateMyReaction(
 	});
 
 	if (reaction) {
-		return convertLegacyReaction(reaction.reaction);
+		return convertToDecoded(reaction.reaction);
 	}
 
 	return undefined;
@@ -221,7 +221,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 				note.visibility === "specified" ? note.visibleUserIds : undefined,
 			renoteCount: note.renoteCount,
 			repliesCount: note.repliesCount,
-			reactions: convertLegacyReactions(note.reactions),
+			reactions: convertReactions(note.reactions),
 			reactionEmojis: reactionEmoji,
 			emojis: noteEmoji,
 			tags: note.tags.length > 0 ? note.tags : undefined,
