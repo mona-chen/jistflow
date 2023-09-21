@@ -41,6 +41,8 @@ export const renderActivity = (x: any): IActivity | null => {
 					// Misskey
 					misskey: "https://misskey-hub.net/ns#",
 					_misskey_talk: "misskey:_misskey_talk",
+					_misskey_reaction: "misskey:_misskey_reaction",
+					_misskey_votes: "misskey:_misskey_votes",
 					isCat: "misskey:isCat",
 					// Fedibird
 					fedibird: "http://fedibird.com/ns#",
