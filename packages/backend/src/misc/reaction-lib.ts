@@ -90,7 +90,3 @@ export function decodeReaction(str: string): DecodedReaction {
 		host: undefined,
 	};
 }
-
-export function convertToDecoded(reaction: string): string {
-	return decodeReaction(reaction).reaction;
-}

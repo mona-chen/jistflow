@@ -15,7 +15,6 @@ import type { Packed } from "@/misc/schema.js";
 import { nyaize } from "@/misc/nyaize.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import {
-	convertToDecoded,
 	convertReactions,
 	decodeReaction,
 } from "@/misc/reaction-lib.js";
@@ -77,7 +76,7 @@ async function populateMyReaction(
 	if (_hint_?.myReactions) {
 		const reaction = _hint_.myReactions.get(note.id);
 		if (reaction) {
-			return convertToDecoded(reaction.reaction);
+			return decodeReaction(reaction.reaction).reaction;
 		} else if (reaction === null) {
 			return undefined;
 		}
@@ -90,7 +89,7 @@ async function populateMyReaction(
 	});
 
 	if (reaction) {
-		return convertToDecoded(reaction.reaction);
+		return decodeReaction(reaction.reaction).reaction;
 	}
 
 	return undefined;

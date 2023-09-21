@@ -2,7 +2,7 @@ import { db } from "@/db/postgre.js";
 import { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Notes, Users } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
-import { convertToDecoded } from "@/misc/reaction-lib.js";
+import { decodeReaction } from "@/misc/reaction-lib.js";
 import type { User } from "@/models/entities/user.js";
 
 export const NoteReactionRepository = db.getRepository(NoteReaction).extend({
@@ -27,7 +27,7 @@ export const NoteReactionRepository = db.getRepository(NoteReaction).extend({
 			id: reaction.id,
 			createdAt: reaction.createdAt.toISOString(),
 			user: await Users.pack(reaction.user ?? reaction.userId, me),
-			type: convertToDecoded(reaction.reaction),
+			type: decodeReaction(reaction.reaction).reaction,
 			...(opts.withNote
 				? {
 						// may throw error
