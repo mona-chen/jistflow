@@ -637,7 +637,7 @@ emptyToDisableSmtpAuth: "Kosongkan nama pengguna dan kata sandi untuk menonaktif
 smtpSecure: "Gunakan SSL/TLS implisit untuk koneksi SMTP"
 smtpSecureInfo: "Matikan ini ketika menggunakan STARTTLS"
 testEmail: "Tes pengiriman surel"
-wordMute: "Bisukan kata"
+wordMute: "Bisukan kata dan bahasa"
 regexpError: "Kesalahan ekspresi reguler"
 regexpErrorDescription: "Galat terjadi pada baris {line} ekspresi reguler dari {tab}
   kata yang dibisukan:"
@@ -1135,6 +1135,12 @@ _wordMute:
   soft: "Lembut"
   hard: "Keras"
   mutedNotes: "Postingan yang dibisukan"
+  muteLangsDescription2: Gunakan kode bahasa misalnya en, fr, ja, zh.
+  lang: Bahasa
+  langDescription: Sembunyikan postingan yang cocok dengan bahasa yang ditetapkan
+    dari timeline.
+  muteLangs: Bahasa yang dibisukan
+  muteLangsDescription: Pisahkan dengan spasi atau jeda baris untuk kondisi ATAU.
 _instanceMute:
   instanceMuteDescription: "Pengaturan ini akan membisukan postingan/pembagian apa
     saja dari server yang terdaftar, termasuk pengguna yang membalas pengguna lain
@@ -2175,3 +2181,4 @@ indexable: Dapat diindeks
 languageForTranslation: Bahasa terjemahan kiriman
 openServerInfo: Tampilkan informasi server dengan mengeklik ticker server di sebuah
   kiriman
+vibrate: Putar getaran
