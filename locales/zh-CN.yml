@@ -486,15 +486,16 @@ hideThisNote: "隐藏这条帖子"
 showFeaturedNotesInTimeline: "在时间线上显示热门推荐"
 objectStorage: "对象存储"
 useObjectStorage: "使用对象存储"
-objectStorageBaseUrl: "Base URL"
-objectStorageBaseUrlDesc: "用于引用的 URL。如果您正在使用 CDN 或反向代理，请指定其 URL。\n例如S3：“https://<bucket>.s3.amazonaws.com”，GCS：“https://storage.googleapis.com/<bucket>”，其它同理。"
+objectStorageBaseUrl: "根 URL"
+objectStorageBaseUrlDesc: "用于引用的 URL。如果您正在使用 CDN 或反向代理，请指定其 URL。\n例如S3：\"https://<bucket>.s3.amazonaws.com\"\
+  ，GCS：\"https://storage.googleapis.com/<bucket>\"，其它同理。"
 objectStorageBucket: "存储桶"
 objectStorageBucketDesc: "请指定使用的对象存储服务的存储桶名称。"
 objectStoragePrefix: "前缀"
 objectStoragePrefixDesc: "文件将存储在此前缀的目录下。"
-objectStorageEndpoint: "Endpoint"
-objectStorageEndpointDesc: "如果您使用 AWS S3 请留空。否则请根据您使用的服务商的说明来进行设置，指定 Endpoint 形式为
-  \"<host>\" 或 \"<host>:<port>\"。"
+objectStorageEndpoint: "端点 (Endpoint)"
+objectStorageEndpointDesc: "如果您使用 AWS S3 请留空。否则请根据您使用的服务商的说明来进行设置，指定端点 (Endpoint)
+  形式为 \"<host>\" 或 \"<host>:<port>\"。"
 objectStorageRegion: "可用区"
 objectStorageRegionDesc: "指定一个可用区，例如 \"xx-east-1\"。 如果您的对象存储服务没有可用区概念，请将其留空或填写 \"\
   us-east-1\"。\n对于 Cloudflare R2，可以填为 \"auto\"。"
@@ -502,7 +503,7 @@ objectStorageUseSSL: "使用 SSL"
 objectStorageUseSSLDesc: "如果不使用 HTTPS 进行 API 连接，请关闭"
 objectStorageUseProxy: "使用代理"
 objectStorageUseProxyDesc: "如果您不使用代理进行 API 连接，请将其关闭"
-objectStorageSetPublicRead: "上传时设置为 public-read"
+objectStorageSetPublicRead: "上传时设置为 \"public-read\""
 serverLogs: "服务器日志"
 deleteAll: "全部删除"
 showFixedPostForm: "在时间线顶部显示发帖框"
@@ -745,7 +746,7 @@ unlikeConfirm: "取消赞？"
 fullView: "全屏"
 quitFullView: "退出全屏"
 addDescription: "添加描述"
-userPagePinTip: "在帖子的菜单中选择“置顶”，即可显示该条帖子。"
+userPagePinTip: "在帖子的菜单中选择「置顶」，即可在此显示该条帖子。"
 notSpecifiedMentionWarning: "有未指定的提及"
 info: "关于"
 userInfo: "用户信息"
@@ -805,7 +806,7 @@ accountDeletionInProgress: "正在删除账号"
 usernameInfo: "在服务器上唯一标识您的账号的名称。您可以使用字母 (a ~ z, A ~ Z)、数字 (0 ~ 9) 和下划线 (_)。用户名以后不能更改。"
 aiChanMode: "小蓝模式"
 keepCw: "保留内容警告"
-pubSub: "推送 (Pub)/订阅 (Sub) 账号"
+pubSub: "推送 (Pub) / 订阅 (Sub) 账号"
 lastCommunication: "最近通信"
 resolved: "已解决"
 unresolved: "未解决"
@@ -1839,8 +1840,8 @@ customMOTD: 自定义 MOTD（启动屏幕消息）
 sendPushNotificationReadMessageCaption: 会短暂显示 "{emptyPushNotificationMessage}" 的通知，如果启用，可能会增加您的设备的耗电量。
 adminCustomCssWarn: 仅当您知道此设置的作用时才应使用它。输入不正确的值可能会导致每个人的客户端停止正常运行。请在用户设置中进行测试来确保您的 CSS
   正常工作。
-customMOTDDescription: 自定义 MOTD（启动屏幕）消息，一行一个，每次用户加载/刷新页面时都会随机显示。
-customSplashIconsDescription: 用换行符隔开的自定义启动屏幕图标的 URL，在用户每次加载/重新载入页面时随机显示。请确保图片是在一个静态的
+customMOTDDescription: 自定义 MOTD（启动屏幕）消息，一行一个，每次用户加载 / 重新加载页面时都会随机显示。
+customSplashIconsDescription: 用换行符隔开的自定义启动屏幕图标的 URL，在用户每次加载 / 重新加载页面时随机显示。请确保图片是在一个静态的
   URL 上，最好全部调整为 192x192 的大小。
 recommendedInstancesDescription: 推荐的服务器一行一个，它们将出现在推荐时间线中。
 splash: 启动画面
@@ -1976,7 +1977,7 @@ confirm: 确认
 importZip: 导入 ZIP
 exportZip: 导出 ZIP
 emojiPackCreator: 表情包创建工具
-objectStorageS3ForcePathStyleDesc: 打开此选项可构建格式为 's3.amazonaws.com/<bucket>/' 而非 '<bucket>.s3.amazonaws.com'
+objectStorageS3ForcePathStyleDesc: 打开此选项可构建格式为 "s3.amazonaws.com/<bucket>/" 而非 "<bucket>.s3.amazonaws.com"
   的端点 URL。
 objectStorageS3ForcePathStyle: 使用基于路径的端点 URL
 delete2fa: 禁用 2FA

@@ -12,7 +12,7 @@ ok: "OK"
 gotIt: "知道了！"
 cancel: "取消"
 enterUsername: "輸入使用者名稱"
-renotedBy: "{user} 轉傳了"
+renotedBy: "{user} 轉發了"
 noNotes: "無貼文"
 noNotifications: "沒有通知"
 instance: "伺服器"
@@ -325,7 +325,7 @@ connectService: "己連結"
 disconnectService: "己斷開"
 enableLocalTimeline: "開啟本地時間線"
 enableGlobalTimeline: "啟用公開時間線"
-disablingTimelinesInfo: "即使您關閉了時間線功能，管理員和版主始終可以訪問所有的時間線。"
+disablingTimelinesInfo: "即使您關閉了時間線功能，管理員和板主仍可訪問所有的時間線。"
 registration: "註冊"
 enableRegistration: "開啟新使用者註冊"
 invite: "邀請"
@@ -801,7 +801,7 @@ translatedFrom: "從 {x} 翻譯"
 accountDeletionInProgress: "正在刪除帳戶"
 usernameInfo: "在伺服器上您的帳戶是唯一的識別名稱。您可以使用字母 (a ~ z, A ~ Z)、數字 (0 ~ 9) 和下底線 (_)。之後帳戶名是不能更改的。"
 aiChanMode: "小藍模式"
-keepCw: "保持CW"
+keepCw: "保持內容警告"
 pubSub: "Pub/Sub 帳戶"
 lastCommunication: "最近的通信"
 resolved: "已解決"
@@ -1067,7 +1067,7 @@ _mfm:
   position: 位置
   alwaysPlay: 自動播放所有MFM動畫
   positionDescription: 按指定數量移動內容。
-  advancedDescription: 如果禁用，則僅允許基本標記，除非正在播放 MFM 動畫
+  advancedDescription: 如果停用，僅顯示基礎MFM及正在播放的MFM動畫
   advanced: 高級MFM
   fade: 淡出
   foreground: 文字顏色
@@ -1114,6 +1114,11 @@ _wordMute:
   soft: "軟性靜音"
   hard: "硬性靜音"
   mutedNotes: "已靜音的貼文"
+  muteLangsDescription2: '使用語言代碼。例: en, fr, ja, zh.'
+  lang: 語言
+  langDescription: 將指定語言的貼文從時間線中隱藏。
+  muteLangs: 被靜音的語言
+  muteLangsDescription: OR條件以空格或換行進行分隔。
 _instanceMute:
   instanceMuteDescription: "包括對被靜音伺服器上的用戶的回覆，被設定的伺服器上所有貼文及轉發都會被靜音。"
   instanceMuteDescription2: "設定時以換行進行分隔"
@@ -1355,9 +1360,9 @@ _cw:
   files: "{count} 個檔案"
 _poll:
   noOnlyOneChoice: "至少需要兩個選項"
-  choiceN: "選擇{n}"
+  choiceN: "選項{n}"
   noMore: "沒辦法再添加選項了"
-  canMultipleVote: "可以多次投票"
+  canMultipleVote: "允許複選"
   expiration: "期限"
   infinite: "無期限"
   at: "結束時間"
@@ -1366,7 +1371,7 @@ _poll:
   deadlineTime: "小時"
   duration: "時長"
   votesCount: "{n}票"
-  totalVotes: "一共{n}票"
+  totalVotes: "總計{n}票"
   vote: "投票"
   showResult: "顯示結果"
   voted: "已投票"
@@ -1777,6 +1782,7 @@ _notification:
     reply: "回覆"
     renote: "轉發"
   reacted: 對您的貼文做出了反應
+  renoted: 轉發了您的貼文
 _deck:
   alwaysShowMainColumn: "總是顯示主欄"
   columnAlign: "對齊欄位"
@@ -1863,9 +1869,10 @@ silencedInstances: 已靜音的伺服器
 silenced: 已靜音
 _experiments:
   title: 試驗功能
+  enablePostImports: 啟用匯入貼文的功能
 findOtherInstance: 找找另一個伺服器
 noGraze: 瀏覽器擴展 "Graze for Mastodon" 會與Firefish發生衝突，請停用該擴展。
-userSaysSomethingReasonRenote: '{name} 轉傳了包含 {reason} 的貼文'
+userSaysSomethingReasonRenote: '{name} 轉發了包含 {reason} 的貼文'
 pushNotificationNotSupported: 你的瀏覽器或伺服器不支援推送通知
 accessibility: 輔助功能
 userSaysSomethingReasonReply: '{name} 回覆了包含 {reason} 的貼文'
@@ -1909,7 +1916,7 @@ channelFederationWarn: 頻道功能尚未與聯邦宇宙連動
 swipeOnMobile: 允許以滑動在頁面之間切換
 sendPushNotificationReadMessage: 閱讀相關通知或消息後刪除推送通知
 image: 圖片
-seperateRenoteQuote: 分別獨立的轉傳及引用按鈕
+seperateRenoteQuote: 分開轉發及引用的按鈕
 clipsDesc: 摘錄就像一個可以分享的書籤。 你可以從每個貼文的菜單創建新摘錄或將貼文加入已有的摘錄。
 noteId: 貼文 ID
 sendModMail: 發送審核通知
@@ -1919,7 +1926,7 @@ reactionPickerSkinTone: 首選表情符號膚色
 indexFromDescription: 留空以索引每個貼文
 preventAiLearning: 防止 AI 機器人抓取
 preventAiLearningDescription: 請求第三方 AI 語言模型不要研究您上傳的內容，例如貼文和圖像。
-indexFrom: 從貼文 ID 開始的索引
+indexFrom: 建立此貼文ID以後的索引
 isLocked: 該帳戶已獲得以下批准
 isModerator: 板主
 isAdmin: 管理員
@@ -1927,7 +1934,7 @@ isPatron: Firefish 項目贊助者
 silencedWarning: 顯示此頁面是因為這些使用者來自您伺服器管理員已靜音的伺服器，因此他們可能是垃圾訊息。
 signupsDisabled: 該伺服器上的註冊當前已被禁用，但您隨時可以在另一台伺服器上註冊！或是您有該伺服器的邀請碼，請在下面輸入。
 showPopup: 通過彈出式視窗通知用戶
-showWithSparkles: 閃閃發光的顯示
+showWithSparkles: 讓標題閃閃發光
 youHaveUnreadAnnouncements: 您有未讀的公告
 donationLink: 連結到贊助頁面
 neverShow: 不再顯示
@@ -1962,3 +1969,11 @@ emojiPackCreator: 表情包的作者
 importZip: 匯入ZIP
 delete2fa: 停用二階段認證(2FA)
 confirm: 確認
+deletePasskeysConfirm: 此帳號的所有通行密鑰及安全密鑰將被完全刪除。此動作無法復原，是否繼續？
+deletePasskeys: 刪除通行密鑰
+detectPostLanguage: 自動判定貼文的語言，並在外文貼文顯示翻譯按鈕
+indexableDescription: 允許內建搜尋引擎顯示您的公開貼文
+addRe: 在回覆有內容警告的貼文時，在標題前面加上 "re:"
+vibrate: 播放振動
+openServerInfo: 點擊貼文中的伺服器名稱以顯示伺服器資訊
+languageForTranslation: 貼文翻譯語言
