@@ -134,7 +134,6 @@ export interface IPost extends IObject {
 		content: string;
 		mediaType: string;
 	};
-	_misskey_quote?: string;
 	quoteUrl?: string;
 	quoteUri?: string;
 	_misskey_talk: boolean;
@@ -146,7 +145,6 @@ export interface IQuestion extends IObject {
 		content: string;
 		mediaType: string;
 	};
-	_misskey_quote?: string;
 	quoteUrl?: string;
 	oneOf?: IQuestionChoice[];
 	anyOf?: IQuestionChoice[];

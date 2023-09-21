@@ -152,12 +152,10 @@ export default async function renderNote(
 		attributedTo,
 		summary,
 		content,
-		_misskey_content: text,
 		source: {
 			content: text,
 			mediaType: "text/x.misskeymarkdown",
 		},
-		_misskey_quote: quote,
 		quoteUri: quote,
 		quoteUrl: quote,
 		published: note.createdAt.toISOString(),
