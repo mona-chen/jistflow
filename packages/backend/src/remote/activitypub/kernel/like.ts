@@ -12,11 +12,7 @@ export default async (actor: CacheableRemoteUser, activity: ILike) => {
 
 	await extractEmojis(activity.tag || [], actor.host).catch(() => null);
 
-	return await create(
-		actor,
-		note,
-		activity.content || activity.name,
-	)
+	return await create(actor, note, activity.content || activity.name)
 		.catch((e) => {
 			if (e.id === "51c42bb4-931a-456b-bff7-e5a8a70dd298") {
 				return "skip: already reacted";

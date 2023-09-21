@@ -199,7 +199,8 @@ export const NoteRepository = db.getRepository(Note).extend({
 			host,
 		);
 
-		const lang = detectLanguage_(`${note.cw ?? ''}\n${note.text ?? ''}`) ?? "unknown"
+		const lang =
+			detectLanguage_(`${note.cw ?? ""}\n${note.text ?? ""}`) ?? "unknown";
 		const reactionEmoji = await populateEmojis(reactionEmojiNames, host);
 		const packed: Packed<"Note"> = await awaitAll({
 			id: note.id,
