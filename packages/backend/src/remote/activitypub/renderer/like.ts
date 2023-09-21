@@ -18,6 +18,7 @@ export const renderLike = async (noteReaction: NoteReaction, note: Note) => {
 		...(!meta.defaultReaction.includes(reaction)
 			? {
 					content: reaction,
+					_misskey_reaction: reaction,
 			  }
 			: {}),
 	} as any;
