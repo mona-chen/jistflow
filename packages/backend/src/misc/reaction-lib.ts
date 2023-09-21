@@ -13,10 +13,10 @@ export function convertReactions(reactions: Record<string, number>) {
 	const result = new Map();
 
 	for (const reaction in reactions) {
-			if (reactions[reaction] <= 0) continue;
+		if (reactions[reaction] <= 0) continue;
 
-			const decoded = decodeReaction(reaction).reaction;
-			result.set(decoded, (result.get(decoded) || 0) + reactions[reaction]);
+		const decoded = decodeReaction(reaction).reaction;
+		result.set(decoded, (result.get(decoded) || 0) + reactions[reaction]);
 	}
 
 	return Object.fromEntries(result);

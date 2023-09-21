@@ -14,10 +14,7 @@ import {
 import type { Packed } from "@/misc/schema.js";
 import { nyaize } from "@/misc/nyaize.js";
 import { awaitAll } from "@/prelude/await-all.js";
-import {
-	convertReactions,
-	decodeReaction,
-} from "@/misc/reaction-lib.js";
+import { convertReactions, decodeReaction } from "@/misc/reaction-lib.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import {
 	aggregateNoteEmojis,
