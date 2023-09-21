@@ -14,11 +14,7 @@ import {
 import type { Packed } from "@/misc/schema.js";
 import { nyaize } from "@/misc/nyaize.js";
 import { awaitAll } from "@/prelude/await-all.js";
-import {
-	convertLegacyReaction,
-	convertLegacyReactions,
-	decodeReaction,
-} from "@/misc/reaction-lib.js";
+import { decodeReaction } from "@/misc/reaction-lib.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import {
 	aggregateNoteEmojis,
@@ -77,7 +73,7 @@ async function populateMyReaction(
 	if (_hint_?.myReactions) {
 		const reaction = _hint_.myReactions.get(note.id);
 		if (reaction) {
-			return convertLegacyReaction(reaction.reaction);
+			return reaction.reaction;
 		} else if (reaction === null) {
 			return undefined;
 		}
@@ -90,7 +86,7 @@ async function populateMyReaction(
 	});
 
 	if (reaction) {
-		return convertLegacyReaction(reaction.reaction);
+		return reaction.reaction;
 	}
 
 	return undefined;
@@ -107,7 +103,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 				return true;
 			} else {
 				// 指定されているかどうか
-				return note.visibleUserIds.some((id: any) => meId === id);
+				return note.visibleUserIds.some((id: string) => meId === id);
 			}
 		}
 
@@ -182,7 +178,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 		let text = note.text;
 
 		if (note.name && (note.url ?? note.uri)) {
-			text = `【${note.name}】\n${(note.text || "").trim()}\n\n${
+			text = `${note.name}\n${(note.text || "").trim()}\n\n${
 				note.url ?? note.uri
 			}`;
 		}
@@ -220,7 +216,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 				note.visibility === "specified" ? note.visibleUserIds : undefined,
 			renoteCount: note.renoteCount,
 			repliesCount: note.repliesCount,
-			reactions: convertLegacyReactions(note.reactions),
+			reactions: note.reactions,
 			reactionEmojis: reactionEmoji,
 			emojis: noteEmoji,
 			tags: note.tags.length > 0 ? note.tags : undefined,
@@ -301,7 +297,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 		if (meId) {
 			const renoteIds = notes
 				.filter((n) => n.renoteId != null)
-				.map((n) => n.renoteId!);
+				.map((n) => n.renoteId);
 			const targets = [...notes.map((n) => n.id), ...renoteIds];
 			const myReactions = await NoteReactions.findBy({
 				userId: meId,

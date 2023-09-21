@@ -110,9 +110,8 @@ export function fromHtml(html: string, hashtagNames?: string[]): string {
 			}
 
 			case "h1": {
-				text += "【";
 				appendChildren(node.childNodes);
-				text += "】\n";
+				text += "\n";
 				break;
 			}
 
