@@ -1179,7 +1179,7 @@ emptyToDisableSmtpAuth: Deixa el nom d'usuari i la contrasenya sense emplenar pe
   desactivar la verificació SMTP
 smtpSecureInfo: Desactiva això quant facis servir STARTTLS
 testEmail: Envia un correu electrònic de verificació
-wordMute: Silenciar paraules
+wordMute: Paraules i llenguatge silenciats
 regexpError: Error a la Expressió Regular
 regexpErrorDescription: 'Hi ha un error a la expressió regular a la línea {line} de
   la teva {tab} de paraules silenciades:'
@@ -2040,6 +2040,13 @@ _wordMute:
     s'afegeixin a la línia de temps. A més, aquestes publicacions no s'afegiran a
     la línia de temps encara que es modifiquin les condicions.
   mutedNotes: Publicacions silenciades
+  muteLangsDescription2: Fes servir el codi del l'idioma. Per exemple en, fr, ja,
+    zh.
+  lang: Idioma
+  langDescription: Amagar les publicacions que coincideixin amb l'idioma a la línia
+    de temps.
+  muteLangs: Llenguatges silenciats
+  muteLangsDescription: Separar amb espais o línies no es per una condició OR.
 _auth:
   shareAccessAsk: Estàs segur que vols autoritzar aquesta aplicació per accedir al
     teu compte?
@@ -2192,3 +2199,4 @@ indexable: Indexable
 languageForTranslation: Idioma de traducció d'articles
 openServerInfo: Mostra la informació del servidor fent clic al símbol del servidor
   en un missatge
+vibrate: Activar vibracions

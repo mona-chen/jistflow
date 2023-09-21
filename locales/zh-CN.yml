@@ -599,7 +599,7 @@ emptyToDisableSmtpAuth: "留空用户名和密码以禁用 SMTP 验证"
 smtpSecure: "在 SMTP 连接中使用隐式 SSL / TLS"
 smtpSecureInfo: "使用 STARTTLS 时关闭"
 testEmail: "邮件发送测试"
-wordMute: "文字过滤"
+wordMute: "文字和语言过滤"
 regexpError: "正则表达式错误"
 regexpErrorDescription: "{tab} 文字过滤的第 {line} 行的正则表达式有错误："
 instanceMute: "服务器静音"
@@ -608,7 +608,7 @@ makeActive: "启用"
 display: "显示"
 copy: "复制"
 metrics: "指标"
-overview: "服务器概况"
+overview: "概况"
 logs: "日志"
 delayed: "滞后"
 database: "数据库"
@@ -1113,7 +1113,7 @@ _wordMute:
   muteLangs: "过滤语言"
   muteWordsDescription: "AND 条件用空格分隔，OR 条件用换行符分隔。"
   muteWordsDescription2: "将关键字用斜线括起来表示正则表达式。"
-  muteLangsDescription: "OR 条件用空格，换行符分隔"
+  muteLangsDescription: "OR 条件用空格或换行符分隔。"
   muteLangsDescription2: "使用语言代码。例: en, fr, ja, zh."
   softDescription: "隐藏时间线中指定条件的帖子。"
   langDescription: "从时间线中隐藏与设置语言匹配的帖子。"
@@ -1863,7 +1863,7 @@ customSplashIcons: 自定义启动屏幕图标（urls）
 alt: 替代文字
 pushNotificationNotSupported: 您的浏览器或者服务器不支持推送通知
 showAds: 显示社区横幅
-enterSendsMessage: 按回车键发送信息（关闭则是 Ctrl + Retun 发送）
+enterSendsMessage: 按回车键发送信息（关闭则是 Ctrl + Return 发送）
 recommendedInstances: 推荐服务器
 updateAvailable: 可能有可用更新！
 swipeOnMobile: 允许在页面之间滑动
@@ -1989,3 +1989,5 @@ detectPostLanguage: 自动检测语言，并显示外文帖子的翻译按钮
 indexableDescription: 允许内置搜索显示您的公开帖子
 indexable: 可索引的
 languageForTranslation: 帖子翻译语言
+vibrate: 播放振动
+openServerInfo: 点击帖子上的服务器滚动条时显示服务器信息
