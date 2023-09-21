@@ -15,7 +15,7 @@ export default async (actor: CacheableRemoteUser, activity: ILike) => {
 	return await create(
 		actor,
 		note,
-		activity._misskey_reaction || activity.content || activity.name,
+		activity.content || activity.name,
 	)
 		.catch((e) => {
 			if (e.id === "51c42bb4-931a-456b-bff7-e5a8a70dd298") {

@@ -158,7 +158,6 @@ export const isQuestion = (object: IObject): object is IQuestion =>
 interface IQuestionChoice {
 	name?: string;
 	replies?: ICollection;
-	_misskey_votes?: number;
 }
 export interface ITombstone extends IObject {
 	type: "Tombstone";
@@ -299,7 +298,6 @@ export interface IRemove extends IActivity {
 
 export interface ILike extends IActivity {
 	type: "Like" | "EmojiReaction" | "EmojiReact";
-	_misskey_reaction?: string;
 }
 
 export interface IAnnounce extends IActivity {
