@@ -14,6 +14,7 @@ export interface IObject {
 	inReplyTo?: any;
 	replies?: ICollection;
 	content?: string;
+	contentMap?: obj;
 	name?: string;
 	startTime?: Date;
 	endTime?: Date;
