@@ -3,6 +3,7 @@ import { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Notes, Users } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
 import type { User } from "@/models/entities/user.js";
+import { decodeReaction } from "@/misc/reaction-lib.js";
 
 export const NoteReactionRepository = db.getRepository(NoteReaction).extend({
 	async pack(
@@ -26,7 +27,7 @@ export const NoteReactionRepository = db.getRepository(NoteReaction).extend({
 			id: reaction.id,
 			createdAt: reaction.createdAt.toISOString(),
 			user: await Users.pack(reaction.user ?? reaction.userId, me),
-			type: reaction.reaction,
+			type: decodeReaction(reaction.reaction).reaction,
 			...(opts.withNote
 				? {
 						note: await Notes.pack(reaction.note ?? reaction.noteId, me),

@@ -73,7 +73,7 @@ async function populateMyReaction(
 	if (_hint_?.myReactions) {
 		const reaction = _hint_.myReactions.get(note.id);
 		if (reaction) {
-			return reaction.reaction;
+			return decodeReaction(reaction.reaction).reaction;
 		} else if (reaction === null) {
 			return undefined;
 		}
@@ -86,7 +86,7 @@ async function populateMyReaction(
 	});
 
 	if (reaction) {
-		return reaction.reaction;
+		return decodeReaction(reaction.reaction).reaction;
 	}
 
 	return undefined;
@@ -103,7 +103,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 				return true;
 			} else {
 				// 指定されているかどうか
-				return note.visibleUserIds.some((id: string) => meId === id);
+				return note.visibleUserIds.some((id: any) => meId === id);
 			}
 		}
 
