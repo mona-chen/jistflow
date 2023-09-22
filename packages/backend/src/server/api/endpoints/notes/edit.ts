@@ -35,6 +35,8 @@ import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { deliverToRelays } from "@/services/relay.js";
 // import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
+import { detect as detectLanguage } from "tinyld";
+import { langmap } from "@/misc/langmap.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -169,6 +171,7 @@ export const paramDef = {
 			},
 		},
 		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
+		lang: { type: "string", nullable: true, maxLength: 10 },
 		cw: { type: "string", nullable: true, maxLength: 250 },
 		localOnly: { type: "boolean", default: false },
 		noExtractMentions: { type: "boolean", default: false },
@@ -375,6 +378,15 @@ export default define(meta, paramDef, async (ps, user) => {
 		ps.text = null;
 	}
 
+	if (ps.lang) {
+		ps.lang = ps.lang.trim();
+		if (!Object.keys(langmap).includes(ps.lang.trim())) throw new Error("invalid param");
+	} else if (ps.text) {
+		ps.lang = detectLanguage(ps.text);
+	} else {
+		ps.lang = null;
+	}
+
 	let tags = [];
 	let emojis = [];
 	let mentionedUsers = [];
@@ -531,6 +543,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	const update: Partial<Note> = {};
 	if (ps.text !== note.text) {
 		update.text = ps.text;
+	}
+	if (ps.lang !== note.lang) {
+		update.lang = ps.lang;
 	}
 	if (ps.cw !== note.cw || (ps.cw && !note.cw)) {
 		update.cw = ps.cw;

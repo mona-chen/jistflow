@@ -108,6 +108,7 @@ export const paramDef = {
 			},
 		},
 		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
+		lang: { type: "string", nullable: true, maxLength: 10 },
 		cw: { type: "string", nullable: true, maxLength: 100 },
 		localOnly: { type: "boolean", default: false },
 		noExtractMentions: { type: "boolean", default: false },
@@ -294,6 +295,7 @@ export default define(meta, paramDef, async (ps, user) => {
 			  }
 			: undefined,
 		text: ps.text || undefined,
+		lang: ps.lang,
 		reply,
 		renote,
 		cw: ps.cw,

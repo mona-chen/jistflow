@@ -67,6 +67,12 @@ export class Note {
 	public text: string | null;
 
 	@Column("varchar", {
+		length: 10,
+		nullable: true,
+	})
+	public lang: string | null;
+
+	@Column("varchar", {
 		length: 256,
 		nullable: true,
 	})
