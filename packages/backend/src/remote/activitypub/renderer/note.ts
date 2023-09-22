@@ -116,9 +116,11 @@ export default async function renderNote(
 	);
 
 	const lang = note.lang ?? detectLanguage(text);
-	const contentMap = lang ? {
-		[lang]: content
-	} : null;
+	const contentMap = lang
+		? {
+				[lang]: content,
+		  }
+		: null;
 
 	const emojis = await getEmojis(note.emojis);
 	const apemojis = emojis.map((emoji) => renderEmoji(emoji));

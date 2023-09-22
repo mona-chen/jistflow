@@ -280,7 +280,8 @@ export default async (
 		}
 
 		if (data.lang) {
-			if (!Object.keys(langmap).includes(data.lang.trim())) throw new Error("invalid param");
+			if (!Object.keys(langmap).includes(data.lang.trim()))
+				throw new Error("invalid param");
 			data.lang = data.lang.trim().split("-")[0].split("@")[0];
 		} else if (data.text) {
 			data.lang = detectLanguage(data.text);

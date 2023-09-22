@@ -97,7 +97,11 @@
 			<div class="main">
 				<div class="header-container">
 					<MkAvatar class="avatar" :user="appearNote.user" />
-					<XNoteHeader class="header" :note="appearNote" :can-open-server-info="true" />
+					<XNoteHeader
+						class="header"
+						:note="appearNote"
+						:can-open-server-info="true"
+					/>
 				</div>
 				<div class="body">
 					<MkSubNoteContent

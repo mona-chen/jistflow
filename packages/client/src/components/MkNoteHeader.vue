@@ -74,9 +74,15 @@ const showTicker =
 		note.value.user.instance);
 
 function openServerInfo() {
-	if (props.canOpenServerInfo && !defaultStore.state.openServerInfo || !note.value.user.instance) return;
+	if (
+		(props.canOpenServerInfo && !defaultStore.state.openServerInfo) ||
+		!note.value.user.instance
+	)
+		return;
 	const instanceInfoUrl =
-		props.host == null ? "/about" : `/instance-info/${note.value.user.instance}`;
+		props.host == null
+			? "/about"
+			: `/instance-info/${note.value.user.instance}`;
 	pageWindow(instanceInfoUrl);
 }
 </script>

@@ -314,11 +314,15 @@ export async function createNote(
 		text = note.source.content;
 		if (note.contentMap != null) {
 			const key = Object.keys(note.contentMap)[0];
-			lang = Object.keys(langmap).includes(key) ? key.trim().split("-")[0].split("@")[0] : null;
+			lang = Object.keys(langmap).includes(key)
+				? key.trim().split("-")[0].split("@")[0]
+				: null;
 		}
 	} else if (note.contentMap != null) {
 		const entry = Object.entries(note.contentMap)[0];
-		lang = Object.keys(langmap).includes(entry[0]) ? entry[0].trim().split("-")[0].split("@")[0] : null;
+		lang = Object.keys(langmap).includes(entry[0])
+			? entry[0].trim().split("-")[0].split("@")[0]
+			: null;
 		text = htmlToMfm(entry[1], note.tag);
 	} else if (typeof note.content === "string") {
 		text = htmlToMfm(note.content, note.tag);
@@ -584,11 +588,15 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 		text = post.source.content;
 		if (post.contentMap != null) {
 			const key = Object.keys(post.contentMap)[0];
-			lang = Object.keys(langmap).includes(key) ? key.trim().split("-")[0].split("@")[0] : null;
+			lang = Object.keys(langmap).includes(key)
+				? key.trim().split("-")[0].split("@")[0]
+				: null;
 		}
 	} else if (post.contentMap != null) {
 		const entry = Object.entries(post.contentMap)[0];
-		lang = Object.keys(langmap).includes(entry[0]) ? entry[0].trim().split("-")[0].split("@")[0] : null;
+		lang = Object.keys(langmap).includes(entry[0])
+			? entry[0].trim().split("-")[0].split("@")[0]
+			: null;
 		text = htmlToMfm(entry[1], post.tag);
 	} else if (typeof post.content === "string") {
 		text = htmlToMfm(post.content, post.tag);

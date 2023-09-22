@@ -379,7 +379,8 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	if (ps.lang) {
-		if (!Object.keys(langmap).includes(ps.lang.trim())) throw new Error("invalid param");
+		if (!Object.keys(langmap).includes(ps.lang.trim()))
+			throw new Error("invalid param");
 		ps.lang = ps.lang.trim().split("-")[0].split("@")[0];
 	} else if (ps.text) {
 		ps.lang = detectLanguage(ps.text);
