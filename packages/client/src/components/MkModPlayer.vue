@@ -418,8 +418,8 @@ onDeactivated(() => {
 		width: 100%;
 		height: 100%;
 		overflow: hidden;
-		color: #ffffff;
-		background-color: black;
+		color: var(--fg);
+		background-color: var(--panelHighlight);
 		text-align: center;
 		font: 12px monospace;
 		white-space: pre;
@@ -441,17 +441,17 @@ onDeactivated(() => {
 				opacity: 0.5;
 
 				> .modColQuarter {
-					color: #ffff00;
+					color: var(--badge);
 				}
 
 				> .mod-row-inner {
 					background: repeating-linear-gradient(
 						to right,
-						white 0 4ch,
-						#80e0ff 4ch 6ch,
-						#80ff80 6ch 9ch,
-						#ff80e0 9ch 10ch,
-						#ffe080 10ch 12ch
+						var(--fg) 0 4ch,
+						var(--codeBoolean) 4ch 6ch,
+						var(--CodeNumber) 6ch 9ch,
+						var(--codeString) 9ch 10ch,
+						var(--error) 10ch 12ch
 					);
 					background-clip: text;
 					-webkit-background-clip: text;
@@ -500,8 +500,8 @@ onDeactivated(() => {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: #111;
-	color: #fff;
+	background: var(--infoWarnBg);
+	color: var(--infoWarnFg);
 
 	> div {
 		display: table-cell;
