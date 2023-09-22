@@ -449,7 +449,7 @@ onDeactivated(() => {
 						to right,
 						var(--fg) 0 4ch,
 						var(--codeBoolean) 4ch 6ch,
-						var(--CodeNumber) 6ch 9ch,
+						var(--codeNumber) 6ch 9ch,
 						var(--codeString) 9ch 10ch,
 						var(--error) 10ch 12ch
 					);
