@@ -67,6 +67,8 @@ import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
 import meilisearch from "../../db/meilisearch.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
+import { detect as detectLanguage } from "tinyld";
+import { langmap } from "@/misc/langmap.js";
 
 const mutedWordsCache = new Cache<
 	{ userId: UserProfile["userId"]; mutedWords: UserProfile["mutedWords"] }[]
@@ -139,6 +141,7 @@ type Option = {
 	createdAt?: Date | null;
 	name?: string | null;
 	text?: string | null;
+	lang?: string | null;
 	reply?: Note | null;
 	renote?: Note | null;
 	files?: DriveFile[] | null;
@@ -274,6 +277,15 @@ export default async (
 			data.text = data.text.trim();
 		} else {
 			data.text = null;
+		}
+
+		if (data.lang) {
+			data.lang = data.lang.trim();
+			if (!Object.keys(langmap).includes(data.lang.trim())) throw new Error("invalid param");
+		} else if (data.text) {
+			data.lang = detectLanguage(data.text);
+		} else {
+			data.lang = null;
 		}
 
 		let tags = data.apHashtags;
@@ -712,6 +724,7 @@ async function insertNote(
 			: null,
 		name: data.name,
 		text: data.text,
+		lang: data.lang,
 		hasPoll: data.poll != null,
 		cw: data.cw == null ? null : data.cw,
 		tags: tags.map((tag) => normalizeForSearch(tag)),

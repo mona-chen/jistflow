@@ -115,7 +115,7 @@ export default async function renderNote(
 		}),
 	);
 
-	const lang = detectLanguage(text);
+	const lang = note.lang ?? detectLanguage(text);
 	const contentMap = lang ? {
 		[lang]: content
 	} : null;
