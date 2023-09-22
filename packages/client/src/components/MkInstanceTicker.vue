@@ -24,7 +24,6 @@ const props = defineProps<{
 		themeColor?: string;
 		softwareName?: string;
 	};
-	host: string | null;
 }>();
 
 const ticker = ref<HTMLElement | null>(null);

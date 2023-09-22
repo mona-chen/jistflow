@@ -40,7 +40,6 @@
 					v-if="showTicker"
 					class="ticker"
 					:instance="note.user.instance"
-					:host="note.user.host"
 					@click.stop="openServerInfo"
 				/>
 			</div>
@@ -74,15 +73,11 @@ const showTicker =
 		note.value.user.instance);
 
 function openServerInfo() {
-	if (
-		(props.canOpenServerInfo && !defaultStore.state.openServerInfo) ||
-		!note.value.user.instance
-	)
-		return;
+	if (!props.canOpenServerInfo || !defaultStore.state.openServerInfo) return;
 	const instanceInfoUrl =
-		props.host == null
+		note.value.user.host == null
 			? "/about"
-			: `/instance-info/${note.value.user.instance}`;
+			: `/instance-info/${note.value.user.host}`;
 	pageWindow(instanceInfoUrl);
 }
 </script>
