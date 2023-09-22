@@ -626,7 +626,7 @@ emptyToDisableSmtpAuth: "Lasciare username e password vuoti per disabilitare la 
 smtpSecure: "Usa la porta SSL/TLS predefinita per le connessioni SMTP"
 smtpSecureInfo: "Disabilita quando è attivo STARTTLS"
 testEmail: "Test di consegna email"
-wordMute: "Filtro parole"
+wordMute: "Filtro parole e lingua"
 instanceMute: "Server silenziati"
 userSaysSomething: "{name} ha detto qualcosa"
 makeActive: "Attiva"
@@ -1084,6 +1084,11 @@ _wordMute:
   soft: "Moderato"
   hard: "Severo"
   mutedNotes: "Post silenziati"
+  muteLangsDescription2: 'Usa il codice lingua, esempio: en, fr, ja, zh.'
+  lang: Lingua
+  langDescription: Nascondi dalla timeline i post in quest'insieme di lingue.
+  muteLangs: Lingue da non mostrare
+  muteLangsDescription: Separa andando a capo o con spazi per la condizione OR.
 _theme:
   explore: "Esplora temi"
   install: "Installa un tema"
@@ -2164,3 +2169,4 @@ indexable: Indicizzabile
 languageForTranslation: Linguaggio di traduzione dei post
 openServerInfo: Mostra informazioni sul server cliccando sul riquadro del server in
   un post
+vibrate: Abilita la vibrazione
