@@ -111,11 +111,15 @@
 							/></FormLink>
 							<FormLink to="/@panos@firefish.social"
 								><Mfm
-									:text="'@panos@firefish.social (Project Coordinator)'"
+									:text="'@panos@firefish.social (Project coordinator)'"
 							/></FormLink>
 							<FormLink to="/@blackspike@mastodon.cloud"
 								><Mfm
-									:text="'@blackspike@mastodon.cloud (Logo Design)'"
+									:text="'@blackspike@mastodon.cloud (Logo design)'"
+							/></FormLink>
+							<FormLink to="/@magi@minazukey.uk"
+								><Mfm
+									:text="'@magi@minazukey.uk (Error images)'"
 							/></FormLink>
 						</div>
 						<h3

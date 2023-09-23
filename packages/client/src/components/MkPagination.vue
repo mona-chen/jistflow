@@ -8,7 +8,7 @@
 			<slot name="empty">
 				<div class="_fullinfo">
 					<img
-						src="/static-assets/badges/info.png"
+						src="/static-assets/badges/info.avif"
 						class="_ghost"
 						alt="Error"
 					/>

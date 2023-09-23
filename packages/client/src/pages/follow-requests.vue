@@ -6,7 +6,7 @@
 				<template #empty>
 					<div class="_fullinfo">
 						<img
-							src="/static-assets/badges/info.png"
+							src="/static-assets/badges/info.avif"
 							aria-label="none"
 							class="_ghost"
 						/>

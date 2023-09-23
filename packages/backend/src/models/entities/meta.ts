@@ -162,7 +162,7 @@ export class Meta {
 	@Column("varchar", {
 		length: 512,
 		nullable: true,
-		default: "/static-assets/badges/info.png",
+		default: "/static-assets/badges/info.avif",
 	})
 	public mascotImageUrl: string | null;
 
@@ -187,7 +187,7 @@ export class Meta {
 	@Column("varchar", {
 		length: 512,
 		nullable: true,
-		default: "/static-assets/badges/error.png",
+		default: "/static-assets/badges/error.avif",
 	})
 	public errorImageUrl: string | null;
 

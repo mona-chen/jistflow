@@ -64,7 +64,7 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "/static-assets/badges/info.png",
+				default: "/static-assets/badges/info.avif",
 			},
 			bannerUrl: {
 				type: "string",
@@ -75,7 +75,7 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "/static-assets/badges/error.png",
+				default: "/static-assets/badges/error.avif",
 			},
 			iconUrl: {
 				type: "string",
