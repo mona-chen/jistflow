@@ -103,4 +103,4 @@ NODE_ENV=production pnpm run migrate
 
 ## Reverse
 
-You ***cannot*** migrate back to Misskey from Firefish due to re-hashing passwords on signin with argon2. You can migrate from Firefish to FoundKey, although this is not recommended due to FoundKey being end-of-life, and may have some problems with alt-text.
+You ***cannot*** migrate back to Misskey from Firefish due to re-hashing passwords on signin with argon2. You can migrate to [Sharkey](https://github.com/transfem-org/Sharkey), a soft fork of Misskey that uses argon2 though. You can also migrate from Firefish to FoundKey, although this is not recommended due to FoundKey being end-of-life, and may have some problems with alt-text.
