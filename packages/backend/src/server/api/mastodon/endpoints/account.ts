@@ -9,6 +9,7 @@ import authenticate from "@/server/api/authenticate.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import config from "@/config/index.js";
+import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 
 const relationshipModel = {
 	id: "",
@@ -202,20 +203,7 @@ export function apiAccountMastodon(router: Router): void {
 				const followers = await UserConverter.encodeMany(res.data, cache);
 
 				ctx.body = followers.map((account) => convertAccount(account));
-
-				const link: string[] = [];
-				const limit = args.limit ?? 40;
-				if (res.maxId) {
-					const l = `<${config.url}/api/v1/accounts/${ctx.params.id}/followers?limit=${limit}&max_id=${convertId(res.maxId, IdType.MastodonId)}>; rel="next"`;
-					link.push(l);
-				}
-				if (res.minId) {
-					const l = `<${config.url}/api/v1/accounts/${ctx.params.id}/followers?limit=${limit}&min_id=${convertId(res.minId, IdType.MastodonId)}>; rel="prev"`;
-					link.push(l);
-				}
-				if (link.length > 0){
-					ctx.response.append('Link', link.join(', '));
-				}
+				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `accounts/${ctx.params.id}/followers`);
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -227,15 +215,20 @@ export function apiAccountMastodon(router: Router): void {
 	router.get<{ Params: { id: string } }>(
 		"/v1/accounts/:id/following",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.getAccountFollowing(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-					convertTimelinesArgsId(limitToInt(ctx.query as any)),
-				);
-				ctx.body = data.data.map((account) => convertAccount(account));
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				const userId = convertId(ctx.params.id, IdType.IceshrimpId);
+				const cache = UserHelpers.getFreshAccountCache();
+				const query = await UserHelpers.getUserCached(userId, cache);
+				const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
+
+				const res = await UserHelpers.getUserFollowing(query, user, args.max_id, args.since_id, args.min_id, args.limit);
+				const following = await UserConverter.encodeMany(res.data, cache);
+
+				ctx.body = following.map((account) => convertAccount(account));
+				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `accounts/${ctx.params.id}/following`);
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);

@@ -24,6 +24,8 @@ export type LinkPaginationObject<T> = {
 	minId?: string | undefined;
 }
 
+type RelationshipType = 'followers' | 'following';
+
 export class UserHelpers {
 	public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {
 		if (limit > 40) limit = 40;
@@ -76,7 +78,7 @@ export class UserHelpers {
 		return NoteHelpers.execQuery(query, limit, minId !== undefined);
 	}
 
-	public static async getUserFollowers(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+	private static async getUserRelationships(type: RelationshipType, user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
 		if (limit > 80) limit = 80;
 
 		const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
@@ -99,19 +101,33 @@ export class UserHelpers {
 			sinceId,
 			maxId,
 			minId
-		)
-			.andWhere("following.followeeId = :userId", { userId: user.id })
-			.innerJoinAndSelect("following.follower", "follower");
+		);
+
+		if (type === "followers") {
+			query.andWhere("following.followeeId = :userId", {userId: user.id})
+				.innerJoinAndSelect("following.follower", "follower");
+		} else {
+			query.andWhere("following.followerId = :userId", {userId: user.id})
+				.innerJoinAndSelect("following.followee", "followee");
+		}
 
 		return query.take(limit).getMany().then(p => {
 			if (minId !== undefined) p = p.reverse();
 
 			return {
-				data: p.map(p => p.follower).filter(p => p) as User[],
+				data: p.map(p => type === "followers" ? p.follower : p.followee).filter(p => p) as User[],
 				maxId: p.map(p => p.id).at(-1),
 				minId: p.map(p => p.id)[0],
 			};
 		});
+	}
+
+	public static async getUserFollowers(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+		return this.getUserRelationships('followers', user, localUser, maxId, sinceId, minId, limit);
+	}
+
+	public static async getUserFollowing(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+		return this.getUserRelationships('following', user, localUser, maxId, sinceId, minId, limit);
 	}
 
 	public static async getUserCached(id: string, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<User> {
