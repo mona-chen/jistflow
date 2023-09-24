@@ -25,17 +25,17 @@ export class NoteConverter {
 				if (!await Notes.isVisibleForMe(note, user?.id ?? null))
 					throw new Error('Cannot encode note not visible for user');
 
-				const host = note.user?.host ?? null;
+				const host = Promise.resolve(noteUser).then(noteUser => noteUser.host ?? null);
 
 				const reactionEmojiNames = Object.keys(note.reactions)
 					.filter((x) => x?.startsWith(":"))
 					.map((x) => decodeReaction(x).reaction)
 					.map((x) => x.replace(/:/g, ""));
 
-				const noteEmoji = populateEmojis(
+				const noteEmoji = Promise.resolve(host).then(async host => populateEmojis(
 					note.emojis.concat(reactionEmojiNames),
 					host,
-				);
+				));
 
 				const reactionCount = NoteReactions.countBy({noteId: note.id});
 
