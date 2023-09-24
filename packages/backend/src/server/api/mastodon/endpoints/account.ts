@@ -198,7 +198,7 @@ export function apiAccountMastodon(router: Router): void {
 				const followers = await UserConverter.encodeMany(res.data, cache);
 
 				ctx.body = followers.map((account) => convertAccount(account));
-				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `accounts/${ctx.params.id}/followers`);
+				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `v1/accounts/${ctx.params.id}/followers`);
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -223,7 +223,7 @@ export function apiAccountMastodon(router: Router): void {
 				const following = await UserConverter.encodeMany(res.data, cache);
 
 				ctx.body = following.map((account) => convertAccount(account));
-				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `accounts/${ctx.params.id}/following`);
+				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `v1/accounts/${ctx.params.id}/following`);
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -410,10 +410,11 @@ export function apiAccountMastodon(router: Router): void {
 
 			const cache = UserHelpers.getFreshAccountCache();
 			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
-			const bookmarks = await UserHelpers.getUserBookmarks(user, args.max_id, args.since_id, args.min_id, args.limit)
-				.then(n => NoteConverter.encodeMany(n, user, cache));
+			const res = await UserHelpers.getUserBookmarks(user, args.max_id, args.since_id, args.min_id, args.limit);
+			const bookmarks = await NoteConverter.encodeMany(res.data, user, cache);
 
 			ctx.body = bookmarks.map(s => convertStatus(s));
+			PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `v1/bookmarks`);
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
@@ -433,10 +434,11 @@ export function apiAccountMastodon(router: Router): void {
 
 			const cache = UserHelpers.getFreshAccountCache();
 			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
-			const favorites = await UserHelpers.getUserFavorites(user, args.max_id, args.since_id, args.min_id, args.limit)
-				.then(n => NoteConverter.encodeMany(n, user, cache));
+			const res = await UserHelpers.getUserFavorites(user, args.max_id, args.since_id, args.min_id, args.limit);
+			const favorites = await NoteConverter.encodeMany(res.data, user, cache);
 
 			ctx.body = favorites.map(s => convertStatus(s));
+			PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `v1/favourites`);
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);

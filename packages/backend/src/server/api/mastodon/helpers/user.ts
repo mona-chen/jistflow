@@ -78,68 +78,52 @@ export class UserHelpers {
 		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
 	}
 
-	public static async getUserBookmarks(localUser: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
+	public static async getUserBookmarks(localUser: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<Note[]>> {
 		if (limit > 40) limit = 40;
 
-		const bookmarkQuery = NoteFavorites.createQueryBuilder("favorite")
-			.select("favorite.noteId")
-			.where("favorite.userId = :meId");
-
 		const query = PaginationHelpers.makePaginationQuery(
-			Notes.createQueryBuilder("note"),
+			NoteFavorites.createQueryBuilder("favorite"),
 			sinceId,
 			maxId,
 			minId
 		)
-			.andWhere(`note.id IN (${bookmarkQuery.getQuery()})`)
-			.innerJoinAndSelect("note.user", "user")
-			.leftJoinAndSelect("user.avatar", "avatar")
-			.leftJoinAndSelect("user.banner", "banner")
-			.leftJoinAndSelect("note.reply", "reply")
-			.leftJoinAndSelect("note.renote", "renote")
-			.leftJoinAndSelect("reply.user", "replyUser")
-			.leftJoinAndSelect("replyUser.avatar", "replyUserAvatar")
-			.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
-			.leftJoinAndSelect("renote.user", "renoteUser")
-			.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
-			.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner");
+			.andWhere("favorite.userId = :meId", { meId: localUser.id })
+			.leftJoinAndSelect("favorite.note", "note");
 
 		generateVisibilityQuery(query, localUser);
 
-		query.setParameters({ meId: localUser.id });
-		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+		return PaginationHelpers.execQuery(query, limit, minId !== undefined)
+			.then(res => {
+				return {
+					data: res.map(p => p.note as Note),
+					maxId: res.map(p => p.id).at(-1),
+					minId: res.map(p => p.id)[0],
+				};
+			});
 	}
 
-	public static async getUserFavorites(localUser: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
+	public static async getUserFavorites(localUser: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<Note[]>> {
 		if (limit > 40) limit = 40;
 
-		const favoriteQuery = NoteReactions.createQueryBuilder("reaction")
-			.select("reaction.noteId")
-			.where("reaction.userId = :meId");
-
 		const query = PaginationHelpers.makePaginationQuery(
-			Notes.createQueryBuilder("note"),
+			NoteReactions.createQueryBuilder("reaction"),
 			sinceId,
 			maxId,
 			minId
 		)
-			.andWhere(`note.id IN (${favoriteQuery.getQuery()})`)
-			.innerJoinAndSelect("note.user", "user")
-			.leftJoinAndSelect("user.avatar", "avatar")
-			.leftJoinAndSelect("user.banner", "banner")
-			.leftJoinAndSelect("note.reply", "reply")
-			.leftJoinAndSelect("note.renote", "renote")
-			.leftJoinAndSelect("reply.user", "replyUser")
-			.leftJoinAndSelect("replyUser.avatar", "replyUserAvatar")
-			.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
-			.leftJoinAndSelect("renote.user", "renoteUser")
-			.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
-			.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner");
+			.andWhere("reaction.userId = :meId", { meId: localUser.id })
+			.leftJoinAndSelect("reaction.note", "note");
 
 		generateVisibilityQuery(query, localUser);
 
-		query.setParameters({ meId: localUser.id });
-		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+		return PaginationHelpers.execQuery(query, limit, minId !== undefined)
+			.then(res => {
+				return {
+					data: res.map(p => p.note as Note),
+					maxId: res.map(p => p.id).at(-1),
+					minId: res.map(p => p.id)[0],
+				};
+			});
 	}
 
 	private static async getUserRelationships(type: RelationshipType, user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
