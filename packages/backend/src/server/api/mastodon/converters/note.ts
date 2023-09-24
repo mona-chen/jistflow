@@ -54,6 +54,7 @@ export class NoteConverter {
 				}) : null;
 
 				const reply = note.reply ?? (note.replyId ? getNote(note.replyId, user) : null);
+				const renote = note.renote ?? (note.renoteId ? getNote(note.renoteId, user) : null);
 
 				const isBookmarked = user ? NoteFavorites.exist({
 					where: {
@@ -78,6 +79,12 @@ export class NoteConverter {
 						.catch(() => null)))
 					.then(p => p.filter(m => m)) as Promise<MastodonEntity.Mention[]>;
 
+				const text = Promise.resolve(renote).then(renote => {
+					return renote && note.text !== null
+						? note.text + `\n\nRE: ${renote.uri ? renote.uri : `${config.url}/notes/${renote.id}`}`
+						: note.text;
+				});
+
         // noinspection ES6MissingAwait
 				return await awaitAll({
             id: note.id,
@@ -86,9 +93,9 @@ export class NoteConverter {
             account: Promise.resolve(noteUser).then(p => UserConverter.encode(p, cache)),
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: Promise.resolve(reply).then(reply => reply?.userId ?? null),
-            reblog: note.renote ? this.encode(note.renote, user, cache) : null,
-            content: note.text ? toHtml(mfm.parse(note.text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(note.text) : "",
-            text: note.text ? note.text : null,
+            reblog: Promise.resolve(renote).then(renote => renote && note.text === null ? this.encode(renote, user, cache) : null),
+            content: Promise.resolve(text).then(text => text !== null ? toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(text) : ""),
+            text: text,
             created_at: note.createdAt.toISOString(),
             // Remove reaction emojis with names containing @ from the emojis list.
             emojis: noteEmoji
@@ -115,7 +122,7 @@ export class NoteConverter {
             // Use emojis list to provide URLs for emoji reactions.
             reactions: [], //FIXME: this.mapReactions(n.emojis, n.reactions, n.myReaction),
             bookmarked: isBookmarked,
-            quote: note.renote && note.text ? this.encode(note.renote, user, cache) : null,
+            quote: Promise.resolve(renote).then(renote => renote && note.text !== null ? this.encode(renote, user, cache) : null),
         });
     }
 
