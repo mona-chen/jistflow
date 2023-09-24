@@ -1,12 +1,12 @@
 import { In, IsNull } from "typeorm";
-import { detect as detectLanguage } from "tinyld";
 import config from "@/config/index.js";
 import type { Note, IMentionedRemoteUsers } from "@/models/entities/note.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { DriveFiles, Notes, Users, Emojis, Polls } from "@/models/index.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import type { Poll } from "@/models/entities/poll.js";
-import toHtml from "../misc/get-note-html.js";
+import toHtml from "@/remote/activitypub/misc/get-note-html.js";
+import detectLanguage from "@/misc/detect-language.js";
 import renderEmoji from "./emoji.js";
 import renderMention from "./mention.js";
 import renderHashtag from "./hashtag.js";
