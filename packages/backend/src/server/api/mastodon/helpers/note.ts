@@ -27,7 +27,7 @@ export class NoteHelpers {
 			generateBlockedUserQuery(query, user);
 		}
 
-		return query.getMany();
+		return query.getMany().then(p => p.reverse());
 	}
 
 	public static async getNoteAncestors(rootNote: Note, user: ILocalUser | null, limit: number = 10): Promise<Note[]> {
@@ -43,7 +43,7 @@ export class NoteHelpers {
 			else break;
 		}
 
-		return notes;
+		return notes.reverse();
 	}
 
 	/**
