@@ -45,7 +45,7 @@ export class UserConverter {
 				acct: acct,
 				display_name: u.name || u.username,
 				locked: u.isLocked,
-				created_at: new Date().toISOString(),
+				created_at: u.createdAt.toISOString(),
 				followers_count: u.followersCount,
 				following_count: u.followingCount,
 				statuses_count: u.notesCount,
