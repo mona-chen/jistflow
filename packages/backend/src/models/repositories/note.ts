@@ -23,7 +23,6 @@ import {
 } from "@/misc/populate-emojis.js";
 import { db } from "@/db/postgre.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { detect as detectLanguage } from "tinyld";
 
 export async function populatePoll(note: Note, meId: User["id"] | null) {
 	const poll = await Polls.findOneByOrFail({ noteId: note.id });
