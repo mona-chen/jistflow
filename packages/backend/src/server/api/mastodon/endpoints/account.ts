@@ -145,12 +145,7 @@ export function apiAccountMastodon(router: Router): void {
 		async (ctx) => {
 			try {
 				const auth = await authenticate(ctx.headers.authorization, null);
-				const user = auth[0] ?? undefined;
-
-				if (!user) {
-					ctx.status = 401;
-					return;
-				}
+				const user = auth[0] ?? null;
 
 				const userId = convertId(ctx.params.id, IdType.IceshrimpId);
 				const cache = UserHelpers.getFreshAccountCache();
