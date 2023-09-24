@@ -40,7 +40,7 @@ export default class WebSocket
 	private _pongWaiting = false;
 
 	/**
-	 * @param url Full url of websocket: e.g. wss://misskey.io/streaming
+	 * @param url Full url of websocket: e.g. wss://firefish.io/streaming
 	 * @param channel Channel name is user, localTimeline, hybridTimeline, globalTimeline, conversation or list.
 	 * @param accessToken The access token.
 	 * @param listId This parameter is required when you specify list as channel.

@@ -151,7 +151,7 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, onUpdated, ref } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import type { NoteUpdatedEvent } from "firefish-js/built/streaming.types";
 import MkTab from "@/components/MkTab.vue";
 import MkNote from "@/components/MkNote.vue";
@@ -173,7 +173,7 @@ import { deepClone } from "@/scripts/clone";
 import { stream } from "@/stream";
 
 const props = defineProps<{
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 	pinned?: boolean;
 }>();
 
@@ -219,10 +219,10 @@ const muted = ref(
 );
 const translation = ref(null);
 const translating = ref(false);
-const conversation = ref<null | misskey.entities.Note[]>([]);
-const replies = ref<misskey.entities.Note[]>([]);
-const directReplies = ref<null | misskey.entities.Note[]>([]);
-const directQuotes = ref<null | misskey.entities.Note[]>([]);
+const conversation = ref<null | firefish.entities.Note[]>([]);
+const replies = ref<firefish.entities.Note[]>([]);
+const directReplies = ref<null | firefish.entities.Note[]>([]);
+const directQuotes = ref<null | firefish.entities.Note[]>([]);
 const clips = ref();
 const renotes = ref();
 let isScrolling;

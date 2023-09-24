@@ -53,7 +53,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { sum } from "@/scripts/array";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
@@ -61,7 +61,7 @@ import { i18n } from "@/i18n";
 import { useInterval } from "@/scripts/use-interval";
 
 const props = defineProps<{
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 	readOnly?: boolean;
 }>();
 

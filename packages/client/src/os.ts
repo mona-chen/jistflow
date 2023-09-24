@@ -4,7 +4,7 @@ import type { Component, Ref } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
 import { EventEmitter } from "eventemitter3";
 import insertTextAtCursor from "insert-text-at-cursor";
-import * as Misskey from "firefish-js";
+import * as firefish from "firefish-js";
 import { i18n } from "./i18n";
 import { apiUrl, url } from "@/config";
 import MkPostFormDialog from "@/components/MkPostFormDialog.vue";
@@ -16,7 +16,7 @@ import { $i } from "@/account";
 
 export const pendingApiRequestsCount = ref(0);
 
-const apiClient = new Misskey.api.APIClient({
+const apiClient = new firefish.api.APIClient({
 	origin: url,
 });
 
@@ -651,7 +651,7 @@ export async function selectLocalUser() {
 	});
 }
 
-export async function selectInstance(): Promise<Misskey.entities.Instance> {
+export async function selectInstance(): Promise<firefish.entities.Instance> {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
@@ -741,11 +741,11 @@ export async function pickEmoji(src: HTMLElement | null, opts) {
 }
 
 export async function cropImage(
-	image: Misskey.entities.DriveFile,
+	image: firefish.entities.DriveFile,
 	options: {
 		aspectRatio: number;
 	},
-): Promise<Misskey.entities.DriveFile> {
+): Promise<firefish.entities.DriveFile> {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({

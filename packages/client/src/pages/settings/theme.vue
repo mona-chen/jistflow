@@ -114,7 +114,7 @@
 					>{{ i18n.ts._theme.manage
 					}}<template #suffix>{{ themesCount }}</template></FormLink
 				>
-				<FormLink to="https://assets.misskey.io/theme/list" external
+				<FormLink to="https://assets.firefish.io/theme/list" external
 					><template #icon
 						><i class="ph-planet ph-bold ph-lg"></i></template
 					>{{ i18n.ts._theme.explore }}</FormLink

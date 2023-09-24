@@ -38,14 +38,14 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from "vue";
-import type * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 
 const props = withDefaults(
 	defineProps<{
-		folder: Misskey.entities.DriveFolder;
+		folder: firefish.entities.DriveFolder;
 		isSelected?: boolean;
 		selectMode?: boolean;
 	}>(),
@@ -56,11 +56,11 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "chosen", v: Misskey.entities.DriveFolder): void;
-	(ev: "move", v: Misskey.entities.DriveFolder): void;
-	(ev: "upload", file: File, folder: Misskey.entities.DriveFolder);
-	(ev: "removeFile", v: Misskey.entities.DriveFile["id"]): void;
-	(ev: "removeFolder", v: Misskey.entities.DriveFolder["id"]): void;
+	(ev: "chosen", v: firefish.entities.DriveFolder): void;
+	(ev: "move", v: firefish.entities.DriveFolder): void;
+	(ev: "upload", file: File, folder: firefish.entities.DriveFolder);
+	(ev: "removeFile", v: firefish.entities.DriveFile["id"]): void;
+	(ev: "removeFolder", v: firefish.entities.DriveFolder["id"]): void;
 	(ev: "dragstart"): void;
 	(ev: "dragend"): void;
 }>();

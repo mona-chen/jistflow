@@ -35,7 +35,7 @@ import { computed, ref } from "vue";
 // SPECIFICATION: https://misskey-hub.net/docs/features/share-form.html
 import { noteVisibilities } from "firefish-js";
 import * as Acct from "firefish-js/built/acct";
-import type * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import XPostForm from "@/components/MkPostForm.vue";
 import * as os from "@/os";
@@ -52,16 +52,16 @@ const title = ref(urlParams.get("title"));
 const text = urlParams.get("text");
 const url = urlParams.get("url");
 const initialText = ref(null as string | null);
-const reply = ref(null as Misskey.entities.Note | null);
-const renote = ref(null as Misskey.entities.Note | null);
+const reply = ref(null as firefish.entities.Note | null);
+const renote = ref(null as firefish.entities.Note | null);
 const visibility = ref(
 	noteVisibilities.includes(visibilityQuery) ? visibilityQuery : null,
 );
 const localOnly = ref(
 	localOnlyQuery === "0" ? false : localOnlyQuery === "1" ? true : null,
 );
-const files = ref([] as Misskey.entities.DriveFile[]);
-const visibleUsers = ref([] as Misskey.entities.User[]);
+const files = ref([] as firefish.entities.DriveFile[]);
+const visibleUsers = ref([] as firefish.entities.User[]);
 
 async function init() {
 	let noteText = "";

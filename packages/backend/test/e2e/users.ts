@@ -15,7 +15,7 @@ import {
 	failedApiCall,
 	uploadFile,
 } from "../utils.js";
-import type * as misskey from "misskey-js";
+import type * as firefish from "firefish-js";
 import type { INestApplicationContext } from "@nestjs/common";
 
 describe("ユーザー", () => {
@@ -34,16 +34,16 @@ describe("ユーザー", () => {
 	};
 
 	// BUG misskey-jsとjson-schemaと実際に返ってくるデータが全部違う
-	type UserLite = misskey.entities.UserLite & {
+	type UserLite = firefish.entities.UserLite & {
 		badgeRoles: any[];
 	};
 
 	type UserDetailedNotMe = UserLite &
-		misskey.entities.UserDetailed & {
+		firefish.entities.UserDetailed & {
 			roles: any[];
 		};
 
-	type MeDetailed = UserDetailedNotMe & misskey.entities.MeDetailed;
+	type MeDetailed = UserDetailedNotMe & firefish.entities.MeDetailed;
 
 	type User = MeDetailed & { token: string };
 
@@ -183,12 +183,12 @@ describe("ユーザー", () => {
 
 	let root: User;
 	let alice: User;
-	let aliceNote: misskey.entities.Note;
-	let alicePage: misskey.entities.Page;
-	let aliceList: misskey.entities.UserList;
+	let aliceNote: firefish.entities.Note;
+	let alicePage: firefish.entities.Page;
+	let aliceList: firefish.entities.UserList;
 
 	let bob: User;
-	let bobNote: misskey.entities.Note;
+	let bobNote: firefish.entities.Note;
 
 	let carol: User;
 	let dave: User;

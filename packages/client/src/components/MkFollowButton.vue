@@ -62,7 +62,7 @@
 
 <script lang="ts" setup>
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
-import type * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import { stream } from "@/stream";
 import { i18n } from "@/i18n";
@@ -76,7 +76,7 @@ const router = useRouter();
 const emit = defineEmits(["refresh"]);
 const props = withDefaults(
 	defineProps<{
-		user: Misskey.entities.UserDetailed;
+		user: firefish.entities.UserDetailed;
 		full?: boolean;
 		large?: boolean;
 		hideMenu?: boolean;
@@ -104,7 +104,7 @@ if (props.user.isFollowing == null) {
 	}).then(onFollowChange);
 }
 
-function onFollowChange(user: Misskey.entities.UserDetailed) {
+function onFollowChange(user: firefish.entities.UserDetailed) {
 	if (user.id === props.user.id) {
 		isFollowing.value = user.isFollowing;
 		hasPendingFollowRequestFromYou.value =
