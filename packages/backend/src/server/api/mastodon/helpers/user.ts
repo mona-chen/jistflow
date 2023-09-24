@@ -83,17 +83,19 @@ export class UserHelpers {
 
 		const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 		if (profile.ffVisibility === "private") {
-			if (!localUser || user.id != localUser.id) return { data: [] };
+			if (!localUser || user.id !== localUser.id) return { data: [] };
 		}
 		else if (profile.ffVisibility === "followers") {
 			if (!localUser) return { data: [] };
-			const isFollowed = await Followings.exist({
-				where: {
-					followeeId: user.id,
-					followerId: localUser.id,
-				},
-			});
-			if (!isFollowed) return { data: [] };
+			if (user.id !== localUser.id) {
+				const isFollowed = await Followings.exist({
+					where: {
+						followeeId: user.id,
+						followerId: localUser.id,
+					},
+				});
+				if (!isFollowed) return { data: [] };
+			}
 		}
 
 		const query = PaginationHelpers.makePaginationQuery(
