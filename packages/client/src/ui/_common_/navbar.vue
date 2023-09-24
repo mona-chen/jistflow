@@ -26,7 +26,7 @@
 				<MkA
 					v-click-anime
 					v-tooltip.noDelay.right="i18n.ts.timeline"
-					class="item index"
+					class="item _button index"
 					active-class="active"
 					to="/"
 					exact
