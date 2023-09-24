@@ -21,7 +21,7 @@
 		</div>
 		<div v-else class="menu">
 			<div class="body">
-				<div>Ads by {{ host }}</div>
+				<div>{{ i18n.t("_ad.adsBy", { by: host }) }}</div>
 				<!--<MkButton class="button" primary>{{ i18n.ts._ad.like }}</MkButton>-->
 				<MkButton
 					v-if="chosen.ratio !== 0"
