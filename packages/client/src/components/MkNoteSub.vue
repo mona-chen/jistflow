@@ -193,7 +193,6 @@ import { computed, inject, ref } from "vue";
 import type { Ref } from "vue";
 import type * as firefish from "firefish-js";
 import * as mfm from "mfm-js";
-import { detect as detectLanguage_ } from "tinyld";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
 import MkSubNoteContent from "@/components/MkSubNoteContent.vue";
 import XReactionsViewer from "@/components/MkReactionsViewer.vue";
@@ -202,6 +201,7 @@ import XStarButtonNoEmoji from "@/components/MkStarButtonNoEmoji.vue";
 import XRenoteButton from "@/components/MkRenoteButton.vue";
 import XQuoteButton from "@/components/MkQuoteButton.vue";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
+import detectLanguage from "@/scripts/detect-language";
 import { url } from "@/config";
 import { pleaseLogin } from "@/scripts/please-login";
 import { getNoteMenu } from "@/scripts/get-note-menu";
@@ -287,15 +287,6 @@ const enableEmojiReactions = defaultStore.state.enableEmojiReactions;
 const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
 const lang = localStorage.getItem("lang");
 const translateLang = localStorage.getItem("translateLang");
-
-function detectLanguage(text: string) {
-	const nodes = mfm.parse(text);
-	const filtered = mfm.extract(nodes, (node) => {
-		return node.type === "text" || node.type === "quote";
-	});
-	const purified = mfm.toString(filtered);
-	return detectLanguage_(purified);
-}
 
 const isForeignLanguage: boolean =
 	defaultStore.state.detectPostLanguage &&
