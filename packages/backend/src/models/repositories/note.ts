@@ -264,7 +264,8 @@ export const NoteRepository = db.getRepository(Note).extend({
 			const tokens = packed.text ? mfm.parse(packed.text) : [];
 			function nyaizeNode(node: mfm.MfmNode) {
 				if (node.type === "quote") return;
-				if (node.type === "text") node.props.text = nyaize(node.props.text);
+				if (node.type === "text")
+					node.props.text = nyaize(node.props.text, packed.lang);
 
 				if (node.children) {
 					for (const child of node.children) {
