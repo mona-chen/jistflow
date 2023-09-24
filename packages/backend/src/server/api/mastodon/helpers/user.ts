@@ -1,6 +1,6 @@
 import { Note } from "@/models/entities/note.js";
 import { ILocalUser, User } from "@/models/entities/user.js";
-import { Notes } from "@/models/index.js";
+import { Followings, Notes, UserProfiles } from "@/models/index.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
@@ -10,6 +10,7 @@ import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import Entity from "megalodon/src/entity.js";
 import AsyncLock from "async-lock";
 import { getUser } from "@/server/api/common/getters.js";
+import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 
 export type AccountCache = {
 	locks: AsyncLock;
@@ -31,7 +32,7 @@ export class UserHelpers {
 			return [];
 		}
 
-		const query = NoteHelpers.makePaginationQuery(
+		const query = PaginationHelpers.makePaginationQuery(
 			Notes.createQueryBuilder("note"),
 			sinceId,
 			maxId,
@@ -67,6 +68,36 @@ export class UserHelpers {
 		query.andWhere("note.visibility != 'hidden'");
 
 		return NoteHelpers.execQuery(query, limit, minId !== undefined);
+	}
+
+	public static async getUserFollowers(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<User[]> {
+		if (limit > 80) limit = 80;
+
+		const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
+		if (profile.ffVisibility === "private") {
+			if (!localUser || user.id != localUser.id) return [];
+		}
+		else if (profile.ffVisibility === "followers") {
+			if (!localUser) return [];
+			const isFollowed = await Followings.exist({
+				where: {
+					followeeId: user.id,
+					followerId: localUser.id,
+				},
+			});
+			if (!isFollowed) return [];
+		}
+
+		const query = PaginationHelpers.makePaginationQuery(
+			Followings.createQueryBuilder("following"),
+			sinceId,
+			maxId,
+			minId
+		)
+			.andWhere("following.followeeId = :userId", { userId: user.id })
+			.innerJoinAndSelect("following.follower", "follower");
+
+		return query.take(limit).getMany().then(p => p.map(p => p.follower).filter(p => p) as User[]);
 	}
 
 	public static async getUserCached(id: string, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<User> {

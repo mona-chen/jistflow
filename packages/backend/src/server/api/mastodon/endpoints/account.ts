@@ -198,15 +198,19 @@ export function apiAccountMastodon(router: Router): void {
 	router.get<{ Params: { id: string } }>(
 		"/v1/accounts/:id/followers",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.getAccountFollowers(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-					convertTimelinesArgsId(limitToInt(ctx.query as any)),
-				);
-				ctx.body = data.data.map((account) => convertAccount(account));
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				const userId = convertId(ctx.params.id, IdType.IceshrimpId);
+				const cache = UserHelpers.getFreshAccountCache();
+				const query = await UserHelpers.getUserCached(userId, cache);
+				const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
+
+				const followers = await UserHelpers.getUserFollowers(query, user, args.max_id, args.since_id, args.min_id, args.limit)
+					.then(f => UserConverter.encodeMany(f, cache));
+
+				ctx.body = followers.map((account) => convertAccount(account));
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);

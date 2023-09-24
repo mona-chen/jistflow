@@ -14,6 +14,7 @@ import { fetchMeta } from "@/misc/fetch-meta.js";
 import { ApiError } from "@/server/api/error.js";
 import { meta } from "@/server/api/endpoints/notes/global-timeline.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
+import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 
 export class TimelineHelpers {
 	public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
@@ -31,7 +32,7 @@ export class TimelineHelpers {
 			.select("following.followeeId")
 			.where("following.followerId = :followerId", {followerId: user.id});
 
-		const query = NoteHelpers.makePaginationQuery(
+		const query = PaginationHelpers.makePaginationQuery(
 			Notes.createQueryBuilder("note"),
 			sinceId,
 			maxId,
@@ -84,7 +85,7 @@ export class TimelineHelpers {
 			throw new Error("local and remote are mutually exclusive options");
 		}
 
-		const query = NoteHelpers.makePaginationQuery(
+		const query = PaginationHelpers.makePaginationQuery(
 			Notes.createQueryBuilder("note"),
 			sinceId,
 			maxId,

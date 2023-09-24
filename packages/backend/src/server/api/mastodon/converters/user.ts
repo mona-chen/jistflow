@@ -1,4 +1,4 @@
-import { User } from "@/models/entities/user.js";
+import { ILocalUser, User } from "@/models/entities/user.js";
 import config from "@/config/index.js";
 import { DriveFiles, UserProfiles, Users } from "@/models/index.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
@@ -8,6 +8,7 @@ import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import mfm from "mfm-js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { Note } from "@/models/entities/note.js";
 
 type Field = {
 	name: string;
@@ -65,6 +66,11 @@ export class UserConverter {
 		});
 	}
 
+	public static async encodeMany(users: User[], cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Account[]> {
+		const encoded = users.map(u => this.encode(u, cache));
+		return Promise.all(encoded);
+	}
+
 	private static encodeField(f: Field): MastodonEntity.Field {
 		return {
 			name: f.name,
@@ -72,5 +78,4 @@ export class UserConverter {
 			verified_at: f.verified ? (new Date()).toISOString() : null,
 		}
 	}
-
 }
