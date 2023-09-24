@@ -1,6 +1,6 @@
 import { Note } from "@/models/entities/note.js";
 import { ILocalUser, User } from "@/models/entities/user.js";
-import { Followings, Notes, UserProfiles } from "@/models/index.js";
+import { Followings, NoteFavorites, Notes, UserProfiles } from "@/models/index.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
@@ -75,8 +75,41 @@ export class UserHelpers {
 
 		query.andWhere("note.visibility != 'hidden'");
 
-		return NoteHelpers.execQuery(query, limit, minId !== undefined);
+		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
 	}
+
+	public static async getUserBookmarks(localUser: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
+		if (limit > 40) limit = 40;
+
+		const bookmarkQuery = NoteFavorites.createQueryBuilder("favorite")
+			.select("favorite.noteId")
+			.where("favorite.userId = :meId");
+
+		const query = PaginationHelpers.makePaginationQuery(
+			Notes.createQueryBuilder("note"),
+			sinceId,
+			maxId,
+			minId
+		)
+			.andWhere(`note.id IN (${bookmarkQuery.getQuery()})`)
+			.innerJoinAndSelect("note.user", "user")
+			.leftJoinAndSelect("user.avatar", "avatar")
+			.leftJoinAndSelect("user.banner", "banner")
+			.leftJoinAndSelect("note.reply", "reply")
+			.leftJoinAndSelect("note.renote", "renote")
+			.leftJoinAndSelect("reply.user", "replyUser")
+			.leftJoinAndSelect("replyUser.avatar", "replyUserAvatar")
+			.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
+			.leftJoinAndSelect("renote.user", "renoteUser")
+			.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
+			.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner");
+
+		generateVisibilityQuery(query, localUser);
+
+		query.setParameters({ meId: localUser.id });
+		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+	}
+
 
 	private static async getUserRelationships(type: RelationshipType, user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
 		if (limit > 80) limit = 80;

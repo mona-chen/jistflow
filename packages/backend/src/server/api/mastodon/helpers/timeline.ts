@@ -68,7 +68,7 @@ export class TimelineHelpers {
 
 		query.andWhere("note.visibility != 'hidden'");
 
-		return NoteHelpers.execQuery(query, limit, minId !== undefined);
+		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
 	}
 
 	public static async getPublicTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<Note[]> {
@@ -122,6 +122,6 @@ export class TimelineHelpers {
 
 		query.andWhere("note.visibility != 'hidden'");
 
-		return NoteHelpers.execQuery(query, limit, minId !== undefined);
+		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
 	}
 }
