@@ -274,7 +274,7 @@ import {
 import { uploadFile } from "@/scripts/upload";
 import { deepClone } from "@/scripts/clone";
 import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
-import { preprocess } from "@/scripts/preprocess";
+import preprocess from "@/scripts/preprocess";
 import { vibrate } from "@/scripts/vibrate";
 
 const modal = inject("modal");

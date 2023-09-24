@@ -20,8 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
-import { preprocess } from "@/scripts/preprocess";
+import preprocess from "@/scripts/preprocess";
 
 const props = defineProps<{
 	text: string;
