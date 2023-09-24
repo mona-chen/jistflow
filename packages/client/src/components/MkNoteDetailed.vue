@@ -42,7 +42,7 @@
 				{{ i18n.ts._notification._types.reply }}
 			</option>
 			<option v-if="note.renoteCount > 0" value="renotes">
-				<!-- <i class="ph-repeat ph-bold ph-lg"></i> -->
+				<!-- <i class="ph-rocket-launch ph-bold ph-lg"></i> -->
 				<span class="count">{{ note.renoteCount }}</span>
 				{{ i18n.ts._notification._types.renote }}
 			</option>

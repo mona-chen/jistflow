@@ -41,7 +41,7 @@
 				></i>
 				<i
 					v-else-if="notification.type === 'renote'"
-					class="ph-repeat ph-bold"
+					class="ph-rocket-launch ph-bold"
 				></i>
 				<i
 					v-else-if="notification.type === 'reply'"

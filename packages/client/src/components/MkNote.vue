@@ -43,7 +43,7 @@
 				>{{ i18n.ts.pinnedNote }}
 			</div>
 			<div v-if="isRenote" class="renote">
-				<i class="ph-repeat ph-bold ph-lg"></i>
+				<i class="ph-rocket-launch ph-bold ph-lg"></i>
 				<I18n :src="i18n.ts.renotedBy" tag="span">
 					<template #user>
 						<MkA

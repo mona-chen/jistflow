@@ -75,7 +75,7 @@
 										@click="shareWithNote"
 									>
 										<i
-											class="ph-repeat ph-bold ph-lg ph-fw ph-lg"
+											class="ph-rocket-launch ph-bold ph-lg ph-fw ph-lg"
 										></i>
 									</button>
 									<button
