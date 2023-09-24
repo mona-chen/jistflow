@@ -70,7 +70,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XNoteDetailed from "@/components/MkNoteDetailed.vue";
 import XNotes from "@/components/MkNotes.vue";
 import MkRemoteCaution from "@/components/MkRemoteCaution.vue";
@@ -83,14 +83,14 @@ const props = defineProps<{
 	noteId: string;
 }>();
 
-const note = ref<null | misskey.entities.Note>();
+const note = ref<null | firefish.entities.Note>();
 const hasPrev = ref(false);
 const hasNext = ref(false);
 const showPrev = ref(false);
 const showNext = ref(false);
 const error = ref();
 const isRenote = ref(false);
-const appearNote = ref<null | misskey.entities.Note>();
+const appearNote = ref<null | firefish.entities.Note>();
 
 const prevPagination = {
 	endpoint: "users/notes" as const,
@@ -136,7 +136,7 @@ function fetchNote() {
 				note.value.fileIds.length === 0 &&
 				note.value.poll == null;
 			appearNote.value = isRenote.value
-				? (note.value.renote as misskey.entities.Note)
+				? (note.value.renote as firefish.entities.Note)
 				: note.value;
 
 			Promise.all([

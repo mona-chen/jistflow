@@ -30,7 +30,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import * as Acct from "firefish-js/built/acct";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MkUserInfo from "@/components/MkUserInfo.vue";
 import * as os from "@/os";
 
@@ -47,7 +47,7 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex("middle");
-const user = ref<misskey.entities.UserDetailed | null>(null);
+const user = ref<firefish.entities.UserDetailed | null>(null);
 const top = ref(0);
 const left = ref(0);
 

@@ -25,11 +25,11 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MkPagination from "@/components/MkPagination.vue";
 
 const props = defineProps<{
-	user: misskey.entities.User;
+	user: firefish.entities.User;
 }>();
 
 const pagination = {

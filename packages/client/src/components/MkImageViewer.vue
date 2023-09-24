@@ -28,14 +28,14 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import bytes from "@/filters/bytes";
 import number from "@/filters/number";
 import MkModal from "@/components/MkModal.vue";
 
 const props = withDefaults(
 	defineProps<{
-		image: misskey.entities.DriveFile;
+		image: firefish.entities.DriveFile;
 	}>(),
 	{},
 );

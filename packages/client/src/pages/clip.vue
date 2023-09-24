@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import { computed, provide, ref, watch } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XNotes from "@/components/MkNotes.vue";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
@@ -40,7 +40,7 @@ const props = defineProps<{
 	clipId: string;
 }>();
 
-const clip = ref<misskey.entities.Clip>();
+const clip = ref<firefish.entities.Clip>();
 const pagination = {
 	endpoint: "clips/notes" as const,
 	limit: 10,

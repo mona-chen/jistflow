@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, watch } from "vue";
 import * as Acct from "firefish-js/built/acct";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { acct as getAcct } from "@/filters/user";
 import * as os from "@/os";
 import { useRouter } from "@/router";
@@ -58,7 +58,7 @@ const props = withDefaults(
 useRouter();
 
 const tab = ref(props.page);
-const user = ref<null | misskey.entities.UserDetailed>(null);
+const user = ref<null | firefish.entities.UserDetailed>(null);
 const error = ref(null);
 
 function fetchUser(): void {

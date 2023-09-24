@@ -85,7 +85,7 @@
 import { computed } from "vue";
 
 import * as mfm from "mfm-js";
-import type * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XMediaList from "@/components/MkMediaList.vue";
 import { extractUrlFromMfm } from "@/scripts/extract-url-from-mfm";
 import MkUrlPreview from "@/components/MkUrlPreview.vue";
@@ -94,7 +94,7 @@ import { $i } from "@/account";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{
-	message: Misskey.entities.MessagingMessage;
+	message: firefish.entities.MessagingMessage;
 	isGroup?: boolean;
 }>();
 

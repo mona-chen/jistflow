@@ -1,4 +1,4 @@
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import type { ComputedRef, Ref } from "vue";
 import { inject, isRef, onActivated, onMounted, provide, ref } from "vue";
 
@@ -9,8 +9,8 @@ export interface PageMetadata {
 	title: string;
 	subtitle?: string;
 	icon?: string | null;
-	avatar?: misskey.entities.User | null;
-	userName?: misskey.entities.User | null;
+	avatar?: firefish.entities.User | null;
+	userName?: firefish.entities.User | null;
 	bg?: string;
 }
 

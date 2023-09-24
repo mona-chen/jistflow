@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from "vue";
-import type * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
 import MkDriveFileThumbnail from "@/components/MkDriveFileThumbnail.vue";
 import bytes from "@/filters/bytes";
@@ -49,7 +49,7 @@ import { $i } from "@/account";
 
 const props = withDefaults(
 	defineProps<{
-		file: Misskey.entities.DriveFile;
+		file: firefish.entities.DriveFile;
 		isSelected?: boolean;
 		selectMode?: boolean;
 	}>(),
@@ -60,7 +60,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "chosen", r: Misskey.entities.DriveFile): void;
+	(ev: "chosen", r: firefish.entities.DriveFile): void;
 	(ev: "dragstart"): void;
 	(ev: "dragend"): void;
 }>();

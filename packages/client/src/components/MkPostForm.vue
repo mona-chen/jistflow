@@ -243,7 +243,7 @@ import {
 	watch,
 } from "vue";
 import * as mfm from "mfm-js";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import autosize from "autosize";
 import insertTextAtCursor from "insert-text-at-cursor";
 import { length } from "stringz";
@@ -281,22 +281,22 @@ const modal = inject("modal");
 
 const props = withDefaults(
 	defineProps<{
-		reply?: misskey.entities.Note;
-		renote?: misskey.entities.Note;
+		reply?: firefish.entities.Note;
+		renote?: firefish.entities.Note;
 		channel?: any; // TODO
-		mention?: misskey.entities.User;
-		specified?: misskey.entities.User;
+		mention?: firefish.entities.User;
+		specified?: firefish.entities.User;
 		initialText?: string;
-		initialVisibility?: typeof misskey.noteVisibilities;
-		initialFiles?: misskey.entities.DriveFile[];
+		initialVisibility?: typeof firefish.noteVisibilities;
+		initialFiles?: firefish.entities.DriveFile[];
 		initialLocalOnly?: boolean;
-		initialVisibleUsers?: misskey.entities.User[];
-		initialNote?: misskey.entities.Note;
+		initialVisibleUsers?: firefish.entities.User[];
+		initialNote?: firefish.entities.Note;
 		instant?: boolean;
 		fixed?: boolean;
 		autofocus?: boolean;
 		showMfmCheatSheet?: boolean;
-		editId?: misskey.entities.Note["id"];
+		editId?: firefish.entities.Note["id"];
 	}>(),
 	{
 		initialVisibleUsers: () => [],
@@ -338,7 +338,7 @@ const visibility = ref(
 		((defaultStore.state.rememberNoteVisibility
 			? defaultStore.state.visibility
 			: defaultStore.state
-					.defaultNoteVisibility) as (typeof misskey.noteVisibilities)[number]),
+					.defaultNoteVisibility) as (typeof firefish.noteVisibilities)[number]),
 );
 const visibleUsers = ref([]);
 if (props.initialVisibleUsers) {
@@ -980,7 +980,7 @@ function showActions(ev) {
 	);
 }
 
-const postAccount = ref<misskey.entities.UserDetailed | null>(null);
+const postAccount = ref<firefish.entities.UserDetailed | null>(null);
 
 function openAccountMenu(ev: MouseEvent) {
 	openAccountMenu_(

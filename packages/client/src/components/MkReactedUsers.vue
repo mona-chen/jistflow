@@ -37,16 +37,16 @@
 
 <script lang="ts" setup>
 import { onMounted, ref, watch } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MkReactionIcon from "@/components/MkReactionIcon.vue";
 import MkUserCardMini from "@/components/MkUserCardMini.vue";
 import * as os from "@/os";
 
 const props = defineProps<{
-	noteId: misskey.entities.Note["id"];
+	noteId: firefish.entities.Note["id"];
 }>();
 
-const note = ref<misskey.entities.Note>();
+const note = ref<firefish.entities.Note>();
 const tab = ref<string>();
 const reactions = ref<string[]>();
 const users = ref();

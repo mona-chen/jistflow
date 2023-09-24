@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MkContainer from "@/components/MkContainer.vue";
 import MkChart from "@/components/MkChart.vue";
 import * as os from "@/os";
@@ -39,7 +39,7 @@ import { i18n } from "@/i18n";
 
 const props = withDefaults(
 	defineProps<{
-		user: misskey.entities.User;
+		user: firefish.entities.User;
 		limit?: number;
 	}>(),
 	{

@@ -21,26 +21,26 @@
 <script lang="ts" setup>
 import { shallowRef } from "vue";
 
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import MkPostForm from "@/components/MkPostForm.vue";
 
 const props = defineProps<{
-	reply?: misskey.entities.Note;
-	renote?: misskey.entities.Note;
+	reply?: firefish.entities.Note;
+	renote?: firefish.entities.Note;
 	channel?: any; // TODO
-	mention?: misskey.entities.User;
-	specified?: misskey.entities.User;
+	mention?: firefish.entities.User;
+	specified?: firefish.entities.User;
 	initialText?: string;
-	initialVisibility?: typeof misskey.noteVisibilities;
-	initialFiles?: misskey.entities.DriveFile[];
+	initialVisibility?: typeof firefish.noteVisibilities;
+	initialFiles?: firefish.entities.DriveFile[];
 	initialLocalOnly?: boolean;
-	initialVisibleUsers?: misskey.entities.User[];
-	initialNote?: misskey.entities.Note;
+	initialVisibleUsers?: firefish.entities.User[];
+	initialNote?: firefish.entities.Note;
 	instant?: boolean;
 	fixed?: boolean;
 	autofocus?: boolean;
-	editId?: misskey.entities.Note["id"];
+	editId?: firefish.entities.Note["id"];
 }>();
 
 const emit = defineEmits<{

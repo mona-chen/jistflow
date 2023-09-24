@@ -1,6 +1,6 @@
 import type { Ref } from "vue";
 import { defineAsyncComponent, inject } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
@@ -12,12 +12,12 @@ import { shareAvailable } from "@/scripts/share-available";
 import { getUserMenu } from "@/scripts/get-user-menu";
 
 export function getNoteMenu(props: {
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 	menuButton: Ref<HTMLElement | undefined>;
 	translation: Ref<any>;
 	translating: Ref<boolean>;
 	isDeleted: Ref<boolean>;
-	currentClipPage?: Ref<misskey.entities.Clip>;
+	currentClipPage?: Ref<firefish.entities.Clip>;
 }) {
 	const isRenote =
 		props.note.renote != null &&
@@ -26,7 +26,7 @@ export function getNoteMenu(props: {
 		props.note.poll == null;
 
 	const appearNote = isRenote
-		? (props.note.renote as misskey.entities.Note)
+		? (props.note.renote as firefish.entities.Note)
 		: props.note;
 
 	function del(): void {
