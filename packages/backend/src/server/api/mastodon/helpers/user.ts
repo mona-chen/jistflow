@@ -51,7 +51,6 @@ export class UserHelpers {
 		if (excludeReblogs) query.andWhere("(note.renoteId IS NOT NULL) OR (note.text IS NOT NULL)");
 
 		query
-			.leftJoinAndSelect("note.reply", "reply")
 			.leftJoinAndSelect("note.renote", "renote");
 
 		//FIXME this doesn't exclude replies to your own reply to someone else's post

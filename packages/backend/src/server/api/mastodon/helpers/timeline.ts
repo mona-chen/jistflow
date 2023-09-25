@@ -34,7 +34,6 @@ export class TimelineHelpers {
 					qb.orWhere(`note.userId IN (:...followingIds)`, {followingIds: followingIds});
 				}),
 			)
-			.leftJoinAndSelect("note.reply", "reply")
 			.leftJoinAndSelect("note.renote", "renote");
 
 		generateChannelQuery(query, user);
@@ -77,7 +76,6 @@ export class TimelineHelpers {
 		if (!local) query.andWhere("note.channelId IS NULL");
 
 		query
-			.leftJoinAndSelect("note.reply", "reply")
 			.leftJoinAndSelect("note.renote", "renote");
 
 		generateRepliesQuery(query, true, user);

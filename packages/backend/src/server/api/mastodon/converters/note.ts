@@ -53,7 +53,6 @@ export class NoteConverter {
 					}
 				}) : null;
 
-				const reply = note.reply ?? (note.replyId ? getNote(note.replyId, user) : null);
 				const renote = note.renote ?? (note.renoteId ? getNote(note.renoteId, user) : null);
 
 				const isBookmarked = user ? NoteFavorites.exist({
@@ -92,7 +91,7 @@ export class NoteConverter {
             url: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
             account: Promise.resolve(noteUser).then(p => UserConverter.encode(p, cache)),
             in_reply_to_id: note.replyId,
-            in_reply_to_account_id: Promise.resolve(reply).then(reply => reply?.userId ?? null),
+            in_reply_to_account_id: note.replyUserId,
             reblog: Promise.resolve(renote).then(renote => renote && note.text === null ? this.encode(renote, user, cache) : null),
             content: Promise.resolve(text).then(text => text !== null ? toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(text) : ""),
             text: text,
