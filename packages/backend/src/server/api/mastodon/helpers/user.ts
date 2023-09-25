@@ -53,7 +53,9 @@ export class UserHelpers {
 		query
 			.leftJoinAndSelect("note.renote", "renote");
 
-		//FIXME this doesn't exclude replies to your own reply to someone else's post
+		//this doesn't exclude replies to your own reply to someone else's post
+		//this also breaks when checking your own profile
+		//FIXME write new the replies query generator specific to the mastodon client api
 		generateRepliesQuery(query, !excludeReplies, localUser);
 		generateVisibilityQuery(query, localUser);
 		if (localUser) {
