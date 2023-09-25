@@ -17,6 +17,7 @@ import { populatePoll } from "@/models/repositories/note.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { IsNull } from "typeorm";
 
 export class NoteConverter {
     public static async encode(note: Note, user: ILocalUser | null, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Status> {
@@ -49,7 +50,8 @@ export class NoteConverter {
 				const isReblogged = user ? Notes.exist({
 					where: {
 						userId: user.id,
-						renoteId: note.id
+						renoteId: note.id,
+						text: IsNull(),
 					}
 				}) : null;
 
