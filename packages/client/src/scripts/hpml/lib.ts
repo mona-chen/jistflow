@@ -22,10 +22,10 @@ Chart.pluginService.register({
 
 export function initAiLib(hpml: Hpml) {
 	return {
-		"MkPages:updated": values.FN_NATIVE(([callback]) => {
+		"Pages:updated": values.FN_NATIVE(([callback]) => {
 			hpml.pageVarUpdatedCallback = callback as values.VFn;
 		}),
-		"MkPages:get_canvas": values.FN_NATIVE(([id]) => {
+		"Pages:get_canvas": values.FN_NATIVE(([id]) => {
 			utils.assertString(id);
 			const canvas = hpml.canvases[id.value];
 			const ctx = canvas.getContext("2d");
@@ -152,7 +152,7 @@ export function initAiLib(hpml: Hpml) {
 				]),
 			);
 		}),
-		"MkPages:chart": values.FN_NATIVE(([id, opts]) => {
+		"Pages:chart": values.FN_NATIVE(([id, opts]) => {
 			/* TODO
 			utils.assertString(id);
 			utils.assertObject(opts);

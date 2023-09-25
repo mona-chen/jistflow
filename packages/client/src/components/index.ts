@@ -1,39 +1,39 @@
 import { App } from "vue";
 
-import Mfm from "./global/MkMisskeyFlavoredMarkdown.vue";
-import MkA from "./global/MkA.vue";
-import MkAcct from "./global/MkAcct.vue";
-import MkAvatar from "./global/MkAvatar.vue";
-import MkEmoji from "./global/MkEmoji.vue";
-import MkUserName from "./global/MkUserName.vue";
-import MkEllipsis from "./global/MkEllipsis.vue";
-import MkTime from "./global/MkTime.vue";
-import MkUrl from "./global/MkUrl.vue";
+import Mfm from "./global/MisskeyFlavoredMarkdown.vue";
+import A from "./global/Anchor.vue";
+import Acct from "./global/Acct.vue";
+import Avatar from "./global/Avatar.vue";
+import Emoji from "./global/Emoji.vue";
+import UserName from "./global/UserName.vue";
+import Ellipsis from "./global/Ellipsis.vue";
+import Time from "./global/Time.vue";
+import Url from "./global/Url.vue";
 import I18n from "./global/i18n";
 import RouterView from "./global/RouterView.vue";
-import MkLoading from "./global/MkLoading.vue";
-import MkError from "./global/MkError.vue";
-import MkPageHeader from "./global/MkPageHeader.vue";
-import MkSpacer from "./global/MkSpacer.vue";
-import MkStickyContainer from "./global/MkStickyContainer.vue";
+import Loading from "./global/Loading.vue";
+import Error_ from "./global/Error.vue";
+import PageHeader from "./global/PageHeader.vue";
+import Spacer from "./global/Spacer.vue";
+import StickyContainer from "./global/StickyContainer.vue";
 
 export default function (app: App) {
 	app.component("I18n", I18n);
 	app.component("RouterView", RouterView);
 	app.component("Mfm", Mfm);
-	app.component("MkA", MkA);
-	app.component("MkAcct", MkAcct);
-	app.component("MkAvatar", MkAvatar);
-	app.component("MkEmoji", MkEmoji);
-	app.component("MkUserName", MkUserName);
-	app.component("MkEllipsis", MkEllipsis);
-	app.component("MkTime", MkTime);
-	app.component("MkUrl", MkUrl);
-	app.component("MkLoading", MkLoading);
-	app.component("MkError", MkError);
-	app.component("MkPageHeader", MkPageHeader);
-	app.component("MkSpacer", MkSpacer);
-	app.component("MkStickyContainer", MkStickyContainer);
+	app.component("A", A);
+	app.component("Acct", Acct);
+	app.component("Avatar", Avatar);
+	app.component("Emoji", Emoji);
+	app.component("UserName", UserName);
+	app.component("Ellipsis", Ellipsis);
+	app.component("Time", Time);
+	app.component("Url", Url);
+	app.component("Loading", Loading);
+	app.component("Error_", Error_);
+	app.component("PageHeader", PageHeader);
+	app.component("Spacer", Spacer);
+	app.component("StickyContainer", StickyContainer);
 }
 
 declare module "@vue/runtime-core" {
@@ -41,18 +41,18 @@ declare module "@vue/runtime-core" {
 		I18n: typeof I18n;
 		RouterView: typeof RouterView;
 		Mfm: typeof Mfm;
-		MkA: typeof MkA;
-		MkAcct: typeof MkAcct;
-		MkAvatar: typeof MkAvatar;
-		MkEmoji: typeof MkEmoji;
-		MkUserName: typeof MkUserName;
-		MkEllipsis: typeof MkEllipsis;
-		MkTime: typeof MkTime;
-		MkUrl: typeof MkUrl;
-		MkLoading: typeof MkLoading;
-		MkError: typeof MkError;
-		MkPageHeader: typeof MkPageHeader;
-		MkSpacer: typeof MkSpacer;
-		MkStickyContainer: typeof MkStickyContainer;
+		A: typeof A;
+		Acct: typeof Acct;
+		Avatar: typeof Avatar;
+		Emoji: typeof Emoji;
+		UserName: typeof UserName;
+		Ellipsis: typeof Ellipsis;
+		Time: typeof Time;
+		Url: typeof Url;
+		Loading: typeof Loading;
+		Error_: typeof Error_;
+		PageHeader: typeof PageHeader;
+		Spacer: typeof Spacer;
+		StickyContainer: typeof StickyContainer;
 	}
 }

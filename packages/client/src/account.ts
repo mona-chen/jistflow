@@ -157,7 +157,7 @@ export async function openAccountMenu(
 ) {
 	function showSigninDialog() {
 		popup(
-			defineAsyncComponent(() => import("@/components/MkSigninDialog.vue")),
+			defineAsyncComponent(() => import("@/components/SigninDialog.vue")),
 			{},
 			{
 				done: (res) => {
@@ -171,7 +171,7 @@ export async function openAccountMenu(
 
 	function createAccount() {
 		popup(
-			defineAsyncComponent(() => import("@/components/MkSignupDialog.vue")),
+			defineAsyncComponent(() => import("@/components/SignupDialog.vue")),
 			{},
 			{
 				done: (res) => {

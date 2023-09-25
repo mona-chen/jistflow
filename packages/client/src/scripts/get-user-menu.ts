@@ -193,9 +193,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 
 	function reportAbuse() {
 		os.popup(
-			defineAsyncComponent(
-				() => import("@/components/MkAbuseReportWindow.vue"),
-			),
+			defineAsyncComponent(() => import("@/components/AbuseReportWindow.vue")),
 			{
 				user: user,
 			},

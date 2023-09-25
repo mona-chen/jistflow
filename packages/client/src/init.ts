@@ -189,12 +189,12 @@ function checkForSplash() {
 
 	const app = createApp(
 		window.location.search === "?zen"
-			? defineAsyncComponent(() => import("@/ui/zen.vue"))
+			? defineAsyncComponent(() => import("@/ui/Zen.vue"))
 			: !$i
-			? defineAsyncComponent(() => import("@/ui/visitor.vue"))
+			? defineAsyncComponent(() => import("@/ui/Visitor.vue"))
 			: ui === "deck"
-			? defineAsyncComponent(() => import("@/ui/deck.vue"))
-			: defineAsyncComponent(() => import("@/ui/universal.vue")),
+			? defineAsyncComponent(() => import("@/ui/Deck.vue"))
+			: defineAsyncComponent(() => import("@/ui/Universal.vue")),
 	);
 
 	if (_DEV_) {
@@ -262,7 +262,7 @@ function checkForSplash() {
 				// ログインしてる場合だけ
 				if ($i) {
 					popup(
-						defineAsyncComponent(() => import("@/components/MkUpdated.vue")),
+						defineAsyncComponent(() => import("@/components/Updated.vue")),
 						{},
 						{},
 						"closed",
@@ -287,7 +287,7 @@ function checkForSplash() {
 				if (unreadAnnouncements.length > 3) {
 					popup(
 						defineAsyncComponent(
-							() => import("@/components/MkManyAnnouncements.vue"),
+							() => import("@/components/ManyAnnouncements.vue"),
 						),
 						{},
 						{},
@@ -298,7 +298,7 @@ function checkForSplash() {
 						if (item.showPopup)
 							popup(
 								defineAsyncComponent(
-									() => import("@/components/MkAnnouncement.vue"),
+									() => import("@/components/Announcement.vue"),
 								),
 								{ announcement: item },
 								{},
@@ -382,13 +382,12 @@ function checkForSplash() {
 		{ immediate: true },
 	);
 
-	watch(
-		defaultStore.reactiveState.useBlurEffect,
-		() => {
-			const theme = defaultStore.state.darkMode ? ColdDeviceStorage.get("darkTheme") : ColdDeviceStorage.get("lightTheme");
-			applyTheme(theme);
-		}
-	);
+	watch(defaultStore.reactiveState.useBlurEffect, () => {
+		const theme = defaultStore.state.darkMode
+			? ColdDeviceStorage.get("darkTheme")
+			: ColdDeviceStorage.get("lightTheme");
+		applyTheme(theme);
+	});
 
 	let reloadDialogShowing = false;
 	stream.on("_disconnected_", async () => {

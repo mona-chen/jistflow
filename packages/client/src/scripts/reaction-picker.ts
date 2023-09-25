@@ -13,9 +13,7 @@ class ReactionPicker {
 
 	public async init() {
 		await popup(
-			defineAsyncComponent(
-				() => import("@/components/MkEmojiPickerDialog.vue"),
-			),
+			defineAsyncComponent(() => import("@/components/EmojiPickerDialog.vue")),
 			{
 				src: this.src,
 				asReactionPicker: true,

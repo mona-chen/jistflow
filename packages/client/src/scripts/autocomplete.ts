@@ -170,7 +170,7 @@ export class Autocomplete {
 			const _q = ref(q);
 
 			const { dispose } = await popup(
-				defineAsyncComponent(() => import("@/components/MkAutocomplete.vue")),
+				defineAsyncComponent(() => import("@/components/Autocomplete.vue")),
 				{
 					textarea: this.textarea,
 					close: this.close,

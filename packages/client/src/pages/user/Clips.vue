@@ -1,0 +1,59 @@
+<template>
+	<Spacer :content-max="800">
+		<div class="pages-user-clips">
+			<Pagination
+				v-slot="{ items }"
+				ref="list"
+				:pagination="pagination"
+				class="list"
+			>
+				<A
+					v-for="item in items"
+					:key="item.id"
+					:to="`/clips/${item.id}`"
+					class="item _panel _gap"
+				>
+					<b>{{ item.name }}</b>
+					<div v-if="item.description" class="description">
+						{{ item.description }}
+					</div>
+				</A>
+			</Pagination>
+		</div>
+	</Spacer>
+</template>
+
+<script lang="ts" setup>
+import { computed } from "vue";
+import * as misskey from "iceshrimp-js";
+import Pagination from "@/components/Pagination.vue";
+
+const props = defineProps<{
+	user: misskey.entities.User;
+}>();
+
+const pagination = {
+	endpoint: "users/clips" as const,
+	limit: 20,
+	params: computed(() => ({
+		userId: props.user.id,
+	})),
+};
+</script>
+
+<style lang="scss" scoped>
+.pages-user-clips {
+	> .list {
+		> .item {
+			display: block;
+			padding: 16px;
+
+			> .description {
+				margin-top: 8px;
+				padding-top: 8px;
+				border-top: solid 0.5px var(--divider);
+			}
+		}
+	}
+}
+</style>

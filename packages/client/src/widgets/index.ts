@@ -2,96 +2,96 @@ import { App, defineAsyncComponent } from "vue";
 
 export default function (app: App) {
 	app.component(
-		"MkwMemo",
-		defineAsyncComponent(() => import("./memo.vue")),
+		"wMemo",
+		defineAsyncComponent(() => import("./Memo.vue")),
 	);
 	app.component(
-		"MkwNotifications",
-		defineAsyncComponent(() => import("./notifications.vue")),
+		"wNotifications",
+		defineAsyncComponent(() => import("./Notifications.vue")),
 	);
 	app.component(
-		"MkwTimeline",
-		defineAsyncComponent(() => import("./timeline.vue")),
+		"wTimeline",
+		defineAsyncComponent(() => import("./Timeline.vue")),
 	);
 	app.component(
-		"MkwCalendar",
-		defineAsyncComponent(() => import("./calendar.vue")),
+		"wCalendar",
+		defineAsyncComponent(() => import("./Calendar.vue")),
 	);
 	app.component(
-		"MkwRss",
-		defineAsyncComponent(() => import("./rss.vue")),
+		"wRss",
+		defineAsyncComponent(() => import("./Rss.vue")),
 	);
 	app.component(
-		"MkwRssTicker",
-		defineAsyncComponent(() => import("./rss-ticker.vue")),
+		"wRssTicker",
+		defineAsyncComponent(() => import("./RssTicker.vue")),
 	);
 	app.component(
-		"MkwTrends",
-		defineAsyncComponent(() => import("./trends.vue")),
+		"wTrends",
+		defineAsyncComponent(() => import("./Trends.vue")),
 	);
 	app.component(
-		"MkwClock",
-		defineAsyncComponent(() => import("./clock.vue")),
+		"wClock",
+		defineAsyncComponent(() => import("./Clock.vue")),
 	);
 	app.component(
-		"MkwActivity",
-		defineAsyncComponent(() => import("./activity.vue")),
+		"wActivity",
+		defineAsyncComponent(() => import("./Activity.vue")),
 	);
 	app.component(
-		"MkwPhotos",
-		defineAsyncComponent(() => import("./photos.vue")),
+		"wPhotos",
+		defineAsyncComponent(() => import("./Photos.vue")),
 	);
 	app.component(
-		"MkwDigitalClock",
-		defineAsyncComponent(() => import("./digital-clock.vue")),
+		"wDigitalClock",
+		defineAsyncComponent(() => import("./DigitalClock.vue")),
 	);
 	app.component(
-		"MkwUnixClock",
-		defineAsyncComponent(() => import("./unix-clock.vue")),
+		"wUnixClock",
+		defineAsyncComponent(() => import("./UnixClock.vue")),
 	);
 	app.component(
-		"MkwFederation",
-		defineAsyncComponent(() => import("./federation.vue")),
+		"wFederation",
+		defineAsyncComponent(() => import("./Federation.vue")),
 	);
 	app.component(
-		"MkwPostForm",
-		defineAsyncComponent(() => import("./post-form.vue")),
+		"wPostForm",
+		defineAsyncComponent(() => import("./PostForm.vue")),
 	);
 	app.component(
-		"MkwSlideshow",
-		defineAsyncComponent(() => import("./slideshow.vue")),
+		"wSlideshow",
+		defineAsyncComponent(() => import("./Slideshow.vue")),
 	);
 	app.component(
-		"MkwServerMetric",
-		defineAsyncComponent(() => import("./server-metric/index.vue")),
+		"wServerMetric",
+		defineAsyncComponent(() => import("./server-metric/Index.vue")),
 	);
 	app.component(
-		"MkwOnlineUsers",
-		defineAsyncComponent(() => import("./online-users.vue")),
+		"wOnlineUsers",
+		defineAsyncComponent(() => import("./OnlineUsers.vue")),
 	);
 	app.component(
-		"MkwJobQueue",
-		defineAsyncComponent(() => import("./job-queue.vue")),
+		"wJobQueue",
+		defineAsyncComponent(() => import("./JobQueue.vue")),
 	);
 	app.component(
-		"MkwInstanceCloud",
-		defineAsyncComponent(() => import("./instance-cloud.vue")),
+		"wInstanceCloud",
+		defineAsyncComponent(() => import("./InstanceCloud.vue")),
 	);
 	app.component(
-		"MkwButton",
-		defineAsyncComponent(() => import("./button.vue")),
+		"wButton",
+		defineAsyncComponent(() => import("./Button.vue")),
 	);
 	app.component(
-		"MkwAiscript",
-		defineAsyncComponent(() => import("./aiscript.vue")),
+		"wAiscript",
+		defineAsyncComponent(() => import("./Aiscript.vue")),
 	);
 	app.component(
-		"MkwUserList",
-		defineAsyncComponent(() => import("./user-list.vue")),
+		"wUserList",
+		defineAsyncComponent(() => import("./UserList.vue")),
 	);
 	app.component(
-		"MkwServerInfo",
-		defineAsyncComponent(() => import("./server-info.vue")),
+		"wServerInfo",
+		defineAsyncComponent(() => import("./ServerInfo.vue")),
 	);
 }
 
