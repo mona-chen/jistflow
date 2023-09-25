@@ -1,8 +1,7 @@
 import { Note } from "@/models/entities/note.js";
 import { ILocalUser } from "@/models/entities/user.js";
 import { Followings, Notes } from "@/models/index.js";
-import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import { Brackets, SelectQueryBuilder } from "typeorm";
+import { Brackets } from "typeorm";
 import { generateChannelQuery } from "@/server/api/common/generate-channel-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
@@ -13,24 +12,15 @@ import { generateMutedUserRenotesQueryForNotes } from "@/server/api/common/gener
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { ApiError } from "@/server/api/error.js";
 import { meta } from "@/server/api/endpoints/notes/global-timeline.js";
-import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 
 export class TimelineHelpers {
 	public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
 		if (limit > 40) limit = 40;
 
-		const hasFollowing =
-			(await Followings.count({
-				where: {
-					followerId: user.id,
-				},
-				take: 1,
-			})) !== 0;
-
-		const followingQuery = Followings.createQueryBuilder("following")
-			.select("following.followeeId")
-			.where("following.followerId = :followerId", {followerId: user.id});
+		const followingIds = await Followings.findBy({
+				followerId: user.id
+			}).then(res => res.map(p => p.followeeId));
 
 		const query = PaginationHelpers.makePaginationQuery(
 			Notes.createQueryBuilder("note"),
@@ -41,22 +31,11 @@ export class TimelineHelpers {
 			.andWhere(
 				new Brackets((qb) => {
 					qb.where("note.userId = :meId", {meId: user.id});
-					if (hasFollowing)
-						qb.orWhere(`note.userId IN (${followingQuery.getQuery()})`);
+					qb.orWhere(`note.userId IN (:...followingIds)`, {followingIds: followingIds});
 				}),
 			)
-			.innerJoinAndSelect("note.user", "user")
-			.leftJoinAndSelect("user.avatar", "avatar")
-			.leftJoinAndSelect("user.banner", "banner")
 			.leftJoinAndSelect("note.reply", "reply")
-			.leftJoinAndSelect("note.renote", "renote")
-			.leftJoinAndSelect("reply.user", "replyUser")
-			.leftJoinAndSelect("replyUser.avatar", "replyUserAvatar")
-			.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
-			.leftJoinAndSelect("renote.user", "renoteUser")
-			.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
-			.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner")
-			.setParameters(followingQuery.getParameters());
+			.leftJoinAndSelect("note.renote", "renote");
 
 		generateChannelQuery(query, user);
 		generateRepliesQuery(query, true, user);
@@ -98,17 +77,8 @@ export class TimelineHelpers {
 		if (!local) query.andWhere("note.channelId IS NULL");
 
 		query
-			.innerJoinAndSelect("note.user", "user")
-			.leftJoinAndSelect("user.avatar", "avatar")
-			.leftJoinAndSelect("user.banner", "banner")
 			.leftJoinAndSelect("note.reply", "reply")
-			.leftJoinAndSelect("note.renote", "renote")
-			.leftJoinAndSelect("reply.user", "replyUser")
-			.leftJoinAndSelect("replyUser.avatar", "replyUserAvatar")
-			.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
-			.leftJoinAndSelect("renote.user", "renoteUser")
-			.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
-			.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner");
+			.leftJoinAndSelect("note.renote", "renote");
 
 		generateRepliesQuery(query, true, user);
 		if (user) {

@@ -51,17 +51,8 @@ export class UserHelpers {
 		if (excludeReblogs) query.andWhere("(note.renoteId IS NOT NULL) OR (note.text IS NOT NULL)");
 
 		query
-			.innerJoinAndSelect("note.user", "user")
-			.leftJoinAndSelect("user.avatar", "avatar")
-			.leftJoinAndSelect("user.banner", "banner")
 			.leftJoinAndSelect("note.reply", "reply")
-			.leftJoinAndSelect("note.renote", "renote")
-			.leftJoinAndSelect("reply.user", "replyUser")
-			.leftJoinAndSelect("replyUser.avatar", "replyUserAvatar")
-			.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
-			.leftJoinAndSelect("renote.user", "renoteUser")
-			.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
-			.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner");
+			.leftJoinAndSelect("note.renote", "renote");
 
 		//FIXME this doesn't exclude replies to your own reply to someone else's post
 		generateRepliesQuery(query, !excludeReplies, localUser);

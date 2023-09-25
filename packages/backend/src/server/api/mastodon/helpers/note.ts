@@ -16,10 +16,7 @@ export class NoteHelpers {
 			.andWhere(
 				"note.id IN (SELECT id FROM note_replies(:noteId, :depth, :limit))",
 				{noteId, depth, limit},
-			)
-			.innerJoinAndSelect("note.user", "user")
-			.leftJoinAndSelect("user.avatar", "avatar")
-			.leftJoinAndSelect("user.banner", "banner");
+			);
 
 		generateVisibilityQuery(query, user);
 		if (user) {
