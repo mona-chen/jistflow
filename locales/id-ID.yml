@@ -1923,9 +1923,9 @@ moderation: Moderasi
 userSaysSomethingReason: '{name} mengatakan {reason}'
 secureMode: Mode Aman (Pengambilan Terotorisasi)
 secureModeInfo: Saat meminta dari server lain, jangan kirim kembali tanpa bukti.
-privateModeInfo: Saat aktif, hanya server yang masuk daftar putih dapat terfederasi
-  dengan servermu. Semua postingan akan disembunyikan dari publik.
-allowedInstances: Server Masuk Daftar Putih
+privateModeInfo: Saat aktif, hanya server yang masuk daftar yang diizinkan yang dapat
+  terfederasi dengan servermu. Semua postingan akan disembunyikan dari publik.
+allowedInstances: Daftar Server Diizinkan
 newer: lebih baru
 userSaysSomethingReasonReply: '{name} membalas postingan berisi {reason}'
 userSaysSomethingReasonRenote: '{name} memposting ulang postingan berisi {reason}'
@@ -1935,8 +1935,8 @@ jumpToPrevious: Lompat ke sebelumnya
 flagSpeakAsCatDescription: Postinganmu akan nyampak dalam mode kucing
 cw: Peringatan konten
 flagSpeakAsCat: Bicara sebagai kucing
-allowedInstancesDescription: Host server akan masuk daftar putih untuk federasi, mereka
-  dipisahkan dengan baris baru (hanya diterapkan pada mode pribadi).
+allowedInstancesDescription: Server host akan masuk daftar yang diizinkan untuk federasi,
+  mereka dipisahkan dengan baris baru (hanya diterapkan pada mode pribadi).
 xl: XL
 privateMode: Mode Pribadi
 seperateRenoteQuote: Tombol posting ulang dan kutip terpisah
