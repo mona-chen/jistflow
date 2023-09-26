@@ -901,7 +901,8 @@ _accountDelete:
     caricato.
 _ad:
   back: "Indietro"
-  reduceFrequencyOfThisAd: "Mostra meno spesso questa pubblicità"
+  reduceFrequencyOfThisAd: "Mostra meno spesso questo banner"
+  adsBy: Banner della comunità da {by}
 _forgotPassword:
   enterEmail: "Inserisci l'e-mail che hai registrato nel tuo profilo. Il link di ripristino
     della password verrà inviato a questo indirizzo."
@@ -1997,11 +1998,11 @@ secureMode: Modalità sicura (Acquisizione autorizzata)
 secureModeInfo: Le richieste dai server remoti non ricevono risposta senza prima una
   verifica.
 privateMode: Modalità privata
-allowedInstancesDescription: Gli host dei server che saranno federati in esclusiva,
+allowedInstancesDescription: Gli host dei server con cui sarà permessa la federazione,
   uno per riga (funziona solo in modalità privata).
-privateModeInfo: Se abilitata, solo i server in una whitelist potranno essere federati
+privateModeInfo: Se abilitata, solo i server nell'elenco potranno essere federati
   con questo server. Tutti i post saranno nascosti al pubblico.
-allowedInstances: Whitelist dei server
+allowedInstances: Elenco server permessi
 customCssWarn: Questa impostazione dovrebbe essere usata solo se sai cosa stai facendo.
   Inserire valori errati potrebbe bloccare il funzionamento del client.
 lastCommunication: Ultima comunicazione
@@ -2170,3 +2171,4 @@ languageForTranslation: Linguaggio di traduzione dei post
 openServerInfo: Mostra informazioni sul server cliccando sul riquadro del server in
   un post
 vibrate: Abilita la vibrazione
+clickToShowPatterns: Clicca per vedere i pattern del modulo
