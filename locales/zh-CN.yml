@@ -58,7 +58,7 @@ followRequestAccepted: "关注请求已通过"
 mention: "提及"
 mentions: "提及"
 directNotes: "私信"
-importAndExport: "导入/导出数据"
+importAndExport: "导入 / 导出数据"
 import: "导入"
 export: "导出"
 files: "文件"
@@ -675,7 +675,7 @@ driveFilesCount: "网盘的文件数"
 driveUsage: "网盘的空间用量"
 noCrawle: "要求搜索引擎不索引该用户"
 noCrawleDescription: "要求外部搜索引擎不收录（索引）您的内容。"
-lockedAccountInfo: "即使通过了关注请求，只要您不将帖子可见范围设置成“关注者”，任何人都可以看到您的帖子。"
+lockedAccountInfo: "即使通过了关注请求，只要您不将帖子可见范围设置成「关注者」，任何人都可以看到您的帖子。"
 alwaysMarkSensitive: "默认将媒体文件标记为敏感内容"
 loadRawImages: "加载原始图像而不是显示缩略图"
 disableShowingAnimatedImages: "不播放动画"
@@ -1245,7 +1245,7 @@ _tutorial:
   step6_1: "那么，这里是什么地方？"
   step6_2: "好吧，您不只是加入 Firefish。您已经加入了 Fediverse 的一个门户，这是一个由成千上万台服务器组成的互联网络。"
   step6_3: "每个服务器的工作方式不同，并不是所有的服务器都运行 Firefish。但这个服务器是的! 这有点复杂，但您很快就会明白的。"
-  step6_4: "现在，去吧，去探索，去享受乐趣吧!"
+  step6_4: "现在，去吧，去探索，去享受乐趣吧！"
 _2fa:
   alreadyRegistered: "您已经注册了两步验证设备。"
   registerTOTP: "注册身份验证器应用"
@@ -1917,7 +1917,7 @@ _skinTones:
 isModerator: 监察员
 isAdmin: 管理员
 findOtherInstance: 寻找其它服务器
-moveFromDescription: 这将为您的旧账号设置一个别名，以便您可以从该旧账号迁移到当前账号。在从旧账号迁移之前执行此操作。请输入格式如@person@server.com
+moveFromDescription: 这将为您的旧账号设置一个别名，以便您可以从该旧账号迁移到当前账号。在从旧账号迁移之前执行此操作。请输入格式如 @person@server.com
   的账号标签
 indexPosts: 索引帖子
 signupsDisabled: 该服务器目前关闭注册，但您随时可以在另一台服务器上注册！如果您有该服务器的邀请码，请在下面输入。
