@@ -1441,7 +1441,8 @@ _accountDelete:
   requestAccountDelete: Sol·licitar la supressió del compte
 _ad:
   back: Enrera
-  reduceFrequencyOfThisAd: Mostrar aquest anunci menys
+  reduceFrequencyOfThisAd: Mostrar menys aquest anunci
+  adsBy: Anunci comunitari per {by}
 _gallery:
   my: La meva Galeria
   liked: Publicacions que m'han agradat
@@ -1539,8 +1540,8 @@ low: Baixa
 emailNotConfiguredWarning: L'adreça de correu electrònic no està definida.
 instanceSecurity: Seguretat del servidor
 privateMode: Mode Privat
-allowedInstances: Servidors a la llista blanca
-allowedInstancesDescription: Llista blanca de Hosts amb qui federar, cadascún separat
+allowedInstances: Servidors permesos
+allowedInstancesDescription: Llista permesa de Hosts amb qui federar, cadascún separat
   per una línia nova (només s'aplica en mode privat).
 previewNoteText: Mostra la vista prèvia
 customCss: CSS personalitzat
@@ -1646,8 +1647,8 @@ customCssWarn: Aquesta configuració només s'ha d'utilitzar si sabeu què fa. L
 squareAvatars: Mostra avatars quadrats
 secureModeInfo: Quan es faci una solicitut d'altres servidors no contestar sense una
   prova.
-privateModeInfo: Quan està activat, només els servidors a la llista blanca es poden
-  federar amb el vostre servidor. Totes les publicacions s'amagaran al públic.
+privateModeInfo: Quan està activat, només els servidors a la llista es poden federar
+  amb el vostre servidor. Totes les publicacions s'amagaran al públic.
 useBlurEffect: Utilitzeu efectes de desenfocament a la interfície d'usuari
 accountDeletionInProgress: La supressió del compte està en curs
 unmuteThread: Desfés el silenci al fil
