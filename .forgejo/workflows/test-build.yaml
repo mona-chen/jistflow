@@ -25,11 +25,7 @@ jobs:
       - name: Build the shrimp
         run: |
           cd /iceshrimp
-          cp -Trp /iceshrimp-caches/built packages/backend/native-utils/built
-          cp -Trp /iceshrimp-caches/target packages/backend/native-utils/target
           yarn build:debug
-          rm -rf /iceshrimp-caches/built/* && cp -Trp packages/backend/native-utils/built /iceshrimp-caches/built
-          rm -rf /iceshrimp-caches/target/* && cp -Trp packages/backend/native-utils/target /iceshrimp-caches/target
       - name: Test the shrimp
         run: |
           cd /iceshrimp

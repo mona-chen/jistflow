@@ -6,7 +6,6 @@ This document will guide you through manual installation of Iceshrimp on dev bra
 
 ### Build
 
-- **Rust** 1.68+
 - C/C++ compiler like **GCC** or **Clang**
 - Build tools like **make**
 - **Python 3**
