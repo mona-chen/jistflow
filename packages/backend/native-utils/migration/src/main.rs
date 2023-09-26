@@ -9,9 +9,6 @@ const DB_URL_ENV: &str = "DATABASE_URL";
 const CACHE_URL_ENV: &str = "CACHE_URL";
 const CACHE_PREFIX_ENV: &str = "CACHE_PREFIX";
 
-#[cfg(feature = "convert")]
-mod vec_to_json;
-
 #[tokio::main]
 async fn main() {
     let cwd = env::current_dir().unwrap();
@@ -65,9 +62,6 @@ async fn main() {
     }
 
     cli::run_cli(migration::Migrator).await;
-
-    #[cfg(feature = "convert")]
-    vec_to_json::convert().await;
 }
 
 #[derive(Debug, PartialEq, Deserialize)]

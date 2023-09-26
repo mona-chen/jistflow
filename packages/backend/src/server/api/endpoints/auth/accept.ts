@@ -38,7 +38,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	// Generate access token
-	const accessToken = secureRndstr(32, true);
+	const accessToken = secureRndstr(32);
 
 	// Fetch exist access token
 	const exist = await AccessTokens.exist({

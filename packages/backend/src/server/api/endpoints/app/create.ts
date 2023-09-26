@@ -41,7 +41,7 @@ export default define(meta, paramDef, async (ps, user) => {
 			includeSecret: true,
 		});
 	// Generate secret
-	const secret = secureRndstr(32, true);
+	const secret = secureRndstr(32);
 
 	// for backward compatibility
 	const permission = unique(

@@ -25,10 +25,7 @@ import discord from "./service/discord.js";
 import github from "./service/github.js";
 import twitter from "./service/twitter.js";
 import { koaBody } from "koa-body";
-import {
-	convertId,
-	IdConvertType as IdType,
-} from "../../../native-utils/built/index.js";
+import { convertId, IdType } from "@/misc/convert-id.js";
 import { convertAttachment } from "./mastodon/converters.js";
 
 // re-export native rust id conversion (function and enum)

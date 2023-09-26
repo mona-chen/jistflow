@@ -44,7 +44,7 @@ export const paramDef = {
 
 export default define(meta, paramDef, async (ps, user) => {
 	// Generate access token
-	const accessToken = secureRndstr(32, true);
+	const accessToken = secureRndstr(32);
 
 	const now = new Date();
 
