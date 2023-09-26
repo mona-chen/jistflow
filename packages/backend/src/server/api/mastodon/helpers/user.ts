@@ -18,6 +18,12 @@ export type AccountCache = {
 	users: User[];
 };
 
+export type LinkPaginationObject<T> = {
+	data: T;
+	maxId?: string | undefined;
+	minId?: string | undefined;
+}
+
 export class UserHelpers {
 	public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {
 		if (limit > 40) limit = 40;
@@ -70,22 +76,22 @@ export class UserHelpers {
 		return NoteHelpers.execQuery(query, limit, minId !== undefined);
 	}
 
-	public static async getUserFollowers(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<User[]> {
+	public static async getUserFollowers(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
 		if (limit > 80) limit = 80;
 
 		const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 		if (profile.ffVisibility === "private") {
-			if (!localUser || user.id != localUser.id) return [];
+			if (!localUser || user.id != localUser.id) return { data: [] };
 		}
 		else if (profile.ffVisibility === "followers") {
-			if (!localUser) return [];
+			if (!localUser) return { data: [] };
 			const isFollowed = await Followings.exist({
 				where: {
 					followeeId: user.id,
 					followerId: localUser.id,
 				},
 			});
-			if (!isFollowed) return [];
+			if (!isFollowed) return { data: [] };
 		}
 
 		const query = PaginationHelpers.makePaginationQuery(
@@ -97,7 +103,15 @@ export class UserHelpers {
 			.andWhere("following.followeeId = :userId", { userId: user.id })
 			.innerJoinAndSelect("following.follower", "follower");
 
-		return query.take(limit).getMany().then(p => p.map(p => p.follower).filter(p => p) as User[]);
+		return query.take(limit).getMany().then(p => {
+			if (minId !== undefined) p = p.reverse();
+
+			return {
+				data: p.map(p => p.follower).filter(p => p) as User[],
+				maxId: p.map(p => p.id).at(-1),
+				minId: p.map(p => p.id)[0],
+			};
+		});
 	}
 
 	public static async getUserCached(id: string, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<User> {

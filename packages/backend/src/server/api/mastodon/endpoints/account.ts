@@ -1,23 +1,14 @@
-import { Users } from "@/models/index.js";
-import { resolveUser } from "@/remote/resolve-user.js";
 import Router from "@koa/router";
-import { FindOptionsWhere, IsNull } from "typeorm";
 import { getClient } from "../ApiMastodonCompatibleService.js";
 import { argsToBools, convertTimelinesArgsId, limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { convertId, IdType } from "../../index.js";
-import {
-	convertAccount,
-	convertFeaturedTag,
-	convertList,
-	convertRelationship,
-	convertStatus,
-} from "../converters.js";
-import { getNote, getUser } from "@/server/api/common/getters.js";
+import { convertAccount, convertFeaturedTag, convertList, convertRelationship, convertStatus, } from "../converters.js";
+import { getUser } from "@/server/api/common/getters.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import authenticate from "@/server/api/authenticate.js";
-import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import config from "@/config/index.js";
 
 const relationshipModel = {
 	id: "",
@@ -207,10 +198,24 @@ export function apiAccountMastodon(router: Router): void {
 				const query = await UserHelpers.getUserCached(userId, cache);
 				const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
 
-				const followers = await UserHelpers.getUserFollowers(query, user, args.max_id, args.since_id, args.min_id, args.limit)
-					.then(f => UserConverter.encodeMany(f, cache));
+				const res = await UserHelpers.getUserFollowers(query, user, args.max_id, args.since_id, args.min_id, args.limit);
+				const followers = await UserConverter.encodeMany(res.data, cache);
 
 				ctx.body = followers.map((account) => convertAccount(account));
+
+				const link: string[] = [];
+				const limit = args.limit ?? 40;
+				if (res.maxId) {
+					const l = `<${config.url}/api/v1/accounts/${ctx.params.id}/followers?limit=${limit}&max_id=${convertId(res.maxId, IdType.MastodonId)}>; rel="next"`;
+					link.push(l);
+				}
+				if (res.minId) {
+					const l = `<${config.url}/api/v1/accounts/${ctx.params.id}/followers?limit=${limit}&min_id=${convertId(res.minId, IdType.MastodonId)}>; rel="prev"`;
+					link.push(l);
+				}
+				if (link.length > 0){
+					ctx.response.append('Link', link.join(', '));
+				}
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
