@@ -25,6 +25,43 @@
 	//--ad: rgb(255 169 0 / 10%);
 }
 
+/* atkinson-hyperlegible-regular - latin_latin-ext */
+@font-face {
+	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+	font-family: "Atkinson Hyperlegible";
+	font-style: normal;
+	font-weight: 400;
+	src: url("/static-assets/fonts/atkinson-hyperlegible-v11-latin_latin-ext-regular.woff2")
+		format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* atkinson-hyperlegible-italic - latin_latin-ext */
+@font-face {
+	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+	font-family: "Atkinson Hyperlegible";
+	font-style: italic;
+	font-weight: 400;
+	src: url("/static-assets/fonts/atkinson-hyperlegible-v11-latin_latin-ext-italic.woff2")
+		format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* atkinson-hyperlegible-700 - latin_latin-ext */
+@font-face {
+	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+	font-family: "Atkinson Hyperlegible";
+	font-style: normal;
+	font-weight: 700;
+	src: url("/static-assets/fonts/atkinson-hyperlegible-v11-latin_latin-ext-700.woff2")
+		format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* atkinson-hyperlegible-700italic - latin_latin-ext */
+@font-face {
+	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+	font-family: "Atkinson Hyperlegible";
+	font-style: italic;
+	font-weight: 700;
+	src: url("/static-assets/fonts/atkinson-hyperlegible-v11-latin_latin-ext-700italic.woff2")
+		format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
 ::selection {
 	color: #fff;
 	background-color: var(--accent);
@@ -39,7 +76,8 @@ html {
 	accent-color: var(--accent);
 	overflow: auto;
 	overflow-wrap: break-word;
-	font-family: Roboto, HelveticaNeue, Arial, sans-serif;
+	font-family: "Atkinson Hyperlegible", Roboto, HelveticaNeue, Arial,
+		sans-serif;
 	font-size: 14px;
 	line-height: 1.6;
 	text-size-adjust: 100%;
@@ -50,8 +88,8 @@ html {
 	-webkit-text-size-adjust: none;
 
 	&.useCJKFont {
-		font-family: "Hiragino Maru Gothic Pro", "BIZ UDGothic", Roboto,
-			HelveticaNeue, Arial, sans-serif;
+		font-family: "Hiragino Maru Gothic Pro", "BIZ UDGothic",
+			"Atkinson Hyperlegible", Roboto, HelveticaNeue, Arial, sans-serif;
 	}
 
 	&.useSystemFont {
