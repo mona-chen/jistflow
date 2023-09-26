@@ -85,8 +85,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4
       pnpm:
-        specifier: 8.7.1
-        version: 8.7.1
+        specifier: 8.8.0
+        version: 8.8.0
       start-server-and-test:
         specifier: 1.15.2
         version: 1.15.2
@@ -742,7 +742,7 @@ importers:
         version: 2.30.0
       emojilib:
         specifier: github:thatonecalculator/emojilib
-        version: github.com/thatonecalculator/emojilib/d3c8c6a77d4362b3b3180099f1d2eac344ce245c
+        version: github.com/thatonecalculator/emojilib/c3c82a3c8f360e1ec567c61012b95d23f0d22175
       escape-regexp:
         specifier: 0.0.1
         version: 0.0.1
@@ -15186,8 +15186,8 @@ packages:
     engines: {node: '>=14.19.0'}
     dev: false
 
-  /pnpm@8.7.1:
-    resolution: {integrity: sha512-Qbt3EhYUaXFS2k4FLQA7r2/eYz/JoDeG680/3UXG0Ga03LPuY4GgdvCLe+zO3M7ZnWG4VI4bAwk7QpJyfr5eqA==}
+  /pnpm@8.8.0:
+    resolution: {integrity: sha512-eY5rMiZpzmPI2oVr1irR97bzb036oKwCWvK91wDQndXcqUPlytPtrF0bO668Syw/uA+7hTf5NnM8Mr4ux4BRRA==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
@@ -19461,8 +19461,8 @@ packages:
       url-polyfill: 1.1.12
     dev: true
 
-  github.com/thatonecalculator/emojilib/d3c8c6a77d4362b3b3180099f1d2eac344ce245c:
-    resolution: {tarball: https://codeload.github.com/thatonecalculator/emojilib/tar.gz/d3c8c6a77d4362b3b3180099f1d2eac344ce245c}
+  github.com/thatonecalculator/emojilib/c3c82a3c8f360e1ec567c61012b95d23f0d22175:
+    resolution: {tarball: https://codeload.github.com/thatonecalculator/emojilib/tar.gz/c3c82a3c8f360e1ec567c61012b95d23f0d22175}
     name: emojilib
     version: 3.0.10
     dev: true
