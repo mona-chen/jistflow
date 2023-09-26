@@ -12,15 +12,6 @@ const { join } = require("node:path");
 		force: true,
 	});
 
-	fs.rmSync(join(__dirname, "/../packages/backend/native-utils/built"), {
-		recursive: true,
-		force: true,
-	});
-	fs.rmSync(join(__dirname, "/../packages/backend/native-utils/node_modules"), {
-		recursive: true,
-		force: true,
-	});
-
 	fs.rmSync(join(__dirname, "/../packages/client/built"), {
 		recursive: true,
 		force: true,
@@ -63,11 +54,6 @@ const { join } = require("node:path");
 
 	execa("yarn", ["clean"], {
 		cwd: join(__dirname, "/../"),
-		stdio: "inherit",
-	});
-
-	execa("cargo", ["clean"], {
-		cwd: join(__dirname, "/../packages/backend/native-utils"),
 		stdio: "inherit",
 	});
 })();

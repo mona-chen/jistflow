@@ -20,10 +20,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/backend"\
       },\
       {\
-        "name": "native-utils",\
-        "reference": "workspace:packages/backend/native-utils"\
-      },\
-      {\
         "name": "client",\
         "reference": "workspace:packages/client"\
       },\
@@ -48,7 +44,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["iceshrimp", ["workspace:."]],\
       ["iceshrimp-js", ["workspace:packages/iceshrimp-js"]],\
       ["megalodon", ["workspace:packages/megalodon"]],\
-      ["native-utils", ["workspace:packages/backend/native-utils"]],\
       ["sw", ["workspace:packages/sw"]]\
     ],\
     "fallbackPool": [\
@@ -4951,10 +4946,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       [\
         "napi-build-utils",\
         "npm:1.0.2"\
-      ],\
-      [\
-        "native-utils",\
-        "link:native-utils::locator=backend%40workspace%3Apackages%2Fbackend"\
       ],\
       [\
         "natural-compare",\
@@ -15072,7 +15063,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mocha", "npm:10.2.0"],\
             ["msgpackr", "npm:1.9.5"],\
             ["multer", "npm:1.4.4-lts.1"],\
-            ["native-utils", "link:native-utils::locator=backend%40workspace%3Apackages%2Fbackend"],\
             ["nested-property", "npm:4.0.0"],\
             ["node-fetch", "npm:3.3.1"],\
             ["nodemailer", "npm:6.9.3"],\
@@ -26948,23 +26938,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["napi-build-utils", "npm:1.0.2"]\
           ],\
           "linkType": "HARD"\
-        }]\
-      ]],\
-      ["native-utils", [\
-        ["link:native-utils::locator=backend%40workspace%3Apackages%2Fbackend", {\
-          "packageLocation": "./packages/backend/native-utils/",\
-          "packageDependencies": [\
-            ["native-utils", "link:native-utils::locator=backend%40workspace%3Apackages%2Fbackend"]\
-          ],\
-          "linkType": "SOFT",\
-          "discardFromLookup": true\
-        }],\
-        ["workspace:packages/backend/native-utils", {\
-          "packageLocation": "./packages/backend/native-utils/",\
-          "packageDependencies": [\
-            ["native-utils", "workspace:packages/backend/native-utils"]\
-          ],\
-          "linkType": "SOFT"\
         }]\
       ]],\
       ["natural-compare", [\

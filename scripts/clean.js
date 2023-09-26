@@ -7,10 +7,6 @@ const { join } = require("node:path");
 		recursive: true,
 		force: true,
 	});
-	fs.rmSync(join(__dirname, "/../packages/backend/native-utils/built"), {
-		recursive: true,
-		force: true,
-	});
 	fs.rmSync(join(__dirname, "/../packages/client/built"), {
 		recursive: true,
 		force: true,

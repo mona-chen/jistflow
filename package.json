@@ -34,7 +34,6 @@
 	},
 	"workspaces": [
 		"packages/backend",
-		"packages/backend/native-utils",
 		"packages/client",
 		"packages/sw",
 		"packages/iceshrimp-js",

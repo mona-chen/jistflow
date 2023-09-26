@@ -5860,7 +5860,6 @@ __metadata:
     mocha: 10.2.0
     msgpackr: 1.9.5
     multer: 1.4.4-lts.1
-    native-utils: "link:native-utils"
     nested-property: 4.0.0
     node-fetch: 3.3.1
     nodemailer: 6.9.3
@@ -16038,18 +16037,6 @@ __metadata:
   checksum: 06c14271ee966e108d55ae109f340976a9556c8603e888037145d6522726aebe89dd0c861b4b83947feaf6d39e79e08817559e8693deedc2c94e82c5cbd090c7
   languageName: node
   linkType: hard
-
-"native-utils@link:native-utils::locator=backend%40workspace%3Apackages%2Fbackend":
-  version: 0.0.0-use.local
-  resolution: "native-utils@link:native-utils::locator=backend%40workspace%3Apackages%2Fbackend"
-  languageName: node
-  linkType: soft
-
-"native-utils@workspace:packages/backend/native-utils":
-  version: 0.0.0-use.local
-  resolution: "native-utils@workspace:packages/backend/native-utils"
-  languageName: unknown
-  linkType: soft
 
 "natural-compare-lite@npm:^1.4.0":
   version: 1.4.0
