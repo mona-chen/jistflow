@@ -2,7 +2,7 @@
 	<transition :name="$store.state.animation ? 'zoom' : ''" appear>
 		<div :class="$style.root">
 			<img
-				src="/static-assets/badges/info.avif"
+				src="/static-assets/badges/info.webp"
 				class="_ghost"
 				alt="Error"
 			/>

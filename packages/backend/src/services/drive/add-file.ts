@@ -93,7 +93,7 @@ async function save(
 			if (type === "image/png") ext = ".png";
 			if (type === "image/webp") ext = ".webp";
 			if (type === "image/apng") ext = ".apng";
-			if (type === "image/avif") ext = ".avif";
+			if (type === "image/avif") ext = ".webp";
 			if (type === "image/vnd.mozilla.apng") ext = ".apng";
 		}
 

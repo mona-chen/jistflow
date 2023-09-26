@@ -155,7 +155,7 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "/static-assets/badges/info.avif",
+				default: "/static-assets/badges/info.webp",
 			},
 			bannerUrl: {
 				type: "string",
@@ -166,7 +166,7 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "/static-assets/badges/error.avif",
+				default: "/static-assets/badges/error.webp",
 			},
 			iconUrl: {
 				type: "string",

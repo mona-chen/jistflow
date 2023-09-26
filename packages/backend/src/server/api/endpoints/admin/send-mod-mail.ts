@@ -49,7 +49,7 @@ export default define(meta, paramDef, async (ps) => {
 	createNotification(user.id, "app", {
 		customBody: ps.comment,
 		customHeader: "Moderation Notice",
-		customIcon: "/static-assets/badges/info.avif",
+		customIcon: "/static-assets/badges/info.webp",
 	});
 
 	setImmediate(async () => {

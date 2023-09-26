@@ -3,7 +3,7 @@
 		<template #empty>
 			<div class="_fullinfo">
 				<img
-					src="/static-assets/badges/not-found.avif"
+					src="/static-assets/badges/not-found.webp"
 					class="_ghost"
 					:alt="i18n.ts.notFound"
 				/>

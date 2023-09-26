@@ -3,7 +3,7 @@
 	<transition :name="$store.state.animation ? 'zoom' : ''" appear>
 		<div v-show="loaded" class="mjndxjch">
 			<img
-				src="/static-assets/badges/error.avif"
+				src="/static-assets/badges/error.webp"
 				class="_ghost"
 				alt="Error"
 			/>

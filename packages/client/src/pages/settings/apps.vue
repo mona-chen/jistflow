@@ -4,7 +4,7 @@
 			<template #empty>
 				<div class="_fullinfo">
 					<img
-						src="/static-assets/badges/info.avif"
+						src="/static-assets/badges/info.webp"
 						class="_ghost"
 						alt="Info"
 					/>
