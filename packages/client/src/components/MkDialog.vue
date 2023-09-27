@@ -54,7 +54,11 @@
 				<Mfm :text="i18n.ts.password" />
 			</header>
 			<div v-if="text" :class="$style.text">
-				<span v-if="isPlaintext === true">{{ text }}</span>
+				<span
+					v-if="isPlaintext === true"
+					style="white-space: pre-line"
+					>{{ text }}</span
+				>
 				<Mfm v-else :text="text" />
 			</div>
 			<MkInput
