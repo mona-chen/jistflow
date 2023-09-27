@@ -277,6 +277,7 @@ export function alert(props: {
 	type?: "error" | "info" | "success" | "warning" | "waiting" | "question";
 	title?: string | null;
 	text?: string | null;
+	isPlaintext?: boolean;
 }): Promise<void> {
 	return new Promise((resolve, reject) => {
 		if (props.text == null && props.type === "error") {
@@ -301,6 +302,7 @@ export function confirm(props: {
 	text?: string | null;
 	okText?: string;
 	cancelText?: string;
+	isPlaintext?: boolean;
 }): Promise<{ canceled: boolean }> {
 	return new Promise((resolve, reject) => {
 		popup(
@@ -323,6 +325,7 @@ export function yesno(props: {
 	type: "error" | "info" | "success" | "warning" | "waiting" | "question";
 	title?: string | null;
 	text?: string | null;
+	isPlaintext?: boolean;
 }): Promise<{ canceled: boolean }> {
 	return new Promise((resolve, reject) => {
 		popup(

@@ -54,7 +54,8 @@
 				<Mfm :text="i18n.ts.password" />
 			</header>
 			<div v-if="text" :class="$style.text">
-				<Mfm :text="text" />
+				<span v-if="isPlaintext === true">{{ text }}</span>
+				<Mfm v-else :text="text" />
 			</div>
 			<MkInput
 				v-if="input && input.type !== 'paragraph'"
@@ -245,6 +246,7 @@ const props = withDefaults(
 			| "search";
 		title: string;
 		text?: string;
+		isPlaintext?: boolean;
 		input?: Input;
 		select?: Select;
 		icon?: string;
@@ -268,6 +270,7 @@ const props = withDefaults(
 		isYesNo: false,
 
 		cancelableByBgClick: true,
+		isPlaintext: false,
 	},
 );
 

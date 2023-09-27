@@ -138,6 +138,7 @@ function captionPopup() {
 	os.alert({
 		type: "info",
 		text: props.media.comment,
+		isPlaintext: true,
 	});
 }
 
