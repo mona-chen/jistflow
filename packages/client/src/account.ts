@@ -97,9 +97,9 @@ function fetchAccount(token: string): Promise<Account> {
 			.then((res) => {
 				if (res.error) {
 					if (res.error.id === "a8c724b3-6e9c-4b46-b1a8-bc3ed6258370") {
-						showSuspendedDialog().then(() => {
-							signout();
-						});
+						showSuspendedDialog();
+						signout();
+						return;
 					} else {
 						alert({
 							type: "error",
@@ -113,6 +113,14 @@ function fetchAccount(token: string): Promise<Account> {
 				}
 			})
 			.catch(fail);
+	});
+}
+
+function showSuspendedDialog() {
+	alert({
+		type: "error",
+		title: i18n.ts.yourAccountSuspendedTitle,
+		text: i18n.ts.yourAccountSuspendedDescription,
 	});
 }
 
