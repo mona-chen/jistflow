@@ -953,7 +953,8 @@ _accountDelete:
   inProgress: "Penghapusan sedang dalam proses"
 _ad:
   back: "Kembali"
-  reduceFrequencyOfThisAd: "Tampilkan iklan ini lebih sedikit"
+  reduceFrequencyOfThisAd: "Tampilkan banner ini lebih sedikit"
+  adsBy: Banner komunitas oleh {by}
 _forgotPassword:
   enterEmail: "Masukkan alamat surel yang kamu gunakan pada saat mendaftar. Sebuah
     tautan untuk mengatur ulang kata sandi kamu akan dikirimkan ke alamat surel tersebut."
