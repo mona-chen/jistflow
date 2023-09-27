@@ -939,7 +939,7 @@ defineExpose({
 					padding: 8px;
 					opacity: 0.7;
 					&:disabled {
-						opacity: 0.5 !important;
+						opacity: 0.2 !important;
 					}
 					flex-grow: 1;
 					max-width: 3.5em;

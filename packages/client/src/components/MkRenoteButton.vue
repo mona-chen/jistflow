@@ -3,7 +3,7 @@
 		v-if="canRenote"
 		ref="buttonRef"
 		v-tooltip.noDelay.bottom="i18n.ts.renote"
-		class="button _button canRenote"
+		class="button _button"
 		:class="{ renoted: hasRenotedBefore }"
 		@click.stop="renote(false, $event)"
 	>
@@ -13,7 +13,7 @@
 	<button
 		v-else
 		v-tooltip.noDelay.bottom="i18n.ts.disabled"
-		class="eddddedb _button"
+		class="_button"
 		disabled="true"
 	>
 		<i class="ph-rocket-launch ph-bold ph-lg"></i>
@@ -266,7 +266,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 
 <style lang="scss" scoped>
 .button {
-	&:not(.canRenote) {
+	&:not(.button) {
 		cursor: default;
 	}
 	&.renoted {
