@@ -527,14 +527,18 @@ export function apiAccountMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/follow_requests/:id/authorize",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.acceptFollowRequest(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-				);
-				ctx.body = convertRelationship(data.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
+				const result = await UserHelpers.acceptFollowRequest(target, user);
+				ctx.body = convertRelationship(result);
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -546,14 +550,18 @@ export function apiAccountMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/follow_requests/:id/reject",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.rejectFollowRequest(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-				);
-				ctx.body = convertRelationship(data.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
+				const result = await UserHelpers.rejectFollowRequest(target, user);
+				ctx.body = convertRelationship(result);
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);

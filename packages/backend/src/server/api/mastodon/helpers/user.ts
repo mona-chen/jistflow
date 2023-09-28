@@ -31,6 +31,8 @@ import { Muting } from "@/models/entities/muting.js";
 import { publishUserEvent } from "@/services/stream.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
+import acceptFollowRequest from "@/services/following/requests/accept.js";
+import { rejectFollowRequest } from "@/services/following/reject.js";
 
 export type AccountCache = {
 	locks: AsyncLock;
@@ -47,7 +49,7 @@ export type LinkPaginationObject<T> = {
 type RelationshipType = 'followers' | 'following';
 
 export class UserHelpers {
-	public static async followUser(target: User, localUser: ILocalUser, reblogs: boolean, notify: boolean) {
+	public static async followUser(target: User, localUser: ILocalUser, reblogs: boolean, notify: boolean): Promise<MastodonEntity.Relationship> {
 		//FIXME: implement reblogs & notify params
 		const following = await Followings.exist({where: {followerId: localUser.id, followeeId: target.id}});
 		const requested = await FollowRequests.exist({where: {followerId: localUser.id, followeeId: target.id}});
@@ -57,7 +59,7 @@ export class UserHelpers {
 		return this.getUserRelationshipTo(target.id, localUser.id);
 	}
 
-	public static async unfollowUser(target: User, localUser: ILocalUser) {
+	public static async unfollowUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
 		const following = await Followings.exist({where: {followerId: localUser.id, followeeId: target.id}});
 		const requested = await FollowRequests.exist({where: {followerId: localUser.id, followeeId: target.id}});
 		if (following)
@@ -68,7 +70,7 @@ export class UserHelpers {
 		return this.getUserRelationshipTo(target.id, localUser.id);
 	}
 
-	public static async blockUser(target: User, localUser: ILocalUser) {
+	public static async blockUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
 		const blocked = await Blockings.exist({where: {blockerId: localUser.id, blockeeId: target.id}});
 		if (!blocked)
 			await createBlocking(localUser, target);
@@ -76,7 +78,7 @@ export class UserHelpers {
 		return this.getUserRelationshipTo(target.id, localUser.id);
 	}
 
-	public static async unblockUser(target: User, localUser: ILocalUser) {
+	public static async unblockUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
 		const blocked = await Blockings.exist({where: {blockerId: localUser.id, blockeeId: target.id}});
 		if (blocked)
 			await deleteBlocking(localUser, target);
@@ -84,7 +86,7 @@ export class UserHelpers {
 		return this.getUserRelationshipTo(target.id, localUser.id);
 	}
 
-	public static async muteUser(target: User, localUser: ILocalUser, notifications: boolean = true, duration: number = 0) {
+	public static async muteUser(target: User, localUser: ILocalUser, notifications: boolean = true, duration: number = 0): Promise<MastodonEntity.Relationship> {
 		//FIXME: respect notifications parameter
 		const muted = await Mutings.exist({where: {muterId: localUser.id, muteeId: target.id}});
 		if (!muted) {
@@ -107,7 +109,7 @@ export class UserHelpers {
 		return this.getUserRelationshipTo(target.id, localUser.id);
 	}
 
-	public static async unmuteUser(target: User, localUser: ILocalUser) {
+	public static async unmuteUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
 		const muting = await Mutings.findOneBy({muterId: localUser.id, muteeId: target.id});
 		if (muting) {
 			await Mutings.delete({
@@ -117,6 +119,20 @@ export class UserHelpers {
 			publishUserEvent(localUser.id, "unmute", target);
 		}
 
+		return this.getUserRelationshipTo(target.id, localUser.id);
+	}
+
+	public static async acceptFollowRequest(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
+		const pending = await FollowRequests.exist({where: {followerId: target.id, followeeId: localUser.id}});
+		if (pending)
+			await acceptFollowRequest(localUser, target);
+		return this.getUserRelationshipTo(target.id, localUser.id);
+	}
+
+	public static async rejectFollowRequest(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
+		const pending = await FollowRequests.exist({where: {followerId: target.id, followeeId: localUser.id}});
+		if (pending)
+			await rejectFollowRequest(localUser, target);
 		return this.getUserRelationshipTo(target.id, localUser.id);
 	}
 
