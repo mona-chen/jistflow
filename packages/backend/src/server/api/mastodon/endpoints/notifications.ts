@@ -15,7 +15,6 @@ function toLimitToInt(q: any) {
 
 export function apiNotificationsMastodon(router: Router): void {
 	router.get("/v1/notifications", async (ctx) => {
-		const body: any = ctx.request.body;
 		try {
 			const auth = await authenticate(ctx.headers.authorization, null);
 			const user = auth[0] ?? null;
@@ -39,24 +38,23 @@ export function apiNotificationsMastodon(router: Router): void {
 		}
 	});
 
-	router.get("/v1/notification/:id", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
+	router.get("/v1/notifications/:id", async (ctx) => {
 		try {
-			const dataRaw = await client.getNotification(
-				convertId(ctx.params.id, IdType.IceshrimpId),
-			);
-			const data = convertNotification(dataRaw.data);
-			ctx.body = data;
-			if (
-				data.type !== "follow" &&
-				data.type !== "follow_request" &&
-				data.type === "reaction"
-			) {
-				data.type = "favourite";
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
 			}
+
+			const notification = await NotificationHelpers.getNotification(convertId(ctx.params.id, IdType.IceshrimpId), user);
+			if (notification === null) {
+				ctx.status = 404;
+				return;
+			}
+
+			ctx.body = convertNotification(await NotificationConverter.encode(notification, user));
 		} catch (e: any) {
 			console.error(e);
 			ctx.status = 401;

@@ -12,8 +12,8 @@ import { getNote } from "@/server/api/common/getters.js";
 type NotificationType = typeof notificationTypes[number];
 
 export class NotificationConverter {
-	public static async encode(notification: Notification, localUser: ILocalUser, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Notification | null> {
-		if (notification.notifieeId !== localUser.id) return null;
+	public static async encode(notification: Notification, localUser: ILocalUser, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Notification> {
+		if (notification.notifieeId !== localUser.id) throw new Error('User is not recipient of notification');
 
 		//TODO: Test this (poll ended etc)
 		const account = notification.notifierId

@@ -33,6 +33,10 @@ export class NotificationHelpers {
         return PaginationHelpers.execQuery(query, limit, minId !== undefined);
     }
 
+		public static async getNotification(id: string, user: ILocalUser): Promise<Notification | null> {
+			return Notifications.findOneBy({id: id, notifieeId: user.id});
+		}
+
 		private static decodeTypes(types: string[]) {
         const result: string[] = [];
         if (types.includes('follow')) result.push('follow');
