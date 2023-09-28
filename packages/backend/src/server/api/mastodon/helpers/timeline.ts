@@ -18,9 +18,9 @@ export class TimelineHelpers {
 	public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
 		if (limit > 40) limit = 40;
 
-		const followingIds = await Followings.findBy({
-				followerId: user.id
-			}).then(res => res.map(p => p.followeeId));
+		const followingQuery = Followings.createQueryBuilder("following")
+			.select("following.followeeId")
+			.where("following.followerId = :followerId", {followerId: user.id});
 
 		const query = PaginationHelpers.makePaginationQuery(
 			Notes.createQueryBuilder("note"),
@@ -30,8 +30,7 @@ export class TimelineHelpers {
 		)
 			.andWhere(
 				new Brackets((qb) => {
-					qb.where("note.userId = :meId", {meId: user.id});
-					qb.orWhere(`note.userId IN (:...followingIds)`, {followingIds: followingIds});
+					qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, {meId: user.id});
 				}),
 			)
 			.leftJoinAndSelect("note.renote", "renote");
