@@ -1,13 +1,14 @@
 import { Note } from "@/models/entities/note.js";
 import { ILocalUser, User } from "@/models/entities/user.js";
 import {
-    Followings,
-    FollowRequests,
-    NoteFavorites,
-    NoteReactions,
-    Notes,
-    UserProfiles,
-    Users
+	Blockings,
+	Followings,
+	FollowRequests,
+	NoteFavorites,
+	NoteReactions,
+	Notes,
+	UserProfiles,
+	Users
 } from "@/models/index.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
@@ -23,6 +24,8 @@ import { awaitAll } from "@/prelude/await-all.js";
 import createFollowing from "@/services/following/create.js";
 import deleteFollowing from "@/services/following/delete.js";
 import cancelFollowRequest from "@/services/following/requests/cancel.js";
+import createBlocking from "@/services/blocking/create.js";
+import deleteBlocking from "@/services/blocking/delete.js";
 
 export type AccountCache = {
 	locks: AsyncLock;
@@ -56,6 +59,22 @@ export class UserHelpers {
 			await deleteFollowing(localUser, target);
 		if (requested)
 			await cancelFollowRequest(target, localUser);
+
+		return this.getUserRelationshipTo(target.id, localUser.id);
+	}
+
+	public static async blockUser(target: User, localUser: ILocalUser) {
+		const blocked = await Blockings.exist({where: {blockerId: localUser.id, blockeeId: target.id}});
+		if (!blocked)
+			await createBlocking(localUser, target);
+
+		return this.getUserRelationshipTo(target.id, localUser.id);
+	}
+
+	public static async unblockUser(target: User, localUser: ILocalUser) {
+		const blocked = await Blockings.exist({where: {blockerId: localUser.id, blockeeId: target.id}});
+		if (blocked)
+			await deleteBlocking(localUser, target);
 
 		return this.getUserRelationshipTo(target.id, localUser.id);
 	}
