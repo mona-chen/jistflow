@@ -3,9 +3,9 @@
 		<VueDraggable
 			v-model="_files"
 			class="files"
-			animation="150"
-			delay="100"
-			delay-on-touch-only="true"
+			:animation="150"
+			:delay="100"
+			:delay-on-touch-only="true"
 		>
 			<div
 				v-for="element in _files"

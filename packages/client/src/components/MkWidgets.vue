@@ -28,7 +28,7 @@
 					i18n.ts.close
 				}}</MkButton>
 			</header>
-			<VueDraggable v-model="widgets_" handle=".handle" animation="150">
+			<VueDraggable v-model="widgets_" handle=".handle" :animation="150">
 				<div v-for="element in widgets_" :key="element.id">
 					<div class="customize-container">
 						<button

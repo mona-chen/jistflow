@@ -13,9 +13,9 @@
 					<VueDraggable
 						v-model="reactions"
 						class="zoaiodol"
-						animation="150"
-						delay="100"
-						delay-on-touch-only="true"
+						:animation="150"
+						:delay="100"
+						:delay-on-touch-only="true"
 						@end="save"
 					>
 						<div

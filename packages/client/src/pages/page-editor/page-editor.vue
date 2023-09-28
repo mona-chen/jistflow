@@ -125,8 +125,8 @@
 						class="variables"
 						handle=".drag-handle"
 						:group="{ name: 'variables' }"
-						animation="150"
-						swap-threshold="0.5"
+						:animation="150"
+						:swap-threshold="0.5"
 					>
 						<XVariable
 							v-for="element in variables"
