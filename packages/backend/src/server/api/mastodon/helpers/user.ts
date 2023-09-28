@@ -3,19 +3,19 @@ import { ILocalUser, User } from "@/models/entities/user.js";
 import {
 	Blockings,
 	Followings,
-	FollowRequests, Mutings,
+	FollowRequests,
+	Mutings,
 	NoteFavorites,
 	NoteReactions,
-	Notes, NoteWatchings,
+	Notes,
+	NoteWatchings,
 	UserProfiles,
 	Users
 } from "@/models/index.js";
-import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
-import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import Entity from "megalodon/src/entity.js";
 import AsyncLock from "async-lock";
 import { getUser } from "@/server/api/common/getters.js";
@@ -29,6 +29,8 @@ import deleteBlocking from "@/services/blocking/delete.js";
 import { genId } from "@/misc/gen-id.js";
 import { Muting } from "@/models/entities/muting.js";
 import { publishUserEvent } from "@/services/stream.js";
+import { UserConverter } from "@/server/api/mastodon/converters/user.js";
+import { convertId, IdType } from "@/misc/convert-id.js";
 
 export type AccountCache = {
 	locks: AsyncLock;
@@ -116,6 +118,42 @@ export class UserHelpers {
 		}
 
 		return this.getUserRelationshipTo(target.id, localUser.id);
+	}
+
+	public static async getUserMutes(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<LinkPaginationObject<MastodonEntity.MutedAccount[]>> {
+		if (limit > 80) limit = 80;
+
+		const query = PaginationHelpers.makePaginationQuery(
+			Mutings.createQueryBuilder("muting"),
+			sinceId,
+			maxId,
+			minId
+		);
+
+		query.andWhere("muting.muterId = :userId", {userId: user.id})
+			.innerJoinAndSelect("muting.mutee", "mutee");
+
+		return query.take(limit).getMany().then(async p => {
+			if (minId !== undefined) p = p.reverse();
+			const users = p
+				.map(p =>  p.mutee)
+				.filter(p => p) as User[];
+
+			const result = await UserConverter.encodeMany(users, cache)
+				.then(res => res.map(m => {
+					const muting = p.find(acc => acc.muteeId === m.id);
+					return {
+						...m,
+						mute_expires_at: muting?.expiresAt?.toISOString() ?? null
+					} as MastodonEntity.MutedAccount
+				}));
+
+			return {
+				data: result,
+				maxId: p.map(p => p.id).at(-1),
+				minId: p.map(p => p.id)[0],
+			};
+		});
 	}
 
 	public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {

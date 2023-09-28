@@ -8,7 +8,7 @@ function simpleConvert(data: any) {
 	return result;
 }
 
-export function convertAccount(account: Entity.Account) {
+export function convertAccount(account: Entity.Account | MastodonEntity.MutedAccount) {
 	return simpleConvert(account);
 }
 export function convertAnnouncement(announcement: Entity.Announcement) {

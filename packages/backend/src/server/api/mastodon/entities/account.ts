@@ -24,4 +24,8 @@ namespace MastodonEntity {
 		bot: boolean | null;
 		source?: Source;
 	};
+
+	export type MutedAccount = Account | {
+		mute_expires_at: string | null;
+	}
 }
