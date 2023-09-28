@@ -63,13 +63,17 @@ export function apiNotificationsMastodon(router: Router): void {
 	});
 
 	router.post("/v1/notifications/clear", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
 		try {
-			const data = await client.dismissNotifications();
-			ctx.body = data.data;
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			await NotificationHelpers.clearAllNotifications(user);
+			ctx.body = {};
 		} catch (e: any) {
 			console.error(e);
 			ctx.status = 401;
@@ -77,16 +81,24 @@ export function apiNotificationsMastodon(router: Router): void {
 		}
 	});
 
-	router.post("/v1/notification/:id/dismiss", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.request.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		const body: any = ctx.request.body;
+	router.post("/v1/notifications/:id/dismiss", async (ctx) => {
 		try {
-			const data = await client.dismissNotification(
-				convertId(ctx.params.id, IdType.IceshrimpId),
-			);
-			ctx.body = data.data;
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const notification = await NotificationHelpers.getNotification(convertId(ctx.params.id, IdType.IceshrimpId), user);
+			if (notification === null) {
+				ctx.status = 404;
+				return;
+			}
+
+			await NotificationHelpers.dismissNotification(notification.id, user);
+			ctx.body = {};
 		} catch (e: any) {
 			console.error(e);
 			ctx.status = 401;

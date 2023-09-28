@@ -37,6 +37,14 @@ export class NotificationHelpers {
 			return Notifications.findOneBy({id: id, notifieeId: user.id});
 		}
 
+		public static async dismissNotification(id: string, user: ILocalUser): Promise<void> {
+			const result = await Notifications.update({id: id, notifieeId: user.id}, {isRead: true});
+		}
+
+		public static async clearAllNotifications(user: ILocalUser): Promise<void> {
+			await Notifications.update({notifieeId: user.id}, {isRead: true});
+		}
+
 		private static decodeTypes(types: string[]) {
         const result: string[] = [];
         if (types.includes('follow')) result.push('follow');
