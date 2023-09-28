@@ -1,8 +1,6 @@
-import megalodon, { MegalodonInterface } from "megalodon";
 import Router from "@koa/router";
-import { koaBody } from "koa-body";
-import { getClient } from "../ApiMastodonCompatibleService.js";
-import bodyParser from "koa-bodyparser";
+import { AuthHelpers } from "@/server/api/mastodon/helpers/auth.js";
+import { convertId, IdType } from "@/misc/convert-id.js";
 
 const readScope = [
 	"read:account",
@@ -43,8 +41,6 @@ const writeScope = [
 
 export function apiAuthMastodon(router: Router): void {
 	router.post("/v1/apps", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const client = getClient(BASE_URL, "");
 		const body: any = ctx.request.body || ctx.request.query;
 		try {
 			let scope = body.scopes;
@@ -57,20 +53,15 @@ export function apiAuthMastodon(router: Router): void {
 			const scopeArr = Array.from(pushScope);
 
 			const red = body.redirect_uris;
-			const appData = await client.registerApp(body.client_name, {
-				scopes: scopeArr,
-				redirect_uris: red,
-				website: body.website,
-			});
+			const appData = await AuthHelpers.registerApp(body['client_name'], scopeArr, red, body['website']);
 			const returns = {
-				id: Math.floor(Math.random() * 100).toString(),
+				id: convertId(appData.id, IdType.MastodonId),
 				name: appData.name,
 				website: body.website,
 				redirect_uri: red,
-				client_id: Buffer.from(appData.url || "").toString("base64"),
+				client_id: Buffer.from(appData.url ?? "").toString("base64"),
 				client_secret: appData.clientSecret,
 			};
-			console.log(returns);
 			ctx.body = returns;
 		} catch (e: any) {
 			console.error(e);
