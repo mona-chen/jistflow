@@ -33,6 +33,7 @@ import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
 import acceptFollowRequest from "@/services/following/requests/accept.js";
 import { rejectFollowRequest } from "@/services/following/reject.js";
+import { IsNull } from "typeorm";
 
 export type AccountCache = {
 	locks: AsyncLock;
@@ -134,6 +135,12 @@ export class UserHelpers {
 		if (pending)
 			await rejectFollowRequest(localUser, target);
 		return this.getUserRelationshipTo(target.id, localUser.id);
+	}
+
+	public static async getUserFromAcct(acct: string): Promise<User | null> {
+		const split = acct.toLowerCase().split('@');
+		if (split.length > 2) throw new Error('Invalid acct');
+		return Users.findOneBy({usernameLower: split[0], host: split[1] ?? IsNull()});
 	}
 
 	public static async getUserMutes(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<LinkPaginationObject<MastodonEntity.MutedAccount[]>> {

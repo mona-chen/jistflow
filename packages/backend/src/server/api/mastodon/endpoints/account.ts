@@ -76,15 +76,15 @@ export function apiAccountMastodon(router: Router): void {
 		}
 	});
 	router.get("/v1/accounts/lookup", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.search(
-				(ctx.request.query as any).acct,
-				"accounts",
-			);
-			ctx.body = convertAccount(data.data.accounts[0]);
+			const args = normalizeUrlQuery(ctx.query);
+			const user = await UserHelpers.getUserFromAcct(args.acct);
+			if (user === null) {
+				ctx.status = 404;
+				return;
+			}
+			const account = await UserConverter.encode(user);
+			ctx.body = convertAccount(account);
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
