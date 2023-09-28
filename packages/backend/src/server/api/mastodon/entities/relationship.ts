@@ -3,7 +3,6 @@ namespace MastodonEntity {
 		id: string;
 		following: boolean;
 		followed_by: boolean;
-		delivery_following?: boolean;
 		blocking: boolean;
 		blocked_by: boolean;
 		muting: boolean;
@@ -13,5 +12,6 @@ namespace MastodonEntity {
 		showing_reblogs: boolean;
 		endorsed: boolean;
 		notifying: boolean;
+		note: string;
 	};
 }

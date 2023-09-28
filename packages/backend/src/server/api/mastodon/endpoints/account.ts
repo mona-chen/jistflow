@@ -8,7 +8,6 @@ import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import authenticate from "@/server/api/authenticate.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
-import config from "@/config/index.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 
 const relationshipModel = {
@@ -254,16 +253,19 @@ export function apiAccountMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/accounts/:id/follow",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.followAccount(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-				);
-				let acct = convertRelationship(data.data);
-				acct.following = true;
-				ctx.body = acct;
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
+				//FIXME: Parse form data
+				const result = await UserHelpers.followUser(target, user, true, false);
+				ctx.body = convertRelationship(result);
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -275,16 +277,18 @@ export function apiAccountMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/accounts/:id/unfollow",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.unfollowAccount(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-				);
-				let acct = convertRelationship(data.data);
-				acct.following = false;
-				ctx.body = acct;
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
+				const result = await UserHelpers.unfollowUser(target, user);
+				ctx.body = convertRelationship(result);
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);

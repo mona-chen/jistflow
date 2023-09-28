@@ -1,6 +1,14 @@
 import { Note } from "@/models/entities/note.js";
 import { ILocalUser, User } from "@/models/entities/user.js";
-import { Followings, NoteFavorites, NoteReactions, Notes, UserProfiles } from "@/models/index.js";
+import {
+    Followings,
+    FollowRequests,
+    NoteFavorites,
+    NoteReactions,
+    Notes,
+    UserProfiles,
+    Users
+} from "@/models/index.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
@@ -11,6 +19,10 @@ import Entity from "megalodon/src/entity.js";
 import AsyncLock from "async-lock";
 import { getUser } from "@/server/api/common/getters.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
+import { awaitAll } from "@/prelude/await-all.js";
+import createFollowing from "@/services/following/create.js";
+import deleteFollowing from "@/services/following/delete.js";
+import cancelFollowRequest from "@/services/following/requests/cancel.js";
 
 export type AccountCache = {
 	locks: AsyncLock;
@@ -27,6 +39,27 @@ export type LinkPaginationObject<T> = {
 type RelationshipType = 'followers' | 'following';
 
 export class UserHelpers {
+	public static async followUser(target: User, localUser: ILocalUser, reblogs: boolean, notify: boolean) {
+		//FIXME: implement reblogs & notify params
+		const following = await Followings.exist({where: {followerId: localUser.id, followeeId: target.id}});
+		const requested = await FollowRequests.exist({where: {followerId: localUser.id, followeeId: target.id}});
+		if (!following && !requested)
+			await createFollowing(localUser, target);
+
+		return this.getUserRelationshipTo(target, localUser);
+	}
+
+	public static async unfollowUser(target: User, localUser: ILocalUser) {
+		const following = await Followings.exist({where: {followerId: localUser.id, followeeId: target.id}});
+		const requested = await FollowRequests.exist({where: {followerId: localUser.id, followeeId: target.id}});
+		if (following)
+			await deleteFollowing(localUser, target);
+		if (requested)
+			await cancelFollowRequest(target, localUser);
+
+		return this.getUserRelationshipTo(target, localUser);
+	}
+
 	public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {
 		if (limit > 40) limit = 40;
 
@@ -170,6 +203,27 @@ export class UserHelpers {
 
 	public static async getUserFollowing(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
 		return this.getUserRelationships('following', user, localUser, maxId, sinceId, minId, limit);
+	}
+
+	public static async getUserRelationshipTo(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
+		const relation = await Users.getRelation(localUser.id, target.id);
+		const response = {
+			id: target.id,
+			following: relation.isFollowing,
+			followed_by: relation.isFollowed,
+			blocking: relation.isBlocking,
+			blocked_by: relation.isBlocked,
+			muting: relation.isMuted,
+			muting_notifications: relation.isMuted,
+			requested: relation.hasPendingFollowRequestFromYou,
+			domain_blocking: false, //FIXME
+			showing_reblogs: !relation.isRenoteMuted,
+			endorsed: false,
+			notifying: false, //FIXME
+			note: '' //FIXME
+		}
+
+		return awaitAll(response);
 	}
 
 	public static async getUserCached(id: string, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<User> {
