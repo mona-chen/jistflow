@@ -294,8 +294,8 @@ export function apiAccountMastodon(router: Router): void {
 				const user = auth[0] ?? null;
 
 				if (!user) {
-						ctx.status = 401;
-						return;
+					ctx.status = 401;
+					return;
 				}
 
 				const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
@@ -317,8 +317,8 @@ export function apiAccountMastodon(router: Router): void {
 				const user = auth[0] ?? null;
 
 				if (!user) {
-						ctx.status = 401;
-						return;
+					ctx.status = 401;
+					return;
 				}
 
 				const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
@@ -335,15 +335,19 @@ export function apiAccountMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/accounts/:id/mute",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.muteAccount(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-					(ctx.request as any).body as any,
-				);
-				ctx.body = convertRelationship(data.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+						ctx.status = 401;
+						return;
+				}
+
+				const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query, ['duration']), ['notifications']));
+				const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
+				const result = await UserHelpers.muteUser(target, user, args.notifications, args.duration);
+				ctx.body = convertRelationship(result)
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -355,14 +359,18 @@ export function apiAccountMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/accounts/:id/unmute",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.unmuteAccount(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-				);
-				ctx.body = convertRelationship(data.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
+				const result = await UserHelpers.unmuteUser(target, user);
+				ctx.body = convertRelationship(result)
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);

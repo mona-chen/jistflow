@@ -3,10 +3,10 @@ import { ILocalUser, User } from "@/models/entities/user.js";
 import {
 	Blockings,
 	Followings,
-	FollowRequests,
+	FollowRequests, Mutings,
 	NoteFavorites,
 	NoteReactions,
-	Notes,
+	Notes, NoteWatchings,
 	UserProfiles,
 	Users
 } from "@/models/index.js";
@@ -26,6 +26,9 @@ import deleteFollowing from "@/services/following/delete.js";
 import cancelFollowRequest from "@/services/following/requests/cancel.js";
 import createBlocking from "@/services/blocking/create.js";
 import deleteBlocking from "@/services/blocking/delete.js";
+import { genId } from "@/misc/gen-id.js";
+import { Muting } from "@/models/entities/muting.js";
+import { publishUserEvent } from "@/services/stream.js";
 
 export type AccountCache = {
 	locks: AsyncLock;
@@ -75,6 +78,42 @@ export class UserHelpers {
 		const blocked = await Blockings.exist({where: {blockerId: localUser.id, blockeeId: target.id}});
 		if (blocked)
 			await deleteBlocking(localUser, target);
+
+		return this.getUserRelationshipTo(target.id, localUser.id);
+	}
+
+	public static async muteUser(target: User, localUser: ILocalUser, notifications: boolean = true, duration: number = 0) {
+		//FIXME: respect notifications parameter
+		const muted = await Mutings.exist({where: {muterId: localUser.id, muteeId: target.id}});
+		if (!muted) {
+			await Mutings.insert({
+				id: genId(),
+				createdAt: new Date(),
+				expiresAt: duration === 0 ? null : new Date(new Date().getTime() + (duration * 1000)),
+				muterId: localUser.id,
+				muteeId: target.id,
+			} as Muting);
+
+			publishUserEvent(localUser.id, "mute", target);
+
+			NoteWatchings.delete({
+				userId: localUser.id,
+				noteUserId: target.id,
+			});
+		}
+
+		return this.getUserRelationshipTo(target.id, localUser.id);
+	}
+
+	public static async unmuteUser(target: User, localUser: ILocalUser) {
+		const muting = await Mutings.findOneBy({muterId: localUser.id, muteeId: target.id});
+		if (muting) {
+			await Mutings.delete({
+				id: muting.id,
+			});
+
+			publishUserEvent(localUser.id, "unmute", target);
+		}
 
 		return this.getUserRelationshipTo(target.id, localUser.id);
 	}

@@ -13,16 +13,18 @@ import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 
-export function limitToInt(q: ParsedUrlQuery) {
+export function limitToInt(q: ParsedUrlQuery, additional: string[] = []) {
 	let object: any = q;
 	if (q.limit)
 		if (typeof q.limit === "string") object.limit = parseInt(q.limit, 10);
 	if (q.offset)
 		if (typeof q.offset === "string") object.offset = parseInt(q.offset, 10);
+	for (const key of additional)
+		if (typeof q[key] === "string") object[key] = parseInt(<string>q[key], 10);
 	return object;
 }
 
-export function argsToBools(q: ParsedUrlQuery) {
+export function argsToBools(q: ParsedUrlQuery, additional: string[] = []) {
 	// Values taken from https://docs.joinmastodon.org/client/intro/#boolean
 	const toBoolean = (value: string) =>
 		!["0", "f", "F", "false", "FALSE", "off", "OFF"].includes(value);
@@ -31,23 +33,14 @@ export function argsToBools(q: ParsedUrlQuery) {
 	// - https://docs.joinmastodon.org/methods/accounts/#statuses
 	// - https://docs.joinmastodon.org/methods/timelines/#public
 	// - https://docs.joinmastodon.org/methods/timelines/#tag
+	let keys = ['only_media', 'exclude_replies', 'exclude_reblogs', 'pinned', 'local', 'remote']
 	let object: any = q;
-	if (q.only_media)
-		if (typeof q.only_media === "string")
-			object.only_media = toBoolean(q.only_media);
-	if (q.exclude_replies)
-		if (typeof q.exclude_replies === "string")
-			object.exclude_replies = toBoolean(q.exclude_replies);
-	if (q.exclude_reblogs)
-		if (typeof q.exclude_reblogs === "string")
-			object.exclude_reblogs = toBoolean(q.exclude_reblogs);
-	if (q.pinned)
-		if (typeof q.pinned === "string") object.pinned = toBoolean(q.pinned);
-	if (q.local)
-		if (typeof q.local === "string") object.local = toBoolean(q.local);
-	if (q.remote)
-		if (typeof q.local === "string") object.local = toBoolean(q.local);
-	return q;
+
+	for (const key of keys)
+		if (q[key] && typeof q[key] === "string")
+			object[key] = toBoolean(<string>q[key]);
+
+	return object;
 }
 
 export function convertTimelinesArgsId(q: ParsedUrlQuery) {
