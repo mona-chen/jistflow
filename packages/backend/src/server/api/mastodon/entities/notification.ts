@@ -11,5 +11,5 @@ namespace MastodonEntity {
 		type: NotificationType;
 	};
 
-	export type NotificationType = string;
+	export type NotificationType = 'follow' | 'favourite' | 'reblog' | 'mention' | 'reaction' | 'follow_request' | 'status' | 'poll';
 }

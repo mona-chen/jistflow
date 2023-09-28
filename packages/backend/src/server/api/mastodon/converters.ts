@@ -27,7 +27,7 @@ export function convertFeaturedTag(tag: Entity.FeaturedTag) {
 	return simpleConvert(tag);
 }
 
-export function convertNotification(notification: Entity.Notification) {
+export function convertNotification(notification: MastodonEntity.Notification) {
 	notification.account = convertAccount(notification.account);
 	notification.id = convertId(notification.id, IdType.MastodonId);
 	if (notification.status)

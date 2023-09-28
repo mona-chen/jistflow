@@ -33,7 +33,7 @@ export class NoteConverter {
 					.map((x) => decodeReaction(x).reaction)
 					.map((x) => x.replace(/:/g, ""));
 
-				const noteEmoji = Promise.resolve(host).then(async host => populateEmojis(
+				const noteEmoji = host.then(async host => populateEmojis(
 					note.emojis.concat(reactionEmojiNames),
 					host,
 				));
@@ -95,7 +95,7 @@ export class NoteConverter {
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: note.replyUserId,
             reblog: Promise.resolve(renote).then(renote => renote && note.text === null ? this.encode(renote, user, cache) : null),
-            content: Promise.resolve(text).then(text => text !== null ? toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(text) : ""),
+            content: text.then(text => text !== null ? toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(text) : ""),
             text: text,
             created_at: note.createdAt.toISOString(),
             // Remove reaction emojis with names containing @ from the emojis list.

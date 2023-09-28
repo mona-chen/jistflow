@@ -61,11 +61,14 @@ export function convertTimelinesArgsId(q: ParsedUrlQuery) {
 	return q;
 }
 
-export function normalizeUrlQuery(q: ParsedUrlQuery): any {
+export function normalizeUrlQuery(q: ParsedUrlQuery, arrayKeys: string[] = []): any {
 	const dict: any = {};
 
 	for (const k in q) {
-		dict[k] = Array.isArray(q[k]) ? q[k]?.at(-1) : q[k];
+		if (arrayKeys.includes(k))
+			dict[k] = Array.isArray(q[k]) ? q[k] : [q[k]];
+		else
+			dict[k] = Array.isArray(q[k]) ? q[k]?.at(-1) : q[k];
 	}
 
 	return dict;
