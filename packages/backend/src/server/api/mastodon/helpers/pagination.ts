@@ -65,15 +65,15 @@ export class PaginationHelpers {
 		return reverse ? found.reverse() : found;
 	}
 
-	public static appendLinkPaginationHeader(args: any, ctx: any, res: any, route: string): void {
+	public static appendLinkPaginationHeader(args: any, ctx: any, res: any): void {
 		const link: string[] = [];
 		const limit = args.limit ?? 40;
 		if (res.maxId) {
-			const l = `<${config.url}/api/${route}?limit=${limit}&max_id=${convertId(res.maxId, IdType.MastodonId)}>; rel="next"`;
+			const l = `<${config.url}/api${ctx.path}?limit=${limit}&max_id=${convertId(res.maxId, IdType.MastodonId)}>; rel="next"`;
 			link.push(l);
 		}
 		if (res.minId) {
-			const l = `<${config.url}/api/${route}?limit=${limit}&min_id=${convertId(res.minId, IdType.MastodonId)}>; rel="prev"`;
+			const l = `<${config.url}/api${ctx.path}?limit=${limit}&min_id=${convertId(res.minId, IdType.MastodonId)}>; rel="prev"`;
 			link.push(l);
 		}
 		if (link.length > 0){

@@ -198,7 +198,7 @@ export function apiAccountMastodon(router: Router): void {
 				const followers = await UserConverter.encodeMany(res.data, cache);
 
 				ctx.body = followers.map((account) => convertAccount(account));
-				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `v1/accounts/${ctx.params.id}/followers`);
+				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -223,7 +223,7 @@ export function apiAccountMastodon(router: Router): void {
 				const following = await UserConverter.encodeMany(res.data, cache);
 
 				ctx.body = following.map((account) => convertAccount(account));
-				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `v1/accounts/${ctx.params.id}/following`);
+				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
@@ -414,7 +414,7 @@ export function apiAccountMastodon(router: Router): void {
 			const bookmarks = await NoteConverter.encodeMany(res.data, user, cache);
 
 			ctx.body = bookmarks.map(s => convertStatus(s));
-			PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `v1/bookmarks`);
+			PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
@@ -438,7 +438,7 @@ export function apiAccountMastodon(router: Router): void {
 			const favorites = await NoteConverter.encodeMany(res.data, user, cache);
 
 			ctx.body = favorites.map(s => convertStatus(s));
-			PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, `v1/favourites`);
+			PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
