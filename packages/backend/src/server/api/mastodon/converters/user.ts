@@ -1,4 +1,4 @@
-import { ILocalUser, User } from "@/models/entities/user.js";
+import { User } from "@/models/entities/user.js";
 import config from "@/config/index.js";
 import { DriveFiles, UserProfiles, Users } from "@/models/index.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
@@ -8,7 +8,6 @@ import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import mfm from "mfm-js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
-import { Note } from "@/models/entities/note.js";
 
 type Field = {
 	name: string;

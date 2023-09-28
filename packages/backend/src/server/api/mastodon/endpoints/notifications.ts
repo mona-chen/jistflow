@@ -1,17 +1,11 @@
 import Router from "@koa/router";
 import { convertId, IdType } from "../../index.js";
-import { getClient } from "../ApiMastodonCompatibleService.js";
 import { convertTimelinesArgsId, limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { convertNotification } from "../converters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { NotificationHelpers } from "@/server/api/mastodon/helpers/notification.js";
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
-
-function toLimitToInt(q: any) {
-	if (q.limit) if (typeof q.limit === "string") q.limit = parseInt(q.limit, 10);
-	return q;
-}
 
 export function apiNotificationsMastodon(router: Router): void {
 	router.get("/v1/notifications", async (ctx) => {

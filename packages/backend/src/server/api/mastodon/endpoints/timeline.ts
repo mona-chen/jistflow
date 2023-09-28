@@ -10,7 +10,6 @@ import {
 import { convertId, IdType } from "../../index.js";
 import authenticate from "@/server/api/authenticate.js";
 import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
-import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 

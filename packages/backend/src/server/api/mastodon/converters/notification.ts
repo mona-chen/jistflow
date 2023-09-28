@@ -1,6 +1,4 @@
-import { ILocalUser, User } from "@/models/entities/user.js";
-import config from "@/config/index.js";
-import { IMentionedRemoteUsers } from "@/models/entities/note.js";
+import { ILocalUser } from "@/models/entities/user.js";
 import { Notification } from "@/models/entities/notification.js";
 import { notificationTypes } from "@/types.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";

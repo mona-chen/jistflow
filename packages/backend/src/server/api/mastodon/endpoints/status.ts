@@ -10,7 +10,6 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { getNote } from "@/server/api/common/getters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
-import { Note } from "@/models/entities/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 
 function normalizeQuery(data: any) {
