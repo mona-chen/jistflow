@@ -1,6 +1,6 @@
 import Router from "@koa/router";
 import { convertId, IdType } from "../../index.js";
-import { convertTimelinesArgsId, limitToInt, normalizeUrlQuery } from "./timeline.js";
+import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { convertNotification } from "../converters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
@@ -19,7 +19,7 @@ export function apiNotificationsMastodon(router: Router): void {
 			}
 
 			const cache = UserHelpers.getFreshAccountCache();
-			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query)), ['types[]', 'exclude_types[]']);
+			const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)), ['types[]', 'exclude_types[]']);
 			const data = NotificationHelpers.getNotifications(user, args.max_id, args.since_id, args.min_id, args.limit, args['types[]'], args['exclude_types[]'], args.account_id)
 				.then(p => NotificationConverter.encodeMany(p, user, cache))
 				.then(p => p.map(n => convertNotification(n)));

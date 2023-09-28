@@ -43,7 +43,7 @@ export function argsToBools(q: ParsedUrlQuery, additional: string[] = []) {
 	return object;
 }
 
-export function convertTimelinesArgsId(q: ParsedUrlQuery) {
+export function convertPaginationArgsIds(q: ParsedUrlQuery) {
 	if (typeof q.min_id === "string")
 		q.min_id = convertId(q.min_id, IdType.IceshrimpId);
 	if (typeof q.max_id === "string")
@@ -77,7 +77,7 @@ export function apiTimelineMastodon(router: Router): void {
 				return;
 			}
 			
-			const args = normalizeUrlQuery(convertTimelinesArgsId(argsToBools(limitToInt(ctx.query))));
+			const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))));
 			const cache = UserHelpers.getFreshAccountCache();
 			const tl = await TimelineHelpers.getPublicTimeline(user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote)
 				.then(n => NoteConverter.encodeMany(n, user, cache));
@@ -99,7 +99,7 @@ export function apiTimelineMastodon(router: Router): void {
 			try {
 				const data = await client.getTagTimeline(
 					ctx.params.hashtag,
-					convertTimelinesArgsId(argsToBools(limitToInt(ctx.query))),
+					convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))),
 				);
 				ctx.body = data.data.map((status) => convertStatus(status));
 			} catch (e: any) {
@@ -120,7 +120,7 @@ export function apiTimelineMastodon(router: Router): void {
 				return;
 			}
 
-			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query)));
+			const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
 			const cache = UserHelpers.getFreshAccountCache();
 			const tl = await TimelineHelpers.getHomeTimeline(user, args.max_id, args.since_id, args.min_id, args.limit)
 				.then(n => NoteConverter.encodeMany(n, user, cache));
@@ -142,7 +142,7 @@ export function apiTimelineMastodon(router: Router): void {
 			try {
 				const data = await client.getListTimeline(
 					convertId(ctx.params.listId, IdType.IceshrimpId),
-					convertTimelinesArgsId(limitToInt(ctx.query)),
+					convertPaginationArgsIds(limitToInt(ctx.query)),
 				);
 				ctx.body = data.data.map((status) => convertStatus(status));
 			} catch (e: any) {
@@ -159,7 +159,7 @@ export function apiTimelineMastodon(router: Router): void {
 		const client = getClient(BASE_URL, accessTokens);
 		try {
 			const data = await client.getConversationTimeline(
-				convertTimelinesArgsId(limitToInt(ctx.query)),
+				convertPaginationArgsIds(limitToInt(ctx.query)),
 			);
 			ctx.body = data.data.map((conversation) =>
 				convertConversation(conversation),
@@ -266,7 +266,7 @@ export function apiTimelineMastodon(router: Router): void {
 			try {
 				const data = await client.getAccountsInList(
 					convertId(ctx.params.id, IdType.IceshrimpId),
-					convertTimelinesArgsId(ctx.query as any),
+					convertPaginationArgsIds(ctx.query as any),
 				);
 				ctx.body = data.data.map((account) => convertAccount(account));
 			} catch (e: any) {

@@ -169,10 +169,37 @@ export class UserHelpers {
 		query.andWhere("blocking.blockerId = :userId", {userId: user.id})
 			.innerJoinAndSelect("blocking.blockee", "blockee");
 
-		return query.take(limit).getMany().then(async p => {
+		return query.take(limit).getMany().then(p => {
 			if (minId !== undefined) p = p.reverse();
 			const users = p
 				.map(p =>  p.blockee)
+				.filter(p => p) as User[];
+
+			return {
+				data: users,
+				maxId: p.map(p => p.id).at(-1),
+				minId: p.map(p => p.id)[0],
+			};
+		});
+	}
+
+	public static async getUserFollowRequests(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+		if (limit > 80) limit = 80;
+
+		const query = PaginationHelpers.makePaginationQuery(
+			FollowRequests.createQueryBuilder("request"),
+			sinceId,
+			maxId,
+			minId
+		);
+
+		query.andWhere("request.followeeId = :userId", {userId: user.id})
+			.innerJoinAndSelect("request.follower", "follower");
+
+		return query.take(limit).getMany().then(p => {
+			if (minId !== undefined) p = p.reverse();
+			const users = p
+				.map(p =>  p.follower)
 				.filter(p => p) as User[];
 
 			return {

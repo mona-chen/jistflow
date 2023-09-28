@@ -3,7 +3,7 @@ import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
 import axios from "axios";
 import { Converter } from "megalodon";
-import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
+import { convertPaginationArgsIds, limitToInt } from "./timeline.js";
 import { convertAccount, convertStatus } from "../converters.js";
 
 export function apiSearchMastodon(router: Router): void {
@@ -13,7 +13,7 @@ export function apiSearchMastodon(router: Router): void {
 		const client = getClient(BASE_URL, accessTokens);
 		const body: any = ctx.request.body;
 		try {
-			const query: any = convertTimelinesArgsId(limitToInt(ctx.query));
+			const query: any = convertPaginationArgsIds(limitToInt(ctx.query));
 			const type = query.type || "";
 			const data = await client.search(query.q, type, query);
 			ctx.body = data.data;
@@ -28,7 +28,7 @@ export function apiSearchMastodon(router: Router): void {
 		const accessTokens = ctx.headers.authorization;
 		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const query: any = convertTimelinesArgsId(limitToInt(ctx.query));
+			const query: any = convertPaginationArgsIds(limitToInt(ctx.query));
 			const type = query.type;
 			const acct =
 				!type || type === "accounts"

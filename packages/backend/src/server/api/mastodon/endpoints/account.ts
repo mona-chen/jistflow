@@ -1,6 +1,6 @@
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
-import { argsToBools, convertTimelinesArgsId, limitToInt, normalizeUrlQuery } from "./timeline.js";
+import { argsToBools, convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { convertId, IdType } from "../../index.js";
 import { convertAccount, convertFeaturedTag, convertList, convertRelationship, convertStatus, } from "../converters.js";
 import { getUser } from "@/server/api/common/getters.js";
@@ -138,7 +138,7 @@ export function apiAccountMastodon(router: Router): void {
 				const userId = convertId(ctx.params.id, IdType.IceshrimpId);
 				const cache = UserHelpers.getFreshAccountCache();
 				const query = await UserHelpers.getUserCached(userId, cache);
-				const args = normalizeUrlQuery(convertTimelinesArgsId(argsToBools(limitToInt(ctx.query))));
+				const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))));
 				const tl = await UserHelpers.getUserStatuses(query, user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.exclude_replies, args.exclude_reblogs, args.pinned, args.tagged)
 					.then(n => NoteConverter.encodeMany(n, user, cache));
 
@@ -180,7 +180,7 @@ export function apiAccountMastodon(router: Router): void {
 				const userId = convertId(ctx.params.id, IdType.IceshrimpId);
 				const cache = UserHelpers.getFreshAccountCache();
 				const query = await UserHelpers.getUserCached(userId, cache);
-				const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
+				const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
 
 				const res = await UserHelpers.getUserFollowers(query, user, args.max_id, args.since_id, args.min_id, args.limit);
 				const followers = await UserConverter.encodeMany(res.data, cache);
@@ -205,7 +205,7 @@ export function apiAccountMastodon(router: Router): void {
 				const userId = convertId(ctx.params.id, IdType.IceshrimpId);
 				const cache = UserHelpers.getFreshAccountCache();
 				const query = await UserHelpers.getUserCached(userId, cache);
-				const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
+				const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
 
 				const res = await UserHelpers.getUserFollowing(query, user, args.max_id, args.since_id, args.min_id, args.limit);
 				const following = await UserConverter.encodeMany(res.data, cache);
@@ -419,7 +419,7 @@ export function apiAccountMastodon(router: Router): void {
 			}
 
 			const cache = UserHelpers.getFreshAccountCache();
-			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
+			const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
 			const res = await UserHelpers.getUserBookmarks(user, args.max_id, args.since_id, args.min_id, args.limit);
 			const bookmarks = await NoteConverter.encodeMany(res.data, user, cache);
 
@@ -443,7 +443,7 @@ export function apiAccountMastodon(router: Router): void {
 			}
 
 			const cache = UserHelpers.getFreshAccountCache();
-			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
+			const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
 			const res = await UserHelpers.getUserFavorites(user, args.max_id, args.since_id, args.min_id, args.limit);
 			const favorites = await NoteConverter.encodeMany(res.data, user, cache);
 
@@ -467,7 +467,7 @@ export function apiAccountMastodon(router: Router): void {
 			}
 
 			const cache = UserHelpers.getFreshAccountCache();
-			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
+			const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
 			const res = await UserHelpers.getUserMutes(user, args.max_id, args.since_id, args.min_id, args.limit, cache);
 			ctx.body = res.data.map(m => convertAccount(m));
 			PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
@@ -489,7 +489,7 @@ export function apiAccountMastodon(router: Router): void {
 			}
 
 			const cache = UserHelpers.getFreshAccountCache();
-			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
+			const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
 			const res = await UserHelpers.getUserBlocks(user, args.max_id, args.since_id, args.min_id, args.limit);
 			const blocks = await UserConverter.encodeMany(res.data, cache);
 			ctx.body = blocks.map(b => convertAccount(b));
@@ -502,14 +502,21 @@ export function apiAccountMastodon(router: Router): void {
 		}
 	});
 	router.get("/v1/follow_requests", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.getFollowRequests(
-				((ctx.query as any) || { limit: 20 }).limit,
-			);
-			ctx.body = data.data.map((account) => convertAccount(account));
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const cache = UserHelpers.getFreshAccountCache();
+			const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
+			const res = await UserHelpers.getUserFollowRequests(user, args.max_id, args.since_id, args.min_id, args.limit);
+			const requests = await UserConverter.encodeMany(res.data, cache);
+			ctx.body = requests.map(b => convertAccount(b));
+			PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
