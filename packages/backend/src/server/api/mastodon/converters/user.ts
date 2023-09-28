@@ -57,7 +57,8 @@ export class UserConverter {
 				emojis: populateEmojis(u.emojis, u.host).then(emoji => emoji.map((e) => EmojiConverter.encode(e))),
 				moved: null, //FIXME
 				fields: profile.then(profile => profile?.fields.map(p => this.encodeField(p)) ?? []),
-				bot: u.isBot
+				bot: u.isBot,
+				discoverable: u.isExplorable
 			}).then(p => {
 				cache.accounts.push(p);
 				return p;

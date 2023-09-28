@@ -30,15 +30,15 @@ import { genId } from "@/misc/gen-id.js";
 import { Muting } from "@/models/entities/muting.js";
 import { publishUserEvent } from "@/services/stream.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
-import { convertId, IdType } from "@/misc/convert-id.js";
 import acceptFollowRequest from "@/services/following/requests/accept.js";
 import { rejectFollowRequest } from "@/services/following/reject.js";
 import { IsNull } from "typeorm";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
+import { UserProfile } from "@/models/entities/user-profile.js";
 
 export type AccountCache = {
 	locks: AsyncLock;
-	accounts: Entity.Account[];
+	accounts: MastodonEntity.Account[];
 	users: User[];
 };
 
@@ -46,6 +46,14 @@ export type LinkPaginationObject<T> = {
 	data: T;
 	maxId?: string | undefined;
 	minId?: string | undefined;
+}
+
+export type updateCredsData = {
+	display_name: string;
+	note: string;
+	locked: boolean;
+	bot: boolean;
+	discoverable: boolean;
 }
 
 type RelationshipType = 'followers' | 'following';
@@ -136,6 +144,21 @@ export class UserHelpers {
 		if (pending)
 			await rejectFollowRequest(localUser, target);
 		return this.getUserRelationshipTo(target.id, localUser.id);
+	}
+
+	public static async updateCredentials(user: ILocalUser, formData: updateCredsData): Promise<MastodonEntity.Account> {
+		//FIXME: Actually implement this
+		//FIXME: handle multipart avatar & header image upload
+		//FIXME: handle field attributes
+		const obj: any = {};
+
+		if (formData.display_name) obj.name = formData.display_name;
+		if (formData.note) obj.description = formData.note;
+		if (formData.locked) obj.isLocked = formData.locked;
+		if (formData.bot) obj.isBot = formData.bot;
+		if (formData.discoverable) obj.isExplorable = formData.discoverable;
+
+		return this.verifyCredentials(user);
 	}
 
 	public static async verifyCredentials(user: ILocalUser): Promise<MastodonEntity.Account> {

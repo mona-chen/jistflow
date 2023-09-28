@@ -22,6 +22,7 @@ namespace MastodonEntity {
 		moved: Account | null;
 		fields: Array<Field>;
 		bot: boolean | null;
+		discoverable: boolean;
 		source?: Source;
 	};
 

@@ -31,14 +31,17 @@ export function apiAccountMastodon(router: Router): void {
 		}
 	});
 	router.patch("/v1/accounts/update_credentials", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.updateCredentials(
-				(ctx.request as any).body as any,
-			);
-			ctx.body = convertAccount(data.data);
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const acct = await UserHelpers.updateCredentials(user, (ctx.request as any).body as any);
+			ctx.body = convertAccount(acct)
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);
