@@ -12,28 +12,17 @@ import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 
 export function apiAccountMastodon(router: Router): void {
 	router.get("/v1/accounts/verify_credentials", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.verifyAccountCredentials();
-			let acct = data.data;
-			acct.id = convertId(acct.id, IdType.MastodonId);
-			acct.display_name = acct.display_name || acct.username;
-			acct.url = `${BASE_URL}/@${acct.url}`;
-			acct.note = acct.note || "";
-			acct.avatar_static = acct.avatar;
-			acct.header = acct.header || "/static-assets/transparent.png";
-			acct.header_static = acct.header || "/static-assets/transparent.png";
-			acct.source = {
-				note: acct.note,
-				fields: acct.fields,
-				privacy: await client.getDefaultPostPrivacy(),
-				sensitive: false,
-				language: "",
-			};
-			console.log(acct);
-			ctx.body = acct;
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const acct = await UserHelpers.verifyCredentials(user);
+			ctx.body = convertAccount(acct);
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);

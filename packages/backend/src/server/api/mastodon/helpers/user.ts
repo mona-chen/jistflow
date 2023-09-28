@@ -8,7 +8,7 @@ import {
 	NoteFavorites,
 	NoteReactions,
 	Notes,
-	NoteWatchings,
+	NoteWatchings, RegistryItems,
 	UserProfiles,
 	Users
 } from "@/models/index.js";
@@ -34,6 +34,7 @@ import { convertId, IdType } from "@/misc/convert-id.js";
 import acceptFollowRequest from "@/services/following/requests/accept.js";
 import { rejectFollowRequest } from "@/services/following/reject.js";
 import { IsNull } from "typeorm";
+import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 
 export type AccountCache = {
 	locks: AsyncLock;
@@ -135,6 +136,28 @@ export class UserHelpers {
 		if (pending)
 			await rejectFollowRequest(localUser, target);
 		return this.getUserRelationshipTo(target.id, localUser.id);
+	}
+
+	public static async verifyCredentials(user: ILocalUser): Promise<MastodonEntity.Account> {
+		const acct = UserConverter.encode(user);
+		const profile = UserProfiles.findOneByOrFail({userId: user.id});
+		const privacy = RegistryItems.findOneBy({domain: IsNull(), userId: user.id, key: 'defaultNoteVisibility', scope: '{client,base}'});
+		return acct.then(acct => {
+			const source = {
+				note: acct.note,
+				fields: acct.fields,
+				privacy: privacy.then(p => VisibilityConverter.encode(p?.value ?? 'public')),
+				sensitive: profile.then(p => p.alwaysMarkNsfw),
+				language: profile.then(p => p.lang ?? ''),
+			};
+
+			const result = {
+				...acct,
+				source: awaitAll(source)
+			};
+
+			return awaitAll(result);
+		});
 	}
 
 	public static async getUserFromAcct(acct: string): Promise<User | null> {
