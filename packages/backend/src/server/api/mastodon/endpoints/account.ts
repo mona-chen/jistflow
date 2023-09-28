@@ -9,24 +9,6 @@ import authenticate from "@/server/api/authenticate.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
-import { NotificationHelpers } from "@/server/api/mastodon/helpers/notification.js";
-
-const relationshipModel = {
-	id: "",
-	following: false,
-	followed_by: false,
-	delivery_following: false,
-	blocking: false,
-	blocked_by: false,
-	muting: false,
-	muting_notifications: false,
-	requested: false,
-	domain_blocking: false,
-	showing_reblogs: false,
-	endorsed: false,
-	notifying: false,
-	note: "",
-};
 
 export function apiAccountMastodon(router: Router): void {
 	router.get("/v1/accounts/verify_credentials", async (ctx) => {
@@ -93,7 +75,6 @@ export function apiAccountMastodon(router: Router): void {
 		}
 	});
 	router.get("/v1/accounts/relationships", async (ctx) => {
-		let users;
 		try {
 			const auth = await authenticate(ctx.headers.authorization, null);
 			const user = auth[0] ?? null;
@@ -109,11 +90,9 @@ export function apiAccountMastodon(router: Router): void {
 			ctx.body = result.map(rel => convertRelationship(rel));
 		} catch (e: any) {
 			console.error(e);
-			let data = e.response.data;
-			data.users = users;
-			console.error(data);
+			console.error(e.response.data);
 			ctx.status = 401;
-			ctx.body = data;
+			ctx.body = e.response.data;
 		}
 	});
 	router.get<{ Params: { id: string } }>("/v1/accounts/:id", async (ctx) => {
