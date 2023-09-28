@@ -46,7 +46,7 @@ export class UserHelpers {
 		if (!following && !requested)
 			await createFollowing(localUser, target);
 
-		return this.getUserRelationshipTo(target, localUser);
+		return this.getUserRelationshipTo(target.id, localUser.id);
 	}
 
 	public static async unfollowUser(target: User, localUser: ILocalUser) {
@@ -57,7 +57,7 @@ export class UserHelpers {
 		if (requested)
 			await cancelFollowRequest(target, localUser);
 
-		return this.getUserRelationshipTo(target, localUser);
+		return this.getUserRelationshipTo(target.id, localUser.id);
 	}
 
 	public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {
@@ -205,10 +205,14 @@ export class UserHelpers {
 		return this.getUserRelationships('following', user, localUser, maxId, sinceId, minId, limit);
 	}
 
-	public static async getUserRelationshipTo(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
-		const relation = await Users.getRelation(localUser.id, target.id);
+	public static async getUserRelationhipToMany(targetIds: string[], localUserId: string): Promise<MastodonEntity.Relationship[]> {
+		return Promise.all(targetIds.map(targetId => this.getUserRelationshipTo(targetId, localUserId)));
+	}
+
+	public static async getUserRelationshipTo(targetId: string, localUserId: string): Promise<MastodonEntity.Relationship> {
+		const relation = await Users.getRelation(localUserId, targetId);
 		const response = {
-			id: target.id,
+			id: targetId,
 			following: relation.isFollowing,
 			followed_by: relation.isFollowed,
 			blocking: relation.isBlocking,

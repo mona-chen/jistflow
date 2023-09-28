@@ -9,6 +9,7 @@ import authenticate from "@/server/api/authenticate.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
+import { NotificationHelpers } from "@/server/api/mastodon/helpers/notification.js";
 
 const relationshipModel = {
 	id: "",
@@ -92,32 +93,20 @@ export function apiAccountMastodon(router: Router): void {
 		}
 	});
 	router.get("/v1/accounts/relationships", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		let users;
 		try {
-			// TODO: this should be body
-			let ids = ctx.request.query ? ctx.request.query["id[]"] : null;
-			if (typeof ids === "string") {
-				ids = [ids];
-			}
-			users = ids;
-			relationshipModel.id = ids?.toString() || "1";
-			if (!ids) {
-				ctx.body = [relationshipModel];
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
 				return;
 			}
 
-			let reqIds = [];
-			for (let i = 0; i < ids.length; i++) {
-				reqIds.push(convertId(ids[i], IdType.IceshrimpId));
-			}
-
-			const data = await client.getRelationships(reqIds);
-			ctx.body = data.data.map((relationship) =>
-				convertRelationship(relationship),
-			);
+			const ids = (normalizeUrlQuery(ctx.query, ['id[]'])['id[]'] ?? [])
+				.map((id: string) => convertId(id, IdType.IceshrimpId));
+			const result = await UserHelpers.getUserRelationhipToMany(ids, user.id);
+			ctx.body = result.map(rel => convertRelationship(rel));
 		} catch (e: any) {
 			console.error(e);
 			let data = e.response.data;
