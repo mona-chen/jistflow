@@ -479,14 +479,21 @@ export function apiAccountMastodon(router: Router): void {
 		}
 	});
 	router.get("/v1/blocks", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.getBlocks(
-				convertTimelinesArgsId(limitToInt(ctx.query as any)),
-			);
-			ctx.body = data.data.map((account) => convertAccount(account));
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const cache = UserHelpers.getFreshAccountCache();
+			const args = normalizeUrlQuery(convertTimelinesArgsId(limitToInt(ctx.query as any)));
+			const res = await UserHelpers.getUserBlocks(user, args.max_id, args.since_id, args.min_id, args.limit);
+			const blocks = await UserConverter.encodeMany(res.data, cache);
+			ctx.body = blocks.map(b => convertAccount(b));
+			PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);

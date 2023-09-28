@@ -156,6 +156,33 @@ export class UserHelpers {
 		});
 	}
 
+	public static async getUserBlocks(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+		if (limit > 80) limit = 80;
+
+		const query = PaginationHelpers.makePaginationQuery(
+			Blockings.createQueryBuilder("blocking"),
+			sinceId,
+			maxId,
+			minId
+		);
+
+		query.andWhere("blocking.blockerId = :userId", {userId: user.id})
+			.innerJoinAndSelect("blocking.blockee", "blockee");
+
+		return query.take(limit).getMany().then(async p => {
+			if (minId !== undefined) p = p.reverse();
+			const users = p
+				.map(p =>  p.blockee)
+				.filter(p => p) as User[];
+
+			return {
+				data: users,
+				maxId: p.map(p => p.id).at(-1),
+				minId: p.map(p => p.id)[0],
+			};
+		});
+	}
+
 	public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {
 		if (limit > 40) limit = 40;
 
