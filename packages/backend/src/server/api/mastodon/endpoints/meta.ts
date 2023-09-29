@@ -25,7 +25,7 @@ export async function getInstance(
 			response.description ||
 			"This is a vanilla Iceshrimp Instance. It doesn't seem to have a description.",
 		email: response.email || "",
-		version: `3.5.0 (compatible; Iceshrimp ${config.version})`,
+		version: `4.1.0 (compatible; Iceshrimp ${config.version})`,
 		urls: response.urls,
 		stats: {
 			user_count: await totalUsers,
