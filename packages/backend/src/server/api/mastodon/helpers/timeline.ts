@@ -44,6 +44,7 @@ export class TimelineHelpers {
 		generateMutedUserRenotesQueryForNotes(query, user);
 
 		query.andWhere("note.visibility != 'hidden'");
+		query.andWhere("note.visibility != 'specified'");
 
 		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
 	}
@@ -74,8 +75,7 @@ export class TimelineHelpers {
 		if (local) query.andWhere("note.userHost IS NULL");
 		if (!local) query.andWhere("note.channelId IS NULL");
 
-		query
-			.leftJoinAndSelect("note.renote", "renote");
+		query.leftJoinAndSelect("note.renote", "renote");
 
 		generateRepliesQuery(query, true, user);
 		if (user) {
@@ -86,8 +86,6 @@ export class TimelineHelpers {
 		}
 
 		if (onlyMedia) query.andWhere("note.fileIds != '{}'");
-
-		query.andWhere("note.visibility != 'hidden'");
 
 		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
 	}
