@@ -15,4 +15,9 @@ export class MediaHelpers {
 		})
 			.then(p => DriveFiles.pack(p));
 	}
+
+	public static async getMedia(user: ILocalUser, id: string): Promise<Packed<"DriveFile"> | null> {
+		return DriveFiles.findOneBy({id: id, userId: user.id})
+			.then(p => p ? DriveFiles.pack(p) : null);
+	}
 }

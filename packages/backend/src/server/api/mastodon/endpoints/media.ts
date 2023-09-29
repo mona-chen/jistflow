@@ -9,17 +9,29 @@ import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 
 export function setupEndpointsMedia(router: Router, fileRouter: Router, upload: multer.Instance): void {
 	router.get<{ Params: { id: string } }>("/v1/media/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.getMedia(
-				convertId(ctx.params.id, IdType.IceshrimpId),
-			);
-			ctx.body = convertAttachment(data.data);
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const id = convertId(ctx.params.id, IdType.IceshrimpId);
+			const file = await MediaHelpers.getMedia(user, id);
+
+			if (!file) {
+				ctx.status = 404;
+				ctx.body = { error: "File not found" };
+				return;
+			}
+
+			const attachment = FileConverter.encode(file);
+			ctx.body = convertAttachment(attachment);
 		} catch (e: any) {
 			console.error(e);
-			ctx.status = 401;
+			ctx.status = 500;
 			ctx.body = e.response.data;
 		}
 	});
