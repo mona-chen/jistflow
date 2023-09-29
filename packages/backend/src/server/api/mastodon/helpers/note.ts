@@ -1,5 +1,5 @@
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import { Metas, Notes, Users } from "@/models/index.js";
+import { Metas, NoteFavorites, Notes, Users } from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
@@ -10,6 +10,7 @@ import createReaction from "@/services/note/reaction/create.js";
 import deleteReaction from "@/services/note/reaction/delete.js";
 import createNote from "@/services/note/create.js";
 import deleteNote from "@/services/note/delete.js";
+import { genId } from "@/misc/gen-id.js";
 
 export class NoteHelpers {
 	public static async getDefaultReaction(): Promise<string> {
@@ -46,6 +47,35 @@ export class NoteHelpers {
 			.then(p => p.map(n => deleteNote(user, n)))
 			.then(p => Promise.all(p))
 			.then(_ => getNote(note.id, user));
+	}
+
+	public static async bookmarkNote(note: Note, user: ILocalUser): Promise<Note> {
+		const bookmarked = await NoteFavorites.exist({
+			where: {
+				noteId: note.id,
+				userId: user.id,
+			},
+		});
+
+		if (!bookmarked) {
+			await NoteFavorites.insert({
+				id: genId(),
+				createdAt: new Date(),
+				noteId: note.id,
+				userId: user.id,
+			});
+		}
+
+		return note;
+	}
+
+	public static async unbookmarkNote(note: Note, user: ILocalUser): Promise<Note> {
+		return await NoteFavorites.findOneBy({
+			noteId: note.id,
+			userId: user.id,
+		})
+			.then(p => p !== null ? NoteFavorites.delete(p.id) : null)
+			.then(_ => note);
 	}
 
 	public static async getNoteDescendants(note: Note | string, user: ILocalUser | null, limit: number = 10, depth: number = 2): Promise<Note[]> {

@@ -414,14 +414,26 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/bookmark",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.bookmarkStatus(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-				);
-				ctx.body = convertStatus(data.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user).catch(_ => null);
+
+				if (note === null) {
+					ctx.status = 404;
+					return;
+				}
+
+				ctx.body = await NoteHelpers.bookmarkNote(note, user)
+					.then(p => NoteConverter.encode(p, user))
+					.then(p => convertStatus(p));
 			} catch (e: any) {
 				console.error(e);
 				ctx.status = 401;
@@ -433,14 +445,26 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/unbookmark",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.unbookmarkStatus(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-				);
-				ctx.body = convertStatus(data.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user).catch(_ => null);
+
+				if (note === null) {
+					ctx.status = 404;
+					return;
+				}
+
+				ctx.body = await NoteHelpers.unbookmarkNote(note, user)
+					.then(p => NoteConverter.encode(p, user))
+					.then(p => convertStatus(p));
 			} catch (e: any) {
 				console.error(e);
 				ctx.status = 401;
