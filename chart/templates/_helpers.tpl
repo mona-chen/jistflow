@@ -119,7 +119,7 @@ port: 3000
 db:
   {{- if .Values.postgresql.enabled }}
   host: {{ template "firefish.postgresql.fullname" . }}
-  port: '5432'
+  port: 5432
   {{- else }}
   host: {{ .Values.postgresql.postgresqlHostname }}
   port: {{ .Values.postgresql.postgresqlPort | default "5432" | quote }}
@@ -150,13 +150,13 @@ redis:
   {{- else }}
   host: {{ required "When the redis chart is disabled .Values.redis.hostname is required" .Values.redis.hostname }}
   {{- end }}
-  port: {{ .Values.redis.port | default "6379" | quote }}
+  port: {{ .Values.redis.port | default 6379 }}
   #family: 0  # 0=Both, 4=IPv4, 6=IPv6
   pass: {{ .Values.redis.auth.password | quote }}
   #prefix: example-prefix
   #db: 1
-	#user: default
-	#tls:
+  #user: default
+  #tls:
   #  host: localhost
   #  rejectUnauthorized: false
 
