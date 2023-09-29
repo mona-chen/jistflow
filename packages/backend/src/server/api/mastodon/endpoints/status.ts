@@ -21,76 +21,19 @@ function normalizeQuery(data: any) {
 
 export function setupEndpointsStatus(router: Router): void {
 	router.post("/v1/statuses", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			let body: any = ctx.request.body;
-			if (body.in_reply_to_id)
-				body.in_reply_to_id = convertId(body.in_reply_to_id, IdType.IceshrimpId);
-			if (body.quote_id)
-				body.quote_id = convertId(body.quote_id, IdType.IceshrimpId);
-			if (
-				(!body.poll && body["poll[options][]"]) ||
-				(!body.media_ids && body["media_ids[]"])
-			) {
-				body = normalizeQuery(body);
-			}
-			const text = body.status;
-			const removed = text.replace(/@\S+/g, "").replace(/\s|​/g, "");
-			const isDefaultEmoji = emojiRegexAtStartToEnd.test(removed);
-			const isCustomEmoji = /^:[a-zA-Z0-9@_]+:$/.test(removed);
-			if ((body.in_reply_to_id && isDefaultEmoji) || isCustomEmoji) {
-				const a = await client.createEmojiReaction(
-					body.in_reply_to_id,
-					removed,
-				);
-				ctx.body = a.data;
-			}
-			if (body.in_reply_to_id && removed === "/unreact") {
-				try {
-					const id = body.in_reply_to_id;
-					const post = await client.getStatus(id);
-					const react = post.data.reactions.filter((e) => e.me)[0].name;
-					const data = await client.deleteEmojiReaction(id, react);
-					ctx.body = data.data;
-				} catch (e: any) {
-					console.error(e);
-					ctx.status = 401;
-					ctx.body = e.response.data;
-				}
-			}
-			if (!body.media_ids) body.media_ids = undefined;
-			if (body.media_ids && !body.media_ids.length) body.media_ids = undefined;
-			if (body.media_ids) {
-				body.media_ids = (body.media_ids as string[]).map((p) =>
-					convertId(p, IdType.IceshrimpId),
-				);
-			}
-			const {sensitive} = body;
-			body.sensitive =
-				typeof sensitive === "string" ? sensitive === "true" : sensitive;
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
 
-			if (body.poll) {
-				if (
-					body.poll.expires_in != null &&
-					typeof body.poll.expires_in === "string"
-				)
-					body.poll.expires_in = parseInt(body.poll.expires_in);
-				if (
-					body.poll.multiple != null &&
-					typeof body.poll.multiple === "string"
-				)
-					body.poll.multiple = body.poll.multiple == "true";
-				if (
-					body.poll.hide_totals != null &&
-					typeof body.poll.hide_totals === "string"
-				)
-					body.poll.hide_totals = body.poll.hide_totals == "true";
+			if (!user) {
+				ctx.status = 401;
+				return;
 			}
 
-			const data = await client.postStatus(text, body);
-			ctx.body = convertStatus(data.data);
+			let request = NoteHelpers.normalizeComposeOptions(ctx.request.body);
+			const note = await NoteHelpers.createNote(request, user)
+				.then(p => NoteConverter.encode(p, user));
+			ctx.body = convertStatus(note);
 		} catch (e: any) {
 			console.error(e);
 			ctx.status = 401;

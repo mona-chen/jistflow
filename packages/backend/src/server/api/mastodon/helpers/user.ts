@@ -164,12 +164,12 @@ export class UserHelpers {
 	public static async verifyCredentials(user: ILocalUser): Promise<MastodonEntity.Account> {
 		const acct = UserConverter.encode(user);
 		const profile = UserProfiles.findOneByOrFail({userId: user.id});
-		const privacy = RegistryItems.findOneBy({domain: IsNull(), userId: user.id, key: 'defaultNoteVisibility', scope: '{client,base}'});
+		const privacy = this.getDefaultNoteVisibility(user);
 		return acct.then(acct => {
 			const source = {
 				note: acct.note,
 				fields: acct.fields,
-				privacy: privacy.then(p => VisibilityConverter.encode(p?.value ?? 'public')),
+				privacy: privacy.then(p => VisibilityConverter.encode(p)),
 				sensitive: profile.then(p => p.alwaysMarkNsfw),
 				language: profile.then(p => p.lang ?? ''),
 			};
@@ -484,5 +484,9 @@ export class UserHelpers {
 			accounts: [],
 			users: [],
 		};
+	}
+
+	public static getDefaultNoteVisibility(user: ILocalUser): Promise<string> {
+		return RegistryItems.findOneBy({domain: IsNull(), userId: user.id, key: 'defaultNoteVisibility', scope: '{client,base}'}).then(p => p?.value ?? 'public')
 	}
 }

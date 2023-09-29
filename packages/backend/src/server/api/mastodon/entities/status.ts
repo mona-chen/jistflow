@@ -42,4 +42,20 @@ namespace MastodonEntity {
 		quote: Status | null;
 		bookmarked: boolean;
 	};
+
+	export type StatusCreationRequest = {
+		text?: string,
+		media_ids?: string[],
+		poll?: {
+			options: string[],
+			expires_in: number,
+			multiple: boolean
+		},
+		in_reply_to_id?: string,
+		sensitive?: boolean,
+		spoiler_text?: string,
+		visibility?: string,
+		language?: string,
+		scheduled_at?: Date
+	}
 }

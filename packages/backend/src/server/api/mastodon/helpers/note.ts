@@ -1,5 +1,14 @@
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import { Metas, NoteFavorites, NoteReactions, Notes, UserNotePinings, Users } from "@/models/index.js";
+import {
+	DriveFiles,
+	Metas,
+	NoteFavorites,
+	NoteReactions,
+	Notes,
+	RegistryItems,
+	UserNotePinings,
+	Users
+} from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
@@ -8,7 +17,7 @@ import { ILocalUser, User } from "@/models/entities/user.js";
 import { getNote } from "@/server/api/common/getters.js";
 import createReaction from "@/services/note/reaction/create.js";
 import deleteReaction from "@/services/note/reaction/delete.js";
-import createNote from "@/services/note/create.js";
+import createNote, { extractMentionedUsers } from "@/services/note/create.js";
 import deleteNote from "@/services/note/delete.js";
 import { genId } from "@/misc/gen-id.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
@@ -16,6 +25,13 @@ import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { AccountCache, LinkPaginationObject, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { addPinned, removePinned } from "@/services/i/pin.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
+import { convertId, IdType } from "@/misc/convert-id.js";
+import querystring from "node:querystring";
+import qs from "qs";
+import { awaitAll } from "@/prelude/await-all.js";
+import { IsNull } from "typeorm";
+import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
+import mfm from "mfm-js";
 
 export class NoteHelpers {
 	public static async getDefaultReaction(): Promise<string> {
@@ -203,5 +219,77 @@ export class NoteHelpers {
 		}
 
 		return notes.reverse();
+	}
+
+	public static async createNote(request: MastodonEntity.StatusCreationRequest, user: ILocalUser): Promise<Note> {
+		const files = request.media_ids && request.media_ids.length > 0
+			? DriveFiles.findByIds(request.media_ids)
+			: [];
+
+		const reply = request.in_reply_to_id ? await getNote(request.in_reply_to_id, user) : undefined;
+		const visibility = request.visibility ?? UserHelpers.getDefaultNoteVisibility(user);
+
+		const data = {
+			createdAt: new Date(),
+			files: files,
+			poll: request.poll
+				? {
+					choices: request.poll.options,
+					multiple: request.poll.multiple,
+					expiresAt: request.poll.expires_in && request.poll.expires_in > 0 ? new Date(new Date().getTime() + (request.poll.expires_in * 1000)) : null,
+				}
+				: undefined,
+			text: request.text,
+			reply: reply,
+			cw: request.spoiler_text,
+			visibility: visibility,
+			visibleUsers: Promise.resolve(visibility).then(p => p === 'specified' ? this.extractMentions(request.text ?? '', user) : undefined)
+		}
+
+		return createNote(user, await awaitAll(data));
+	}
+
+	public static async extractMentions(text: string, user: ILocalUser): Promise<User[]> {
+		return extractMentionedUsers(user, mfm.parse(text)!);
+	}
+
+	public static normalizeComposeOptions(body: any): MastodonEntity.StatusCreationRequest {
+		const result: MastodonEntity.StatusCreationRequest = {};
+
+		body = qs.parse(querystring.stringify(body));
+
+		if (body.status !== null)
+			result.text = body.status;
+		if (body.spoiler_text !== null)
+			result.spoiler_text = body.spoiler_text;
+		if (body.visibility !== null)
+			result.visibility = VisibilityConverter.decode(body.visibility);
+		if (body.language !== null)
+			result.language = body.language;
+		if (body.scheduled_at !== null)
+			result.scheduled_at = new Date(Date.parse(body.scheduled_at));
+		if (body.in_reply_to_id)
+			result.in_reply_to_id = convertId(body.in_reply_to_id, IdType.IceshrimpId);
+		if (body.media_ids)
+			result.media_ids = body.media_ids && body.media_ids.length > 0
+				? this.normalizeToArray(body.media_ids)
+					.map(p => convertId(p, IdType.IceshrimpId))
+				: undefined;
+
+		if (body.poll) {
+			result.poll = {
+				expires_in: parseInt(body.poll.expires_in, 10),
+				options: body.poll.options,
+				multiple: !!body.poll.multiple,
+			}
+		}
+
+		result.sensitive = !!body.sensitive;
+
+		return result;
+	}
+
+	private static normalizeToArray<T>(subject: T | T[]) {
+		return Array.isArray(subject) ? subject : [subject];
 	}
 }
