@@ -110,7 +110,7 @@ export function apiAccountMastodon(router: Router): void {
 				const cache = UserHelpers.getFreshAccountCache();
 				const query = await UserHelpers.getUserCached(userId, cache);
 				const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))));
-				const tl = await UserHelpers.getUserStatuses(query, user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.exclude_replies, args.exclude_reblogs, args.pinned, args.tagged)
+				const tl = await UserHelpers.getUserStatuses(query, user, args.max_id, args.since_id, args.min_id, args.limit, args['only_media'], args['exclude_replies'], args['exclude_reblogs'], args.pinned, args.tagged)
 					.then(n => NoteConverter.encodeMany(n, user, cache));
 
 				ctx.body = tl.map(s => convertStatus(s));

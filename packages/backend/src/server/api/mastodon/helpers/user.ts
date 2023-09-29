@@ -32,7 +32,7 @@ import { publishUserEvent } from "@/services/stream.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import acceptFollowRequest from "@/services/following/requests/accept.js";
 import { rejectFollowRequest } from "@/services/following/reject.js";
-import { IsNull } from "typeorm";
+import { Brackets, IsNull } from "typeorm";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 
@@ -300,15 +300,28 @@ export class UserHelpers {
 		)
 			.andWhere("note.userId = :userId", { userId: user.id });
 
-		if (excludeReblogs) query.andWhere("(note.renoteId IS NOT NULL) OR (note.text IS NOT NULL)");
+		if (excludeReblogs) {
+			query.andWhere(
+				new Brackets(qb => {
+					qb.where('note.renoteId IS NULL')
+						.orWhere('note.text IS NOT NULL');
+			}));
+		}
 
-		query
-			.leftJoinAndSelect("note.renote", "renote");
+		if (excludeReplies) {
+			query.leftJoin("note", "thread", "note.threadId = thread.id")
+				.andWhere(
+				new Brackets(qb => {
+					qb.where("note.replyId IS NULL")
+						.orWhere(new Brackets(qb => {
+							qb.where('note.mentions = :mentions', {mentions: []})
+								.andWhere('thread.userId = :userId', {userId: user.id})
+						}));
+			}));
+		}
 
-		//this doesn't exclude replies to your own reply to someone else's post
-		//this also breaks when checking your own profile
-		//FIXME write new the replies query generator specific to the mastodon client api
-		generateRepliesQuery(query, !excludeReplies, localUser);
+		query.leftJoinAndSelect("note.renote", "renote");
+
 		generateVisibilityQuery(query, localUser);
 		if (localUser) {
 			generateMutedUserQuery(query, localUser, user);
@@ -318,6 +331,7 @@ export class UserHelpers {
 		if (onlyMedia) query.andWhere("note.fileIds != '{}'");
 
 		query.andWhere("note.visibility != 'hidden'");
+		query.andWhere("note.visibility != 'specified'");
 
 		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
 	}
