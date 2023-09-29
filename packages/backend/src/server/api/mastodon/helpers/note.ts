@@ -1,5 +1,5 @@
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import { Metas, NoteFavorites, NoteReactions, Notes, Users } from "@/models/index.js";
+import { Metas, NoteFavorites, NoteReactions, Notes, UserNotePinings, Users } from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
@@ -14,6 +14,7 @@ import { genId } from "@/misc/gen-id.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { AccountCache, LinkPaginationObject, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { addPinned, removePinned } from "@/services/i/pin.js";
 
 export class NoteHelpers {
 	public static async getDefaultReaction(): Promise<string> {
@@ -79,6 +80,36 @@ export class NoteHelpers {
 		})
 			.then(p => p !== null ? NoteFavorites.delete(p.id) : null)
 			.then(_ => note);
+	}
+
+	public static async pinNote(note: Note, user: ILocalUser): Promise<Note> {
+		const pinned = await UserNotePinings.exist({
+			where: {
+				userId: user.id,
+				noteId: note.id
+			}
+		});
+
+		if (!pinned) {
+			await addPinned(user, note.id);
+		}
+
+		return note;
+	}
+
+	public static async unpinNote(note: Note, user: ILocalUser): Promise<Note> {
+		const pinned = await UserNotePinings.exist({
+			where: {
+				userId: user.id,
+				noteId: note.id
+			}
+		});
+
+		if (pinned) {
+			await removePinned(user, note.id);
+		}
+
+		return note;
 	}
 
 	public static async getNoteFavoritedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {

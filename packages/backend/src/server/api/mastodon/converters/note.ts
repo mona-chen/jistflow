@@ -9,7 +9,7 @@ import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
-import { DriveFiles, NoteFavorites, NoteReactions, Notes, NoteThreadMutings } from "@/models/index.js";
+import { DriveFiles, NoteFavorites, NoteReactions, Notes, NoteThreadMutings, UserNotePinings } from "@/models/index.js";
 import { decodeReaction } from "@/misc/reaction-lib.js";
 import { MentionConverter } from "@/server/api/mastodon/converters/mention.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
@@ -86,6 +86,10 @@ export class NoteConverter {
 						: note.text;
 				});
 
+				const isPinned = user && note.userId === user.id
+					? UserNotePinings.exist({ where: {userId: user.id, noteId: note.id } })
+					: false;
+
         // noinspection ES6MissingAwait
 				return await awaitAll({
             id: note.id,
@@ -119,7 +123,7 @@ export class NoteConverter {
             poll: note.hasPoll ? populatePoll(note, user?.id ?? null).then(p => PollConverter.encode(p, note.id)) : null,
             application: null, //FIXME
             language: null, //FIXME
-            pinned: null, //FIXME
+            pinned: isPinned,
             // Use emojis list to provide URLs for emoji reactions.
             reactions: [], //FIXME: this.mapReactions(n.emojis, n.reactions, n.myReaction),
             bookmarked: isBookmarked,
