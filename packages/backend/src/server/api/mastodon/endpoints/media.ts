@@ -1,5 +1,4 @@
 import Router from "@koa/router";
-import { getClient } from "@/server/api/mastodon/index.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
 import { convertAttachment } from "@/server/api/mastodon/converters.js";
 import multer from "@koa/multer";
@@ -19,7 +18,7 @@ export function setupEndpointsMedia(router: Router, fileRouter: Router, upload: 
 			}
 
 			const id = convertId(ctx.params.id, IdType.IceshrimpId);
-			const file = await MediaHelpers.getMedia(user, id);
+			const file = await MediaHelpers.getMediaPacked(user, id);
 
 			if (!file) {
 				ctx.status = 404;
@@ -36,15 +35,27 @@ export function setupEndpointsMedia(router: Router, fileRouter: Router, upload: 
 		}
 	});
 	router.put<{ Params: { id: string } }>("/v1/media/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.updateMedia(
-				convertId(ctx.params.id, IdType.IceshrimpId),
-				ctx.request.body as any,
-			);
-			ctx.body = convertAttachment(data.data);
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const id = convertId(ctx.params.id, IdType.IceshrimpId);
+			const file = await MediaHelpers.getMedia(user, id);
+
+			if (!file) {
+				ctx.status = 404;
+				ctx.body = { error: "File not found" };
+				return;
+			}
+
+			const result = await MediaHelpers.updateMedia(user, file, ctx.request.body)
+				.then(p => FileConverter.encode(p));
+			ctx.body = convertAttachment(result);
 		} catch (e: any) {
 			console.error(e);
 			ctx.status = 401;
