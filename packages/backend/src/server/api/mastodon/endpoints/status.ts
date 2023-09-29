@@ -466,15 +466,26 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string; name: string } }>(
 		"/v1/statuses/:id/react/:name",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.reactStatus(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-					ctx.params.name,
-				);
-				ctx.body = convertStatus(data.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user).catch(_ => null);
+
+				if (note === null) {
+					ctx.status = 404;
+					return;
+				}
+
+				ctx.body = await NoteHelpers.reactToNote(note, user, ctx.params.name)
+					.then(p => NoteConverter.encode(p, user))
+					.then(p => convertStatus(p));
 			} catch (e: any) {
 				console.error(e);
 				ctx.status = 401;
@@ -486,15 +497,26 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string; name: string } }>(
 		"/v1/statuses/:id/unreact/:name",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.unreactStatus(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-					ctx.params.name,
-				);
-				ctx.body = convertStatus(data.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user).catch(_ => null);
+
+				if (note === null) {
+					ctx.status = 404;
+					return;
+				}
+
+				ctx.body = await NoteHelpers.removeReactFromNote(note, user)
+					.then(p => NoteConverter.encode(p, user))
+					.then(p => convertStatus(p));
 			} catch (e: any) {
 				console.error(e);
 				ctx.status = 401;
