@@ -37,7 +37,7 @@ namespace MastodonEntity {
 		poll: Poll | null;
 		application: Application | null;
 		language: string | null;
-		pinned: boolean | null;
+		pinned: boolean | undefined;
 		reactions: Array<Reaction>;
 		quote: Status | null;
 		bookmarked: boolean;

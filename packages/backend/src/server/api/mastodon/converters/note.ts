@@ -88,7 +88,7 @@ export class NoteConverter {
 
 				const isPinned = user && note.userId === user.id
 					? UserNotePinings.exist({ where: {userId: user.id, noteId: note.id } })
-					: false;
+					: undefined;
 
         // noinspection ES6MissingAwait
 				return await awaitAll({
