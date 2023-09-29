@@ -1,16 +1,19 @@
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import { Metas, NoteFavorites, Notes, Users } from "@/models/index.js";
+import { Metas, NoteFavorites, NoteReactions, Notes, Users } from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
 import { Note } from "@/models/entities/note.js";
-import { ILocalUser } from "@/models/entities/user.js";
+import { ILocalUser, User } from "@/models/entities/user.js";
 import { getNote } from "@/server/api/common/getters.js";
 import createReaction from "@/services/note/reaction/create.js";
 import deleteReaction from "@/services/note/reaction/delete.js";
 import createNote from "@/services/note/create.js";
 import deleteNote from "@/services/note/delete.js";
 import { genId } from "@/misc/gen-id.js";
+import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
+import { UserConverter } from "@/server/api/mastodon/converters/user.js";
+import { AccountCache, LinkPaginationObject, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 
 export class NoteHelpers {
 	public static async getDefaultReaction(): Promise<string> {
@@ -70,12 +73,63 @@ export class NoteHelpers {
 	}
 
 	public static async unbookmarkNote(note: Note, user: ILocalUser): Promise<Note> {
-		return await NoteFavorites.findOneBy({
+		return NoteFavorites.findOneBy({
 			noteId: note.id,
 			userId: user.id,
 		})
 			.then(p => p !== null ? NoteFavorites.delete(p.id) : null)
 			.then(_ => note);
+	}
+
+	public static async getNoteFavoritedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+		if (limit > 80) limit = 80;
+		const query = PaginationHelpers.makePaginationQuery(
+			NoteReactions.createQueryBuilder("reaction"),
+			sinceId,
+			maxId,
+			minId
+		)
+			.andWhere("reaction.noteId = :noteId", {noteId: note.id})
+			.innerJoinAndSelect("reaction.user", "user");
+
+		return query.take(limit).getMany().then(async p => {
+			if (minId !== undefined) p = p.reverse();
+			const users = p
+				.map(p =>  p.user)
+				.filter(p => p) as User[];
+
+			return {
+				data: users,
+				maxId: p.map(p => p.id).at(-1),
+				minId: p.map(p => p.id)[0],
+			};
+		});
+	}
+
+	public static async getNoteRebloggedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+		if (limit > 80) limit = 80;
+		const query = PaginationHelpers.makePaginationQuery(
+			Notes.createQueryBuilder("note"),
+			sinceId,
+			maxId,
+			minId
+		)
+			.andWhere("note.renoteId = :noteId", {noteId: note.id})
+			.andWhere("note.text IS NULL") // We don't want to count quotes as renotes
+			.innerJoinAndSelect("note.user", "user");
+
+		return query.take(limit).getMany().then(async p => {
+			if (minId !== undefined) p = p.reverse();
+			const users = p
+				.map(p =>  p.user)
+				.filter(p => p) as User[];
+
+			return {
+				data: users,
+				maxId: p.map(p => p.id).at(-1),
+				minId: p.map(p => p.id)[0],
+			};
+		});
 	}
 
 	public static async getNoteDescendants(note: Note | string, user: ILocalUser | null, limit: number = 10, depth: number = 2): Promise<Note[]> {

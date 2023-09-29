@@ -13,6 +13,9 @@ import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import createReaction from "@/services/note/reaction/create.js";
 import deleteReaction from "@/services/note/reaction/delete.js";
+import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "@/server/api/mastodon/endpoints/timeline.js";
+import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
+import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 
 function normalizeQuery(data: any) {
 	const str = querystring.stringify(data);
@@ -251,10 +254,28 @@ export function apiStatusMastodon(router: Router): void {
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.getStatusRebloggedBy(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-				);
-				ctx.body = data.data.map((account) => convertAccount(account));
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user).catch(_ => null);
+
+				if (note === null) {
+					ctx.status = 404;
+					return;
+				}
+
+				const cache = UserHelpers.getFreshAccountCache();
+				const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
+				const res = await NoteHelpers.getNoteRebloggedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
+				const users = await UserConverter.encodeMany(res.data, cache);
+				ctx.body = users.map(m => convertAccount(m));
+				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
 			} catch (e: any) {
 				console.error(e);
 				ctx.status = 401;
@@ -265,14 +286,29 @@ export function apiStatusMastodon(router: Router): void {
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/favourited_by",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.getStatusFavouritedBy(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-				);
-				ctx.body = data.data.map((account) => convertAccount(account));
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user).catch(_ => null);
+
+				if (note === null) {
+					ctx.status = 404;
+					return;
+				}
+
+				const cache = UserHelpers.getFreshAccountCache();
+				const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
+				const res = await NoteHelpers.getNoteFavoritedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
+				const users = await UserConverter.encodeMany(res.data, cache);
+				ctx.body = users.map(m => convertAccount(m));
+				PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
 			} catch (e: any) {
 				console.error(e);
 				ctx.status = 401;
