@@ -1,12 +1,12 @@
 import megalodon, { MegalodonInterface } from "megalodon";
 import Router from "@koa/router";
-import { getClient } from "../ApiMastodonCompatibleService.js";
+import { getClient } from "../index.js";
 import axios from "axios";
 import { Converter } from "megalodon";
 import { convertPaginationArgsIds, limitToInt } from "./timeline.js";
 import { convertAccount, convertStatus } from "../converters.js";
 
-export function apiSearchMastodon(router: Router): void {
+export function setupEndpointsSearch(router: Router): void {
 	router.get("/v1/search", async (ctx) => {
 		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
 		const accessTokens = ctx.request.headers.authorization;

@@ -1,5 +1,5 @@
 import Router from "@koa/router";
-import { getClient } from "../ApiMastodonCompatibleService.js";
+import { getClient } from "../index.js";
 import { argsToBools, convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { convertId, IdType } from "../../index.js";
 import { convertAccount, convertFeaturedTag, convertList, convertRelationship, convertStatus, } from "../converters.js";
@@ -10,7 +10,7 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 
-export function apiAccountMastodon(router: Router): void {
+export function setupEndpointsAccount(router: Router): void {
 	router.get("/v1/accounts/verify_credentials", async (ctx) => {
 		try {
 			const auth = await authenticate(ctx.headers.authorization, null);

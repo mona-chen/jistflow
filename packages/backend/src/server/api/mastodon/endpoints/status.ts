@@ -1,5 +1,5 @@
 import Router from "@koa/router";
-import { getClient } from "../ApiMastodonCompatibleService.js";
+import { getClient } from "../index.js";
 import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
 import querystring from "node:querystring";
 import qs from "qs";
@@ -19,7 +19,7 @@ function normalizeQuery(data: any) {
 	return qs.parse(str);
 }
 
-export function apiStatusMastodon(router: Router): void {
+export function setupEndpointsStatus(router: Router): void {
 	router.post("/v1/statuses", async (ctx) => {
 		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 		const accessTokens = ctx.headers.authorization;
@@ -643,38 +643,6 @@ export function apiStatusMastodon(router: Router): void {
 			}
 		},
 	);
-
-	router.get<{ Params: { id: string } }>("/v1/media/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.getMedia(
-				convertId(ctx.params.id, IdType.IceshrimpId),
-			);
-			ctx.body = convertAttachment(data.data);
-		} catch (e: any) {
-			console.error(e);
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
-	router.put<{ Params: { id: string } }>("/v1/media/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
-		try {
-			const data = await client.updateMedia(
-				convertId(ctx.params.id, IdType.IceshrimpId),
-				ctx.request.body as any,
-			);
-			ctx.body = convertAttachment(data.data);
-		} catch (e: any) {
-			console.error(e);
-			ctx.status = 401;
-			ctx.body = e.response.data;
-		}
-	});
 	router.get<{ Params: { id: string } }>("/v1/polls/:id", async (ctx) => {
 		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 		const accessTokens = ctx.headers.authorization;

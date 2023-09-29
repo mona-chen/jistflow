@@ -1,5 +1,5 @@
 import Router from "@koa/router";
-import { getClient } from "../ApiMastodonCompatibleService.js";
+import { getClient } from "../index.js";
 import { ParsedUrlQuery } from "querystring";
 import {
 	convertAccount,
@@ -66,7 +66,7 @@ export function normalizeUrlQuery(q: ParsedUrlQuery, arrayKeys: string[] = []): 
 	return dict;
 }
 
-export function apiTimelineMastodon(router: Router): void {
+export function setupEndpointsTimeline(router: Router): void {
 	router.get("/v1/timelines/public", async (ctx, reply) => {
 		try {
 			const auth = await authenticate(ctx.headers.authorization, null);

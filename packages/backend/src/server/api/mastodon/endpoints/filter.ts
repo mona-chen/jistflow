@@ -1,10 +1,10 @@
 import megalodon, { MegalodonInterface } from "megalodon";
 import Router from "@koa/router";
-import { getClient } from "../ApiMastodonCompatibleService.js";
+import { getClient } from "../index.js";
 import { IdType, convertId } from "../../index.js";
 import { convertFilter } from "../converters.js";
 
-export function apiFilterMastodon(router: Router): void {
+export function setupEndpointsFilter(router: Router): void {
 	router.get("/v1/filters", async (ctx) => {
 		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
 		const accessTokens = ctx.request.headers.authorization;

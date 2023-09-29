@@ -7,7 +7,7 @@ import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { NotificationHelpers } from "@/server/api/mastodon/helpers/notification.js";
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
 
-export function apiNotificationsMastodon(router: Router): void {
+export function setupEndpointsNotifications(router: Router): void {
 	router.get("/v1/notifications", async (ctx) => {
 		try {
 			const auth = await authenticate(ctx.headers.authorization, null);

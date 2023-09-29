@@ -39,7 +39,7 @@ const writeScope = [
 	"write:gallery-likes",
 ];
 
-export function apiAuthMastodon(router: Router): void {
+export function setupEndpointsAuth(router: Router): void {
 	router.post("/v1/apps", async (ctx) => {
 		const body: any = ctx.request.body || ctx.request.query;
 		try {

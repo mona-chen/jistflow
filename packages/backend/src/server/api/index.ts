@@ -7,13 +7,9 @@ import Router from "@koa/router";
 import multer from "@koa/multer";
 import bodyParser from "koa-bodyparser";
 import cors from "@koa/cors";
-import {
-	apiMastodonCompatible,
-	getClient,
-} from "./mastodon/ApiMastodonCompatibleService.js";
-import { Instances, AccessTokens, Users } from "@/models/index.js";
+import { setupMastodonApi } from "./mastodon/index.js";
+import { AccessTokens, Users } from "@/models/index.js";
 import config from "@/config/index.js";
-import fs from "fs";
 import endpoints from "./endpoints.js";
 import compatibility from "./compatibility.js";
 import handler from "./api-handler.js";
@@ -24,9 +20,7 @@ import verifyEmail from "./private/verify-email.js";
 import discord from "./service/discord.js";
 import github from "./service/github.js";
 import twitter from "./service/twitter.js";
-import { koaBody } from "koa-body";
 import { convertId, IdType } from "@/misc/convert-id.js";
-import { convertAttachment } from "./mastodon/converters.js";
 
 // re-export native rust id conversion (function and enum)
 export { IdType, convertId };
@@ -72,64 +66,7 @@ router.use(
 	}),
 );
 
-mastoRouter.use(
-	koaBody({
-		multipart: true,
-		urlencoded: true,
-	}),
-);
-
-mastoFileRouter.post("/v1/media", upload.single("file"), async (ctx) => {
-	const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-	const accessTokens = ctx.headers.authorization;
-	const client = getClient(BASE_URL, accessTokens);
-	try {
-		const multipartData = await ctx.file;
-		if (!multipartData) {
-			ctx.body = { error: "No image" };
-			ctx.status = 401;
-			return;
-		}
-		const data = await client.uploadMedia(multipartData);
-		ctx.body = convertAttachment(data.data as MastodonEntity.Attachment);
-	} catch (e: any) {
-		console.error(e);
-		ctx.status = 401;
-		ctx.body = e.response.data;
-	}
-});
-mastoFileRouter.post("/v2/media", upload.single("file"), async (ctx) => {
-	const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-	const accessTokens = ctx.headers.authorization;
-	const client = getClient(BASE_URL, accessTokens);
-	try {
-		const multipartData = await ctx.file;
-		if (!multipartData) {
-			ctx.body = { error: "No image" };
-			ctx.status = 401;
-			return;
-		}
-		const data = await client.uploadMedia(multipartData, ctx.request.body);
-		ctx.body = convertAttachment(data.data as MastodonEntity.Attachment);
-	} catch (e: any) {
-		console.error(e);
-		ctx.status = 401;
-		ctx.body = e.response.data;
-	}
-});
-
-mastoRouter.use(async (ctx, next) => {
-	if (ctx.request.query) {
-		if (!ctx.request.body || Object.keys(ctx.request.body).length === 0) {
-			ctx.request.body = ctx.request.query;
-		} else {
-			ctx.request.body = { ...ctx.request.body, ...ctx.request.query };
-		}
-	}
-	await next();
-});
-
-apiMastodonCompatible(mastoRouter);
+setupMastodonApi(mastoRouter, mastoFileRouter, upload);
 
 /**
  * Register endpoint handlers
