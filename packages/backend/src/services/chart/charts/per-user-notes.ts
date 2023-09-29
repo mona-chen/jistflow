@@ -32,7 +32,6 @@ export default class PerUserNotesChart extends Chart<typeof schema> {
 		user: { id: User["id"] },
 		note: Note,
 		isAdditional: boolean,
-		byBot = false,
 	): Promise<void> {
 		await this.commit(
 			{
@@ -45,8 +44,7 @@ export default class PerUserNotesChart extends Chart<typeof schema> {
 							? 1
 							: -1
 						: 0,
-				"diffs.renote":
-					note.renoteId != null && !byBot ? (isAdditional ? 1 : -1) : 0,
+				"diffs.renote": note.renoteId != null ? (isAdditional ? 1 : -1) : 0,
 				"diffs.reply": note.replyId != null ? (isAdditional ? 1 : -1) : 0,
 				"diffs.withFile": note.fileIds.length > 0 ? (isAdditional ? 1 : -1) : 0,
 			},

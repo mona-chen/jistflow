@@ -163,7 +163,6 @@ export default async (
 		host: User["host"];
 		isSilenced: User["isSilenced"];
 		createdAt: User["createdAt"];
-		isBot: User["isBot"];
 		inbox?: User["inbox"];
 	},
 	data: Option,
@@ -334,8 +333,8 @@ export default async (
 		res(note);
 
 		// 統計を更新
-		notesChart.update(note, true, user.isBot);
-		perUserNotesChart.update(user, note, true, user.isBot);
+		notesChart.update(note, true);
+		perUserNotesChart.update(user, note, true);
 
 		// Register host
 		if (Users.isRemoteUser(user)) {
@@ -410,7 +409,6 @@ export default async (
 		// この投稿を除く指定したユーザーによる指定したノートのリノートが存在しないとき
 		if (
 			data.renote &&
-			!user.isBot &&
 			(await countSameRenotes(user.id, data.renote.id, note.id)) === 0
 		) {
 			incRenoteCount(data.renote);
