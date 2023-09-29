@@ -1,5 +1,5 @@
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import { Metas, Notes } from "@/models/index.js";
+import { Metas, Notes, Users } from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
@@ -8,6 +8,8 @@ import { ILocalUser } from "@/models/entities/user.js";
 import { getNote } from "@/server/api/common/getters.js";
 import createReaction from "@/services/note/reaction/create.js";
 import deleteReaction from "@/services/note/reaction/delete.js";
+import createNote from "@/services/note/create.js";
+import deleteNote from "@/services/note/delete.js";
 
 export class NoteHelpers {
 	public static async getDefaultReaction(): Promise<string> {
@@ -25,6 +27,25 @@ export class NoteHelpers {
 	public static async removeReactFromNote(note: Note, user: ILocalUser): Promise<Note> {
 		await deleteReaction(user, note);
 		return getNote(note.id, user);
+	}
+
+	public static async reblogNote(note: Note, user: ILocalUser): Promise<Note> {
+		const data = {
+			createdAt: new Date(),
+			files: [],
+			renote: note
+		};
+		return await createNote(user, data);
+	}
+
+	public static async unreblogNote(note: Note, user: ILocalUser): Promise<Note> {
+		return Notes.findBy({
+			userId: user.id,
+			renoteId: note.id,
+		})
+			.then(p => p.map(n => deleteNote(user, n)))
+			.then(p => Promise.all(p))
+			.then(_ => getNote(note.id, user));
 	}
 
 	public static async getNoteDescendants(note: Note | string, user: ILocalUser | null, limit: number = 10, depth: number = 2): Promise<Note[]> {
