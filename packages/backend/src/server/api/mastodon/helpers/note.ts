@@ -1,5 +1,5 @@
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import { Notes } from "@/models/index.js";
+import { Metas, Notes } from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
@@ -10,6 +10,13 @@ import { getNote } from "@/server/api/common/getters.js";
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 
 export class NoteHelpers {
+	public static async getDefaultReaction(): Promise<string> {
+		return Metas.createQueryBuilder()
+			.select('"defaultReaction"')
+			.execute()
+			.then(p => p[0].defaultReaction);
+	}
+
 	public static async getNoteDescendants(note: Note | string, user: ILocalUser | null, limit: number = 10, depth: number = 2): Promise<Note[]> {
 		const noteId = typeof note === "string" ? note : note.id;
 		const query = makePaginationQuery(Notes.createQueryBuilder("note"))

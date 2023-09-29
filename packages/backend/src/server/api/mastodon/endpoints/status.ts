@@ -284,7 +284,7 @@ export function apiStatusMastodon(router: Router): void {
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
-			const react = await getFirstReaction(BASE_URL, accessTokens);
+			const react = await NoteHelpers.getDefaultReaction();
 			try {
 				const a = (await client.createEmojiReaction(
 					convertId(ctx.params.id, IdType.IceshrimpId),
@@ -306,7 +306,7 @@ export function apiStatusMastodon(router: Router): void {
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
-			const react = await getFirstReaction(BASE_URL, accessTokens);
+			const react = await NoteHelpers.getDefaultReaction();
 			try {
 				const data = await client.deleteEmojiReaction(
 					convertId(ctx.params.id, IdType.IceshrimpId),
@@ -540,26 +540,4 @@ export function apiStatusMastodon(router: Router): void {
 			}
 		},
 	);
-}
-
-async function getFirstReaction(
-	BASE_URL: string,
-	accessTokens: string | undefined,
-) {
-	const accessTokenArr = accessTokens?.split(" ") ?? [null];
-	const accessToken = accessTokenArr[accessTokenArr.length - 1];
-	let react = "⭐";
-	try {
-		const api = await axios.post(`${BASE_URL}/api/i/registry/get-unsecure`, {
-			scope: ["client", "base"],
-			key: "reactions",
-			i: accessToken,
-		});
-		const reactRaw = api.data;
-		react = Array.isArray(reactRaw) ? api.data[0] : "⭐";
-		console.log(api.data);
-		return react;
-	} catch (e) {
-		return react;
-	}
 }
