@@ -8,7 +8,7 @@ import {
 	NoteFavorites,
 	NoteReactions,
 	Notes,
-	NoteWatchings, RegistryItems,
+	NoteWatchings, RegistryItems, UserNotePinings,
 	UserProfiles,
 	Users
 } from "@/models/index.js";
@@ -282,11 +282,6 @@ export class UserHelpers {
 	public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {
 		if (limit > 40) limit = 40;
 
-		if (pinned) {
-			//FIXME respect pinned
-			return [];
-		}
-
 		if (tagged !== undefined) {
 			//FIXME respect tagged
 			return [];
@@ -298,7 +293,14 @@ export class UserHelpers {
 			maxId,
 			minId
 		)
-			.andWhere("note.userId = :userId", { userId: user.id });
+			.andWhere("note.userId = :userId");
+
+		if (pinned) {
+			const sq = UserNotePinings.createQueryBuilder("pin")
+				.select("pin.noteId")
+				.where("pin.userId = :userId");
+			query.andWhere(`note.id IN (${sq.getQuery()})`);
+		}
 
 		if (excludeReblogs) {
 			query.andWhere(
@@ -315,7 +317,7 @@ export class UserHelpers {
 					qb.where("note.replyId IS NULL")
 						.orWhere(new Brackets(qb => {
 							qb.where('note.mentions = :mentions', {mentions: []})
-								.andWhere('thread.userId = :userId', {userId: user.id})
+								.andWhere('thread.userId = :userId')
 						}));
 			}));
 		}
@@ -332,6 +334,8 @@ export class UserHelpers {
 
 		query.andWhere("note.visibility != 'hidden'");
 		query.andWhere("note.visibility != 'specified'");
+
+		query.setParameters({ userId: user.id });
 
 		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
 	}
