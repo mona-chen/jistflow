@@ -5,9 +5,9 @@ import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
 import { Note } from "@/models/entities/note.js";
 import { ILocalUser } from "@/models/entities/user.js";
-import querystring from "node:querystring";
 import { getNote } from "@/server/api/common/getters.js";
-import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
+import createReaction from "@/services/note/reaction/create.js";
+import deleteReaction from "@/services/note/reaction/delete.js";
 
 export class NoteHelpers {
 	public static async getDefaultReaction(): Promise<string> {
@@ -15,6 +15,16 @@ export class NoteHelpers {
 			.select('"defaultReaction"')
 			.execute()
 			.then(p => p[0].defaultReaction);
+	}
+
+	public static async reactToNote(note: Note, user: ILocalUser, reaction: string): Promise<Note> {
+		await createReaction(user, note, reaction);
+		return getNote(note.id, user);
+	}
+
+	public static async removeReactFromNote(note: Note, user: ILocalUser): Promise<Note> {
+		await deleteReaction(user, note);
+		return getNote(note.id, user);
 	}
 
 	public static async getNoteDescendants(note: Note | string, user: ILocalUser | null, limit: number = 10, depth: number = 2): Promise<Note[]> {

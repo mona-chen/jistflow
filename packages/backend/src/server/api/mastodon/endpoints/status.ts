@@ -11,6 +11,8 @@ import { getNote } from "@/server/api/common/getters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import createReaction from "@/services/note/reaction/create.js";
+import deleteReaction from "@/services/note/reaction/delete.js";
 
 function normalizeQuery(data: any) {
 	const str = querystring.stringify(data);
@@ -281,21 +283,37 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/favourite",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			const react = await NoteHelpers.getDefaultReaction();
 			try {
-				const a = (await client.createEmojiReaction(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-					react,
-				)) as any;
-				//const data = await client.favouriteStatus(ctx.params.id) as any;
-				ctx.body = convertStatus(a.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user).catch(_ => null);
+
+				if (note === null) {
+					ctx.status = 404;
+					return;
+				}
+
+				const reaction = await NoteHelpers.getDefaultReaction().catch(_ => null);
+
+				if (reaction === null) {
+					ctx.status = 500;
+					return;
+				}
+
+				ctx.body = await NoteHelpers.reactToNote(note, user, reaction)
+					.then(p => NoteConverter.encode(p, user))
+					.then(p => convertStatus(p));
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
-				ctx.status = 401;
+				ctx.status = 400;
 				ctx.body = e.response.data;
 			}
 		},
@@ -303,16 +321,26 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/unfavourite",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
-			const react = await NoteHelpers.getDefaultReaction();
 			try {
-				const data = await client.deleteEmojiReaction(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-					react,
-				);
-				ctx.body = convertStatus(data.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user).catch(_ => null);
+
+				if (note === null) {
+					ctx.status = 404;
+					return;
+				}
+
+				ctx.body = await NoteHelpers.removeReactFromNote(note, user)
+					.then(p => NoteConverter.encode(p, user))
+					.then(p => convertStatus(p));
 			} catch (e: any) {
 				console.error(e);
 				ctx.status = 401;
