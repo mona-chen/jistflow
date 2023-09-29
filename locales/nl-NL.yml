@@ -36,11 +36,11 @@ save: "Opslaan"
 users: "Gebruikers"
 addUser: "Toevoegen gebruiker"
 favorite: "Favorieten"
-favorites: "Toevoegen aan favorieten"
+favorites: "Favorieten"
 unfavorite: "Verwijderen uit favorieten"
 favorited: "Toegevoegd aan favorieten."
 alreadyFavorited: "Al toegevoegd aan favorieten"
-cantFavorite: "Kon niet toevoegen aan favorieten"
+cantFavorite: "Kon niet toevoegen aan favorieten."
 pin: "Vastmaken aan profielpagina"
 unpin: "Losmaken van profielpagina"
 copyContent: "Kopiëren inhoud"
@@ -302,7 +302,7 @@ nsfw: "NSFW"
 whenServerDisconnected: "Wanneer de verbinding met de server wordt onderbroken"
 disconnectedFromServer: "Verbinding met de server onderbroken."
 inMb: "in megabytes"
-pinnedNotes: "Vastgemaakte notitie"
+pinnedNotes: "Vastgemaakte posts"
 userList: "Lijsten"
 aboutFirefish: "Over Firefish"
 administrator: "Beheerder"
@@ -412,7 +412,7 @@ emoji: Emoji
 selectList: Selecteer een lijst
 selectAntenna: Selecteer een antenne
 deleted: Verwijderd
-editNote: Bewerk notitie
+editNote: Bewerk post
 edited: 'Bewerkt om {date} {time}'
 emojis: Emojis
 emojiName: Emoji naam
@@ -682,3 +682,27 @@ serverLogs: Server logboek
 deleteAll: Verwijder alles
 showFixedPostForm: Toon het post formulier bovenaan de tijdlijn
 newNoteRecived: Er zijn nieuwe posts
+pinnedUsersDescription: Lijst gebruikersnamen gescheiden door regeleinden om vast
+  te pinnen in het tabblad "Verkennen".
+silencedInstancesDescription: Geef de hostnames op van de servers die je het zwijgen
+  wilt opleggen. Accounts op de vermelde servers worden als "Stil" behandeld, kunnen
+  alleen volgverzoeken doen en kunnen geen lokale accounts vermelden als ze niet worden
+  gevolgd. Dit heeft geen invloed op de geblokkeerde servers.
+searchPlaceholder: Doorzoek Firefish
+pinnedPagesDescription: Voer de paden in van de pagina's die je aan de bovenste pagina
+  van deze server wilt vastmaken, gescheiden door regeleinden.
+_permissions:
+  "read:favorites": Lijst van uw favorieten
+  "write:favorites": Beheer uw favorieten
+clipsDesc: Paperclips zijn deelbare gebundelde favorieten. Je kunt paperclips maken
+  vanuit het menu van individuele posts.
+selectChannel: Selecteer een kanaal
+removeReaction: Uw reactie verwijderen
+antennasDesc: "Antennes geven nieuwe berichten weer die voldoen aan de criteria die
+  je hebt ingesteld!\nZe zijn toegankelijk via de pagina Tijdlijnen."
+pinnedClipId: ID van de paperclip om vast te pinnen
+hiddenTagsDescription: 'Vermeld de hashtags (zonder #) van de hashtags die je wilt
+  verbergen voor trending en verkennen. Verborgen hashtags zijn nog steeds op andere
+  manieren te ontdekken.'
+listsDesc: Met lijsten kun je tijdlijnen aanmaken met gespecificeerde gebruikers.
+  Ze zijn toegankelijk via de pagina Tijdlijnen.

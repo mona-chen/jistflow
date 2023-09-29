@@ -833,7 +833,7 @@ translatedFrom: "{x}から翻訳"
 accountDeletionInProgress: "アカウントの削除が進行中です"
 usernameInfo: "サーバー上であなたのアカウントを一意に識別するための名前です。アルファベット(a~z, A~Z)、数字(0~9)、およびアンダーバー(_)が使用できます。ユーザー名は後から変更できません。"
 aiChanMode: "藍モード（クラシックUI）"
-enterSendsMessage: "メッセージングでReturnキーを押すと、メッセージが送信されます（デフォルトはCtrl + Returnです）"
+enterSendsMessage: "チャットでEnterキー(Returnキー)を押すと、メッセージが送信されます（オフの場合はCtrl + Enterで送信します）"
 keepCw: "CWを維持する"
 pubSub: "Pub/Subのアカウント"
 lastCommunication: "直近の通信"
@@ -1989,3 +1989,4 @@ emojiPackCreator: 絵文字パックの作者
 confirm: 確認
 exportZip: ZIPをエクスポート
 openServerInfo: "投稿内のサーバー名をクリックでサーバー情報を開く"
+indexableDescription: MastodonやFirefishなどの検索機能に、あなたの投稿が表示されるのを許可します。
