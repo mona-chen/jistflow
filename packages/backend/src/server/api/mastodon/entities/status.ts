@@ -17,8 +17,8 @@ namespace MastodonEntity {
 		in_reply_to_id: string | null;
 		in_reply_to_account_id: string | null;
 		reblog: Status | null;
-		content: string;
-		text: string | null;
+		content: string | undefined;
+		text: string | null | undefined;
 		created_at: string;
 		emojis: Emoji[];
 		replies_count: number;

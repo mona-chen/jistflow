@@ -40,7 +40,7 @@ export function convertNotification(notification: MastodonEntity.Notification) {
 export function convertPoll(poll: Entity.Poll) {
 	return simpleConvert(poll);
 }
-export function convertReaction(reaction: Entity.Reaction) {
+export function convertReaction(reaction: MastodonEntity.Reaction) {
 	if (reaction.accounts) {
 		reaction.accounts = reaction.accounts.map(convertAccount);
 	}
@@ -50,7 +50,7 @@ export function convertRelationship(relationship: Entity.Relationship) {
 	return simpleConvert(relationship);
 }
 
-export function convertStatus(status: Entity.Status) {
+export function convertStatus(status: MastodonEntity.Status) {
 	status.account = convertAccount(status.account);
 	status.id = convertId(status.id, IdType.MastodonId);
 	if (status.in_reply_to_account_id)
@@ -75,7 +75,7 @@ export function convertStatus(status: Entity.Status) {
 	return status;
 }
 
-export function convertConversation(conversation: Entity.Conversation) {
+export function convertConversation(conversation: MastodonEntity.Conversation) {
 	conversation.id = convertId(conversation.id, IdType.MastodonId);
 	conversation.accounts = conversation.accounts.map(convertAccount);
 	if (conversation.last_status) {

@@ -1,7 +1,6 @@
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
 import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
-import axios from "axios";
 import querystring from "node:querystring";
 import qs from "qs";
 import { convertId, IdType } from "../../index.js";
@@ -11,8 +10,6 @@ import { getNote } from "@/server/api/common/getters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
-import createReaction from "@/services/note/reaction/create.js";
-import deleteReaction from "@/services/note/reaction/delete.js";
 import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "@/server/api/mastodon/endpoints/timeline.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
@@ -172,27 +169,44 @@ export function apiStatusMastodon(router: Router): void {
 		}
 	});
 	router.delete<{ Params: { id: string } }>("/v1/statuses/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.deleteStatus(
-				convertId(ctx.params.id, IdType.IceshrimpId),
-			);
-			ctx.body = data.data;
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const noteId = convertId(ctx.params.id, IdType.IceshrimpId);
+			const note = await getNote(noteId, user ?? null).then(n => n).catch(() => null);
+
+			if (!note) {
+				ctx.status = 404;
+				ctx.body = {
+					error: "Note not found"
+				}
+				return;
+			}
+
+			if (user.id !== note.userId) {
+				ctx.status = 403;
+				ctx.body = {
+					error: "Cannot delete someone else's note"
+				}
+				return;
+			}
+
+			ctx.body = await NoteHelpers.deleteNote(note, user)
+				.then(p => convertStatus(p));
 		} catch (e: any) {
-			console.error(e.response.data, ctx.params.id);
-			ctx.status = 401;
-			ctx.body = e.response.data;
+			console.error(`Error processing ${ctx.method} /api${ctx.path}: ${e.message}`);
+			ctx.status = 500;
+			ctx.body = {
+				error: e.message
+			}
 		}
 	});
-
-	interface IReaction {
-		id: string;
-		createdAt: string;
-		user: MisskeyEntity.User;
-		type: string;
-	}
 
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/context",
@@ -250,9 +264,6 @@ export function apiStatusMastodon(router: Router): void {
 	router.get<{ Params: { id: string } }>(
 		"/v1/statuses/:id/reblogged_by",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const auth = await authenticate(ctx.headers.authorization, null);
 				const user = auth[0] ?? null;

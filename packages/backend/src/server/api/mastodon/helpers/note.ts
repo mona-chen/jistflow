@@ -15,6 +15,7 @@ import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { AccountCache, LinkPaginationObject, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { addPinned, removePinned } from "@/services/i/pin.js";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 
 export class NoteHelpers {
 	public static async getDefaultReaction(): Promise<string> {
@@ -110,6 +111,14 @@ export class NoteHelpers {
 		}
 
 		return note;
+	}
+
+	public static async deleteNote(note: Note, user: ILocalUser): Promise<MastodonEntity.Status> {
+		if (user.id !== note.userId) throw new Error("Can't delete someone elses note");
+		const status = await NoteConverter.encode(note, user);
+		await deleteNote(user, note);
+		status.content = undefined;
+		return status;
 	}
 
 	public static async getNoteFavoritedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
