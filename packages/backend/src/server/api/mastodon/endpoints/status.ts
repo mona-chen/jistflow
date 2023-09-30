@@ -1,7 +1,4 @@
 import Router from "@koa/router";
-import { getClient } from "../index.js";
-import querystring from "node:querystring";
-import qs from "qs";
 import { convertId, IdType } from "../../index.js";
 import { convertAccount, convertPoll, convertStatus, convertStatusEdit, } from "../converters.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
@@ -15,6 +12,9 @@ import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { Cache } from "@/misc/cache.js";
 import AsyncLock from "async-lock";
 import { ILocalUser } from "@/models/entities/user.js";
+import { PollHelpers } from "@/server/api/mastodon/helpers/poll.js";
+import querystring from "node:querystring";
+import qs from "qs";
 
 const postIdempotencyCache = new Cache<{status?: MastodonEntity.Status}>('postIdempotencyCache', 60 * 60);
 const postIdempotencyLocks = new AsyncLock();
@@ -577,14 +577,20 @@ export function setupEndpointsStatus(router: Router): void {
 		},
 	);
 	router.get<{ Params: { id: string } }>("/v1/polls/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const data = await client.getPoll(
-				convertId(ctx.params.id, IdType.IceshrimpId),
-			);
-			ctx.body = convertPoll(data.data);
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
+
+			const id = convertId(ctx.params.id, IdType.IceshrimpId);
+			const note = await getNote(id, user).catch(_ => null);
+
+			if (note === null || !note.hasPoll) {
+				ctx.status = 404;
+				return;
+			}
+
+			const data = await PollHelpers.getPoll(note, user);
+			ctx.body = convertPoll(data);
 		} catch (e: any) {
 			console.error(e);
 			ctx.status = 401;
@@ -594,15 +600,33 @@ export function setupEndpointsStatus(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/polls/:id/votes",
 		async (ctx) => {
-			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-			const accessTokens = ctx.headers.authorization;
-			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.votePoll(
-					convertId(ctx.params.id, IdType.IceshrimpId),
-					(ctx.request.body as any).choices,
-				);
-				ctx.body = convertPoll(data.data);
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				if (!user) {
+					ctx.status = 401;
+					return;
+				}
+
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user).catch(_ => null);
+
+				if (note === null || !note.hasPoll) {
+					ctx.status = 404;
+					return;
+				}
+
+				const body: any = qs.parse(querystring.stringify(ctx.request.body as any));
+				const choices = NoteHelpers.normalizeToArray(body.choices ?? []).map(p => parseInt(p));
+				if (choices.length < 1) {
+					ctx.status = 400;
+					ctx.body = { error: 'Must vote for at least one option' };
+					return;
+				}
+
+				const data = await PollHelpers.voteInPoll(choices, note, user);
+				ctx.body = convertPoll(data);
 			} catch (e: any) {
 				console.error(e);
 				ctx.status = 401;
@@ -610,11 +634,6 @@ export function setupEndpointsStatus(router: Router): void {
 			}
 		},
 	);
-}
-
-function normalizeQuery(data: any) {
-	const str = querystring.stringify(data);
-	return qs.parse(str);
 }
 
 function getIdempotencyKey(headers: any, user: ILocalUser): string | null {

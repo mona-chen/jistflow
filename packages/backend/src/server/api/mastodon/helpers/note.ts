@@ -384,7 +384,7 @@ export class NoteHelpers {
 		return result;
 	}
 
-	private static normalizeToArray<T>(subject: T | T[]) {
+	public static normalizeToArray<T>(subject: T | T[]) {
 		return Array.isArray(subject) ? subject : [subject];
 	}
 }
