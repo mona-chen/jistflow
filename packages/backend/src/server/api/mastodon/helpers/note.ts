@@ -18,6 +18,7 @@ import { getNote } from "@/server/api/common/getters.js";
 import createReaction from "@/services/note/reaction/create.js";
 import deleteReaction from "@/services/note/reaction/delete.js";
 import createNote, { extractMentionedUsers } from "@/services/note/create.js";
+import editNote from "@/services/note/edit.js";
 import deleteNote from "@/services/note/delete.js";
 import { genId } from "@/misc/gen-id.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
@@ -249,6 +250,27 @@ export class NoteHelpers {
 		return createNote(user, await awaitAll(data));
 	}
 
+	public static async editNote(request: MastodonEntity.StatusEditRequest, note: Note, user: ILocalUser): Promise<Note> {
+		const files = request.media_ids && request.media_ids.length > 0
+			? DriveFiles.findByIds(request.media_ids)
+			: [];
+
+		const data = {
+			files: files,
+			poll: request.poll
+				? {
+					choices: request.poll.options,
+					multiple: request.poll.multiple,
+					expiresAt: request.poll.expires_in && request.poll.expires_in > 0 ? new Date(new Date().getTime() + (request.poll.expires_in * 1000)) : null,
+				}
+				: undefined,
+			text: request.text,
+			cw: request.spoiler_text
+		}
+
+		return editNote(user, note, await awaitAll(data));
+	}
+
 	public static async extractMentions(text: string, user: ILocalUser): Promise<User[]> {
 		return extractMentionedUsers(user, mfm.parse(text)!);
 	}
@@ -270,6 +292,36 @@ export class NoteHelpers {
 			result.scheduled_at = new Date(Date.parse(body.scheduled_at));
 		if (body.in_reply_to_id)
 			result.in_reply_to_id = convertId(body.in_reply_to_id, IdType.IceshrimpId);
+		if (body.media_ids)
+			result.media_ids = body.media_ids && body.media_ids.length > 0
+				? this.normalizeToArray(body.media_ids)
+					.map(p => convertId(p, IdType.IceshrimpId))
+				: undefined;
+
+		if (body.poll) {
+			result.poll = {
+				expires_in: parseInt(body.poll.expires_in, 10),
+				options: body.poll.options,
+				multiple: !!body.poll.multiple,
+			}
+		}
+
+		result.sensitive = !!body.sensitive;
+
+		return result;
+	}
+
+	public static normalizeEditOptions(body: any): MastodonEntity.StatusEditRequest {
+		const result: MastodonEntity.StatusEditRequest = {};
+
+		body = qs.parse(querystring.stringify(body));
+
+		if (body.status !== null)
+			result.text = body.status;
+		if (body.spoiler_text !== null)
+			result.spoiler_text = body.spoiler_text;
+		if (body.language !== null)
+			result.language = body.language;
 		if (body.media_ids)
 			result.media_ids = body.media_ids && body.media_ids.length > 0
 				? this.normalizeToArray(body.media_ids)

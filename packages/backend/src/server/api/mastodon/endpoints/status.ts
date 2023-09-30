@@ -1,10 +1,9 @@
 import Router from "@koa/router";
 import { getClient } from "../index.js";
-import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
 import querystring from "node:querystring";
 import qs from "qs";
 import { convertId, IdType } from "../../index.js";
-import { convertAccount, convertAttachment, convertPoll, convertStatus, } from "../converters.js";
+import { convertAccount, convertPoll, convertStatus, } from "../converters.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { getNote } from "@/server/api/common/getters.js";
 import authenticate from "@/server/api/authenticate.js";
@@ -14,7 +13,6 @@ import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "@/serve
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { Cache } from "@/misc/cache.js";
-import { redisClient } from "@/db/redis.js";
 import AsyncLock from "async-lock";
 import { ILocalUser } from "@/models/entities/user.js";
 
@@ -55,49 +53,31 @@ export function setupEndpointsStatus(router: Router): void {
 		}
 	});
 	router.put("/v1/statuses/:id", async (ctx) => {
-		const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			ctx.params.id = convertId(ctx.params.id, IdType.IceshrimpId);
-			let body: any = ctx.request.body;
-			if (
-				(!body.poll && body["poll[options][]"]) ||
-				(!body.media_ids && body["media_ids[]"])
-			) {
-				body = normalizeQuery(body);
-			}
-			if (!body.media_ids) body.media_ids = undefined;
-			if (body.media_ids && !body.media_ids.length) body.media_ids = undefined;
-			if (body.media_ids) {
-				body.media_ids = (body.media_ids as string[]).map((p) =>
-					convertId(p, IdType.IceshrimpId),
-				);
-			}
-			const {sensitive} = body;
-			body.sensitive =
-				typeof sensitive === "string" ? sensitive === "true" : sensitive;
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? null;
 
-			if (body.poll) {
-				if (
-					body.poll.expires_in != null &&
-					typeof body.poll.expires_in === "string"
-				)
-					body.poll.expires_in = parseInt(body.poll.expires_in);
-				if (
-					body.poll.multiple != null &&
-					typeof body.poll.multiple === "string"
-				)
-					body.poll.multiple = body.poll.multiple == "true";
-				if (
-					body.poll.hide_totals != null &&
-					typeof body.poll.hide_totals === "string"
-				)
-					body.poll.hide_totals = body.poll.hide_totals == "true";
+			if (!user) {
+				ctx.status = 401;
+				return;
 			}
 
-			const data = await client.editStatus(ctx.params.id, body);
-			ctx.body = convertStatus(data.data);
+			const noteId = convertId(ctx.params.id, IdType.IceshrimpId);
+			const note = await getNote(noteId, user ?? null).then(n => n).catch(() => null);
+			if (!note) {
+				if (!note) {
+					ctx.status = 404;
+					ctx.body = {
+						error: "Note not found"
+					};
+					return;
+				}
+			}
+
+			let request = NoteHelpers.normalizeEditOptions(ctx.request.body);
+			ctx.body = await NoteHelpers.editNote(request, note, user)
+				.then(p => NoteConverter.encode(p, user))
+				.then(p => convertStatus(p));
 		} catch (e: any) {
 			console.error(e);
 			ctx.status = ctx.status == 404 ? 404 : 401;
@@ -142,7 +122,7 @@ export function setupEndpointsStatus(router: Router): void {
 				ctx.status = 404;
 				ctx.body = {
 					error: "Note not found"
-				}
+				};
 				return;
 			}
 
@@ -150,7 +130,7 @@ export function setupEndpointsStatus(router: Router): void {
 				ctx.status = 403;
 				ctx.body = {
 					error: "Cannot delete someone else's note"
-				}
+				};
 				return;
 			}
 

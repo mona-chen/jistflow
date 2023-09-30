@@ -58,4 +58,17 @@ namespace MastodonEntity {
 		language?: string,
 		scheduled_at?: Date
 	}
+
+	export type StatusEditRequest = {
+		text?: string,
+		media_ids?: string[],
+		poll?: {
+			options: string[],
+			expires_in: number,
+			multiple: boolean
+		},
+		sensitive?: boolean,
+		spoiler_text?: string,
+		language?: string
+	}
 }
