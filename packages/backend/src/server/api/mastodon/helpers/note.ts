@@ -5,9 +5,7 @@ import {
 	NoteFavorites,
 	NoteReactions,
 	Notes,
-	RegistryItems,
-	UserNotePinings,
-	Users
+	UserNotePinings
 } from "@/models/index.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
@@ -23,14 +21,11 @@ import deleteNote from "@/services/note/delete.js";
 import { genId } from "@/misc/gen-id.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
-import { AccountCache, LinkPaginationObject, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { LinkPaginationObject, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { addPinned, removePinned } from "@/services/i/pin.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
-import querystring from "node:querystring";
-import qs from "qs";
 import { awaitAll } from "@/prelude/await-all.js";
-import { IsNull } from "typeorm";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import mfm from "mfm-js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
@@ -321,8 +316,6 @@ export class NoteHelpers {
 	public static normalizeComposeOptions(body: any): MastodonEntity.StatusCreationRequest {
 		const result: MastodonEntity.StatusCreationRequest = {};
 
-		body = qs.parse(querystring.stringify(body));
-
 		if (body.status !== null)
 			result.text = body.status;
 		if (body.spoiler_text !== null)
@@ -356,8 +349,6 @@ export class NoteHelpers {
 
 	public static normalizeEditOptions(body: any): MastodonEntity.StatusEditRequest {
 		const result: MastodonEntity.StatusEditRequest = {};
-
-		body = qs.parse(querystring.stringify(body));
 
 		if (body.status !== null)
 			result.text = body.status;

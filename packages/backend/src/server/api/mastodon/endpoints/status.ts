@@ -13,8 +13,6 @@ import { Cache } from "@/misc/cache.js";
 import AsyncLock from "async-lock";
 import { ILocalUser } from "@/models/entities/user.js";
 import { PollHelpers } from "@/server/api/mastodon/helpers/poll.js";
-import querystring from "node:querystring";
-import qs from "qs";
 
 const postIdempotencyCache = new Cache<{status?: MastodonEntity.Status}>('postIdempotencyCache', 60 * 60);
 const postIdempotencyLocks = new AsyncLock();
@@ -617,7 +615,7 @@ export function setupEndpointsStatus(router: Router): void {
 					return;
 				}
 
-				const body: any = qs.parse(querystring.stringify(ctx.request.body as any));
+				const body: any = ctx.request.body;
 				const choices = NoteHelpers.normalizeToArray(body.choices ?? []).map(p => parseInt(p));
 				if (choices.length < 1) {
 					ctx.status = 400;
