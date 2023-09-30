@@ -3,8 +3,11 @@ import Router from "@koa/router";
 import { getClient } from "../index.js";
 import axios from "axios";
 import { Converter } from "megalodon";
-import { convertPaginationArgsIds, limitToInt } from "./timeline.js";
-import { convertAccount, convertStatus } from "../converters.js";
+import { argsToBools, convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "./timeline.js";
+import { convertAccount, convertSearch, convertStatus } from "../converters.js";
+import authenticate from "@/server/api/authenticate.js";
+import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { SearchHelpers } from "@/server/api/mastodon/helpers/search.js";
 
 export function setupEndpointsSearch(router: Router): void {
 	router.get("/v1/search", async (ctx) => {
@@ -24,36 +27,24 @@ export function setupEndpointsSearch(router: Router): void {
 		}
 	});
 	router.get("/v2/search", async (ctx) => {
-		const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-		const accessTokens = ctx.headers.authorization;
-		const client = getClient(BASE_URL, accessTokens);
 		try {
-			const query: any = convertPaginationArgsIds(limitToInt(ctx.query));
-			const type = query.type;
-			const acct =
-				!type || type === "accounts"
-					? await client.search(query.q, "accounts", query)
-					: null;
-			const stat =
-				!type || type === "statuses"
-					? await client.search(query.q, "statuses", query)
-					: null;
-			const tags =
-				!type || type === "hashtags"
-					? await client.search(query.q, "hashtags", query)
-					: null;
+			const auth = await authenticate(ctx.headers.authorization, null);
+			const user = auth[0] ?? undefined;
 
-			ctx.body = {
-				accounts:
-					acct?.data?.accounts.map((account) => convertAccount(account)) ?? [],
-				statuses:
-					stat?.data?.statuses.map((status) => convertStatus(status)) ?? [],
-				hashtags: tags?.data?.hashtags ?? [],
-			};
+			if (!user) {
+				ctx.status = 401;
+				return;
+			}
+
+			const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query), ['resolve', 'following', 'exclude_unreviewed'])));
+			const cache = UserHelpers.getFreshAccountCache();
+			const result = await SearchHelpers.search(user, args.q, args.type, args.resolve, args.following, args.account_id, args['exclude_unreviewed'], args.max_id, args.min_id, args.limit, args.offset, cache);
+
+			ctx.body = convertSearch(result);
 		} catch (e: any) {
 			console.error(e);
-			ctx.status = 401;
-			ctx.body = e.response.data;
+			ctx.status = 400;
+			ctx.body = { error: e.message };
 		}
 	});
 	router.get("/v1/trends/statuses", async (ctx) => {

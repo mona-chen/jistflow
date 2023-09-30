@@ -50,6 +50,13 @@ export function convertRelationship(relationship: Entity.Relationship) {
 	return simpleConvert(relationship);
 }
 
+export function convertSearch(search: MastodonEntity.Search) {
+	search.accounts = search.accounts.map(p => convertAccount(p));
+	search.statuses = search.statuses.map(p => convertStatus(p));
+	return search;
+}
+
+
 export function convertStatus(status: MastodonEntity.Status) {
 	status.account = convertAccount(status.account);
 	status.id = convertId(status.id, IdType.MastodonId);

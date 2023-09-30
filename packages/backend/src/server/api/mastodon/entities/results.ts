@@ -3,7 +3,7 @@
 /// <reference path="tag.ts" />
 
 namespace MastodonEntity {
-	export type Results = {
+	export type Search = {
 		accounts: Array<Account>;
 		statuses: Array<Status>;
 		hashtags: Array<Tag>;
