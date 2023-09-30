@@ -41,6 +41,7 @@ namespace MastodonEntity {
 		reactions: Array<Reaction>;
 		quote: Status | null;
 		bookmarked: boolean;
+		edited_at: string | null;
 	};
 
 	export type StatusCreationRequest = {

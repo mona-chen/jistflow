@@ -128,6 +128,7 @@ export class NoteConverter {
             reactions: [], //FIXME: this.mapReactions(n.emojis, n.reactions, n.myReaction),
             bookmarked: isBookmarked,
             quote: Promise.resolve(renote).then(renote => renote && note.text !== null ? this.encode(renote, user, cache) : null),
+						edited_at: note.updatedAt?.toISOString()
         });
     }
 
