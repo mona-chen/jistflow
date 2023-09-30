@@ -62,6 +62,7 @@ export const paramDef = {
 			type: "string",
 			default: "chronological",
 			nullable: true,
+			description: "Either 'chronological' or 'relevancy'",
 		},
 	},
 	required: ["query"],
