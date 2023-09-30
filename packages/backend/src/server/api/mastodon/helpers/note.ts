@@ -1,7 +1,7 @@
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import {
 	DriveFiles,
-	Metas,
+	Metas, NoteEdits,
 	NoteFavorites,
 	NoteReactions,
 	Notes,
@@ -33,6 +33,8 @@ import { awaitAll } from "@/prelude/await-all.js";
 import { IsNull } from "typeorm";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import mfm from "mfm-js";
+import { FileConverter } from "@/server/api/mastodon/converters/file.js";
+import { toHtml } from "@/mfm/to-html.js";
 
 export class NoteHelpers {
 	public static async getDefaultReaction(): Promise<string> {
@@ -161,6 +163,47 @@ export class NoteHelpers {
 				minId: p.map(p => p.id)[0],
 			};
 		});
+	}
+
+	public static async getNoteEditHistory(note: Note): Promise<MastodonEntity.StatusEdit[]> {
+		if (!note.updatedAt) return [];
+		const cache = UserHelpers.getFreshAccountCache();
+		const account = Promise.resolve(note.user ?? await UserHelpers.getUserCached(note.userId, cache))
+				.then(p => UserConverter.encode(p, cache));
+		const edits = await NoteEdits.find({where: {noteId: note.id}, order: {id: "ASC"}});
+		const history: Promise<MastodonEntity.StatusEdit>[] = [];
+		if (edits.length < 1) return [];
+
+		const curr = {
+			id: note.id,
+			noteId: note.id,
+			note: note,
+			text: note.text,
+			cw: note.cw,
+			fileIds: note.fileIds,
+			updatedAt: note.updatedAt
+		}
+
+		edits.push(curr);
+
+		let lastDate = note.createdAt;
+		for (const edit of edits) {
+			const files = DriveFiles.packMany(edit.fileIds);
+			const item = {
+				account: account,
+				content: toHtml(mfm.parse(edit.text ?? ''), JSON.parse(note.mentionedRemoteUsers)) ?? '',
+				created_at: lastDate.toISOString(),
+				emojis: [],
+				sensitive: files.then(files => files.length > 0 ? files.some((f) => f.isSensitive) : false),
+				spoiler_text: edit.cw ?? '',
+				poll: null,
+				media_attachments: files.then(files => files.length > 0 ? files.map((f) => FileConverter.encode(f)) : [])
+			};
+			lastDate = edit.updatedAt;
+			history.unshift(awaitAll(item));
+		}
+
+		return Promise.all(history);
 	}
 
 	public static async getNoteRebloggedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {

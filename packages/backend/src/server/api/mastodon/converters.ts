@@ -75,6 +75,15 @@ export function convertStatus(status: MastodonEntity.Status) {
 	return status;
 }
 
+export function convertStatusEdit(edit: MastodonEntity.StatusEdit) {
+	edit.account = convertAccount(edit.account);
+	edit.media_attachments = edit.media_attachments.map((attachment) =>
+		convertAttachment(attachment),
+	);
+	if (edit.poll) edit.poll = convertPoll(edit.poll);
+	return edit;
+}
+
 export function convertConversation(conversation: MastodonEntity.Conversation) {
 	conversation.id = convertId(conversation.id, IdType.MastodonId);
 	conversation.accounts = conversation.accounts.map(convertAccount);

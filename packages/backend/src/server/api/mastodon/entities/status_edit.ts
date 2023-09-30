@@ -12,7 +12,6 @@ namespace MastodonEntity {
 	export type StatusEdit = {
 		account: Account;
 		content: string;
-		plain_content: string | null;
 		created_at: string;
 		emojis: Emoji[];
 		sensitive: boolean;
