@@ -11,6 +11,7 @@ import { setupEndpointsMedia } from "@/server/api/mastodon/endpoints/media.js";
 import { setupEndpointsMisc } from "@/server/api/mastodon/endpoints/misc.js";
 import { koaBody } from "koa-body";
 import multer from "@koa/multer";
+import { setupEndpointsList } from "@/server/api/mastodon/endpoints/list.js";
 
 export function getClient(
 	BASE_URL: string,
@@ -50,5 +51,6 @@ export function setupMastodonApi(router: Router, fileRouter: Router, upload: mul
 	setupEndpointsNotifications(router);
 	setupEndpointsSearch(router);
 	setupEndpointsMedia(router, fileRouter, upload);
+	setupEndpointsList(router);
 	setupEndpointsMisc(router);
 }

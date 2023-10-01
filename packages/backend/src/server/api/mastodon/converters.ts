@@ -20,7 +20,7 @@ export function convertAttachment(attachment: Entity.Attachment) {
 export function convertFilter(filter: Entity.Filter) {
 	return simpleConvert(filter);
 }
-export function convertList(list: Entity.List) {
+export function convertList(list: MastodonEntity.List) {
 	return simpleConvert(list);
 }
 export function convertFeaturedTag(tag: Entity.FeaturedTag) {
