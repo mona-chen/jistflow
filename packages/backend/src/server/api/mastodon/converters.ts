@@ -56,6 +56,9 @@ export function convertSearch(search: MastodonEntity.Search) {
 	return search;
 }
 
+export function convertStatusSource(statusSource: MastodonEntity.StatusSource) {
+	return simpleConvert(statusSource);
+}
 
 export function convertStatus(status: MastodonEntity.Status) {
 	status.account = convertAccount(status.account);

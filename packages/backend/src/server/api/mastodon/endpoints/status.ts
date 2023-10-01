@@ -1,6 +1,6 @@
 import Router from "@koa/router";
 import { convertId, IdType } from "../../index.js";
-import { convertAccount, convertPoll, convertStatus, convertStatusEdit, } from "../converters.js";
+import { convertAccount, convertPoll, convertStatus, convertStatusEdit, convertStatusSource, } from "../converters.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { getNote } from "@/server/api/common/getters.js";
 import authenticate from "@/server/api/authenticate.js";
@@ -195,6 +195,30 @@ export function setupEndpointsStatus(router: Router): void {
 
 				const res = await NoteHelpers.getNoteEditHistory(note);
 				ctx.body = res.map(p => convertStatusEdit(p));
+			} catch (e: any) {
+				console.error(e);
+				ctx.status = 401;
+				ctx.body = e.response.data;
+			}
+		},
+	);
+	router.get<{ Params: { id: string } }>(
+		"/v1/statuses/:id/source",
+		async (ctx) => {
+			try {
+				const auth = await authenticate(ctx.headers.authorization, null);
+				const user = auth[0] ?? null;
+
+				const id = convertId(ctx.params.id, IdType.IceshrimpId);
+				const note = await getNote(id, user).catch(_ => null);
+
+				if (note === null) {
+					ctx.status = 404;
+					return;
+				}
+
+				const src = NoteHelpers.getNoteSource(note);
+				ctx.body = convertStatusSource(src);
 			} catch (e: any) {
 				console.error(e);
 				ctx.status = 401;

@@ -201,6 +201,14 @@ export class NoteHelpers {
 		return Promise.all(history);
 	}
 
+	public static getNoteSource(note: Note): MastodonEntity.StatusSource {
+		return {
+			id: note.id,
+			text: note.text ?? '',
+			spoiler_text: note.cw ?? ''
+		}
+	}
+
 	public static async getNoteRebloggedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
 		if (limit > 80) limit = 80;
 		const query = PaginationHelpers.makePaginationQuery(
