@@ -29,7 +29,7 @@ import { awaitAll } from "@/prelude/await-all.js";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import mfm from "mfm-js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
-import { toHtml } from "@/mfm/to-html.js";
+import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 
 export class NoteHelpers {
 	public static async getDefaultReaction(): Promise<string> {
@@ -186,7 +186,7 @@ export class NoteHelpers {
 			const files = DriveFiles.packMany(edit.fileIds);
 			const item = {
 				account: account,
-				content: toHtml(mfm.parse(edit.text ?? ''), JSON.parse(note.mentionedRemoteUsers)) ?? '',
+				content: MfmHelpers.toHtml(mfm.parse(edit.text ?? ''), JSON.parse(note.mentionedRemoteUsers)) ?? '',
 				created_at: lastDate.toISOString(),
 				emojis: [],
 				sensitive: files.then(files => files.length > 0 ? files.some((f) => f.isSensitive) : false),

@@ -3,11 +3,11 @@ import config from "@/config/index.js";
 import { DriveFiles, UserProfiles, Users } from "@/models/index.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
-import { toHtml } from "@/mfm/to-html.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import mfm from "mfm-js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 
 type Field = {
 	name: string;
@@ -28,7 +28,7 @@ export class UserConverter {
 				acctUrl = `https://${u.host}/@${u.username}`;
 			}
 			const profile = UserProfiles.findOneBy({userId: u.id});
-			const bio = profile.then(profile => toHtml(mfm.parse(profile?.description ?? "")) ?? escapeMFM(profile?.description ?? ""));
+			const bio = profile.then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? "")) ?? escapeMFM(profile?.description ?? ""));
 			const avatar = u.avatarId
 				? (DriveFiles.findOneBy({ id: u.avatarId }))
 					.then(p => p?.url ?? Users.getIdenticonUrl(u.id))
@@ -74,7 +74,7 @@ export class UserConverter {
 	private static encodeField(f: Field): MastodonEntity.Field {
 		return {
 			name: f.name,
-			value: toHtml(mfm.parse(f.value)) ?? escapeMFM(f.value),
+			value: MfmHelpers.toHtml(mfm.parse(f.value)) ?? escapeMFM(f.value),
 			verified_at: f.verified ? (new Date()).toISOString() : null,
 		}
 	}

@@ -3,7 +3,6 @@ import {getNote, getUser} from "@/server/api/common/getters.js";
 import { Note } from "@/models/entities/note.js";
 import config from "@/config/index.js";
 import mfm from "mfm-js";
-import { toHtml } from "@/mfm/to-html.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
@@ -18,6 +17,7 @@ import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { IsNull } from "typeorm";
+import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 
 export class NoteConverter {
     public static async encode(note: Note, user: ILocalUser | null, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Status> {
@@ -99,7 +99,7 @@ export class NoteConverter {
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: note.replyUserId,
             reblog: Promise.resolve(renote).then(renote => renote && note.text === null ? this.encode(renote, user, cache) : null),
-            content: text.then(text => text !== null ? toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(text) : ""),
+            content: text.then(text => text !== null ? MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(text) : ""),
             text: text,
             created_at: note.createdAt.toISOString(),
             // Remove reaction emojis with names containing @ from the emojis list.
