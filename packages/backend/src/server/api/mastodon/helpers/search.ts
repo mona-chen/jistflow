@@ -65,8 +65,8 @@ export class SearchHelpers {
 					if (!match) match = q.match(/^@(?<user>[a-zA-Z0-9_]+)$/)
 					if (match) {
 						// check if user is already in database
-						const dbResult = await Users.findBy({usernameLower: match.groups!.user.toLowerCase(), host: match.groups?.host ?? IsNull()});
-						if (dbResult) return dbResult;
+						const dbResult = await Users.findOneBy({usernameLower: match.groups!.user.toLowerCase(), host: match.groups?.host ?? IsNull()});
+						if (dbResult) return [dbResult];
 
 						const result = await resolveUser(match.groups!.user.toLowerCase(), match.groups?.host ?? null);
 						if (result) return [result];
