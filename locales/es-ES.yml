@@ -1988,7 +1988,7 @@ migration: Migración
 silenced: Silenciado
 deleted: Eliminado
 edited: 'Editado a las {date} {time}'
-editNote: Editar nota
+editNote: Editar publicación
 silenceThisInstance: Silenciar este servidor
 findOtherInstance: Buscar otro servidor
 userSaysSomethingReasonRenote: '{name} impulsó una publicación que contiene {reason]'
@@ -2164,3 +2164,4 @@ noGraze: Por favor desactiva la extensión de navegador "Graze for Mastodon" ya 
 silencedWarning: Esta página se muestra debido a que estos usuarios son de servidores
   que tu administrador ha silenciado, ya que son presumiblemente fuente de spam.
 isBot: Esta cuenta es un bot
+clickToShowPatterns: Haz clic para mostrar patrones de módulos
