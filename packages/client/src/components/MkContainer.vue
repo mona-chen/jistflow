@@ -131,7 +131,12 @@ export default defineComponent({
 		this.$el.style.setProperty("--maxHeight", this.maxHeight + "px");
 
 		const calcOmit = () => {
-			if (this.omitted || this.ignoreOmit || this.maxHeight == null)
+			if (
+				this.omitted ||
+				this.ignoreOmit ||
+				this.maxHeight == null ||
+				this.$refs.content == null
+			)
 				return;
 			const height = this.$refs.content.offsetHeight;
 			this.omitted = height > this.maxHeight;
