@@ -52,6 +52,7 @@ function close() {
 	display: flex;
 	align-items: center;
 	gap: 0.4em;
+	white-space: pre-line;
 
 	&.warn {
 		background: var(--infoWarnBg);
