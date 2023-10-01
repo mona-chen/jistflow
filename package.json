@@ -9,8 +9,8 @@
 	"packageManager": "pnpm@8.8.0",
 	"private": true,
 	"scripts": {
-		"rebuild": "pnpm run clean && ./scripts/build-greet.sh && pnpm --filter !sw -r --parallel run build && pnpm --filter sw run build && pnpm run gulp",
-		"build": "./scripts/build-greet.sh && pnpm --filter !sw -r --parallel run build && pnpm --filter sw run build && pnpm run gulp",
+		"rebuild": "pnpm run clean && ./scripts/build-greet.sh && pnpm --filter firefish-js run build && pnpm --filter !firefish-js -r --parallel run build && pnpm run gulp",
+		"build": "./scripts/build-greet.sh && pnpm --filter firefish-js run build && pnpm --filter !firefish-js -r --parallel run build && pnpm run gulp",
 		"start": "pnpm --filter backend run start",
 		"start:test": "pnpm --filter backend run start:test",
 		"init": "pnpm run migrate",
