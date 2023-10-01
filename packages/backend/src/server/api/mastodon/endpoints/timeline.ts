@@ -7,6 +7,7 @@ import authenticate from "@/server/api/authenticate.js";
 import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { UserLists } from "@/models/index.js";
 
 export function limitToInt(q: ParsedUrlQuery, additional: string[] = []) {
     let object: any = q;
@@ -131,15 +132,30 @@ export function setupEndpointsTimeline(router: Router): void {
     router.get<{ Params: { listId: string } }>(
         "/v1/timelines/list/:listId",
         async (ctx, reply) => {
-            const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-            const accessTokens = ctx.headers.authorization;
-            const client = getClient(BASE_URL, accessTokens);
             try {
-                const data = await client.getListTimeline(
-                    convertId(ctx.params.listId, IdType.IceshrimpId),
-                    convertPaginationArgsIds(limitToInt(ctx.query)),
-                );
-                ctx.body = data.data.map((status) => convertStatus(status));
+                const auth = await authenticate(ctx.headers.authorization, null);
+                const user = auth[0] ?? undefined;
+
+                if (!user) {
+                    ctx.status = 401;
+                    return;
+                }
+
+                const listId = convertId(ctx.params.listId, IdType.IceshrimpId);
+                const list = await UserLists.findOneBy({userId: user.id, id: listId});
+
+                if (!list) {
+                    ctx.status = 404;
+                    return;
+                }
+
+                const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
+                const cache = UserHelpers.getFreshAccountCache();
+                const tl = await TimelineHelpers.getListTimeline(user, list, args.max_id, args.since_id, args.min_id, args.limit)
+                    .then(n => NoteConverter.encodeMany(n, user, cache));
+
+                ctx.body = tl.map(s => convertStatus(s));
+
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);

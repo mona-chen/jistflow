@@ -1,6 +1,6 @@
 import { Note } from "@/models/entities/note.js";
 import { ILocalUser } from "@/models/entities/user.js";
-import { Followings, Notes } from "@/models/index.js";
+import { Followings, Notes, UserListJoinings } from "@/models/index.js";
 import { Brackets } from "typeorm";
 import { generateChannelQuery } from "@/server/api/common/generate-channel-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
@@ -13,6 +13,7 @@ import { fetchMeta } from "@/misc/fetch-meta.js";
 import { ApiError } from "@/server/api/error.js";
 import { meta } from "@/server/api/endpoints/notes/global-timeline.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
+import { UserList } from "@/models/entities/user-list.js";
 
 export class TimelineHelpers {
     public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
@@ -86,6 +87,30 @@ export class TimelineHelpers {
         }
 
         if (onlyMedia) query.andWhere("note.fileIds != '{}'");
+
+        return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+    }
+
+    public static async getListTimeline(user: ILocalUser, list: UserList, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
+        if (limit > 40) limit = 40;
+        if (user.id != list.userId) throw new Error("List is not owned by user");
+
+        const listQuery = UserListJoinings.createQueryBuilder("member")
+            .select("member.userId", 'userId')
+            .where("member.userListId = :listId");
+
+        const query = PaginationHelpers.makePaginationQuery(
+            Notes.createQueryBuilder("note"),
+            sinceId,
+            maxId,
+            minId
+        )
+            .andWhere(`note.userId IN (${listQuery.getQuery()})`)
+            .andWhere("note.visibility != 'specified'")
+            .leftJoinAndSelect("note.renote", "renote")
+            .setParameters({listId: list.id});
+
+        generateVisibilityQuery(query, user);
 
         return PaginationHelpers.execQuery(query, limit, minId !== undefined);
     }

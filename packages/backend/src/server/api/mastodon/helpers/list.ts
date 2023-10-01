@@ -31,7 +31,7 @@ export class ListHelpers {
             maxId,
             minId
         )
-            .andWhere("member.userListId = :listId", {listId: id})
+            .andWhere("member.userListId = :listId", {listId: list.id})
             .innerJoinAndSelect("member.user", "user");
 
         return query.take(limit).getMany().then(async p => {
