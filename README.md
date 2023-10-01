@@ -65,7 +65,7 @@
   - Donate publicly to get your name on the Patron list!
 - 🚢 Flagship server: <https://firefish.social>
 - 💁 Matrix support room: <https://matrix.to/#/#firefish:matrix.fedibird.com>
-- 📣 Official account: <a href="https://fedi.software/@firefish" rel="me">@firefish</a>
+- 📣 Official account: <a href="https://fedi.software/@firefish" rel="me">@firefish@fedi.software</a>
 - 📜 Server list: <https://joinfirefish.org/join>
 - ✍️ Weblate: <https://hosted.weblate.org/engage/firefish/>
 - ️️📬 Contact: <https://joinfirefish.org/contact/>
