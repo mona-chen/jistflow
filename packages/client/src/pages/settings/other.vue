@@ -1,17 +1,5 @@
 <template>
 	<div class="_formRoot">
-		<FormSwitch
-			v-model="$i.injectFeaturedNote"
-			class="_formBlock"
-			@update:modelValue="onChangeInjectFeaturedNote"
-		>
-			{{ i18n.ts.showFeaturedNotesInTimeline }}
-		</FormSwitch>
-
-		<!--
-	<FormSwitch v-model="reportError" class="_formBlock">{{ i18n.ts.sendErrorReports }}<template #caption>{{ i18n.ts.sendErrorReportsDescription }}</template></FormSwitch>
-	-->
-
 		<FormLink to="/settings/account-info" class="_formBlock">{{
 			i18n.ts.accountInfo
 		}}</FormLink>
@@ -29,20 +17,9 @@
 </template>
 
 <script lang="ts" setup>
-import FormSwitch from "@/components/form/switch.vue";
 import FormLink from "@/components/form/link.vue";
-import * as os from "@/os";
-import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-
-function onChangeInjectFeaturedNote(v) {
-	os.api("i/update", {
-		injectFeaturedNote: v,
-	}).then((i) => {
-		$i!.injectFeaturedNote = i.injectFeaturedNote;
-	});
-}
 
 definePageMetadata({
 	title: i18n.ts.other,
