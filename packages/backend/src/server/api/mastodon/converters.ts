@@ -2,104 +2,111 @@ import { Entity } from "megalodon";
 import { convertId, IdType } from "../index.js";
 
 function simpleConvert(data: any) {
-	// copy the object to bypass weird pass by reference bugs
-	const result = Object.assign({}, data);
-	result.id = convertId(data.id, IdType.MastodonId);
-	return result;
+    // copy the object to bypass weird pass by reference bugs
+    const result = Object.assign({}, data);
+    result.id = convertId(data.id, IdType.MastodonId);
+    return result;
 }
 
 export function convertAccount(account: Entity.Account | MastodonEntity.MutedAccount) {
-	return simpleConvert(account);
+    return simpleConvert(account);
 }
+
 export function convertAnnouncement(announcement: Entity.Announcement) {
-	return simpleConvert(announcement);
+    return simpleConvert(announcement);
 }
+
 export function convertAttachment(attachment: Entity.Attachment) {
-	return simpleConvert(attachment);
+    return simpleConvert(attachment);
 }
+
 export function convertFilter(filter: Entity.Filter) {
-	return simpleConvert(filter);
+    return simpleConvert(filter);
 }
+
 export function convertList(list: MastodonEntity.List) {
-	return simpleConvert(list);
+    return simpleConvert(list);
 }
+
 export function convertFeaturedTag(tag: Entity.FeaturedTag) {
-	return simpleConvert(tag);
+    return simpleConvert(tag);
 }
 
 export function convertNotification(notification: MastodonEntity.Notification) {
-	notification.account = convertAccount(notification.account);
-	notification.id = convertId(notification.id, IdType.MastodonId);
-	if (notification.status)
-		notification.status = convertStatus(notification.status);
-	if (notification.reaction)
-		notification.reaction = convertReaction(notification.reaction);
-	return notification;
+    notification.account = convertAccount(notification.account);
+    notification.id = convertId(notification.id, IdType.MastodonId);
+    if (notification.status)
+        notification.status = convertStatus(notification.status);
+    if (notification.reaction)
+        notification.reaction = convertReaction(notification.reaction);
+    return notification;
 }
 
 export function convertPoll(poll: Entity.Poll) {
-	return simpleConvert(poll);
+    return simpleConvert(poll);
 }
+
 export function convertReaction(reaction: MastodonEntity.Reaction) {
-	if (reaction.accounts) {
-		reaction.accounts = reaction.accounts.map(convertAccount);
-	}
-	return reaction;
+    if (reaction.accounts) {
+        reaction.accounts = reaction.accounts.map(convertAccount);
+    }
+    return reaction;
 }
+
 export function convertRelationship(relationship: Entity.Relationship) {
-	return simpleConvert(relationship);
+    return simpleConvert(relationship);
 }
 
 export function convertSearch(search: MastodonEntity.Search) {
-	search.accounts = search.accounts.map(p => convertAccount(p));
-	search.statuses = search.statuses.map(p => convertStatus(p));
-	return search;
+    search.accounts = search.accounts.map(p => convertAccount(p));
+    search.statuses = search.statuses.map(p => convertStatus(p));
+    return search;
 }
 
 export function convertStatusSource(statusSource: MastodonEntity.StatusSource) {
-	return simpleConvert(statusSource);
+    return simpleConvert(statusSource);
 }
 
 export function convertStatus(status: MastodonEntity.Status) {
-	status.account = convertAccount(status.account);
-	status.id = convertId(status.id, IdType.MastodonId);
-	if (status.in_reply_to_account_id)
-		status.in_reply_to_account_id = convertId(
-			status.in_reply_to_account_id,
-			IdType.MastodonId,
-		);
-	if (status.in_reply_to_id)
-		status.in_reply_to_id = convertId(status.in_reply_to_id, IdType.MastodonId);
-	status.media_attachments = status.media_attachments.map((attachment) =>
-		convertAttachment(attachment),
-	);
-	status.mentions = status.mentions.map((mention) => ({
-		...mention,
-		id: convertId(mention.id, IdType.MastodonId),
-	}));
-	if (status.poll) status.poll = convertPoll(status.poll);
-	if (status.reblog) status.reblog = convertStatus(status.reblog);
-	if (status.quote) status.quote = convertStatus(status.quote);
-	status.reactions = status.reactions.map(convertReaction);
+    status.account = convertAccount(status.account);
+    status.id = convertId(status.id, IdType.MastodonId);
+    if (status.in_reply_to_account_id)
+        status.in_reply_to_account_id = convertId(
+            status.in_reply_to_account_id,
+            IdType.MastodonId,
+        );
+    if (status.in_reply_to_id)
+        status.in_reply_to_id = convertId(status.in_reply_to_id, IdType.MastodonId);
+    status.media_attachments = status.media_attachments.map((attachment) =>
+        convertAttachment(attachment),
+    );
+    status.mentions = status.mentions.map((mention) => ({
+        ...mention,
+        id: convertId(mention.id, IdType.MastodonId),
+    }));
+    if (status.poll) status.poll = convertPoll(status.poll);
+    if (status.reblog) status.reblog = convertStatus(status.reblog);
+    if (status.quote) status.quote = convertStatus(status.quote);
+    status.reactions = status.reactions.map(convertReaction);
 
-	return status;
+    return status;
 }
 
 export function convertStatusEdit(edit: MastodonEntity.StatusEdit) {
-	edit.account = convertAccount(edit.account);
-	edit.media_attachments = edit.media_attachments.map((attachment) =>
-		convertAttachment(attachment),
-	);
-	if (edit.poll) edit.poll = convertPoll(edit.poll);
-	return edit;
+    edit.account = convertAccount(edit.account);
+    edit.media_attachments = edit.media_attachments.map((attachment) =>
+        convertAttachment(attachment),
+    );
+    if (edit.poll) edit.poll = convertPoll(edit.poll);
+    return edit;
 }
 
 export function convertConversation(conversation: MastodonEntity.Conversation) {
-	conversation.id = convertId(conversation.id, IdType.MastodonId);
-	conversation.accounts = conversation.accounts.map(convertAccount);
-	if (conversation.last_status) {
-		conversation.last_status = convertStatus(conversation.last_status);
-	}
+    conversation.id = convertId(conversation.id, IdType.MastodonId);
+    conversation.accounts = conversation.accounts.map(convertAccount);
+    if (conversation.last_status) {
+        conversation.last_status = convertStatus(conversation.last_status);
+    }
 
-	return conversation;
+    return conversation;
 }

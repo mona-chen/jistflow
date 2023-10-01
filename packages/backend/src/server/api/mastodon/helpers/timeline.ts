@@ -15,78 +15,78 @@ import { meta } from "@/server/api/endpoints/notes/global-timeline.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 
 export class TimelineHelpers {
-	public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
-		if (limit > 40) limit = 40;
+    public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
+        if (limit > 40) limit = 40;
 
-		const followingQuery = Followings.createQueryBuilder("following")
-			.select("following.followeeId")
-			.where("following.followerId = :followerId", {followerId: user.id});
+        const followingQuery = Followings.createQueryBuilder("following")
+            .select("following.followeeId")
+            .where("following.followerId = :followerId", {followerId: user.id});
 
-		const query = PaginationHelpers.makePaginationQuery(
-			Notes.createQueryBuilder("note"),
-			sinceId,
-			maxId,
-			minId
-		)
-			.andWhere(
-				new Brackets((qb) => {
-					qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, {meId: user.id});
-				}),
-			)
-			.leftJoinAndSelect("note.renote", "renote");
+        const query = PaginationHelpers.makePaginationQuery(
+            Notes.createQueryBuilder("note"),
+            sinceId,
+            maxId,
+            minId
+        )
+            .andWhere(
+                new Brackets((qb) => {
+                    qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, {meId: user.id});
+                }),
+            )
+            .leftJoinAndSelect("note.renote", "renote");
 
-		generateChannelQuery(query, user);
-		generateRepliesQuery(query, true, user);
-		generateVisibilityQuery(query, user);
-		generateMutedUserQuery(query, user);
-		generateMutedNoteQuery(query, user);
-		generateBlockedUserQuery(query, user);
-		generateMutedUserRenotesQueryForNotes(query, user);
+        generateChannelQuery(query, user);
+        generateRepliesQuery(query, true, user);
+        generateVisibilityQuery(query, user);
+        generateMutedUserQuery(query, user);
+        generateMutedNoteQuery(query, user);
+        generateBlockedUserQuery(query, user);
+        generateMutedUserRenotesQueryForNotes(query, user);
 
-		query.andWhere("note.visibility != 'hidden'");
-		query.andWhere("note.visibility != 'specified'");
+        query.andWhere("note.visibility != 'hidden'");
+        query.andWhere("note.visibility != 'specified'");
 
-		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
-	}
+        return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+    }
 
-	public static async getPublicTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<Note[]> {
-		if (limit > 40) limit = 40;
+    public static async getPublicTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<Note[]> {
+        if (limit > 40) limit = 40;
 
-		const m = await fetchMeta();
-		if (m.disableGlobalTimeline) {
-			if (user == null || !(user.isAdmin || user.isModerator)) {
-				throw new ApiError(meta.errors.gtlDisabled);
-			}
-		}
+        const m = await fetchMeta();
+        if (m.disableGlobalTimeline) {
+            if (user == null || !(user.isAdmin || user.isModerator)) {
+                throw new ApiError(meta.errors.gtlDisabled);
+            }
+        }
 
-		if (local && remote) {
-			throw new Error("local and remote are mutually exclusive options");
-		}
+        if (local && remote) {
+            throw new Error("local and remote are mutually exclusive options");
+        }
 
-		const query = PaginationHelpers.makePaginationQuery(
-			Notes.createQueryBuilder("note"),
-			sinceId,
-			maxId,
-			minId
-		)
-			.andWhere("note.visibility = 'public'");
+        const query = PaginationHelpers.makePaginationQuery(
+            Notes.createQueryBuilder("note"),
+            sinceId,
+            maxId,
+            minId
+        )
+            .andWhere("note.visibility = 'public'");
 
-		if (remote) query.andWhere("note.userHost IS NOT NULL");
-		if (local) query.andWhere("note.userHost IS NULL");
-		if (!local) query.andWhere("note.channelId IS NULL");
+        if (remote) query.andWhere("note.userHost IS NOT NULL");
+        if (local) query.andWhere("note.userHost IS NULL");
+        if (!local) query.andWhere("note.channelId IS NULL");
 
-		query.leftJoinAndSelect("note.renote", "renote");
+        query.leftJoinAndSelect("note.renote", "renote");
 
-		generateRepliesQuery(query, true, user);
-		if (user) {
-			generateMutedUserQuery(query, user);
-			generateMutedNoteQuery(query, user);
-			generateBlockedUserQuery(query, user);
-			generateMutedUserRenotesQueryForNotes(query, user);
-		}
+        generateRepliesQuery(query, true, user);
+        if (user) {
+            generateMutedUserQuery(query, user);
+            generateMutedNoteQuery(query, user);
+            generateBlockedUserQuery(query, user);
+            generateMutedUserRenotesQueryForNotes(query, user);
+        }
 
-		if (onlyMedia) query.andWhere("note.fileIds != '{}'");
+        if (onlyMedia) query.andWhere("note.fileIds != '{}'");
 
-		return PaginationHelpers.execQuery(query, limit, minId !== undefined);
-	}
+        return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+    }
 }

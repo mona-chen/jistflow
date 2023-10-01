@@ -24,6 +24,7 @@ namespace OAuth {
     export class AppData {
         public url: string | null;
         public session_token: string | null;
+
         constructor(
             public id: string,
             public name: string,
@@ -54,9 +55,11 @@ namespace OAuth {
         get redirectUri() {
             return this.redirect_uri;
         }
+
         get clientId() {
             return this.client_id;
         }
+
         get clientSecret() {
             return this.client_secret;
         }
@@ -64,6 +67,7 @@ namespace OAuth {
 
     export class TokenData {
         public _scope: string;
+
         constructor(
             public access_token: string,
             public token_type: string,
@@ -96,21 +100,26 @@ namespace OAuth {
         get accessToken() {
             return this.access_token;
         }
+
         get tokenType() {
             return this.token_type;
         }
+
         get scope() {
             return this._scope;
         }
+
         /**
          * Application ID
          */
         get createdAt() {
             return this.created_at;
         }
+
         get expiresIn() {
             return this.expires_in;
         }
+
         /**
          * OAuth Refresh Token
          */

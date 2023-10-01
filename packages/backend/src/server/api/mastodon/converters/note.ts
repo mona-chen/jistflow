@@ -1,5 +1,5 @@
 import { ILocalUser } from "@/models/entities/user.js";
-import {getNote, getUser} from "@/server/api/common/getters.js";
+import { getNote } from "@/server/api/common/getters.js";
 import { Note } from "@/models/entities/note.js";
 import config from "@/config/index.js";
 import mfm from "mfm-js";
@@ -23,75 +23,75 @@ export class NoteConverter {
     public static async encode(note: Note, user: ILocalUser | null, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Status> {
         const noteUser = note.user ?? UserHelpers.getUserCached(note.userId, cache);
 
-				if (!await Notes.isVisibleForMe(note, user?.id ?? null))
-					throw new Error('Cannot encode note not visible for user');
+        if (!await Notes.isVisibleForMe(note, user?.id ?? null))
+            throw new Error('Cannot encode note not visible for user');
 
-				const host = Promise.resolve(noteUser).then(noteUser => noteUser.host ?? null);
+        const host = Promise.resolve(noteUser).then(noteUser => noteUser.host ?? null);
 
-				const reactionEmojiNames = Object.keys(note.reactions)
-					.filter((x) => x?.startsWith(":"))
-					.map((x) => decodeReaction(x).reaction)
-					.map((x) => x.replace(/:/g, ""));
+        const reactionEmojiNames = Object.keys(note.reactions)
+            .filter((x) => x?.startsWith(":"))
+            .map((x) => decodeReaction(x).reaction)
+            .map((x) => x.replace(/:/g, ""));
 
-				const noteEmoji = host.then(async host => populateEmojis(
-					note.emojis.concat(reactionEmojiNames),
-					host,
-				));
+        const noteEmoji = host.then(async host => populateEmojis(
+            note.emojis.concat(reactionEmojiNames),
+            host,
+        ));
 
-				const reactionCount = NoteReactions.countBy({noteId: note.id});
+        const reactionCount = NoteReactions.countBy({noteId: note.id});
 
-				const reaction = user ? NoteReactions.findOneBy({
-					userId: user.id,
-					noteId: note.id,
-				}) : null;
+        const reaction = user ? NoteReactions.findOneBy({
+            userId: user.id,
+            noteId: note.id,
+        }) : null;
 
-				const isFavorited = Promise.resolve(reaction).then(p => !!p);
+        const isFavorited = Promise.resolve(reaction).then(p => !!p);
 
-				const isReblogged = user ? Notes.exist({
-					where: {
-						userId: user.id,
-						renoteId: note.id,
-						text: IsNull(),
-					}
-				}) : null;
+        const isReblogged = user ? Notes.exist({
+            where: {
+                userId: user.id,
+                renoteId: note.id,
+                text: IsNull(),
+            }
+        }) : null;
 
-				const renote = note.renote ?? (note.renoteId ? getNote(note.renoteId, user) : null);
+        const renote = note.renote ?? (note.renoteId ? getNote(note.renoteId, user) : null);
 
-				const isBookmarked = user ? NoteFavorites.exist({
-					where: {
-						userId: user.id,
-						noteId: note.id,
-					},
-					take: 1,
-				}) : false;
+        const isBookmarked = user ? NoteFavorites.exist({
+            where: {
+                userId: user.id,
+                noteId: note.id,
+            },
+            take: 1,
+        }) : false;
 
-				const isMuted = user ? NoteThreadMutings.exist({
-					where: {
-						userId: user.id,
-						threadId: note.threadId || note.id,
-					}
-				}) : false;
+        const isMuted = user ? NoteThreadMutings.exist({
+            where: {
+                userId: user.id,
+                threadId: note.threadId || note.id,
+            }
+        }) : false;
 
-				const files = DriveFiles.packMany(note.fileIds);
+        const files = DriveFiles.packMany(note.fileIds);
 
-				const mentions = Promise.all(note.mentions.map(p =>
-					UserHelpers.getUserCached(p, cache)
-						.then(u => MentionConverter.encode(u, JSON.parse(note.mentionedRemoteUsers)))
-						.catch(() => null)))
-					.then(p => p.filter(m => m)) as Promise<MastodonEntity.Mention[]>;
+        const mentions = Promise.all(note.mentions.map(p =>
+            UserHelpers.getUserCached(p, cache)
+                .then(u => MentionConverter.encode(u, JSON.parse(note.mentionedRemoteUsers)))
+                .catch(() => null)))
+            .then(p => p.filter(m => m)) as Promise<MastodonEntity.Mention[]>;
 
-				const text = Promise.resolve(renote).then(renote => {
-					return renote && note.text !== null
-						? note.text + `\n\nRE: ${renote.uri ? renote.uri : `${config.url}/notes/${renote.id}`}`
-						: note.text;
-				});
+        const text = Promise.resolve(renote).then(renote => {
+            return renote && note.text !== null
+                ? note.text + `\n\nRE: ${renote.uri ? renote.uri : `${config.url}/notes/${renote.id}`}`
+                : note.text;
+        });
 
-				const isPinned = user && note.userId === user.id
-					? UserNotePinings.exist({ where: {userId: user.id, noteId: note.id } })
-					: undefined;
+        const isPinned = user && note.userId === user.id
+            ? UserNotePinings.exist({where: {userId: user.id, noteId: note.id}})
+            : undefined;
 
         // noinspection ES6MissingAwait
-				return await awaitAll({
+        return await awaitAll({
             id: note.id,
             uri: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
             url: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
@@ -104,9 +104,9 @@ export class NoteConverter {
             created_at: note.createdAt.toISOString(),
             // Remove reaction emojis with names containing @ from the emojis list.
             emojis: noteEmoji
-							.then(noteEmoji => noteEmoji
-                .filter((e) => e.name.indexOf("@") === -1)
-                .map((e) => EmojiConverter.encode(e))),
+                .then(noteEmoji => noteEmoji
+                    .filter((e) => e.name.indexOf("@") === -1)
+                    .map((e) => EmojiConverter.encode(e))),
             replies_count: note.repliesCount,
             reblogs_count: note.renoteCount,
             favourites_count: reactionCount,
@@ -128,12 +128,12 @@ export class NoteConverter {
             reactions: [], //FIXME: this.mapReactions(n.emojis, n.reactions, n.myReaction),
             bookmarked: isBookmarked,
             quote: Promise.resolve(renote).then(renote => renote && note.text !== null ? this.encode(renote, user, cache) : null),
-						edited_at: note.updatedAt?.toISOString()
+            edited_at: note.updatedAt?.toISOString()
         });
     }
 
-	public static async encodeMany(notes: Note[], user: ILocalUser | null, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Status[]> {
-		const encoded = notes.map(n => this.encode(n, user, cache));
-		return Promise.all(encoded);
-	}
+    public static async encodeMany(notes: Note[], user: ILocalUser | null, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Status[]> {
+        const encoded = notes.map(n => this.encode(n, user, cache));
+        return Promise.all(encoded);
+    }
 }

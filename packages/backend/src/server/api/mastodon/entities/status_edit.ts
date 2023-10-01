@@ -9,14 +9,14 @@
 /// <reference path="reaction.ts" />
 
 namespace MastodonEntity {
-	export type StatusEdit = {
-		account: Account;
-		content: string;
-		created_at: string;
-		emojis: Emoji[];
-		sensitive: boolean;
-		spoiler_text: string;
-		media_attachments: Array<Attachment>;
-		poll: Poll | null;
-	};
+    export type StatusEdit = {
+        account: Account;
+        content: string;
+        created_at: string;
+        emojis: Emoji[];
+        sensitive: boolean;
+        spoiler_text: string;
+        media_attachments: Array<Attachment>;
+        poll: Poll | null;
+    };
 }

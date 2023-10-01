@@ -2,8 +2,6 @@ import { Note } from "@/models/entities/note.js";
 import { populatePoll } from "@/models/repositories/note.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
 import { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import { getNote } from "@/server/api/common/getters.js";
-import { ApiError } from "@/server/api/error.js";
 import { Blockings, NoteWatchings, Polls, PollVotes, Users } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import { publishNoteStream } from "@/services/stream.js";
@@ -11,7 +9,6 @@ import { createNotification } from "@/services/create-notification.js";
 import { deliver } from "@/queue/index.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderVote from "@/remote/activitypub/renderer/vote.js";
-import { meta } from "@/server/api/endpoints/notes/polls/vote.js";
 import { Not } from "typeorm";
 
 export class PollHelpers {
@@ -34,7 +31,7 @@ export class PollHelpers {
                 if (block) throw new Error('You are blocked by the poll author');
             }
 
-            const poll = await Polls.findOneByOrFail({ noteId: note.id });
+            const poll = await Polls.findOneByOrFail({noteId: note.id});
 
             if (poll.expiresAt && poll.expiresAt < createdAt) throw new Error('Poll is expired');
 

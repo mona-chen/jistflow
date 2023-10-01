@@ -1,10 +1,10 @@
 /// <reference path="history.ts" />
 
 namespace MastodonEntity {
-	export type Tag = {
-		name: string;
-		url: string;
-		history: Array<History> | null;
-		following?: boolean;
-	};
+    export type Tag = {
+        name: string;
+        url: string;
+        history: Array<History> | null;
+        following?: boolean;
+    };
 }
