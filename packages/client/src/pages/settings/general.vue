@@ -80,13 +80,13 @@
 					{{ i18n.ts.reflectMayTakeTime }}</template
 				></FormSwitch
 			>
-			<FormSwitch
+			<!-- <FormSwitch
 				v-model="$i.injectFeaturedNote"
 				class="_formBlock"
 				@update:modelValue="onChangeInjectFeaturedNote"
 			>
 				{{ i18n.ts.showFeaturedNotesInTimeline }}
-			</FormSwitch>
+			</FormSwitch> -->
 			<!-- <FormSwitch v-model="reportError" class="_formBlock"
 				>{{ i18n.ts.sendErrorReports
 				}}<template #caption>{{
@@ -404,13 +404,14 @@ const openServerInfo = computed(
 	defaultStore.makeGetterSetter("openServerInfo"),
 );
 
-function onChangeInjectFeaturedNote(v) {
-	os.api("i/update", {
-		injectFeaturedNote: v,
-	}).then((i) => {
-		$i!.injectFeaturedNote = i.injectFeaturedNote;
-	});
-}
+// This feature (along with injectPromo) is currently disabled
+// function onChangeInjectFeaturedNote(v) {
+// 	os.api("i/update", {
+// 		injectFeaturedNote: v,
+// 	}).then((i) => {
+// 		$i!.injectFeaturedNote = i.injectFeaturedNote;
+// 	});
+// }
 
 watch(swipeOnDesktop, () => {
 	defaultStore.set("swipeOnMobile", true);
