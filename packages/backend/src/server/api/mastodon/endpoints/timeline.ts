@@ -29,7 +29,7 @@ export function argsToBools(q: ParsedUrlQuery, additional: string[] = []) {
     // - https://docs.joinmastodon.org/methods/accounts/#statuses
     // - https://docs.joinmastodon.org/methods/timelines/#public
     // - https://docs.joinmastodon.org/methods/timelines/#tag
-    let keys = ['only_media', 'exclude_replies', 'exclude_reblogs', 'pinned', 'local', 'remote']
+    let keys = ['only_media', 'exclude_replies', 'exclude_reblogs', 'pinned', 'local', 'remote'].concat(additional);
     let object: any = q;
 
     for (const key of keys)
