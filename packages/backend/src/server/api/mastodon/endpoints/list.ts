@@ -159,7 +159,7 @@ export function setupEndpointsList(router: Router): void {
                 const res = await ListHelpers.getListUsers(user, id, args.max_id, args.since_id, args.min_id, args.limit);
                 const accounts = await UserConverter.encodeMany(res.data);
                 ctx.body = accounts.map(account => convertAccount(account));
-                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
             } catch (e: any) {
                 ctx.status = 404;
             }

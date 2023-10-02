@@ -68,9 +68,9 @@ export class PaginationHelpers {
         return reverse ? found.reverse() : found;
     }
 
-    public static appendLinkPaginationHeader(args: any, ctx: any, res: any): void {
+    public static appendLinkPaginationHeader(args: any, ctx: any, res: any, defaultLimit: number): void {
         const link: string[] = [];
-        const limit = args.limit ?? 40;
+        const limit = args.limit ?? defaultLimit;
         if (res.maxId) {
             const l = `<${config.url}/api${ctx.path}?limit=${limit}&max_id=${convertId(res.maxId, IdType.MastodonId)}>; rel="next"`;
             link.push(l);

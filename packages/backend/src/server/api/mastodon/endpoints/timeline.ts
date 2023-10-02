@@ -193,7 +193,7 @@ export function setupEndpointsTimeline(router: Router): void {
             const res = await TimelineHelpers.getConversations(user, args.max_id, args.since_id, args.min_id, args.limit);
 
             ctx.body = res.data.map(c => convertConversation(c));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 20);
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);

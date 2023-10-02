@@ -246,7 +246,7 @@ export function setupEndpointsStatus(router: Router): void {
                 const res = await NoteHelpers.getNoteRebloggedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
                 const users = await UserConverter.encodeMany(res.data, cache);
                 ctx.body = users.map(m => convertAccount(m));
-                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -274,7 +274,7 @@ export function setupEndpointsStatus(router: Router): void {
                 const res = await NoteHelpers.getNoteFavoritedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
                 const users = await UserConverter.encodeMany(res.data, cache);
                 ctx.body = users.map(m => convertAccount(m));
-                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;

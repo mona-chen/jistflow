@@ -149,7 +149,7 @@ export function setupEndpointsAccount(router: Router): void {
                 const followers = await UserConverter.encodeMany(res.data, cache);
 
                 ctx.body = followers.map((account) => convertAccount(account));
-                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -174,7 +174,7 @@ export function setupEndpointsAccount(router: Router): void {
                 const following = await UserConverter.encodeMany(res.data, cache);
 
                 ctx.body = following.map((account) => convertAccount(account));
-                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -377,7 +377,7 @@ export function setupEndpointsAccount(router: Router): void {
             const bookmarks = await NoteConverter.encodeMany(res.data, user, cache);
 
             ctx.body = bookmarks.map(s => convertStatus(s));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 20);
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -401,7 +401,7 @@ export function setupEndpointsAccount(router: Router): void {
             const favorites = await NoteConverter.encodeMany(res.data, user, cache);
 
             ctx.body = favorites.map(s => convertStatus(s));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 20);
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -423,7 +423,7 @@ export function setupEndpointsAccount(router: Router): void {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserMutes(user, args.max_id, args.since_id, args.min_id, args.limit, cache);
             ctx.body = res.data.map(m => convertAccount(m));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -446,7 +446,7 @@ export function setupEndpointsAccount(router: Router): void {
             const res = await UserHelpers.getUserBlocks(user, args.max_id, args.since_id, args.min_id, args.limit);
             const blocks = await UserConverter.encodeMany(res.data, cache);
             ctx.body = blocks.map(b => convertAccount(b));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -469,7 +469,7 @@ export function setupEndpointsAccount(router: Router): void {
             const res = await UserHelpers.getUserFollowRequests(user, args.max_id, args.since_id, args.min_id, args.limit);
             const requests = await UserConverter.encodeMany(res.data, cache);
             ctx.body = requests.map(b => convertAccount(b));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
+            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
