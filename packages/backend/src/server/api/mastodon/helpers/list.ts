@@ -4,6 +4,7 @@ import { LinkPaginationObject } from "@/server/api/mastodon/helpers/user.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
+import { genId } from "@/misc/gen-id.js";
 
 export class ListHelpers {
     public static async getLists(user: ILocalUser): Promise<MastodonEntity.List[]> {
@@ -78,5 +79,19 @@ export class ListHelpers {
             if (exist) continue;
             await pushUserToUserList(user, list);
         }
+    }
+
+    public static async createList(user: ILocalUser, title: string): Promise<MastodonEntity.List> {
+        const list = await UserLists.insert({
+            id: genId(),
+            createdAt: new Date(),
+            userId: user.id,
+            name: title,
+        }).then(async res => await UserLists.findOneByOrFail(res.identifiers[0]));
+
+        return {
+            id: list.id,
+            title: list.name
+        };
     }
 }
