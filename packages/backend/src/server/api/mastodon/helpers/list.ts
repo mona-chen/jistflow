@@ -1,8 +1,9 @@
 import { ILocalUser, User } from "@/models/entities/user.js";
-import { UserListJoinings, UserLists } from "@/models/index.js";
+import { Blockings, UserListJoinings, UserLists } from "@/models/index.js";
 import { LinkPaginationObject } from "@/server/api/mastodon/helpers/user.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
+import { pushUserToUserList } from "@/services/user-list/push.js";
 
 export class ListHelpers {
     public static async getLists(user: ILocalUser): Promise<MastodonEntity.List[]> {
@@ -52,5 +53,30 @@ export class ListHelpers {
     public static async deleteList(user: ILocalUser, list: UserList) {
         if (user.id != list.userId) throw new Error("List is not owned by user");
         await UserLists.delete(list.id);
+    }
+
+    public static async addToList(localUser: ILocalUser, list: UserList, usersToAdd: User[]) {
+        if (localUser.id != list.userId) throw new Error("List is not owned by user");
+        for (const user of usersToAdd) {
+            if (user.id !== localUser.id) {
+                const isBlocked = await Blockings.exist({
+                    where: {
+                        blockerId: user.id,
+                        blockeeId: localUser.id,
+                    },
+                });
+                if (isBlocked) throw Error("Can't add users you've been blocked by to list");
+            }
+
+            const exist = await UserListJoinings.exist({
+                where: {
+                    userListId: list.id,
+                    userId: user.id,
+                },
+            });
+
+            if (exist) continue;
+            await pushUserToUserList(user, list);
+        }
     }
 }
