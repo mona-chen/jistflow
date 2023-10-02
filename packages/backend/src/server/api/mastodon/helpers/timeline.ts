@@ -1,6 +1,6 @@
 import { Note } from "@/models/entities/note.js";
 import { ILocalUser, User } from "@/models/entities/user.js";
-import { Followings, Notes, UserListJoinings } from "@/models/index.js";
+import { Followings, Notes, Notifications, UserListJoinings } from "@/models/index.js";
 import { Brackets } from "typeorm";
 import { generateChannelQuery } from "@/server/api/common/generate-channel-query.js";
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
@@ -187,12 +187,21 @@ export class TimelineHelpers {
                 const userIds = unique([c.userId].concat(c.visibleUserIds).filter(p => p != user.id));
                 const users = userIds.map(id => UserHelpers.getUserCached(id, cache).catch(_ => null));
                 const accounts = Promise.all(users).then(u => UserConverter.encodeMany(u.filter(u => u) as User[], cache));
+                const unread = Notifications.createQueryBuilder('notification')
+                    .where("notification.noteId = :noteId")
+                    .andWhere("notification.notifieeId = :userId")
+                    .andWhere("notification.isRead = FALSE")
+                    .andWhere("notification.type IN (:...types)")
+                    .setParameter("noteId", c.id)
+                    .setParameter("userId", user.id)
+                    .setParameter("types", ['reply', 'mention'])
+                    .getExists();
 
                 return {
                     id: c.threadId ?? c.id,
                     accounts: accounts.then(u => u.length > 0 ? u : UserConverter.encodeMany([user], cache)), // failsafe to prevent apps from crashing case when all participant users have been deleted
                     last_status: NoteConverter.encode(c, user, cache),
-                    unread: false //FIXME implement this (also the /v1/conversations/:id/read endpoint)
+                    unread: unread
                 }
             });
             const res = {

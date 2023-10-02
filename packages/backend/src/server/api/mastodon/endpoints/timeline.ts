@@ -177,9 +177,6 @@ export function setupEndpointsTimeline(router: Router): void {
         },
     );
     router.get("/v1/conversations", async (ctx, reply) => {
-        const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-        const accessTokens = ctx.headers.authorization;
-        const client = getClient(BASE_URL, accessTokens);
         try {
             const auth = await authenticate(ctx.headers.authorization, null);
             const user = auth[0] ?? undefined;

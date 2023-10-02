@@ -1,5 +1,5 @@
 import { ILocalUser } from "@/models/entities/user.js";
-import { Notifications } from "@/models/index.js";
+import { Notes, Notifications } from "@/models/index.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { Notification } from "@/models/entities/notification.js";
 
@@ -44,6 +44,24 @@ export class NotificationHelpers {
 
     public static async clearAllNotifications(user: ILocalUser): Promise<void> {
         await Notifications.update({notifieeId: user.id}, {isRead: true});
+    }
+
+    public static async markConversationAsRead(id: string, user: ILocalUser): Promise<void> {
+        const notesQuery = Notes.createQueryBuilder("note")
+            .select("note.id")
+            .andWhere("COALESCE(note.threadId, note.id) = :conversationId");
+
+        await Notifications.createQueryBuilder("notification")
+            .where(`notification."noteId" IN (${notesQuery.getQuery()})`)
+            .andWhere(`notification."notifieeId" = :userId`)
+            .andWhere(`notification."isRead" = FALSE`)
+            .andWhere("notification.type IN (:...types)")
+            .setParameter("userId", user.id)
+            .setParameter("conversationId", id)
+            .setParameter("types", ['reply', 'mention'])
+            .update()
+            .set({isRead: true})
+            .execute();
     }
 
     private static decodeTypes(types: string[]) {

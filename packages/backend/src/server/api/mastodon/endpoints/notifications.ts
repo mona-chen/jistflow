@@ -1,11 +1,13 @@
 import Router from "@koa/router";
 import { convertId, IdType } from "../../index.js";
 import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "./timeline.js";
-import { convertNotification } from "../converters.js";
+import { convertConversation, convertNotification } from "../converters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { NotificationHelpers } from "@/server/api/mastodon/helpers/notification.js";
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
+import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
+import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 
 export function setupEndpointsNotifications(router: Router): void {
     router.get("/v1/notifications", async (ctx) => {
@@ -98,5 +100,19 @@ export function setupEndpointsNotifications(router: Router): void {
             ctx.status = 401;
             ctx.body = e.response.data;
         }
+    });
+
+    router.post("/v1/conversations/:id/read", async (ctx, reply) => {
+        const auth = await authenticate(ctx.headers.authorization, null);
+        const user = auth[0] ?? undefined;
+
+        if (!user) {
+            ctx.status = 401;
+            return;
+        }
+
+        const id = convertId(ctx.params.id, IdType.IceshrimpId);
+        await NotificationHelpers.markConversationAsRead(id, user);
+        ctx.body = {};
     });
 }
