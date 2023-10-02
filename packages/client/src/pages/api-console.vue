@@ -71,7 +71,8 @@ function send() {
 	os.api(
 		endpoint.value as keyof Endpoints,
 		requestBody,
-		requestBody.i || (withCredential.value ? undefined : null),
+		null,
+		withCredential.value,
 	).then(
 		(resp) => {
 			sending.value = false;

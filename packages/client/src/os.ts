@@ -24,6 +24,7 @@ export const api = ((
 	endpoint: string,
 	data: Record<string, any> = {},
 	token?: string | null | undefined,
+	useToken: boolean = true,
 ) => {
 	pendingApiRequestsCount.value++;
 
@@ -42,7 +43,7 @@ export const api = ((
 			body: JSON.stringify(data),
 			credentials: "omit",
 			cache: "no-cache",
-			headers: authorization ? { authorization } : {},
+			headers: authorization && useToken ? { authorization } : {},
 		})
 			.then(async (res) => {
 				const body = res.status === 204 ? null : await res.json();
