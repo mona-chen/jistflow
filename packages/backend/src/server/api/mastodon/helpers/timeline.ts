@@ -1,5 +1,5 @@
 import { Note } from "@/models/entities/note.js";
-import { ILocalUser } from "@/models/entities/user.js";
+import { ILocalUser, User } from "@/models/entities/user.js";
 import { Followings, Notes, UserListJoinings } from "@/models/index.js";
 import { Brackets } from "typeorm";
 import { generateChannelQuery } from "@/server/api/common/generate-channel-query.js";
@@ -12,6 +12,11 @@ import { generateMutedUserRenotesQueryForNotes } from "@/server/api/common/gener
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
+import { LinkPaginationObject, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { UserConverter } from "@/server/api/mastodon/converters/user.js";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
+import { awaitAll } from "@/prelude/await-all.js";
+import { unique } from "@/prelude/array.js";
 
 export class TimelineHelpers {
     public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
@@ -152,5 +157,51 @@ export class TimelineHelpers {
         if (onlyMedia) query.andWhere("note.fileIds != '{}'");
 
         return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+    }
+
+    public static async getConversations(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<MastodonEntity.Conversation[]>> {
+        if (limit > 40) limit = 40;
+        const query = PaginationHelpers.makePaginationQuery(
+            Notes.createQueryBuilder("note"),
+            sinceId,
+            maxId,
+            minId,
+            "COALESCE(note.threadId, note.id)",
+            false
+        )
+            .distinctOn(["COALESCE(note.threadId, note.id)"])
+            .orderBy({"COALESCE(note.threadId, note.id)": minId ? "ASC" : "DESC", "note.id": "DESC"})
+            .andWhere("note.visibility = 'specified'")
+            .andWhere(
+                new Brackets(qb => {
+                    qb.where("note.userId = :userId");
+                    qb.orWhere("note.visibleUserIds @> array[:userId]::varchar[]");
+                }))
+            .setParameters({userId: user.id})
+
+        return query.take(limit).getMany().then(p => {
+            if (minId !== undefined) p = p.reverse();
+            const cache = UserHelpers.getFreshAccountCache();
+            const conversations = p.map(c => {
+                // Gather all unique IDs except for the local user
+                const userIds = unique([c.userId].concat(c.visibleUserIds).filter(p => p != user.id));
+                const users = userIds.map(id => UserHelpers.getUserCached(id, cache).catch(_ => null));
+                const accounts = Promise.all(users).then(u => UserConverter.encodeMany(u.filter(u => u) as User[], cache));
+
+                return {
+                    id: c.threadId ?? c.id,
+                    accounts: accounts.then(u => u.length > 0 ? u : UserConverter.encodeMany([user], cache)), // failsafe to prevent apps from crashing case when all participant users have been deleted
+                    last_status: NoteConverter.encode(c, user, cache),
+                    unread: false //FIXME implement this (also the /v1/conversations/:id/read endpoint)
+                }
+            });
+            const res = {
+                data: Promise.all(conversations.map(c => awaitAll(c))),
+                maxId: p.map(p => p.threadId ?? p.id).at(-1),
+                minId: p.map(p => p.threadId ?? p.id)[0],
+            };
+
+            return awaitAll(res);
+        });
     }
 }

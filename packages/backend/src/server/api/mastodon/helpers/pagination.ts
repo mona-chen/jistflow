@@ -8,30 +8,32 @@ export class PaginationHelpers {
         sinceId?: string,
         maxId?: string,
         minId?: string,
-        idField: string = "id"
+        idField: string = "id",
+        autoPrefix: boolean = true
     ) {
         if (sinceId && minId) throw new Error("Can't user both sinceId and minId params");
+        if (autoPrefix) idField = `${q.alias}.${idField}`;
 
         if (sinceId && maxId) {
-            q.andWhere(`${q.alias}.${idField} > :sinceId`, {sinceId: sinceId});
-            q.andWhere(`${q.alias}.${idField} < :maxId`, {maxId: maxId});
-            q.orderBy(`${q.alias}.${idField}`, "DESC");
+            q.andWhere(`${idField} > :sinceId`, {sinceId: sinceId});
+            q.andWhere(`${idField} < :maxId`, {maxId: maxId});
+            q.orderBy(`${idField}`, "DESC");
         }
         if (minId && maxId) {
-            q.andWhere(`${q.alias}.${idField} > :minId`, {minId: minId});
-            q.andWhere(`${q.alias}.${idField} < :maxId`, {maxId: maxId});
-            q.orderBy(`${q.alias}.${idField}`, "ASC");
+            q.andWhere(`${idField} > :minId`, {minId: minId});
+            q.andWhere(`${idField} < :maxId`, {maxId: maxId});
+            q.orderBy(`${idField}`, "ASC");
         } else if (sinceId) {
-            q.andWhere(`${q.alias}.${idField} > :sinceId`, {sinceId: sinceId});
-            q.orderBy(`${q.alias}.${idField}`, "DESC");
+            q.andWhere(`${idField} > :sinceId`, {sinceId: sinceId});
+            q.orderBy(`${idField}`, "DESC");
         } else if (minId) {
-            q.andWhere(`${q.alias}.${idField} > :minId`, {minId: minId});
-            q.orderBy(`${q.alias}.${idField}`, "ASC");
+            q.andWhere(`${idField} > :minId`, {minId: minId});
+            q.orderBy(`${idField}`, "ASC");
         } else if (maxId) {
-            q.andWhere(`${q.alias}.${idField} < :maxId`, {maxId: maxId});
-            q.orderBy(`${q.alias}.${idField}`, "DESC");
+            q.andWhere(`${idField} < :maxId`, {maxId: maxId});
+            q.orderBy(`${idField}`, "DESC");
         } else {
-            q.orderBy(`${q.alias}.${idField}`, "DESC");
+            q.orderBy(`${idField}`, "DESC");
         }
         return q;
     }

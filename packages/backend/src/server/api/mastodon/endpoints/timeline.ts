@@ -8,6 +8,7 @@ import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { UserLists } from "@/models/index.js";
+import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 
 export function limitToInt(q: ParsedUrlQuery, additional: string[] = []) {
     let object: any = q;
@@ -180,12 +181,19 @@ export function setupEndpointsTimeline(router: Router): void {
         const accessTokens = ctx.headers.authorization;
         const client = getClient(BASE_URL, accessTokens);
         try {
-            const data = await client.getConversationTimeline(
-                convertPaginationArgsIds(limitToInt(ctx.query)),
-            );
-            ctx.body = data.data.map((conversation) =>
-                convertConversation(conversation),
-            );
+            const auth = await authenticate(ctx.headers.authorization, null);
+            const user = auth[0] ?? undefined;
+
+            if (!user) {
+                ctx.status = 401;
+                return;
+            }
+
+            const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
+            const res = await TimelineHelpers.getConversations(user, args.max_id, args.since_id, args.min_id, args.limit);
+
+            ctx.body = res.data.map(c => convertConversation(c));
+            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res);
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
