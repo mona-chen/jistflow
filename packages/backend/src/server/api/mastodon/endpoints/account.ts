@@ -1,8 +1,7 @@
 import Router from "@koa/router";
-import { getClient } from "../index.js";
 import { argsToBools, convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { convertId, IdType } from "../../index.js";
-import { convertAccount, convertFeaturedTag, convertList, convertRelationship, convertStatus, } from "../converters.js";
+import { convertAccount, convertList, convertRelationship, convertStatus, } from "../converters.js";
 import { getUser } from "@/server/api/common/getters.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import authenticate from "@/server/api/authenticate.js";
@@ -126,19 +125,11 @@ export function setupEndpointsAccount(router: Router): void {
     router.get<{ Params: { id: string } }>(
         "/v1/accounts/:id/featured_tags",
         async (ctx) => {
-            const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-            const accessTokens = ctx.headers.authorization;
-            const client = getClient(BASE_URL, accessTokens);
             try {
-                const data = await client.getAccountFeaturedTags(
-                    convertId(ctx.params.id, IdType.IceshrimpId),
-                );
-                ctx.body = data.data.map((tag) => convertFeaturedTag(tag));
+                ctx.body = [];
             } catch (e: any) {
-                console.error(e);
-                console.error(e.response.data);
-                ctx.status = 401;
-                ctx.body = e.response.data;
+                ctx.status = 400;
+                ctx.body = { error: e.message };
             }
         },
     );
@@ -355,31 +346,19 @@ export function setupEndpointsAccount(router: Router): void {
         },
     );
     router.get("/v1/featured_tags", async (ctx) => {
-        const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-        const accessTokens = ctx.headers.authorization;
-        const client = getClient(BASE_URL, accessTokens);
         try {
-            const data = await client.getFeaturedTags();
-            ctx.body = data.data.map((tag) => convertFeaturedTag(tag));
+            ctx.body = [];
         } catch (e: any) {
-            console.error(e);
-            console.error(e.response.data);
-            ctx.status = 401;
-            ctx.body = e.response.data;
+            ctx.status = 400;
+            ctx.body = { error: e.message };
         }
     });
     router.get("/v1/followed_tags", async (ctx) => {
-        const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-        const accessTokens = ctx.headers.authorization;
-        const client = getClient(BASE_URL, accessTokens);
         try {
-            const data = await client.getFollowedTags();
-            ctx.body = data.data;
+            ctx.body = [];
         } catch (e: any) {
-            console.error(e);
-            console.error(e.response.data);
-            ctx.status = 401;
-            ctx.body = e.response.data;
+            ctx.status = 400;
+            ctx.body = { error: e.message };
         }
     });
     router.get("/v1/bookmarks", async (ctx) => {
