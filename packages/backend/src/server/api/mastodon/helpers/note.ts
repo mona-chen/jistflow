@@ -154,13 +154,11 @@ export class NoteHelpers {
     }
 
     public static async getNoteEditHistory(note: Note): Promise<MastodonEntity.StatusEdit[]> {
-        if (!note.updatedAt) return [];
         const cache = UserHelpers.getFreshAccountCache();
         const account = Promise.resolve(note.user ?? await UserHelpers.getUserCached(note.userId, cache))
             .then(p => UserConverter.encode(p, cache));
         const edits = await NoteEdits.find({where: {noteId: note.id}, order: {id: "ASC"}});
         const history: Promise<MastodonEntity.StatusEdit>[] = [];
-        if (edits.length < 1) return [];
 
         const curr = {
             id: note.id,
@@ -169,7 +167,7 @@ export class NoteHelpers {
             text: note.text,
             cw: note.cw,
             fileIds: note.fileIds,
-            updatedAt: note.updatedAt
+            updatedAt: note.updatedAt ?? note.createdAt
         }
 
         edits.push(curr);
