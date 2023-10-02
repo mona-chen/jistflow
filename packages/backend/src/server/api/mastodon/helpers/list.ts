@@ -2,6 +2,7 @@ import { ILocalUser, User } from "@/models/entities/user.js";
 import { UserListJoinings, UserLists } from "@/models/index.js";
 import { LinkPaginationObject } from "@/server/api/mastodon/helpers/user.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
+import { UserList } from "@/models/entities/user-list.js";
 
 export class ListHelpers {
     public static async getLists(user: ILocalUser): Promise<MastodonEntity.List[]> {
@@ -46,5 +47,10 @@ export class ListHelpers {
                 minId: p.map(p => p.id)[0],
             };
         });
+    }
+
+    public static async deleteList(user: ILocalUser, list: UserList) {
+        if (user.id != list.userId) throw new Error("List is not owned by user");
+        await UserLists.delete(list.id);
     }
 }

@@ -7,6 +7,7 @@ import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "@/serve
 import { ListHelpers } from "@/server/api/mastodon/helpers/list.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
+import { UserLists } from "@/models/index.js";
 
 export function setupEndpointsList(router: Router): void {
     router.get("/v1/lists", async (ctx, reply) => {
@@ -86,19 +87,28 @@ export function setupEndpointsList(router: Router): void {
     router.delete<{ Params: { id: string } }>(
         "/v1/lists/:id",
         async (ctx, reply) => {
-            const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-            const accessTokens = ctx.headers.authorization;
-            const client = getClient(BASE_URL, accessTokens);
             try {
-                const data = await client.deleteList(
-                    convertId(ctx.params.id, IdType.IceshrimpId),
-                );
-                ctx.body = data.data;
+                const auth = await authenticate(ctx.headers.authorization, null);
+                const user = auth[0] ?? undefined;
+
+                if (!user) {
+                    ctx.status = 401;
+                    return;
+                }
+
+                const id = convertId(ctx.params.id, IdType.IceshrimpId);
+                const list = await UserLists.findOneBy({userId: user.id, id: id});
+
+                if (!list) {
+                    ctx.status = 404;
+                    return;
+                }
+
+                await ListHelpers.deleteList(user, list);
+                ctx.body = {};
             } catch (e: any) {
-                console.error(e);
-                console.error(e.response.data);
-                ctx.status = 401;
-                ctx.body = e.response.data;
+                ctx.status = 500;
+                ctx.body = { error: e.message };
             }
         },
     );
