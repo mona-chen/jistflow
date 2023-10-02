@@ -89,20 +89,31 @@ export function setupEndpointsTimeline(router: Router): void {
     router.get<{ Params: { hashtag: string } }>(
         "/v1/timelines/tag/:hashtag",
         async (ctx, reply) => {
-            const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-            const accessTokens = ctx.headers.authorization;
-            const client = getClient(BASE_URL, accessTokens);
             try {
-                const data = await client.getTagTimeline(
-                    ctx.params.hashtag,
-                    convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))),
-                );
-                ctx.body = data.data.map((status) => convertStatus(status));
+                const auth = await authenticate(ctx.headers.authorization, null);
+                const user = auth[0] ?? undefined;
+
+                if (!user) {
+                    ctx.status = 401;
+                    return;
+                }
+
+                const tag = (ctx.params.hashtag ?? '').trim();
+                if (tag.length < 1) {
+                    ctx.status = 400;
+                    ctx.body = { error: "tag cannot be empty" };
+                    return;
+                }
+
+                const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))), ['any[]', 'all[]', 'none[]']);
+                const cache = UserHelpers.getFreshAccountCache();
+                const tl = await TimelineHelpers.getTagTimeline(user, tag, args.max_id, args.since_id, args.min_id, args.limit, args['any[]'] ?? [], args['all[]'] ?? [], args['none[]'] ?? [], args.only_media, args.local, args.remote)
+                    .then(n => NoteConverter.encodeMany(n, user, cache));
+
+                ctx.body = tl.map(s => convertStatus(s));
             } catch (e: any) {
-                console.error(e);
-                console.error(e.response.data);
-                ctx.status = 401;
-                ctx.body = e.response.data;
+                ctx.status = 400;
+                ctx.body = { error: e.message };
             }
         },
     );
