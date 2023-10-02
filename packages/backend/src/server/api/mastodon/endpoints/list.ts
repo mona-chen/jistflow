@@ -80,15 +80,33 @@ export function setupEndpointsList(router: Router): void {
     router.put<{ Params: { id: string } }>(
         "/v1/lists/:id",
         async (ctx, reply) => {
-            const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-            const accessTokens = ctx.headers.authorization;
-            const client = getClient(BASE_URL, accessTokens);
             try {
-                const data = await client.updateList(
-                    convertId(ctx.params.id, IdType.IceshrimpId),
-                    (ctx.request.body as any).title,
-                );
-                ctx.body = convertList(data.data);
+                const auth = await authenticate(ctx.headers.authorization, null);
+                const user = auth[0] ?? undefined;
+
+                if (!user) {
+                    ctx.status = 401;
+                    return;
+                }
+
+                const id = convertId(ctx.params.id, IdType.IceshrimpId);
+                const list = await UserLists.findOneBy({userId: user.id, id: id});
+
+                if (!list) {
+                    ctx.status = 404;
+                    return;
+                }
+
+                const body = ctx.request.body as any;
+                const title = (body.title ?? '').trim();
+                if (title.length < 1) {
+                    ctx.body = { error: "Title must not be empty" };
+                    ctx.status = 400;
+                    return
+                }
+
+                ctx.body = await ListHelpers.updateList(user, list, title)
+                    .then(p => convertList(p));
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);

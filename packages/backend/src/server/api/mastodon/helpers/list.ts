@@ -94,4 +94,16 @@ export class ListHelpers {
             title: list.name
         };
     }
+
+    public static async updateList(user: ILocalUser, list: UserList, title: string) {
+        if (user.id != list.userId) throw new Error("List is not owned by user");
+        const partial = {name: title};
+        const result = await UserLists.update(list.id, partial)
+            .then(async _ => await UserLists.findOneByOrFail({id: list.id}));
+
+        return {
+            id: result.id,
+            title: result.name
+        };
+    }
 }
