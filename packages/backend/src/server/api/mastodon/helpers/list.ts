@@ -123,4 +123,22 @@ export class ListHelpers {
             title: result.name
         };
     }
+
+    public static async getListsByMember(user: ILocalUser, member: User): Promise<MastodonEntity.List[]> {
+        const joinQuery = UserListJoinings.createQueryBuilder('member')
+            .select("member.userListId")
+            .where("member.userId = :memberId");
+        const query = UserLists.createQueryBuilder('list')
+            .where("list.userId = :userId", {userId: user.id})
+            .andWhere(`list.id IN (${joinQuery.getQuery()})`)
+            .setParameters({memberId: member.id});
+
+        return query.getMany()
+            .then(results => results.map(result => {
+                return {
+                    id: result.id,
+                    title: result.name
+                }
+            }));
+    }
 }

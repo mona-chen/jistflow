@@ -9,6 +9,7 @@ import authenticate from "@/server/api/authenticate.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
+import { ListHelpers } from "@/server/api/mastodon/helpers/list.js";
 
 export function setupEndpointsAccount(router: Router): void {
     router.get("/v1/accounts/verify_credentials", async (ctx) => {
@@ -194,19 +195,21 @@ export function setupEndpointsAccount(router: Router): void {
     router.get<{ Params: { id: string } }>(
         "/v1/accounts/:id/lists",
         async (ctx) => {
-            const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-            const accessTokens = ctx.headers.authorization;
-            const client = getClient(BASE_URL, accessTokens);
             try {
-                const data = await client.getAccountLists(
-                    convertId(ctx.params.id, IdType.IceshrimpId),
-                );
-                ctx.body = data.data.map((list) => convertList(list));
+                const auth = await authenticate(ctx.headers.authorization, null);
+                const user = auth[0] ?? null;
+
+                if (!user) {
+                    ctx.status = 401;
+                    return;
+                }
+
+                const member = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
+                const results = await ListHelpers.getListsByMember(user, member);
+                ctx.body = results.map(p => convertList(p));
             } catch (e: any) {
-                console.error(e);
-                console.error(e.response.data);
-                ctx.status = 401;
-                ctx.body = e.response.data;
+                ctx.status = 400;
+                ctx.body = { error: e.message };
             }
         },
     );
