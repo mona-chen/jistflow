@@ -1,5 +1,4 @@
 import Router from "@koa/router";
-import { getClient } from "../index.js";
 import { convertAccount, convertList, } from "../converters.js";
 import { convertId, IdType } from "../../index.js";
 import authenticate from "@/server/api/authenticate.js";
@@ -206,22 +205,37 @@ export function setupEndpointsList(router: Router): void {
     router.delete<{ Params: { id: string } }>(
         "/v1/lists/:id/accounts",
         async (ctx, reply) => {
-            const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
-            const accessTokens = ctx.headers.authorization;
-            const client = getClient(BASE_URL, accessTokens);
             try {
-                const data = await client.deleteAccountsFromList(
-                    convertId(ctx.params.id, IdType.IceshrimpId),
-                    (ctx.query.account_ids as string[]).map((id) =>
-                        convertId(id, IdType.IceshrimpId),
-                    ),
-                );
-                ctx.body = data.data;
+                const auth = await authenticate(ctx.headers.authorization, null);
+                const user = auth[0] ?? undefined;
+
+                if (!user) {
+                    ctx.status = 401;
+                    return;
+                }
+
+                const id = convertId(ctx.params.id, IdType.IceshrimpId);
+                const list = await UserLists.findOneBy({userId: user.id, id: id});
+
+                if (!list) {
+                    ctx.status = 404;
+                    return;
+                }
+
+                const body = ctx.request.body as any;
+                if (!body['account_ids']) {
+                    ctx.status = 400;
+                    ctx.body = { error: "Missing account_ids[] field" };
+                    return;
+                }
+
+                const ids = NoteHelpers.normalizeToArray(body['account_ids']).map(p => convertId(p, IdType.IceshrimpId));
+                const targets = await Promise.all(ids.map(p => getUser(p)));
+                await ListHelpers.removeFromList(user, list, targets);
+                ctx.body = {}
             } catch (e: any) {
-                console.error(e);
-                console.error(e.response.data);
-                ctx.status = 401;
-                ctx.body = e.response.data;
+                ctx.status = 400;
+                ctx.body = { error: e.message };
             }
         },
     );

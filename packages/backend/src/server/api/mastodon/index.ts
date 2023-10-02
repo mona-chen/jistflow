@@ -9,7 +9,7 @@ import { setupEndpointsNotifications } from "./endpoints/notifications.js";
 import { setupEndpointsSearch } from "./endpoints/search.js";
 import { setupEndpointsMedia } from "@/server/api/mastodon/endpoints/media.js";
 import { setupEndpointsMisc } from "@/server/api/mastodon/endpoints/misc.js";
-import { koaBody } from "koa-body";
+import { HttpMethodEnum, koaBody } from "koa-body";
 import multer from "@koa/multer";
 import { setupEndpointsList } from "@/server/api/mastodon/endpoints/list.js";
 
@@ -29,6 +29,7 @@ export function setupMastodonApi(router: Router, fileRouter: Router, upload: mul
         koaBody({
             multipart: true,
             urlencoded: true,
+            parsedMethods: [HttpMethodEnum.POST, HttpMethodEnum.PUT, HttpMethodEnum.PATCH, HttpMethodEnum.DELETE] // dear god mastodon why
         }),
     );
 

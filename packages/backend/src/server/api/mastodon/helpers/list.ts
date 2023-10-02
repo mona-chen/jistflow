@@ -1,10 +1,11 @@
 import { ILocalUser, User } from "@/models/entities/user.js";
-import { Blockings, UserListJoinings, UserLists } from "@/models/index.js";
+import { Blockings, UserListJoinings, UserLists, Users } from "@/models/index.js";
 import { LinkPaginationObject } from "@/server/api/mastodon/helpers/user.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
 import { genId } from "@/misc/gen-id.js";
+import { publishUserListStream } from "@/services/stream.js";
 
 export class ListHelpers {
     public static async getLists(user: ILocalUser): Promise<MastodonEntity.List[]> {
@@ -78,6 +79,22 @@ export class ListHelpers {
 
             if (exist) continue;
             await pushUserToUserList(user, list);
+        }
+    }
+
+    public static async removeFromList(localUser: ILocalUser, list: UserList, usersToRemove: User[]) {
+        if (localUser.id != list.userId) throw new Error("List is not owned by user");
+        for (const user of usersToRemove) {
+            const exist = await UserListJoinings.exist({
+                where: {
+                    userListId: list.id,
+                    userId: user.id,
+                },
+            });
+
+            if (!exist) continue;
+            await UserListJoinings.delete({ userListId: list.id, userId: user.id });
+            publishUserListStream(list.id, "userRemoved", await Users.pack(user));
         }
     }
 
