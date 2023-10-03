@@ -4,11 +4,6 @@ import { Emojis } from "@/models/index.js";
 import { toPunyNullable } from "./convert-host.js";
 import { IsNull } from "typeorm";
 
-export async function getFallbackReaction() {
-	const meta = await fetchMeta();
-	return meta.defaultReaction;
-}
-
 export function convertReactions(reactions: Record<string, number>) {
 	const result = new Map();
 
@@ -26,11 +21,11 @@ export async function toDbReaction(
 	reaction?: string | null,
 	reacterHost?: string | null,
 ): Promise<string> {
-	if (!reaction) return await getFallbackReaction();
+	if (!reaction) return (await fetchMeta()).defaultReaction;
 
 	reacterHost = toPunyNullable(reacterHost);
 
-	if (reaction === "♥️") return "❤️";
+	if (reaction.includes("❤") || reaction.includes("♥️")) return "❤️";
 
 	// Allow unicode reactions
 	const match = emojiRegex.exec(reaction);
@@ -50,7 +45,7 @@ export async function toDbReaction(
 		if (emoji) return reacterHost ? `:${name}@${reacterHost}:` : `:${name}:`;
 	}
 
-	return await getFallbackReaction();
+	return (await fetchMeta()).defaultReaction;
 }
 
 type DecodedReaction = {
