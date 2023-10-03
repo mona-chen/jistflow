@@ -729,8 +729,8 @@ importers:
         specifier: 6.1.0
         version: 6.1.0
       cropperjs:
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.4
+        version: 2.0.0-beta.4
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
@@ -741,8 +741,8 @@ importers:
         specifier: 2.30.0
         version: 2.30.0
       emojilib:
-        specifier: github:thatonecalculator/emojilib
-        version: github.com/thatonecalculator/emojilib/c3c82a3c8f360e1ec567c61012b95d23f0d22175
+        specifier: ^3.0.11
+        version: 3.0.11
       escape-regexp:
         specifier: 0.0.1
         version: 0.0.1
@@ -1658,92 +1658,92 @@ packages:
     dev: true
     optional: true
 
-  /@cropper/element-canvas@2.0.0-beta.3:
-    resolution: {integrity: sha512-G4KqpZHAqb2PNY63lt7MxSIXQhYrQUWImDmsQYrXSTVYC5yrMLlk5bT9oEaSTjQZnV4x5EaujFM+gx6lWh/5sg==}
+  /@cropper/element-canvas@2.0.0-beta.4:
+    resolution: {integrity: sha512-xL7k5YgtbCLdR/QEj81An4HpPcBTJXf1lq+2xisyHALGeUKQXjA9cJQL7bldYscHAKjmFgNZ5xOMrNaYM++qZw==}
     dependencies:
-      '@cropper/element': 2.0.0-beta.3
-      '@cropper/utils': 2.0.0-beta.3
+      '@cropper/element': 2.0.0-beta.4
+      '@cropper/utils': 2.0.0-beta.4
     dev: true
 
-  /@cropper/element-crosshair@2.0.0-beta.3:
-    resolution: {integrity: sha512-SfrzZjO+x7ND/CgAclfwDQ9T/nTlZTKsLtM+dDXfjJQjuqreMaWaLD23isB1kh8H7iqjz1g+VE2ZsdiLB932ww==}
+  /@cropper/element-crosshair@2.0.0-beta.4:
+    resolution: {integrity: sha512-NiwIQZFh963i3E3QbXFiU9oNqs+P1cLJur3+e+DK0E3oLTa7rEfcigP/ZoMj/3DZ9Et0LPhKKRDY2SJ8ZszyPA==}
     dependencies:
-      '@cropper/element': 2.0.0-beta.3
-      '@cropper/utils': 2.0.0-beta.3
+      '@cropper/element': 2.0.0-beta.4
+      '@cropper/utils': 2.0.0-beta.4
     dev: true
 
-  /@cropper/element-grid@2.0.0-beta.3:
-    resolution: {integrity: sha512-/U1/sNcJ9TKcUD7N+yHJqxRfZcW15XHz63LYMLaWQ7Cnnq2uYopopJUqtTiAdIoCh6mwoIWdYvLZ1Vhr6XKJBg==}
+  /@cropper/element-grid@2.0.0-beta.4:
+    resolution: {integrity: sha512-uMVVNk1SICwM2nA/7BHkyEojc0DAqsDFIUnC/sIGPtNf3fe5hYQyukby8BEPO7dlqzfIXYmnxacgLaPM9BZ7GQ==}
     dependencies:
-      '@cropper/element': 2.0.0-beta.3
-      '@cropper/utils': 2.0.0-beta.3
+      '@cropper/element': 2.0.0-beta.4
+      '@cropper/utils': 2.0.0-beta.4
     dev: true
 
-  /@cropper/element-handle@2.0.0-beta.3:
-    resolution: {integrity: sha512-bjxZfX0rqj4RsTBGxJ1WcxDya1/25dKe9j4+YRZFyASQUOPuUrqVOpWKQcGaQ0PeN+wfwLo3422vjaGSXNA+Pg==}
+  /@cropper/element-handle@2.0.0-beta.4:
+    resolution: {integrity: sha512-PHjC4ptBi0leQ82mPWvivNilNOpiBnV90ueqz99tli8f9bQobx+Os7dzKFwLIpj4WKCNRYhyEvxf1KuKhQisIg==}
     dependencies:
-      '@cropper/element': 2.0.0-beta.3
-      '@cropper/utils': 2.0.0-beta.3
+      '@cropper/element': 2.0.0-beta.4
+      '@cropper/utils': 2.0.0-beta.4
     dev: true
 
-  /@cropper/element-image@2.0.0-beta.3:
-    resolution: {integrity: sha512-1VjqaJG+IxPDkvEUvnKAfR12zK8fx+C6+ZsC5T4986KLtpltmqccaYiupgGXX8CVHrVyaW5ncBvOXSTGowiC7Q==}
+  /@cropper/element-image@2.0.0-beta.4:
+    resolution: {integrity: sha512-Nu5z5EFpyOEC2CAdhNZGfvpG9Xj6ZD46jvpJGKxsel7J7Kqf4qy+5m6nNdq2J+lK7YfTi16svkHeFwzNWZYLAA==}
     dependencies:
-      '@cropper/element': 2.0.0-beta.3
-      '@cropper/element-canvas': 2.0.0-beta.3
-      '@cropper/utils': 2.0.0-beta.3
+      '@cropper/element': 2.0.0-beta.4
+      '@cropper/element-canvas': 2.0.0-beta.4
+      '@cropper/utils': 2.0.0-beta.4
     dev: true
 
-  /@cropper/element-selection@2.0.0-beta.3:
-    resolution: {integrity: sha512-FjcNwUaV5/KzQROoaoNZzOpeRe92PCd8PPTgfl4/b2rGgpYvGcjwpjei5HRsF+uaDJwR2f1MOK8L+3ZkAUw18Q==}
+  /@cropper/element-selection@2.0.0-beta.4:
+    resolution: {integrity: sha512-wHZhWI80cC5TfFHI/2HT1A+ZbHifnAO+/IAr4IqkbaxtDZ9duqEvM2hhC+ZXgB3BYqVidAJNwpSnZkVK+DlJ6A==}
     dependencies:
-      '@cropper/element': 2.0.0-beta.3
-      '@cropper/element-canvas': 2.0.0-beta.3
-      '@cropper/element-image': 2.0.0-beta.3
-      '@cropper/utils': 2.0.0-beta.3
+      '@cropper/element': 2.0.0-beta.4
+      '@cropper/element-canvas': 2.0.0-beta.4
+      '@cropper/element-image': 2.0.0-beta.4
+      '@cropper/utils': 2.0.0-beta.4
     dev: true
 
-  /@cropper/element-shade@2.0.0-beta.3:
-    resolution: {integrity: sha512-WCmGYbmewIF49GUeJyXCXZUBwmLsu7B+G22o5FObhtxoY8pF7mp1SclIZdJU5KfvGFFOzXKHJg4yx1wO9IAfvQ==}
+  /@cropper/element-shade@2.0.0-beta.4:
+    resolution: {integrity: sha512-sTFTzlmu+Z31Hp7RHgUAxfDsRIQ/uG8RueOBBHLeKVGFZbYhsIElQaLcVDwebgqXLHVr9imCEvvIX11JeTqiTQ==}
     dependencies:
-      '@cropper/element': 2.0.0-beta.3
-      '@cropper/element-canvas': 2.0.0-beta.3
-      '@cropper/element-selection': 2.0.0-beta.3
-      '@cropper/utils': 2.0.0-beta.3
+      '@cropper/element': 2.0.0-beta.4
+      '@cropper/element-canvas': 2.0.0-beta.4
+      '@cropper/element-selection': 2.0.0-beta.4
+      '@cropper/utils': 2.0.0-beta.4
     dev: true
 
-  /@cropper/element-viewer@2.0.0-beta.3:
-    resolution: {integrity: sha512-A2yh8ULbxuykJHVvcG3eI81VX2ug/IklDuOAzCP4yRMGSvGb9eK0BQDkOButoViwM2FtleCf2blXPuXjzD1OMA==}
+  /@cropper/element-viewer@2.0.0-beta.4:
+    resolution: {integrity: sha512-bXW8OuezoHjyGFmQzX1QEj3OqvmSZwaLiQts+mVhcarYqAEVrK9s/bC/OqZKR2ZKkHeaiGWq+rTOBVAmhZja/A==}
     dependencies:
-      '@cropper/element': 2.0.0-beta.3
-      '@cropper/element-canvas': 2.0.0-beta.3
-      '@cropper/element-image': 2.0.0-beta.3
-      '@cropper/element-selection': 2.0.0-beta.3
-      '@cropper/utils': 2.0.0-beta.3
+      '@cropper/element': 2.0.0-beta.4
+      '@cropper/element-canvas': 2.0.0-beta.4
+      '@cropper/element-image': 2.0.0-beta.4
+      '@cropper/element-selection': 2.0.0-beta.4
+      '@cropper/utils': 2.0.0-beta.4
     dev: true
 
-  /@cropper/element@2.0.0-beta.3:
-    resolution: {integrity: sha512-Ta1QPx6uqO4WtlvWbQanKSdTi0NptfnSk4h93TSk/GTKYTUI6Qa1g5C+2ibdsomcD/bVTTY6cbuGMFfM8E8zQQ==}
+  /@cropper/element@2.0.0-beta.4:
+    resolution: {integrity: sha512-1P8Vm9+OqTQz4B/rEA0t8xmzKUkYyxzxTiOaDMPKjKbG2R3UZgJBWRzvTgTsDudld9vlR6FfXpDBU1ZWA1BWxQ==}
     dependencies:
-      '@cropper/utils': 2.0.0-beta.3
+      '@cropper/utils': 2.0.0-beta.4
     dev: true
 
-  /@cropper/elements@2.0.0-beta.3:
-    resolution: {integrity: sha512-oHRnhrFN/S2vadX1/ogaoZQuPUwUxYRoZ+BZjPUxr0kdX4SwumU0pMD2hxVMbveTl0zxFc0S3HdqXx8kcHGPtg==}
+  /@cropper/elements@2.0.0-beta.4:
+    resolution: {integrity: sha512-cXKNFwudKcFrxn75VU9nLWNpjUnHcY0rUvtLn+2YVOLAnCTFLlu+azjOW1XZJ01FAEcC62Itb4CvDae+qgDpcQ==}
     dependencies:
-      '@cropper/element': 2.0.0-beta.3
-      '@cropper/element-canvas': 2.0.0-beta.3
-      '@cropper/element-crosshair': 2.0.0-beta.3
-      '@cropper/element-grid': 2.0.0-beta.3
-      '@cropper/element-handle': 2.0.0-beta.3
-      '@cropper/element-image': 2.0.0-beta.3
-      '@cropper/element-selection': 2.0.0-beta.3
-      '@cropper/element-shade': 2.0.0-beta.3
-      '@cropper/element-viewer': 2.0.0-beta.3
+      '@cropper/element': 2.0.0-beta.4
+      '@cropper/element-canvas': 2.0.0-beta.4
+      '@cropper/element-crosshair': 2.0.0-beta.4
+      '@cropper/element-grid': 2.0.0-beta.4
+      '@cropper/element-handle': 2.0.0-beta.4
+      '@cropper/element-image': 2.0.0-beta.4
+      '@cropper/element-selection': 2.0.0-beta.4
+      '@cropper/element-shade': 2.0.0-beta.4
+      '@cropper/element-viewer': 2.0.0-beta.4
     dev: true
 
-  /@cropper/utils@2.0.0-beta.3:
-    resolution: {integrity: sha512-3oBwFN2DZiqfKzkB+fpAa+LV2izRUpbH0MS427p8rgMb7EEOP/UFaKeq/P/Ovs3dhLbiA48aLiV6GmX9piEmlw==}
+  /@cropper/utils@2.0.0-beta.4:
+    resolution: {integrity: sha512-mrUTA3LbEq1Y3nPTC5X6koTd2Dk8P+6xTuhp4P8X3mg5Z7d8AVK+0OU5kbB49OLAaEfvGEqbZJ84rLwgMy9RHw==}
     dev: true
 
   /@cspotcode/source-map-consumer@0.8.0:
@@ -7393,11 +7393,11 @@ packages:
       luxon: 3.3.0
     dev: false
 
-  /cropperjs@2.0.0-beta.2:
-    resolution: {integrity: sha512-jDRSODDGKmi9vp3p/+WXkxMqV/AE+GpSld1U3cHZDRdLy9UykRzurSe8k1dR0TExn45ygCMrv31qkg+K3EeXXw==}
+  /cropperjs@2.0.0-beta.4:
+    resolution: {integrity: sha512-tWIQnvbou6eJvQkajwhGLOOEw03dM/i23FmnUQtMKjuzbTDSMP61kcwM77Uit8MXEWcUb5PH8n4jawyrFvj5ag==}
     dependencies:
-      '@cropper/elements': 2.0.0-beta.3
-      '@cropper/utils': 2.0.0-beta.3
+      '@cropper/elements': 2.0.0-beta.4
+      '@cropper/utils': 2.0.0-beta.4
     dev: true
 
   /cross-env@7.0.3:
@@ -8160,6 +8160,10 @@ packages:
 
   /emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
+
+  /emojilib@3.0.11:
+    resolution: {integrity: sha512-OuML9z640prB+0Rms1RgzJrBAqNC9mFdqT2HeFcXSGSGNEiZh9adsaPPxWbqRoMyJPzu+zNKPyGKv4/sPmJDyg==}
+    dev: true
 
   /emojis-list@3.0.0:
     resolution: {integrity: sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==}
@@ -19459,10 +19463,4 @@ packages:
       loadjs: 4.2.0
       rangetouch: 2.0.1
       url-polyfill: 1.1.12
-    dev: true
-
-  github.com/thatonecalculator/emojilib/c3c82a3c8f360e1ec567c61012b95d23f0d22175:
-    resolution: {tarball: https://codeload.github.com/thatonecalculator/emojilib/tar.gz/c3c82a3c8f360e1ec567c61012b95d23f0d22175}
-    name: emojilib
-    version: 3.0.10
     dev: true
