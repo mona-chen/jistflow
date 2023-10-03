@@ -2,7 +2,7 @@
 	"name": "sw",
 	"private": true,
 	"scripts": {
-		"build": "webpack",
+		"build": "pnpm vite build --emptyOutDir",
 		"build:debug": "pnpm run build",
 		"watch": "pnpm swc src -d built -D -w",
 		"lint": "pnpm biome check **/*.ts --apply",
@@ -14,8 +14,10 @@
 		"@swc/core-android-arm64": "1.3.11",
 		"firefish-js": "workspace:*",
 		"idb-keyval": "^6.2.1",
-		"swc-loader": "^0.2.3",
-		"webpack": "^5.85.1",
-		"webpack-cli": "^5.1.3"
+		"vite": "4.4.9",
+		"vite-plugin-compression": "^0.5.1"
+	},
+	"optionalDependencies": {
+		"@swc/core-android-arm64": "1.3.11"
 	}
 }
