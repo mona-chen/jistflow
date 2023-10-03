@@ -31,6 +31,8 @@
 		panelHeaderFg: '@fg',
 		panelHeaderDivider: 'rgba(0, 0, 0, 0)',
 		panelBorder: '" solid 1px var(--divider)',
+		panelActiveFg: '@accent',
+		panelActiveBg: '@accentedBg',
 		acrylicPanel: ':alpha<0.5<@panel',
 		windowHeader: ':alpha<0.85<@panel',
 		pageHeader: ':alpha<0.85<@bg',

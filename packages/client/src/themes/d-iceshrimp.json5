@@ -1,15 +1,22 @@
 {
 	id: '0c74bfbe-c9b9-4a42-9798-2ee030e65f1c',
-
 	name: 'Iceshrimp Dark',
-	author: 'aylamz',
-
+	author: '@TyrKilcat@meow.social',
 	base: 'dark',
-
 	props: {
-		accent: '#47BFE8',
-		bg: '#212526',
+		fg: '#E7EDFF',
+		bg: '#3B364C',
+		accent: '#9A92FF',
 		shadow: 'rgba(0, 0, 0, 0)',
 		fgOnAccent: '@bg',
+		panel: ':lighten<3<@bg',
+		panelActiveBg: ':darken<1.5<@bg',
+		panelActiveFg: '@fg',
+		panelHeaderBg: ':lighten<1<@bg',
+		panelHighlight: ':lighten<6<@panel',
+		hashtag: ':darken<6<#91c0ff',
+		link: ':darken<6<#ff9891',
+		infoFg: ':lighten<6<@fg',
+		infoBg: ':darken<3<@bg',
 	},
 }

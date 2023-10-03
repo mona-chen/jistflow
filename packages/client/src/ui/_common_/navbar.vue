@@ -446,11 +446,11 @@ function more(ev: MouseEvent) {
 					}
 
 					&.active {
-						color: var(--accent);
+						color: var(--panelActiveFg);
 						transition: all 0.4s ease;
 
 						&:before {
-							background: var(--accentedBg);
+							background: var(--panelActiveBg);
 						}
 					}
 				}
@@ -603,7 +603,7 @@ function more(ev: MouseEvent) {
 					&:focus-within,
 					&.active {
 						text-decoration: none;
-						color: var(--accent);
+						color: var(--panelActiveFg);
 						transition: all 0.4s ease;
 
 						&:before {
@@ -635,7 +635,7 @@ function more(ev: MouseEvent) {
 
 					&.active {
 						&:before {
-							background: var(--accentedBg);
+							background: var(--panelActiveBg);
 						}
 					}
 				}
