@@ -37,6 +37,30 @@ export class UserConverter {
                 ? (DriveFiles.findOneBy({id: u.bannerId}))
                     .then(p => p?.url ?? `${config.url}/static-assets/transparent.png`)
                 : `${config.url}/static-assets/transparent.png`;
+            const followersCount = profile.then(profile => {
+                if (profile === null) return u.followersCount;
+                switch (profile.ffVisibility) {
+                    case "public":
+                        return u.followersCount;
+                    case "followers":
+                        // FIXME: check following relationship
+                        return 0;
+                    case "private":
+                        return 0;
+                }
+            });
+            const followingCount = profile.then(profile => {
+                if (profile === null) return u.followingCount;
+                switch (profile.ffVisibility) {
+                    case "public":
+                        return u.followingCount;
+                    case "followers":
+                        // FIXME: check following relationship
+                        return 0;
+                    case "private":
+                        return 0;
+                }
+            });
 
             return awaitAll({
                 id: u.id,
@@ -45,8 +69,8 @@ export class UserConverter {
                 display_name: u.name || u.username,
                 locked: u.isLocked,
                 created_at: u.createdAt.toISOString(),
-                followers_count: u.followersCount,
-                following_count: u.followingCount,
+                followers_count: followersCount,
+                following_count: followingCount,
                 statuses_count: u.notesCount,
                 note: bio,
                 url: u.uri ?? acctUrl,
