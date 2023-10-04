@@ -1,3 +1,24 @@
+## v2023.10.04
+### Highlights
+- New logos, themes & brand colors
+- All rust code has been removed (less jank, significantly faster build times)
+
+### Bug Fixes
+- Post boost counts can no longer become negative
+
+### Performance
+- User note lookups are now significantly faster
+
+### Miscellaneous
+- Minor iconograpgy changes
+- Translation updates
+
+### Infrastructure
+- Docker builds are now versioned
+
+### Attribution
+This release was made possible by project contributors: AntoineÐ, Aylam, Jeder, Laura Hausmann & moshibar
+
 ## v2023.09.13-rc1
 ### Highlights
 - New branding & documentation
