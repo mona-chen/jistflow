@@ -153,12 +153,12 @@ cacheRemoteFilesDescription: "Lorsque cette option est désactivée, les fichier
   sont chargés directement depuis l’instance distante. La désactiver diminuera certes
   l’utilisation de l’espace de stockage local mais augmentera le trafic réseau puisque
   les miniatures ne seront plus générées."
-flagAsBot: "Ce compte est un robot"
+flagAsBot: "Ce compte est un robot 🤖"
 flagAsBotDescription: "Si ce compte est géré de manière automatisée, choisissez cette
   option. Si elle est activée, elle agira comme un marqueur pour les autres développeurs
   afin d’éviter des chaînes d’interaction sans fin avec d’autres robots et d’ajuster
   les systèmes internes de Iceshrimp pour traiter ce compte comme un robot."
-flagAsCat: "Ce compte est un chat"
+flagAsCat: "Ce compte est un chat 🐱"
 flagAsCatDescription: "Vous aurez des oreilles de chat et parlerez comme un chat !"
 flagShowTimelineReplies: "Afficher les réponses dans le fil"
 autoAcceptFollowed: "Accepter automatiquement les demandes d’abonnement venant d’utilisateur·rice·s
@@ -224,7 +224,7 @@ noUsers: "Il n’y a pas d’utilisateur·rice·s"
 editProfile: "Modifier votre profil"
 noteDeleteConfirm: "Êtes-vous sûr·e de vouloir supprimer cette publication ?"
 pinLimitExceeded: "Vous ne pouvez pas épingler plus de publications"
-intro: "L’installation de Iceshrimp est terminée ! Veuillez créer un compte administrateur."
+intro: "L’installation de Iceshrimp est terminée ! Veuillez créer un compte administrateur·rice."
 done: "Terminé"
 processing: "Traitement en cours…"
 preview: "Aperçu"
@@ -413,7 +413,7 @@ popularTags: "Mots-clés populaires"
 userList: "Listes"
 about: "Informations"
 aboutIceshrimp: "À propos de Iceshrimp"
-administrator: "Administrateur"
+administrator: "Administrateur·rice"
 token: "Jeton"
 twoStepAuthentication: "Authentification à deux facteurs"
 moderator: "Modérateur·rice·s"
@@ -834,7 +834,7 @@ user: "Utilisateur·rice·s"
 administration: "Gestion"
 accounts: "Comptes"
 switch: "Remplacer"
-noMaintainerInformationWarning: "Informations administrateur non configurées."
+noMaintainerInformationWarning: "Informations administrateur·rice non configurées."
 noBotProtectionWarning: "La protection contre les bots n’est pas configurée."
 configure: "Configurer"
 postToGallery: "Publier dans la galerie"
@@ -1275,7 +1275,7 @@ _tutorial:
     de tout le monde sur ce instance."
   step5_5: "Le fil {icon} Social est une combinaison des fils Principal et Local."
   step5_6: "Le fil {icon} Recommandé est l’endroit où vous pouvez voir les publications
-    des instances recommandés par vos administrateurs."
+    des instances recommandés par vos administrateur·rice·s."
   step5_7: "Le fil {icon} Global est l’endroit où vous pouvez voir les publications
     de tout les autres instances connectés."
   step6_1: "Alors quel est cet endroit ?"
@@ -2174,9 +2174,9 @@ preventAiLearningDescription: Demandez aux modèles d’IA de tiers de ne pas é
 noGraze: Veuillez désactiver l’extension de navigateur "Graze for Mastodon", car elle
   interfère avec Iceshrimp.
 silencedWarning: Cette page s’affiche car ces utilisateurs proviennent d’instances
-  que votre administrateur a réduits au silence/masqué, il se peut donc qu’ils soient
-  de potentiels spams.
-isAdmin: Administrateur
+  que votre administrateur·rice a réduits au silence/masqué, il se peut donc qu’ils
+  soient de potentiels spams.
+isAdmin: Administrateur·rice
 isPatron: Mécène Iceshrimp
 _filters:
   fromUser: De l’utilisateur
