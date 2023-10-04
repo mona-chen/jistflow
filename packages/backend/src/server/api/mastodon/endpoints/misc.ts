@@ -5,6 +5,7 @@ import { convertAccount, convertAnnouncement, convertFilter } from "@/server/api
 import { Users } from "@/models/index.js";
 import { getInstance } from "@/server/api/mastodon/endpoints/meta.js";
 import { IsNull } from "typeorm";
+import { MiscHelpers } from "@/server/api/mastodon/helpers/misc.js";
 
 export function setupEndpointsMisc(router: Router): void {
     router.get("/v1/custom_emojis", async (ctx) => {
@@ -22,30 +23,12 @@ export function setupEndpointsMisc(router: Router): void {
     });
 
     router.get("/v1/instance", async (ctx) => {
-        const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-        const accessTokens = ctx.request.headers.authorization;
-        const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
-        // displayed without being logged in
         try {
-            const data = await client.getInstance();
-            const admin = await Users.findOne({
-                where: {
-                    host: IsNull(),
-                    isAdmin: true,
-                    isDeleted: false,
-                    isSuspended: false,
-                },
-                order: {id: "ASC"},
-            });
-            const contact =
-                admin == null
-                    ? null
-                    : convertAccount((await client.getAccount(admin.id)).data);
-            ctx.body = await getInstance(data.data, contact);
+            ctx.body = await MiscHelpers.getInstance();
         } catch (e: any) {
             console.error(e);
-            ctx.status = 401;
-            ctx.body = e.response.data;
+            ctx.status = 500;
+            ctx.body = { error: e.message };
         }
     });
 
