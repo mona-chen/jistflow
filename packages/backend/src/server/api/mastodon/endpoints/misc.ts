@@ -1,10 +1,7 @@
 import Router from "@koa/router";
 import { getClient } from "@/server/api/mastodon/index.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
-import { convertAccountId, convertAnnouncementId, convertFilterId } from "@/server/api/mastodon/converters.js";
-import { Users } from "@/models/index.js";
-import { getInstance } from "@/server/api/mastodon/endpoints/meta.js";
-import { IsNull } from "typeorm";
+import { convertAnnouncementId } from "@/server/api/mastodon/converters.js";
 import { MiscHelpers } from "@/server/api/mastodon/helpers/misc.js";
 
 export function setupEndpointsMisc(router: Router): void {
@@ -66,21 +63,6 @@ export function setupEndpointsMisc(router: Router): void {
             }
         },
     );
-
-    router.get("/v1/filters", async (ctx) => {
-        const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-        const accessTokens = ctx.request.headers.authorization;
-        const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
-        // displayed without being logged in
-        try {
-            const data = await client.getFilters();
-            ctx.body = data.data.map((filter) => convertFilterId(filter));
-        } catch (e: any) {
-            console.error(e);
-            ctx.status = 401;
-            ctx.body = e.response.data;
-        }
-    });
 
     router.get("/v1/trends", async (ctx) => {
         const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;

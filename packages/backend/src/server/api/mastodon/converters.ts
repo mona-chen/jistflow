@@ -19,10 +19,6 @@ export function convertAttachmentId(attachment: MastodonEntity.Attachment) {
     return simpleConvertId(attachment);
 }
 
-export function convertFilterId(filter: MastodonEntity.Filter) {
-    return simpleConvertId(filter);
-}
-
 export function convertListId(list: MastodonEntity.List) {
     return simpleConvertId(list);
 }
