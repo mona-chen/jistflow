@@ -672,7 +672,7 @@ console.log(mainRouter.currentRoute.value.name);
 			color: var(--fg);
 
 			&:active {
-				background-color: var(--accentedBg);
+				background-color: var(--panelHighlight);
 				background-size: 100%;
 				transition: background 0.1s;
 			}
@@ -680,13 +680,13 @@ console.log(mainRouter.currentRoute.value.name);
 			> .button-wrapper {
 				display: inline-flex;
 				justify-content: center;
+				padding: 4px 0;
 
 				&.on {
-					background-color: var(--accentedBg);
+					background-color: var(--focus);
 					width: 100%;
 					border-radius: 999px;
-					transform: translateY(-0.5em);
-					transition: all 0.2s ease-in-out;
+					transition: all 0.4s ease-in-out;
 				}
 
 				> .indicator {
