@@ -88,7 +88,8 @@
 							updateAvailable
 						"
 						class="indicator"
-					></span
+					><i class="icon ph-circle ph-fill"></i>
+					</span
 					><i class="icon ph-door ph-bold ph-fw ph-lg"></i
 					><span class="text">{{ i18n.ts.controlPanel }}</span>
 				</MkA>
