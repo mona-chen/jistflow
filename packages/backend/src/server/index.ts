@@ -165,7 +165,8 @@ mastoRouter.post("/oauth/token", async (ctx) => {
 	}
 	let client_id: Array<string> | string | null = body.client_id;
 	const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-	const client = megalodon("firefish", BASE_URL) as MegalodonInterface;
+	const generator = (megalodon as any).default;
+	const client = generator("firefish", BASE_URL, null) as MegalodonInterface;
 	let token = null;
 	if (body.code) {
 		//m = body.code.match(/^([a-zA-Z0-9]{8})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{12})/);
