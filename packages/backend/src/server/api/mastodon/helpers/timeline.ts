@@ -161,13 +161,9 @@ export class TimelineHelpers {
 
     public static async getConversations(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<MastodonEntity.Conversation[]>> {
         if (limit > 40) limit = 40;
-        const query = PaginationHelpers.makePaginationQuery(
-            Notes.createQueryBuilder("note"),
-            sinceId,
-            maxId,
-            minId,
-            "COALESCE(note.threadId, note.id)",
-        )
+        const sq = Notes.createQueryBuilder("note")
+            .select("COALESCE(note.threadId, note.id)", "conversationId")
+            .addSelect("note.id", "latest")
             .distinctOn(["COALESCE(note.threadId, note.id)"])
             .orderBy({"COALESCE(note.threadId, note.id)": minId ? "ASC" : "DESC", "note.id": "DESC"})
             .andWhere("note.visibility = 'specified'")
@@ -175,7 +171,15 @@ export class TimelineHelpers {
                 new Brackets(qb => {
                     qb.where("note.userId = :userId");
                     qb.orWhere("note.visibleUserIds @> array[:userId]::varchar[]");
-                }))
+                }));
+
+        const query = PaginationHelpers.makePaginationQuery(
+            Notes.createQueryBuilder("note"),
+            sinceId,
+            maxId,
+            minId
+        )
+            .innerJoin(`(${sq.getQuery()})`, "sq", "note.id = sq.latest")
             .setParameters({userId: user.id})
 
         return query.take(limit).getMany().then(p => {
