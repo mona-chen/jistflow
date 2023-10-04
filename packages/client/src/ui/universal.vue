@@ -671,12 +671,6 @@ console.log(mainRouter.currentRoute.value.name);
 			transition: background 0.6s;
 			color: var(--fg);
 
-			&:active {
-				background-color: var(--panelHighlight);
-				background-size: 100%;
-				transition: background 0.1s;
-			}
-
 			> .button-wrapper {
 				display: inline-flex;
 				justify-content: center;
