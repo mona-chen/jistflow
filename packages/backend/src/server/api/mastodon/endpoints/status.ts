@@ -243,7 +243,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 const cache = UserHelpers.getFreshAccountCache();
                 const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
-                const res = await NoteHelpers.getNoteRebloggedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
+                const res = await NoteHelpers.getNoteRebloggedBy(note, user, args.max_id, args.since_id, args.min_id, args.limit);
                 const users = await UserConverter.encodeMany(res.data, cache);
                 ctx.body = users.map(m => convertAccount(m));
                 PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);

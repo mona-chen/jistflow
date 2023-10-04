@@ -200,7 +200,7 @@ export class NoteHelpers {
         }
     }
 
-    public static async getNoteRebloggedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+    public static async getNoteRebloggedBy(note: Note, user: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
         if (limit > 80) limit = 80;
         const query = PaginationHelpers.makePaginationQuery(
             Notes.createQueryBuilder("note"),
@@ -211,6 +211,8 @@ export class NoteHelpers {
             .andWhere("note.renoteId = :noteId", {noteId: note.id})
             .andWhere("note.text IS NULL") // We don't want to count quotes as renotes
             .innerJoinAndSelect("note.user", "user");
+
+        generateVisibilityQuery(query, user);
 
         return query.take(limit).getMany().then(async p => {
             if (minId !== undefined) p = p.reverse();
