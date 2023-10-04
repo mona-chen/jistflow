@@ -13,7 +13,7 @@ export async function sendEmail(
 ) {
 	const meta = await fetchMeta(true);
 
-	const iconUrl = `${config.url}/static-assets/mi-white.png`;
+	const iconUrl = `${config.url}/static-assets/mail-wordmark.png`;
 	const emailSettingUrl = `${config.url}/settings/email`;
 
 	const enableAuth = meta.smtpUser != null && meta.smtpUser !== "";

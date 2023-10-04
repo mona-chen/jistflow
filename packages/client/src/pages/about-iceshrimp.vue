@@ -14,12 +14,22 @@
 						:class="{ playing: easterEggEngine != null }"
 					>
 						<img
-							src="/client-assets/about-icon.png"
+							src="/client-assets/about-icon-dark.png"
+							v-if="!darkMode"
 							alt=""
 							class="icon"
 							draggable="false"
 							@load="iconLoaded"
 							@click="gravity"
+						/>
+						<img
+								src="/client-assets/about-icon-light.png"
+								v-if="darkMode"
+								alt=""
+								class="icon"
+								draggable="false"
+								@load="iconLoaded"
+								@click="gravity"
 						/>
 						<div class="misskey">Iceshrimp</div>
 						<div class="version">v{{ version }}</div>
@@ -77,7 +87,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount } from "vue";
+import { computed, nextTick, onBeforeUnmount } from "vue";
 import { version } from "@/config";
 import FormLink from "@/components/form/link.vue";
 import FormSection from "@/components/form/section.vue";
@@ -135,6 +145,8 @@ const headerActions = $computed(() => []);
 
 const headerTabs = $computed(() => []);
 
+const darkMode = computed(defaultStore.makeGetterSetter("darkMode"));
+
 definePageMetadata({
 	title: i18n.ts.aboutIceshrimp,
 	icon: null,
@@ -166,9 +178,9 @@ definePageMetadata({
 
 		> .icon {
 			display: block;
-			width: 100px;
+			width: 250px;
 			margin: 0 auto;
-			border-radius: 3px;
+			border-radius: 5px;
 		}
 
 		> .misskey {

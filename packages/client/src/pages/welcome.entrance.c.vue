@@ -11,7 +11,7 @@
 				<MkEmoji :normal="true" :no-style="true" emoji="🍮" />
 			</div>
 			<div class="main">
-				<img src="/client-assets/misskey.svg" class="misskey" />
+				<img src="/client-assets/welcome-logo.svg" class="misskey" />
 				<div class="form _panel">
 					<div class="bg">
 						<div class="fade"></div>

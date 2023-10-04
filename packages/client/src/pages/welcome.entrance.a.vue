@@ -5,7 +5,7 @@
 			<XTimeline class="tl" />
 			<div class="shape1"></div>
 			<div class="shape2"></div>
-			<img src="/client-assets/misskey.svg" class="misskey" />
+			<img src="/client-assets/welcome-logo.svg" class="misskey" />
 			<div class="emojis">
 				<MkEmoji :normal="true" :no-style="true" emoji="⭐" />
 				<MkEmoji :normal="true" :no-style="true" emoji="❤️" />
