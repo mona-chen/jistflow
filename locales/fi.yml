@@ -817,7 +817,7 @@ userPagePinTip: Voit näyttää viestit täällä valitsemalla yksittäisten vie
 notSpecifiedMentionWarning: Tämä viesti sisältää mainintoja käyttäjistä, joita ei
   ole mainittu vastaanottajina
 name: Nimi
-allowedInstances: Sallitut (whitelisted) instanssit
+allowedInstances: Sallitut (allowlisted) instanssit
 hashtags: Aihetunnisteet
 troubleshooting: Vianetsintä
 received: Vastaanotettu
@@ -870,7 +870,7 @@ emailNotConfiguredWarning: Sähköpostiosoitetta ei ole asetettu.
 ratio: Suhde
 secureMode: Suojattu moodi (Valtuutettu nouto)
 instanceSecurity: Instanssiturvallisuus
-allowedInstancesDescription: Federaatiota varten sallitulle listalle (whitelisted)
+allowedInstancesDescription: Federaatiota varten sallitulle listalle (allowlisted)
   otettavien instanssien isännät, kukin erotettuna uudella rivillä (sovelletaan vain
   yksityisessä tilassa).
 previewNoteText: Näytä esikatselu
@@ -913,7 +913,7 @@ administration: Hallinta
 shareWithNote: Jaa viestin kanssa
 secureModeInfo: Kun pyydät muista instansseista, älä lähetä takaisin ilman todisteita.
 privateMode: Yksityinen moodi
-privateModeInfo: Kun tämä on käytössä, vain sallittujen (whitelisted) luetteloon merkityt
+privateModeInfo: Kun tämä on käytössä, vain sallittujen (allowlisted) luetteloon merkityt
   instanssit voivat liittyä instansseihisi. Kaikki viestit piilotetaan yleisöltä.
 global: Globaali
 resolved: Ratkaistu

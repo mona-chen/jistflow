@@ -894,10 +894,10 @@ secureMode: "Secure Mode (Authorized Fetch)"
 instanceSecurity: "Server Security"
 secureModeInfo: "When requesting from other servers, do not send back without proof."
 privateMode: "Private Mode"
-privateModeInfo: "When enabled, only whitelisted servers can federate with your server.
+privateModeInfo: "When enabled, only the listed servers can federate with your server.
   All posts will be hidden from the public."
-allowedInstances: "Whitelisted Servers"
-allowedInstancesDescription: "Hosts of servers to be whitelisted for federation, each
+allowedInstances: "Allowlisted Servers"
+allowedInstancesDescription: "Hosts of servers to be allowed to federate with, each
   separated by a new line (only applies in private mode)."
 previewNoteText: "Show preview"
 customCss: "Custom CSS"
