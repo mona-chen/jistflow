@@ -193,16 +193,29 @@ if ($i?.isAdmin) {
 	}).then((reports) => {
 		if (reports?.length > 0) thereIsUnresolvedAbuseReport = true;
 	});
-}
 
-if (defaultStore.state.showAdminUpdates) {
-	os.api("latest-version").then((res) => {
-		const cleanRes = parseInt(res?.tag_name.replace(/[^0-9]/g, ""));
-		const cleanVersion = parseInt(version.replace(/[^0-9]/g, ""));
-		if (cleanRes > cleanVersion) {
+	if (defaultStore.state.showAdminUpdates) {
+		os.api("latest-version").then((res) => {
+			if (!res?.tag_name) {
+				updateAvailable = false;
+				return;
+			}
+
+			const tag = res.tag_name as string;
+			if (tag === `v${version}`) {
+				updateAvailable = false;
+				return;
+			}
+			const tagDate = tag.includes('-') ? tag.substring(0, tag.indexOf('-')) : tag;
+			const versionDate = version.includes('-') ? version.substring(0, version.indexOf('-')) : version;
+			if (tagDate < versionDate) {
+				updateAvailable = false;
+				return;
+			}
 			updateAvailable = true;
-		}
-	});
+			return;
+		});
+	}
 }
 
 function openAccountMenu(ev: MouseEvent) {
