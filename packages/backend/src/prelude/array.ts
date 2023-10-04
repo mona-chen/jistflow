@@ -52,6 +52,14 @@ export function unique<T>(xs: T[]): T[] {
 	return [...new Set(xs)];
 }
 
+export function uniqBy<T>(a: T[], key: Function): T[] {
+	const seen = new Set<any>();
+	return a.filter(function(item) {
+		const k = key(item);
+		return seen.has(k) ? false : seen.add(k);
+	})
+}
+
 export function sum(xs: number[]): number {
 	return xs.reduce((a, b) => a + b, 0);
 }

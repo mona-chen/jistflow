@@ -23,6 +23,11 @@ export function convertListId(list: MastodonEntity.List) {
     return simpleConvertId(list);
 }
 
+export function convertSuggestionIds(suggestion: MastodonEntity.SuggestedAccount) {
+    suggestion.account = convertAccountId(suggestion.account)
+    return suggestion
+}
+
 export function convertNotificationIds(notification: MastodonEntity.Notification) {
     notification.account = convertAccountId(notification.account);
     notification.id = convertId(notification.id, IdType.MastodonId);

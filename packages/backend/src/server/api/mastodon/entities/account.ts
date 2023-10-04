@@ -29,4 +29,9 @@ namespace MastodonEntity {
     export type MutedAccount = Account | {
         mute_expires_at: string | null;
     }
+
+    export type SuggestedAccount = {
+        source: "staff" | "past_interactions" | "global",
+        account: Account
+    }
 }

@@ -10,6 +10,12 @@ import { Announcement } from "@/models/entities/announcement.js";
 import { ILocalUser } from "@/models/entities/user.js";
 import { AnnouncementConverter } from "@/server/api/mastodon/converters/announcement.js";
 import { genId } from "@/misc/gen-id.js";
+import * as Acct from "@/misc/acct.js";
+import { User } from "@/models/entities/user.js";
+import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { generateMutedUserQueryForUsers } from "@/server/api/common/generate-muted-user-query.js";
+import { generateBlockQueryForUsers } from "@/server/api/common/generate-block-query.js";
+import { uniqBy } from "@/prelude/array.js";
 
 export class MiscHelpers {
     public static async getInstance(): Promise<MastodonEntity.Instance> {
@@ -122,5 +128,51 @@ export class MiscHelpers {
                 announcementId: announcement.id
             });
         }
+    }
+
+    public static async getFollowSuggestions(user: ILocalUser, limit: number): Promise<MastodonEntity.SuggestedAccount[]> {
+        const cache = UserHelpers.getFreshAccountCache();
+        const results: Promise<MastodonEntity.SuggestedAccount[]>[] = [];
+
+        const pinned = fetchMeta().then(meta => Promise.all(
+            meta.pinnedUsers
+                .map((acct) => Acct.parse(acct))
+                .map((acct) =>
+                    Users.findOneBy({
+                        usernameLower: acct.username.toLowerCase(),
+                        host: acct.host ?? IsNull(),
+                    }))
+            )
+            .then(p => p.filter(x => !!x) as User[])
+            .then(p => UserConverter.encodeMany(p, cache))
+            .then(p => p.map(x => {
+                return {source: "staff", account: x} as MastodonEntity.SuggestedAccount
+            }))
+        );
+
+        const query = Users.createQueryBuilder("user")
+            .where("user.isExplorable = TRUE")
+            .andWhere("user.host IS NULL")
+            .orderBy("user.followersCount", "DESC")
+            .andWhere("user.updatedAt > :date", {
+                date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
+            });
+
+        generateMutedUserQueryForUsers(query, user);
+        generateBlockQueryForUsers(query, user);
+
+        const global = query
+            .take(limit)
+            .getMany()
+            .then(p => UserConverter.encodeMany(p, cache))
+            .then(p => p.map(x => {
+                return {source: "global", account: x} as MastodonEntity.SuggestedAccount
+            }));
+
+        results.push(pinned);
+        results.push(global);
+
+
+        return Promise.all(results).then(p => uniqBy(p.flat(), (x: MastodonEntity.SuggestedAccount) => x.account.id).slice(0, limit));
     }
 }

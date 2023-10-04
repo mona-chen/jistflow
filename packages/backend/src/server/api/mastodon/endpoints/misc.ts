@@ -2,9 +2,9 @@ import Router from "@koa/router";
 import { getClient } from "@/server/api/mastodon/index.js";
 import { MiscHelpers } from "@/server/api/mastodon/helpers/misc.js";
 import authenticate from "@/server/api/authenticate.js";
-import { argsToBools } from "@/server/api/mastodon/endpoints/timeline.js";
+import { argsToBools, limitToInt } from "@/server/api/mastodon/endpoints/timeline.js";
 import { Announcements } from "@/models/index.js";
-import { convertAnnouncementId } from "@/server/api/mastodon/converters.js";
+import { convertAnnouncementId, convertSuggestionIds } from "@/server/api/mastodon/converters.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
 
 export function setupEndpointsMisc(router: Router): void {
@@ -107,6 +107,25 @@ export function setupEndpointsMisc(router: Router): void {
             console.error(e);
             ctx.status = 401;
             ctx.body = e.response.data;
+        }
+    });
+
+    router.get("/v2/suggestions", async (ctx) => {
+        try {
+            const auth = await authenticate(ctx.headers.authorization, null);
+            const user = auth[0] ?? undefined;
+
+            if (!user) {
+                ctx.status = 401;
+                return;
+            }
+
+            const args = limitToInt(ctx.query);
+            ctx.body = await MiscHelpers.getFollowSuggestions(user, args.limit)
+                .then(p => p.map(x => convertSuggestionIds(x)));
+        } catch (e: any) {
+            ctx.status = 500;
+            ctx.body = { error: e.message };
         }
     });
 }
