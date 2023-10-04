@@ -8,11 +8,9 @@ export class PaginationHelpers {
         sinceId?: string,
         maxId?: string,
         minId?: string,
-        idField: string = "id",
-        autoPrefix: boolean = true
+        idField: string = `${q.alias}.id`,
     ) {
         if (sinceId && minId) throw new Error("Can't user both sinceId and minId params");
-        if (autoPrefix) idField = `${q.alias}.${idField}`;
 
         if (sinceId && maxId) {
             q.andWhere(`${idField} > :sinceId`, {sinceId: sinceId});

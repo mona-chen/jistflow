@@ -167,7 +167,6 @@ export class TimelineHelpers {
             maxId,
             minId,
             "COALESCE(note.threadId, note.id)",
-            false
         )
             .distinctOn(["COALESCE(note.threadId, note.id)"])
             .orderBy({"COALESCE(note.threadId, note.id)": minId ? "ASC" : "DESC", "note.id": "DESC"})
