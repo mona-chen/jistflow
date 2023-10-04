@@ -2,7 +2,7 @@ import { Converter } from "megalodon";
 import Router from "@koa/router";
 import axios from "axios";
 import { argsToBools, convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "./timeline.js";
-import { convertAccount, convertSearch, convertStatus } from "../converters.js";
+import { convertAccountId, convertSearchIds, convertStatusIds } from "../converters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { SearchHelpers } from "@/server/api/mastodon/helpers/search.js";
@@ -23,7 +23,7 @@ export function setupEndpointsSearch(router: Router): void {
             const result = await SearchHelpers.search(user, args.q, args.type, args.resolve, args.following, args.account_id, args['exclude_unreviewed'], args.max_id, args.min_id, args.limit, args.offset, cache);
 
             ctx.body = {
-                ...convertSearch(result),
+                ...convertSearchIds(result),
                 hashtags: result.hashtags.map(p => p.name),
             };
         } catch (e: any) {
@@ -46,7 +46,7 @@ export function setupEndpointsSearch(router: Router): void {
             const cache = UserHelpers.getFreshAccountCache();
             const result = await SearchHelpers.search(user, args.q, args.type, args.resolve, args.following, args.account_id, args['exclude_unreviewed'], args.max_id, args.min_id, args.limit, args.offset, cache);
 
-            ctx.body = convertSearch(result);
+            ctx.body = convertSearchIds(result);
         } catch (e: any) {
             console.error(e);
             ctx.status = 400;
@@ -62,7 +62,7 @@ export function setupEndpointsSearch(router: Router): void {
                 ctx.request.hostname,
                 accessTokens,
             );
-            ctx.body = data.map((status) => convertStatus(status));
+            ctx.body = data.map((status) => convertStatusIds(status));
         } catch (e: any) {
             console.error(e);
             ctx.status = 401;
@@ -81,7 +81,7 @@ export function setupEndpointsSearch(router: Router): void {
                 query.limit || 20,
             );
             data = data.map((suggestion) => {
-                suggestion.account = convertAccount(suggestion.account);
+                suggestion.account = convertAccountId(suggestion.account);
                 return suggestion;
             });
             console.log(data);

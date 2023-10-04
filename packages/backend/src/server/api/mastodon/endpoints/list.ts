@@ -1,5 +1,5 @@
 import Router from "@koa/router";
-import { convertAccount, convertList, } from "../converters.js";
+import { convertAccountId, convertListId, } from "../converters.js";
 import { convertId, IdType } from "../../index.js";
 import authenticate from "@/server/api/authenticate.js";
 import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "@/server/api/mastodon/endpoints/timeline.js";
@@ -23,7 +23,7 @@ export function setupEndpointsList(router: Router): void {
             }
 
             ctx.body = await ListHelpers.getLists(user)
-                .then(p => p.map(list => convertList(list)));
+                .then(p => p.map(list => convertListId(list)));
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -46,7 +46,7 @@ export function setupEndpointsList(router: Router): void {
                 const id = convertId(ctx.params.id, IdType.IceshrimpId);
 
                 ctx.body = await ListHelpers.getList(user, id)
-                    .then(p => convertList(p));
+                    .then(p => convertListId(p));
             } catch (e: any) {
                 ctx.status = 404;
             }
@@ -71,7 +71,7 @@ export function setupEndpointsList(router: Router): void {
             }
 
             ctx.body = await ListHelpers.createList(user, title)
-                .then(p => convertList(p));
+                .then(p => convertListId(p));
         } catch (e: any) {
             ctx.status = 400;
             ctx.body = { error: e.message };
@@ -106,7 +106,7 @@ export function setupEndpointsList(router: Router): void {
                 }
 
                 ctx.body = await ListHelpers.updateList(user, list, title)
-                    .then(p => convertList(p));
+                    .then(p => convertListId(p));
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -159,7 +159,7 @@ export function setupEndpointsList(router: Router): void {
                 const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
                 const res = await ListHelpers.getListUsers(user, id, args.max_id, args.since_id, args.min_id, args.limit);
                 const accounts = await UserConverter.encodeMany(res.data);
-                ctx.body = accounts.map(account => convertAccount(account));
+                ctx.body = accounts.map(account => convertAccountId(account));
                 PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
             } catch (e: any) {
                 ctx.status = 404;

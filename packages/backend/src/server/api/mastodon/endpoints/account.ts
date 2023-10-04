@@ -1,7 +1,7 @@
 import Router from "@koa/router";
 import { argsToBools, convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { convertId, IdType } from "../../index.js";
-import { convertAccount, convertList, convertRelationship, convertStatus, } from "../converters.js";
+import { convertAccountId, convertListId, convertRelationshipId, convertStatusIds, } from "../converters.js";
 import { getUser } from "@/server/api/common/getters.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import authenticate from "@/server/api/authenticate.js";
@@ -22,7 +22,7 @@ export function setupEndpointsAccount(router: Router): void {
             }
 
             const acct = await UserHelpers.verifyCredentials(user);
-            ctx.body = convertAccount(acct);
+            ctx.body = convertAccountId(acct);
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -41,7 +41,7 @@ export function setupEndpointsAccount(router: Router): void {
             }
 
             const acct = await UserHelpers.updateCredentials(user, (ctx.request as any).body as any);
-            ctx.body = convertAccount(acct)
+            ctx.body = convertAccountId(acct)
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -58,7 +58,7 @@ export function setupEndpointsAccount(router: Router): void {
                 return;
             }
             const account = await UserConverter.encode(user);
-            ctx.body = convertAccount(account);
+            ctx.body = convertAccountId(account);
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -79,7 +79,7 @@ export function setupEndpointsAccount(router: Router): void {
             const ids = (normalizeUrlQuery(ctx.query, ['id[]'])['id[]'] ?? [])
                 .map((id: string) => convertId(id, IdType.IceshrimpId));
             const result = await UserHelpers.getUserRelationhipToMany(ids, user.id);
-            ctx.body = result.map(rel => convertRelationship(rel));
+            ctx.body = result.map(rel => convertRelationshipId(rel));
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -91,7 +91,7 @@ export function setupEndpointsAccount(router: Router): void {
         try {
             const userId = convertId(ctx.params.id, IdType.IceshrimpId);
             const account = await UserConverter.encode(await getUser(userId));
-            ctx.body = convertAccount(account);
+            ctx.body = convertAccountId(account);
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -113,7 +113,7 @@ export function setupEndpointsAccount(router: Router): void {
                 const tl = await UserHelpers.getUserStatuses(query, user, args.max_id, args.since_id, args.min_id, args.limit, args['only_media'], args['exclude_replies'], args['exclude_reblogs'], args.pinned, args.tagged)
                     .then(n => NoteConverter.encodeMany(n, user, cache));
 
-                ctx.body = tl.map(s => convertStatus(s));
+                ctx.body = tl.map(s => convertStatusIds(s));
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -148,7 +148,7 @@ export function setupEndpointsAccount(router: Router): void {
                 const res = await UserHelpers.getUserFollowers(query, user, args.max_id, args.since_id, args.min_id, args.limit);
                 const followers = await UserConverter.encodeMany(res.data, cache);
 
-                ctx.body = followers.map((account) => convertAccount(account));
+                ctx.body = followers.map((account) => convertAccountId(account));
                 PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
             } catch (e: any) {
                 console.error(e);
@@ -173,7 +173,7 @@ export function setupEndpointsAccount(router: Router): void {
                 const res = await UserHelpers.getUserFollowing(query, user, args.max_id, args.since_id, args.min_id, args.limit);
                 const following = await UserConverter.encodeMany(res.data, cache);
 
-                ctx.body = following.map((account) => convertAccount(account));
+                ctx.body = following.map((account) => convertAccountId(account));
                 PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
             } catch (e: any) {
                 console.error(e);
@@ -197,7 +197,7 @@ export function setupEndpointsAccount(router: Router): void {
 
                 const member = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
                 const results = await ListHelpers.getListsByMember(user, member);
-                ctx.body = results.map(p => convertList(p));
+                ctx.body = results.map(p => convertListId(p));
             } catch (e: any) {
                 ctx.status = 400;
                 ctx.body = { error: e.message };
@@ -219,7 +219,7 @@ export function setupEndpointsAccount(router: Router): void {
                 const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
                 //FIXME: Parse form data
                 const result = await UserHelpers.followUser(target, user, true, false);
-                ctx.body = convertRelationship(result);
+                ctx.body = convertRelationshipId(result);
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -242,7 +242,7 @@ export function setupEndpointsAccount(router: Router): void {
 
                 const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
                 const result = await UserHelpers.unfollowUser(target, user);
-                ctx.body = convertRelationship(result);
+                ctx.body = convertRelationshipId(result);
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -265,7 +265,7 @@ export function setupEndpointsAccount(router: Router): void {
 
                 const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
                 const result = await UserHelpers.blockUser(target, user);
-                ctx.body = convertRelationship(result);
+                ctx.body = convertRelationshipId(result);
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -288,7 +288,7 @@ export function setupEndpointsAccount(router: Router): void {
 
                 const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
                 const result = await UserHelpers.unblockUser(target, user);
-                ctx.body = convertRelationship(result)
+                ctx.body = convertRelationshipId(result)
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -313,7 +313,7 @@ export function setupEndpointsAccount(router: Router): void {
                 const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query, ['duration']), ['notifications']));
                 const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
                 const result = await UserHelpers.muteUser(target, user, args.notifications, args.duration);
-                ctx.body = convertRelationship(result)
+                ctx.body = convertRelationshipId(result)
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -336,7 +336,7 @@ export function setupEndpointsAccount(router: Router): void {
 
                 const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
                 const result = await UserHelpers.unmuteUser(target, user);
-                ctx.body = convertRelationship(result)
+                ctx.body = convertRelationshipId(result)
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -376,7 +376,7 @@ export function setupEndpointsAccount(router: Router): void {
             const res = await UserHelpers.getUserBookmarks(user, args.max_id, args.since_id, args.min_id, args.limit);
             const bookmarks = await NoteConverter.encodeMany(res.data, user, cache);
 
-            ctx.body = bookmarks.map(s => convertStatus(s));
+            ctx.body = bookmarks.map(s => convertStatusIds(s));
             PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 20);
         } catch (e: any) {
             console.error(e);
@@ -400,7 +400,7 @@ export function setupEndpointsAccount(router: Router): void {
             const res = await UserHelpers.getUserFavorites(user, args.max_id, args.since_id, args.min_id, args.limit);
             const favorites = await NoteConverter.encodeMany(res.data, user, cache);
 
-            ctx.body = favorites.map(s => convertStatus(s));
+            ctx.body = favorites.map(s => convertStatusIds(s));
             PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 20);
         } catch (e: any) {
             console.error(e);
@@ -422,7 +422,7 @@ export function setupEndpointsAccount(router: Router): void {
             const cache = UserHelpers.getFreshAccountCache();
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserMutes(user, args.max_id, args.since_id, args.min_id, args.limit, cache);
-            ctx.body = res.data.map(m => convertAccount(m));
+            ctx.body = res.data.map(m => convertAccountId(m));
             PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
         } catch (e: any) {
             console.error(e);
@@ -445,7 +445,7 @@ export function setupEndpointsAccount(router: Router): void {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserBlocks(user, args.max_id, args.since_id, args.min_id, args.limit);
             const blocks = await UserConverter.encodeMany(res.data, cache);
-            ctx.body = blocks.map(b => convertAccount(b));
+            ctx.body = blocks.map(b => convertAccountId(b));
             PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
         } catch (e: any) {
             console.error(e);
@@ -468,7 +468,7 @@ export function setupEndpointsAccount(router: Router): void {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserFollowRequests(user, args.max_id, args.since_id, args.min_id, args.limit);
             const requests = await UserConverter.encodeMany(res.data, cache);
-            ctx.body = requests.map(b => convertAccount(b));
+            ctx.body = requests.map(b => convertAccountId(b));
             PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
         } catch (e: any) {
             console.error(e);
@@ -491,7 +491,7 @@ export function setupEndpointsAccount(router: Router): void {
 
                 const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
                 const result = await UserHelpers.acceptFollowRequest(target, user);
-                ctx.body = convertRelationship(result);
+                ctx.body = convertRelationshipId(result);
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -514,7 +514,7 @@ export function setupEndpointsAccount(router: Router): void {
 
                 const target = await UserHelpers.getUserCached(convertId(ctx.params.id, IdType.IceshrimpId));
                 const result = await UserHelpers.rejectFollowRequest(target, user);
-                ctx.body = convertRelationship(result);
+                ctx.body = convertRelationshipId(result);
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);

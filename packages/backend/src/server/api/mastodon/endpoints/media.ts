@@ -1,6 +1,6 @@
 import Router from "@koa/router";
 import { convertId, IdType } from "@/misc/convert-id.js";
-import { convertAttachment } from "@/server/api/mastodon/converters.js";
+import { convertAttachmentId } from "@/server/api/mastodon/converters.js";
 import multer from "@koa/multer";
 import authenticate from "@/server/api/authenticate.js";
 import { MediaHelpers } from "@/server/api/mastodon/helpers/media.js";
@@ -27,7 +27,7 @@ export function setupEndpointsMedia(router: Router, fileRouter: Router, upload: 
             }
 
             const attachment = FileConverter.encode(file);
-            ctx.body = convertAttachment(attachment);
+            ctx.body = convertAttachmentId(attachment);
         } catch (e: any) {
             console.error(e);
             ctx.status = 500;
@@ -55,7 +55,7 @@ export function setupEndpointsMedia(router: Router, fileRouter: Router, upload: 
 
             const result = await MediaHelpers.updateMedia(user, file, ctx.request.body)
                 .then(p => FileConverter.encode(p));
-            ctx.body = convertAttachment(result);
+            ctx.body = convertAttachmentId(result);
         } catch (e: any) {
             console.error(e);
             ctx.status = 401;
@@ -81,7 +81,7 @@ export function setupEndpointsMedia(router: Router, fileRouter: Router, upload: 
             }
             const result = await MediaHelpers.uploadMedia(user, file, ctx.request.body)
                 .then(p => FileConverter.encode(p));
-            ctx.body = convertAttachment(result);
+            ctx.body = convertAttachmentId(result);
         } catch (e: any) {
             console.error(e);
             ctx.status = 500;

@@ -1,7 +1,7 @@
 import Router from "@koa/router";
 import { getClient } from "../index.js";
 import { ParsedUrlQuery } from "querystring";
-import { convertConversation, convertStatus, } from "../converters.js";
+import { convertConversationIds, convertStatusIds, } from "../converters.js";
 import { convertId, IdType } from "../../index.js";
 import authenticate from "@/server/api/authenticate.js";
 import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
@@ -79,7 +79,7 @@ export function setupEndpointsTimeline(router: Router): void {
             const tl = await TimelineHelpers.getPublicTimeline(user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote)
                 .then(n => NoteConverter.encodeMany(n, user, cache));
 
-            ctx.body = tl.map(s => convertStatus(s));
+            ctx.body = tl.map(s => convertStatusIds(s));
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -111,7 +111,7 @@ export function setupEndpointsTimeline(router: Router): void {
                 const tl = await TimelineHelpers.getTagTimeline(user, tag, args.max_id, args.since_id, args.min_id, args.limit, args['any[]'] ?? [], args['all[]'] ?? [], args['none[]'] ?? [], args.only_media, args.local, args.remote)
                     .then(n => NoteConverter.encodeMany(n, user, cache));
 
-                ctx.body = tl.map(s => convertStatus(s));
+                ctx.body = tl.map(s => convertStatusIds(s));
             } catch (e: any) {
                 ctx.status = 400;
                 ctx.body = { error: e.message };
@@ -133,7 +133,7 @@ export function setupEndpointsTimeline(router: Router): void {
             const tl = await TimelineHelpers.getHomeTimeline(user, args.max_id, args.since_id, args.min_id, args.limit)
                 .then(n => NoteConverter.encodeMany(n, user, cache));
 
-            ctx.body = tl.map(s => convertStatus(s));
+            ctx.body = tl.map(s => convertStatusIds(s));
         } catch (e: any) {
             console.error(e);
             console.error(e.response.data);
@@ -166,7 +166,7 @@ export function setupEndpointsTimeline(router: Router): void {
                 const tl = await TimelineHelpers.getListTimeline(user, list, args.max_id, args.since_id, args.min_id, args.limit)
                     .then(n => NoteConverter.encodeMany(n, user, cache));
 
-                ctx.body = tl.map(s => convertStatus(s));
+                ctx.body = tl.map(s => convertStatusIds(s));
 
             } catch (e: any) {
                 console.error(e);
@@ -189,7 +189,7 @@ export function setupEndpointsTimeline(router: Router): void {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
             const res = await TimelineHelpers.getConversations(user, args.max_id, args.since_id, args.min_id, args.limit);
 
-            ctx.body = res.data.map(c => convertConversation(c));
+            ctx.body = res.data.map(c => convertConversationIds(c));
             PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 20);
         } catch (e: any) {
             console.error(e);

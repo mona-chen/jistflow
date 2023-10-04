@@ -1,7 +1,7 @@
 import Router from "@koa/router";
 import { getClient } from "../index.js";
 import { convertId, IdType } from "../../index.js";
-import { convertFilter } from "../converters.js";
+import { convertFilterId } from "../converters.js";
 
 export function setupEndpointsFilter(router: Router): void {
     router.get("/v1/filters", async (ctx) => {
@@ -11,7 +11,7 @@ export function setupEndpointsFilter(router: Router): void {
         const body: any = ctx.request.body;
         try {
             const data = await client.getFilters();
-            ctx.body = data.data.map((filter) => convertFilter(filter));
+            ctx.body = data.data.map((filter) => convertFilterId(filter));
         } catch (e: any) {
             console.error(e);
             ctx.status = 401;
@@ -28,7 +28,7 @@ export function setupEndpointsFilter(router: Router): void {
             const data = await client.getFilter(
                 convertId(ctx.params.id, IdType.IceshrimpId),
             );
-            ctx.body = convertFilter(data.data);
+            ctx.body = convertFilterId(data.data);
         } catch (e: any) {
             console.error(e);
             ctx.status = 401;
@@ -43,7 +43,7 @@ export function setupEndpointsFilter(router: Router): void {
         const body: any = ctx.request.body;
         try {
             const data = await client.createFilter(body.phrase, body.context, body);
-            ctx.body = convertFilter(data.data);
+            ctx.body = convertFilterId(data.data);
         } catch (e: any) {
             console.error(e);
             ctx.status = 401;
@@ -62,7 +62,7 @@ export function setupEndpointsFilter(router: Router): void {
                 body.phrase,
                 body.context,
             );
-            ctx.body = convertFilter(data.data);
+            ctx.body = convertFilterId(data.data);
         } catch (e: any) {
             console.error(e);
             ctx.status = 401;

@@ -5,7 +5,7 @@ import { Instances, Notes, Users } from "@/models/index.js";
 import { IsNull } from "typeorm";
 import { awaitAll } from "@/prelude/await-all.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
-import { convertAccount } from "@/server/api/mastodon/converters.js";
+import { convertAccountId } from "@/server/api/mastodon/converters.js";
 
 export class MiscHelpers {
     public static async getInstance(): Promise<MastodonEntity.Instance> {
@@ -22,7 +22,7 @@ export class MiscHelpers {
             order: {id: "ASC"},
         })
             .then(p => p ? UserConverter.encode(p) : null)
-            .then(p => p ? convertAccount(p) : null);
+            .then(p => p ? convertAccountId(p) : null);
         const meta = await fetchMeta(true);
 
         const res = {

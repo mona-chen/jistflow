@@ -1,6 +1,6 @@
 import Router from "@koa/router";
 import { convertId, IdType } from "../../index.js";
-import { convertAccount, convertPoll, convertStatus, convertStatusEdit, convertStatusSource, } from "../converters.js";
+import { convertAccountId, convertPollId, convertStatusIds, convertStatusEditIds, convertStatusSourceId, } from "../converters.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { getNote } from "@/server/api/common/getters.js";
 import authenticate from "@/server/api/authenticate.js";
@@ -42,7 +42,7 @@ export function setupEndpointsStatus(router: Router): void {
             let request = NoteHelpers.normalizeComposeOptions(ctx.request.body);
             ctx.body = await NoteHelpers.createNote(request, user)
                 .then(p => NoteConverter.encode(p, user))
-                .then(p => convertStatus(p));
+                .then(p => convertStatusIds(p));
 
             if (key !== null) postIdempotencyCache.set(key, {status: ctx.body});
         } catch (e: any) {
@@ -76,7 +76,7 @@ export function setupEndpointsStatus(router: Router): void {
             let request = NoteHelpers.normalizeEditOptions(ctx.request.body);
             ctx.body = await NoteHelpers.editNote(request, note, user)
                 .then(p => NoteConverter.encode(p, user))
-                .then(p => convertStatus(p));
+                .then(p => convertStatusIds(p));
         } catch (e: any) {
             console.error(e);
             ctx.status = ctx.status == 404 ? 404 : 401;
@@ -97,7 +97,7 @@ export function setupEndpointsStatus(router: Router): void {
             }
 
             const status = await NoteConverter.encode(note, user);
-            ctx.body = convertStatus(status);
+            ctx.body = convertStatusIds(status);
         } catch (e: any) {
             console.error(e);
             ctx.status = ctx.status == 404 ? 404 : 401;
@@ -134,7 +134,7 @@ export function setupEndpointsStatus(router: Router): void {
             }
 
             ctx.body = await NoteHelpers.deleteNote(note, user)
-                .then(p => convertStatus(p));
+                .then(p => convertStatusIds(p));
         } catch (e: any) {
             console.error(`Error processing ${ctx.method} /api${ctx.path}: ${e.message}`);
             ctx.status = 500;
@@ -163,10 +163,10 @@ export function setupEndpointsStatus(router: Router): void {
 
                 const ancestors = await NoteHelpers.getNoteAncestors(note, user, user ? 4096 : 60)
                     .then(n => NoteConverter.encodeMany(n, user, cache))
-                    .then(n => n.map(s => convertStatus(s)));
+                    .then(n => n.map(s => convertStatusIds(s)));
                 const descendants = await NoteHelpers.getNoteDescendants(note, user, user ? 4096 : 40, user ? 4096 : 20)
                     .then(n => NoteConverter.encodeMany(n, user, cache))
-                    .then(n => n.map(s => convertStatus(s)));
+                    .then(n => n.map(s => convertStatusIds(s)));
 
                 ctx.body = {
                     ancestors,
@@ -195,7 +195,7 @@ export function setupEndpointsStatus(router: Router): void {
                 }
 
                 const res = await NoteHelpers.getNoteEditHistory(note);
-                ctx.body = res.map(p => convertStatusEdit(p));
+                ctx.body = res.map(p => convertStatusEditIds(p));
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -219,7 +219,7 @@ export function setupEndpointsStatus(router: Router): void {
                 }
 
                 const src = NoteHelpers.getNoteSource(note);
-                ctx.body = convertStatusSource(src);
+                ctx.body = convertStatusSourceId(src);
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -246,7 +246,7 @@ export function setupEndpointsStatus(router: Router): void {
                 const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
                 const res = await NoteHelpers.getNoteRebloggedBy(note, user, args.max_id, args.since_id, args.min_id, args.limit);
                 const users = await UserConverter.encodeMany(res.data, cache);
-                ctx.body = users.map(m => convertAccount(m));
+                ctx.body = users.map(m => convertAccountId(m));
                 PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
             } catch (e: any) {
                 console.error(e);
@@ -274,7 +274,7 @@ export function setupEndpointsStatus(router: Router): void {
                 const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
                 const res = await NoteHelpers.getNoteFavoritedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
                 const users = await UserConverter.encodeMany(res.data, cache);
-                ctx.body = users.map(m => convertAccount(m));
+                ctx.body = users.map(m => convertAccountId(m));
                 PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
             } catch (e: any) {
                 console.error(e);
@@ -312,7 +312,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 ctx.body = await NoteHelpers.reactToNote(note, user, reaction)
                     .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatus(p));
+                    .then(p => convertStatusIds(p));
             } catch (e: any) {
                 console.error(e);
                 console.error(e.response.data);
@@ -343,7 +343,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 ctx.body = await NoteHelpers.removeReactFromNote(note, user)
                     .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatus(p));
+                    .then(p => convertStatusIds(p));
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -374,7 +374,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 ctx.body = await NoteHelpers.reblogNote(note, user)
                     .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatus(p));
+                    .then(p => convertStatusIds(p));
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -405,7 +405,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 ctx.body = await NoteHelpers.unreblogNote(note, user)
                     .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatus(p));
+                    .then(p => convertStatusIds(p));
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -436,7 +436,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 ctx.body = await NoteHelpers.bookmarkNote(note, user)
                     .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatus(p));
+                    .then(p => convertStatusIds(p));
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -467,7 +467,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 ctx.body = await NoteHelpers.unbookmarkNote(note, user)
                     .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatus(p));
+                    .then(p => convertStatusIds(p));
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -498,7 +498,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 ctx.body = await NoteHelpers.pinNote(note, user)
                     .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatus(p));
+                    .then(p => convertStatusIds(p));
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -529,7 +529,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 ctx.body = await NoteHelpers.unpinNote(note, user)
                     .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatus(p));
+                    .then(p => convertStatusIds(p));
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -560,7 +560,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 ctx.body = await NoteHelpers.reactToNote(note, user, ctx.params.name)
                     .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatus(p));
+                    .then(p => convertStatusIds(p));
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -591,7 +591,7 @@ export function setupEndpointsStatus(router: Router): void {
 
                 ctx.body = await NoteHelpers.removeReactFromNote(note, user)
                     .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatus(p));
+                    .then(p => convertStatusIds(p));
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;
@@ -613,7 +613,7 @@ export function setupEndpointsStatus(router: Router): void {
             }
 
             const data = await PollHelpers.getPoll(note, user);
-            ctx.body = convertPoll(data);
+            ctx.body = convertPollId(data);
         } catch (e: any) {
             console.error(e);
             ctx.status = 401;
@@ -649,7 +649,7 @@ export function setupEndpointsStatus(router: Router): void {
                 }
 
                 const data = await PollHelpers.voteInPoll(choices, note, user);
-                ctx.body = convertPoll(data);
+                ctx.body = convertPollId(data);
             } catch (e: any) {
                 console.error(e);
                 ctx.status = 401;

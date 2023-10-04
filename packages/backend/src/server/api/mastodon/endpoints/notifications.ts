@@ -1,7 +1,7 @@
 import Router from "@koa/router";
 import { convertId, IdType } from "../../index.js";
 import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "./timeline.js";
-import { convertConversation, convertNotification } from "../converters.js";
+import { convertConversationIds, convertNotificationIds } from "../converters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { NotificationHelpers } from "@/server/api/mastodon/helpers/notification.js";
@@ -24,7 +24,7 @@ export function setupEndpointsNotifications(router: Router): void {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)), ['types[]', 'exclude_types[]']);
             const data = NotificationHelpers.getNotifications(user, args.max_id, args.since_id, args.min_id, args.limit, args['types[]'], args['exclude_types[]'], args.account_id)
                 .then(p => NotificationConverter.encodeMany(p, user, cache))
-                .then(p => p.map(n => convertNotification(n)));
+                .then(p => p.map(n => convertNotificationIds(n)));
 
             ctx.body = await data;
         } catch (e: any) {
@@ -50,7 +50,7 @@ export function setupEndpointsNotifications(router: Router): void {
                 return;
             }
 
-            ctx.body = convertNotification(await NotificationConverter.encode(notification, user));
+            ctx.body = convertNotificationIds(await NotificationConverter.encode(notification, user));
         } catch (e: any) {
             console.error(e);
             ctx.status = 401;

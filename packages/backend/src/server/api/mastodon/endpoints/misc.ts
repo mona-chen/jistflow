@@ -1,7 +1,7 @@
 import Router from "@koa/router";
 import { getClient } from "@/server/api/mastodon/index.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
-import { convertAccount, convertAnnouncement, convertFilter } from "@/server/api/mastodon/converters.js";
+import { convertAccountId, convertAnnouncementId, convertFilterId } from "@/server/api/mastodon/converters.js";
 import { Users } from "@/models/index.js";
 import { getInstance } from "@/server/api/mastodon/endpoints/meta.js";
 import { IsNull } from "typeorm";
@@ -39,7 +39,7 @@ export function setupEndpointsMisc(router: Router): void {
         try {
             const data = await client.getInstanceAnnouncements();
             ctx.body = data.data.map((announcement) =>
-                convertAnnouncement(announcement),
+                convertAnnouncementId(announcement),
             );
         } catch (e: any) {
             console.error(e);
@@ -74,7 +74,7 @@ export function setupEndpointsMisc(router: Router): void {
         // displayed without being logged in
         try {
             const data = await client.getFilters();
-            ctx.body = data.data.map((filter) => convertFilter(filter));
+            ctx.body = data.data.map((filter) => convertFilterId(filter));
         } catch (e: any) {
             console.error(e);
             ctx.status = 401;
