@@ -1,11 +1,15 @@
 import config from "@/config/index.js";
 import { FILE_TYPE_BROWSERSAFE, MAX_NOTE_TEXT_LENGTH } from "@/const.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import { Instances, Notes, Users } from "@/models/index.js";
+import { AnnouncementReads, Announcements, Instances, Notes, Users } from "@/models/index.js";
 import { IsNull } from "typeorm";
 import { awaitAll } from "@/prelude/await-all.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { convertAccountId } from "@/server/api/mastodon/converters.js";
+import { Announcement } from "@/models/entities/announcement.js";
+import { ILocalUser } from "@/models/entities/user.js";
+import { AnnouncementConverter } from "@/server/api/mastodon/converters/announcement.js";
+import { genId } from "@/misc/gen-id.js";
 
 export class MiscHelpers {
     public static async getInstance(): Promise<MastodonEntity.Instance> {
@@ -80,5 +84,43 @@ export class MiscHelpers {
         };
 
         return awaitAll(res);
+    }
+
+    public static async getAnnouncements(user: ILocalUser, includeRead: boolean = false): Promise<MastodonEntity.Announcement[]> {
+        if (includeRead) {
+            const [announcements, reads] = await Promise.all([
+                Announcements.createQueryBuilder("announcement")
+                    .orderBy({"announcement.id": "DESC"})
+                    .getMany(),
+                AnnouncementReads.findBy({userId: user.id})
+                    .then(p => p.map(x => x.announcementId))
+            ]);
+
+            return announcements.map(p => AnnouncementConverter.encode(p, reads.includes(p.id)));
+        }
+
+        const sq = AnnouncementReads.createQueryBuilder("reads")
+            .select("reads.announcementId")
+            .where("reads.userId = :userId");
+
+        const query = Announcements.createQueryBuilder("announcement")
+            .where(`announcement.id NOT IN (${sq.getQuery()})`)
+            .orderBy({"announcement.id": "DESC"})
+            .setParameter("userId", user.id);
+
+        return query.getMany()
+            .then(p => p.map(x => AnnouncementConverter.encode(x, false)));
+    }
+
+    public static async dismissAnnouncement(announcement: Announcement, user: ILocalUser): Promise<void> {
+        const exists = await AnnouncementReads.exist({where: {userId: user.id, announcementId: announcement.id}});
+        if (!exists) {
+            await AnnouncementReads.insert({
+                id: genId(),
+                createdAt: new Date(),
+                userId: user.id,
+                announcementId: announcement.id
+            });
+        }
     }
 }
