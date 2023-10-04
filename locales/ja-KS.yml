@@ -138,9 +138,9 @@ addEmoji: "絵文字を追加"
 settingGuide: "ええ感じの設定"
 cacheRemoteFiles: "リモートのファイルをキャッシュする"
 cacheRemoteFilesDescription: "この設定を切っとくと、リモートファイルをキャッシュせず直リンクするようになるで。サーバーの容量は節約できるけど、サムネイルが作られんくなるから通信量が増えるで。"
-flagAsBot: "ワイはBotや 🤖"
+flagAsBot: "ワイはBotや🤖"
 flagAsBotDescription: "もしこのアカウントがプログラムによって運用されるんやったら、このフラグをオンにしてたのむで。オンにすると、反応の連鎖を防ぐためのフラグとして他の開発者に役立ったり、Firefishのシステム上での扱いがBotに合ったもんになったりするんやで。"
-flagAsCat: "ワイはCatや 🐯"
+flagAsCat: "ワイはCatや🐯"
 flagAsCatDescription: "自分、猫ちゃんならこのフラグつけてみ？"
 flagShowTimelineReplies: "タイムラインに返信を表示させたる"
 flagShowTimelineRepliesDescription: "有効にすると、タイムラインに他のユーザー宛ての投稿も表示したるで。"
@@ -246,7 +246,7 @@ uploadFromUrl: "URLアップロード"
 uploadFromUrlDescription: "このURLのファイルをアップロードしたいねん"
 uploadFromUrlRequested: "アップロードしたい言うといたで"
 uploadFromUrlMayTakeTime: "アップロード終わるんにちょい時間かかるかもしれへんわ。"
-explore: "みつける"
+explore: "みっける"
 messageRead: "もう読まはった"
 noMoreHistory: "これより過去の履歴はあらへんで"
 startMessaging: "チャットやるで"
@@ -334,7 +334,7 @@ bannerUrl: "バナー画像のURL"
 backgroundImageUrl: "背景画像のURL"
 basicInfo: "基本情報"
 pinnedUsers: "ピン留めしたユーザー"
-pinnedUsersDescription: "「みつける」ページとかにピン留めしたいユーザーをここに書けばええんやで。他ん人との名前は改行で区切ればええんやで。"
+pinnedUsersDescription: "「みっける」ページとかにピン留めしときたい兄ちゃんらをここに書いといたらええわ。名前は改行で区切ればええで。"
 pinnedPages: "ピン留めページ"
 pinnedPagesDescription: "サーバーのいっちゃん上にピン留めしたいページのパスを、改行で区切って記述してな。"
 pinnedClipId: "ピン留めするクリップのID"
@@ -684,7 +684,7 @@ clips: "クリップ"
 experimentalFeatures: "実験的機能やで"
 developer: "開発者やで"
 makeExplorable: "アカウントを見つけやすくするで"
-makeExplorableDescription: "オフにすると、「みつける」にアカウントが載らんくなるで。"
+makeExplorableDescription: "オフにすると、「みっける」ページに名前が載らんくなるで。"
 showGapBetweenNotesInTimeline: "タイムライン上の投稿を離して表示するで"
 duplicate: "複製"
 left: "左"
@@ -872,7 +872,7 @@ _registry:
   domain: "ドメイン"
   createKey: "キーを作る"
 _aboutFirefish:
-  about: "Firefishは、ThatOneCalculatorが2022年にMisskeyをいじって作った、オープンなソースのソフトウェアーや。"
+  about: "Firefishは、ThatOneCalculatorが2022年にMisskeyをいじって作った、オープンなソースのソフトウエアーや。"
   contributors: "ごっつい貢献者"
   allContributors: "全ての貢献者"
   source: "ソースコード"
@@ -1442,6 +1442,12 @@ _tutorial:
   step1_2: 使い始める前に、いくつか設定を済ませまひょ。すぐできますえ。
   step2_1: 最初に、あんさんのプロフィールを作りまひょ
   step2_2: プロフィールを設定しはることで、他ん人があんさんの投稿を見たり、フォローしたりするときの助けになってます。
+  step3_2: "あんさんのホームとソーシャルタイムラインは、どなたはんをフォローしはるかで決まります。ほな、いくつかアカウントをフォローしてみまひょ。\n\
+    プロフィールの右上にある、まあるい＋ボタンをクリックしはるとフォローできますえ。"
+  step4_1: 投稿しとーみ
+  step5_1: タイムライン！ 文字と写真の宝石箱や～
+  step5_2: うちのサーバーでは{timelines}種類のタイムラインをご用意しとります。
+  step4_2: 最初は{introduction}に投稿したり、シンプルに「ここは賑やかどすなぁ。うちはそこまで喋れまへんが、どうぞよろしゅうに」などと投稿しはる方もいてます。
 _postForm:
   _placeholders:
     b: なんかおましたか？
