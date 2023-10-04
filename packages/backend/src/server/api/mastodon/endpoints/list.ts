@@ -9,6 +9,7 @@ import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserLists } from "@/models/index.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import { getUser } from "@/server/api/common/getters.js";
+import { toArray } from "@/prelude/array.js";
 
 export function setupEndpointsList(router: Router): void {
     router.get("/v1/lists", async (ctx, reply) => {
@@ -192,7 +193,7 @@ export function setupEndpointsList(router: Router): void {
                     return;
                 }
 
-                const ids = NoteHelpers.normalizeToArray(body['account_ids']).map(p => convertId(p, IdType.IceshrimpId));
+                const ids = toArray(body['account_ids']).map(p => convertId(p, IdType.IceshrimpId));
                 const targets = await Promise.all(ids.map(p => getUser(p)));
                 await ListHelpers.addToList(user, list, targets);
                 ctx.body = {}
@@ -229,7 +230,7 @@ export function setupEndpointsList(router: Router): void {
                     return;
                 }
 
-                const ids = NoteHelpers.normalizeToArray(body['account_ids']).map(p => convertId(p, IdType.IceshrimpId));
+                const ids = toArray(body['account_ids']).map(p => convertId(p, IdType.IceshrimpId));
                 const targets = await Promise.all(ids.map(p => getUser(p)));
                 await ListHelpers.removeFromList(user, list, targets);
                 ctx.body = {}

@@ -23,6 +23,7 @@ import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility
 import mfm from "mfm-js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
+import { toArray } from "@/prelude/array.js";
 
 export class NoteHelpers {
     public static async getDefaultReaction(): Promise<string> {
@@ -331,7 +332,7 @@ export class NoteHelpers {
             result.in_reply_to_id = convertId(body.in_reply_to_id, IdType.IceshrimpId);
         if (body.media_ids)
             result.media_ids = body.media_ids && body.media_ids.length > 0
-                ? this.normalizeToArray(body.media_ids)
+                ? toArray(body.media_ids)
                     .map(p => convertId(p, IdType.IceshrimpId))
                 : undefined;
 
@@ -359,7 +360,7 @@ export class NoteHelpers {
             result.language = body.language;
         if (body.media_ids)
             result.media_ids = body.media_ids && body.media_ids.length > 0
-                ? this.normalizeToArray(body.media_ids)
+                ? toArray(body.media_ids)
                     .map(p => convertId(p, IdType.IceshrimpId))
                 : undefined;
 
@@ -374,9 +375,5 @@ export class NoteHelpers {
         result.sensitive = !!body.sensitive;
 
         return result;
-    }
-
-    public static normalizeToArray<T>(subject: T | T[]) {
-        return Array.isArray(subject) ? subject : [subject];
     }
 }

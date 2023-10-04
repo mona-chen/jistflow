@@ -13,6 +13,7 @@ import { Cache } from "@/misc/cache.js";
 import AsyncLock from "async-lock";
 import { ILocalUser } from "@/models/entities/user.js";
 import { PollHelpers } from "@/server/api/mastodon/helpers/poll.js";
+import { toArray } from "@/prelude/array.js";
 
 const postIdempotencyCache = new Cache<{ status?: MastodonEntity.Status }>('postIdempotencyCache', 60 * 60);
 const postIdempotencyLocks = new AsyncLock();
@@ -640,7 +641,7 @@ export function setupEndpointsStatus(router: Router): void {
                 }
 
                 const body: any = ctx.request.body;
-                const choices = NoteHelpers.normalizeToArray(body.choices ?? []).map(p => parseInt(p));
+                const choices = toArray(body.choices ?? []).map(p => parseInt(p));
                 if (choices.length < 1) {
                     ctx.status = 400;
                     ctx.body = {error: 'Must vote for at least one option'};
