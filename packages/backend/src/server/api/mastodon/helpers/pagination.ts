@@ -43,27 +43,7 @@ export class PaginationHelpers {
      * @param reverse whether the result needs to be .reverse()'d. Set this to true when the parameter minId is not undefined in the original request.
      */
     public static async execQuery<T extends ObjectLiteral>(query: SelectQueryBuilder<T>, limit: number, reverse: boolean): Promise<T[]> {
-        // We fetch more than requested because some may be filtered out, and if there's less than
-        // requested, the pagination stops.
-        const found = [];
-        const take = Math.floor(limit * 1.5);
-        let skip = 0;
-        try {
-            while (found.length < limit) {
-                const notes = await query.take(take).skip(skip).getMany();
-                found.push(...notes);
-                skip += take;
-                if (notes.length < take) break;
-            }
-        } catch (error) {
-            return [];
-        }
-
-        if (found.length > limit) {
-            found.length = limit;
-        }
-
-        return reverse ? found.reverse() : found;
+        return query.take(limit).getMany().then(found => reverse ? found.reverse() : found);
     }
 
     public static appendLinkPaginationHeader(args: any, ctx: any, res: any, defaultLimit: number): void {
