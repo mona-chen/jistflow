@@ -318,15 +318,15 @@ export class NoteHelpers {
     public static normalizeComposeOptions(body: any): MastodonEntity.StatusCreationRequest {
         const result: MastodonEntity.StatusCreationRequest = {};
 
-        if (body.status !== null && body.status.trim().length > 0)
+        if (body.status != null && body.status.trim().length > 0)
             result.text = body.status;
-        if (body.spoiler_text !== null && body.spoiler_text.trim().length > 0)
+        if (body.spoiler_text != null && body.spoiler_text.trim().length > 0)
             result.spoiler_text = body.spoiler_text;
-        if (body.visibility !== null)
+        if (body.visibility != null)
             result.visibility = VisibilityConverter.decode(body.visibility);
-        if (body.language !== null)
+        if (body.language != null)
             result.language = body.language;
-        if (body.scheduled_at !== null)
+        if (body.scheduled_at != null)
             result.scheduled_at = new Date(Date.parse(body.scheduled_at));
         if (body.in_reply_to_id)
             result.in_reply_to_id = convertId(body.in_reply_to_id, IdType.IceshrimpId);
@@ -352,11 +352,11 @@ export class NoteHelpers {
     public static normalizeEditOptions(body: any): MastodonEntity.StatusEditRequest {
         const result: MastodonEntity.StatusEditRequest = {};
 
-        if (body.status !== null && body.status.trim().length > 0)
+        if (body.status != null && body.status.trim().length > 0)
             result.text = body.status;
-        if (body.spoiler_text !== null && body.spoiler_text.trim().length > 0)
+        if (body.spoiler_text != null && body.spoiler_text.trim().length > 0)
             result.spoiler_text = body.spoiler_text;
-        if (body.language !== null)
+        if (body.language != null)
             result.language = body.language;
         if (body.media_ids)
             result.media_ids = body.media_ids && body.media_ids.length > 0
