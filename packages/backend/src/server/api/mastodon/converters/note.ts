@@ -90,6 +90,13 @@ export class NoteConverter {
             ? UserNotePinings.exist({where: {userId: user.id, noteId: note.id}})
             : undefined;
 
+        const tags = note.tags.map(tag => {
+            return {
+                name: tag,
+                url: `${config.url}/tags/${tag}`
+            } as MastodonEntity.Tag;
+        });
+
         // noinspection ES6MissingAwait
         return await awaitAll({
             id: note.id,
@@ -118,7 +125,7 @@ export class NoteConverter {
             visibility: VisibilityConverter.encode(note.visibility),
             media_attachments: files.then(files => files.length > 0 ? files.map((f) => FileConverter.encode(f)) : []),
             mentions: mentions,
-            tags: [], //FIXME
+            tags: tags,
             card: null, //FIXME
             poll: note.hasPoll ? populatePoll(note, user?.id ?? null).then(p => PollConverter.encode(p, note.id)) : null,
             application: null, //FIXME

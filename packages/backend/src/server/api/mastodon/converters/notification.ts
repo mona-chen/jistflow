@@ -13,7 +13,6 @@ export class NotificationConverter {
     public static async encode(notification: Notification, localUser: ILocalUser, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Notification> {
         if (notification.notifieeId !== localUser.id) throw new Error('User is not recipient of notification');
 
-        //TODO: Test this (poll ended etc)
         const account = notification.notifierId
             ? UserHelpers.getUserCached(notification.notifierId, cache).then(p => UserConverter.encode(p))
             : UserConverter.encode(localUser);
