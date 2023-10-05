@@ -20,7 +20,7 @@ import { IsNull } from "typeorm";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 
 export class NoteConverter {
-    public static async encode(note: Note, user: ILocalUser | null, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Status> {
+    public static async encode(note: Note, user: ILocalUser | null, cache: AccountCache = UserHelpers.getFreshAccountCache(), recurse: boolean = true): Promise<MastodonEntity.Status> {
         const noteUser = note.user ?? UserHelpers.getUserCached(note.userId, cache);
 
         if (!await Notes.isVisibleForMe(note, user?.id ?? null))
@@ -98,7 +98,7 @@ export class NoteConverter {
             account: Promise.resolve(noteUser).then(p => UserConverter.encode(p, cache)),
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: note.replyUserId,
-            reblog: Promise.resolve(renote).then(renote => renote && note.text === null ? this.encode(renote, user, cache) : null),
+            reblog: Promise.resolve(renote).then(renote => renote && note.text === null ? this.encode(renote, user, cache, false) : null),
             content: text.then(text => text !== null ? MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(text) : ""),
             text: text,
             created_at: note.createdAt.toISOString(),
@@ -127,7 +127,7 @@ export class NoteConverter {
             // Use emojis list to provide URLs for emoji reactions.
             reactions: [], //FIXME: this.mapReactions(n.emojis, n.reactions, n.myReaction),
             bookmarked: isBookmarked,
-            quote: Promise.resolve(renote).then(renote => renote && note.text !== null ? this.encode(renote, user, cache) : null),
+            quote: Promise.resolve(renote).then(renote => renote && note.text !== null ? this.encode(renote, user, cache, false) : null),
             edited_at: note.updatedAt?.toISOString()
         });
     }
