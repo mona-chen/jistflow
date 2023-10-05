@@ -165,7 +165,7 @@ cacheRemoteFiles: "Cache remote files"
 cacheRemoteFilesDescription: "When this setting is disabled, remote files are loaded
   directly from the remote server. Disabling this will decrease storage usage, but
   increase traffic, as thumbnails will not be generated."
-flagAsBot: "Mark this account as a bot"
+flagAsBot: "Mark this account as a bot 🤖"
 flagAsBotDescription: "Enable this option if this account is controlled by a program.
   If enabled, it will act as a flag for other developers to prevent endless interaction
   chains with other bots and adjust Iceshrimp's internal systems to treat this account
@@ -424,8 +424,8 @@ withFileAntenna: "Only posts with files"
 enableServiceworker: "Enable Push-Notifications for your Browser"
 antennaUsersDescription: "List one username per line"
 antennaInstancesDescription: "List one server host per line"
-antennaTimelineHint: "Antennas display matching posts in order they have been received in,
-  which is not necessarily chronological."
+antennaTimelineHint: "Antennas display matching posts in order they have been received
+  in, which is not necessarily chronological."
 caseSensitive: "Case sensitive"
 withReplies: "Include replies"
 connectedTo: "Following account(s) are connected"
