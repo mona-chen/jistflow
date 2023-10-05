@@ -32,6 +32,7 @@ import { initializeStreamingServer } from "./api/streaming.js";
 import removeTrailingSlash from "koa-remove-trailing-slashes";
 import { koaBody } from "koa-body";
 import { setupEndpointsAuthRoot } from "@/server/api/mastodon/endpoints/auth.js";
+import { CatchErrorsMiddleware } from "@/server/api/mastodon/middleware/catch-errors.js";
 export const serverLogger = new Logger("server", "gray", false);
 
 // Init app
@@ -134,6 +135,7 @@ mastoRouter.use(async (ctx, next) => {
 	await next();
 });
 
+mastoRouter.use(CatchErrorsMiddleware);
 setupEndpointsAuthRoot(mastoRouter);
 
 // Register router
