@@ -192,7 +192,8 @@ export class UserHelpers {
     }
 
     public static async verifyCredentials(user: ILocalUser): Promise<MastodonEntity.Account> {
-        const acct = UserConverter.encode(user);
+        // re-fetch local user because auth user possibly contains outdated info
+        const acct = getUser(user.id).then(u => UserConverter.encode(u));
         const profile = UserProfiles.findOneByOrFail({userId: user.id});
         const privacy = this.getDefaultNoteVisibility(user);
         const fields = profile.then(profile => profile.fields.map(field => {
