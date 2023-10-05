@@ -7,7 +7,7 @@
 		fg: '#E7EDFF',
 		bg: '#3B364C',
 		accent: '#9A92FF',
-		shadow: 'rgba(0, 0, 0, 0)',
+		shadow: 'rgba(0, 0, 0, 0.3)',
 		fgOnAccent: '@bg',
 		panel: ':lighten<3<@bg',
 		panelActiveBg: ':darken<1.5<@bg',
