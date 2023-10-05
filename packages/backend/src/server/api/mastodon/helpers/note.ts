@@ -318,9 +318,9 @@ export class NoteHelpers {
     public static normalizeComposeOptions(body: any): MastodonEntity.StatusCreationRequest {
         const result: MastodonEntity.StatusCreationRequest = {};
 
-        if (body.status !== null)
+        if (body.status !== null && body.status.trim().length > 0)
             result.text = body.status;
-        if (body.spoiler_text !== null)
+        if (body.spoiler_text !== null && body.spoiler_text.trim().length > 0)
             result.spoiler_text = body.spoiler_text;
         if (body.visibility !== null)
             result.visibility = VisibilityConverter.decode(body.visibility);
@@ -352,9 +352,9 @@ export class NoteHelpers {
     public static normalizeEditOptions(body: any): MastodonEntity.StatusEditRequest {
         const result: MastodonEntity.StatusEditRequest = {};
 
-        if (body.status !== null)
+        if (body.status !== null && body.status.trim().length > 0)
             result.text = body.status;
-        if (body.spoiler_text !== null)
+        if (body.spoiler_text !== null && body.spoiler_text.trim().length > 0)
             result.spoiler_text = body.spoiler_text;
         if (body.language !== null)
             result.language = body.language;
