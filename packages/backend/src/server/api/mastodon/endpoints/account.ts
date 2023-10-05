@@ -9,6 +9,7 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { ListHelpers } from "@/server/api/mastodon/helpers/list.js";
+import { Files } from "formidable";
 
 export function setupEndpointsAccount(router: Router): void {
     router.get("/v1/accounts/verify_credentials", async (ctx) => {
@@ -40,7 +41,8 @@ export function setupEndpointsAccount(router: Router): void {
                 return;
             }
 
-            const acct = await UserHelpers.updateCredentials(user, (ctx.request as any).body as any);
+            const files = (ctx.request as any).files as Files | undefined;
+            const acct = await UserHelpers.updateCredentials(user, (ctx.request as any).body as any, files);
             ctx.body = convertAccountId(acct)
         } catch (e: any) {
             console.error(e);

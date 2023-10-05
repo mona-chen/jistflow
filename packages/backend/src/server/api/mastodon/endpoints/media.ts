@@ -75,8 +75,8 @@ export function setupEndpointsMedia(router: Router): void {
             }
 
             //FIXME: why do we have to cast this to any first?
-            const files = (ctx.request as any).files as Files;
-            const file = toSingleLast(files['file']);
+            const files = (ctx.request as any).files as Files | undefined;
+            const file = toSingleLast(files?.file);
             if (!file) {
                 ctx.body = {error: "No image"};
                 ctx.status = 400;

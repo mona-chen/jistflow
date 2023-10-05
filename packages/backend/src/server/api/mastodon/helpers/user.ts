@@ -34,6 +34,12 @@ import acceptFollowRequest from "@/services/following/requests/accept.js";
 import { rejectFollowRequest } from "@/services/following/reject.js";
 import { Brackets, IsNull } from "typeorm";
 import { IceshrimpVisibility, VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
+import { Files } from "formidable";
+import { toSingleLast } from "@/prelude/array.js";
+import { MediaHelpers } from "@/server/api/mastodon/helpers/media.js";
+import { FileConverter } from "@/server/api/mastodon/converters/file.js";
+import { UserProfile } from "@/models/entities/user-profile.js";
+import { verifyLink } from "@/services/fetch-rel-me.js";
 
 export type AccountCache = {
     locks: AsyncLock;
@@ -53,6 +59,7 @@ export type updateCredsData = {
     locked: boolean;
     bot: boolean;
     discoverable: boolean;
+    fields_attributes?: { name: string, value: string }[];
 }
 
 type RelationshipType = 'followers' | 'following';
@@ -145,17 +152,41 @@ export class UserHelpers {
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
-    public static async updateCredentials(user: ILocalUser, formData: updateCredsData): Promise<MastodonEntity.Account> {
-        //FIXME: Actually implement this
-        //FIXME: handle multipart avatar & header image upload
-        //FIXME: handle field attributes
-        const obj: any = {};
+    public static async updateCredentials(user: ILocalUser, formData: updateCredsData, files: Files | undefined): Promise<MastodonEntity.Account> {
+        const updates: Partial<User> = {};
+        const profileUpdates: Partial<UserProfile> = {};
 
-        if (formData.display_name) obj.name = formData.display_name;
-        if (formData.note) obj.description = formData.note;
-        if (formData.locked) obj.isLocked = formData.locked;
-        if (formData.bot) obj.isBot = formData.bot;
-        if (formData.discoverable) obj.isExplorable = formData.discoverable;
+        const avatar = toSingleLast(files?.avatar);
+        const header = toSingleLast(files?.header);
+
+        if (avatar) {
+            const file = await MediaHelpers.uploadMediaBasic(user, avatar);
+            updates.avatarId = file.id;
+        }
+
+        if (header) {
+            const file = await MediaHelpers.uploadMediaBasic(user, header);
+            updates.bannerId = file.id;
+        }
+
+        if (formData.fields_attributes) {
+            profileUpdates.fields = await Promise.all(formData.fields_attributes.map(async field => {
+                const verified = field.value.startsWith("http") ? await verifyLink(field.value, user.username) : undefined;
+                return {
+                    ...field,
+                    verified
+                };
+            }));
+        }
+
+        if (formData.display_name) updates.name = formData.display_name;
+        if (formData.note) profileUpdates.description = formData.note;
+        if (formData.locked) updates.isLocked = formData.locked;
+        if (formData.bot) updates.isBot = formData.bot;
+        if (formData.discoverable) updates.isExplorable = formData.discoverable;
+
+        if (Object.keys(updates).length > 0) await Users.update(user.id, updates);
+        if (Object.keys(profileUpdates).length > 0) await UserProfiles.update({ userId: user.id }, profileUpdates);
 
         return this.verifyCredentials(user);
     }
@@ -164,10 +195,16 @@ export class UserHelpers {
         const acct = UserConverter.encode(user);
         const profile = UserProfiles.findOneByOrFail({userId: user.id});
         const privacy = this.getDefaultNoteVisibility(user);
+        const fields = profile.then(profile => profile.fields.map(field => {
+            return {
+                name: field.name,
+                value: field.value
+            } as MastodonEntity.Field;
+        }));
         return acct.then(acct => {
             const source = {
-                note: acct.note,
-                fields: acct.fields,
+                note: profile.then(profile => profile.description ?? ''),
+                fields: fields,
                 privacy: privacy.then(p => VisibilityConverter.encode(p)),
                 sensitive: profile.then(p => p.alwaysMarkNsfw),
                 language: profile.then(p => p.lang ?? ''),

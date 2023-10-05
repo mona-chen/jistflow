@@ -7,7 +7,7 @@ import { File } from "formidable";
 
 export class MediaHelpers {
     public static async uploadMedia(user: ILocalUser, file: File, body: any): Promise<Packed<"DriveFile">> {
-        return await addFile({
+        return addFile({
             user: user,
             path: file.filepath,
             name: file.originalFilename !== null && file.originalFilename !== 'file' ? file.originalFilename : undefined,
@@ -15,6 +15,15 @@ export class MediaHelpers {
             sensitive: false, //FIXME: this needs to be updated on from composing a post with the media attached
         })
             .then(p => DriveFiles.pack(p));
+    }
+
+    public static async uploadMediaBasic(user: ILocalUser, file: File): Promise<DriveFile> {
+        return addFile({
+            user: user,
+            path: file.filepath,
+            name: file.originalFilename !== null && file.originalFilename !== 'file' ? file.originalFilename : undefined,
+            sensitive: false
+        })
     }
 
     public static async updateMedia(user: ILocalUser, file: DriveFile, body: any): Promise<Packed<"DriveFile">> {
