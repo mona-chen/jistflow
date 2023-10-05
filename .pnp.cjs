@@ -14389,6 +14389,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/cbor", "npm:6.0.0"],\
             ["@types/escape-regexp", "npm:0.0.1"],\
             ["@types/fluent-ffmpeg", "npm:2.1.21"],\
+            ["@types/formidable", "npm:2.0.6"],\
             ["@types/js-yaml", "npm:4.0.5"],\
             ["@types/jsdom", "npm:21.1.1"],\
             ["@types/jsonld", "npm:1.5.9"],\

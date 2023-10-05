@@ -5404,6 +5404,7 @@ __metadata:
     "@types/cbor": 6.0.0
     "@types/escape-regexp": 0.0.1
     "@types/fluent-ffmpeg": 2.1.21
+    "@types/formidable": ^2.0.5
     "@types/js-yaml": 4.0.5
     "@types/jsdom": 21.1.1
     "@types/jsonld": 1.5.9
@@ -5561,6 +5562,8 @@ __metadata:
     "@swc/core-android-arm64":
       optional: true
     "@tensorflow/tfjs-node":
+      optional: true
+    "@types/formidable":
       optional: true
   languageName: unknown
   linkType: soft

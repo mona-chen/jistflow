@@ -9,10 +9,9 @@ import { setupEndpointsSearch } from "./endpoints/search.js";
 import { setupEndpointsMedia } from "@/server/api/mastodon/endpoints/media.js";
 import { setupEndpointsMisc } from "@/server/api/mastodon/endpoints/misc.js";
 import { HttpMethodEnum, koaBody } from "koa-body";
-import multer from "@koa/multer";
 import { setupEndpointsList } from "@/server/api/mastodon/endpoints/list.js";
 
-export function setupMastodonApi(router: Router, fileRouter: Router, upload: multer.Instance): void {
+export function setupMastodonApi(router: Router): void {
     router.use(
         koaBody({
             multipart: true,
@@ -39,7 +38,7 @@ export function setupMastodonApi(router: Router, fileRouter: Router, upload: mul
     setupEndpointsTimeline(router);
     setupEndpointsNotifications(router);
     setupEndpointsSearch(router);
-    setupEndpointsMedia(router, fileRouter, upload);
+    setupEndpointsMedia(router);
     setupEndpointsList(router);
     setupEndpointsMisc(router);
 }

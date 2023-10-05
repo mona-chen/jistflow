@@ -1,16 +1,16 @@
 import { addFile } from "@/services/drive/add-file.js";
 import { ILocalUser } from "@/models/entities/user.js";
-import multer from "@koa/multer";
 import { DriveFiles } from "@/models/index.js";
 import { Packed } from "@/misc/schema.js";
 import { DriveFile } from "@/models/entities/drive-file.js";
+import { File } from "formidable";
 
 export class MediaHelpers {
-    public static async uploadMedia(user: ILocalUser, file: multer.File, body: any): Promise<Packed<"DriveFile">> {
+    public static async uploadMedia(user: ILocalUser, file: File, body: any): Promise<Packed<"DriveFile">> {
         return await addFile({
             user: user,
-            path: file.path,
-            name: file.originalname !== null && file.originalname !== 'file' ? file.originalname : undefined,
+            path: file.filepath,
+            name: file.originalFilename !== null && file.originalFilename !== 'file' ? file.originalFilename : undefined,
             comment: body?.description ?? undefined,
             sensitive: false, //FIXME: this needs to be updated on from composing a post with the media attached
         })

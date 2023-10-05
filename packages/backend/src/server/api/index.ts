@@ -43,7 +43,6 @@ app.use(async (ctx, next) => {
 // Init router
 const router = new Router();
 const mastoRouter = new Router();
-const mastoFileRouter = new Router();
 const errorRouter = new Router();
 
 // Init multer instance
@@ -66,7 +65,7 @@ router.use(
 	}),
 );
 
-setupMastodonApi(mastoRouter, mastoFileRouter, upload);
+setupMastodonApi(mastoRouter);
 
 /**
  * Register endpoint handlers
@@ -147,7 +146,6 @@ errorRouter.all("(.*)", async (ctx) => {
 });
 
 // Register router
-app.use(mastoFileRouter.routes());
 app.use(mastoRouter.routes());
 app.use(mastoRouter.allowedMethods());
 app.use(router.routes());

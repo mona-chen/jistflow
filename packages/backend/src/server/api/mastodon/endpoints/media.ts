@@ -1,12 +1,13 @@
 import Router from "@koa/router";
 import { convertId, IdType } from "@/misc/convert-id.js";
 import { convertAttachmentId } from "@/server/api/mastodon/converters.js";
-import multer from "@koa/multer";
 import authenticate from "@/server/api/authenticate.js";
 import { MediaHelpers } from "@/server/api/mastodon/helpers/media.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
+import { Files } from "formidable";
+import { toSingleLast } from "@/prelude/array.js";
 
-export function setupEndpointsMedia(router: Router, fileRouter: Router, upload: multer.Instance): void {
+export function setupEndpointsMedia(router: Router): void {
     router.get<{ Params: { id: string } }>("/v1/media/:id", async (ctx) => {
         try {
             const auth = await authenticate(ctx.headers.authorization, null);
@@ -63,7 +64,7 @@ export function setupEndpointsMedia(router: Router, fileRouter: Router, upload: 
         }
     });
 
-    fileRouter.post(["/v2/media", "/v1/media"], upload.single("file"), async (ctx) => {
+    router.post(["/v2/media", "/v1/media"], async (ctx) => {
         try {
             const auth = await authenticate(ctx.headers.authorization, null);
             const user = auth[0] ?? null;
@@ -73,7 +74,9 @@ export function setupEndpointsMedia(router: Router, fileRouter: Router, upload: 
                 return;
             }
 
-            const file = await ctx.file;
+            //FIXME: why do we have to cast this to any first?
+            const files = (ctx.request as any).files as Files;
+            const file = toSingleLast(files['file']);
             if (!file) {
                 ctx.body = {error: "No image"};
                 ctx.status = 400;
