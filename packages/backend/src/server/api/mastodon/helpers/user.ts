@@ -33,7 +33,7 @@ import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import acceptFollowRequest from "@/services/following/requests/accept.js";
 import { rejectFollowRequest } from "@/services/following/reject.js";
 import { Brackets, IsNull } from "typeorm";
-import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
+import { IceshrimpVisibility, VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 
 export type AccountCache = {
     locks: AsyncLock;
@@ -484,7 +484,7 @@ export class UserHelpers {
         };
     }
 
-    public static getDefaultNoteVisibility(user: ILocalUser): Promise<string> {
+    public static async getDefaultNoteVisibility(user: ILocalUser): Promise<IceshrimpVisibility> {
         return RegistryItems.findOneBy({domain: IsNull(), userId: user.id, key: 'defaultNoteVisibility', scope: '{client,base}'}).then(p => p?.value ?? 'public')
     }
 }

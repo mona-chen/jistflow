@@ -100,17 +100,19 @@ export function setupEndpointsMisc(router: Router): void {
     });
 
     router.get("/v1/preferences", async (ctx) => {
-        const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-        const accessTokens = ctx.request.headers.authorization;
-        const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
-        // displayed without being logged in
         try {
-            const data = await client.getPreferences();
-            ctx.body = data.data;
+            const auth = await authenticate(ctx.headers.authorization, null);
+            const user = auth[0] ?? null;
+
+            if (!user) {
+                ctx.status = 401;
+                return;
+            }
+
+            ctx.body = await MiscHelpers.getPreferences(user);
         } catch (e: any) {
-            console.error(e);
-            ctx.status = 401;
-            ctx.body = e.response.data;
+            ctx.status = 500;
+            ctx.body = { error: e.message };
         }
     });
 

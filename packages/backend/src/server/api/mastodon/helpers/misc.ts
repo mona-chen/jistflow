@@ -1,7 +1,7 @@
 import config from "@/config/index.js";
 import { FILE_TYPE_BROWSERSAFE, MAX_NOTE_TEXT_LENGTH } from "@/const.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import { AnnouncementReads, Announcements, Emojis, Instances, Notes, Users } from "@/models/index.js";
+import { AnnouncementReads, Announcements, Emojis, Instances, Notes, UserProfiles, Users } from "@/models/index.js";
 import { IsNull } from "typeorm";
 import { awaitAll } from "@/prelude/await-all.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
@@ -19,6 +19,7 @@ import { uniqBy } from "@/prelude/array.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
+import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 
 export class MiscHelpers {
     public static async getInstance(): Promise<MastodonEntity.Instance> {
@@ -226,5 +227,23 @@ export class MiscHelpers {
         if (limit > 20) limit = 20;
         return [];
         //FIXME: This was already implemented in api/endpoints/hashtags/trend.ts, but the implementation is sketchy at best. Rewrite from scratch.
+    }
+
+    public static getPreferences(user: ILocalUser): Promise<MastodonEntity.Preferences> {
+        const profile = UserProfiles.findOneByOrFail({userId: user.id});
+        const sensitive = profile.then(p => p.alwaysMarkNsfw);
+        const language = profile.then(p => p.lang);
+        const privacy = UserHelpers.getDefaultNoteVisibility(user)
+            .then(p => VisibilityConverter.encode(p));
+
+        const res = {
+            "posting:default:visibility": privacy,
+            "posting:default:sensitive": sensitive,
+            "posting:default:language": language,
+            "reading:expand:media": "default" as "default" | "show_all" | "hide_all", //FIXME: see below
+            "reading:expand:spoilers": false //FIXME: store this on server instead of client
+        }
+
+        return awaitAll(res);
     }
 }
