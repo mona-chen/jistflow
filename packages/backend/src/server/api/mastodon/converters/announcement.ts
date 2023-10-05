@@ -1,7 +1,4 @@
 import { Announcement } from "@/models/entities/announcement.js";
-import { ILocalUser } from "@/models/entities/user.js";
-import { awaitAll } from "@/prelude/await-all";
-import { AnnouncementReads } from "@/models/index.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import mfm from "mfm-js";
 

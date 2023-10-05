@@ -17,6 +17,7 @@ import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { unique } from "@/prelude/array.js";
+import {MastoApiError} from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export class TimelineHelpers {
     public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
@@ -122,6 +123,8 @@ export class TimelineHelpers {
 
     public static async getTagTimeline(user: ILocalUser, tag: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, any: string[], all: string[], none: string[], onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<Note[]> {
         if (limit > 40) limit = 40;
+
+        if (tag.length < 1) throw new MastoApiError(400, "Tag cannot be empty");
 
         if (local && remote) {
             throw new Error("local and remote are mutually exclusive options");

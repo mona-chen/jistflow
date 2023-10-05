@@ -1,72 +1,68 @@
 import Router from "@koa/router";
 import { AuthHelpers } from "@/server/api/mastodon/helpers/auth.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
-
-const readScope = [
-    "read:account",
-    "read:drive",
-    "read:blocks",
-    "read:favorites",
-    "read:following",
-    "read:messaging",
-    "read:mutes",
-    "read:notifications",
-    "read:reactions",
-    "read:pages",
-    "read:page-likes",
-    "read:user-groups",
-    "read:channels",
-    "read:gallery",
-    "read:gallery-likes",
-];
-const writeScope = [
-    "write:account",
-    "write:drive",
-    "write:blocks",
-    "write:favorites",
-    "write:following",
-    "write:messaging",
-    "write:mutes",
-    "write:notes",
-    "write:notifications",
-    "write:reactions",
-    "write:votes",
-    "write:pages",
-    "write:page-likes",
-    "write:user-groups",
-    "write:channels",
-    "write:gallery",
-    "write:gallery-likes",
-];
+import { AuthConverter } from "@/server/api/mastodon/converters/auth.js";
+import { v4 as uuid } from "uuid";
 
 export function setupEndpointsAuth(router: Router): void {
     router.post("/v1/apps", async (ctx) => {
         const body: any = ctx.request.body || ctx.request.query;
-        try {
-            let scope = body.scopes;
-            if (typeof scope === "string") scope = scope.split(" ");
-            const pushScope = new Set<string>();
-            for (const s of scope) {
-                if (s.match(/^read/)) for (const r of readScope) pushScope.add(r);
-                if (s.match(/^write/)) for (const r of writeScope) pushScope.add(r);
-            }
-            const scopeArr = Array.from(pushScope);
+        let scope = body.scopes;
+        if (typeof scope === "string") scope = scope.split(" ");
+        const scopeArr = AuthConverter.decode(scope);
+        const red = body.redirect_uris;
+        const appData = await AuthHelpers.registerApp(body['client_name'], scopeArr, red, body['website']);
+        ctx.body = {
+            id: convertId(appData.id, IdType.MastodonId),
+            name: appData.name,
+            website: body.website,
+            redirect_uri: red,
+            client_id: Buffer.from(appData.url ?? "").toString("base64"),
+            client_secret: appData.clientSecret,
+        };
+    });
+}
 
-            const red = body.redirect_uris;
-            const appData = await AuthHelpers.registerApp(body['client_name'], scopeArr, red, body['website']);
-            const returns = {
-                id: convertId(appData.id, IdType.MastodonId),
-                name: appData.name,
-                website: body.website,
-                redirect_uri: red,
-                client_id: Buffer.from(appData.url ?? "").toString("base64"),
-                client_secret: appData.clientSecret,
+export function setupEndpointsAuthRoot(router: Router): void {
+    router.get("/oauth/authorize", async (ctx) => {
+        const { client_id, state, redirect_uri } = ctx.request.query;
+        let param = "mastodon=true";
+        if (state) param += `&state=${state}`;
+        if (redirect_uri) param += `&redirect_uri=${redirect_uri}`;
+        const client = client_id ? client_id : "";
+        ctx.redirect(
+            `${Buffer.from(client.toString(), "base64").toString()}?${param}`,
+        );
+    });
+
+    router.post("/oauth/token", async (ctx) => {
+        const body: any = ctx.request.body || ctx.request.query;
+        if (body.grant_type === "client_credentials") {
+            ctx.body = {
+                access_token: uuid(),
+                token_type: "Bearer",
+                scope: "read",
+                created_at: Math.floor(new Date().getTime() / 1000),
             };
-            ctx.body = returns;
-        } catch (e: any) {
-            console.error(e);
+            return;
+        }
+        let token = null;
+        if (body.code) {
+            token = body.code;
+        }
+        try {
+            const accessToken = await AuthHelpers.getAuthToken(body.client_secret, token ? token : "");
+            const ret = {
+                access_token: accessToken,
+                token_type: "Bearer",
+                scope: body.scope || "read write follow push",
+                created_at: Math.floor(new Date().getTime() / 1000),
+            };
+            ctx.body = ret;
+        } catch (err: any) {
+            console.error(err);
             ctx.status = 401;
-            ctx.body = e.response.data;
+            ctx.body = err.response.data;
         }
     });
 }

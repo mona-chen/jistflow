@@ -21,6 +21,7 @@ export class AuthenticationError extends Error {
 export default async (
 	authorization: string | null | undefined,
 	bodyToken: string | null,
+	bypassUserCache: boolean = false
 ): Promise<
 	[CacheableLocalUser | null | undefined, AccessToken | null | undefined]
 > => {
@@ -46,11 +47,13 @@ export default async (
 	}
 
 	if (isNativeToken(token)) {
-		const user = await localUserByNativeTokenCache.fetch(
-			token,
-			() => Users.findOneBy({ token }) as Promise<ILocalUser | null>,
-			true,
-		);
+		const user = bypassUserCache
+			? await Users.findOneBy({ token }) as ILocalUser | null
+			: await localUserByNativeTokenCache.fetch(
+				token,
+				() => Users.findOneBy({ token: token ?? undefined }) as Promise<ILocalUser | null>,
+				true,
+				);
 
 		if (user == null) {
 			throw new AuthenticationError("unknown token");
@@ -77,14 +80,18 @@ export default async (
 			lastUsedAt: new Date(),
 		});
 
-		const user = await localUserByIdCache.fetch(
-			accessToken.userId,
-			() =>
-				Users.findOneBy({
-					id: accessToken.userId,
-				}) as Promise<ILocalUser>,
-			true,
-		);
+		const user = bypassUserCache
+			? await Users.findOneBy({
+				id: accessToken.userId,
+			}) as ILocalUser
+			: await localUserByIdCache.fetch(
+				accessToken.userId,
+				() =>
+					Users.findOneBy({
+						id: accessToken.userId,
+					}) as Promise<ILocalUser>,
+				true,
+				);
 
 		if (accessToken.appId) {
 			const app = await appCache.fetch(

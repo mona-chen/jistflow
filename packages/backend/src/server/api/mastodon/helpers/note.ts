@@ -24,13 +24,23 @@ import mfm from "mfm-js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import { toArray } from "@/prelude/array.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { Cache } from "@/misc/cache.js";
+import AsyncLock from "async-lock";
 
 export class NoteHelpers {
+    public static postIdempotencyCache = new Cache<{ status?: MastodonEntity.Status }>('postIdempotencyCache', 60 * 60);
+    public static postIdempotencyLocks = new AsyncLock();
+
     public static async getDefaultReaction(): Promise<string> {
         return Metas.createQueryBuilder()
             .select('"defaultReaction"')
             .execute()
-            .then(p => p[0].defaultReaction);
+            .then(p => p[0].defaultReaction)
+            .then(p => {
+                if (p != null) return p;
+                throw new MastoApiError(500, "Failed to get default reaction");
+            });
     }
 
     public static async reactToNote(note: Note, user: ILocalUser, reaction: string): Promise<Note> {
@@ -122,7 +132,7 @@ export class NoteHelpers {
     }
 
     public static async deleteNote(note: Note, user: ILocalUser): Promise<MastodonEntity.Status> {
-        if (user.id !== note.userId) throw new Error("Can't delete someone elses note");
+        if (user.id !== note.userId) throw new MastoApiError(404);
         const status = await NoteConverter.encode(note, user);
         await deleteNote(user, note);
         status.content = undefined;
@@ -375,5 +385,36 @@ export class NoteHelpers {
         result.sensitive = !!body.sensitive;
 
         return result;
+    }
+
+    public static async getNoteOr404(id: string, user: ILocalUser | null): Promise<Note> {
+        return getNote(id, user).then(p => {
+            if (p === null) throw new MastoApiError(404);
+            return p;
+        });
+    }
+
+    public static getIdempotencyKey(headers: any, user: ILocalUser): string | null {
+        if (headers["idempotency-key"] === undefined || headers["idempotency-key"] === null) return null;
+        return `${user.id}-${Array.isArray(headers["idempotency-key"]) ? headers["idempotency-key"].at(-1)! : headers["idempotency-key"]}`;
+    }
+
+    public static async getFromIdempotencyCache(key: string): Promise<MastodonEntity.Status | undefined> {
+        return this.postIdempotencyLocks.acquire(key, async (): Promise<MastodonEntity.Status | undefined> => {
+            if (await this.postIdempotencyCache.get(key) !== undefined) {
+                let i = 5;
+                while ((await this.postIdempotencyCache.get(key))?.status === undefined) {
+                    if (++i > 5) throw new Error('Post is duplicate but unable to resolve original');
+                    await new Promise((resolve) => {
+                        setTimeout(resolve, 500);
+                    });
+                }
+
+                return (await this.postIdempotencyCache.get(key))?.status;
+            } else {
+                await this.postIdempotencyCache.set(key, {});
+                return undefined;
+            }
+        });
     }
 }

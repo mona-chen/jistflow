@@ -6,6 +6,7 @@ import { UserList } from "@/models/entities/user-list.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
 import { genId } from "@/misc/gen-id.js";
 import { publishUserListStream } from "@/services/stream.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export class ListHelpers {
     public static async getLists(user: ILocalUser): Promise<MastodonEntity.List[]> {
@@ -26,9 +27,15 @@ export class ListHelpers {
         });
     }
 
+    public static async getListOr404(user: ILocalUser, id: string): Promise<MastodonEntity.List> {
+        return this.getList(user, id).catch(_ => {
+            throw new MastoApiError(404);
+        })
+    }
     public static async getListUsers(user: ILocalUser, id: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
         if (limit > 80) limit = 80;
-        const list = await UserLists.findOneByOrFail({userId: user.id, id: id});
+        const list = await UserLists.findOneBy({userId: user.id, id: id});
+        if (!list) throw new MastoApiError(404);
         const query = PaginationHelpers.makePaginationQuery(
             UserListJoinings.createQueryBuilder('member'),
             sinceId,
@@ -99,6 +106,8 @@ export class ListHelpers {
     }
 
     public static async createList(user: ILocalUser, title: string): Promise<MastodonEntity.List> {
+        if (title.length < 1) throw new MastoApiError(400, "Title must not be empty");
+
         const list = await UserLists.insert({
             id: genId(),
             createdAt: new Date(),
@@ -113,7 +122,9 @@ export class ListHelpers {
     }
 
     public static async updateList(user: ILocalUser, list: UserList, title: string) {
+        if (title.length < 1) throw new MastoApiError(400, "Title must not be empty");
         if (user.id != list.userId) throw new Error("List is not owned by user");
+
         const partial = {name: title};
         const result = await UserLists.update(list.id, partial)
             .then(async _ => await UserLists.findOneByOrFail({id: list.id}));

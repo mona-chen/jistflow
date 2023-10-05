@@ -37,9 +37,9 @@ import { IceshrimpVisibility, VisibilityConverter } from "@/server/api/mastodon/
 import { Files } from "formidable";
 import { toSingleLast } from "@/prelude/array.js";
 import { MediaHelpers } from "@/server/api/mastodon/helpers/media.js";
-import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export type AccountCache = {
     locks: AsyncLock;
@@ -192,8 +192,7 @@ export class UserHelpers {
     }
 
     public static async verifyCredentials(user: ILocalUser): Promise<MastodonEntity.Account> {
-        // re-fetch local user because auth user possibly contains outdated info
-        const acct = getUser(user.id).then(u => UserConverter.encode(u));
+        const acct = UserConverter.encode(user);
         const profile = UserProfiles.findOneByOrFail({userId: user.id});
         const privacy = this.getDefaultNoteVisibility(user);
         const fields = profile.then(profile => profile.fields.map(field => {
@@ -220,10 +219,14 @@ export class UserHelpers {
         });
     }
 
-    public static async getUserFromAcct(acct: string): Promise<User | null> {
+    public static async getUserFromAcct(acct: string): Promise<User> {
         const split = acct.toLowerCase().split('@');
         if (split.length > 2) throw new Error('Invalid acct');
-        return Users.findOneBy({usernameLower: split[0], host: split[1] ?? IsNull()});
+        return Users.findOneBy({usernameLower: split[0], host: split[1] ?? IsNull()})
+            .then(p => {
+                if (p) return p;
+                throw new MastoApiError(404);
+            });
     }
 
     public static async getUserMutes(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<LinkPaginationObject<MastodonEntity.MutedAccount[]>> {
@@ -511,6 +514,18 @@ export class UserHelpers {
                 cache.users.push(p);
                 return p;
             });
+        });
+    }
+
+    public static async getUserCachedOr404(id: string, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<User> {
+        return this.getUserCached(id, cache).catch(_ => {
+            throw new MastoApiError(404);
+        });
+    }
+
+    public static async getUserOr404(id: string): Promise<User> {
+        return getUser(id).catch(_ => {
+            throw new MastoApiError(404);
         });
     }
 

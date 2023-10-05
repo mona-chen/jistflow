@@ -29,11 +29,9 @@ import fileServer from "./file/index.js";
 import proxyServer from "./proxy/index.js";
 import webServer from "./web/index.js";
 import { initializeStreamingServer } from "./api/streaming.js";
-import { koaBody } from "koa-body";
 import removeTrailingSlash from "koa-remove-trailing-slashes";
-import { v4 as uuid } from "uuid";
-import { AuthHelpers } from "@/server/api/mastodon/helpers/auth.js";
-
+import { koaBody } from "koa-body";
+import { setupEndpointsAuthRoot } from "@/server/api/mastodon/endpoints/auth.js";
 export const serverLogger = new Logger("server", "gray", false);
 
 // Init app
@@ -83,24 +81,6 @@ app.use(mount("/proxy", proxyServer));
 const router = new Router();
 const mastoRouter = new Router();
 
-mastoRouter.use(
-	koaBody({
-		urlencoded: true,
-		multipart: true,
-	}),
-);
-
-mastoRouter.use(async (ctx, next) => {
-	if (ctx.request.query) {
-		if (!ctx.request.body || Object.keys(ctx.request.body).length === 0) {
-			ctx.request.body = ctx.request.query;
-		} else {
-			ctx.request.body = { ...ctx.request.body, ...ctx.request.query };
-		}
-	}
-	await next();
-});
-
 // Routing
 router.use(activityPub.routes());
 router.use(nodeinfo.routes());
@@ -136,55 +116,29 @@ router.get("/identicon/:x", async (ctx) => {
 	}
 });
 
-//TODO: move these to auth.ts
-mastoRouter.get("/oauth/authorize", async (ctx) => {
-	const { client_id, state, redirect_uri } = ctx.request.query;
-	console.log(ctx.request.req);
-	let param = "mastodon=true";
-	if (state) param += `&state=${state}`;
-	if (redirect_uri) param += `&redirect_uri=${redirect_uri}`;
-	const client = client_id ? client_id : "";
-	ctx.redirect(
-		`${Buffer.from(client.toString(), "base64").toString()}?${param}`,
-	);
+mastoRouter.use(
+	koaBody({
+		urlencoded: true,
+		multipart: true,
+	}),
+);
+
+mastoRouter.use(async (ctx, next) => {
+	if (ctx.request.query) {
+		if (!ctx.request.body || Object.keys(ctx.request.body).length === 0) {
+			ctx.request.body = ctx.request.query;
+		} else {
+			ctx.request.body = { ...ctx.request.body, ...ctx.request.query };
+		}
+	}
+	await next();
 });
 
-mastoRouter.post("/oauth/token", async (ctx) => {
-	const body: any = ctx.request.body || ctx.request.query;
-	console.log("token-request", body);
-	console.log("token-query", ctx.request.query);
-	if (body.grant_type === "client_credentials") {
-		ctx.body = {
-			access_token: uuid(),
-			token_type: "Bearer",
-			scope: "read",
-			created_at: Math.floor(new Date().getTime() / 1000),
-		};
-		return;
-	}
-	let token = null;
-	if (body.code) {
-		token = body.code;
-	}
-	try {
-		const accessToken = await AuthHelpers.getAuthToken(body.client_secret, token ? token : "");
-		const ret = {
-			access_token: accessToken,
-			token_type: "Bearer",
-			scope: body.scope || "read write follow push",
-			created_at: Math.floor(new Date().getTime() / 1000),
-		};
-		ctx.body = ret;
-	} catch (err: any) {
-		console.error(err);
-		ctx.status = 401;
-		ctx.body = err.response.data;
-	}
-});
+setupEndpointsAuthRoot(mastoRouter);
 
 // Register router
-app.use(mastoRouter.routes());
 app.use(router.routes());
+app.use(mastoRouter.routes());
 
 app.use(mount(webServer));
 

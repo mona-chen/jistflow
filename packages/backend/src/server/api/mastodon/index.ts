@@ -1,4 +1,5 @@
-import Router from "@koa/router";
+import { DefaultContext } from "koa";
+import Router, { RouterContext } from "@koa/router";
 import { setupEndpointsAuth } from "./endpoints/auth.js";
 import { setupEndpointsAccount } from "./endpoints/account.js";
 import { setupEndpointsStatus } from "./endpoints/status.js";
@@ -8,29 +9,19 @@ import { setupEndpointsNotifications } from "./endpoints/notifications.js";
 import { setupEndpointsSearch } from "./endpoints/search.js";
 import { setupEndpointsMedia } from "@/server/api/mastodon/endpoints/media.js";
 import { setupEndpointsMisc } from "@/server/api/mastodon/endpoints/misc.js";
-import { HttpMethodEnum, koaBody } from "koa-body";
 import { setupEndpointsList } from "@/server/api/mastodon/endpoints/list.js";
+import { AuthMiddleware } from "@/server/api/mastodon/middleware/auth.js";
+import { CatchErrorsMiddleware } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { apiLogger } from "@/server/api/logger.js";
+import { CacheMiddleware } from "@/server/api/mastodon/middleware/cache.js";
+import { KoaBodyMiddleware } from "@/server/api/mastodon/middleware/koa-body.js";
+import { NormalizeQueryMiddleware } from "@/server/api/mastodon/middleware/normalize-query.js";
+
+export const logger = apiLogger.createSubLogger("mastodon");
+export type MastoContext = RouterContext & DefaultContext;
 
 export function setupMastodonApi(router: Router): void {
-    router.use(
-        koaBody({
-            multipart: true,
-            urlencoded: true,
-            parsedMethods: [HttpMethodEnum.POST, HttpMethodEnum.PUT, HttpMethodEnum.PATCH, HttpMethodEnum.DELETE] // dear god mastodon why
-        }),
-    );
-
-    router.use(async (ctx, next) => {
-        if (ctx.request.query) {
-            if (!ctx.request.body || Object.keys(ctx.request.body).length === 0) {
-                ctx.request.body = ctx.request.query;
-            } else {
-                ctx.request.body = {...ctx.request.body, ...ctx.request.query};
-            }
-        }
-        await next();
-    });
-
+    setupMiddleware(router);
     setupEndpointsAuth(router);
     setupEndpointsAccount(router);
     setupEndpointsStatus(router);
@@ -41,4 +32,12 @@ export function setupMastodonApi(router: Router): void {
     setupEndpointsMedia(router);
     setupEndpointsList(router);
     setupEndpointsMisc(router);
+}
+
+function setupMiddleware(router: Router): void {
+    router.use(KoaBodyMiddleware());
+    router.use(NormalizeQueryMiddleware);
+    router.use(AuthMiddleware);
+    router.use(CacheMiddleware);
+    router.use(CatchErrorsMiddleware);
 }

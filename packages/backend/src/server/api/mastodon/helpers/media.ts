@@ -4,9 +4,12 @@ import { DriveFiles } from "@/models/index.js";
 import { Packed } from "@/misc/schema.js";
 import { DriveFile } from "@/models/entities/drive-file.js";
 import { File } from "formidable";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export class MediaHelpers {
-    public static async uploadMedia(user: ILocalUser, file: File, body: any): Promise<Packed<"DriveFile">> {
+    public static async uploadMedia(user: ILocalUser, file: File | undefined, body: any): Promise<Packed<"DriveFile">> {
+        if (!file) throw new MastoApiError(400, "Validation failed: File content type is invalid, File is invalid");
+
         return addFile({
             user: user,
             path: file.filepath,
@@ -40,7 +43,21 @@ export class MediaHelpers {
             .then(p => p ? DriveFiles.pack(p) : null);
     }
 
+    public static async getMediaPackedOr404(user: ILocalUser, id: string): Promise<Packed<"DriveFile">> {
+        return this.getMediaPacked(user, id).then(p => {
+            if (p) return p;
+            throw new MastoApiError(404);
+        });
+    }
+
     public static async getMedia(user: ILocalUser, id: string): Promise<DriveFile | null> {
         return DriveFiles.findOneBy({id: id, userId: user.id});
+    }
+
+    public static async getMediaOr404(user: ILocalUser, id: string): Promise<DriveFile> {
+        return this.getMedia(user, id).then(p => {
+           if (p) return p;
+           throw new MastoApiError(404);
+        });
     }
 }

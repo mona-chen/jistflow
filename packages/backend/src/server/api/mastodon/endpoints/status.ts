@@ -2,36 +2,21 @@ import Router from "@koa/router";
 import { convertId, IdType } from "../../index.js";
 import { convertAccountId, convertPollId, convertStatusIds, convertStatusEditIds, convertStatusSourceId, } from "../converters.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
-import { getNote } from "@/server/api/common/getters.js";
-import authenticate from "@/server/api/authenticate.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
-import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "@/server/api/mastodon/endpoints/timeline.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
-import { Cache } from "@/misc/cache.js";
-import AsyncLock from "async-lock";
-import { ILocalUser } from "@/models/entities/user.js";
 import { PollHelpers } from "@/server/api/mastodon/helpers/poll.js";
 import { toArray } from "@/prelude/array.js";
-
-const postIdempotencyCache = new Cache<{ status?: MastodonEntity.Status }>('postIdempotencyCache', 60 * 60);
-const postIdempotencyLocks = new AsyncLock();
+import { auth } from "@/server/api/mastodon/middleware/auth.js";
 
 export function setupEndpointsStatus(router: Router): void {
-    router.post("/v1/statuses", async (ctx) => {
-        try {
-            const auth = await authenticate(ctx.headers.authorization, null);
-            const user = auth[0] ?? null;
-
-            if (!user) {
-                ctx.status = 401;
-                return;
-            }
-
-            const key = getIdempotencyKey(ctx.headers, user);
+    router.post("/v1/statuses",
+        auth(true, ['write:statuses']),
+        async (ctx) => {
+            const key = NoteHelpers.getIdempotencyKey(ctx.headers, ctx.user);
             if (key !== null) {
-                const result = await getFromIdempotencyCache(key);
+                const result = await NoteHelpers.getFromIdempotencyCache(key);
 
                 if (result) {
                     ctx.body = result;
@@ -40,645 +25,263 @@ export function setupEndpointsStatus(router: Router): void {
             }
 
             let request = NoteHelpers.normalizeComposeOptions(ctx.request.body);
-            ctx.body = await NoteHelpers.createNote(request, user)
-                .then(p => NoteConverter.encode(p, user))
+            ctx.body = await NoteHelpers.createNote(request, ctx.user)
+                .then(p => NoteConverter.encode(p, ctx.user))
                 .then(p => convertStatusIds(p));
 
-            if (key !== null) postIdempotencyCache.set(key, {status: ctx.body});
-        } catch (e: any) {
-            console.error(e);
-            ctx.status = 500;
-            ctx.body = {error: e.message};
+            if (key !== null) NoteHelpers.postIdempotencyCache.set(key, {status: ctx.body});
         }
-    });
-    router.put("/v1/statuses/:id", async (ctx) => {
-        try {
-            const auth = await authenticate(ctx.headers.authorization, null);
-            const user = auth[0] ?? null;
-
-            if (!user) {
-                ctx.status = 401;
-                return;
-            }
-
+    );
+    router.put("/v1/statuses/:id",
+        auth(true, ['write:statuses']),
+        async (ctx) => {
             const noteId = convertId(ctx.params.id, IdType.IceshrimpId);
-            const note = await getNote(noteId, user ?? null).then(n => n).catch(() => null);
-            if (!note) {
-                if (!note) {
-                    ctx.status = 404;
-                    ctx.body = {
-                        error: "Note not found"
-                    };
-                    return;
-                }
-            }
-
+            const note = await NoteHelpers.getNoteOr404(noteId, ctx.user);
             let request = NoteHelpers.normalizeEditOptions(ctx.request.body);
-            ctx.body = await NoteHelpers.editNote(request, note, user)
-                .then(p => NoteConverter.encode(p, user))
+            ctx.body = await NoteHelpers.editNote(request, note, ctx.user)
+                .then(p => NoteConverter.encode(p, ctx.user))
                 .then(p => convertStatusIds(p));
-        } catch (e: any) {
-            console.error(e);
-            ctx.status = ctx.status == 404 ? 404 : 401;
-            ctx.body = e.response.data;
         }
-    });
-    router.get<{ Params: { id: string } }>("/v1/statuses/:id", async (ctx) => {
-        try {
-            const auth = await authenticate(ctx.headers.authorization, null);
-            const user = auth[0] ?? null;
-
+    );
+    router.get<{ Params: { id: string } }>("/v1/statuses/:id",
+        auth(false, ["read:statuses"]),
+        async (ctx) => {
             const noteId = convertId(ctx.params.id, IdType.IceshrimpId);
-            const note = await getNote(noteId, user ?? null).then(n => n).catch(() => null);
+            const note = await NoteHelpers.getNoteOr404(noteId, ctx.user);
 
-            if (!note) {
-                ctx.status = 404;
-                return;
-            }
-
-            const status = await NoteConverter.encode(note, user);
+            const status = await NoteConverter.encode(note, ctx.user);
             ctx.body = convertStatusIds(status);
-        } catch (e: any) {
-            console.error(e);
-            ctx.status = ctx.status == 404 ? 404 : 401;
-            ctx.body = e.response.data;
         }
-    });
-    router.delete<{ Params: { id: string } }>("/v1/statuses/:id", async (ctx) => {
-        try {
-            const auth = await authenticate(ctx.headers.authorization, null);
-            const user = auth[0] ?? null;
-
-            if (!user) {
-                ctx.status = 401;
-                return;
-            }
-
+    );
+    router.delete<{ Params: { id: string } }>("/v1/statuses/:id",
+        auth(true, ['write:statuses']),
+        async (ctx) => {
             const noteId = convertId(ctx.params.id, IdType.IceshrimpId);
-            const note = await getNote(noteId, user ?? null).then(n => n).catch(() => null);
-
-            if (!note) {
-                ctx.status = 404;
-                ctx.body = {
-                    error: "Note not found"
-                };
-                return;
-            }
-
-            if (user.id !== note.userId) {
-                ctx.status = 403;
-                ctx.body = {
-                    error: "Cannot delete someone else's note"
-                };
-                return;
-            }
-
-            ctx.body = await NoteHelpers.deleteNote(note, user)
+            const note = await NoteHelpers.getNoteOr404(noteId, ctx.user);
+            ctx.body = await NoteHelpers.deleteNote(note, ctx.user)
                 .then(p => convertStatusIds(p));
-        } catch (e: any) {
-            console.error(`Error processing ${ctx.method} /api${ctx.path}: ${e.message}`);
-            ctx.status = 500;
-            ctx.body = {
-                error: e.message
-            }
         }
-    });
+    );
 
     router.get<{ Params: { id: string } }>(
         "/v1/statuses/:id/context",
+        auth(false, ["read:statuses"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
+            const ancestors = await NoteHelpers.getNoteAncestors(note, ctx.user, ctx.user ? 4096 : 60)
+                .then(n => NoteConverter.encodeMany(n, ctx.user, ctx.cache))
+                .then(n => n.map(s => convertStatusIds(s)));
+            const descendants = await NoteHelpers.getNoteDescendants(note, ctx.user, ctx.user ? 4096 : 40, ctx.user ? 4096 : 20)
+                .then(n => NoteConverter.encodeMany(n, ctx.user, ctx.cache))
+                .then(n => n.map(s => convertStatusIds(s)));
 
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const cache = UserHelpers.getFreshAccountCache();
-                const note = await getNote(id, user ?? null).then(n => n).catch(() => null);
-                if (!note) {
-                    if (!note) {
-                        ctx.status = 404;
-                        return;
-                    }
-                }
-
-                const ancestors = await NoteHelpers.getNoteAncestors(note, user, user ? 4096 : 60)
-                    .then(n => NoteConverter.encodeMany(n, user, cache))
-                    .then(n => n.map(s => convertStatusIds(s)));
-                const descendants = await NoteHelpers.getNoteDescendants(note, user, user ? 4096 : 40, user ? 4096 : 20)
-                    .then(n => NoteConverter.encodeMany(n, user, cache))
-                    .then(n => n.map(s => convertStatusIds(s)));
-
-                ctx.body = {
-                    ancestors,
-                    descendants,
-                };
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
-        },
+            ctx.body = {
+                ancestors,
+                descendants,
+            };
+        }
     );
     router.get<{ Params: { id: string } }>(
         "/v1/statuses/:id/history",
+        auth(false, ["read:statuses"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                const res = await NoteHelpers.getNoteEditHistory(note);
-                ctx.body = res.map(p => convertStatusEditIds(p));
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
-        },
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
+            const res = await NoteHelpers.getNoteEditHistory(note);
+            ctx.body = res.map(p => convertStatusEditIds(p));
+        }
     );
     router.get<{ Params: { id: string } }>(
         "/v1/statuses/:id/source",
+        auth(true, ["read:statuses"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                const src = NoteHelpers.getNoteSource(note);
-                ctx.body = convertStatusSourceId(src);
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
-        },
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
+            const src = NoteHelpers.getNoteSource(note);
+            ctx.body = convertStatusSourceId(src);
+        }
     );
     router.get<{ Params: { id: string } }>(
         "/v1/statuses/:id/reblogged_by",
+        auth(false, ["read:statuses"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                const cache = UserHelpers.getFreshAccountCache();
-                const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
-                const res = await NoteHelpers.getNoteRebloggedBy(note, user, args.max_id, args.since_id, args.min_id, args.limit);
-                const users = await UserConverter.encodeMany(res.data, cache);
-                ctx.body = users.map(m => convertAccountId(m));
-                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
-        },
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
+            const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
+            const res = await NoteHelpers.getNoteRebloggedBy(note, ctx.user, args.max_id, args.since_id, args.min_id, args.limit);
+            const users = await UserConverter.encodeMany(res.data, ctx.cache);
+            ctx.body = users.map(m => convertAccountId(m));
+            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
+        }
     );
     router.get<{ Params: { id: string } }>(
         "/v1/statuses/:id/favourited_by",
+        auth(false, ["read:statuses"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                const cache = UserHelpers.getFreshAccountCache();
-                const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
-                const res = await NoteHelpers.getNoteFavoritedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
-                const users = await UserConverter.encodeMany(res.data, cache);
-                ctx.body = users.map(m => convertAccountId(m));
-                PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
-        },
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
+            const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
+            const res = await NoteHelpers.getNoteFavoritedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
+            const users = await UserConverter.encodeMany(res.data, ctx.cache);
+            ctx.body = users.map(m => convertAccountId(m));
+            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
+        }
     );
     router.post<{ Params: { id: string } }>(
         "/v1/statuses/:id/favourite",
+        auth(true, ["write:favourites"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
+            const reaction = await NoteHelpers.getDefaultReaction();
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                const reaction = await NoteHelpers.getDefaultReaction().catch(_ => null);
-
-                if (reaction === null) {
-                    ctx.status = 500;
-                    return;
-                }
-
-                ctx.body = await NoteHelpers.reactToNote(note, user, reaction)
-                    .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatusIds(p));
-            } catch (e: any) {
-                console.error(e);
-                console.error(e.response.data);
-                ctx.status = 400;
-                ctx.body = e.response.data;
-            }
-        },
+            ctx.body = await NoteHelpers.reactToNote(note, ctx.user, reaction)
+                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => convertStatusIds(p));
+        }
     );
     router.post<{ Params: { id: string } }>(
         "/v1/statuses/:id/unfavourite",
+        auth(true, ["write:favourites"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                ctx.body = await NoteHelpers.removeReactFromNote(note, user)
-                    .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatusIds(p));
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
+            ctx.body = await NoteHelpers.removeReactFromNote(note, ctx.user)
+                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => convertStatusIds(p));
         },
     );
 
     router.post<{ Params: { id: string } }>(
         "/v1/statuses/:id/reblog",
+        auth(true, ["write:statuses"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                ctx.body = await NoteHelpers.reblogNote(note, user)
-                    .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatusIds(p));
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
+            ctx.body = await NoteHelpers.reblogNote(note, ctx.user)
+                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => convertStatusIds(p));
         },
     );
 
     router.post<{ Params: { id: string } }>(
         "/v1/statuses/:id/unreblog",
+        auth(true, ["write:statuses"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                ctx.body = await NoteHelpers.unreblogNote(note, user)
-                    .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatusIds(p));
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
+            ctx.body = await NoteHelpers.unreblogNote(note, ctx.user)
+                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => convertStatusIds(p));
         },
     );
 
     router.post<{ Params: { id: string } }>(
         "/v1/statuses/:id/bookmark",
+        auth(true, ["write:bookmarks"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                ctx.body = await NoteHelpers.bookmarkNote(note, user)
-                    .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatusIds(p));
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
+            ctx.body = await NoteHelpers.bookmarkNote(note, ctx.user)
+                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => convertStatusIds(p));
         },
     );
 
     router.post<{ Params: { id: string } }>(
         "/v1/statuses/:id/unbookmark",
+        auth(true, ["write:bookmarks"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                ctx.body = await NoteHelpers.unbookmarkNote(note, user)
-                    .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatusIds(p));
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
+            ctx.body = await NoteHelpers.unbookmarkNote(note, ctx.user)
+                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => convertStatusIds(p));
         },
     );
 
     router.post<{ Params: { id: string } }>(
         "/v1/statuses/:id/pin",
+        auth(true, ["write:accounts"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                ctx.body = await NoteHelpers.pinNote(note, user)
-                    .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatusIds(p));
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
+            ctx.body = await NoteHelpers.pinNote(note, ctx.user)
+                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => convertStatusIds(p));
         },
     );
 
     router.post<{ Params: { id: string } }>(
         "/v1/statuses/:id/unpin",
+        auth(true, ["write:accounts"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                ctx.body = await NoteHelpers.unpinNote(note, user)
-                    .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatusIds(p));
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
+            ctx.body = await NoteHelpers.unpinNote(note, ctx.user)
+                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => convertStatusIds(p));
         },
     );
 
     router.post<{ Params: { id: string; name: string } }>(
         "/v1/statuses/:id/react/:name",
+        auth(true, ["write:favourites"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                ctx.body = await NoteHelpers.reactToNote(note, user, ctx.params.name)
-                    .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatusIds(p));
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
+            ctx.body = await NoteHelpers.reactToNote(note, ctx.user, ctx.params.name)
+                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => convertStatusIds(p));
         },
     );
 
     router.post<{ Params: { id: string; name: string } }>(
         "/v1/statuses/:id/unreact/:name",
+        auth(true, ["write:favourites"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                ctx.body = await NoteHelpers.removeReactFromNote(note, user)
-                    .then(p => NoteConverter.encode(p, user))
-                    .then(p => convertStatusIds(p));
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
-            }
+            ctx.body = await NoteHelpers.removeReactFromNote(note, ctx.user)
+                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => convertStatusIds(p));
         },
     );
-    router.get<{ Params: { id: string } }>("/v1/polls/:id", async (ctx) => {
-        try {
-            const auth = await authenticate(ctx.headers.authorization, null);
-            const user = auth[0] ?? null;
-
+    router.get<{ Params: { id: string } }>("/v1/polls/:id",
+        auth(false, ["read:statuses"]),
+        async (ctx) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const note = await getNote(id, user).catch(_ => null);
-
-            if (note === null || !note.hasPoll) {
-                ctx.status = 404;
-                return;
-            }
-
-            const data = await PollHelpers.getPoll(note, user);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
+            const data = await PollHelpers.getPoll(note, ctx.user);
             ctx.body = convertPollId(data);
-        } catch (e: any) {
-            console.error(e);
-            ctx.status = 401;
-            ctx.body = e.response.data;
-        }
     });
     router.post<{ Params: { id: string } }>(
         "/v1/polls/:id/votes",
+        auth(true, ["write:statuses"]),
         async (ctx) => {
-            try {
-                const auth = await authenticate(ctx.headers.authorization, null);
-                const user = auth[0] ?? null;
+            const id = convertId(ctx.params.id, IdType.IceshrimpId);
+            const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
-                if (!user) {
-                    ctx.status = 401;
-                    return;
-                }
-
-                const id = convertId(ctx.params.id, IdType.IceshrimpId);
-                const note = await getNote(id, user).catch(_ => null);
-
-                if (note === null || !note.hasPoll) {
-                    ctx.status = 404;
-                    return;
-                }
-
-                const body: any = ctx.request.body;
-                const choices = toArray(body.choices ?? []).map(p => parseInt(p));
-                if (choices.length < 1) {
-                    ctx.status = 400;
-                    ctx.body = {error: 'Must vote for at least one option'};
-                    return;
-                }
-
-                const data = await PollHelpers.voteInPoll(choices, note, user);
-                ctx.body = convertPollId(data);
-            } catch (e: any) {
-                console.error(e);
-                ctx.status = 401;
-                ctx.body = e.response.data;
+            const body: any = ctx.request.body;
+            const choices = toArray(body.choices ?? []).map(p => parseInt(p));
+            if (choices.length < 1) {
+                ctx.status = 400;
+                ctx.body = {error: 'Must vote for at least one option'};
+                return;
             }
+
+            const data = await PollHelpers.voteInPoll(choices, note, ctx.user);
+            ctx.body = convertPollId(data);
         },
     );
-}
-
-function getIdempotencyKey(headers: any, user: ILocalUser): string | null {
-    if (headers["idempotency-key"] === undefined || headers["idempotency-key"] === null) return null;
-    return `${user.id}-${Array.isArray(headers["idempotency-key"]) ? headers["idempotency-key"].at(-1)! : headers["idempotency-key"]}`;
-}
-
-async function getFromIdempotencyCache(key: string): Promise<MastodonEntity.Status | undefined> {
-    return postIdempotencyLocks.acquire(key, async (): Promise<MastodonEntity.Status | undefined> => {
-        if (await postIdempotencyCache.get(key) !== undefined) {
-            let i = 5;
-            while ((await postIdempotencyCache.get(key))?.status === undefined) {
-                if (++i > 5) throw new Error('Post is duplicate but unable to resolve original');
-                await new Promise((resolve) => {
-                    setTimeout(resolve, 500);
-                });
-            }
-
-            return (await postIdempotencyCache.get(key))?.status;
-        } else {
-            await postIdempotencyCache.set(key, {});
-            return undefined;
-        }
-    });
 }

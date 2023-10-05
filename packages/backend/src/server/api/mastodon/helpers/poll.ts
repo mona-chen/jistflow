@@ -10,6 +10,7 @@ import { deliver } from "@/queue/index.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderVote from "@/remote/activitypub/renderer/vote.js";
 import { Not } from "typeorm";
+import {MastoApiError} from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export class PollHelpers {
     public static async getPoll(note: Note, user: ILocalUser | null): Promise<MastodonEntity.Poll> {
@@ -17,10 +18,12 @@ export class PollHelpers {
     }
 
     public static async voteInPoll(choices: number[], note: Note, user: ILocalUser): Promise<MastodonEntity.Poll> {
+        if (!note.hasPoll) throw new MastoApiError(404);
+
         for (const choice of choices) {
             const createdAt = new Date();
 
-            if (!note.hasPoll) throw new Error('Note has no poll');
+            if (!note.hasPoll) throw new MastoApiError(404);
 
             // Check blocking
             if (note.userId !== user.id) {

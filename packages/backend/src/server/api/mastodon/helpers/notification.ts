@@ -2,6 +2,7 @@ import { ILocalUser } from "@/models/entities/user.js";
 import { Notes, Notifications } from "@/models/index.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { Notification } from "@/models/entities/notification.js";
+import {MastoApiError} from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export class NotificationHelpers {
     public static async getNotifications(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, types: string[] | undefined, excludeTypes: string[] | undefined, accountId: string | undefined): Promise<Notification[]> {
@@ -36,6 +37,13 @@ export class NotificationHelpers {
 
     public static async getNotification(id: string, user: ILocalUser): Promise<Notification | null> {
         return Notifications.findOneBy({id: id, notifieeId: user.id});
+    }
+
+    public static async getNotificationOr404(id: string, user: ILocalUser): Promise<Notification> {
+        return this.getNotification(id, user).then(p => {
+           if (p) return p;
+           throw new MastoApiError(404);
+        });
     }
 
     public static async dismissNotification(id: string, user: ILocalUser): Promise<void> {
