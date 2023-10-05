@@ -18,6 +18,7 @@ import { generateBlockQueryForUsers } from "@/server/api/common/generate-block-q
 import { uniqBy } from "@/prelude/array.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 
 export class MiscHelpers {
     public static async getInstance(): Promise<MastodonEntity.Instance> {
@@ -202,5 +203,28 @@ export class MiscHelpers {
                     })
                 )
             );
+    }
+
+    public static async getTrendingStatuses(limit: number = 20, offset: number = 0): Promise<MastodonEntity.Status[]> {
+        if (limit > 40) limit = 40;
+        const query = Notes.createQueryBuilder("note")
+            .addSelect("note.score")
+            .andWhere("note.score > 0")
+            .andWhere("note.createdAt > :date", { date: new Date(Date.now() - 1000 * 60 * 60 * 24) })
+            .andWhere("note.visibility = 'public'")
+            .andWhere("note.userHost IS NULL")
+            .orderBy("note.score", "DESC");
+
+        return query
+            .skip(offset)
+            .take(limit)
+            .getMany()
+            .then(result => NoteConverter.encodeMany(result, null));
+    }
+
+    public static async getTrendingHashtags(limit: number = 10, offset: number = 0): Promise<MastodonEntity.Tag[]> {
+        if (limit > 20) limit = 20;
+        return [];
+        //FIXME: This was already implemented in api/endpoints/hashtags/trend.ts, but the implementation is sketchy at best. Rewrite from scratch.
     }
 }

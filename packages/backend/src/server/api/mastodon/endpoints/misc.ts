@@ -75,19 +75,28 @@ export function setupEndpointsMisc(router: Router): void {
         },
     );
 
-    router.get("/v1/trends", async (ctx) => {
-        const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-        const accessTokens = ctx.request.headers.authorization;
-        const client = getClient(BASE_URL, accessTokens); // we are using this here, because in private mode some info isnt
-        // displayed without being logged in
+    router.get(["/v1/trends/tags", "/v1/trends"], async (ctx) => {
         try {
-            const data = await client.getInstanceTrends();
-            ctx.body = data.data;
+            const args = limitToInt(ctx.query);
+            ctx.body = await MiscHelpers.getTrendingHashtags(args.limit, args.offset);
         } catch (e: any) {
-            console.error(e);
-            ctx.status = 401;
-            ctx.body = e.response.data;
+            ctx.status = 500;
+            ctx.body = { error: e.message };
         }
+    });
+
+    router.get("/v1/trends/statuses", async (ctx) => {
+        try {
+            const args = limitToInt(ctx.query);
+            ctx.body = await MiscHelpers.getTrendingStatuses(args.limit, args.offset);
+        } catch (e: any) {
+            ctx.status = 500;
+            ctx.body = { error: e.message };
+        }
+    });
+
+    router.get("/v1/trends/links", async (ctx) => {
+        ctx.body = [];
     });
 
     router.get("/v1/preferences", async (ctx) => {

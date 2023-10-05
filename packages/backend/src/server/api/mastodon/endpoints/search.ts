@@ -54,40 +54,4 @@ export function setupEndpointsSearch(router: Router): void {
             ctx.body = {error: e.message};
         }
     });
-    router.get("/v1/trends/statuses", async (ctx) => {
-        const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-        const accessTokens = ctx.headers.authorization;
-        try {
-            const data = await getHighlight(
-                BASE_URL,
-                ctx.request.hostname,
-                accessTokens,
-            );
-            ctx.body = data.map((status) => convertStatusIds(status));
-        } catch (e: any) {
-            console.error(e);
-            ctx.status = 401;
-            ctx.body = e.response.data;
-        }
-    });
-}
-
-async function getHighlight(
-    BASE_URL: string,
-    domain: string,
-    accessTokens: string | undefined,
-) {
-    const accessTokenArr = accessTokens?.split(" ") ?? [null];
-    const accessToken = accessTokenArr[accessTokenArr.length - 1];
-    try {
-        const api = await axios.post(`${BASE_URL}/api/notes/featured`, {
-            i: accessToken,
-        });
-        const data: MisskeyEntity.Note[] = api.data;
-        return data.map((note) => new Converter(BASE_URL).note(note, domain));
-    } catch (e: any) {
-        console.log(e);
-        console.log(e.response.data);
-        return [];
-    }
 }
