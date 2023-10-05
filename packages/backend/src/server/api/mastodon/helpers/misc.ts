@@ -199,7 +199,7 @@ export class MiscHelpers {
                     .map(x => {
                         return {
                             ...x,
-                            category: dbRes.find(y => y.name === x.shortcode)?.category ?? null
+                            category: dbRes.find(y => y.name === x.shortcode)?.category ?? undefined
                         }
                     })
                 )
