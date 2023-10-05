@@ -9,16 +9,11 @@ import { convertId, IdType } from "@/misc/convert-id.js";
 
 export function setupEndpointsMisc(router: Router): void {
     router.get("/v1/custom_emojis", async (ctx) => {
-        const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
-        const accessTokens = ctx.request.headers.authorization;
-        const client = getClient(BASE_URL, accessTokens);
         try {
-            const data = await client.getInstanceCustomEmojis();
-            ctx.body = data.data;
+            ctx.body = await MiscHelpers.getCustomEmoji();
         } catch (e: any) {
-            console.error(e);
-            ctx.status = 401;
-            ctx.body = e.response.data;
+            ctx.status = 500;
+            ctx.body = { error: e.message };
         }
     });
 

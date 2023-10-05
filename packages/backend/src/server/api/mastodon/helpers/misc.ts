@@ -1,7 +1,7 @@
 import config from "@/config/index.js";
 import { FILE_TYPE_BROWSERSAFE, MAX_NOTE_TEXT_LENGTH } from "@/const.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import { AnnouncementReads, Announcements, Instances, Notes, Users } from "@/models/index.js";
+import { AnnouncementReads, Announcements, Emojis, Instances, Notes, Users } from "@/models/index.js";
 import { IsNull } from "typeorm";
 import { awaitAll } from "@/prelude/await-all.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
@@ -16,6 +16,8 @@ import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { generateMutedUserQueryForUsers } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockQueryForUsers } from "@/server/api/common/generate-block-query.js";
 import { uniqBy } from "@/prelude/array.js";
+import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
+import { populateEmojis } from "@/misc/populate-emojis.js";
 
 export class MiscHelpers {
     public static async getInstance(): Promise<MastodonEntity.Instance> {
@@ -174,5 +176,31 @@ export class MiscHelpers {
 
 
         return Promise.all(results).then(p => uniqBy(p.flat(), (x: MastodonEntity.SuggestedAccount) => x.account.id).slice(0, limit));
+    }
+
+    public static async getCustomEmoji() {
+        return Emojis.find({
+            where: {
+                host: IsNull(),
+            },
+            order: {
+                category: "ASC",
+                name: "ASC",
+            },
+            cache: {
+                id: "meta_emojis",
+                milliseconds: 3600000, // 1 hour
+            }}
+        )
+            .then(dbRes => populateEmojis(dbRes.map(p => p.name), null)
+                .then(p => p.map(x => EmojiConverter.encode(x))
+                    .map(x => {
+                        return {
+                            ...x,
+                            category: dbRes.find(y => y.name === x.shortcode)?.category ?? null
+                        }
+                    })
+                )
+            );
     }
 }

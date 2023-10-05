@@ -7,7 +7,7 @@ export class EmojiConverter {
             static_url: e.url,
             url: e.url,
             visible_in_picker: true,
-            category: "unknown", //FIXME - e.category
+            category: null
         };
     }
 }
