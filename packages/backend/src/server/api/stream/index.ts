@@ -25,8 +25,6 @@ import { readNotification } from "../common/read-notification.js";
 import channels from "./channels/index.js";
 import type Channel from "./channel.js";
 import type { StreamEventEmitter, StreamMessages } from "./types.js";
-import { Converter } from "megalodon";
-import { getClient } from "../mastodon/index.js";
 
 /**
  * Main stream connection
@@ -45,7 +43,6 @@ export default class Connection {
 	private channels: Channel[] = [];
 	private subscribingNotes: Map<string, number> = new Map();
 	private cachedNotes: Packed<"Note">[] = [];
-	private isMastodonCompatible = false;
 	private host: string;
 	private accessToken: string;
 	private currentSubscribe: string[][] = [];
@@ -154,95 +151,6 @@ export default class Connection {
 			objs = [JSON.parse(data.utf8Data)];
 		} catch (e) {
 			return;
-		}
-
-		const simpleObj = objs[0];
-		if (simpleObj.stream) {
-			// is Mastodon Compatible
-			this.isMastodonCompatible = true;
-			if (simpleObj.type === "subscribe") {
-				let forSubscribe = [];
-				if (simpleObj.stream === "user") {
-					this.currentSubscribe.push(["user"]);
-					objs = [
-						{
-							type: "connect",
-							body: {
-								channel: "main",
-								id: simpleObj.stream,
-							},
-						},
-						{
-							type: "connect",
-							body: {
-								channel: "homeTimeline",
-								id: simpleObj.stream,
-							},
-						},
-					];
-					const client = getClient(this.host, this.accessToken);
-					try {
-						const tl = await client.getHomeTimeline();
-						for (const t of tl.data) forSubscribe.push(t.id);
-					} catch (e: any) {
-						console.log(e);
-						console.error(e.response.data);
-					}
-				} else if (simpleObj.stream === "public:local") {
-					this.currentSubscribe.push(["public:local"]);
-					objs = [
-						{
-							type: "connect",
-							body: {
-								channel: "localTimeline",
-								id: simpleObj.stream,
-							},
-						},
-					];
-					const client = getClient(this.host, this.accessToken);
-					const tl = await client.getLocalTimeline();
-					for (const t of tl.data) forSubscribe.push(t.id);
-				} else if (simpleObj.stream === "public") {
-					this.currentSubscribe.push(["public"]);
-					objs = [
-						{
-							type: "connect",
-							body: {
-								channel: "globalTimeline",
-								id: simpleObj.stream,
-							},
-						},
-					];
-					const client = getClient(this.host, this.accessToken);
-					const tl = await client.getPublicTimeline();
-					for (const t of tl.data) forSubscribe.push(t.id);
-				} else if (simpleObj.stream === "list") {
-					this.currentSubscribe.push(["list", simpleObj.list]);
-					objs = [
-						{
-							type: "connect",
-							body: {
-								channel: "list",
-								id: simpleObj.stream,
-								params: {
-									listId: simpleObj.list,
-								},
-							},
-						},
-					];
-					const client = getClient(this.host, this.accessToken);
-					const tl = await client.getListTimeline(simpleObj.list);
-					for (const t of tl.data) forSubscribe.push(t.id);
-				}
-				for (const s of forSubscribe) {
-					objs.push({
-						type: "s",
-						body: {
-							id: s,
-						},
-					});
-				}
-			}
 		}
 
 		for (const obj of objs) {
@@ -393,66 +301,12 @@ export default class Connection {
 	 * クライアントにメッセージ送信
 	 */
 	public sendMessageToWs(type: string, payload: any) {
-		if (this.isMastodonCompatible) {
-			if (payload.type === "note") {
-				this.wsConnection.send(
-					JSON.stringify({
-						stream: [payload.id],
-						event: "update",
-						payload: JSON.stringify(Converter.note(payload.body, this.host)),
-					}),
-				);
-				this.onSubscribeNote({
-					id: payload.body.id,
-				});
-			} else if (payload.type === "reacted" || payload.type === "unreacted") {
-				// reaction
-				const client = getClient(this.host, this.accessToken);
-				client.getStatus(payload.id).then((data) => {
-					const newPost = [data.data];
-					const targetPost = newPost[0];
-					for (const stream of this.currentSubscribe) {
-						this.wsConnection.send(
-							JSON.stringify({
-								stream,
-								event: "status.update",
-								payload: JSON.stringify(targetPost),
-							}),
-						);
-					}
-				});
-			} else if (payload.type === "deleted") {
-				// delete
-				for (const stream of this.currentSubscribe) {
-					this.wsConnection.send(
-						JSON.stringify({
-							stream,
-							event: "delete",
-							payload: payload.id,
-						}),
-					);
-				}
-			} else if (payload.type === "unreadNotification") {
-				if (payload.id === "user") {
-					const body = Converter.notification(payload.body, this.host);
-					if (body.type === "reaction") body.type = "favourite";
-					this.wsConnection.send(
-						JSON.stringify({
-							stream: ["user"],
-							event: "notification",
-							payload: JSON.stringify(body),
-						}),
-					);
-				}
-			}
-		} else {
-			this.wsConnection.send(
-				JSON.stringify({
-					type: type,
-					body: payload,
-				}),
-			);
-		}
+		this.wsConnection.send(
+			JSON.stringify({
+				type: type,
+				body: payload,
+			}),
+		);
 	}
 
 	/**
