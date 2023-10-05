@@ -16,10 +16,10 @@ noNotifications: "Bildirim bulunmuyor"
 settings: "Ayarlar"
 basicSettings: "Temel Ayarlar"
 otherSettings: "Diğer Ayarlar"
-openInWindow: "Bir pencere ile aç"
+openInWindow: "Açılır pencerede aç"
 profile: "Profil"
-timeline: "Zaman çizelgesi"
-noAccountDescription: "Bu kullanıcı henüz kendi hakkında kısmını yazmadı."
+timeline: "Akış"
+noAccountDescription: "Bu kullanıcı henüz \"hakkında\" kısmını yazmadı."
 login: "Giriş Yap"
 logout: "Çıkış Yap"
 signup: "Kayıt Ol"
@@ -29,7 +29,7 @@ addUser: "Kullanıcı Ekle"
 favorite: "Favorilere ekle"
 favorites: "Favoriler"
 unfavorite: "Favorilerden Kaldır"
-favorited: "Favorilerime eklendi."
+favorited: "Favorilere eklendi."
 alreadyFavorited: "Zaten favorilerinizde kayıtlı."
 pin: "Sabitlenmiş"
 unpin: "Sabitlemeyi kaldır"
@@ -41,9 +41,9 @@ deleteAndEditConfirm: "Bu gönderiyi silip yeniden düzenlemek istiyor musunuz? 
   ilişkin tüm tepkiler, destekler ve yanıtlar silinecektir."
 addToList: "Listeye ekle"
 sendMessage: "Mesaj Gönder"
-copyUsername: "Kullanıcı Adını Kopyala"
+copyUsername: "Kullanıcı Adını kopyala"
 searchUser: "Kullanıcıları ara"
-pinned: "Sabitlenmiş"
+pinned: "Profile sabitle"
 remove: "Sil"
 smtpUser: "Kullanıcı Adı"
 smtpPass: "Şifre"
@@ -240,7 +240,7 @@ instance: Sunucu
 fetchingAsApObject: Fediverse'den çekiliyor
 removeReaction: Tepkini sil
 rememberNoteVisibility: Gönderi görünürlüğü ayarlarını hatırla
-attachCancel: Eklentiyi kaldır
+attachCancel: Ek'i kaldır
 suspend: Askıya Al
 unsuspend: Askıya Almayı Kaldır
 unmute: Susturmayı Kaldır
@@ -248,13 +248,13 @@ blockConfirm: Bu hesabı engellemek istediğinize emin misiniz?
 unblockConfirm: Bu hesabın engelini kaldırmak istediğinize emin misiniz?
 settingGuide: Tavsiye edilen ayarlar
 cacheRemoteFilesDescription: Bu ayar devre dışı bırakıldığında, uzak dosyalar doğrudan
-  uzak sunucudan yüklenir. Bunun devre dışı bırakılması depolama kullanımını azaltacak,
-  ancak küçük resimler oluşturulmayacağından trafiği artıracaktır.
+  dosyanın bulunduğu sunucudan yüklenir. Bunun devre dışı bırakılması depolama kullanımını
+  azaltacak, ancak küçük resimler oluşturulmayacağından trafiği artıracaktır.
 flagAsCatDescription: Kedi kulaklarına sahip olacak ve bir kedi gibi konuşacaksın!
 flagSpeakAsCat: Kedi gibi konuş
 setWallpaper: Arkaplanı ayarla
 removeWallpaper: Arkaplanı sil
-operations: Operasyonlar
+operations: İşlemler
 clearCachedFiles: Ön belleği temizle
 clearCachedFilesConfirm: Önbelleğe alınan tüm uzak dosyaları silmek istediğinizden
   emin misiniz?
@@ -357,13 +357,13 @@ whatIsNew: Değişiklikleri göster
 translate: Çevir
 breakFollow: Takipçiyi sil
 breakFollowConfirm: Takipçiyi kaldırmak istediğinizden emin misiniz?
-unfollowConfirm: "{name}'i takibi bırakmak istediğinizden emin misiniz?"
+unfollowConfirm: "{name} kullanıcısını takip etmeyi bırakmak istediğinizden emin misiniz?"
 importRequested: Bir içe aktarma isteğinde bulundunuz. Bu biraz zaman alabilir.
 somethingHappened: Bir hata ile karşılaşıldı
 retry: Tekrar Dene
 youShouldUpgradeClient: Bu sayfayı görüntülemek için, lütfen istemcinizi yenileyin.
 reactionSetting: Tepki seçicide gösterilecek tepkiler
-unmarkAsSensitive: NSFW işaretini kaldır
+unmarkAsSensitive: NSFW (Müstehcen İçerik) işaretini kaldır
 enterFileName: Dosya adı gir
 noJobs: Hiçbir iş yok
 instanceFollowing: Sunucuda takip ediliyor
@@ -481,8 +481,8 @@ mention: Bahset
 download: İndir
 lists: Listeler
 noLists: Hiç listen yok
-cantRenote: Bu gönderi yükseltilemez.
-cantReRenote: Bir yükseltme tekrar yükseltilemez.
+cantRenote: Bu gönderi desteklenemez.
+cantReRenote: Bir destek tekrardan desteklenemez.
 mute: Sustur
 block: Engelle
 editWidgetsExit: Tamamlandı
@@ -636,10 +636,10 @@ reactionSettingDescription2: Yeniden sıralamak için sürükleyin, silmek için
   eklemek için "+"ya basın.
 you: Sen
 clickToShow: Görmek için tıkla
-sensitive: NSFW
+sensitive: NSFW (Müstehcen İçerik)
 add: Ekle
 reaction: Tepkiler
-markAsSensitive: NSFW olarak işaretle
+markAsSensitive: NSFW (Müstehcen İçerik) olarak işaretle
 unblock: Engeli Kaldır
 addAccount: Hesap ekle
 network: İnternet
@@ -722,11 +722,11 @@ moveAccountDescription: Bu süreç geri döndürülemez. Taşımadan önce yeni 
   şeklinde biçimlendirilmiş hesabın etiketini girin
 emojis: Emoji
 flagAsCat: Kedi misin? 😺
-selectChannel: Kanal seç
+selectChannel: Bir kanal seç
 emojiName: Emoji adı
 showOnRemote: Orijinal sayfayı aç
 flagSpeakAsCatDescription: Gönderileriniz kedi modundayken miyavdirilecektir
-flagShowTimelineReplies: Yanıtları zaman çizelgesinde göster
+flagShowTimelineReplies: Yanıtları akışta göster
 silenceThisInstance: Bu sunucuyu sustur
 proxyAccountDescription: Vekil hesabı, belirli koşullar altında kullanıcılar için
   uzaktan takipçi işlevi gören bir hesaptır. Örneğin, bir kullanıcı listeye bir uzak
@@ -845,8 +845,8 @@ pageLoadErrorDescription: Bu problem genelde ağ hataları veya tarayıcının �
   kaynaklanır. Önbelleği temizlemeyi deneyin ve biraz bekledikten sonra tekrar deneyin.
 quote: Alıntıla
 pinnedNote: Sabitlenmiş gönderi
-renote: Yükselt
-unrenote: Yükseltmeyi geri al
+renote: Destekle
+unrenote: Desteklemeyi geri al
 emojiUrl: Emoji URL'si
 suspendConfirm: Bu hesabı askıya almak istediğinize emin misiniz?
 addEmoji: Ekle
@@ -858,7 +858,7 @@ wallpaper: Arkaplan
 searchWith: 'Arat: {q}'
 youHaveNoLists: Hiçbir listen yok
 followConfirm: '{name} kullanıcısını takip etmek istediğine emin misin?'
-metadata: Metadata
+metadata: Üstveri
 monitor: Monitör
 jobQueue: İş Sırası
 noUsers: Kullanıcılar bulunamadı
@@ -1013,7 +1013,7 @@ incorrectPassword: Yanlış şifre.
 voteConfirm: '"{choice}" için oyunuzu onaylıyor musunuz?'
 failedToFetchAccountInformation: Hesap bilgileri getirilemedi
 rateLimitExceeded: Hız limiti aşıldı
-renotedBy: '{user} Yükseltti'
+renotedBy: '{user} destekledi'
 host: Host
 objectStorage: Nesne Depolaması
 objectStorageUseSSLDesc: API bağlantıları için HTTPS kullanmayacaksanız bunu kapatın
@@ -1026,8 +1026,8 @@ verificationEmailSent: Bir doğrulama maili gönderildi. Doğrulamayı tamamlama
   lütfen verilen bağlantıyı takip edin.
 hashtags: Etiketler
 resolved: Çözüldü
-flagShowTimelineRepliesDescription: Açıksa, kullanıcıların zaman çizelgesindeki diğer
-  kullanıcıların gönderilerine verdiği yanıtları gösterir.
+flagShowTimelineRepliesDescription: Açıksa, kullanıcıların akıştaki diğer kullanıcıların
+  gönderilerine verdiği yanıtları gösterir.
 clearQueueConfirmText: Kuyrukta kalan teslim edilmemiş gönderiler birleştirilmeyecektir.
   Genellikle bu işleme gerek yoktur.
 image: Resim
@@ -1040,8 +1040,8 @@ unsuspendConfirm: Bu hesabın askıya almasını kaldırmak istediğinize emin m
 selectList: Liste seç
 editWidgets: Widget'ları düzenle
 showEmojisInReactionNotifications: Tepki bildirimlerinde emojileri göster
-renoteMute: Yükseltmeleri sustur
-renoteUnmute: Yükseltmeleri susturmayı kaldır
+renoteMute: Desteklemeleri sustur
+renoteUnmute: Desteklemelerde ki susturmayı kaldır
 loginFailed: Giriş yapılamadı
 proxyAccount: Vekil Hesap
 selectUser: Kullanıcı seç
@@ -1068,7 +1068,7 @@ hideThisNote: Bu gönderiyi gizle
 file: Dosya
 enableEmojiReactions: Emoji tepkilerini aç
 cw: İçerik uyarısı
-makeFollowManuallyApprove: Onay gerektiren takip istekleri
+makeFollowManuallyApprove: Onayınızı gerektiren takip istekleri
 today: Bugün
 enableRecommendedTimeline: Tavsiye edilen zaman çizgisini aktive et
 state: Durum
@@ -1165,7 +1165,7 @@ indexFromDescription: Her gönderiyi dizine eklemek için boş bırakın
 indexNotice: Şimdi indeksleniyor. Bu muhtemelen biraz zaman alacaktır, lütfen sunucunuzu
   en az bir saat yeniden başlatmayın.
 customKaTeXMacro: Özel KaTeX makroları
-directNotes: Direkt Mesajlar
+directNotes: Özel Mesajlar
 import: İçeri Aktar
 export: Dışarı Aktar
 mentions: Bahsetmeler
@@ -1173,8 +1173,8 @@ files: Dosyalar
 driveFileDeleteConfirm: '"{name}" dosyasını silmek istediğinizden emin misiniz? Dosyayı
   "Ek" olarak içeren tüm gönderilerden kaldırılacaktır.'
 createList: Liste oluştur
-listsDesc: Listeler, belirtilen kullanıcılarla zaman çizelgesi oluşturmanıza olanak
-  tanır. Zaman Çizelgesi sayfasından erişilebilirler.
+listsDesc: Listeler, belirtilen kullanıcıların içeriklerini içeren akışlar oluşturmanıza
+  olanak tanır. Akış sayfasından erişilebilirler.
 note: Gönder
 enterListName: Liste için isim gir
 unfollow: Takipten Çık
@@ -1183,14 +1183,14 @@ followRequestPending: Takip isteği bekleniyor
 enterEmoji: Bir emoji gir
 followRequest: Takip İsteği
 followRequests: Takip istekleri
-renoted: Yükseldi.
+renoted: Desteklendi.
 emoji: Emoji
 cacheRemoteFiles: Uzak dosyaları önbelleğe al
 flagAsBot: Bu hesabı robot olarak işaretle
 flagAsBotDescription: Bu hesap bir program tarafından kontrol ediliyorsa bu seçeneği
   etkinleştirin. Etkinleştirilirse, diğer geliştiricilerin botlarıyla sonsuz etkileşim
   zincirlerinin önlemesi ve Firefish'in dahili sistemlerinin bu hesabı bir bot olarak
-  ele alacak şekilde ayarlaması için bir bayrak görevi görür.
+  ele alacak şekilde ayarlaması için bir işaret görevi görür.
 clearQueue: Sırayı Temizle
 hiddenTags: Gizlenmiş Etiketler
 done: Tamamlandı
@@ -2156,3 +2156,4 @@ importZip: ZIP içe aktar
 indexable: Endekslenebilir
 languageForTranslation: Çeviri sonrası dili
 confirm: Onayla
+clickToShowPatterns: Modülün örüntülerini göstermek için tıklayın
