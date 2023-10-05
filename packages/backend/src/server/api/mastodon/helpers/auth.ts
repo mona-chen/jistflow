@@ -1,6 +1,6 @@
 import OAuth from "@/server/api/mastodon/entities/oauth/oauth.js";
 import { secureRndstr } from "@/misc/secure-rndstr.js";
-import { Apps, AuthSessions } from "@/models/index.js";
+import { AccessTokens, Apps, AuthSessions } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import { v4 as uuid } from "uuid";
 import config from "@/config/index.js";
@@ -39,5 +39,34 @@ export class AuthHelpers {
         appdata.url = `${config.authUrl}/${session.token}`;
         appdata.session_token = session.token;
         return appdata;
+    }
+
+    public static async getAuthToken(appSecret: string, token: string) {
+        // Lookup app
+        const app = await Apps.findOneBy({
+            secret: appSecret,
+        });
+
+        if (app == null) throw new Error("No such app");
+
+        // Fetch token
+        const session = await AuthSessions.findOneBy({
+            token: token,
+            appId: app.id,
+        });
+
+        if (session == null) throw new Error("No such session");
+        if (session.userId == null) throw new Error("This session is still pending");
+
+        // Lookup access token
+        const accessToken = await AccessTokens.findOneByOrFail({
+            appId: app.id,
+            userId: session.userId,
+        });
+
+        // Delete session
+        AuthSessions.delete(session.id);
+
+        return accessToken.token;
     }
 }
