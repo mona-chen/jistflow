@@ -36,8 +36,7 @@
 		"packages/backend",
 		"packages/client",
 		"packages/sw",
-		"packages/iceshrimp-js",
-		"packages/megalodon"
+		"packages/iceshrimp-js"
 	],
 	"resolutions": {
 		"chokidar": "^3.3.1"

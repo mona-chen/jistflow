@@ -12,7 +12,6 @@ COPY packages/backend/package.json packages/backend/package.json
 COPY packages/client/package.json packages/client/package.json
 COPY packages/sw/package.json packages/sw/package.json
 COPY packages/iceshrimp-js/package.json packages/iceshrimp-js/package.json
-COPY packages/megalodon/package.json packages/megalodon/package.json
 
 # Prepare yarn cache
 COPY .yarn/cache .yarn/cache
@@ -47,8 +46,6 @@ WORKDIR /iceshrimp
 RUN apk add --no-cache --no-progress tini ffmpeg vips-dev zip unzip nodejs-current
 
 COPY . ./
-
-COPY --from=build /iceshrimp/packages/megalodon /iceshrimp/packages/megalodon
 
 # Copy node modules
 COPY --from=build /iceshrimp/.yarn /iceshrimp/.yarn

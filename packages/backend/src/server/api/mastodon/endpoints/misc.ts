@@ -1,5 +1,4 @@
 import Router from "@koa/router";
-import { getClient } from "@/server/api/mastodon/index.js";
 import { MiscHelpers } from "@/server/api/mastodon/helpers/misc.js";
 import authenticate from "@/server/api/authenticate.js";
 import { argsToBools, limitToInt } from "@/server/api/mastodon/endpoints/timeline.js";

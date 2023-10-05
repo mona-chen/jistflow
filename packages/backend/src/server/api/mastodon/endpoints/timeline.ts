@@ -1,5 +1,4 @@
 import Router from "@koa/router";
-import { getClient } from "../index.js";
 import { ParsedUrlQuery } from "querystring";
 import { convertConversationIds, convertStatusIds, } from "../converters.js";
 import { convertId, IdType } from "../../index.js";

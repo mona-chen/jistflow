@@ -1,12 +1,9 @@
-import { Converter } from "megalodon";
 import Router from "@koa/router";
-import axios from "axios";
 import { argsToBools, convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "./timeline.js";
-import { convertAccountId, convertSearchIds, convertStatusIds } from "../converters.js";
+import { convertSearchIds } from "../converters.js";
 import authenticate from "@/server/api/authenticate.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { SearchHelpers } from "@/server/api/mastodon/helpers/search.js";
-import { MiscHelpers } from "@/server/api/mastodon/helpers/misc.js";
 
 export function setupEndpointsSearch(router: Router): void {
     router.get("/v1/search", async (ctx) => {

@@ -91,7 +91,6 @@
 		"koa-send": "5.0.1",
 		"koa-slow": "2.1.0",
 		"koa-views": "7.0.2",
-		"megalodon": "workspace:*",
 		"meilisearch": "0.33.0",
 		"mfm-js": "0.23.3",
 		"mime-types": "2.1.35",

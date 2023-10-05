@@ -1,5 +1,4 @@
 import Router from "@koa/router";
-import megalodon, { MegalodonInterface } from "megalodon";
 import { setupEndpointsAuth } from "./endpoints/auth.js";
 import { setupEndpointsAccount } from "./endpoints/account.js";
 import { setupEndpointsStatus } from "./endpoints/status.js";
@@ -12,17 +11,6 @@ import { setupEndpointsMisc } from "@/server/api/mastodon/endpoints/misc.js";
 import { HttpMethodEnum, koaBody } from "koa-body";
 import multer from "@koa/multer";
 import { setupEndpointsList } from "@/server/api/mastodon/endpoints/list.js";
-
-export function getClient(
-    BASE_URL: string,
-    authorization: string | undefined,
-): MegalodonInterface {
-    const accessTokenArr = authorization?.split(" ") ?? [null];
-    const accessToken = accessTokenArr[accessTokenArr.length - 1];
-    const generator = (megalodon as any).default;
-    const client = generator(BASE_URL, accessToken) as MegalodonInterface;
-    return client;
-}
 
 export function setupMastodonApi(router: Router, fileRouter: Router, upload: multer.Instance): void {
     router.use(
