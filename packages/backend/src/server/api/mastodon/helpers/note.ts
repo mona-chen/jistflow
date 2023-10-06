@@ -388,9 +388,8 @@ export class NoteHelpers {
     }
 
     public static async getNoteOr404(id: string, user: ILocalUser | null): Promise<Note> {
-        return getNote(id, user).then(p => {
-            if (p === null) throw new MastoApiError(404);
-            return p;
+        return getNote(id, user).catch(_ => {
+            throw new MastoApiError(404);
         });
     }
 
