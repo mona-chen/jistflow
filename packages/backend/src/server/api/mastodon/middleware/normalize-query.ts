@@ -5,7 +5,7 @@ export async function NormalizeQueryMiddleware(ctx: MastoContext, next: () => Pr
         if (!ctx.request.body || Object.keys(ctx.request.body).length === 0) {
             ctx.request.body = ctx.request.query;
         } else {
-            ctx.request.body = {...ctx.request.body, ...ctx.request.query};
+            ctx.request.body = { ...ctx.request.body, ...ctx.request.query };
         }
     }
     await next();

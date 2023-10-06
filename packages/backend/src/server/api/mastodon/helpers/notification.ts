@@ -2,7 +2,7 @@ import { ILocalUser } from "@/models/entities/user.js";
 import { Notes, Notifications } from "@/models/index.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { Notification } from "@/models/entities/notification.js";
-import {MastoApiError} from "@/server/api/mastodon/middleware/catch-errors.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export class NotificationHelpers {
     public static async getNotifications(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, types: string[] | undefined, excludeTypes: string[] | undefined, accountId: string | undefined): Promise<Notification[]> {
@@ -24,11 +24,11 @@ export class NotificationHelpers {
             maxId,
             minId
         )
-            .andWhere("notification.notifieeId = :userId", {userId: user.id})
-            .andWhere("notification.type IN (:...types)", {types: requestedTypes});
+            .andWhere("notification.notifieeId = :userId", { userId: user.id })
+            .andWhere("notification.type IN (:...types)", { types: requestedTypes });
 
         if (accountId !== undefined)
-            query.andWhere("notification.notifierId = :notifierId", {notifierId: accountId});
+            query.andWhere("notification.notifierId = :notifierId", { notifierId: accountId });
 
         query.leftJoinAndSelect("notification.note", "note");
 
@@ -36,22 +36,22 @@ export class NotificationHelpers {
     }
 
     public static async getNotification(id: string, user: ILocalUser): Promise<Notification | null> {
-        return Notifications.findOneBy({id: id, notifieeId: user.id});
+        return Notifications.findOneBy({ id: id, notifieeId: user.id });
     }
 
     public static async getNotificationOr404(id: string, user: ILocalUser): Promise<Notification> {
         return this.getNotification(id, user).then(p => {
-           if (p) return p;
-           throw new MastoApiError(404);
+            if (p) return p;
+            throw new MastoApiError(404);
         });
     }
 
     public static async dismissNotification(id: string, user: ILocalUser): Promise<void> {
-        const result = await Notifications.update({id: id, notifieeId: user.id}, {isRead: true});
+        const result = await Notifications.update({ id: id, notifieeId: user.id }, { isRead: true });
     }
 
     public static async clearAllNotifications(user: ILocalUser): Promise<void> {
-        await Notifications.update({notifieeId: user.id}, {isRead: true});
+        await Notifications.update({ notifieeId: user.id }, { isRead: true });
     }
 
     public static async markConversationAsRead(id: string, user: ILocalUser): Promise<void> {
@@ -68,7 +68,7 @@ export class NotificationHelpers {
             .setParameter("conversationId", id)
             .setParameter("types", ['reply', 'mention'])
             .update()
-            .set({isRead: true})
+            .set({ isRead: true })
             .execute();
     }
 

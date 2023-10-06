@@ -147,7 +147,7 @@ export class NoteHelpers {
             maxId,
             minId
         )
-            .andWhere("reaction.noteId = :noteId", {noteId: note.id})
+            .andWhere("reaction.noteId = :noteId", { noteId: note.id })
             .innerJoinAndSelect("reaction.user", "user");
 
         return query.take(limit).getMany().then(async p => {
@@ -168,7 +168,7 @@ export class NoteHelpers {
         const cache = UserHelpers.getFreshAccountCache();
         const account = Promise.resolve(note.user ?? await UserHelpers.getUserCached(note.userId, cache))
             .then(p => UserConverter.encode(p, cache));
-        const edits = await NoteEdits.find({where: {noteId: note.id}, order: {id: "ASC"}});
+        const edits = await NoteEdits.find({ where: { noteId: note.id }, order: { id: "ASC" } });
         const history: Promise<MastodonEntity.StatusEdit>[] = [];
 
         const curr = {
@@ -219,7 +219,7 @@ export class NoteHelpers {
             maxId,
             minId
         )
-            .andWhere("note.renoteId = :noteId", {noteId: note.id})
+            .andWhere("note.renoteId = :noteId", { noteId: note.id })
             .andWhere("note.text IS NULL") // We don't want to count quotes as renotes
             .innerJoinAndSelect("note.user", "user");
 
@@ -244,7 +244,7 @@ export class NoteHelpers {
         const query = makePaginationQuery(Notes.createQueryBuilder("note"))
             .andWhere(
                 "note.id IN (SELECT id FROM note_replies(:noteId, :depth, :limit))",
-                {noteId, depth, limit},
+                { noteId, depth, limit },
             );
 
         generateVisibilityQuery(query, user);

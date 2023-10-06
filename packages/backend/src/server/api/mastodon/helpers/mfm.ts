@@ -13,7 +13,7 @@ export class MfmHelpers {
             return null;
         }
 
-        const {window} = new JSDOM("");
+        const { window } = new JSDOM("");
 
         const doc = window.document;
 
@@ -122,7 +122,7 @@ export class MfmHelpers {
 
             mention(node) {
                 const a = doc.createElement("a");
-                const {username, host, acct} = node.props;
+                const { username, host, acct } = node.props;
                 const remoteUserInfo = mentionedRemoteUsers.find(
                     (remoteUser) =>
                         remoteUser.username === username && remoteUser.host === host,

@@ -13,22 +13,22 @@ export class PaginationHelpers {
         if (sinceId && minId) throw new Error("Can't user both sinceId and minId params");
 
         if (sinceId && maxId) {
-            q.andWhere(`${idField} > :sinceId`, {sinceId: sinceId});
-            q.andWhere(`${idField} < :maxId`, {maxId: maxId});
+            q.andWhere(`${idField} > :sinceId`, { sinceId: sinceId });
+            q.andWhere(`${idField} < :maxId`, { maxId: maxId });
             q.orderBy(`${idField}`, "DESC");
         }
         if (minId && maxId) {
-            q.andWhere(`${idField} > :minId`, {minId: minId});
-            q.andWhere(`${idField} < :maxId`, {maxId: maxId});
+            q.andWhere(`${idField} > :minId`, { minId: minId });
+            q.andWhere(`${idField} < :maxId`, { maxId: maxId });
             q.orderBy(`${idField}`, "ASC");
         } else if (sinceId) {
-            q.andWhere(`${idField} > :sinceId`, {sinceId: sinceId});
+            q.andWhere(`${idField} > :sinceId`, { sinceId: sinceId });
             q.orderBy(`${idField}`, "DESC");
         } else if (minId) {
-            q.andWhere(`${idField} > :minId`, {minId: minId});
+            q.andWhere(`${idField} > :minId`, { minId: minId });
             q.orderBy(`${idField}`, "ASC");
         } else if (maxId) {
-            q.andWhere(`${idField} < :maxId`, {maxId: maxId});
+            q.andWhere(`${idField} < :maxId`, { maxId: maxId });
             q.orderBy(`${idField}`, "DESC");
         } else {
             q.orderBy(`${idField}`, "DESC");

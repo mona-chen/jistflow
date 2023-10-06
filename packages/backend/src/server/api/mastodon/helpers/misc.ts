@@ -7,11 +7,10 @@ import { awaitAll } from "@/prelude/await-all.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { convertAccountId } from "@/server/api/mastodon/converters.js";
 import { Announcement } from "@/models/entities/announcement.js";
-import { ILocalUser } from "@/models/entities/user.js";
+import { ILocalUser, User } from "@/models/entities/user.js";
 import { AnnouncementConverter } from "@/server/api/mastodon/converters/announcement.js";
 import { genId } from "@/misc/gen-id.js";
 import * as Acct from "@/misc/acct.js";
-import { User } from "@/models/entities/user.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { generateMutedUserQueryForUsers } from "@/server/api/common/generate-muted-user-query.js";
 import { generateBlockQueryForUsers } from "@/server/api/common/generate-block-query.js";
@@ -23,8 +22,8 @@ import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility
 
 export class MiscHelpers {
     public static async getInstance(): Promise<MastodonEntity.Instance> {
-        const userCount = Users.count({where: {host: IsNull()}});
-        const noteCount = Notes.count({where: {userHost: IsNull()}});
+        const userCount = Users.count({ where: { host: IsNull() } });
+        const noteCount = Notes.count({ where: { userHost: IsNull() } });
         const instanceCount = Instances.count({ cache: 3600000 });
         const contact = await Users.findOne({
             where: {
@@ -33,7 +32,7 @@ export class MiscHelpers {
                 isDeleted: false,
                 isSuspended: false,
             },
-            order: {id: "ASC"},
+            order: { id: "ASC" },
         })
             .then(p => p ? UserConverter.encode(p) : null)
             .then(p => p ? convertAccountId(p) : null);
@@ -100,9 +99,9 @@ export class MiscHelpers {
         if (includeRead) {
             const [announcements, reads] = await Promise.all([
                 Announcements.createQueryBuilder("announcement")
-                    .orderBy({"announcement.id": "DESC"})
+                    .orderBy({ "announcement.id": "DESC" })
                     .getMany(),
-                AnnouncementReads.findBy({userId: user.id})
+                AnnouncementReads.findBy({ userId: user.id })
                     .then(p => p.map(x => x.announcementId))
             ]);
 
@@ -115,7 +114,7 @@ export class MiscHelpers {
 
         const query = Announcements.createQueryBuilder("announcement")
             .where(`announcement.id NOT IN (${sq.getQuery()})`)
-            .orderBy({"announcement.id": "DESC"})
+            .orderBy({ "announcement.id": "DESC" })
             .setParameter("userId", user.id);
 
         return query.getMany()
@@ -123,7 +122,7 @@ export class MiscHelpers {
     }
 
     public static async dismissAnnouncement(announcement: Announcement, user: ILocalUser): Promise<void> {
-        const exists = await AnnouncementReads.exist({where: {userId: user.id, announcementId: announcement.id}});
+        const exists = await AnnouncementReads.exist({ where: { userId: user.id, announcementId: announcement.id } });
         if (!exists) {
             await AnnouncementReads.insert({
                 id: genId(),
@@ -139,19 +138,19 @@ export class MiscHelpers {
         const results: Promise<MastodonEntity.SuggestedAccount[]>[] = [];
 
         const pinned = fetchMeta().then(meta => Promise.all(
-            meta.pinnedUsers
-                .map((acct) => Acct.parse(acct))
-                .map((acct) =>
-                    Users.findOneBy({
-                        usernameLower: acct.username.toLowerCase(),
-                        host: acct.host ?? IsNull(),
-                    }))
+                meta.pinnedUsers
+                    .map((acct) => Acct.parse(acct))
+                    .map((acct) =>
+                        Users.findOneBy({
+                            usernameLower: acct.username.toLowerCase(),
+                            host: acct.host ?? IsNull(),
+                        }))
             )
-            .then(p => p.filter(x => !!x) as User[])
-            .then(p => UserConverter.encodeMany(p, cache))
-            .then(p => p.map(x => {
-                return {source: "staff", account: x} as MastodonEntity.SuggestedAccount
-            }))
+                .then(p => p.filter(x => !!x) as User[])
+                .then(p => UserConverter.encodeMany(p, cache))
+                .then(p => p.map(x => {
+                    return { source: "staff", account: x } as MastodonEntity.SuggestedAccount
+                }))
         );
 
         const query = Users.createQueryBuilder("user")
@@ -170,7 +169,7 @@ export class MiscHelpers {
             .getMany()
             .then(p => UserConverter.encodeMany(p, cache))
             .then(p => p.map(x => {
-                return {source: "global", account: x} as MastodonEntity.SuggestedAccount
+                return { source: "global", account: x } as MastodonEntity.SuggestedAccount
             }));
 
         results.push(pinned);
@@ -182,17 +181,18 @@ export class MiscHelpers {
 
     public static async getCustomEmoji() {
         return Emojis.find({
-            where: {
-                host: IsNull(),
-            },
-            order: {
-                category: "ASC",
-                name: "ASC",
-            },
-            cache: {
-                id: "meta_emojis",
-                milliseconds: 3600000, // 1 hour
-            }}
+                where: {
+                    host: IsNull(),
+                },
+                order: {
+                    category: "ASC",
+                    name: "ASC",
+                },
+                cache: {
+                    id: "meta_emojis",
+                    milliseconds: 3600000, // 1 hour
+                }
+            }
         )
             .then(dbRes => populateEmojis(dbRes.map(p => p.name), null)
                 .then(p => p.map(x => EmojiConverter.encode(x))
@@ -230,7 +230,7 @@ export class MiscHelpers {
     }
 
     public static getPreferences(user: ILocalUser): Promise<MastodonEntity.Preferences> {
-        const profile = UserProfiles.findOneByOrFail({userId: user.id});
+        const profile = UserProfiles.findOneByOrFail({ userId: user.id });
         const sensitive = profile.then(p => p.alwaysMarkNsfw);
         const language = profile.then(p => p.lang);
         const privacy = UserHelpers.getDefaultNoteVisibility(user)

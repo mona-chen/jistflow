@@ -34,7 +34,7 @@ export function setupEndpointsMisc(router: Router): void {
         auth(true, ['write:accounts']),
         async (ctx) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const announcement = await Announcements.findOneBy({id: id});
+            const announcement = await Announcements.findOneBy({ id: id });
             if (!announcement) throw new MastoApiError(404);
 
             await MiscHelpers.dismissAnnouncement(announcement, ctx.user);

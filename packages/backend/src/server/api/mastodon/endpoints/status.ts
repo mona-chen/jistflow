@@ -1,6 +1,12 @@
 import Router from "@koa/router";
 import { convertId, IdType } from "../../index.js";
-import { convertAccountId, convertPollId, convertStatusIds, convertStatusEditIds, convertStatusSourceId, } from "../converters.js";
+import {
+    convertAccountId,
+    convertPollId,
+    convertStatusEditIds,
+    convertStatusIds,
+    convertStatusSourceId,
+} from "../converters.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "@/server/api/mastodon/endpoints/timeline.js";
@@ -29,7 +35,7 @@ export function setupEndpointsStatus(router: Router): void {
                 .then(p => NoteConverter.encode(p, ctx.user))
                 .then(p => convertStatusIds(p));
 
-            if (key !== null) NoteHelpers.postIdempotencyCache.set(key, {status: ctx.body});
+            if (key !== null) NoteHelpers.postIdempotencyCache.set(key, { status: ctx.body });
         }
     );
     router.put("/v1/statuses/:id",
@@ -264,7 +270,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
             const data = await PollHelpers.getPoll(note, ctx.user);
             ctx.body = convertPollId(data);
-    });
+        });
     router.post<{ Params: { id: string } }>(
         "/v1/polls/:id/votes",
         auth(true, ["write:statuses"]),
@@ -276,7 +282,7 @@ export function setupEndpointsStatus(router: Router): void {
             const choices = toArray(body.choices ?? []).map(p => parseInt(p));
             if (choices.length < 1) {
                 ctx.status = 400;
-                ctx.body = {error: 'Must vote for at least one option'};
+                ctx.body = { error: 'Must vote for at least one option' };
                 return;
             }
 

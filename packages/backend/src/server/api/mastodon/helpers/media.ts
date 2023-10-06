@@ -34,7 +34,7 @@ export class MediaHelpers {
             comment: body?.description ?? undefined
         });
 
-        return DriveFiles.findOneByOrFail({id: file.id, userId: user.id})
+        return DriveFiles.findOneByOrFail({ id: file.id, userId: user.id })
             .then(p => DriveFiles.pack(p));
     }
 
@@ -51,13 +51,13 @@ export class MediaHelpers {
     }
 
     public static async getMedia(user: ILocalUser, id: string): Promise<DriveFile | null> {
-        return DriveFiles.findOneBy({id: id, userId: user.id});
+        return DriveFiles.findOneBy({ id: id, userId: user.id });
     }
 
     public static async getMediaOr404(user: ILocalUser, id: string): Promise<DriveFile> {
         return this.getMedia(user, id).then(p => {
-           if (p) return p;
-           throw new MastoApiError(404);
+            if (p) return p;
+            throw new MastoApiError(404);
         });
     }
 }

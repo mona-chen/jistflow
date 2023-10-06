@@ -63,7 +63,10 @@ export class SearchHelpers {
                     if (!match) match = q.match(/^@(?<user>[a-zA-Z0-9_]+)$/)
                     if (match) {
                         // check if user is already in database
-                        const dbResult = await Users.findOneBy({usernameLower: match.groups!.user.toLowerCase(), host: match.groups?.host ?? IsNull()});
+                        const dbResult = await Users.findOneBy({
+                            usernameLower: match.groups!.user.toLowerCase(),
+                            host: match.groups?.host ?? IsNull()
+                        });
                         if (dbResult) return [dbResult];
 
                         const result = await resolveUser(match.groups!.user.toLowerCase(), match.groups?.host ?? null);
@@ -89,23 +92,23 @@ export class SearchHelpers {
         if (following) {
             const followingQuery = Followings.createQueryBuilder("following")
                 .select("following.followeeId")
-                .where("following.followerId = :followerId", {followerId: user.id});
+                .where("following.followerId = :followerId", { followerId: user.id });
 
             query.andWhere(
                 new Brackets((qb) => {
-                    qb.where(`user.id IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, {meId: user.id});
+                    qb.where(`user.id IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, { meId: user.id });
                 }),
             );
         }
 
         query.andWhere(
             new Brackets((qb) => {
-                qb.where("user.name ILIKE :q", {q: `%${sqlLikeEscape(q)}%`});
-                qb.orWhere("user.usernameLower ILIKE :q", {q: `%${sqlLikeEscape(q)}%`});
+                qb.where("user.name ILIKE :q", { q: `%${sqlLikeEscape(q)}%` });
+                qb.orWhere("user.usernameLower ILIKE :q", { q: `%${sqlLikeEscape(q)}%` });
             })
         );
 
-        query.orderBy({'user.notesCount': 'DESC'});
+        query.orderBy({ 'user.notesCount': 'DESC' });
 
         return query.skip(offset ?? 0).take(limit).getMany().then(p => minId ? p.reverse() : p);
     }
@@ -184,8 +187,8 @@ export class SearchHelpers {
                 const chunk = ids.slice(start, start + chunkSize);
 
                 const query = Notes.createQueryBuilder("note")
-                    .where({id: In(chunk)})
-                    .orderBy({id: "DESC"})
+                    .where({ id: In(chunk) })
+                    .orderBy({ id: "DESC" })
 
                 generateVisibilityQuery(query, user);
 
@@ -197,11 +200,11 @@ export class SearchHelpers {
                 if (following) {
                     const followingQuery = Followings.createQueryBuilder("following")
                         .select("following.followeeId")
-                        .where("following.followerId = :followerId", {followerId: user.id});
+                        .where("following.followerId = :followerId", { followerId: user.id });
 
                     query.andWhere(
                         new Brackets((qb) => {
-                            qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, {meId: user.id});
+                            qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, { meId: user.id });
                         }),
                     )
                 }
@@ -267,8 +270,8 @@ export class SearchHelpers {
                 const chunk = ids.slice(start, start + chunkSize);
 
                 const query = Notes.createQueryBuilder("note")
-                    .where({id: In(chunk)})
-                    .orderBy({id: "DESC"})
+                    .where({ id: In(chunk) })
+                    .orderBy({ id: "DESC" })
 
                 generateVisibilityQuery(query, user);
 
@@ -356,23 +359,23 @@ export class SearchHelpers {
         );
 
         if (accountId) {
-            query.andWhere("note.userId = :userId", {userId: accountId});
+            query.andWhere("note.userId = :userId", { userId: accountId });
         }
 
         if (following) {
             const followingQuery = Followings.createQueryBuilder("following")
                 .select("following.followeeId")
-                .where("following.followerId = :followerId", {followerId: user.id});
+                .where("following.followerId = :followerId", { followerId: user.id });
 
             query.andWhere(
                 new Brackets((qb) => {
-                    qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, {meId: user.id});
+                    qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, { meId: user.id });
                 }),
             )
         }
 
         query
-            .andWhere("note.text ILIKE :q", {q: `%${sqlLikeEscape(q)}%`})
+            .andWhere("note.text ILIKE :q", { q: `%${sqlLikeEscape(q)}%` })
             .leftJoinAndSelect("note.renote", "renote");
 
 
@@ -390,8 +393,8 @@ export class SearchHelpers {
         const tags = Hashtags.createQueryBuilder('tag')
             .select('tag.name')
             .distinctOn(['tag.name'])
-            .where("tag.name ILIKE :q", {q: `%${sqlLikeEscape(q)}%`})
-            .orderBy({'tag.name': 'ASC'})
+            .where("tag.name ILIKE :q", { q: `%${sqlLikeEscape(q)}%` })
+            .orderBy({ 'tag.name': 'ASC' })
             .skip(offset ?? 0).take(limit).getMany();
 
         return tags.then(p => p.map(tag => {

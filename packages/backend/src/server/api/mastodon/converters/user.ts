@@ -27,14 +27,14 @@ export class UserConverter {
                 acct = `${u.username}@${u.host}`;
                 acctUrl = `https://${u.host}/@${u.username}`;
             }
-            const profile = UserProfiles.findOneBy({userId: u.id});
+            const profile = UserProfiles.findOneBy({ userId: u.id });
             const bio = profile.then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? "")) ?? escapeMFM(profile?.description ?? ""));
             const avatar = u.avatarId
-                ? (DriveFiles.findOneBy({id: u.avatarId}))
+                ? (DriveFiles.findOneBy({ id: u.avatarId }))
                     .then(p => p?.url ?? Users.getIdenticonUrl(u.id))
                 : Users.getIdenticonUrl(u.id);
             const banner = u.bannerId
-                ? (DriveFiles.findOneBy({id: u.bannerId}))
+                ? (DriveFiles.findOneBy({ id: u.bannerId }))
                     .then(p => p?.url ?? `${config.url}/static-assets/transparent.png`)
                 : `${config.url}/static-assets/transparent.png`;
             const followersCount = profile.then(profile => {

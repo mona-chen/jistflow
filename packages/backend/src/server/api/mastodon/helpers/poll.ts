@@ -10,7 +10,7 @@ import { deliver } from "@/queue/index.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderVote from "@/remote/activitypub/renderer/vote.js";
 import { Not } from "typeorm";
-import {MastoApiError} from "@/server/api/mastodon/middleware/catch-errors.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export class PollHelpers {
     public static async getPoll(note: Note, user: ILocalUser | null): Promise<MastodonEntity.Poll> {
@@ -34,7 +34,7 @@ export class PollHelpers {
                 if (block) throw new Error('You are blocked by the poll author');
             }
 
-            const poll = await Polls.findOneByOrFail({noteId: note.id});
+            const poll = await Polls.findOneByOrFail({ noteId: note.id });
 
             if (poll.expiresAt && poll.expiresAt < createdAt) throw new Error('Poll is expired');
 

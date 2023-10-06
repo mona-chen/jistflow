@@ -10,7 +10,7 @@ import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js"
 
 export class ListHelpers {
     public static async getLists(user: ILocalUser): Promise<MastodonEntity.List[]> {
-        return UserLists.findBy({userId: user.id}).then(p => p.map(list => {
+        return UserLists.findBy({ userId: user.id }).then(p => p.map(list => {
             return {
                 id: list.id,
                 title: list.name
@@ -19,7 +19,7 @@ export class ListHelpers {
     }
 
     public static async getList(user: ILocalUser, id: string): Promise<MastodonEntity.List> {
-        return UserLists.findOneByOrFail({userId: user.id, id: id}).then(list => {
+        return UserLists.findOneByOrFail({ userId: user.id, id: id }).then(list => {
             return {
                 id: list.id,
                 title: list.name
@@ -32,9 +32,10 @@ export class ListHelpers {
             throw new MastoApiError(404);
         })
     }
+
     public static async getListUsers(user: ILocalUser, id: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
         if (limit > 80) limit = 80;
-        const list = await UserLists.findOneBy({userId: user.id, id: id});
+        const list = await UserLists.findOneBy({ userId: user.id, id: id });
         if (!list) throw new MastoApiError(404);
         const query = PaginationHelpers.makePaginationQuery(
             UserListJoinings.createQueryBuilder('member'),
@@ -42,7 +43,7 @@ export class ListHelpers {
             maxId,
             minId
         )
-            .andWhere("member.userListId = :listId", {listId: list.id})
+            .andWhere("member.userListId = :listId", { listId: list.id })
             .innerJoinAndSelect("member.user", "user");
 
         return query.take(limit).getMany().then(async p => {
@@ -125,9 +126,9 @@ export class ListHelpers {
         if (title.length < 1) throw new MastoApiError(400, "Title must not be empty");
         if (user.id != list.userId) throw new Error("List is not owned by user");
 
-        const partial = {name: title};
+        const partial = { name: title };
         const result = await UserLists.update(list.id, partial)
-            .then(async _ => await UserLists.findOneByOrFail({id: list.id}));
+            .then(async _ => await UserLists.findOneByOrFail({ id: list.id }));
 
         return {
             id: result.id,
@@ -140,9 +141,9 @@ export class ListHelpers {
             .select("member.userListId")
             .where("member.userId = :memberId");
         const query = UserLists.createQueryBuilder('list')
-            .where("list.userId = :userId", {userId: user.id})
+            .where("list.userId = :userId", { userId: user.id })
             .andWhere(`list.id IN (${joinQuery.getQuery()})`)
-            .setParameters({memberId: member.id});
+            .setParameters({ memberId: member.id });
 
         return query.getMany()
             .then(results => results.map(result => {

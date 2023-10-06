@@ -44,7 +44,7 @@ export function setupEndpointsList(router: Router): void {
         auth(true, ['write:lists']),
         async (ctx, reply) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const list = await UserLists.findOneBy({userId: ctx.user.id, id: id});
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: id });
             if (!list) throw new MastoApiError(404);
 
             const body = ctx.request.body as any;
@@ -58,7 +58,7 @@ export function setupEndpointsList(router: Router): void {
         auth(true, ['write:lists']),
         async (ctx, reply) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const list = await UserLists.findOneBy({userId: ctx.user.id, id: id});
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: id });
             if (!list) throw new MastoApiError(404);
 
             await ListHelpers.deleteList(ctx.user, list);
@@ -83,7 +83,7 @@ export function setupEndpointsList(router: Router): void {
         auth(true, ['write:lists']),
         async (ctx, reply) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const list = await UserLists.findOneBy({userId: ctx.user.id, id: id});
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: id });
             if (!list) throw new MastoApiError(404);
 
             const body = ctx.request.body as any;
@@ -100,7 +100,7 @@ export function setupEndpointsList(router: Router): void {
         auth(true, ['write:lists']),
         async (ctx, reply) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const list = await UserLists.findOneBy({userId: ctx.user.id, id: id});
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: id });
             if (!list) throw new MastoApiError(404);
 
             const body = ctx.request.body as any;

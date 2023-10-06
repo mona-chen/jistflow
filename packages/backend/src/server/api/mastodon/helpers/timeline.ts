@@ -17,7 +17,7 @@ import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { unique } from "@/prelude/array.js";
-import {MastoApiError} from "@/server/api/mastodon/middleware/catch-errors.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export class TimelineHelpers {
     public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
@@ -25,7 +25,7 @@ export class TimelineHelpers {
 
         const followingQuery = Followings.createQueryBuilder("following")
             .select("following.followeeId")
-            .where("following.followerId = :followerId", {followerId: user.id});
+            .where("following.followerId = :followerId", { followerId: user.id });
 
         const query = PaginationHelpers.makePaginationQuery(
             Notes.createQueryBuilder("note"),
@@ -35,7 +35,7 @@ export class TimelineHelpers {
         )
             .andWhere(
                 new Brackets((qb) => {
-                    qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, {meId: user.id});
+                    qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, { meId: user.id });
                 }),
             )
             .leftJoinAndSelect("note.renote", "renote");
@@ -114,7 +114,7 @@ export class TimelineHelpers {
             .andWhere(`note.userId IN (${listQuery.getQuery()})`)
             .andWhere("note.visibility != 'specified'")
             .leftJoinAndSelect("note.renote", "renote")
-            .setParameters({listId: list.id});
+            .setParameters({ listId: list.id });
 
         generateVisibilityQuery(query, user);
 
@@ -137,11 +137,11 @@ export class TimelineHelpers {
             minId
         )
             .andWhere("note.visibility = 'public'")
-            .andWhere("note.tags @> array[:tag]::varchar[]", {tag: tag});
+            .andWhere("note.tags @> array[:tag]::varchar[]", { tag: tag });
 
-        if (any.length > 0) query.andWhere("note.tags && array[:...any]::varchar[]", {any: any});
-        if (all.length > 0) query.andWhere("note.tags @> array[:...all]::varchar[]", {all: all});
-        if (none.length > 0) query.andWhere("NOT(note.tags @> array[:...none]::varchar[])", {none: none});
+        if (any.length > 0) query.andWhere("note.tags && array[:...any]::varchar[]", { any: any });
+        if (all.length > 0) query.andWhere("note.tags @> array[:...all]::varchar[]", { all: all });
+        if (none.length > 0) query.andWhere("NOT(note.tags @> array[:...none]::varchar[])", { none: none });
 
         if (remote) query.andWhere("note.userHost IS NOT NULL");
         if (local) query.andWhere("note.userHost IS NULL");
@@ -168,7 +168,7 @@ export class TimelineHelpers {
             .select("COALESCE(note.threadId, note.id)", "conversationId")
             .addSelect("note.id", "latest")
             .distinctOn(["COALESCE(note.threadId, note.id)"])
-            .orderBy({"COALESCE(note.threadId, note.id)": minId ? "ASC" : "DESC", "note.id": "DESC"})
+            .orderBy({ "COALESCE(note.threadId, note.id)": minId ? "ASC" : "DESC", "note.id": "DESC" })
             .andWhere("note.visibility = 'specified'")
             .andWhere(
                 new Brackets(qb => {
@@ -183,7 +183,7 @@ export class TimelineHelpers {
             minId
         )
             .innerJoin(`(${sq.getQuery()})`, "sq", "note.id = sq.latest")
-            .setParameters({userId: user.id})
+            .setParameters({ userId: user.id })
 
         return query.take(limit).getMany().then(p => {
             if (minId !== undefined) p = p.reverse();

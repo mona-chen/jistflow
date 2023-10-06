@@ -67,8 +67,8 @@ type RelationshipType = 'followers' | 'following';
 export class UserHelpers {
     public static async followUser(target: User, localUser: ILocalUser, reblogs: boolean, notify: boolean): Promise<MastodonEntity.Relationship> {
         //FIXME: implement reblogs & notify params
-        const following = await Followings.exist({where: {followerId: localUser.id, followeeId: target.id}});
-        const requested = await FollowRequests.exist({where: {followerId: localUser.id, followeeId: target.id}});
+        const following = await Followings.exist({ where: { followerId: localUser.id, followeeId: target.id } });
+        const requested = await FollowRequests.exist({ where: { followerId: localUser.id, followeeId: target.id } });
         if (!following && !requested)
             await createFollowing(localUser, target);
 
@@ -76,8 +76,8 @@ export class UserHelpers {
     }
 
     public static async unfollowUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
-        const following = await Followings.exist({where: {followerId: localUser.id, followeeId: target.id}});
-        const requested = await FollowRequests.exist({where: {followerId: localUser.id, followeeId: target.id}});
+        const following = await Followings.exist({ where: { followerId: localUser.id, followeeId: target.id } });
+        const requested = await FollowRequests.exist({ where: { followerId: localUser.id, followeeId: target.id } });
         if (following)
             await deleteFollowing(localUser, target);
         if (requested)
@@ -87,7 +87,7 @@ export class UserHelpers {
     }
 
     public static async blockUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
-        const blocked = await Blockings.exist({where: {blockerId: localUser.id, blockeeId: target.id}});
+        const blocked = await Blockings.exist({ where: { blockerId: localUser.id, blockeeId: target.id } });
         if (!blocked)
             await createBlocking(localUser, target);
 
@@ -95,7 +95,7 @@ export class UserHelpers {
     }
 
     public static async unblockUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
-        const blocked = await Blockings.exist({where: {blockerId: localUser.id, blockeeId: target.id}});
+        const blocked = await Blockings.exist({ where: { blockerId: localUser.id, blockeeId: target.id } });
         if (blocked)
             await deleteBlocking(localUser, target);
 
@@ -104,7 +104,7 @@ export class UserHelpers {
 
     public static async muteUser(target: User, localUser: ILocalUser, notifications: boolean = true, duration: number = 0): Promise<MastodonEntity.Relationship> {
         //FIXME: respect notifications parameter
-        const muted = await Mutings.exist({where: {muterId: localUser.id, muteeId: target.id}});
+        const muted = await Mutings.exist({ where: { muterId: localUser.id, muteeId: target.id } });
         if (!muted) {
             await Mutings.insert({
                 id: genId(),
@@ -126,7 +126,7 @@ export class UserHelpers {
     }
 
     public static async unmuteUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
-        const muting = await Mutings.findOneBy({muterId: localUser.id, muteeId: target.id});
+        const muting = await Mutings.findOneBy({ muterId: localUser.id, muteeId: target.id });
         if (muting) {
             await Mutings.delete({
                 id: muting.id,
@@ -139,14 +139,14 @@ export class UserHelpers {
     }
 
     public static async acceptFollowRequest(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
-        const pending = await FollowRequests.exist({where: {followerId: target.id, followeeId: localUser.id}});
+        const pending = await FollowRequests.exist({ where: { followerId: target.id, followeeId: localUser.id } });
         if (pending)
             await acceptFollowRequest(localUser, target);
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
     public static async rejectFollowRequest(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
-        const pending = await FollowRequests.exist({where: {followerId: target.id, followeeId: localUser.id}});
+        const pending = await FollowRequests.exist({ where: { followerId: target.id, followeeId: localUser.id } });
         if (pending)
             await rejectFollowRequest(localUser, target);
         return this.getUserRelationshipTo(target.id, localUser.id);
@@ -193,7 +193,7 @@ export class UserHelpers {
 
     public static async verifyCredentials(user: ILocalUser): Promise<MastodonEntity.Account> {
         const acct = UserConverter.encode(user);
-        const profile = UserProfiles.findOneByOrFail({userId: user.id});
+        const profile = UserProfiles.findOneByOrFail({ userId: user.id });
         const privacy = this.getDefaultNoteVisibility(user);
         const fields = profile.then(profile => profile.fields.map(field => {
             return {
@@ -222,7 +222,7 @@ export class UserHelpers {
     public static async getUserFromAcct(acct: string): Promise<User> {
         const split = acct.toLowerCase().split('@');
         if (split.length > 2) throw new Error('Invalid acct');
-        return Users.findOneBy({usernameLower: split[0], host: split[1] ?? IsNull()})
+        return Users.findOneBy({ usernameLower: split[0], host: split[1] ?? IsNull() })
             .then(p => {
                 if (p) return p;
                 throw new MastoApiError(404);
@@ -239,7 +239,7 @@ export class UserHelpers {
             minId
         );
 
-        query.andWhere("muting.muterId = :userId", {userId: user.id})
+        query.andWhere("muting.muterId = :userId", { userId: user.id })
             .innerJoinAndSelect("muting.mutee", "mutee");
 
         return query.take(limit).getMany().then(async p => {
@@ -275,7 +275,7 @@ export class UserHelpers {
             minId
         );
 
-        query.andWhere("blocking.blockerId = :userId", {userId: user.id})
+        query.andWhere("blocking.blockerId = :userId", { userId: user.id })
             .innerJoinAndSelect("blocking.blockee", "blockee");
 
         return query.take(limit).getMany().then(p => {
@@ -302,7 +302,7 @@ export class UserHelpers {
             minId
         );
 
-        query.andWhere("request.followeeId = :userId", {userId: user.id})
+        query.andWhere("request.followeeId = :userId", { userId: user.id })
             .innerJoinAndSelect("request.follower", "follower");
 
         return query.take(limit).getMany().then(p => {
@@ -356,7 +356,7 @@ export class UserHelpers {
                     new Brackets(qb => {
                         qb.where("note.replyId IS NULL")
                             .orWhere(new Brackets(qb => {
-                                qb.where('note.mentions = :mentions', {mentions: []})
+                                qb.where('note.mentions = :mentions', { mentions: [] })
                                     .andWhere('thread.userId = :userId')
                             }));
                     }));
@@ -375,7 +375,7 @@ export class UserHelpers {
         query.andWhere("note.visibility != 'hidden'");
         query.andWhere("note.visibility != 'specified'");
 
-        query.setParameters({userId: user.id});
+        query.setParameters({ userId: user.id });
 
         return PaginationHelpers.execQuery(query, limit, minId !== undefined);
     }
@@ -389,7 +389,7 @@ export class UserHelpers {
             maxId,
             minId
         )
-            .andWhere("favorite.userId = :meId", {meId: localUser.id})
+            .andWhere("favorite.userId = :meId", { meId: localUser.id })
             .leftJoinAndSelect("favorite.note", "note");
 
         generateVisibilityQuery(query, localUser);
@@ -413,7 +413,7 @@ export class UserHelpers {
             maxId,
             minId
         )
-            .andWhere("reaction.userId = :meId", {meId: localUser.id})
+            .andWhere("reaction.userId = :meId", { meId: localUser.id })
             .leftJoinAndSelect("reaction.note", "note");
 
         generateVisibilityQuery(query, localUser);
@@ -431,11 +431,11 @@ export class UserHelpers {
     private static async getUserRelationships(type: RelationshipType, user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
         if (limit > 80) limit = 80;
 
-        const profile = await UserProfiles.findOneByOrFail({userId: user.id});
+        const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
         if (profile.ffVisibility === "private") {
-            if (!localUser || user.id !== localUser.id) return {data: []};
+            if (!localUser || user.id !== localUser.id) return { data: [] };
         } else if (profile.ffVisibility === "followers") {
-            if (!localUser) return {data: []};
+            if (!localUser) return { data: [] };
             if (user.id !== localUser.id) {
                 const isFollowed = await Followings.exist({
                     where: {
@@ -443,7 +443,7 @@ export class UserHelpers {
                         followerId: localUser.id,
                     },
                 });
-                if (!isFollowed) return {data: []};
+                if (!isFollowed) return { data: [] };
             }
         }
 
@@ -455,10 +455,10 @@ export class UserHelpers {
         );
 
         if (type === "followers") {
-            query.andWhere("following.followeeId = :userId", {userId: user.id})
+            query.andWhere("following.followeeId = :userId", { userId: user.id })
                 .innerJoinAndSelect("following.follower", "follower");
         } else {
-            query.andWhere("following.followerId = :userId", {userId: user.id})
+            query.andWhere("following.followerId = :userId", { userId: user.id })
                 .innerJoinAndSelect("following.followee", "followee");
         }
 
@@ -538,6 +538,11 @@ export class UserHelpers {
     }
 
     public static async getDefaultNoteVisibility(user: ILocalUser): Promise<IceshrimpVisibility> {
-        return RegistryItems.findOneBy({domain: IsNull(), userId: user.id, key: 'defaultNoteVisibility', scope: '{client,base}'}).then(p => p?.value ?? 'public')
+        return RegistryItems.findOneBy({
+            domain: IsNull(),
+            userId: user.id,
+            key: 'defaultNoteVisibility',
+            scope: '{client,base}'
+        }).then(p => p?.value ?? 'public')
     }
 }

@@ -38,7 +38,7 @@ export class NoteConverter {
             host,
         ));
 
-        const reactionCount = NoteReactions.countBy({noteId: note.id});
+        const reactionCount = NoteReactions.countBy({ noteId: note.id });
 
         const reaction = user ? NoteReactions.findOneBy({
             userId: user.id,
@@ -87,7 +87,7 @@ export class NoteConverter {
         });
 
         const isPinned = user && note.userId === user.id
-            ? UserNotePinings.exist({where: {userId: user.id, noteId: note.id}})
+            ? UserNotePinings.exist({ where: { userId: user.id, noteId: note.id } })
             : undefined;
 
         const tags = note.tags.map(tag => {

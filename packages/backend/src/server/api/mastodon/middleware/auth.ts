@@ -19,12 +19,11 @@ export function auth(required: boolean, scopes: string[] = []) {
             return;
         }
 
-        if (!AuthConverter.decode(scopes).every(p =>  ctx.scopes.includes(p))) {
+        if (!AuthConverter.decode(scopes).every(p => ctx.scopes.includes(p))) {
             if (required) {
                 ctx.status = 403;
-                ctx.body = {error: "This action is outside the authorized scopes"};
-            }
-            else {
+                ctx.body = { error: "This action is outside the authorized scopes" };
+            } else {
                 ctx.user = null;
                 ctx.scopes = [];
             }

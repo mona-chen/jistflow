@@ -74,7 +74,7 @@ export function setupEndpointsTimeline(router: Router): void {
                 .then(n => NoteConverter.encodeMany(n, ctx.user, cache));
 
             ctx.body = tl.map(s => convertStatusIds(s));
-    });
+        });
     router.get<{ Params: { hashtag: string } }>(
         "/v1/timelines/tag/:hashtag",
         auth(false, ['read:statuses']),
@@ -97,13 +97,13 @@ export function setupEndpointsTimeline(router: Router): void {
                 .then(n => NoteConverter.encodeMany(n, ctx.user, cache));
 
             ctx.body = tl.map(s => convertStatusIds(s));
-    });
+        });
     router.get<{ Params: { listId: string } }>(
         "/v1/timelines/list/:listId",
         auth(true, ['read:lists']),
         async (ctx, reply) => {
             const listId = convertId(ctx.params.listId, IdType.IceshrimpId);
-            const list = await UserLists.findOneBy({userId: ctx.user.id, id: listId});
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: listId });
             if (!list) throw new MastoApiError(404);
 
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));

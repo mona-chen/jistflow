@@ -11,7 +11,7 @@ export function setupEndpointsFilter(router: Router): void {
     router.post(["/v1/filters", "/v2/filters"],
         auth(true, ['write:filters']),
         async (ctx) => {
-            ctx.status =  400;
+            ctx.status = 400;
             ctx.body = { error: "Please change word mute settings in the web frontend settings." };
         }
     );
