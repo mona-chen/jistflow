@@ -1,10 +1,12 @@
 import { convertId, IdType } from "../index.js";
 
+// It's *very* important to put `param = structuredClone(param)` at the top of each function that doesn't simply call simpleConvertId on the param object directly.
+
 function simpleConvertId(data: any) {
     // copy the object to bypass weird pass by reference bugs
-    const result = Object.assign({}, data);
-    result.id = convertId(data.id, IdType.MastodonId);
-    return result;
+    data = structuredClone(data);
+    data.id = convertId(data.id, IdType.MastodonId);
+    return data;
 }
 
 export function convertAccountId(account: MastodonEntity.Account | MastodonEntity.MutedAccount) {
@@ -23,12 +25,26 @@ export function convertListId(list: MastodonEntity.List) {
     return simpleConvertId(list);
 }
 
+export function convertPollId(poll: MastodonEntity.Poll) {
+    return simpleConvertId(poll);
+}
+
+export function convertRelationshipId(relationship: MastodonEntity.Relationship) {
+    return simpleConvertId(relationship);
+}
+
+export function convertStatusSourceId(statusSource: MastodonEntity.StatusSource) {
+    return simpleConvertId(statusSource);
+}
+
 export function convertSuggestionIds(suggestion: MastodonEntity.SuggestedAccount) {
+    suggestion = structuredClone(suggestion);
     suggestion.account = convertAccountId(suggestion.account)
     return suggestion
 }
 
 export function convertNotificationIds(notification: MastodonEntity.Notification) {
+    notification = structuredClone(notification);
     notification.account = convertAccountId(notification.account);
     notification.id = convertId(notification.id, IdType.MastodonId);
     if (notification.status)
@@ -38,32 +54,23 @@ export function convertNotificationIds(notification: MastodonEntity.Notification
     return notification;
 }
 
-export function convertPollId(poll: MastodonEntity.Poll) {
-    return simpleConvertId(poll);
-}
-
 export function convertReactionIds(reaction: MastodonEntity.Reaction) {
+    reaction = structuredClone(reaction);
     if (reaction.accounts) {
         reaction.accounts = reaction.accounts.map(convertAccountId);
     }
     return reaction;
 }
 
-export function convertRelationshipId(relationship: MastodonEntity.Relationship) {
-    return simpleConvertId(relationship);
-}
-
 export function convertSearchIds(search: MastodonEntity.Search) {
+    search = structuredClone(search);
     search.accounts = search.accounts.map(p => convertAccountId(p));
     search.statuses = search.statuses.map(p => convertStatusIds(p));
     return search;
 }
 
-export function convertStatusSourceId(statusSource: MastodonEntity.StatusSource) {
-    return simpleConvertId(statusSource);
-}
-
 export function convertStatusIds(status: MastodonEntity.Status) {
+    status = structuredClone(status);
     status.account = convertAccountId(status.account);
     status.id = convertId(status.id, IdType.MastodonId);
     if (status.in_reply_to_account_id)
@@ -89,6 +96,7 @@ export function convertStatusIds(status: MastodonEntity.Status) {
 }
 
 export function convertStatusEditIds(edit: MastodonEntity.StatusEdit) {
+    edit = structuredClone(edit);
     edit.account = convertAccountId(edit.account);
     edit.media_attachments = edit.media_attachments.map((attachment) =>
         convertAttachmentId(attachment),
@@ -98,6 +106,7 @@ export function convertStatusEditIds(edit: MastodonEntity.StatusEdit) {
 }
 
 export function convertConversationIds(conversation: MastodonEntity.Conversation) {
+    conversation = structuredClone(conversation);
     conversation.id = convertId(conversation.id, IdType.MastodonId);
     conversation.accounts = conversation.accounts.map(convertAccountId);
     if (conversation.last_status) {
