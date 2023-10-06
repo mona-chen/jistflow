@@ -283,10 +283,10 @@ hr {
 		transition: background 0.2s;
 	}
 
-	&:hover:before,
-	&:focus::before,
-	&.highlighted::before {
-		background: var(--buttonBg);
+	&:hover,
+	&:focus,
+	&.highlighted {
+		background: var(--buttonHoverBg);
 	}
 	&:focus-visible::before {
 		outline: auto;
