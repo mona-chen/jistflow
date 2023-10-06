@@ -17,6 +17,7 @@ import { CacheMiddleware } from "@/server/api/mastodon/middleware/cache.js";
 import { KoaBodyMiddleware } from "@/server/api/mastodon/middleware/koa-body.js";
 import { NormalizeQueryMiddleware } from "@/server/api/mastodon/middleware/normalize-query.js";
 import { PaginationMiddleware } from "@/server/api/mastodon/middleware/pagination.js";
+import { SetHeadersMiddleware } from "@/server/api/mastodon/middleware/set-headers.js";
 
 export const logger = apiLogger.createSubLogger("mastodon");
 export type MastoContext = RouterContext & DefaultContext;
@@ -37,6 +38,7 @@ export function setupMastodonApi(router: Router): void {
 
 function setupMiddleware(router: Router): void {
     router.use(KoaBodyMiddleware());
+    router.use(SetHeadersMiddleware);
     router.use(CatchErrorsMiddleware);
     router.use(NormalizeQueryMiddleware);
     router.use(PaginationMiddleware);
