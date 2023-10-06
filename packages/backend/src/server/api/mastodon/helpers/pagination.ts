@@ -1,6 +1,5 @@
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
-import config from "@/config/index.js";
-import { convertId, IdType } from "../../index.js";
+import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
 
 export class PaginationHelpers {
     public static makePaginationQuery<T extends ObjectLiteral>(
@@ -44,5 +43,20 @@ export class PaginationHelpers {
      */
     public static async execQuery<T extends ObjectLiteral>(query: SelectQueryBuilder<T>, limit: number, reverse: boolean): Promise<T[]> {
         return query.take(limit).getMany().then(found => reverse ? found.reverse() : found);
+    }
+
+    public static async execQueryLinkPagination<T extends ObjectLiteral>(query: SelectQueryBuilder<T>, limit: number, reverse: boolean): Promise<LinkPaginationObject<T[]>> {
+        return this.execQuery(query, limit, reverse)
+            .then(p => {
+                const ids = p.map(x => x.id);
+                return {
+                    data: p,
+                    pagination: p.length > 0 ? {
+                        limit: limit,
+                        maxId: ids.at(reverse ? 0 : -1),
+                        minId: ids.at(reverse ? -1 : 0)
+                    } : undefined
+                }
+            });
     }
 }

@@ -3,9 +3,10 @@ import { Notes, Notifications } from "@/models/index.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { Notification } from "@/models/entities/notification.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
 
 export class NotificationHelpers {
-    public static async getNotifications(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, types: string[] | undefined, excludeTypes: string[] | undefined, accountId: string | undefined): Promise<Notification[]> {
+    public static async getNotifications(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, types: string[] | undefined, excludeTypes: string[] | undefined, accountId: string | undefined): Promise<LinkPaginationObject<Notification[]>> {
         if (limit > 80) limit = 80;
         if (types && excludeTypes) throw new Error("types and exclude_types can not be used simultaneously");
 
@@ -32,7 +33,7 @@ export class NotificationHelpers {
 
         query.leftJoinAndSelect("notification.note", "note");
 
-        return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
     public static async getNotification(id: string, user: ILocalUser): Promise<Notification | null> {

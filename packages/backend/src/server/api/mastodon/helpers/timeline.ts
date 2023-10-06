@@ -21,7 +21,7 @@ import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js"
 import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
 
 export class TimelineHelpers {
-    public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
+    public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
 
         const followingQuery = Followings.createQueryBuilder("following")
@@ -52,10 +52,10 @@ export class TimelineHelpers {
         query.andWhere("note.visibility != 'hidden'");
         query.andWhere("note.visibility != 'specified'");
 
-        return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
-    public static async getPublicTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<Note[]> {
+    public static async getPublicTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
 
         if (local && remote) {
@@ -95,10 +95,10 @@ export class TimelineHelpers {
 
         if (onlyMedia) query.andWhere("note.fileIds != '{}'");
 
-        return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
-    public static async getListTimeline(user: ILocalUser, list: UserList, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
+    public static async getListTimeline(user: ILocalUser, list: UserList, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
         if (user.id != list.userId) throw new Error("List is not owned by user");
 
@@ -119,10 +119,10 @@ export class TimelineHelpers {
 
         generateVisibilityQuery(query, user);
 
-        return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
-    public static async getTagTimeline(user: ILocalUser, tag: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, any: string[], all: string[], none: string[], onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<Note[]> {
+    public static async getTagTimeline(user: ILocalUser, tag: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, any: string[], all: string[], none: string[], onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
 
         if (tag.length < 1) throw new MastoApiError(400, "Tag cannot be empty");
@@ -160,7 +160,7 @@ export class TimelineHelpers {
 
         if (onlyMedia) query.andWhere("note.fileIds != '{}'");
 
-        return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
     public static async getConversations(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<MastodonEntity.Conversation[]>> {

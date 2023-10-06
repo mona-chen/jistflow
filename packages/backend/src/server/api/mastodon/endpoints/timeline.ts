@@ -4,9 +4,7 @@ import { convertConversationIds, convertStatusIds, } from "../converters.js";
 import { convertId, IdType } from "../../index.js";
 import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
-import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { UserLists } from "@/models/index.js";
-import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
@@ -69,11 +67,11 @@ export function setupEndpointsTimeline(router: Router): void {
         auth(true, ['read:statuses']),
         async (ctx, reply) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))));
-            const cache = UserHelpers.getFreshAccountCache();
-            const tl = await TimelineHelpers.getPublicTimeline(ctx.user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote)
-                .then(n => NoteConverter.encodeMany(n, ctx.user, cache));
+            const res = await TimelineHelpers.getPublicTimeline(ctx.user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote);
+            const tl = await NoteConverter.encodeMany(res.data, ctx.user, ctx.cache);
 
             ctx.body = tl.map(s => convertStatusIds(s));
+            ctx.pagination = res.pagination;
         });
     router.get<{ Params: { hashtag: string } }>(
         "/v1/timelines/tag/:hashtag",
@@ -81,22 +79,22 @@ export function setupEndpointsTimeline(router: Router): void {
         async (ctx, reply) => {
             const tag = (ctx.params.hashtag ?? '').trim();
             const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))), ['any[]', 'all[]', 'none[]']);
-            const cache = UserHelpers.getFreshAccountCache();
-            const tl = await TimelineHelpers.getTagTimeline(ctx.user, tag, args.max_id, args.since_id, args.min_id, args.limit, args['any[]'] ?? [], args['all[]'] ?? [], args['none[]'] ?? [], args.only_media, args.local, args.remote)
-                .then(n => NoteConverter.encodeMany(n, ctx.user, cache));
+            const res = await TimelineHelpers.getTagTimeline(ctx.user, tag, args.max_id, args.since_id, args.min_id, args.limit, args['any[]'] ?? [], args['all[]'] ?? [], args['none[]'] ?? [], args.only_media, args.local, args.remote);
+            const tl = await NoteConverter.encodeMany(res.data, ctx.user, ctx.cache);
 
             ctx.body = tl.map(s => convertStatusIds(s));
+            ctx.pagination = res.pagination;
         },
     );
     router.get("/v1/timelines/home",
         auth(true, ['read:statuses']),
         async (ctx, reply) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
-            const cache = UserHelpers.getFreshAccountCache();
-            const tl = await TimelineHelpers.getHomeTimeline(ctx.user, args.max_id, args.since_id, args.min_id, args.limit)
-                .then(n => NoteConverter.encodeMany(n, ctx.user, cache));
+            const res = await TimelineHelpers.getHomeTimeline(ctx.user, args.max_id, args.since_id, args.min_id, args.limit);
+            const tl = await NoteConverter.encodeMany(res.data, ctx.user, ctx.cache);
 
             ctx.body = tl.map(s => convertStatusIds(s));
+            ctx.pagination = res.pagination;
         });
     router.get<{ Params: { listId: string } }>(
         "/v1/timelines/list/:listId",
@@ -107,11 +105,11 @@ export function setupEndpointsTimeline(router: Router): void {
             if (!list) throw new MastoApiError(404);
 
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
-            const cache = UserHelpers.getFreshAccountCache();
-            const tl = await TimelineHelpers.getListTimeline(ctx.user, list, args.max_id, args.since_id, args.min_id, args.limit)
-                .then(n => NoteConverter.encodeMany(n, ctx.user, cache));
+            const res = await TimelineHelpers.getListTimeline(ctx.user, list, args.max_id, args.since_id, args.min_id, args.limit);
+            const tl = await NoteConverter.encodeMany(res.data, ctx.user, ctx.cache);
 
             ctx.body = tl.map(s => convertStatusIds(s));
+            ctx.pagination = res.pagination;
         },
     );
     router.get("/v1/conversations",

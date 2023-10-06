@@ -42,6 +42,7 @@ export function setupEndpointsMisc(router: Router): void {
         },
     );
 
+    //FIXME: add link pagination to trends (ref: https://mastodon.social/api/v1/trends/tags?offset=10&limit=1)
     router.get(["/v1/trends/tags", "/v1/trends"],
         async (ctx) => {
             const args = limitToInt(ctx.query);

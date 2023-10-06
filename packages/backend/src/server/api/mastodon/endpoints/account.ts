@@ -58,10 +58,11 @@ export function setupEndpointsAccount(router: Router): void {
             const userId = convertId(ctx.params.id, IdType.IceshrimpId);
             const query = await UserHelpers.getUserCachedOr404(userId, ctx.cache);
             const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))));
-            const tl = await UserHelpers.getUserStatuses(query, ctx.user, args.max_id, args.since_id, args.min_id, args.limit, args['only_media'], args['exclude_replies'], args['exclude_reblogs'], args.pinned, args.tagged)
-                .then(n => NoteConverter.encodeMany(n, ctx.user, ctx.cache));
+            const res = await UserHelpers.getUserStatuses(query, ctx.user, args.max_id, args.since_id, args.min_id, args.limit, args['only_media'], args['exclude_replies'], args['exclude_reblogs'], args.pinned, args.tagged);
+            const tl = await NoteConverter.encodeMany(res.data, ctx.user, ctx.cache);
 
             ctx.body = tl.map(s => convertStatusIds(s));
+            ctx.pagination = res.pagination;
         },
     );
     router.get<{ Params: { id: string } }>(

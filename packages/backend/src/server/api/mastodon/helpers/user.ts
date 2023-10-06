@@ -323,12 +323,12 @@ export class UserHelpers {
         });
     }
 
-    public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<Note[]> {
+    public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
 
         if (tagged !== undefined) {
             //FIXME respect tagged
-            return [];
+            return {data: []};
         }
 
         const query = PaginationHelpers.makePaginationQuery(
@@ -381,7 +381,7 @@ export class UserHelpers {
 
         query.setParameters({ userId: user.id });
 
-        return PaginationHelpers.execQuery(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
     public static async getUserBookmarks(localUser: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<Note[]>> {

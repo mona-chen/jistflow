@@ -13,11 +13,11 @@ export function setupEndpointsNotifications(router: Router): void {
         async (ctx) => {
             const cache = UserHelpers.getFreshAccountCache();
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)), ['types[]', 'exclude_types[]']);
-            const data = NotificationHelpers.getNotifications(ctx.user, args.max_id, args.since_id, args.min_id, args.limit, args['types[]'], args['exclude_types[]'], args.account_id)
-                .then(p => NotificationConverter.encodeMany(p, ctx.user, cache))
-                .then(p => p.map(n => convertNotificationIds(n)));
+            const res = await NotificationHelpers.getNotifications(ctx.user, args.max_id, args.since_id, args.min_id, args.limit, args['types[]'], args['exclude_types[]'], args.account_id);
+            const data = await NotificationConverter.encodeMany(res.data, ctx.user, cache);
 
-            ctx.body = await data;
+            ctx.body = data.map(n => convertNotificationIds(n));
+            ctx.pagination = res.pagination;
         }
     );
 
