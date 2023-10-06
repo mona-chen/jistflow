@@ -106,15 +106,17 @@ export default defineComponent({
 					.split("&")
 					.reduce((result, query) => {
 						const [k, v] = query.split("=");
-						result[k] = decodeURI(v);
+						result[k] = decodeURIComponent(v);
 						return result;
 					}, {});
 			const isMastodon = !!getUrlParams().mastodon;
 			if (this.session.app.callbackUrl && isMastodon) {
-				const redirectUri = decodeURIComponent(getUrlParams().redirect_uri);
+				const redirectUri = getUrlParams().redirect_uri;
 				if (!this.session.app.callbackUrl.split('\n').some(p => p === redirectUri)){
 					this.state = "fetch-session-error";
 					this.fetching = false;
+					console.log(`redirect uri: ${redirectUri}`);
+					console.log(`reg_app uris: ${this.session.app.callbackUrl.split('\n').join(',')}`);
 					throw new Error("callback uri doesn't match registered app");
 				}
 				const callbackUrl = new URL(redirectUri)

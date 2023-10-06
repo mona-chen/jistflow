@@ -4,6 +4,7 @@ import { convertId, IdType } from "@/misc/convert-id.js";
 import { AuthConverter } from "@/server/api/mastodon/converters/auth.js";
 import { v4 as uuid } from "uuid";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { toSingleLast } from "@/prelude/array.js";
 
 export function setupEndpointsAuth(router: Router): void {
     router.post("/v1/apps", async (ctx) => {
@@ -29,7 +30,8 @@ export function setupEndpointsAuthRoot(router: Router): void {
         const { client_id, state, redirect_uri } = ctx.request.query;
         let param = "mastodon=true";
         if (state) param += `&state=${state}`;
-        if (redirect_uri) param += `&redirect_uri=${redirect_uri}`;
+        const final_redirect_uri = toSingleLast(redirect_uri);
+        if (final_redirect_uri) param += `&redirect_uri=${encodeURIComponent(final_redirect_uri)}`;
         const client = client_id ? client_id : "";
         ctx.redirect(`${Buffer.from(client.toString(), "base64").toString()}?${param}`);
     });
