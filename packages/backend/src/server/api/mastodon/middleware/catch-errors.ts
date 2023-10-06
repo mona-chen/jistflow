@@ -1,5 +1,6 @@
 import { MastoContext, logger } from "@/server/api/mastodon/index.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
+import { ApiError } from "@/server/api/error.js";
 
 export class MastoApiError extends Error {
     statusCode: number;
@@ -28,6 +29,9 @@ export async function CatchErrorsMiddleware(ctx: MastoContext, next: () => Promi
         }
         else if (e instanceof IdentifiableError) {
             ctx.status = 400;
+        }
+        else if (e instanceof ApiError) {
+            ctx.status = e.httpStatusCode ?? 500;
         }
         else {
             logger.error(`Error occured in ${ctx.method} ${ctx.path}:`);
