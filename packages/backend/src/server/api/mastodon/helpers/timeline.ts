@@ -12,12 +12,13 @@ import { generateMutedUserRenotesQueryForNotes } from "@/server/api/common/gener
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
-import { LinkPaginationObject, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { unique } from "@/prelude/array.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
 
 export class TimelineHelpers {
     public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<Note[]> {
@@ -212,8 +213,11 @@ export class TimelineHelpers {
             });
             const res = {
                 data: Promise.all(conversations.map(c => awaitAll(c))),
-                maxId: p.map(p => p.threadId ?? p.id).at(-1),
-                minId: p.map(p => p.threadId ?? p.id)[0],
+                pagination: {
+                    limit: limit,
+                    maxId: p.map(p => p.threadId ?? p.id).at(-1),
+                    minId: p.map(p => p.threadId ?? p.id)[0],
+                }
             };
 
             return awaitAll(res);

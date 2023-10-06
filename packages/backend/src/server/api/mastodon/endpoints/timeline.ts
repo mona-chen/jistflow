@@ -121,7 +121,7 @@ export function setupEndpointsTimeline(router: Router): void {
             const res = await TimelineHelpers.getConversations(ctx.user, args.max_id, args.since_id, args.min_id, args.limit);
 
             ctx.body = res.data.map(c => convertConversationIds(c));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 20);
+            ctx.pagination = res.pagination;
         }
     );
 }

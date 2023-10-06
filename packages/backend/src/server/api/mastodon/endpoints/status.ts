@@ -118,7 +118,7 @@ export function setupEndpointsStatus(router: Router): void {
             const res = await NoteHelpers.getNoteRebloggedBy(note, ctx.user, args.max_id, args.since_id, args.min_id, args.limit);
             const users = await UserConverter.encodeMany(res.data, ctx.cache);
             ctx.body = users.map(m => convertAccountId(m));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
+            ctx.pagination = res.pagination;
         }
     );
     router.get<{ Params: { id: string } }>(
@@ -131,7 +131,7 @@ export function setupEndpointsStatus(router: Router): void {
             const res = await NoteHelpers.getNoteFavoritedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
             const users = await UserConverter.encodeMany(res.data, ctx.cache);
             ctx.body = users.map(m => convertAccountId(m));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
+            ctx.pagination = res.pagination;
         }
     );
     router.post<{ Params: { id: string } }>(

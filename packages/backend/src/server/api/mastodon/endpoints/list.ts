@@ -75,7 +75,7 @@ export function setupEndpointsList(router: Router): void {
             const accounts = await UserConverter.encodeMany(res.data);
 
             ctx.body = accounts.map(account => convertAccountId(account));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
+            ctx.pagination = res.pagination;
         },
     );
     router.post<{ Params: { id: string } }>(

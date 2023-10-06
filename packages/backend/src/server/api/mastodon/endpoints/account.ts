@@ -81,7 +81,7 @@ export function setupEndpointsAccount(router: Router): void {
             const followers = await UserConverter.encodeMany(res.data, ctx.cache);
 
             ctx.body = followers.map((account) => convertAccountId(account));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
+            ctx.pagination = res.pagination;
         },
     );
     router.get<{ Params: { id: string } }>(
@@ -95,7 +95,7 @@ export function setupEndpointsAccount(router: Router): void {
             const following = await UserConverter.encodeMany(res.data, ctx.cache);
 
             ctx.body = following.map((account) => convertAccountId(account));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
+            ctx.pagination = res.pagination;
         },
     );
     router.get<{ Params: { id: string } }>(
@@ -181,7 +181,7 @@ export function setupEndpointsAccount(router: Router): void {
             const res = await UserHelpers.getUserBookmarks(ctx.user, args.max_id, args.since_id, args.min_id, args.limit);
             const bookmarks = await NoteConverter.encodeMany(res.data, ctx.user, ctx.cache);
             ctx.body = bookmarks.map(s => convertStatusIds(s));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 20);
+            ctx.pagination = res.pagination;
         }
     );
     router.get("/v1/favourites",
@@ -191,7 +191,7 @@ export function setupEndpointsAccount(router: Router): void {
             const res = await UserHelpers.getUserFavorites(ctx.user, args.max_id, args.since_id, args.min_id, args.limit);
             const favorites = await NoteConverter.encodeMany(res.data, ctx.user, ctx.cache);
             ctx.body = favorites.map(s => convertStatusIds(s));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 20);
+            ctx.pagination = res.pagination;
         }
     );
     router.get("/v1/mutes",
@@ -200,7 +200,7 @@ export function setupEndpointsAccount(router: Router): void {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserMutes(ctx.user, args.max_id, args.since_id, args.min_id, args.limit, ctx.cache);
             ctx.body = res.data.map(m => convertAccountId(m));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
+            ctx.pagination = res.pagination;
         }
     );
     router.get("/v1/blocks",
@@ -210,7 +210,7 @@ export function setupEndpointsAccount(router: Router): void {
             const res = await UserHelpers.getUserBlocks(ctx.user, args.max_id, args.since_id, args.min_id, args.limit);
             const blocks = await UserConverter.encodeMany(res.data, ctx.cache);
             ctx.body = blocks.map(b => convertAccountId(b));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
+            ctx.pagination = res.pagination;
         }
     );
     router.get("/v1/follow_requests",
@@ -220,7 +220,7 @@ export function setupEndpointsAccount(router: Router): void {
             const res = await UserHelpers.getUserFollowRequests(ctx.user, args.max_id, args.since_id, args.min_id, args.limit);
             const requests = await UserConverter.encodeMany(res.data, ctx.cache);
             ctx.body = requests.map(b => convertAccountId(b));
-            PaginationHelpers.appendLinkPaginationHeader(args, ctx, res, 40);
+            ctx.pagination = res.pagination;
         }
     );
     router.post<{ Params: { id: string } }>(

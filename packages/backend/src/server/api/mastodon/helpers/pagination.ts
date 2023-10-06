@@ -45,20 +45,4 @@ export class PaginationHelpers {
     public static async execQuery<T extends ObjectLiteral>(query: SelectQueryBuilder<T>, limit: number, reverse: boolean): Promise<T[]> {
         return query.take(limit).getMany().then(found => reverse ? found.reverse() : found);
     }
-
-    public static appendLinkPaginationHeader(args: any, ctx: any, res: any, defaultLimit: number): void {
-        const link: string[] = [];
-        const limit = args.limit ?? defaultLimit;
-        if (res.maxId) {
-            const l = `<${config.url}/api${ctx.path}?limit=${limit}&max_id=${convertId(res.maxId, IdType.MastodonId)}>; rel="next"`;
-            link.push(l);
-        }
-        if (res.minId) {
-            const l = `<${config.url}/api${ctx.path}?limit=${limit}&min_id=${convertId(res.minId, IdType.MastodonId)}>; rel="prev"`;
-            link.push(l);
-        }
-        if (link.length > 0) {
-            ctx.response.append('Link', link.join(', '));
-        }
-    }
 }

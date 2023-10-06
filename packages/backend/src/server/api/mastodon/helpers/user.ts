@@ -40,18 +40,13 @@ import { MediaHelpers } from "@/server/api/mastodon/helpers/media.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
 
 export type AccountCache = {
     locks: AsyncLock;
     accounts: MastodonEntity.Account[];
     users: User[];
 };
-
-export type LinkPaginationObject<T> = {
-    data: T;
-    maxId?: string | undefined;
-    minId?: string | undefined;
-}
 
 export type updateCredsData = {
     display_name: string;
@@ -259,8 +254,11 @@ export class UserHelpers {
 
             return {
                 data: result,
-                maxId: p.map(p => p.id).at(-1),
-                minId: p.map(p => p.id)[0],
+                pagination: {
+                    limit: limit,
+                    maxId: p.map(p => p.id).at(-1),
+                    minId: p.map(p => p.id)[0],
+                }
             };
         });
     }
@@ -286,8 +284,11 @@ export class UserHelpers {
 
             return {
                 data: users,
-                maxId: p.map(p => p.id).at(-1),
-                minId: p.map(p => p.id)[0],
+                pagination: {
+                    limit: limit,
+                    maxId: p.map(p => p.id).at(-1),
+                    minId: p.map(p => p.id)[0],
+                }
             };
         });
     }
@@ -313,8 +314,11 @@ export class UserHelpers {
 
             return {
                 data: users,
-                maxId: p.map(p => p.id).at(-1),
-                minId: p.map(p => p.id)[0],
+                pagination: {
+                    limit: limit,
+                    maxId: p.map(p => p.id).at(-1),
+                    minId: p.map(p => p.id)[0],
+                }
             };
         });
     }
@@ -398,8 +402,11 @@ export class UserHelpers {
             .then(res => {
                 return {
                     data: res.map(p => p.note as Note),
-                    maxId: res.map(p => p.id).at(-1),
-                    minId: res.map(p => p.id)[0],
+                    pagination: {
+                        limit: limit,
+                        maxId: res.map(p => p.id).at(-1),
+                        minId: res.map(p => p.id)[0],
+                    }
                 };
             });
     }
@@ -422,8 +429,11 @@ export class UserHelpers {
             .then(res => {
                 return {
                     data: res.map(p => p.note as Note),
-                    maxId: res.map(p => p.id).at(-1),
-                    minId: res.map(p => p.id)[0],
+                    pagination: {
+                        limit: limit,
+                        maxId: res.map(p => p.id).at(-1),
+                        minId: res.map(p => p.id)[0],
+                    }
                 };
             });
     }
@@ -467,8 +477,11 @@ export class UserHelpers {
 
             return {
                 data: p.map(p => type === "followers" ? p.follower : p.followee).filter(p => p) as User[],
-                maxId: p.map(p => p.id).at(-1),
-                minId: p.map(p => p.id)[0],
+                pagination: {
+                    limit: limit,
+                    maxId: p.map(p => p.id).at(-1),
+                    minId: p.map(p => p.id)[0],
+                }
             };
         });
     }
