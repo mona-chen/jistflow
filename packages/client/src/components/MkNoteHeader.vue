@@ -78,7 +78,6 @@ const showTicker =
 	justify-self: flex-end;
 	border-radius: 100px;
 	font-size: 0.8em;
-	text-shadow: 0 2px 2px var(--shadow);
 	> .avatar {
 		width: 3.7em;
 		height: 3.7em;
