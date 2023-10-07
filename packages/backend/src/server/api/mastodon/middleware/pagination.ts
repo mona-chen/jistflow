@@ -1,7 +1,6 @@
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import config from "@/config/index.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
-import { ObjectLiteral } from "typeorm";
 
 type PaginationData = {
     limit: number;

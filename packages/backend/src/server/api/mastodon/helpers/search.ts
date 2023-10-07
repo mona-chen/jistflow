@@ -11,7 +11,6 @@ import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { ILocalUser, User } from "@/models/entities/user.js";
 import { Brackets, In, IsNull } from "typeorm";
 import { awaitAll } from "@/prelude/await-all.js";
-import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import Resolver from "@/remote/activitypub/resolver.js";
 import { getApId, isActor, isPost } from "@/remote/activitypub/type.js";
@@ -22,9 +21,10 @@ import { resolveUser } from "@/remote/resolve-user.js";
 import { createNote } from "@/remote/activitypub/models/note.js";
 import { getUser } from "@/server/api/common/getters.js";
 import config from "@/config/index.js";
+import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class SearchHelpers {
-    public static async search(user: ILocalUser, q: string | undefined, type: string | undefined, resolve: boolean = false, following: boolean = false, accountId: string | undefined, excludeUnreviewed: boolean = false, maxId: string | undefined, minId: string | undefined, limit: number = 20, offset: number | undefined, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Search> {
+    public static async search(user: ILocalUser, q: string | undefined, type: string | undefined, resolve: boolean = false, following: boolean = false, accountId: string | undefined, excludeUnreviewed: boolean = false, maxId: string | undefined, minId: string | undefined, limit: number = 20, offset: number | undefined, ctx: MastoContext): Promise<MastodonEntity.Search> {
         if (q === undefined || q.trim().length === 0) throw new Error('Search query cannot be empty');
         if (limit > 40) limit = 40;
         const notes = type === 'statuses' || !type ? this.searchNotes(user, q, resolve, following, accountId, maxId, minId, limit, offset) : [];
@@ -32,8 +32,8 @@ export class SearchHelpers {
         const tags = type === 'hashtags' || !type ? this.searchTags(q, excludeUnreviewed, limit, offset) : [];
 
         const result = {
-            statuses: Promise.resolve(notes).then(p => NoteConverter.encodeMany(p, user, cache)),
-            accounts: Promise.resolve(users).then(p => UserConverter.encodeMany(p, cache)),
+            statuses: Promise.resolve(notes).then(p => NoteConverter.encodeMany(p, user, ctx)),
+            accounts: Promise.resolve(users).then(p => UserConverter.encodeMany(p, ctx)),
             hashtags: Promise.resolve(tags)
         };
 

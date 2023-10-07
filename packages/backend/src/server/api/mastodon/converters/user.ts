@@ -6,8 +6,9 @@ import { populateEmojis } from "@/misc/populate-emojis.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import mfm from "mfm-js";
 import { awaitAll } from "@/prelude/await-all.js";
-import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { AccountCache } from "@/server/api/mastodon/helpers/user.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
+import { MastoContext } from "@/server/api/mastodon/index.js";
 
 type Field = {
     name: string;
@@ -16,7 +17,8 @@ type Field = {
 };
 
 export class UserConverter {
-    public static async encode(u: User, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Account> {
+    public static async encode(u: User, ctx: MastoContext): Promise<MastodonEntity.Account> {
+        const cache = ctx.cache as AccountCache;
         return cache.locks.acquire(u.id, async () => {
             const cacheHit = cache.accounts.find(p => p.id == u.id);
             if (cacheHit) return cacheHit;
@@ -90,8 +92,8 @@ export class UserConverter {
         });
     }
 
-    public static async encodeMany(users: User[], cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Account[]> {
-        const encoded = users.map(u => this.encode(u, cache));
+    public static async encodeMany(users: User[], ctx: MastoContext): Promise<MastodonEntity.Account[]> {
+        const encoded = users.map(u => this.encode(u, ctx));
         return Promise.all(encoded);
     }
 

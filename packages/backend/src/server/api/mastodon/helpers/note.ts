@@ -30,6 +30,7 @@ import { Cache } from "@/misc/cache.js";
 import AsyncLock from "async-lock";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import { IsNull } from "typeorm";
+import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class NoteHelpers {
     public static postIdempotencyCache = new Cache<{ status?: MastodonEntity.Status }>('postIdempotencyCache', 60 * 60);
@@ -143,9 +144,9 @@ export class NoteHelpers {
         return note;
     }
 
-    public static async deleteNote(note: Note, user: ILocalUser): Promise<MastodonEntity.Status> {
+    public static async deleteNote(note: Note, user: ILocalUser, ctx: MastoContext): Promise<MastodonEntity.Status> {
         if (user.id !== note.userId) throw new MastoApiError(404);
-        const status = await NoteConverter.encode(note, user);
+        const status = await NoteConverter.encode(note, user, ctx);
         await deleteNote(user, note);
         status.content = undefined;
         return status;
@@ -175,10 +176,9 @@ export class NoteHelpers {
         });
     }
 
-    public static async getNoteEditHistory(note: Note): Promise<MastodonEntity.StatusEdit[]> {
-        const cache = UserHelpers.getFreshAccountCache();
-        const account = Promise.resolve(note.user ?? await UserHelpers.getUserCached(note.userId, cache))
-            .then(p => UserConverter.encode(p, cache));
+    public static async getNoteEditHistory(note: Note, ctx: MastoContext): Promise<MastodonEntity.StatusEdit[]> {
+        const account = Promise.resolve(note.user ?? await UserHelpers.getUserCached(note.userId, ctx))
+            .then(p => UserConverter.encode(p, ctx));
         const edits = await NoteEdits.find({ where: { noteId: note.id }, order: { id: "ASC" } });
         const history: Promise<MastodonEntity.StatusEdit>[] = [];
 

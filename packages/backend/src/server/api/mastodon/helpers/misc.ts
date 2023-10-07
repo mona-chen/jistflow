@@ -19,9 +19,10 @@ import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
+import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class MiscHelpers {
-    public static async getInstance(): Promise<MastodonEntity.Instance> {
+    public static async getInstance(ctx: MastoContext): Promise<MastodonEntity.Instance> {
         const userCount = Users.count({ where: { host: IsNull() } });
         const noteCount = Notes.count({ where: { userHost: IsNull() } });
         const instanceCount = Instances.count({ cache: 3600000 });
@@ -34,7 +35,7 @@ export class MiscHelpers {
             },
             order: { id: "ASC" },
         })
-            .then(p => p ? UserConverter.encode(p) : null)
+            .then(p => p ? UserConverter.encode(p, ctx) : null)
             .then(p => p ? convertAccountId(p) : null);
         const meta = await fetchMeta(true);
 
@@ -133,8 +134,7 @@ export class MiscHelpers {
         }
     }
 
-    public static async getFollowSuggestions(user: ILocalUser, limit: number): Promise<MastodonEntity.SuggestedAccount[]> {
-        const cache = UserHelpers.getFreshAccountCache();
+    public static async getFollowSuggestions(user: ILocalUser, limit: number, ctx: MastoContext): Promise<MastodonEntity.SuggestedAccount[]> {
         const results: Promise<MastodonEntity.SuggestedAccount[]>[] = [];
 
         const pinned = fetchMeta().then(meta => Promise.all(
@@ -147,7 +147,7 @@ export class MiscHelpers {
                         }))
             )
                 .then(p => p.filter(x => !!x) as User[])
-                .then(p => UserConverter.encodeMany(p, cache))
+                .then(p => UserConverter.encodeMany(p, ctx))
                 .then(p => p.map(x => {
                     return { source: "staff", account: x } as MastodonEntity.SuggestedAccount
                 }))
@@ -167,7 +167,7 @@ export class MiscHelpers {
         const global = query
             .take(limit)
             .getMany()
-            .then(p => UserConverter.encodeMany(p, cache))
+            .then(p => UserConverter.encodeMany(p, ctx))
             .then(p => p.map(x => {
                 return { source: "global", account: x } as MastodonEntity.SuggestedAccount
             }));
@@ -206,7 +206,7 @@ export class MiscHelpers {
             );
     }
 
-    public static async getTrendingStatuses(limit: number = 20, offset: number = 0): Promise<MastodonEntity.Status[]> {
+    public static async getTrendingStatuses(limit: number = 20, offset: number = 0, ctx: MastoContext): Promise<MastodonEntity.Status[]> {
         if (limit > 40) limit = 40;
         const query = Notes.createQueryBuilder("note")
             .addSelect("note.score")
@@ -220,7 +220,7 @@ export class MiscHelpers {
             .skip(offset)
             .take(limit)
             .getMany()
-            .then(result => NoteConverter.encodeMany(result, null));
+            .then(result => NoteConverter.encodeMany(result, null, ctx));
     }
 
     public static async getTrendingHashtags(limit: number = 10, offset: number = 0): Promise<MastodonEntity.Tag[]> {

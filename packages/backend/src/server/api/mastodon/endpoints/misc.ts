@@ -16,7 +16,7 @@ export function setupEndpointsMisc(router: Router): void {
 
     router.get("/v1/instance",
         async (ctx) => {
-            ctx.body = await MiscHelpers.getInstance();
+            ctx.body = await MiscHelpers.getInstance(ctx);
         }
     );
 
@@ -54,7 +54,7 @@ export function setupEndpointsMisc(router: Router): void {
     router.get("/v1/trends/statuses",
         async (ctx) => {
             const args = limitToInt(ctx.query);
-            ctx.body = await MiscHelpers.getTrendingStatuses(args.limit, args.offset)
+            ctx.body = await MiscHelpers.getTrendingStatuses(args.limit, args.offset, ctx)
                 .then(p => p.map(x => convertStatusIds(x)));
         }
     );
@@ -76,7 +76,7 @@ export function setupEndpointsMisc(router: Router): void {
         auth(true, ['read']),
         async (ctx) => {
             const args = limitToInt(ctx.query);
-            ctx.body = await MiscHelpers.getFollowSuggestions(ctx.user, args.limit)
+            ctx.body = await MiscHelpers.getFollowSuggestions(ctx.user, args.limit, ctx)
                 .then(p => p.map(x => convertSuggestionIds(x)));
         }
     );

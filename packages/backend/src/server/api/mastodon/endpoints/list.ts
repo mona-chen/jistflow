@@ -4,7 +4,6 @@ import { convertId, IdType } from "../../index.js";
 import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "@/server/api/mastodon/endpoints/timeline.js";
 import { ListHelpers } from "@/server/api/mastodon/helpers/list.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
-import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserLists } from "@/models/index.js";
 import { getUser } from "@/server/api/common/getters.js";
 import { toArray } from "@/prelude/array.js";
@@ -72,7 +71,7 @@ export function setupEndpointsList(router: Router): void {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
             const res = await ListHelpers.getListUsers(ctx.user, id, args.max_id, args.since_id, args.min_id, args.limit);
-            const accounts = await UserConverter.encodeMany(res.data);
+            const accounts = await UserConverter.encodeMany(res.data, ctx);
 
             ctx.body = accounts.map(account => convertAccountId(account));
             ctx.pagination = res.pagination;

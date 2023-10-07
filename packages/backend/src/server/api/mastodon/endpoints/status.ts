@@ -10,7 +10,6 @@ import {
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "@/server/api/mastodon/endpoints/timeline.js";
-import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { PollHelpers } from "@/server/api/mastodon/helpers/poll.js";
 import { toArray } from "@/prelude/array.js";
@@ -33,7 +32,7 @@ export function setupEndpointsStatus(router: Router): void {
 
             let request = NoteHelpers.normalizeComposeOptions(ctx.request.body);
             ctx.body = await NoteHelpers.createNote(request, ctx.user)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
 
             if (key !== null) NoteHelpers.postIdempotencyCache.set(key, { status: ctx.body });
@@ -46,7 +45,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(noteId, ctx.user);
             let request = NoteHelpers.normalizeEditOptions(ctx.request.body);
             ctx.body = await NoteHelpers.editNote(request, note, ctx.user)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         }
     );
@@ -56,7 +55,7 @@ export function setupEndpointsStatus(router: Router): void {
             const noteId = convertId(ctx.params.id, IdType.IceshrimpId);
             const note = await NoteHelpers.getNoteOr404(noteId, ctx.user);
 
-            const status = await NoteConverter.encode(note, ctx.user);
+            const status = await NoteConverter.encode(note, ctx.user, ctx);
             ctx.body = convertStatusIds(status);
         }
     );
@@ -65,7 +64,7 @@ export function setupEndpointsStatus(router: Router): void {
         async (ctx) => {
             const noteId = convertId(ctx.params.id, IdType.IceshrimpId);
             const note = await NoteHelpers.getNoteOr404(noteId, ctx.user);
-            ctx.body = await NoteHelpers.deleteNote(note, ctx.user)
+            ctx.body = await NoteHelpers.deleteNote(note, ctx.user, ctx)
                 .then(p => convertStatusIds(p));
         }
     );
@@ -77,10 +76,10 @@ export function setupEndpointsStatus(router: Router): void {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
             const ancestors = await NoteHelpers.getNoteAncestors(note, ctx.user, ctx.user ? 4096 : 60)
-                .then(n => NoteConverter.encodeMany(n, ctx.user, ctx.cache))
+                .then(n => NoteConverter.encodeMany(n, ctx.user, ctx))
                 .then(n => n.map(s => convertStatusIds(s)));
             const descendants = await NoteHelpers.getNoteDescendants(note, ctx.user, ctx.user ? 4096 : 40, ctx.user ? 4096 : 20)
-                .then(n => NoteConverter.encodeMany(n, ctx.user, ctx.cache))
+                .then(n => NoteConverter.encodeMany(n, ctx.user, ctx))
                 .then(n => n.map(s => convertStatusIds(s)));
 
             ctx.body = {
@@ -95,7 +94,7 @@ export function setupEndpointsStatus(router: Router): void {
         async (ctx) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
-            const res = await NoteHelpers.getNoteEditHistory(note);
+            const res = await NoteHelpers.getNoteEditHistory(note, ctx);
             ctx.body = res.map(p => convertStatusEditIds(p));
         }
     );
@@ -117,7 +116,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await NoteHelpers.getNoteRebloggedBy(note, ctx.user, args.max_id, args.since_id, args.min_id, args.limit);
-            const users = await UserConverter.encodeMany(res.data, ctx.cache);
+            const users = await UserConverter.encodeMany(res.data, ctx);
             ctx.body = users.map(m => convertAccountId(m));
             ctx.pagination = res.pagination;
         }
@@ -130,7 +129,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await NoteHelpers.getNoteFavoritedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
-            const users = await UserConverter.encodeMany(res.data, ctx.cache);
+            const users = await UserConverter.encodeMany(res.data, ctx);
             ctx.body = users.map(m => convertAccountId(m));
             ctx.pagination = res.pagination;
         }
@@ -144,7 +143,7 @@ export function setupEndpointsStatus(router: Router): void {
             const reaction = await NoteHelpers.getDefaultReaction();
 
             ctx.body = await NoteHelpers.reactToNote(note, ctx.user, reaction)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         }
     );
@@ -156,7 +155,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
             ctx.body = await NoteHelpers.removeReactFromNote(note, ctx.user)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         },
     );
@@ -169,7 +168,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
             ctx.body = await NoteHelpers.reblogNote(note, ctx.user)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         },
     );
@@ -182,7 +181,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
             ctx.body = await NoteHelpers.unreblogNote(note, ctx.user)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         },
     );
@@ -195,7 +194,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
             ctx.body = await NoteHelpers.bookmarkNote(note, ctx.user)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         },
     );
@@ -208,7 +207,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
             ctx.body = await NoteHelpers.unbookmarkNote(note, ctx.user)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         },
     );
@@ -221,7 +220,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
             ctx.body = await NoteHelpers.pinNote(note, ctx.user)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         },
     );
@@ -234,7 +233,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
             ctx.body = await NoteHelpers.unpinNote(note, ctx.user)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         },
     );
@@ -247,7 +246,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
             ctx.body = await NoteHelpers.reactToNote(note, ctx.user, ctx.params.name)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         },
     );
@@ -260,7 +259,7 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
 
             ctx.body = await NoteHelpers.removeReactFromNote(note, ctx.user)
-                .then(p => NoteConverter.encode(p, ctx.user))
+                .then(p => NoteConverter.encode(p, ctx.user, ctx))
                 .then(p => convertStatusIds(p));
         },
     );
@@ -269,7 +268,7 @@ export function setupEndpointsStatus(router: Router): void {
         async (ctx) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
-            const data = await PollHelpers.getPoll(note, ctx.user, ctx.cache);
+            const data = await PollHelpers.getPoll(note, ctx.user, ctx);
             ctx.body = convertPollId(data);
         });
     router.post<{ Params: { id: string } }>(
@@ -283,7 +282,7 @@ export function setupEndpointsStatus(router: Router): void {
             const choices = toArray(body.choices ?? []).map(p => parseInt(p));
             if (choices.length < 1)  throw new MastoApiError(400, "Must vote for at least one option");
 
-            const data = await PollHelpers.voteInPoll(choices, note, ctx.user, ctx.cache);
+            const data = await PollHelpers.voteInPoll(choices, note, ctx.user, ctx);
             ctx.body = convertPollId(data);
         },
     );

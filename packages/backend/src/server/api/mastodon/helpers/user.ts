@@ -41,6 +41,7 @@ import { UserProfile } from "@/models/entities/user-profile.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { generatePaginationData, LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
+import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export type AccountCache = {
     locks: AsyncLock;
@@ -147,7 +148,7 @@ export class UserHelpers {
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
-    public static async updateCredentials(user: ILocalUser, formData: updateCredsData, files: Files | undefined): Promise<MastodonEntity.Account> {
+    public static async updateCredentials(user: ILocalUser, formData: updateCredsData, files: Files | undefined, ctx: MastoContext): Promise<MastodonEntity.Account> {
         const updates: Partial<User> = {};
         const profileUpdates: Partial<UserProfile> = {};
 
@@ -183,11 +184,11 @@ export class UserHelpers {
         if (Object.keys(updates).length > 0) await Users.update(user.id, updates);
         if (Object.keys(profileUpdates).length > 0) await UserProfiles.update({ userId: user.id }, profileUpdates);
 
-        return this.verifyCredentials(user);
+        return this.verifyCredentials(user, ctx);
     }
 
-    public static async verifyCredentials(user: ILocalUser): Promise<MastodonEntity.Account> {
-        const acct = UserConverter.encode(user);
+    public static async verifyCredentials(user: ILocalUser, ctx: MastoContext): Promise<MastodonEntity.Account> {
+        const acct = UserConverter.encode(user, ctx);
         const profile = UserProfiles.findOneByOrFail({ userId: user.id });
         const privacy = this.getDefaultNoteVisibility(user);
         const fields = profile.then(profile => profile.fields.map(field => {
@@ -224,7 +225,7 @@ export class UserHelpers {
             });
     }
 
-    public static async getUserMutes(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<LinkPaginationObject<MastodonEntity.MutedAccount[]>> {
+    public static async getUserMutes(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<MastodonEntity.MutedAccount[]>> {
         if (limit > 80) limit = 80;
 
         const query = PaginationHelpers.makePaginationQuery(
@@ -243,7 +244,7 @@ export class UserHelpers {
                 .map(p => p.mutee)
                 .filter(p => p) as User[];
 
-            const result = await UserConverter.encodeMany(users, cache)
+            const result = await UserConverter.encodeMany(users, ctx)
                 .then(res => res.map(m => {
                     const muting = p.find(acc => acc.muteeId === m.id);
                     return {
@@ -495,7 +496,8 @@ export class UserHelpers {
         return awaitAll(response);
     }
 
-    public static async getUserCached(id: string, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<User> {
+    public static async getUserCached(id: string, ctx: MastoContext): Promise<User> {
+        const cache = ctx.cache as AccountCache;
         return cache.locks.acquire(id, async () => {
             const cacheHit = cache.users.find(p => p.id == id);
             if (cacheHit) return cacheHit;
@@ -506,8 +508,8 @@ export class UserHelpers {
         });
     }
 
-    public static async getUserCachedOr404(id: string, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<User> {
-        return this.getUserCached(id, cache).catch(_ => {
+    public static async getUserCachedOr404(id: string, ctx: MastoContext): Promise<User> {
+        return this.getUserCached(id, ctx).catch(_ => {
             throw new MastoApiError(404);
         });
     }
