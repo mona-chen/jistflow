@@ -1,6 +1,6 @@
 import { ILocalUser, User } from "@/models/entities/user.js";
 import { Blockings, UserListJoinings, UserLists, Users } from "@/models/index.js";
-import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
+import { generatePaginationData, LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
@@ -54,11 +54,7 @@ export class ListHelpers {
 
             return {
                 data: users,
-                pagination: {
-                    limit: limit,
-                    maxId: p.map(p => p.id).at(-1),
-                    minId: p.map(p => p.id)[0],
-                }
+                pagination: generatePaginationData(p.map(p => p.id), limit, minId !== undefined)
             };
         });
     }

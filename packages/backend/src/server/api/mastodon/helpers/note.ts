@@ -15,7 +15,7 @@ import { genId } from "@/misc/gen-id.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
-import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js"
+import { generatePaginationData, LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js"
 import { addPinned, removePinned } from "@/services/i/pin.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
@@ -170,11 +170,7 @@ export class NoteHelpers {
 
             return {
                 data: users,
-                pagination: {
-                    limit: limit,
-                    maxId: p.map(p => p.id).at(-1),
-                    minId: p.map(p => p.id)[0],
-                }
+                pagination: generatePaginationData(p.map(p => p.id), limit, minId !== undefined)
             };
         });
     }
@@ -248,11 +244,7 @@ export class NoteHelpers {
 
             return {
                 data: users,
-                pagination: {
-                    limit: limit,
-                    maxId: p.map(p => p.id).at(-1),
-                    minId: p.map(p => p.id)[0],
-                }
+                pagination: generatePaginationData(p.map(p => p.id), limit, minId !== undefined)
             };
         });
     }

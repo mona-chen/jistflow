@@ -1,6 +1,7 @@
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import config from "@/config/index.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
+import { ObjectLiteral } from "typeorm";
 
 type PaginationData = {
     limit: number;
@@ -29,5 +30,15 @@ export async function PaginationMiddleware(ctx: MastoContext, next: () => Promis
     }
     if (link.length > 0) {
         ctx.response.append('Link', link.join(', '));
+    }
+}
+
+export function generatePaginationData(ids: string[], limit: number, reverse: boolean): PaginationData | undefined {
+    if (ids.length < 1) return undefined;
+
+    return {
+        limit: limit,
+        maxId: ids.at(reverse ? 0 : -1),
+        minId: ids.at(reverse ? -1 : 0)
     }
 }

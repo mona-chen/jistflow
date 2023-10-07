@@ -18,7 +18,7 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { unique } from "@/prelude/array.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
-import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
+import { generatePaginationData, LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
 
 export class TimelineHelpers {
     public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<Note[]>> {
@@ -213,11 +213,7 @@ export class TimelineHelpers {
             });
             const res = {
                 data: Promise.all(conversations.map(c => awaitAll(c))),
-                pagination: {
-                    limit: limit,
-                    maxId: p.map(p => p.threadId ?? p.id).at(-1),
-                    minId: p.map(p => p.threadId ?? p.id)[0],
-                }
+                pagination: generatePaginationData(p.map(p => p.threadId ?? p.id), limit, minId !== undefined)
             };
 
             return awaitAll(res);
