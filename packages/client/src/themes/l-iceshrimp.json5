@@ -12,7 +12,7 @@
 		panelActiveFg: '@fg',
 		panelActiveBg: ':lighten<12<@accent',
 		panelHighlight: ':darken<3<@bg',
-		shadow: 'rgba(0, 0, 0, 0.3)',
+		shadow: 'rgba(0, 0, 0, 0.1)',
 		hashtag: ':darken<20<#91c0ff',
 		link: ':darken<8<#ff9891',
 		infoFg: ':lighten<6<@fg',
