@@ -15,6 +15,7 @@ import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { PollHelpers } from "@/server/api/mastodon/helpers/poll.js";
 import { toArray } from "@/prelude/array.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
+import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export function setupEndpointsStatus(router: Router): void {
     router.post("/v1/statuses",
@@ -280,11 +281,7 @@ export function setupEndpointsStatus(router: Router): void {
 
             const body: any = ctx.request.body;
             const choices = toArray(body.choices ?? []).map(p => parseInt(p));
-            if (choices.length < 1) {
-                ctx.status = 400;
-                ctx.body = { error: 'Must vote for at least one option' };
-                return;
-            }
+            if (choices.length < 1)  throw new MastoApiError(400, "Must vote for at least one option");
 
             const data = await PollHelpers.voteInPoll(choices, note, ctx.user, ctx.cache);
             ctx.body = convertPollId(data);
