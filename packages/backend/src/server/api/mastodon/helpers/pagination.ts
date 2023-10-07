@@ -1,5 +1,5 @@
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
-import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
+import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class PaginationHelpers {
     public static makePaginationQuery<T extends ObjectLiteral>(
@@ -45,18 +45,16 @@ export class PaginationHelpers {
         return query.take(limit).getMany().then(found => reverse ? found.reverse() : found);
     }
 
-    public static async execQueryLinkPagination<T extends ObjectLiteral>(query: SelectQueryBuilder<T>, limit: number, reverse: boolean): Promise<LinkPaginationObject<T[]>> {
+    public static async execQueryLinkPagination<T extends ObjectLiteral>(query: SelectQueryBuilder<T>, limit: number, reverse: boolean, ctx: MastoContext): Promise<T[]> {
         return this.execQuery(query, limit, reverse)
             .then(p => {
                 const ids = p.map(x => x.id);
-                return {
-                    data: p,
-                    pagination: p.length > 0 ? {
-                        limit: limit,
-                        maxId: ids.at(reverse ? 0 : -1),
-                        minId: ids.at(reverse ? -1 : 0)
-                    } : undefined
-                }
+                ctx.pagination = p.length > 0 ? {
+                    limit: limit,
+                    maxId: ids.at(reverse ? 0 : -1),
+                    minId: ids.at(reverse ? -1 : 0)
+                } : undefined;
+                return p;
             });
     }
 }

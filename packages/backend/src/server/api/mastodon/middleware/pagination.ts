@@ -8,11 +8,6 @@ type PaginationData = {
     minId?: string | undefined;
 }
 
-export type LinkPaginationObject<T> = {
-    data: T;
-    pagination?: PaginationData;
-}
-
 export async function PaginationMiddleware(ctx: MastoContext, next: () => Promise<any>) {
     await next();
     if (!ctx.pagination) return;

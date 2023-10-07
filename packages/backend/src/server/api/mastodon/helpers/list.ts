@@ -1,6 +1,6 @@
 import { ILocalUser, User } from "@/models/entities/user.js";
 import { Blockings, UserListJoinings, UserLists, Users } from "@/models/index.js";
-import { generatePaginationData, LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
+import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
@@ -38,7 +38,7 @@ export class ListHelpers {
         })
     }
 
-    public static async getListUsers(id: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<User[]>> {
+    public static async getListUsers(id: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<User[]> {
         if (limit > 80) limit = 80;
         const user = ctx.user as ILocalUser;
         const list = await UserLists.findOneBy({ userId: user.id, id: id });
@@ -58,10 +58,8 @@ export class ListHelpers {
                 .map(p => p.user)
                 .filter(p => p) as User[];
 
-            return {
-                data: users,
-                pagination: generatePaginationData(p.map(p => p.id), limit, minId !== undefined)
-            };
+            ctx.pagination = generatePaginationData(p.map(p => p.id), limit, minId !== undefined);
+            return users;
         });
     }
 

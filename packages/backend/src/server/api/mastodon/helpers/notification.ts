@@ -3,11 +3,10 @@ import { Notes, Notifications } from "@/models/index.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { Notification } from "@/models/entities/notification.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
-import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class NotificationHelpers {
-    public static async getNotifications(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, types: string[] | undefined, excludeTypes: string[] | undefined, accountId: string | undefined, ctx: MastoContext): Promise<LinkPaginationObject<Notification[]>> {
+    public static async getNotifications(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, types: string[] | undefined, excludeTypes: string[] | undefined, accountId: string | undefined, ctx: MastoContext): Promise<Notification[]> {
         if (limit > 80) limit = 80;
 
         const user = ctx.user as ILocalUser;
@@ -34,7 +33,7 @@ export class NotificationHelpers {
 
         query.leftJoinAndSelect("notification.note", "note");
 
-        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx);
     }
 
     public static async getNotification(id: string, ctx: MastoContext): Promise<Notification | null> {

@@ -15,7 +15,7 @@ import { genId } from "@/misc/gen-id.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
-import { generatePaginationData, LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js"
+import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js"
 import { addPinned, removePinned } from "@/services/i/pin.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
@@ -161,7 +161,7 @@ export class NoteHelpers {
         return status;
     }
 
-    public static async getNoteFavoritedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+    public static async getNoteFavoritedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<User[]> {
         if (limit > 80) limit = 80;
         const query = PaginationHelpers.makePaginationQuery(
             NoteReactions.createQueryBuilder("reaction"),
@@ -178,10 +178,8 @@ export class NoteHelpers {
                 .map(p => p.user)
                 .filter(p => p) as User[];
 
-            return {
-                data: users,
-                pagination: generatePaginationData(p.map(p => p.id), limit, minId !== undefined)
-            };
+            ctx.pagination = generatePaginationData(p.map(p => p.id), limit, minId !== undefined);
+            return users;
         });
     }
 
@@ -231,7 +229,7 @@ export class NoteHelpers {
         }
     }
 
-    public static async getNoteRebloggedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<User[]>> {
+    public static async getNoteRebloggedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<User[]> {
         if (limit > 80) limit = 80;
         const user = ctx.user as ILocalUser | null;
         const query = PaginationHelpers.makePaginationQuery(
@@ -252,10 +250,8 @@ export class NoteHelpers {
                 .map(p => p.user)
                 .filter(p => p) as User[];
 
-            return {
-                data: users,
-                pagination: generatePaginationData(p.map(p => p.id), limit, minId !== undefined)
-            };
+            ctx.pagination = generatePaginationData(p.map(p => p.id), limit, minId !== undefined);
+            return users;
         });
     }
 

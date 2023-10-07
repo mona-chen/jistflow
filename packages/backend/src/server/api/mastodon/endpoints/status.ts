@@ -117,9 +117,8 @@ export function setupEndpointsStatus(router: Router): void {
             const note = await NoteHelpers.getNoteOr404(id, ctx);
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await NoteHelpers.getNoteRebloggedBy(note, args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const users = await UserConverter.encodeMany(res.data, ctx);
+            const users = await UserConverter.encodeMany(res, ctx);
             ctx.body = users.map(m => convertAccountId(m));
-            ctx.pagination = res.pagination;
         }
     );
     router.get<{ Params: { id: string } }>(
@@ -129,10 +128,9 @@ export function setupEndpointsStatus(router: Router): void {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
             const note = await NoteHelpers.getNoteOr404(id, ctx);
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
-            const res = await NoteHelpers.getNoteFavoritedBy(note, args.max_id, args.since_id, args.min_id, args.limit);
-            const users = await UserConverter.encodeMany(res.data, ctx);
+            const res = await NoteHelpers.getNoteFavoritedBy(note, args.max_id, args.since_id, args.min_id, args.limit, ctx);
+            const users = await UserConverter.encodeMany(res, ctx);
             ctx.body = users.map(m => convertAccountId(m));
-            ctx.pagination = res.pagination;
         }
     );
     router.post<{ Params: { id: string } }>(

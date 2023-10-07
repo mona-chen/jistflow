@@ -12,10 +12,9 @@ export function setupEndpointsNotifications(router: Router): void {
         async (ctx) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)), ['types[]', 'exclude_types[]']);
             const res = await NotificationHelpers.getNotifications(args.max_id, args.since_id, args.min_id, args.limit, args['types[]'], args['exclude_types[]'], args.account_id, ctx);
-            const data = await NotificationConverter.encodeMany(res.data, ctx);
+            const data = await NotificationConverter.encodeMany(res, ctx);
 
             ctx.body = data.map(n => convertNotificationIds(n));
-            ctx.pagination = res.pagination;
         }
     );
 

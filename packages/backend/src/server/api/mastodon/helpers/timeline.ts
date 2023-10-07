@@ -18,11 +18,11 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { unique } from "@/prelude/array.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
-import { generatePaginationData, LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
+import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class TimelineHelpers {
-    public static async getHomeTimeline(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
+    public static async getHomeTimeline(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<Note[]> {
         if (limit > 40) limit = 40;
         const user = ctx.user as ILocalUser;
 
@@ -54,10 +54,10 @@ export class TimelineHelpers {
         query.andWhere("note.visibility != 'hidden'");
         query.andWhere("note.visibility != 'specified'");
 
-        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx);
     }
 
-    public static async getPublicTimeline(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
+    public static async getPublicTimeline(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false, ctx: MastoContext): Promise<Note[]> {
         if (limit > 40) limit = 40;
         const user = ctx.user as ILocalUser;
 
@@ -98,10 +98,10 @@ export class TimelineHelpers {
 
         if (onlyMedia) query.andWhere("note.fileIds != '{}'");
 
-        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx);
     }
 
-    public static async getListTimeline(list: UserList, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
+    public static async getListTimeline(list: UserList, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<Note[]> {
         if (limit > 40) limit = 40;
         const user = ctx.user as ILocalUser;
         if (user.id != list.userId) throw new Error("List is not owned by user");
@@ -123,10 +123,10 @@ export class TimelineHelpers {
 
         generateVisibilityQuery(query, user);
 
-        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx);
     }
 
-    public static async getTagTimeline(tag: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, any: string[], all: string[], none: string[], onlyMedia: boolean = false, local: boolean = false, remote: boolean = false, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
+    public static async getTagTimeline(tag: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, any: string[], all: string[], none: string[], onlyMedia: boolean = false, local: boolean = false, remote: boolean = false, ctx: MastoContext): Promise<Note[]> {
         if (limit > 40) limit = 40;
         const user = ctx.user as ILocalUser | null;
 
@@ -165,10 +165,10 @@ export class TimelineHelpers {
 
         if (onlyMedia) query.andWhere("note.fileIds != '{}'");
 
-        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx);
     }
 
-    public static async getConversations(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<LinkPaginationObject<MastodonEntity.Conversation[]>> {
+    public static async getConversations(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<MastodonEntity.Conversation[]> {
         if (limit > 40) limit = 40;
         const user = ctx.user as ILocalUser;
         const sq = Notes.createQueryBuilder("note")
@@ -216,12 +216,9 @@ export class TimelineHelpers {
                     unread: unread
                 }
             });
-            const res = {
-                data: Promise.all(conversations.map(c => awaitAll(c))),
-                pagination: generatePaginationData(p.map(p => p.threadId ?? p.id), limit, minId !== undefined)
-            };
 
-            return awaitAll(res);
+            ctx.pagination = generatePaginationData(p.map(p => p.threadId ?? p.id), limit, minId !== undefined);
+            return Promise.all(conversations.map(c => awaitAll(c)));
         });
     }
 }

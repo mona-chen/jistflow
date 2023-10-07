@@ -56,10 +56,9 @@ export function setupEndpointsAccount(router: Router): void {
             const query = await UserHelpers.getUserCachedOr404(userId, ctx);
             const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))));
             const res = await UserHelpers.getUserStatuses(query, args.max_id, args.since_id, args.min_id, args.limit, args['only_media'], args['exclude_replies'], args['exclude_reblogs'], args.pinned, args.tagged, ctx);
-            const tl = await NoteConverter.encodeMany(res.data, ctx);
+            const tl = await NoteConverter.encodeMany(res, ctx);
 
             ctx.body = tl.map(s => convertStatusIds(s));
-            ctx.pagination = res.pagination;
         },
     );
     router.get<{ Params: { id: string } }>(
@@ -76,10 +75,9 @@ export function setupEndpointsAccount(router: Router): void {
             const query = await UserHelpers.getUserCachedOr404(userId, ctx);
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserFollowers(query, args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const followers = await UserConverter.encodeMany(res.data, ctx);
+            const followers = await UserConverter.encodeMany(res, ctx);
 
             ctx.body = followers.map((account) => convertAccountId(account));
-            ctx.pagination = res.pagination;
         },
     );
     router.get<{ Params: { id: string } }>(
@@ -90,10 +88,9 @@ export function setupEndpointsAccount(router: Router): void {
             const query = await UserHelpers.getUserCachedOr404(userId, ctx);
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserFollowing(query, args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const following = await UserConverter.encodeMany(res.data, ctx);
+            const following = await UserConverter.encodeMany(res, ctx);
 
             ctx.body = following.map((account) => convertAccountId(account));
-            ctx.pagination = res.pagination;
         },
     );
     router.get<{ Params: { id: string } }>(
@@ -177,9 +174,8 @@ export function setupEndpointsAccount(router: Router): void {
         async (ctx) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserBookmarks(args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const bookmarks = await NoteConverter.encodeMany(res.data, ctx);
+            const bookmarks = await NoteConverter.encodeMany(res, ctx);
             ctx.body = bookmarks.map(s => convertStatusIds(s));
-            ctx.pagination = res.pagination;
         }
     );
     router.get("/v1/favourites",
@@ -187,9 +183,8 @@ export function setupEndpointsAccount(router: Router): void {
         async (ctx) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserFavorites(args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const favorites = await NoteConverter.encodeMany(res.data, ctx);
+            const favorites = await NoteConverter.encodeMany(res, ctx);
             ctx.body = favorites.map(s => convertStatusIds(s));
-            ctx.pagination = res.pagination;
         }
     );
     router.get("/v1/mutes",
@@ -197,8 +192,7 @@ export function setupEndpointsAccount(router: Router): void {
         async (ctx) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserMutes(args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            ctx.body = res.data.map(m => convertAccountId(m));
-            ctx.pagination = res.pagination;
+            ctx.body = res.map(m => convertAccountId(m));
         }
     );
     router.get("/v1/blocks",
@@ -206,9 +200,8 @@ export function setupEndpointsAccount(router: Router): void {
         async (ctx) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserBlocks(args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const blocks = await UserConverter.encodeMany(res.data, ctx);
+            const blocks = await UserConverter.encodeMany(res, ctx);
             ctx.body = blocks.map(b => convertAccountId(b));
-            ctx.pagination = res.pagination;
         }
     );
     router.get("/v1/follow_requests",
@@ -216,9 +209,8 @@ export function setupEndpointsAccount(router: Router): void {
         async (ctx) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query as any)));
             const res = await UserHelpers.getUserFollowRequests(args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const requests = await UserConverter.encodeMany(res.data, ctx);
+            const requests = await UserConverter.encodeMany(res, ctx);
             ctx.body = requests.map(b => convertAccountId(b));
-            ctx.pagination = res.pagination;
         }
     );
     router.post<{ Params: { id: string } }>(

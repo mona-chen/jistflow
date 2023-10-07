@@ -71,10 +71,9 @@ export function setupEndpointsList(router: Router): void {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
             const res = await ListHelpers.getListUsers(id, args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const accounts = await UserConverter.encodeMany(res.data, ctx);
+            const accounts = await UserConverter.encodeMany(res, ctx);
 
             ctx.body = accounts.map(account => convertAccountId(account));
-            ctx.pagination = res.pagination;
         },
     );
     router.post<{ Params: { id: string } }>(
