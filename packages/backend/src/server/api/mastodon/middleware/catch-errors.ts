@@ -41,7 +41,7 @@ export async function CatchErrorsMiddleware(ctx: MastoContext, next: () => Promi
             }
             ctx.status = 500;
         }
-        ctx.body = { error: e.message };
+        ctx.body = { error: e.message ?? e };
         return;
     }
 }
