@@ -5,6 +5,7 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { ListHelpers } from "@/server/api/mastodon/helpers/list.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
+import { SearchHelpers } from "@/server/api/mastodon/helpers/search.js";
 
 export function setupEndpointsAccount(router: Router): void {
     router.get("/v1/accounts/verify_credentials",
@@ -31,6 +32,15 @@ export function setupEndpointsAccount(router: Router): void {
         async (ctx) => {
             const ids = (normalizeUrlQuery(ctx.query, ['id[]'])['id[]'] ?? []);
             ctx.body = await UserHelpers.getUserRelationhipToMany(ids, ctx.user.id);
+        }
+    );
+    // This must come before /accounts/:id, otherwise that will take precedence
+    router.get("/v1/accounts/search",
+        auth(true, ['read:accounts']),
+        async (ctx) => {
+            const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query), ['resolve', 'following']));
+            ctx.body = await SearchHelpers.search(args.q, 'accounts', args.resolve, args.following, undefined, false, undefined, undefined, args.limit, args.offset, ctx)
+                .then(p => p.accounts);
         }
     );
     router.get<{ Params: { id: string } }>("/v1/accounts/:id",
