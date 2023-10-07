@@ -90,6 +90,10 @@ In order for Iceshrimp to work properly, you need to initialise the database usi
 yarn run init
 ```
 
+### Optimizing performance
+
+For optimal database performance, it's highly recommended to configure PostgreSQL with [PGTune](https://pgtune.leopard.in.ua/) using the "Mixed type of application" profile. This is especially important should your database server use HDD instead of SATA or NVMe SSD storage.
+
 ## Setting up Webproxy
 
 ### Nginx
