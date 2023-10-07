@@ -219,14 +219,14 @@ export function setupEndpointsStatus(router: Router): void {
     router.get<{ Params: { id: string } }>("/v1/polls/:id",
         auth(false, ["read:statuses"]),
         async (ctx) => {
-            const note = await NoteHelpers.getNoteOr404(ctx.params.name, ctx);
+            const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
             ctx.body = await PollHelpers.getPoll(note, ctx);
         });
     router.post<{ Params: { id: string } }>(
         "/v1/polls/:id/votes",
         auth(true, ["write:statuses"]),
         async (ctx) => {
-            const note = await NoteHelpers.getNoteOr404(ctx.params.name, ctx);
+            const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
             const body: any = ctx.request.body;
             const choices = toArray(body.choices ?? []).map(p => parseInt(p));
