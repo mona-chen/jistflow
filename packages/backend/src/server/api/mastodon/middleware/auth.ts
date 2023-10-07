@@ -5,7 +5,7 @@ import { AuthConverter } from "@/server/api/mastodon/converters/auth.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
 export async function AuthMiddleware(ctx: MastoContext, next: () => Promise<any>) {
-    const auth = await authenticate(ctx.headers.authorization, null, true);
+    const auth = await authenticate(ctx.headers.authorization, null, true).catch(_ => [null, null]);
     ctx.user = auth[0] ?? null as ILocalUser | null;
     ctx.scopes = auth[1]?.permission ?? [] as string[];
 
