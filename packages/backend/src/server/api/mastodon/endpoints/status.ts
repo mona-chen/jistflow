@@ -210,7 +210,7 @@ export function setupEndpointsStatus(router: Router): void {
         "/v1/statuses/:id/unreact/:name",
         auth(true, ["write:favourites"]),
         async (ctx) => {
-            const note = await NoteHelpers.getNoteOr404(ctx.params.name, ctx);
+            const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
             ctx.body = await NoteHelpers.removeReactFromNote(note, ctx)
                 .then(p => NoteConverter.encode(p, ctx));

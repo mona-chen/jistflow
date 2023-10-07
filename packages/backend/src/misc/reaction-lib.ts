@@ -61,6 +61,7 @@ export function convertLegacyReactions(reactions: Record<string, number>) {
 export async function toDbReaction(
 	reaction?: string | null,
 	reacterHost?: string | null,
+	recurse: boolean = true
 ): Promise<string> {
 	if (!reaction) return await getFallbackReaction();
 
@@ -88,7 +89,9 @@ export async function toDbReaction(
 		if (emoji) return reacterHost ? `:${name}@${reacterHost}:` : `:${name}:`;
 	}
 
-	return await getFallbackReaction();
+	return recurse && reacterHost == null && reaction !== null
+		? await toDbReaction(`:${reaction}:`, reacterHost, false)
+		: await getFallbackReaction();
 }
 
 type DecodedReaction = {

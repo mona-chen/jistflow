@@ -6,7 +6,7 @@ import mfm from "mfm-js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
-import { populateEmojis } from "@/misc/populate-emojis.js";
+import { PopulatedEmoji, populateEmojis } from "@/misc/populate-emojis.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { DriveFiles, NoteFavorites, NoteReactions, Notes, NoteThreadMutings, UserNotePinings } from "@/models/index.js";
 import { decodeReaction } from "@/misc/reaction-lib.js";
@@ -35,13 +35,14 @@ export class NoteConverter {
             .map((x) => decodeReaction(x).reaction)
             .map((x) => x.replace(/:/g, ""));
 
-        const noteEmoji = host.then(async host => populateEmojis(
+        const populated = host.then(async host => populateEmojis(
             note.emojis.concat(reactionEmojiNames),
             host,
-        ))
-            .then(noteEmoji => noteEmoji
-                .filter((e) => e.name.indexOf("@") === -1)
-                .map((e) => EmojiConverter.encode(e)));
+        ));
+
+        const noteEmoji = populated.then(noteEmoji => noteEmoji
+            .filter((e) => e.name.indexOf("@") === -1)
+            .map((e) => EmojiConverter.encode(e)));
 
         const reactionCount = NoteReactions.countBy({ noteId: note.id });
 
@@ -114,7 +115,6 @@ export class NoteConverter {
             content: text.then(text => text !== null ? MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(text) : ""),
             text: text,
             created_at: note.createdAt.toISOString(),
-            // Remove reaction emojis with names containing @ from the emojis list.
             emojis: noteEmoji,
             replies_count: note.repliesCount,
             reblogs_count: note.renoteCount,
@@ -133,8 +133,7 @@ export class NoteConverter {
             application: null, //FIXME
             language: null, //FIXME
             pinned: isPinned,
-            // Use emojis list to provide URLs for emoji reactions.
-            reactions: [], //FIXME: this.mapReactions(n.emojis, n.reactions, n.myReaction),
+            reactions: populated.then(populated => Promise.resolve(reaction).then(reaction => this.encodeReactions(note.reactions, reaction?.reaction, populated))),
             bookmarked: isBookmarked,
             quote: Promise.resolve(renote).then(renote => recurse && renote && note.text !== null ? this.encode(renote, ctx, false) : null),
             edited_at: note.updatedAt?.toISOString()
@@ -144,5 +143,23 @@ export class NoteConverter {
     public static async encodeMany(notes: Note[], ctx: MastoContext): Promise<MastodonEntity.Status[]> {
         const encoded = notes.map(n => this.encode(n, ctx));
         return Promise.all(encoded);
+    }
+
+    private static encodeReactions(reactions: Record<string, number>, myReaction: string | undefined, populated: PopulatedEmoji[]): MastodonEntity.Reaction[] {
+        return Object.keys(reactions).map(key => {
+
+            const isCustom = key.startsWith(':') && key.endsWith(':');
+            const name = isCustom ? key.substring(1, key.length - 1) : key;
+            const populatedName = isCustom && name.indexOf('@') === -1 ? `${name}@.` : name;
+            const url = isCustom ? populated.find(p => p.name === populatedName)?.url : undefined;
+
+            return {
+                count: reactions[key],
+                me: key === myReaction,
+                name: name,
+                url: url,
+                static_url: url,
+            };
+        });
     }
 }
