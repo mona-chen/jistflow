@@ -2,7 +2,7 @@ import Router from "@koa/router";
 import { MiscHelpers } from "@/server/api/mastodon/helpers/misc.js";
 import { argsToBools, limitToInt } from "@/server/api/mastodon/endpoints/timeline.js";
 import { Announcements } from "@/models/index.js";
-import { convertAnnouncementId, convertSuggestionIds } from "@/server/api/mastodon/converters.js";
+import { convertAnnouncementId, convertStatusIds, convertSuggestionIds } from "@/server/api/mastodon/converters.js";
 import { convertId, IdType } from "@/misc/convert-id.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
@@ -47,13 +47,15 @@ export function setupEndpointsMisc(router: Router): void {
         async (ctx) => {
             const args = limitToInt(ctx.query);
             ctx.body = await MiscHelpers.getTrendingHashtags(args.limit, args.offset);
+            //FIXME: convert ids
         }
     );
 
     router.get("/v1/trends/statuses",
         async (ctx) => {
             const args = limitToInt(ctx.query);
-            ctx.body = await MiscHelpers.getTrendingStatuses(args.limit, args.offset);
+            ctx.body = await MiscHelpers.getTrendingStatuses(args.limit, args.offset)
+                .then(p => p.map(x => convertStatusIds(x)));
         }
     );
 
