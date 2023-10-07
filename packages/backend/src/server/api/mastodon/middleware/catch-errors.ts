@@ -28,6 +28,7 @@ export async function CatchErrorsMiddleware(ctx: MastoContext, next: () => Promi
         if (e instanceof MastoApiError) {
             ctx.status = e.statusCode;
         } else if (e instanceof IdentifiableError) {
+            if (e.message.length < 1) e.message = e.id;
             ctx.status = 400;
         } else if (e instanceof ApiError) {
             ctx.status = e.httpStatusCode ?? 500;
