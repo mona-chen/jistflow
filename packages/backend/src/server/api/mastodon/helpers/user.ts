@@ -326,7 +326,7 @@ export class UserHelpers {
         if (limit > 40) limit = 40;
         const localUser = ctx.user as ILocalUser | null;
 
-        if (tagged !== undefined) {
+        if (tagged !== undefined && tagged.length > 0) {
             //FIXME respect tagged
             return [];
         }
