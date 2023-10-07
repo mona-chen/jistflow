@@ -40,6 +40,7 @@ const props = withDefaults(
 		},
 	},
 );
+props.value.children ??= [];
 
 const getPageBlockList = inject<(any) => any>("getPageBlockList");
 
