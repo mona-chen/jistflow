@@ -96,7 +96,9 @@ export class MiscHelpers {
         return awaitAll(res);
     }
 
-    public static async getAnnouncements(user: ILocalUser, includeRead: boolean = false): Promise<MastodonEntity.Announcement[]> {
+    public static async getAnnouncements(includeRead: boolean = false, ctx: MastoContext): Promise<MastodonEntity.Announcement[]> {
+        const user = ctx.user as ILocalUser;
+
         if (includeRead) {
             const [announcements, reads] = await Promise.all([
                 Announcements.createQueryBuilder("announcement")
@@ -122,7 +124,8 @@ export class MiscHelpers {
             .then(p => p.map(x => AnnouncementConverter.encode(x, false)));
     }
 
-    public static async dismissAnnouncement(announcement: Announcement, user: ILocalUser): Promise<void> {
+    public static async dismissAnnouncement(announcement: Announcement, ctx: MastoContext): Promise<void> {
+        const user = ctx.user as ILocalUser;
         const exists = await AnnouncementReads.exist({ where: { userId: user.id, announcementId: announcement.id } });
         if (!exists) {
             await AnnouncementReads.insert({
@@ -134,7 +137,8 @@ export class MiscHelpers {
         }
     }
 
-    public static async getFollowSuggestions(user: ILocalUser, limit: number, ctx: MastoContext): Promise<MastodonEntity.SuggestedAccount[]> {
+    public static async getFollowSuggestions(limit: number, ctx: MastoContext): Promise<MastodonEntity.SuggestedAccount[]> {
+        const user = ctx.user as ILocalUser;
         const results: Promise<MastodonEntity.SuggestedAccount[]>[] = [];
 
         const pinned = fetchMeta().then(meta => Promise.all(
@@ -220,7 +224,7 @@ export class MiscHelpers {
             .skip(offset)
             .take(limit)
             .getMany()
-            .then(result => NoteConverter.encodeMany(result, null, ctx));
+            .then(result => NoteConverter.encodeMany(result, ctx));
     }
 
     public static async getTrendingHashtags(limit: number = 10, offset: number = 0): Promise<MastodonEntity.Tag[]> {
@@ -229,11 +233,12 @@ export class MiscHelpers {
         //FIXME: This was already implemented in api/endpoints/hashtags/trend.ts, but the implementation is sketchy at best. Rewrite from scratch.
     }
 
-    public static getPreferences(user: ILocalUser): Promise<MastodonEntity.Preferences> {
+    public static getPreferences(ctx: MastoContext): Promise<MastodonEntity.Preferences> {
+        const user = ctx.user as ILocalUser;
         const profile = UserProfiles.findOneByOrFail({ userId: user.id });
         const sensitive = profile.then(p => p.alwaysMarkNsfw);
         const language = profile.then(p => p.lang);
-        const privacy = UserHelpers.getDefaultNoteVisibility(user)
+        const privacy = UserHelpers.getDefaultNoteVisibility(ctx)
             .then(p => VisibilityConverter.encode(p));
 
         const res = {

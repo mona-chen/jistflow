@@ -14,7 +14,7 @@ export function setupEndpointsList(router: Router): void {
     router.get("/v1/lists",
         auth(true, ['read:lists']),
         async (ctx, reply) => {
-            ctx.body = await ListHelpers.getLists(ctx.user)
+            ctx.body = await ListHelpers.getLists(ctx)
                 .then(p => p.map(list => convertListId(list)));
         }
     );
@@ -24,7 +24,7 @@ export function setupEndpointsList(router: Router): void {
         async (ctx, reply) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
 
-            ctx.body = await ListHelpers.getListOr404(ctx.user, id)
+            ctx.body = await ListHelpers.getListOr404(id, ctx)
                 .then(p => convertListId(p));
         },
     );
@@ -34,7 +34,7 @@ export function setupEndpointsList(router: Router): void {
             const body = ctx.request.body as any;
             const title = (body.title ?? '').trim();
 
-            ctx.body = await ListHelpers.createList(ctx.user, title)
+            ctx.body = await ListHelpers.createList(title, ctx)
                 .then(p => convertListId(p));
         }
     );
@@ -48,7 +48,7 @@ export function setupEndpointsList(router: Router): void {
 
             const body = ctx.request.body as any;
             const title = (body.title ?? '').trim();
-            ctx.body = await ListHelpers.updateList(ctx.user, list, title)
+            ctx.body = await ListHelpers.updateList(list, title, ctx)
                 .then(p => convertListId(p));
         },
     );
@@ -60,7 +60,7 @@ export function setupEndpointsList(router: Router): void {
             const list = await UserLists.findOneBy({ userId: ctx.user.id, id: id });
             if (!list) throw new MastoApiError(404);
 
-            await ListHelpers.deleteList(ctx.user, list);
+            await ListHelpers.deleteList(list, ctx);
             ctx.body = {};
         },
     );
@@ -70,7 +70,7 @@ export function setupEndpointsList(router: Router): void {
         async (ctx, reply) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
-            const res = await ListHelpers.getListUsers(ctx.user, id, args.max_id, args.since_id, args.min_id, args.limit);
+            const res = await ListHelpers.getListUsers(id, args.max_id, args.since_id, args.min_id, args.limit, ctx);
             const accounts = await UserConverter.encodeMany(res.data, ctx);
 
             ctx.body = accounts.map(account => convertAccountId(account));
@@ -90,7 +90,7 @@ export function setupEndpointsList(router: Router): void {
 
             const ids = toArray(body['account_ids']).map(p => convertId(p, IdType.IceshrimpId));
             const targets = await Promise.all(ids.map(p => getUser(p)));
-            await ListHelpers.addToList(ctx.user, list, targets);
+            await ListHelpers.addToList(list, targets, ctx);
             ctx.body = {}
         },
     );
@@ -107,7 +107,7 @@ export function setupEndpointsList(router: Router): void {
 
             const ids = toArray(body['account_ids']).map(p => convertId(p, IdType.IceshrimpId));
             const targets = await Promise.all(ids.map(p => getUser(p)));
-            await ListHelpers.removeFromList(ctx.user, list, targets);
+            await ListHelpers.removeFromList(list, targets, ctx);
             ctx.body = {}
         },
     );

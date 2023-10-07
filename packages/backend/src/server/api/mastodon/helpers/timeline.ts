@@ -22,8 +22,9 @@ import { generatePaginationData, LinkPaginationObject } from "@/server/api/masto
 import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class TimelineHelpers {
-    public static async getHomeTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<Note[]>> {
+    public static async getHomeTimeline(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
+        const user = ctx.user as ILocalUser;
 
         const followingQuery = Followings.createQueryBuilder("following")
             .select("following.followeeId")
@@ -56,8 +57,9 @@ export class TimelineHelpers {
         return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
-    public static async getPublicTimeline(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<LinkPaginationObject<Note[]>> {
+    public static async getPublicTimeline(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, local: boolean = false, remote: boolean = false, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
+        const user = ctx.user as ILocalUser;
 
         if (local && remote) {
             throw new Error("local and remote are mutually exclusive options");
@@ -99,8 +101,9 @@ export class TimelineHelpers {
         return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
-    public static async getListTimeline(user: ILocalUser, list: UserList, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<Note[]>> {
+    public static async getListTimeline(list: UserList, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
+        const user = ctx.user as ILocalUser;
         if (user.id != list.userId) throw new Error("List is not owned by user");
 
         const listQuery = UserListJoinings.createQueryBuilder("member")
@@ -123,8 +126,9 @@ export class TimelineHelpers {
         return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
-    public static async getTagTimeline(user: ILocalUser, tag: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, any: string[], all: string[], none: string[], onlyMedia: boolean = false, local: boolean = false, remote: boolean = false): Promise<LinkPaginationObject<Note[]>> {
+    public static async getTagTimeline(tag: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, any: string[], all: string[], none: string[], onlyMedia: boolean = false, local: boolean = false, remote: boolean = false, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
+        const user = ctx.user as ILocalUser | null;
 
         if (tag.length < 1) throw new MastoApiError(400, "Tag cannot be empty");
 
@@ -164,8 +168,9 @@ export class TimelineHelpers {
         return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
-    public static async getConversations(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<LinkPaginationObject<MastodonEntity.Conversation[]>> {
+    public static async getConversations(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<LinkPaginationObject<MastodonEntity.Conversation[]>> {
         if (limit > 40) limit = 40;
+        const user = ctx.user as ILocalUser;
         const sq = Notes.createQueryBuilder("note")
             .select("COALESCE(note.threadId, note.id)", "conversationId")
             .addSelect("note.id", "latest")
@@ -207,7 +212,7 @@ export class TimelineHelpers {
                 return {
                     id: c.threadId ?? c.id,
                     accounts: accounts.then(u => u.length > 0 ? u : UserConverter.encodeMany([user], ctx)), // failsafe to prevent apps from crashing case when all participant users have been deleted
-                    last_status: NoteConverter.encode(c, user, ctx),
+                    last_status: NoteConverter.encode(c, ctx),
                     unread: unread
                 }
             });

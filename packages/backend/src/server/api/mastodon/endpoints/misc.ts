@@ -24,7 +24,7 @@ export function setupEndpointsMisc(router: Router): void {
         auth(true),
         async (ctx) => {
             const args = argsToBools(ctx.query, ['with_dismissed']);
-            ctx.body = await MiscHelpers.getAnnouncements(ctx.user, args['with_dismissed'])
+            ctx.body = await MiscHelpers.getAnnouncements(args['with_dismissed'], ctx)
                 .then(p => p.map(x => convertAnnouncementId(x)));
         }
     );
@@ -37,7 +37,7 @@ export function setupEndpointsMisc(router: Router): void {
             const announcement = await Announcements.findOneBy({ id: id });
             if (!announcement) throw new MastoApiError(404);
 
-            await MiscHelpers.dismissAnnouncement(announcement, ctx.user);
+            await MiscHelpers.dismissAnnouncement(announcement, ctx);
             ctx.body = {};
         },
     );
@@ -68,7 +68,7 @@ export function setupEndpointsMisc(router: Router): void {
     router.get("/v1/preferences",
         auth(true, ['read:accounts']),
         async (ctx) => {
-            ctx.body = await MiscHelpers.getPreferences(ctx.user);
+            ctx.body = await MiscHelpers.getPreferences(ctx);
         }
     );
 
@@ -76,7 +76,7 @@ export function setupEndpointsMisc(router: Router): void {
         auth(true, ['read']),
         async (ctx) => {
             const args = limitToInt(ctx.query);
-            ctx.body = await MiscHelpers.getFollowSuggestions(ctx.user, args.limit, ctx)
+            ctx.body = await MiscHelpers.getFollowSuggestions(args.limit, ctx)
                 .then(p => p.map(x => convertSuggestionIds(x)));
         }
     );

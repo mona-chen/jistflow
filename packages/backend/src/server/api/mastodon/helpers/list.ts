@@ -7,9 +7,12 @@ import { pushUserToUserList } from "@/services/user-list/push.js";
 import { genId } from "@/misc/gen-id.js";
 import { publishUserListStream } from "@/services/stream.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class ListHelpers {
-    public static async getLists(user: ILocalUser): Promise<MastodonEntity.List[]> {
+    public static async getLists(ctx: MastoContext): Promise<MastodonEntity.List[]> {
+        const user = ctx.user as ILocalUser;
+
         return UserLists.findBy({ userId: user.id }).then(p => p.map(list => {
             return {
                 id: list.id,
@@ -18,7 +21,9 @@ export class ListHelpers {
         }));
     }
 
-    public static async getList(user: ILocalUser, id: string): Promise<MastodonEntity.List> {
+    public static async getList(id: string, ctx: MastoContext): Promise<MastodonEntity.List> {
+        const user = ctx.user as ILocalUser;
+
         return UserLists.findOneByOrFail({ userId: user.id, id: id }).then(list => {
             return {
                 id: list.id,
@@ -27,14 +32,15 @@ export class ListHelpers {
         });
     }
 
-    public static async getListOr404(user: ILocalUser, id: string): Promise<MastodonEntity.List> {
-        return this.getList(user, id).catch(_ => {
+    public static async getListOr404(id: string, ctx: MastoContext): Promise<MastodonEntity.List> {
+        return this.getList(id, ctx).catch(_ => {
             throw new MastoApiError(404);
         })
     }
 
-    public static async getListUsers(user: ILocalUser, id: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+    public static async getListUsers(id: string, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<User[]>> {
         if (limit > 80) limit = 80;
+        const user = ctx.user as ILocalUser;
         const list = await UserLists.findOneBy({ userId: user.id, id: id });
         if (!list) throw new MastoApiError(404);
         const query = PaginationHelpers.makePaginationQuery(
@@ -59,12 +65,14 @@ export class ListHelpers {
         });
     }
 
-    public static async deleteList(user: ILocalUser, list: UserList) {
+    public static async deleteList(list: UserList, ctx: MastoContext) {
+        const user = ctx.user as ILocalUser;
         if (user.id != list.userId) throw new Error("List is not owned by user");
         await UserLists.delete(list.id);
     }
 
-    public static async addToList(localUser: ILocalUser, list: UserList, usersToAdd: User[]) {
+    public static async addToList(list: UserList, usersToAdd: User[], ctx: MastoContext) {
+        const localUser = ctx.user as ILocalUser;
         if (localUser.id != list.userId) throw new Error("List is not owned by user");
         for (const user of usersToAdd) {
             if (user.id !== localUser.id) {
@@ -89,7 +97,8 @@ export class ListHelpers {
         }
     }
 
-    public static async removeFromList(localUser: ILocalUser, list: UserList, usersToRemove: User[]) {
+    public static async removeFromList(list: UserList, usersToRemove: User[], ctx: MastoContext) {
+        const localUser = ctx.user as ILocalUser;
         if (localUser.id != list.userId) throw new Error("List is not owned by user");
         for (const user of usersToRemove) {
             const exist = await UserListJoinings.exist({
@@ -105,9 +114,10 @@ export class ListHelpers {
         }
     }
 
-    public static async createList(user: ILocalUser, title: string): Promise<MastodonEntity.List> {
+    public static async createList(title: string, ctx: MastoContext): Promise<MastodonEntity.List> {
         if (title.length < 1) throw new MastoApiError(400, "Title must not be empty");
 
+        const user = ctx.user as ILocalUser;
         const list = await UserLists.insert({
             id: genId(),
             createdAt: new Date(),
@@ -121,8 +131,10 @@ export class ListHelpers {
         };
     }
 
-    public static async updateList(user: ILocalUser, list: UserList, title: string) {
+    public static async updateList(list: UserList, title: string, ctx: MastoContext) {
         if (title.length < 1) throw new MastoApiError(400, "Title must not be empty");
+
+        const user = ctx.user as ILocalUser;
         if (user.id != list.userId) throw new Error("List is not owned by user");
 
         const partial = { name: title };
@@ -135,7 +147,8 @@ export class ListHelpers {
         };
     }
 
-    public static async getListsByMember(user: ILocalUser, member: User): Promise<MastodonEntity.List[]> {
+    public static async getListsByMember(member: User, ctx: MastoContext): Promise<MastodonEntity.List[]> {
+        const user = ctx.user as ILocalUser;
         const joinQuery = UserListJoinings.createQueryBuilder('member')
             .select("member.userListId")
             .where("member.userId = :memberId");

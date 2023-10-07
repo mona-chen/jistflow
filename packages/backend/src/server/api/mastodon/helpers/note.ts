@@ -47,7 +47,8 @@ export class NoteHelpers {
             });
     }
 
-    public static async reactToNote(note: Note, user: ILocalUser, reaction: string): Promise<Note> {
+    public static async reactToNote(note: Note, reaction: string, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser;
         await createReaction(user, note, reaction).catch(e => {
             if (e instanceof IdentifiableError && e.id == '51c42bb4-931a-456b-bff7-e5a8a70dd298') return;
             throw e;
@@ -55,12 +56,14 @@ export class NoteHelpers {
         return getNote(note.id, user);
     }
 
-    public static async removeReactFromNote(note: Note, user: ILocalUser): Promise<Note> {
+    public static async removeReactFromNote(note: Note, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser;
         await deleteReaction(user, note);
         return getNote(note.id, user);
     }
 
-    public static async reblogNote(note: Note, user: ILocalUser): Promise<Note> {
+    public static async reblogNote(note: Note, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser;
         const existingRenote = await Notes.findOneBy({
             userId: user.id,
             renoteId: note.id,
@@ -75,7 +78,8 @@ export class NoteHelpers {
         return await createNote(user, data);
     }
 
-    public static async unreblogNote(note: Note, user: ILocalUser): Promise<Note> {
+    public static async unreblogNote(note: Note, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser;
         return Notes.findBy({
             userId: user.id,
             renoteId: note.id,
@@ -85,7 +89,8 @@ export class NoteHelpers {
             .then(_ => getNote(note.id, user));
     }
 
-    public static async bookmarkNote(note: Note, user: ILocalUser): Promise<Note> {
+    public static async bookmarkNote(note: Note, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser;
         const bookmarked = await NoteFavorites.exist({
             where: {
                 noteId: note.id,
@@ -105,7 +110,8 @@ export class NoteHelpers {
         return note;
     }
 
-    public static async unbookmarkNote(note: Note, user: ILocalUser): Promise<Note> {
+    public static async unbookmarkNote(note: Note, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser;
         return NoteFavorites.findOneBy({
             noteId: note.id,
             userId: user.id,
@@ -114,7 +120,8 @@ export class NoteHelpers {
             .then(_ => note);
     }
 
-    public static async pinNote(note: Note, user: ILocalUser): Promise<Note> {
+    public static async pinNote(note: Note, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser;
         const pinned = await UserNotePinings.exist({
             where: {
                 userId: user.id,
@@ -129,7 +136,8 @@ export class NoteHelpers {
         return note;
     }
 
-    public static async unpinNote(note: Note, user: ILocalUser): Promise<Note> {
+    public static async unpinNote(note: Note, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser;
         const pinned = await UserNotePinings.exist({
             where: {
                 userId: user.id,
@@ -144,9 +152,10 @@ export class NoteHelpers {
         return note;
     }
 
-    public static async deleteNote(note: Note, user: ILocalUser, ctx: MastoContext): Promise<MastodonEntity.Status> {
+    public static async deleteNote(note: Note, ctx: MastoContext): Promise<MastodonEntity.Status> {
+        const user = ctx.user as ILocalUser;
         if (user.id !== note.userId) throw new MastoApiError(404);
-        const status = await NoteConverter.encode(note, user, ctx);
+        const status = await NoteConverter.encode(note, ctx);
         await deleteNote(user, note);
         status.content = undefined;
         return status;
@@ -222,8 +231,9 @@ export class NoteHelpers {
         }
     }
 
-    public static async getNoteRebloggedBy(note: Note, user: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+    public static async getNoteRebloggedBy(note: Note, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<User[]>> {
         if (limit > 80) limit = 80;
+        const user = ctx.user as ILocalUser | null;
         const query = PaginationHelpers.makePaginationQuery(
             Notes.createQueryBuilder("note"),
             sinceId,
@@ -249,7 +259,8 @@ export class NoteHelpers {
         });
     }
 
-    public static async getNoteDescendants(note: Note | string, user: ILocalUser | null, limit: number = 10, depth: number = 2): Promise<Note[]> {
+    public static async getNoteDescendants(note: Note | string, limit: number = 10, depth: number = 2, ctx: MastoContext): Promise<Note[]> {
+        const user = ctx.user as ILocalUser | null;
         const noteId = typeof note === "string" ? note : note.id;
         const query = makePaginationQuery(Notes.createQueryBuilder("note"))
             .andWhere(
@@ -266,7 +277,8 @@ export class NoteHelpers {
         return query.getMany().then(p => p.reverse());
     }
 
-    public static async getNoteAncestors(rootNote: Note, user: ILocalUser | null, limit: number = 10): Promise<Note[]> {
+    public static async getNoteAncestors(rootNote: Note, limit: number = 10, ctx: MastoContext): Promise<Note[]> {
+        const user = ctx.user as ILocalUser | null;
         const notes = new Array<Note>;
         for (let i = 0; i < limit; i++) {
             const currentNote = notes.at(-1) ?? rootNote;
@@ -282,13 +294,14 @@ export class NoteHelpers {
         return notes.reverse();
     }
 
-    public static async createNote(request: MastodonEntity.StatusCreationRequest, user: ILocalUser): Promise<Note> {
+    public static async createNote(request: MastodonEntity.StatusCreationRequest, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser;
         const files = request.media_ids && request.media_ids.length > 0
             ? DriveFiles.findByIds(request.media_ids)
             : [];
 
         const reply = request.in_reply_to_id ? await getNote(request.in_reply_to_id, user) : undefined;
-        const visibility = request.visibility ?? UserHelpers.getDefaultNoteVisibility(user);
+        const visibility = request.visibility ?? UserHelpers.getDefaultNoteVisibility(ctx);
 
         const data = {
             createdAt: new Date(),
@@ -304,13 +317,14 @@ export class NoteHelpers {
             reply: reply,
             cw: request.spoiler_text,
             visibility: visibility,
-            visibleUsers: Promise.resolve(visibility).then(p => p === 'specified' ? this.extractMentions(request.text ?? '', user) : undefined)
+            visibleUsers: Promise.resolve(visibility).then(p => p === 'specified' ? this.extractMentions(request.text ?? '', ctx) : undefined)
         }
 
         return createNote(user, await awaitAll(data));
     }
 
-    public static async editNote(request: MastodonEntity.StatusEditRequest, note: Note, user: ILocalUser): Promise<Note> {
+    public static async editNote(request: MastodonEntity.StatusEditRequest, note: Note, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser;
         const files = request.media_ids && request.media_ids.length > 0
             ? DriveFiles.findByIds(request.media_ids)
             : [];
@@ -331,7 +345,8 @@ export class NoteHelpers {
         return editNote(user, note, await awaitAll(data));
     }
 
-    public static async extractMentions(text: string, user: ILocalUser): Promise<User[]> {
+    public static async extractMentions(text: string, ctx: MastoContext): Promise<User[]> {
+        const user = ctx.user as ILocalUser;
         return extractMentionedUsers(user, mfm.parse(text)!);
     }
 
@@ -397,13 +412,16 @@ export class NoteHelpers {
         return result;
     }
 
-    public static async getNoteOr404(id: string, user: ILocalUser | null): Promise<Note> {
+    public static async getNoteOr404(id: string, ctx: MastoContext): Promise<Note> {
+        const user = ctx.user as ILocalUser | null;
         return getNote(id, user).catch(_ => {
             throw new MastoApiError(404);
         });
     }
 
-    public static getIdempotencyKey(headers: any, user: ILocalUser): string | null {
+    public static getIdempotencyKey(ctx: MastoContext): string | null {
+        const headers = ctx.headers;
+        const user = ctx.user as ILocalUser;
         if (headers["idempotency-key"] === undefined || headers["idempotency-key"] === null) return null;
         return `${user.id}-${Array.isArray(headers["idempotency-key"]) ? headers["idempotency-key"].at(-1)! : headers["idempotency-key"]}`;
     }

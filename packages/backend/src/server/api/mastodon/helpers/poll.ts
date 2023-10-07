@@ -17,7 +17,8 @@ import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class PollHelpers {
-    public static async getPoll(note: Note, user: ILocalUser | null, ctx: MastoContext): Promise<MastodonEntity.Poll> {
+    public static async getPoll(note: Note, ctx: MastoContext): Promise<MastodonEntity.Poll> {
+        const user = ctx.user as ILocalUser | null;
         if (!await Notes.isVisibleForMe(note, user?.id ?? null))
             throw new Error('Cannot encode poll not visible for user');
 
@@ -25,15 +26,16 @@ export class PollHelpers {
         const host = Promise.resolve(noteUser).then(noteUser => noteUser.host ?? null);
         const noteEmoji = await host
             .then(async host => populateEmojis(note.emojis, host)
-            .then(noteEmoji => noteEmoji
-                .filter((e) => e.name.indexOf("@") === -1)
-                .map((e) => EmojiConverter.encode(e))));
+                .then(noteEmoji => noteEmoji
+                    .filter((e) => e.name.indexOf("@") === -1)
+                    .map((e) => EmojiConverter.encode(e))));
 
         return populatePoll(note, user?.id ?? null).then(p => PollConverter.encode(p, note.id, noteEmoji));
     }
 
-    public static async voteInPoll(choices: number[], note: Note, user: ILocalUser, ctx: MastoContext): Promise<MastodonEntity.Poll> {
+    public static async voteInPoll(choices: number[], note: Note, ctx: MastoContext): Promise<MastodonEntity.Poll> {
         if (!note.hasPoll) throw new MastoApiError(404);
+        const user = ctx.user as ILocalUser;
 
         for (const choice of choices) {
             const createdAt = new Date();
@@ -123,6 +125,6 @@ export class PollHelpers {
                 );
             }
         }
-        return this.getPoll(note, user, ctx);
+        return this.getPoll(note, ctx);
     }
 }

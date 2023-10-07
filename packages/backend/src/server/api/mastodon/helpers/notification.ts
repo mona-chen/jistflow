@@ -4,11 +4,13 @@ import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { Notification } from "@/models/entities/notification.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { LinkPaginationObject } from "@/server/api/mastodon/middleware/pagination.js";
+import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class NotificationHelpers {
-    public static async getNotifications(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, types: string[] | undefined, excludeTypes: string[] | undefined, accountId: string | undefined): Promise<LinkPaginationObject<Notification[]>> {
+    public static async getNotifications(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, types: string[] | undefined, excludeTypes: string[] | undefined, accountId: string | undefined, ctx: MastoContext): Promise<LinkPaginationObject<Notification[]>> {
         if (limit > 80) limit = 80;
 
+        const user = ctx.user as ILocalUser;
         let requestedTypes = types
             ? this.decodeTypes(types)
             : ['follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest'];
@@ -35,26 +37,30 @@ export class NotificationHelpers {
         return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
-    public static async getNotification(id: string, user: ILocalUser): Promise<Notification | null> {
+    public static async getNotification(id: string, ctx: MastoContext): Promise<Notification | null> {
+        const user = ctx.user as ILocalUser;
         return Notifications.findOneBy({ id: id, notifieeId: user.id });
     }
 
-    public static async getNotificationOr404(id: string, user: ILocalUser): Promise<Notification> {
-        return this.getNotification(id, user).then(p => {
+    public static async getNotificationOr404(id: string, ctx: MastoContext): Promise<Notification> {
+        return this.getNotification(id, ctx).then(p => {
             if (p) return p;
             throw new MastoApiError(404);
         });
     }
 
-    public static async dismissNotification(id: string, user: ILocalUser): Promise<void> {
-        const result = await Notifications.update({ id: id, notifieeId: user.id }, { isRead: true });
+    public static async dismissNotification(id: string, ctx: MastoContext): Promise<void> {
+        const user = ctx.user as ILocalUser;
+        await Notifications.update({ id: id, notifieeId: user.id }, { isRead: true });
     }
 
-    public static async clearAllNotifications(user: ILocalUser): Promise<void> {
+    public static async clearAllNotifications(ctx: MastoContext): Promise<void> {
+        const user = ctx.user as ILocalUser;
         await Notifications.update({ notifieeId: user.id }, { isRead: true });
     }
 
-    public static async markConversationAsRead(id: string, user: ILocalUser): Promise<void> {
+    public static async markConversationAsRead(id: string, ctx: MastoContext): Promise<void> {
+        const user = ctx.user as ILocalUser;
         const notesQuery = Notes.createQueryBuilder("note")
             .select("note.id")
             .andWhere("COALESCE(note.threadId, note.id) = :conversationId");

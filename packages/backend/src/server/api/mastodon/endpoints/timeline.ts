@@ -67,8 +67,8 @@ export function setupEndpointsTimeline(router: Router): void {
         auth(true, ['read:statuses']),
         async (ctx, reply) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))));
-            const res = await TimelineHelpers.getPublicTimeline(ctx.user, args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote);
-            const tl = await NoteConverter.encodeMany(res.data, ctx.user, ctx);
+            const res = await TimelineHelpers.getPublicTimeline(args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote, ctx);
+            const tl = await NoteConverter.encodeMany(res.data, ctx);
 
             ctx.body = tl.map(s => convertStatusIds(s));
             ctx.pagination = res.pagination;
@@ -80,7 +80,7 @@ export function setupEndpointsTimeline(router: Router): void {
             const tag = (ctx.params.hashtag ?? '').trim();
             const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))), ['any[]', 'all[]', 'none[]']);
             const res = await TimelineHelpers.getTagTimeline(ctx.user, tag, args.max_id, args.since_id, args.min_id, args.limit, args['any[]'] ?? [], args['all[]'] ?? [], args['none[]'] ?? [], args.only_media, args.local, args.remote);
-            const tl = await NoteConverter.encodeMany(res.data, ctx.user, ctx);
+            const tl = await NoteConverter.encodeMany(res.data, ctx);
 
             ctx.body = tl.map(s => convertStatusIds(s));
             ctx.pagination = res.pagination;
@@ -90,8 +90,8 @@ export function setupEndpointsTimeline(router: Router): void {
         auth(true, ['read:statuses']),
         async (ctx, reply) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
-            const res = await TimelineHelpers.getHomeTimeline(ctx.user, args.max_id, args.since_id, args.min_id, args.limit);
-            const tl = await NoteConverter.encodeMany(res.data, ctx.user, ctx);
+            const res = await TimelineHelpers.getHomeTimeline(args.max_id, args.since_id, args.min_id, args.limit, ctx);
+            const tl = await NoteConverter.encodeMany(res.data, ctx);
 
             ctx.body = tl.map(s => convertStatusIds(s));
             ctx.pagination = res.pagination;
@@ -105,8 +105,8 @@ export function setupEndpointsTimeline(router: Router): void {
             if (!list) throw new MastoApiError(404);
 
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
-            const res = await TimelineHelpers.getListTimeline(ctx.user, list, args.max_id, args.since_id, args.min_id, args.limit);
-            const tl = await NoteConverter.encodeMany(res.data, ctx.user, ctx);
+            const res = await TimelineHelpers.getListTimeline(list, args.max_id, args.since_id, args.min_id, args.limit, ctx);
+            const tl = await NoteConverter.encodeMany(res.data, ctx);
 
             ctx.body = tl.map(s => convertStatusIds(s));
             ctx.pagination = res.pagination;
@@ -116,7 +116,7 @@ export function setupEndpointsTimeline(router: Router): void {
         auth(true, ['read:statuses']),
         async (ctx, reply) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
-            const res = await TimelineHelpers.getConversations(ctx.user, args.max_id, args.since_id, args.min_id, args.limit, ctx);
+            const res = await TimelineHelpers.getConversations(args.max_id, args.since_id, args.min_id, args.limit, ctx);
 
             ctx.body = res.data.map(c => convertConversationIds(c));
             ctx.pagination = res.pagination;

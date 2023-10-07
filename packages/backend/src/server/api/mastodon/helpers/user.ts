@@ -61,8 +61,9 @@ export type updateCredsData = {
 type RelationshipType = 'followers' | 'following';
 
 export class UserHelpers {
-    public static async followUser(target: User, localUser: ILocalUser, reblogs: boolean, notify: boolean): Promise<MastodonEntity.Relationship> {
+    public static async followUser(target: User, reblogs: boolean, notify: boolean, ctx: MastoContext): Promise<MastodonEntity.Relationship> {
         //FIXME: implement reblogs & notify params
+        const localUser = ctx.user as ILocalUser;
         const following = await Followings.exist({ where: { followerId: localUser.id, followeeId: target.id } });
         const requested = await FollowRequests.exist({ where: { followerId: localUser.id, followeeId: target.id } });
         if (!following && !requested)
@@ -71,7 +72,8 @@ export class UserHelpers {
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
-    public static async unfollowUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
+    public static async unfollowUser(target: User, ctx: MastoContext): Promise<MastodonEntity.Relationship> {
+        const localUser = ctx.user as ILocalUser;
         const following = await Followings.exist({ where: { followerId: localUser.id, followeeId: target.id } });
         const requested = await FollowRequests.exist({ where: { followerId: localUser.id, followeeId: target.id } });
         if (following)
@@ -82,7 +84,8 @@ export class UserHelpers {
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
-    public static async blockUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
+    public static async blockUser(target: User, ctx: MastoContext): Promise<MastodonEntity.Relationship> {
+        const localUser = ctx.user as ILocalUser;
         const blocked = await Blockings.exist({ where: { blockerId: localUser.id, blockeeId: target.id } });
         if (!blocked)
             await createBlocking(localUser, target);
@@ -90,7 +93,8 @@ export class UserHelpers {
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
-    public static async unblockUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
+    public static async unblockUser(target: User, ctx: MastoContext): Promise<MastodonEntity.Relationship> {
+        const localUser = ctx.user as ILocalUser;
         const blocked = await Blockings.exist({ where: { blockerId: localUser.id, blockeeId: target.id } });
         if (blocked)
             await deleteBlocking(localUser, target);
@@ -98,8 +102,9 @@ export class UserHelpers {
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
-    public static async muteUser(target: User, localUser: ILocalUser, notifications: boolean = true, duration: number = 0): Promise<MastodonEntity.Relationship> {
+    public static async muteUser(target: User, notifications: boolean = true, duration: number = 0, ctx: MastoContext): Promise<MastodonEntity.Relationship> {
         //FIXME: respect notifications parameter
+        const localUser = ctx.user as ILocalUser;
         const muted = await Mutings.exist({ where: { muterId: localUser.id, muteeId: target.id } });
         if (!muted) {
             await Mutings.insert({
@@ -121,7 +126,8 @@ export class UserHelpers {
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
-    public static async unmuteUser(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
+    public static async unmuteUser(target: User, ctx: MastoContext): Promise<MastodonEntity.Relationship> {
+        const localUser = ctx.user as ILocalUser;
         const muting = await Mutings.findOneBy({ muterId: localUser.id, muteeId: target.id });
         if (muting) {
             await Mutings.delete({
@@ -134,21 +140,27 @@ export class UserHelpers {
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
-    public static async acceptFollowRequest(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
+    public static async acceptFollowRequest(target: User, ctx: MastoContext): Promise<MastodonEntity.Relationship> {
+        const localUser = ctx.user as ILocalUser;
         const pending = await FollowRequests.exist({ where: { followerId: target.id, followeeId: localUser.id } });
         if (pending)
             await acceptFollowRequest(localUser, target);
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
-    public static async rejectFollowRequest(target: User, localUser: ILocalUser): Promise<MastodonEntity.Relationship> {
+    public static async rejectFollowRequest(target: User, ctx: MastoContext): Promise<MastodonEntity.Relationship> {
+        const localUser = ctx.user as ILocalUser;
         const pending = await FollowRequests.exist({ where: { followerId: target.id, followeeId: localUser.id } });
         if (pending)
             await rejectFollowRequest(localUser, target);
         return this.getUserRelationshipTo(target.id, localUser.id);
     }
 
-    public static async updateCredentials(user: ILocalUser, formData: updateCredsData, files: Files | undefined, ctx: MastoContext): Promise<MastodonEntity.Account> {
+    public static async updateCredentials(ctx: MastoContext): Promise<MastodonEntity.Account> {
+        const user = ctx.user as ILocalUser;
+        const files = (ctx.request as any).files as Files | undefined;
+        const formData = (ctx.request as any).body as updateCredsData;
+
         const updates: Partial<User> = {};
         const profileUpdates: Partial<UserProfile> = {};
 
@@ -156,12 +168,12 @@ export class UserHelpers {
         const header = toSingleLast(files?.header);
 
         if (avatar) {
-            const file = await MediaHelpers.uploadMediaBasic(user, avatar);
+            const file = await MediaHelpers.uploadMediaBasic(avatar, ctx);
             updates.avatarId = file.id;
         }
 
         if (header) {
-            const file = await MediaHelpers.uploadMediaBasic(user, header);
+            const file = await MediaHelpers.uploadMediaBasic(header, ctx);
             updates.bannerId = file.id;
         }
 
@@ -184,13 +196,14 @@ export class UserHelpers {
         if (Object.keys(updates).length > 0) await Users.update(user.id, updates);
         if (Object.keys(profileUpdates).length > 0) await UserProfiles.update({ userId: user.id }, profileUpdates);
 
-        return this.verifyCredentials(user, ctx);
+        return this.verifyCredentials(ctx);
     }
 
-    public static async verifyCredentials(user: ILocalUser, ctx: MastoContext): Promise<MastodonEntity.Account> {
+    public static async verifyCredentials(ctx: MastoContext): Promise<MastodonEntity.Account> {
+        const user = ctx.user as ILocalUser;
         const acct = UserConverter.encode(user, ctx);
         const profile = UserProfiles.findOneByOrFail({ userId: user.id });
-        const privacy = this.getDefaultNoteVisibility(user);
+        const privacy = this.getDefaultNoteVisibility(ctx);
         const fields = profile.then(profile => profile.fields.map(field => {
             return {
                 name: field.name,
@@ -225,9 +238,10 @@ export class UserHelpers {
             });
     }
 
-    public static async getUserMutes(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<MastodonEntity.MutedAccount[]>> {
+    public static async getUserMutes(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<MastodonEntity.MutedAccount[]>> {
         if (limit > 80) limit = 80;
 
+        const user = ctx.user as ILocalUser;
         const query = PaginationHelpers.makePaginationQuery(
             Mutings.createQueryBuilder("muting"),
             sinceId,
@@ -260,9 +274,10 @@ export class UserHelpers {
         });
     }
 
-    public static async getUserBlocks(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+    public static async getUserBlocks(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<User[]>> {
         if (limit > 80) limit = 80;
 
+        const user = ctx.user as ILocalUser;
         const query = PaginationHelpers.makePaginationQuery(
             Blockings.createQueryBuilder("blocking"),
             sinceId,
@@ -286,9 +301,10 @@ export class UserHelpers {
         });
     }
 
-    public static async getUserFollowRequests(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+    public static async getUserFollowRequests(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<User[]>> {
         if (limit > 80) limit = 80;
 
+        const user = ctx.user as ILocalUser;
         const query = PaginationHelpers.makePaginationQuery(
             FollowRequests.createQueryBuilder("request"),
             sinceId,
@@ -312,12 +328,13 @@ export class UserHelpers {
         });
     }
 
-    public static async getUserStatuses(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined): Promise<LinkPaginationObject<Note[]>> {
+    public static async getUserStatuses(user: User, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
+        const localUser = ctx.user as ILocalUser | null;
 
         if (tagged !== undefined) {
             //FIXME respect tagged
-            return {data: []};
+            return { data: [] };
         }
 
         const query = PaginationHelpers.makePaginationQuery(
@@ -373,9 +390,10 @@ export class UserHelpers {
         return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined);
     }
 
-    public static async getUserBookmarks(localUser: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<Note[]>> {
+    public static async getUserBookmarks(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
 
+        const localUser = ctx.user as ILocalUser;
         const query = PaginationHelpers.makePaginationQuery(
             NoteFavorites.createQueryBuilder("favorite"),
             sinceId,
@@ -396,9 +414,10 @@ export class UserHelpers {
             });
     }
 
-    public static async getUserFavorites(localUser: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20): Promise<LinkPaginationObject<Note[]>> {
+    public static async getUserFavorites(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<LinkPaginationObject<Note[]>> {
         if (limit > 40) limit = 40;
 
+        const localUser = ctx.user as ILocalUser;
         const query = PaginationHelpers.makePaginationQuery(
             NoteReactions.createQueryBuilder("reaction"),
             sinceId,
@@ -419,9 +438,10 @@ export class UserHelpers {
             });
     }
 
-    private static async getUserRelationships(type: RelationshipType, user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
+    private static async getUserRelationships(type: RelationshipType, user: User, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<User[]>> {
         if (limit > 80) limit = 80;
 
+        const localUser = ctx.user as ILocalUser | null;
         const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
         if (profile.ffVisibility === "private") {
             if (!localUser || user.id !== localUser.id) return { data: [] };
@@ -463,12 +483,12 @@ export class UserHelpers {
         });
     }
 
-    public static async getUserFollowers(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
-        return this.getUserRelationships('followers', user, localUser, maxId, sinceId, minId, limit);
+    public static async getUserFollowers(user: User, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<User[]>> {
+        return this.getUserRelationships('followers', user, maxId, sinceId, minId, limit, ctx);
     }
 
-    public static async getUserFollowing(user: User, localUser: ILocalUser | null, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40): Promise<LinkPaginationObject<User[]>> {
-        return this.getUserRelationships('following', user, localUser, maxId, sinceId, minId, limit);
+    public static async getUserFollowing(user: User, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<LinkPaginationObject<User[]>> {
+        return this.getUserRelationships('following', user, maxId, sinceId, minId, limit, ctx);
     }
 
     public static async getUserRelationhipToMany(targetIds: string[], localUserId: string): Promise<MastodonEntity.Relationship[]> {
@@ -528,7 +548,8 @@ export class UserHelpers {
         };
     }
 
-    public static async getDefaultNoteVisibility(user: ILocalUser): Promise<IceshrimpVisibility> {
+    public static async getDefaultNoteVisibility(ctx: MastoContext): Promise<IceshrimpVisibility> {
+        const user = ctx.user as ILocalUser;
         return RegistryItems.findOneBy({
             domain: IsNull(),
             userId: user.id,

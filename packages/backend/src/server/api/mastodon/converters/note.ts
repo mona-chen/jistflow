@@ -21,7 +21,8 @@ import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class NoteConverter {
-    public static async encode(note: Note, user: ILocalUser | null, ctx: MastoContext, recurse: boolean = true): Promise<MastodonEntity.Status> {
+    public static async encode(note: Note, ctx: MastoContext, recurse: boolean = true): Promise<MastodonEntity.Status> {
+        const user = ctx.user as ILocalUser | null;
         const noteUser = note.user ?? UserHelpers.getUserCached(note.userId, ctx);
 
         if (!await Notes.isVisibleForMe(note, user?.id ?? null))
@@ -109,7 +110,7 @@ export class NoteConverter {
             account: Promise.resolve(noteUser).then(p => UserConverter.encode(p, ctx)),
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: note.replyUserId,
-            reblog: Promise.resolve(renote).then(renote => recurse && renote && note.text === null ? this.encode(renote, user, ctx, false) : null),
+            reblog: Promise.resolve(renote).then(renote => recurse && renote && note.text === null ? this.encode(renote, ctx, false) : null),
             content: text.then(text => text !== null ? MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(text) : ""),
             text: text,
             created_at: note.createdAt.toISOString(),
@@ -135,13 +136,13 @@ export class NoteConverter {
             // Use emojis list to provide URLs for emoji reactions.
             reactions: [], //FIXME: this.mapReactions(n.emojis, n.reactions, n.myReaction),
             bookmarked: isBookmarked,
-            quote: Promise.resolve(renote).then(renote => recurse && renote && note.text !== null ? this.encode(renote, user, ctx, false) : null),
+            quote: Promise.resolve(renote).then(renote => recurse && renote && note.text !== null ? this.encode(renote, ctx, false) : null),
             edited_at: note.updatedAt?.toISOString()
         });
     }
 
-    public static async encodeMany(notes: Note[], user: ILocalUser | null, ctx: MastoContext): Promise<MastodonEntity.Status[]> {
-        const encoded = notes.map(n => this.encode(n, user, ctx));
+    public static async encodeMany(notes: Note[], ctx: MastoContext): Promise<MastodonEntity.Status[]> {
+        const encoded = notes.map(n => this.encode(n, ctx));
         return Promise.all(encoded);
     }
 }

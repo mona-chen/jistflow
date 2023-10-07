@@ -24,15 +24,16 @@ import config from "@/config/index.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export class SearchHelpers {
-    public static async search(user: ILocalUser, q: string | undefined, type: string | undefined, resolve: boolean = false, following: boolean = false, accountId: string | undefined, excludeUnreviewed: boolean = false, maxId: string | undefined, minId: string | undefined, limit: number = 20, offset: number | undefined, ctx: MastoContext): Promise<MastodonEntity.Search> {
+    public static async search(q: string | undefined, type: string | undefined, resolve: boolean = false, following: boolean = false, accountId: string | undefined, excludeUnreviewed: boolean = false, maxId: string | undefined, minId: string | undefined, limit: number = 20, offset: number | undefined, ctx: MastoContext): Promise<MastodonEntity.Search> {
         if (q === undefined || q.trim().length === 0) throw new Error('Search query cannot be empty');
         if (limit > 40) limit = 40;
-        const notes = type === 'statuses' || !type ? this.searchNotes(user, q, resolve, following, accountId, maxId, minId, limit, offset) : [];
-        const users = type === 'accounts' || !type ? this.searchUsers(user, q, resolve, following, maxId, minId, limit, offset) : [];
+        const user = ctx.user as ILocalUser;
+        const notes = type === 'statuses' || !type ? this.searchNotes(q, resolve, following, accountId, maxId, minId, limit, offset, ctx) : [];
+        const users = type === 'accounts' || !type ? this.searchUsers(q, resolve, following, maxId, minId, limit, offset, ctx) : [];
         const tags = type === 'hashtags' || !type ? this.searchTags(q, excludeUnreviewed, limit, offset) : [];
 
         const result = {
-            statuses: Promise.resolve(notes).then(p => NoteConverter.encodeMany(p, user, ctx)),
+            statuses: Promise.resolve(notes).then(p => NoteConverter.encodeMany(p, ctx)),
             accounts: Promise.resolve(users).then(p => UserConverter.encodeMany(p, ctx)),
             hashtags: Promise.resolve(tags)
         };
@@ -40,7 +41,8 @@ export class SearchHelpers {
         return awaitAll(result);
     }
 
-    private static async searchUsers(user: ILocalUser, q: string, resolve: boolean, following: boolean, maxId: string | undefined, minId: string | undefined, limit: number, offset: number | undefined): Promise<User[]> {
+    private static async searchUsers(q: string, resolve: boolean, following: boolean, maxId: string | undefined, minId: string | undefined, limit: number, offset: number | undefined, ctx: MastoContext): Promise<User[]> {
+        const user = ctx.user as ILocalUser;
         if (resolve) {
             try {
                 if (q.startsWith('https://') || q.startsWith('http://')) {
@@ -113,8 +115,9 @@ export class SearchHelpers {
         return query.skip(offset ?? 0).take(limit).getMany().then(p => minId ? p.reverse() : p);
     }
 
-    private static async searchNotes(user: ILocalUser, q: string, resolve: boolean, following: boolean, accountId: string | undefined, maxId: string | undefined, minId: string | undefined, limit: number, offset: number | undefined): Promise<Note[]> {
+    private static async searchNotes(q: string, resolve: boolean, following: boolean, accountId: string | undefined, maxId: string | undefined, minId: string | undefined, limit: number, offset: number | undefined, ctx: MastoContext): Promise<Note[]> {
         if (accountId && following) throw new Error("The 'following' and 'accountId' parameters cannot be used simultaneously");
+        const user = ctx.user as ILocalUser;
 
         if (resolve) {
             try {
