@@ -40,8 +40,8 @@ export default async function (
 		note.renoteId &&
 		(await countSameRenotes(user.id, note.renoteId, note.id)) === 0
 	) {
-		Notes.decrement({ id: note.renoteId }, "renoteCount", 1);
-		Notes.decrement({ id: note.renoteId }, "score", 1);
+		await Notes.decrement({ id: note.renoteId }, "renoteCount", 1);
+		await Notes.decrement({ id: note.renoteId }, "score", 1);
 	}
 
 	if (note.replyId) {

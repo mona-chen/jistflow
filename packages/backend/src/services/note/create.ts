@@ -330,6 +330,19 @@ export default async (
 
 		const note = await insertNote(user, data, tags, emojis, mentionedUsers);
 
+		// We need to increment these before resolving the promise
+		if (data.reply) {
+			await incRepliesCount(data.reply);
+		}
+
+		// この投稿を除く指定したユーザーによる指定したノートのリノートが存在しないとき
+		if (
+			data.renote &&
+			(await countSameRenotes(user.id, data.renote.id, note.id)) === 0
+		) {
+			await incRenoteCount(data.renote);
+		}
+
 		res(note);
 
 		// 統計を更新
@@ -402,17 +415,6 @@ export default async (
 			);
 		}
 
-		if (data.reply) {
-			saveReply(data.reply, note);
-		}
-
-		// この投稿を除く指定したユーザーによる指定したノートのリノートが存在しないとき
-		if (
-			data.renote &&
-			(await countSameRenotes(user.id, data.renote.id, note.id)) === 0
-		) {
-			incRenoteCount(data.renote);
-		}
 
 		if (data.poll?.expiresAt) {
 			const delay = data.poll.expiresAt.getTime() - Date.now();
@@ -674,15 +676,10 @@ async function renderNoteOrRenoteActivity(data: Option, note: Note) {
 	return renderActivity(content);
 }
 
-function incRenoteCount(renote: Note) {
-	Notes.createQueryBuilder()
-		.update()
-		.set({
-			renoteCount: () => '"renoteCount" + 1',
-			score: () => '"score" + 1',
-		})
-		.where("id = :id", { id: renote.id })
-		.execute();
+async function incRenoteCount(renote: Note) {
+	// only await renoteCount increment, as score isn't relevant for returning the correct created note response
+	await Notes.increment({ id: renote.id }, "renoteCount", 1);
+	Notes.increment({ id: renote.id }, "score", 1);
 }
 
 async function insertNote(
@@ -910,8 +907,8 @@ async function createMentionedEvents(
 	}
 }
 
-function saveReply(reply: Note, note: Note) {
-	Notes.increment({ id: reply.id }, "repliesCount", 1);
+async function incRepliesCount(reply: Note) {
+	await Notes.increment({ id: reply.id }, "repliesCount", 1);
 }
 
 function incNotesCountOfUser(user: { id: User["id"] }) {
