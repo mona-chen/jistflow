@@ -23,7 +23,7 @@
 				@swiper="setSwiperRef"
 				@slide-change="onSlideChange"
 			>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<div class="rknalgpo">
 						<MkPagination
 							v-slot="{ items }"
@@ -38,7 +38,7 @@
 						</MkPagination>
 					</div>
 				</swiper-slide>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<div class="rknalgpo liked">
 						<MkPagination
 							v-slot="{ items }"
@@ -53,7 +53,7 @@
 						</MkPagination>
 					</div>
 				</swiper-slide>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<div class="rknalgpo my">
 						<div class="buttoncontainer">
 							<MkButton class="new primary" @click="create()"
