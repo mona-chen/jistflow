@@ -2,7 +2,7 @@ import { Note } from "@/models/entities/note.js";
 import { populatePoll } from "@/models/repositories/note.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
 import { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import { Blockings, NoteWatchings, Polls, PollVotes, Users } from "@/models/index.js";
+import { Blockings, Notes, NoteWatchings, Polls, PollVotes, Users } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import { publishNoteStream } from "@/services/stream.js";
 import { createNotification } from "@/services/create-notification.js";
@@ -11,13 +11,27 @@ import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderVote from "@/remote/activitypub/renderer/vote.js";
 import { Not } from "typeorm";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { populateEmojis } from "@/misc/populate-emojis.js";
+import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
+import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 
 export class PollHelpers {
-    public static async getPoll(note: Note, user: ILocalUser | null): Promise<MastodonEntity.Poll> {
-        return populatePoll(note, user?.id ?? null).then(p => PollConverter.encode(p, note.id));
+    public static async getPoll(note: Note, user: ILocalUser | null, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Poll> {
+        if (!await Notes.isVisibleForMe(note, user?.id ?? null))
+            throw new Error('Cannot encode poll not visible for user');
+
+        const noteUser = note.user ?? UserHelpers.getUserCached(note.userId, cache);
+        const host = Promise.resolve(noteUser).then(noteUser => noteUser.host ?? null);
+        const noteEmoji = await host
+            .then(async host => populateEmojis(note.emojis, host)
+            .then(noteEmoji => noteEmoji
+                .filter((e) => e.name.indexOf("@") === -1)
+                .map((e) => EmojiConverter.encode(e))));
+
+        return populatePoll(note, user?.id ?? null).then(p => PollConverter.encode(p, note.id, noteEmoji));
     }
 
-    public static async voteInPoll(choices: number[], note: Note, user: ILocalUser): Promise<MastodonEntity.Poll> {
+    public static async voteInPoll(choices: number[], note: Note, user: ILocalUser, cache: AccountCache = UserHelpers.getFreshAccountCache()): Promise<MastodonEntity.Poll> {
         if (!note.hasPoll) throw new MastoApiError(404);
 
         for (const choice of choices) {
@@ -108,6 +122,6 @@ export class PollHelpers {
                 );
             }
         }
-        return this.getPoll(note, user);
+        return this.getPoll(note, user, cache);
     }
 }

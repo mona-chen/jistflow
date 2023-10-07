@@ -10,5 +10,6 @@ namespace MastodonEntity {
         options: Array<PollOption>;
         voted: boolean;
         own_votes: Array<number>;
+        emojis: Array<MastodonEntity.Emoji>;
     };
 }

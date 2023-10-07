@@ -11,7 +11,7 @@ type Poll = {
 }
 
 export class PollConverter {
-    public static encode(p: Poll, noteId: string): MastodonEntity.Poll {
+    public static encode(p: Poll, noteId: string, emojis: MastodonEntity.Emoji[]): MastodonEntity.Poll {
         const now = new Date();
         const count = p.choices.reduce((sum, choice) => sum + choice.votes, 0);
         return {
@@ -21,6 +21,7 @@ export class PollConverter {
             multiple: p.multiple,
             votes_count: count,
             options: p.choices.map((c) => this.encodeChoice(c)),
+            emojis: emojis,
             voted: p.choices.some((c) => c.isVoted),
             own_votes: p.choices
                 .filter((c) => c.isVoted)

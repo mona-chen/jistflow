@@ -36,7 +36,10 @@ export class NoteConverter {
         const noteEmoji = host.then(async host => populateEmojis(
             note.emojis.concat(reactionEmojiNames),
             host,
-        ));
+        ))
+            .then(noteEmoji => noteEmoji
+                .filter((e) => e.name.indexOf("@") === -1)
+                .map((e) => EmojiConverter.encode(e)));
 
         const reactionCount = NoteReactions.countBy({ noteId: note.id });
 
@@ -110,10 +113,7 @@ export class NoteConverter {
             text: text,
             created_at: note.createdAt.toISOString(),
             // Remove reaction emojis with names containing @ from the emojis list.
-            emojis: noteEmoji
-                .then(noteEmoji => noteEmoji
-                    .filter((e) => e.name.indexOf("@") === -1)
-                    .map((e) => EmojiConverter.encode(e))),
+            emojis: noteEmoji,
             replies_count: note.repliesCount,
             reblogs_count: note.renoteCount,
             favourites_count: reactionCount,
@@ -127,7 +127,7 @@ export class NoteConverter {
             mentions: mentions,
             tags: tags,
             card: null, //FIXME
-            poll: note.hasPoll ? populatePoll(note, user?.id ?? null).then(p => PollConverter.encode(p, note.id)) : null,
+            poll: note.hasPoll ? populatePoll(note, user?.id ?? null).then(p => noteEmoji.then(emojis => PollConverter.encode(p, note.id, emojis))) : null,
             application: null, //FIXME
             language: null, //FIXME
             pinned: isPinned,

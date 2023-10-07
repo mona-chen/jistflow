@@ -268,7 +268,7 @@ export function setupEndpointsStatus(router: Router): void {
         async (ctx) => {
             const id = convertId(ctx.params.id, IdType.IceshrimpId);
             const note = await NoteHelpers.getNoteOr404(id, ctx.user);
-            const data = await PollHelpers.getPoll(note, ctx.user);
+            const data = await PollHelpers.getPoll(note, ctx.user, ctx.cache);
             ctx.body = convertPollId(data);
         });
     router.post<{ Params: { id: string } }>(
@@ -286,7 +286,7 @@ export function setupEndpointsStatus(router: Router): void {
                 return;
             }
 
-            const data = await PollHelpers.voteInPoll(choices, note, ctx.user);
+            const data = await PollHelpers.voteInPoll(choices, note, ctx.user, ctx.cache);
             ctx.body = convertPollId(data);
         },
     );
