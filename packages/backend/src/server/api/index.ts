@@ -20,10 +20,6 @@ import verifyEmail from "./private/verify-email.js";
 import discord from "./service/discord.js";
 import github from "./service/github.js";
 import twitter from "./service/twitter.js";
-import { convertId, IdType } from "@/misc/convert-id.js";
-
-// re-export native rust id conversion (function and enum)
-export { IdType, convertId };
 
 // Init app
 const app = new Koa();

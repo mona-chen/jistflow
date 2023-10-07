@@ -1,6 +1,5 @@
 import Router from "@koa/router";
 import { AuthHelpers } from "@/server/api/mastodon/helpers/auth.js";
-import { convertId, IdType } from "@/misc/convert-id.js";
 import { AuthConverter } from "@/server/api/mastodon/converters/auth.js";
 import { v4 as uuid } from "uuid";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
@@ -15,7 +14,7 @@ export function setupEndpointsAuth(router: Router): void {
         const red = body.redirect_uris;
         const appData = await AuthHelpers.registerApp(body['client_name'], scopeArr, red, body['website']);
         ctx.body = {
-            id: convertId(appData.id, IdType.MastodonId),
+            id: appData.id,
             name: appData.name,
             website: body.website,
             redirect_uri: red,

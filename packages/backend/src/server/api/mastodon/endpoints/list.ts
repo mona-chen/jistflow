@@ -1,7 +1,5 @@
 import Router from "@koa/router";
-import { convertAccountId, convertListId, } from "../converters.js";
-import { convertId, IdType } from "../../index.js";
-import { convertPaginationArgsIds, limitToInt, normalizeUrlQuery } from "@/server/api/mastodon/endpoints/timeline.js";
+import { limitToInt, normalizeUrlQuery } from "@/server/api/mastodon/endpoints/timeline.js";
 import { ListHelpers } from "@/server/api/mastodon/helpers/list.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { UserLists } from "@/models/index.js";
@@ -14,18 +12,14 @@ export function setupEndpointsList(router: Router): void {
     router.get("/v1/lists",
         auth(true, ['read:lists']),
         async (ctx, reply) => {
-            ctx.body = await ListHelpers.getLists(ctx)
-                .then(p => p.map(list => convertListId(list)));
+            ctx.body = await ListHelpers.getLists(ctx);
         }
     );
     router.get<{ Params: { id: string } }>(
         "/v1/lists/:id",
         auth(true, ['read:lists']),
         async (ctx, reply) => {
-            const id = convertId(ctx.params.id, IdType.IceshrimpId);
-
-            ctx.body = await ListHelpers.getListOr404(id, ctx)
-                .then(p => convertListId(p));
+            ctx.body = await ListHelpers.getListOr404(ctx.params.id, ctx);
         },
     );
     router.post("/v1/lists",
@@ -33,31 +27,26 @@ export function setupEndpointsList(router: Router): void {
         async (ctx, reply) => {
             const body = ctx.request.body as any;
             const title = (body.title ?? '').trim();
-
-            ctx.body = await ListHelpers.createList(title, ctx)
-                .then(p => convertListId(p));
+            ctx.body = await ListHelpers.createList(title, ctx);
         }
     );
     router.put<{ Params: { id: string } }>(
         "/v1/lists/:id",
         auth(true, ['write:lists']),
         async (ctx, reply) => {
-            const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: id });
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: ctx.params.id });
             if (!list) throw new MastoApiError(404);
 
             const body = ctx.request.body as any;
             const title = (body.title ?? '').trim();
-            ctx.body = await ListHelpers.updateList(list, title, ctx)
-                .then(p => convertListId(p));
+            ctx.body = await ListHelpers.updateList(list, title, ctx);
         },
     );
     router.delete<{ Params: { id: string } }>(
         "/v1/lists/:id",
         auth(true, ['write:lists']),
         async (ctx, reply) => {
-            const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: id });
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: ctx.params.id });
             if (!list) throw new MastoApiError(404);
 
             await ListHelpers.deleteList(list, ctx);
@@ -68,26 +57,22 @@ export function setupEndpointsList(router: Router): void {
         "/v1/lists/:id/accounts",
         auth(true, ['read:lists']),
         async (ctx, reply) => {
-            const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
-            const res = await ListHelpers.getListUsers(id, args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const accounts = await UserConverter.encodeMany(res, ctx);
-
-            ctx.body = accounts.map(account => convertAccountId(account));
+            const args = normalizeUrlQuery(limitToInt(ctx.query));
+            const res = await ListHelpers.getListUsers(ctx.params.id, args.max_id, args.since_id, args.min_id, args.limit, ctx);
+            ctx.body = await UserConverter.encodeMany(res, ctx);
         },
     );
     router.post<{ Params: { id: string } }>(
         "/v1/lists/:id/accounts",
         auth(true, ['write:lists']),
         async (ctx, reply) => {
-            const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: id });
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: ctx.params.id });
             if (!list) throw new MastoApiError(404);
 
             const body = ctx.request.body as any;
             if (!body['account_ids']) throw new MastoApiError(400, "Missing account_ids[] field");
 
-            const ids = toArray(body['account_ids']).map(p => convertId(p, IdType.IceshrimpId));
+            const ids = toArray(body['account_ids']);
             const targets = await Promise.all(ids.map(p => getUser(p)));
             await ListHelpers.addToList(list, targets, ctx);
             ctx.body = {}
@@ -97,14 +82,13 @@ export function setupEndpointsList(router: Router): void {
         "/v1/lists/:id/accounts",
         auth(true, ['write:lists']),
         async (ctx, reply) => {
-            const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: id });
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: ctx.params.id });
             if (!list) throw new MastoApiError(404);
 
             const body = ctx.request.body as any;
             if (!body['account_ids']) throw new MastoApiError(400, "Missing account_ids[] field");
 
-            const ids = toArray(body['account_ids']).map(p => convertId(p, IdType.IceshrimpId));
+            const ids = toArray(body['account_ids']);
             const targets = await Promise.all(ids.map(p => getUser(p)));
             await ListHelpers.removeFromList(list, targets, ctx);
             ctx.body = {}

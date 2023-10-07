@@ -2,8 +2,6 @@ import Router from "@koa/router";
 import { MiscHelpers } from "@/server/api/mastodon/helpers/misc.js";
 import { argsToBools, limitToInt } from "@/server/api/mastodon/endpoints/timeline.js";
 import { Announcements } from "@/models/index.js";
-import { convertAnnouncementId, convertStatusIds, convertSuggestionIds } from "@/server/api/mastodon/converters.js";
-import { convertId, IdType } from "@/misc/convert-id.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 
@@ -24,8 +22,7 @@ export function setupEndpointsMisc(router: Router): void {
         auth(true),
         async (ctx) => {
             const args = argsToBools(ctx.query, ['with_dismissed']);
-            ctx.body = await MiscHelpers.getAnnouncements(args['with_dismissed'], ctx)
-                .then(p => p.map(x => convertAnnouncementId(x)));
+            ctx.body = await MiscHelpers.getAnnouncements(args['with_dismissed'], ctx);
         }
     );
 
@@ -33,8 +30,7 @@ export function setupEndpointsMisc(router: Router): void {
         "/v1/announcements/:id/dismiss",
         auth(true, ['write:accounts']),
         async (ctx) => {
-            const id = convertId(ctx.params.id, IdType.IceshrimpId);
-            const announcement = await Announcements.findOneBy({ id: id });
+            const announcement = await Announcements.findOneBy({ id: ctx.params.id });
             if (!announcement) throw new MastoApiError(404);
 
             await MiscHelpers.dismissAnnouncement(announcement, ctx);
@@ -54,8 +50,7 @@ export function setupEndpointsMisc(router: Router): void {
     router.get("/v1/trends/statuses",
         async (ctx) => {
             const args = limitToInt(ctx.query);
-            ctx.body = await MiscHelpers.getTrendingStatuses(args.limit, args.offset, ctx)
-                .then(p => p.map(x => convertStatusIds(x)));
+            ctx.body = await MiscHelpers.getTrendingStatuses(args.limit, args.offset, ctx);
         }
     );
 
@@ -76,8 +71,7 @@ export function setupEndpointsMisc(router: Router): void {
         auth(true, ['read']),
         async (ctx) => {
             const args = limitToInt(ctx.query);
-            ctx.body = await MiscHelpers.getFollowSuggestions(args.limit, ctx)
-                .then(p => p.map(x => convertSuggestionIds(x)));
+            ctx.body = await MiscHelpers.getFollowSuggestions(args.limit, ctx);
         }
     );
 }

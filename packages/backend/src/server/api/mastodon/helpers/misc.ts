@@ -5,7 +5,6 @@ import { AnnouncementReads, Announcements, Emojis, Instances, Notes, UserProfile
 import { IsNull } from "typeorm";
 import { awaitAll } from "@/prelude/await-all.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
-import { convertAccountId } from "@/server/api/mastodon/converters.js";
 import { Announcement } from "@/models/entities/announcement.js";
 import { ILocalUser, User } from "@/models/entities/user.js";
 import { AnnouncementConverter } from "@/server/api/mastodon/converters/announcement.js";
@@ -35,8 +34,7 @@ export class MiscHelpers {
             },
             order: { id: "ASC" },
         })
-            .then(p => p ? UserConverter.encode(p, ctx) : null)
-            .then(p => p ? convertAccountId(p) : null);
+            .then(p => p ? UserConverter.encode(p, ctx) : null);
         const meta = await fetchMeta(true);
 
         const res = {

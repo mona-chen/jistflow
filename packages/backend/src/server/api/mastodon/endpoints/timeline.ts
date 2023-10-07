@@ -1,7 +1,5 @@
 import Router from "@koa/router";
 import { ParsedUrlQuery } from "querystring";
-import { convertConversationIds, convertStatusIds, } from "../converters.js";
-import { convertId, IdType } from "../../index.js";
 import { TimelineHelpers } from "@/server/api/mastodon/helpers/timeline.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserLists } from "@/models/index.js";
@@ -39,16 +37,6 @@ export function argsToBools(q: ParsedUrlQuery, additional: string[] = []) {
     return object;
 }
 
-export function convertPaginationArgsIds(q: ParsedUrlQuery) {
-    if (typeof q.min_id === "string")
-        q.min_id = convertId(q.min_id, IdType.IceshrimpId);
-    if (typeof q.max_id === "string")
-        q.max_id = convertId(q.max_id, IdType.IceshrimpId);
-    if (typeof q.since_id === "string")
-        q.since_id = convertId(q.since_id, IdType.IceshrimpId);
-    return q;
-}
-
 export function normalizeUrlQuery(q: ParsedUrlQuery, arrayKeys: string[] = []): any {
     const dict: any = {};
 
@@ -66,55 +54,44 @@ export function setupEndpointsTimeline(router: Router): void {
     router.get("/v1/timelines/public",
         auth(true, ['read:statuses']),
         async (ctx, reply) => {
-            const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))));
+            const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)));
             const res = await TimelineHelpers.getPublicTimeline(args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote, ctx);
-            const tl = await NoteConverter.encodeMany(res, ctx);
-
-            ctx.body = tl.map(s => convertStatusIds(s));
+            ctx.body = await NoteConverter.encodeMany(res, ctx);
         });
     router.get<{ Params: { hashtag: string } }>(
         "/v1/timelines/tag/:hashtag",
         auth(false, ['read:statuses']),
         async (ctx, reply) => {
             const tag = (ctx.params.hashtag ?? '').trim();
-            const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query))), ['any[]', 'all[]', 'none[]']);
+            const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)), ['any[]', 'all[]', 'none[]']);
             const res = await TimelineHelpers.getTagTimeline(tag, args.max_id, args.since_id, args.min_id, args.limit, args['any[]'] ?? [], args['all[]'] ?? [], args['none[]'] ?? [], args.only_media, args.local, args.remote, ctx);
-            const tl = await NoteConverter.encodeMany(res, ctx);
-
-            ctx.body = tl.map(s => convertStatusIds(s));
+            ctx.body = await NoteConverter.encodeMany(res, ctx);
         },
     );
     router.get("/v1/timelines/home",
         auth(true, ['read:statuses']),
         async (ctx, reply) => {
-            const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
+            const args = normalizeUrlQuery(limitToInt(ctx.query));
             const res = await TimelineHelpers.getHomeTimeline(args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const tl = await NoteConverter.encodeMany(res, ctx);
-
-            ctx.body = tl.map(s => convertStatusIds(s));
+            ctx.body = await NoteConverter.encodeMany(res, ctx);
         });
     router.get<{ Params: { listId: string } }>(
         "/v1/timelines/list/:listId",
         auth(true, ['read:lists']),
         async (ctx, reply) => {
-            const listId = convertId(ctx.params.listId, IdType.IceshrimpId);
-            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: listId });
+            const list = await UserLists.findOneBy({ userId: ctx.user.id, id: ctx.params.listId });
             if (!list) throw new MastoApiError(404);
 
-            const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
+            const args = normalizeUrlQuery(limitToInt(ctx.query));
             const res = await TimelineHelpers.getListTimeline(list, args.max_id, args.since_id, args.min_id, args.limit, ctx);
-            const tl = await NoteConverter.encodeMany(res, ctx);
-
-            ctx.body = tl.map(s => convertStatusIds(s));
+            ctx.body = await NoteConverter.encodeMany(res, ctx);
         },
     );
     router.get("/v1/conversations",
         auth(true, ['read:statuses']),
         async (ctx, reply) => {
-            const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)));
-            const res = await TimelineHelpers.getConversations(args.max_id, args.since_id, args.min_id, args.limit, ctx);
-
-            ctx.body = res.map(c => convertConversationIds(c));
+            const args = normalizeUrlQuery(limitToInt(ctx.query));
+            ctx.body = await TimelineHelpers.getConversations(args.max_id, args.since_id, args.min_id, args.limit, ctx);
         }
     );
 }

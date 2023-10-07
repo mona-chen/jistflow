@@ -18,7 +18,6 @@ import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js"
 import { addPinned, removePinned } from "@/services/i/pin.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
-import { convertId, IdType } from "@/misc/convert-id.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import mfm from "mfm-js";
@@ -360,11 +359,10 @@ export class NoteHelpers {
         if (body.scheduled_at != null)
             result.scheduled_at = new Date(Date.parse(body.scheduled_at));
         if (body.in_reply_to_id)
-            result.in_reply_to_id = convertId(body.in_reply_to_id, IdType.IceshrimpId);
+            result.in_reply_to_id = body.in_reply_to_id;
         if (body.media_ids)
             result.media_ids = body.media_ids && body.media_ids.length > 0
                 ? toArray(body.media_ids)
-                    .map(p => convertId(p, IdType.IceshrimpId))
                 : undefined;
 
         if (body.poll) {
@@ -392,7 +390,6 @@ export class NoteHelpers {
         if (body.media_ids)
             result.media_ids = body.media_ids && body.media_ids.length > 0
                 ? toArray(body.media_ids)
-                    .map(p => convertId(p, IdType.IceshrimpId))
                 : undefined;
 
         if (body.poll) {
