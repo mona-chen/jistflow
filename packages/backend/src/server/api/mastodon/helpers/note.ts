@@ -29,6 +29,7 @@ import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js"
 import { Cache } from "@/misc/cache.js";
 import AsyncLock from "async-lock";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
+import { IsNull } from "typeorm";
 
 export class NoteHelpers {
     public static postIdempotencyCache = new Cache<{ status?: MastodonEntity.Status }>('postIdempotencyCache', 60 * 60);
@@ -59,6 +60,12 @@ export class NoteHelpers {
     }
 
     public static async reblogNote(note: Note, user: ILocalUser): Promise<Note> {
+        const existingRenote = await Notes.findOneBy({
+            userId: user.id,
+            renoteId: note.id,
+            text: IsNull(),
+        });
+        if (existingRenote) return existingRenote;
         const data = {
             createdAt: new Date(),
             files: [],
