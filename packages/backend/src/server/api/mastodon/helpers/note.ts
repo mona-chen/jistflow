@@ -28,6 +28,7 @@ import { toArray } from "@/prelude/array.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { Cache } from "@/misc/cache.js";
 import AsyncLock from "async-lock";
+import { IdentifiableError } from "@/misc/identifiable-error.js";
 
 export class NoteHelpers {
     public static postIdempotencyCache = new Cache<{ status?: MastodonEntity.Status }>('postIdempotencyCache', 60 * 60);
@@ -45,7 +46,10 @@ export class NoteHelpers {
     }
 
     public static async reactToNote(note: Note, user: ILocalUser, reaction: string): Promise<Note> {
-        await createReaction(user, note, reaction);
+        await createReaction(user, note, reaction).catch(e => {
+            if (e instanceof IdentifiableError && e.id == '51c42bb4-931a-456b-bff7-e5a8a70dd298') return;
+            throw e;
+        });
         return getNote(note.id, user);
     }
 

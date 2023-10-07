@@ -73,7 +73,7 @@ export default async (
 				await NoteReactions.insert(record);
 			} else {
 				// 同じリアクションがすでにされていたらエラー
-				throw new IdentifiableError("51c42bb4-931a-456b-bff7-e5a8a70dd298");
+				throw new IdentifiableError("51c42bb4-931a-456b-bff7-e5a8a70dd298", "Reaction already exists");
 			}
 		} else {
 			throw e;
