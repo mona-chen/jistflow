@@ -458,7 +458,7 @@ youHaveNoGroups: "找不到群組"
 joinOrCreateGroup: "請加入現有群組，或創建新群組。"
 noHistory: "沒有歷史紀錄"
 signinHistory: "登入歷史"
-disableAnimatedMfm: "禁用MFM動畫"
+disableAnimatedMfm: "停用MFM動畫"
 doing: "正在處理..."
 category: "類別"
 tags: "標籤"
@@ -596,7 +596,7 @@ emptyToDisableSmtpAuth: "留空使用者名稱及密碼以關閉SMTP驗證"
 smtpSecure: "在 SMTP 連接中使用隱式 SSL/TLS"
 smtpSecureInfo: "如使用STARTTLS，請關閉"
 testEmail: "測試郵件發送"
-wordMute: "被靜音的文字"
+wordMute: "被靜音的文字及語言"
 regexpError: "正規表達式錯誤"
 regexpErrorDescription: "{tab} 靜音文字的第 {line} 行的正規表達式有錯誤："
 instanceMute: "伺服器的靜音"
@@ -765,7 +765,7 @@ user: "使用者"
 administration: "管理"
 accounts: "帳戶"
 switch: "切換"
-noMaintainerInformationWarning: "尚未設定管理員信息。"
+noMaintainerInformationWarning: "尚未設定管理員資訊。"
 noBotProtectionWarning: "尚未設定Bot防護。"
 configure: "設定"
 postToGallery: "發佈到相簿"
@@ -899,7 +899,7 @@ customKaTeXMacro: "自訂KaTeX巨集"
 customKaTeXMacroDescription: "使用巨集來輕鬆輸入數學表達式吧！巨集的用法與 LaTeX 中的命令定義相同。你可以使用 \\newcommand{\\
   name}{content} 或 \\newcommand{\\name}[number of arguments]{content} 來輸入數學表達式。舉例來說，\\
   newcommand{\\add}[2]{#1 + #2} 會將 \\add{3}{foo} 展開為 3 + foo。巨集名稱除了可用大括號 {} 括起來之外，也可使用小括號
-  () 和中括號 []，但使用於巨集參數的括號會有所變更。每行只能夠定義一個巨集，巨集中間無法間換。無效的行將被忽略。只支援簡單字串的替換功能，不支援條件分歧的高級語法。"
+  () 和中括號 []，但使用於巨集參數的括號會有所變更。每行只能夠定義一個巨集，巨集中間無法間換。無效的行將被忽略。只支援簡單字串的替換功能，不支援條件分歧的進階語法。"
 enableCustomKaTeXMacro: "啟用自定義 KaTeX 宏"
 _sensitiveMediaDetection:
   description: "您可以使用機器學習自動檢測敏感媒體並將其用於審核。 伺服器的負荷會稍微增加。"
@@ -932,7 +932,7 @@ _accountDelete:
   inProgress: "正在刪除"
 _ad:
   back: "返回"
-  reduceFrequencyOfThisAd: "降低此廣告的頻率"
+  reduceFrequencyOfThisAd: "降低此橫幅的頻率"
 _forgotPassword:
   enterEmail: "請輸入您的帳戶註冊的電子郵件地址。 密碼重置連結將被發送到該電子郵件地址。"
   ifNoEmail: "如果您還沒有註冊您的電子郵件地址，請聯繫管理員。"
@@ -1026,7 +1026,7 @@ _mfm:
   emoji: "自訂表情符號"
   emojiDescription: "您可以通過將自定義表情符號名稱括在冒號中來顯示自定義表情符號。"
   search: "搜尋"
-  searchDescription: "您可以顯示所輸入的搜索框。"
+  searchDescription: "顯示含有指定文字的搜尋欄。"
   flip: "翻轉"
   flipDescription: "將內容上下或左右翻轉。"
   jelly: "動畫(果凍)"
@@ -1068,7 +1068,7 @@ _mfm:
   alwaysPlay: 自動播放所有MFM動畫
   positionDescription: 按指定數量移動內容。
   advancedDescription: 如果停用，僅顯示基礎MFM及正在播放的MFM動畫
-  advanced: 高級MFM
+  advanced: 進階MFM
   fade: 淡出
   foreground: 文字顏色
   crop: 裁切
@@ -1230,7 +1230,7 @@ _tutorial:
   step3_1: "現在是時候追隨一些人了！"
   step3_2: "你的主頁和社交時間線是基於你所追蹤的人，所以試著先追蹤幾個帳戶。\n點擊個人資料右上角的加號圈就可以關注它。"
   step4_1: "讓我們出去找你。"
-  step4_2: "對於他們的第一條信息，有些人喜歡做 {introduction} 或一個簡單的 \"hello world!\""
+  step4_2: "作為第一則貼文，有些人喜歡發 {introduction} 或單純發一個 \"hello world!\""
   step5_1: "時間線，到處都是時間線！"
   step5_2: "您的伺服器已啟用了{timelines}個時間線。"
   step5_3: "首頁 {icon} 時間線是顯示你追蹤的帳號的貼文。"
@@ -1815,7 +1815,7 @@ _deck:
 secureMode: 安全模式（授權獲取）
 instanceSecurity: 伺服器安全性
 privateMode: 私人模式
-allowedInstances: 列入白名單的伺服器
+allowedInstances: 列入允許名單的伺服器
 secureModeInfo: 當從其他伺服器請求時，不要在沒有證據的情況下發回。
 _messaging:
   dms: 私訊
@@ -1823,8 +1823,8 @@ _messaging:
 manageGroups: 管理群組
 replayTutorial: 重新播放教程
 moveFromLabel: '您想遷移的舊帳戶:'
-customMOTDDescription: 每次用戶加載/重新加載頁面時，由換行符號分隔的 MOTD（啟動畫面）的自定信息將隨機顯示。
-privateModeInfo: 啟用後，只有列入白名單的伺服器才能與你的伺服器聯合。所有貼文都將對公眾隱藏。
+customMOTDDescription: 自訂MOTD(啟動畫面)訊息，一行一個。每次用戶載入/重新整理頁面時將會隨機顯示。
+privateModeInfo: 啟用後，只有列入允許名單的伺服器才能與你的伺服器聯合。所有貼文都將對公眾隱藏。
 adminCustomCssWarn: 除非你知道它的作用，否則請不要使用此設定。 輸入不正確的值可能會導致每個人的客戶端無法正常運行。你可在你的的用戶設定中測試，確保你的
   CSS 正常工作。
 showUpdates: Firefish 更新時顯示彈出視窗
@@ -1852,7 +1852,7 @@ enableEmojiReactions: 啟用表情符號反應
 breakFollowConfirm: 您確定要移除該關注者嗎？
 socialTimeline: 社交時間軸
 cannotUploadBecauseExceedsFileSizeLimit: 因檔案太大而無法上傳。
-customMOTD: 自定義MOTD (網頁載入時顯示的信息)
+customMOTD: 自定義MOTD (網頁載入時顯示的訊息)
 customSplashIcons: 啟動畫面圖標 (網址)
 splash: 啟動畫面
 updateAvailable: 可能有可用的更新!
@@ -1871,7 +1871,7 @@ _experiments:
   title: 試驗功能
   enablePostImports: 啟用匯入貼文的功能
 findOtherInstance: 找找另一個伺服器
-noGraze: 瀏覽器擴展 "Graze for Mastodon" 會與Firefish發生衝突，請停用該擴展。
+noGraze: 瀏覽器擴充元件 "Graze for Mastodon" 會與Firefish發生衝突，請停用該擴充元件。
 userSaysSomethingReasonRenote: '{name} 轉發了包含 {reason} 的貼文'
 pushNotificationNotSupported: 你的瀏覽器或伺服器不支援推送通知
 accessibility: 輔助功能
@@ -1883,13 +1883,13 @@ deleted: 已刪除
 editNote: 編輯貼文
 edited: '於 {date} {time} 編輯'
 userSaysSomethingReason: '{name} 說了 {reason}'
-allowedInstancesDescription: 要加入聯邦白名單的服務器，每台伺服器用新行分隔（僅適用於私有模式）。
+allowedInstancesDescription: 允許聯邦的伺服器名單，一行一個（僅適用於私人模式）。
 defaultReaction: 默認的表情符號反應
 license: 授權
 apps: 應用
 pushNotification: 推送通知
 subscribePushNotification: 啟用推送通知
-unsubscribePushNotification: 禁用推送通知
+unsubscribePushNotification: 停用推送通知
 pushNotificationAlreadySubscribed: 推送通知已經啟用
 recommendedInstancesDescription: 以每行分隔的推薦伺服器出現在推薦的時間線中。
 searchPlaceholder: 在 Firefish 上搜尋
@@ -1932,7 +1932,7 @@ isModerator: 板主
 isAdmin: 管理員
 isPatron: Firefish 項目贊助者
 silencedWarning: 顯示此頁面是因為這些使用者來自您伺服器管理員已靜音的伺服器，因此他們可能是垃圾訊息。
-signupsDisabled: 該伺服器上的註冊當前已被禁用，但您隨時可以在另一台伺服器上註冊！或是您有該伺服器的邀請碼，請在下面輸入。
+signupsDisabled: 此伺服器目前停止註冊，但您隨時可以在另一台伺服器上註冊！如果您有此伺服器的邀請碼，請在下面輸入。
 showPopup: 通過彈出式視窗通知用戶
 showWithSparkles: 讓標題閃閃發光
 youHaveUnreadAnnouncements: 您有未讀的公告
