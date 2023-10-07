@@ -8,7 +8,6 @@ import { LinkPaginationObject } from "@/server/api/mastodon/middleware/paginatio
 export class NotificationHelpers {
     public static async getNotifications(user: ILocalUser, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, types: string[] | undefined, excludeTypes: string[] | undefined, accountId: string | undefined): Promise<LinkPaginationObject<Notification[]>> {
         if (limit > 80) limit = 80;
-        if (types && excludeTypes) throw new Error("types and exclude_types can not be used simultaneously");
 
         let requestedTypes = types
             ? this.decodeTypes(types)
