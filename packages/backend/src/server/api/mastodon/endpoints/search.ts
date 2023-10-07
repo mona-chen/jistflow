@@ -10,8 +10,7 @@ export function setupEndpointsSearch(router: Router): void {
         auth(true, ['read:search']),
         async (ctx) => {
             const args = normalizeUrlQuery(convertPaginationArgsIds(argsToBools(limitToInt(ctx.query), ['resolve', 'following', 'exclude_unreviewed'])));
-            const cache = UserHelpers.getFreshAccountCache();
-            const result = await SearchHelpers.search(ctx.user, args.q, args.type, args.resolve, args.following, args.account_id, args['exclude_unreviewed'], args.max_id, args.min_id, args.limit, args.offset, cache);
+            const result = await SearchHelpers.search(ctx.user, args.q, args.type, args.resolve, args.following, args.account_id, args['exclude_unreviewed'], args.max_id, args.min_id, args.limit, args.offset, ctx.cache);
 
             ctx.body = convertSearchIds(result);
 

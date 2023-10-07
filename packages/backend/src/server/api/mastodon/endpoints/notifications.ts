@@ -11,10 +11,9 @@ export function setupEndpointsNotifications(router: Router): void {
     router.get("/v1/notifications",
         auth(true, ['read:notifications']),
         async (ctx) => {
-            const cache = UserHelpers.getFreshAccountCache();
             const args = normalizeUrlQuery(convertPaginationArgsIds(limitToInt(ctx.query)), ['types[]', 'exclude_types[]']);
             const res = await NotificationHelpers.getNotifications(ctx.user, args.max_id, args.since_id, args.min_id, args.limit, args['types[]'], args['exclude_types[]'], args.account_id);
-            const data = await NotificationConverter.encodeMany(res.data, ctx.user, cache);
+            const data = await NotificationConverter.encodeMany(res.data, ctx.user, ctx.cache);
 
             ctx.body = data.map(n => convertNotificationIds(n));
             ctx.pagination = res.pagination;
