@@ -61,7 +61,7 @@ export class NoteConverter {
             }
         }) : null;
 
-        const renote = note.renote ?? (note.renoteId ? getNote(note.renoteId, user) : null);
+        const renote = note.renote ?? (note.renoteId && recurse ? getNote(note.renoteId, user) : null);
 
         const isBookmarked = user ? NoteFavorites.exist({
             where: {
@@ -103,6 +103,8 @@ export class NoteConverter {
             } as MastodonEntity.Tag;
         });
 
+        const reblog = Promise.resolve(renote).then(renote => recurse && renote ? this.encode(renote, ctx, false) : null);
+
         // noinspection ES6MissingAwait
         return await awaitAll({
             id: note.id,
@@ -111,7 +113,7 @@ export class NoteConverter {
             account: Promise.resolve(noteUser).then(p => UserConverter.encode(p, ctx)),
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: note.replyUserId,
-            reblog: Promise.resolve(renote).then(renote => recurse && renote && note.text === null ? this.encode(renote, ctx, false) : null),
+            reblog: reblog.then(reblog => note.text === null ? reblog : null),
             content: text.then(text => text !== null ? MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers)) ?? escapeMFM(text) : ""),
             text: text,
             created_at: note.createdAt.toISOString(),
@@ -135,7 +137,7 @@ export class NoteConverter {
             pinned: isPinned,
             reactions: populated.then(populated => Promise.resolve(reaction).then(reaction => this.encodeReactions(note.reactions, reaction?.reaction, populated))),
             bookmarked: isBookmarked,
-            quote: Promise.resolve(renote).then(renote => recurse && renote && note.text !== null ? this.encode(renote, ctx, false) : null),
+            quote: reblog.then(reblog => note.text !== null ? reblog : null),
             edited_at: note.updatedAt?.toISOString()
         });
     }
