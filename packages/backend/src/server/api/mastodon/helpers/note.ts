@@ -237,8 +237,11 @@ export class NoteHelpers {
 
             return {
                 data: users,
-                maxId: p.map(p => p.id).at(-1),
-                minId: p.map(p => p.id)[0],
+                pagination: {
+                    limit: limit,
+                    maxId: p.map(p => p.id).at(-1),
+                    minId: p.map(p => p.id)[0],
+                }
             };
         });
     }
