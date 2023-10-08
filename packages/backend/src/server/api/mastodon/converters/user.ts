@@ -1,6 +1,6 @@
-import { User } from "@/models/entities/user.js";
+import { ILocalUser, User } from "@/models/entities/user.js";
 import config from "@/config/index.js";
-import { DriveFiles, UserProfiles, Users } from "@/models/index.js";
+import { DriveFiles, Followings, UserProfiles, Users } from "@/models/index.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
@@ -18,6 +18,7 @@ type Field = {
 
 export class UserConverter {
     public static async encode(u: User, ctx: MastoContext): Promise<MastodonEntity.Account> {
+        const localUser = ctx.user as ILocalUser | null;
         const cache = ctx.cache as AccountCache;
         return cache.locks.acquire(u.id, async () => {
             const cacheHit = cache.accounts.find(p => p.id == u.id);
@@ -39,28 +40,37 @@ export class UserConverter {
                 ? (DriveFiles.findOneBy({ id: u.bannerId }))
                     .then(p => p?.url ?? `${config.url}/static-assets/transparent.png`)
                 : `${config.url}/static-assets/transparent.png`;
-            const followersCount = profile.then(profile => {
+
+            const isFollowedOrSelf = !!localUser &&
+                (localUser.id === u.id ||
+                    Followings.exist({
+                        where: {
+                            followeeId: u.id,
+                            followerId: localUser.id,
+                        },
+                    })
+                );
+
+            const followersCount = profile.then(async profile => {
                 if (profile === null) return u.followersCount;
                 switch (profile.ffVisibility) {
                     case "public":
                         return u.followersCount;
                     case "followers":
-                        // FIXME: check following relationship
-                        return 0;
+                        return Promise.resolve(isFollowedOrSelf).then(isFollowedOrSelf => isFollowedOrSelf ? u.followersCount : 0);
                     case "private":
-                        return 0;
+                        return localUser?.id === profile.userId ? u.followersCount : 0;
                 }
             });
-            const followingCount = profile.then(profile => {
+            const followingCount = profile.then(async profile => {
                 if (profile === null) return u.followingCount;
                 switch (profile.ffVisibility) {
                     case "public":
                         return u.followingCount;
                     case "followers":
-                        // FIXME: check following relationship
-                        return 0;
+                        return Promise.resolve(isFollowedOrSelf).then(isFollowedOrSelf => isFollowedOrSelf ? u.followingCount : 0);
                     case "private":
-                        return 0;
+                        return localUser?.id === profile.userId ? u.followingCount : 0;
                 }
             });
 
