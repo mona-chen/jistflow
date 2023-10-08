@@ -6,7 +6,8 @@ import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { getNote } from "@/server/api/common/getters.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import { getStubMastoContext, MastoContext } from "@/server/api/mastodon/index.js";
+import { Notifications } from "@/models/index.js";
 
 type NotificationType = typeof notificationTypes[number];
 
@@ -26,11 +27,13 @@ export class NotificationConverter {
             type: this.encodeNotificationType(notification.type),
         };
 
-        if (notification.note) {
-            const isPureRenote = notification.note.renoteId !== null && notification.note.text === null;
+        const note = notification.note ?? (notification.noteId ? await getNote(notification.noteId, localUser) : null);
+
+        if (note) {
+            const isPureRenote = note.renoteId !== null && note.text === null;
             const encodedNote = isPureRenote
-                ? getNote(notification.note.renoteId!, localUser).then(note => NoteConverter.encode(note, ctx))
-                : NoteConverter.encode(notification.note, ctx);
+                ? getNote(note.renoteId!, localUser).then(note => NoteConverter.encode(note, ctx))
+                : NoteConverter.encode(note, ctx);
             result = Object.assign(result, {
                 status: encodedNote,
             });
@@ -77,5 +80,11 @@ export class NotificationConverter {
             case "app":
                 throw new Error(`Notification type ${t} not supported`);
         }
+    }
+
+    public static async encodeEvent(target: Notification["id"], user: ILocalUser): Promise<MastodonEntity.Notification | null> {
+        const ctx = getStubMastoContext(user);
+        const notification = await Notifications.findOneByOrFail({ id: target });
+        return this.encode(notification, ctx).catch(_ => null);
     }
 }

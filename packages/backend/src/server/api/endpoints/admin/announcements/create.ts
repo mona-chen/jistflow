@@ -1,6 +1,7 @@
 import define from "../../../define.js";
 import { Announcements } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
+import { publishBroadcastStream } from "@/services/stream.js";
 
 export const meta = {
 	tags: ["admin"],
@@ -84,6 +85,8 @@ export default define(meta, paramDef, async (ps) => {
 		showPopup: ps.showPopup ?? false,
 		isGoodNews: ps.isGoodNews ?? false,
 	}).then((x) => Announcements.findOneByOrFail(x.identifiers[0]));
+
+	publishBroadcastStream("announcementAdded", announcement);
 
 	return Object.assign({}, announcement, {
 		createdAt: announcement.createdAt.toISOString(),

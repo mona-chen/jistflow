@@ -18,6 +18,9 @@ import { KoaBodyMiddleware } from "@/server/api/mastodon/middleware/koa-body.js"
 import { NormalizeQueryMiddleware } from "@/server/api/mastodon/middleware/normalize-query.js";
 import { PaginationMiddleware } from "@/server/api/mastodon/middleware/pagination.js";
 import { SetHeadersMiddleware } from "@/server/api/mastodon/middleware/set-headers.js";
+import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { ILocalUser } from "@/models/entities/user.js";
+import { setupEndpointsStreaming } from "@/server/api/mastodon/endpoints/streaming.js";
 
 export const logger = apiLogger.createSubLogger("mastodon");
 export type MastoContext = RouterContext & DefaultContext;
@@ -30,6 +33,7 @@ export function setupMastodonApi(router: Router): void {
     setupEndpointsFilter(router);
     setupEndpointsTimeline(router);
     setupEndpointsNotifications(router);
+    setupEndpointsStreaming(router);
     setupEndpointsSearch(router);
     setupEndpointsMedia(router);
     setupEndpointsList(router);
@@ -44,4 +48,11 @@ function setupMiddleware(router: Router): void {
     router.use(PaginationMiddleware);
     router.use(AuthMiddleware);
     router.use(CacheMiddleware);
+}
+
+export function getStubMastoContext(user: ILocalUser | null | undefined): any {
+    return {
+        user: user ?? null,
+        cache: UserHelpers.getFreshAccountCache()
+    };
 }

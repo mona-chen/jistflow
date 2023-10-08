@@ -18,7 +18,8 @@ import { awaitAll } from "@/prelude/await-all.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { IsNull } from "typeorm";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import { getStubMastoContext, MastoContext } from "@/server/api/mastodon/index.js";
+import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 
 export class NoteConverter {
     public static async encode(note: Note, ctx: MastoContext, recurse: boolean = true): Promise<MastodonEntity.Status> {
@@ -163,5 +164,11 @@ export class NoteConverter {
                 static_url: url,
             };
         });
+    }
+
+    public static async encodeEvent(note: Note, user: ILocalUser | undefined): Promise<MastodonEntity.Status> {
+        const ctx = getStubMastoContext(user);
+        NoteHelpers.fixupEventNote(note);
+        return NoteConverter.encode(note, ctx);
     }
 }

@@ -1,5 +1,5 @@
 import { Brackets, In } from "typeorm";
-import { publishNoteStream } from "@/services/stream.js";
+import { publishNoteStream, publishNoteUpdatesStream } from "@/services/stream.js";
 import renderDelete from "@/remote/activitypub/renderer/delete.js";
 import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
 import renderUndo from "@/remote/activitypub/renderer/undo.js";
@@ -52,6 +52,8 @@ export default async function (
 		publishNoteStream(note.id, "deleted", {
 			deletedAt: deletedAt,
 		});
+
+		publishNoteUpdatesStream("deleted", note);
 
 		//#region ローカルの投稿なら削除アクティビティを配送
 		if (Users.isLocalUser(user) && !note.localOnly) {

@@ -23,13 +23,13 @@ import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility
 import mfm from "mfm-js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
-import { toArray } from "@/prelude/array.js";
+import { toArray, unique } from "@/prelude/array.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { Cache } from "@/misc/cache.js";
 import AsyncLock from "async-lock";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import { IsNull } from "typeorm";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import { getStubMastoContext, MastoContext } from "@/server/api/mastodon/index.js";
 
 export class NoteHelpers {
     public static postIdempotencyCache = new Cache<{ status?: MastodonEntity.Status }>('postIdempotencyCache', 60 * 60);
@@ -410,6 +410,33 @@ export class NoteHelpers {
         return getNote(id, user).catch(_ => {
             throw new MastoApiError(404);
         });
+    }
+
+    public static async getConversationFromEvent(noteId: string, user: ILocalUser): Promise<MastodonEntity.Conversation> {
+        const ctx = getStubMastoContext(user);
+        const note = await getNote(noteId, ctx.user);
+        const conversationId = note.threadId ?? note.id;
+        const userIds = unique([note.userId].concat(note.visibleUserIds).filter(p => p != ctx.user.id));
+        const users = userIds.map(id => UserHelpers.getUserCached(id, ctx).catch(_ => null));
+        const accounts = Promise.all(users).then(u => UserConverter.encodeMany(u.filter(u => u) as User[], ctx));
+        const res = {
+            id: conversationId,
+            accounts: accounts.then(u => u.length > 0 ? u : UserConverter.encodeMany([ctx.user], ctx)), // failsafe to prevent apps from crashing case when all participant users have been deleted
+            last_status: NoteConverter.encode(note, ctx),
+            unread: true
+        };
+
+        return awaitAll(res);
+    }
+
+    public static fixupEventNote(note: Note): Note {
+        note.createdAt = note.createdAt ? new Date(note.createdAt) : note.createdAt;
+        note.updatedAt = note.updatedAt ? new Date(note.updatedAt) : note.updatedAt;
+        note.reply = null;
+        note.renote = null;
+        note.user = null;
+
+        return note;
     }
 
     public static getIdempotencyKey(ctx: MastoContext): string | null {

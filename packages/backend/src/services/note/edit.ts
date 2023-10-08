@@ -1,6 +1,6 @@
 import * as mfm from "mfm-js";
 import {
-	publishNoteStream,
+	publishNoteStream, publishNoteUpdatesStream,
 } from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
@@ -171,6 +171,8 @@ export default async function (
 		publishNoteStream(note.id, "updated", {
 			updatedAt: update.updatedAt,
 		});
+
+		publishNoteUpdatesStream("updated", note);
 
 		(async () => {
 			const noteActivity = await renderNote(note, false);

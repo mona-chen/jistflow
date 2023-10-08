@@ -15,6 +15,7 @@ import type { Signin } from "@/models/entities/signin.js";
 import type { Page } from "@/models/entities/page.js";
 import type { Packed } from "@/misc/schema.js";
 import type { Webhook } from "@/models/entities/webhook";
+import { Announcement } from "@/models/entities/announcement.js";
 
 //#region Stream type-body definitions
 export interface InternalStreamTypes {
@@ -59,6 +60,8 @@ export interface BroadcastTypes {
 	emojiAdded: {
 		emoji: Packed<"Emoji">;
 	};
+	announcementAdded: Announcement;
+	announcementDeleted: Announcement["id"];
 }
 
 export interface UserStreamTypes {
@@ -161,6 +164,11 @@ type NoteStreamEventTypes = {
 		body: NoteStreamTypes[key];
 	};
 };
+
+export interface NoteUpdatesStreamTypes {
+	deleted: Note;
+	updated: Note;
+}
 
 export interface ChannelStreamTypes {
 	typing: User["id"];
@@ -270,6 +278,10 @@ export type StreamMessages = {
 	notes: {
 		name: "notesStream";
 		payload: Note;
+	};
+	noteUpdates: {
+		name: "noteUpdatesStream";
+		payload: EventUnionFromDictionary<NoteUpdatesStreamTypes>;
 	};
 };
 

@@ -1,6 +1,7 @@
 import define from "../../../define.js";
 import { Announcements } from "@/models/index.js";
 import { ApiError } from "../../../error.js";
+import { publishBroadcastStream } from "@/services/stream.js";
 
 export const meta = {
 	tags: ["admin"],
@@ -30,5 +31,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (announcement == null) throw new ApiError(meta.errors.noSuchAnnouncement);
 
+	publishBroadcastStream("announcementDeleted", announcement.id);
 	await Announcements.delete(announcement.id);
 });

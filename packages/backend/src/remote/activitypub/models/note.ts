@@ -45,7 +45,7 @@ import { extractApMentions } from "./mention.js";
 import DbResolver from "../db-resolver.js";
 import { StatusError } from "@/misc/fetch.js";
 import { shouldBlockInstance } from "@/misc/should-block-instance.js";
-import { publishNoteStream } from "@/services/stream.js";
+import { publishNoteStream, publishNoteUpdatesStream } from "@/services/stream.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { UserProfiles } from "@/models/index.js";
 import { In } from "typeorm";
@@ -760,5 +760,12 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 		publishNoteStream(note.id, "updated", {
 			updatedAt: update.updatedAt,
 		});
+
+		const updatedNote = {
+			...note,
+			...update
+		};
+
+		publishNoteUpdatesStream("updated", updatedNote);
 	}
 }

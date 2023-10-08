@@ -1,7 +1,8 @@
 import type { Packed } from "./schema.js";
+import { Note } from "@/models/entities/note.js";
 
 export function isInstanceMuted(
-	note: Packed<"Note">,
+	note: Packed<"Note"> | Note,
 	mutedInstances: Set<string>,
 ): boolean {
 	if (mutedInstances.has(note?.user?.host ?? "")) return true;

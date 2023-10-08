@@ -52,7 +52,6 @@ export class TimelineHelpers {
         generateMutedUserRenotesQueryForNotes(query, user);
 
         query.andWhere("note.visibility != 'hidden'");
-        query.andWhere("note.visibility != 'specified'");
 
         return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx);
     }

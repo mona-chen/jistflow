@@ -7,6 +7,10 @@ import { subscriber as redisClient } from "@/db/redis.js";
 import { Users } from "@/models/index.js";
 import MainStreamConnection from "./stream/index.js";
 import authenticate from "./authenticate.js";
+import { apiLogger } from "@/server/api/logger.js";
+import { MastodonStreamingConnection } from "@/server/api/mastodon/streaming/index.js";
+
+export const streamingLogger = apiLogger.createSubLogger("streaming");
 
 export const initializeStreamingServer = (server: http.Server) => {
 	// Init websocket server
@@ -48,17 +52,15 @@ export const initializeStreamingServer = (server: http.Server) => {
 		redisClient.on("message", onRedisMessage);
 		const host = `https://${request.host}`;
 		const prepareStream = q.stream?.toString();
-		console.log("start", q);
 
-		const main = new MainStreamConnection(
-			connection,
-			ev,
-			user,
-			app,
-			host,
-			accessToken,
-			prepareStream,
-		);
+		const isMastodon = request.resourceURL.pathname?.endsWith('/api/v1/streaming');
+		if (isMastodon && !request.resourceURL.pathname?.startsWith('/mastodon')) {
+			streamingLogger.warn(`Received connect from mastodon on incorrect path: ${request.resourceURL.pathname}`);
+		}
+
+		const main = isMastodon
+			? new MastodonStreamingConnection(connection, ev, user, app, q)
+			: new MainStreamConnection(connection, ev, user, app, host, accessToken, prepareStream);
 
 		const intervalId = user
 			? setInterval(() => {
