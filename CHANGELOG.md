@@ -1,3 +1,35 @@
+## v2023.10.08-rc1
+### Breaking changes
+- The Mastodon client API now uses the standard alphanumeric ID format. This breaks pagination with existing Mastodon client sessions, if they cache user and/or post data. It is therefore strongly recommended that you either clear the client's cache (if it exposes such a button), its data (if your OS supports this), log out and in again, or in the worst case reinstall any clients with active sessions, especially if you notice strange timeline behavior or unexplained "Record not found" errors.
+
+### Highlights
+- The Mastodon client API backend underwent a full rewrite, dropping megalodon as a dependency. Expect:
+    + Rich text formatting (mentions, links, hashtags, etc. are now properly formatted)
+    + Significantly improved API responsiveness - performance was improved by a factor of 2-5x (or more!) depending on the endpoint
+    + Better spec compliance & improved compatibility (we test against: Mona, toot!, Ice Cubes, Tusker, Feditext, Mastodon for iOS, Mastodon for Android/Megalodon/Moshidon, Tusky, Elk, Phanphy, Pinafore/Semaphore/Enafore and more)
+
+### Bug Fixes
+- The update checker now works properly with the new versioning scheme
+- The control panel indicator is now displayed correctly
+- Countless Mastodon client API bugs have been resolved
+
+### Backend
+- Note edits (of local users) have been completely reworked, now storing the correct history and no longer accepting nonsensical parameters (like changing the reply target) that don't federate properly if at all
+
+### UI/UX
+- The calendar widget is now disabled by default
+- The navigation buttons on mobile have been improved
+- The default themes now have proper shadows
+- Post headers no longer have text shadow
+
+### Miscellaneous
+- The documentation now mentions PGTune
+- Private mode descriptions now refer to 'allowlists' instead of an outdated term
+- Various translation updates
+
+### Attribution
+- This release was made possible by project contributors: Alexis, AntoineÐ, Aylam & Laura Hausmann
+
 ## v2023.10.04
 ### Highlights
 - New logos, themes & brand colors
