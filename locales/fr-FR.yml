@@ -646,7 +646,7 @@ emptyToDisableSmtpAuth: "Laisser le nom d’utilisateur et le mot de passe vides
 smtpSecure: "Utiliser SSL/TLS implicitement dans les connexions SMTP"
 smtpSecureInfo: "Désactiver cette option lorsque STARTTLS est utilisé"
 testEmail: "Tester la distribution de courriel"
-wordMute: "Filtre de mots"
+wordMute: "Filtre de mots et langages"
 regexpError: "Erreur d’expression régulière"
 instanceMute: "Serveur masqué"
 userSaysSomething: "{name} a dit quelque chose"
@@ -960,7 +960,8 @@ _accountDelete:
   inProgress: "Suppression en cours"
 _ad:
   back: "Retour"
-  reduceFrequencyOfThisAd: "Voir cette publicité moins souvent"
+  reduceFrequencyOfThisAd: "Voir cette bannière moins souvent"
+  adsBy: Bannière communautaire par {by}
 _forgotPassword:
   enterEmail: "Entrez ici l'adresse e-mail que vous avez enregistrée pour votre compte.
     Un lien vous permettant de réinitialiser votre mot de passe sera envoyé à cette
@@ -1145,6 +1146,13 @@ _wordMute:
   soft: "Doux"
   hard: "Strict"
   mutedNotes: "Publications masquées"
+  muteLangsDescription2: Utiliser les code de langage (i.e en, fr, ja, zh).
+  lang: Langage
+  langDescription: Cacher du fil de publication les publications qui correspondent
+    à ces langues.
+  muteLangs: Langages filtrés
+  muteLangsDescription: Séparer avec des espaces or des retours à la ligne pour une
+    condition OU (OR).
 _instanceMute:
   instanceMuteDescription2: "Séparer avec des sauts de lignes"
   title: "Masque les publications provenant des serveurs listés."
@@ -2218,3 +2226,5 @@ openServerInfo: Afficher les informations du serveur en cliquant sur le bandeau 
   serveur d’une publication
 indexable: Indexable
 languageForTranslation: Langage post-traduction
+vibrate: Jouer les vibrations
+clickToShowPatterns: Cliquer pour montrer les patrons de modules
