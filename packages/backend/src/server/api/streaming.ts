@@ -53,10 +53,7 @@ export const initializeStreamingServer = (server: http.Server) => {
 		const host = `https://${request.host}`;
 		const prepareStream = q.stream?.toString();
 
-		const isMastodon = request.resourceURL.pathname?.endsWith('/api/v1/streaming');
-		if (isMastodon && !request.resourceURL.pathname?.startsWith('/mastodon')) {
-			streamingLogger.warn(`Received connect from mastodon on incorrect path: ${request.resourceURL.pathname}`);
-		}
+		const isMastodon = request.resourceURL.pathname?.startsWith('/api/v1/streaming');
 
 		const main = isMastodon
 			? new MastodonStreamingConnection(connection, ev, user, app, q)
