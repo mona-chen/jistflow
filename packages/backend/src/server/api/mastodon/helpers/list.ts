@@ -1,6 +1,5 @@
 import { ILocalUser, User } from "@/models/entities/user.js";
 import { Blockings, UserListJoinings, UserLists, Users } from "@/models/index.js";
-import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
@@ -52,15 +51,12 @@ export class ListHelpers {
             .andWhere("member.userListId = :listId", { listId: list.id })
             .innerJoinAndSelect("member.user", "user");
 
-        return query.take(limit).getMany().then(async p => {
-            if (minId !== undefined) p = p.reverse();
-            const users = p
-                .map(p => p.user)
-                .filter(p => p) as User[];
-
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
-            return users;
-        });
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx)
+            .then(members => {
+                return members
+                    .map(p => p.user)
+                    .filter(p => p) as User[];
+            });
     }
 
     public static async deleteList(list: UserList, ctx: MastoContext) {

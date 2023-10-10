@@ -40,7 +40,6 @@ import { MediaHelpers } from "@/server/api/mastodon/helpers/media.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
-import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 
 export type AccountCache = {
@@ -252,24 +251,21 @@ export class UserHelpers {
         query.andWhere("muting.muterId = :userId", { userId: user.id })
             .innerJoinAndSelect("muting.mutee", "mutee");
 
-        return query.take(limit).getMany().then(async p => {
-            if (minId !== undefined) p = p.reverse();
-            const users = p
-                .map(p => p.mutee)
-                .filter(p => p) as User[];
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx)
+            .then(async mutes => {
+                const users = mutes
+                    .map(p => p.mutee)
+                    .filter(p => p) as User[];
 
-            const result = await UserConverter.encodeMany(users, ctx)
-                .then(res => res.map(m => {
-                    const muting = p.find(acc => acc.muteeId === m.id);
-                    return {
-                        ...m,
-                        mute_expires_at: muting?.expiresAt?.toISOString() ?? null
-                    } as MastodonEntity.MutedAccount
-                }));
-
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
-            return result;
-        });
+                return await UserConverter.encodeMany(users, ctx)
+                    .then(res => res.map(m => {
+                        const muting = mutes.find(acc => acc.muteeId === m.id);
+                        return {
+                            ...m,
+                            mute_expires_at: muting?.expiresAt?.toISOString() ?? null
+                        } as MastodonEntity.MutedAccount
+                    }));
+            });
     }
 
     public static async getUserBlocks(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<User[]> {
@@ -286,15 +282,12 @@ export class UserHelpers {
         query.andWhere("blocking.blockerId = :userId", { userId: user.id })
             .innerJoinAndSelect("blocking.blockee", "blockee");
 
-        return query.take(limit).getMany().then(p => {
-            if (minId !== undefined) p = p.reverse();
-            const users = p
-                .map(p => p.blockee)
-                .filter(p => p) as User[];
-
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
-            return users;
-        });
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx)
+            .then(blocks => {
+                return blocks
+                    .map(p => p.blockee)
+                    .filter(p => p) as User[];
+            });
     }
 
     public static async getUserFollowRequests(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<User[]> {
@@ -311,15 +304,12 @@ export class UserHelpers {
         query.andWhere("request.followeeId = :userId", { userId: user.id })
             .innerJoinAndSelect("request.follower", "follower");
 
-        return query.take(limit).getMany().then(p => {
-            if (minId !== undefined) p = p.reverse();
-            const users = p
-                .map(p => p.follower)
-                .filter(p => p) as User[];
-
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
-            return users;
-        });
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx)
+            .then(requests => {
+                return requests
+                    .map(p => p.follower)
+                    .filter(p => p) as User[];
+            });
     }
 
     public static async getUserStatuses(user: User, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, onlyMedia: boolean = false, excludeReplies: boolean = false, excludeReblogs: boolean = false, pinned: boolean = false, tagged: string | undefined, ctx: MastoContext): Promise<Note[]> {
@@ -399,11 +389,8 @@ export class UserHelpers {
 
         generateVisibilityQuery(query, localUser);
 
-        return PaginationHelpers.execQuery(query, limit, minId !== undefined)
-            .then(res => {
-                ctx.pagination = generatePaginationData(res.map(p => p.id), limit);
-                return res.map(p => p.note as Note);
-            });
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx)
+            .then(res => res.map(p => p.note as Note));
     }
 
     public static async getUserFavorites(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<Note[]> {
@@ -421,11 +408,8 @@ export class UserHelpers {
 
         generateVisibilityQuery(query, localUser);
 
-        return PaginationHelpers.execQuery(query, limit, minId !== undefined)
-            .then(res => {
-                ctx.pagination = generatePaginationData(res.map(p => p.id), limit);
-                return res.map(p => p.note as Note);
-            });
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx)
+            .then(res => res.map(p => p.note as Note));
     }
 
     private static async getUserRelationships(type: RelationshipType, user: User, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<User[]> {
@@ -463,12 +447,10 @@ export class UserHelpers {
                 .innerJoinAndSelect("following.followee", "followee");
         }
 
-        return query.take(limit).getMany().then(p => {
-            if (minId !== undefined) p = p.reverse();
-
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
-            return p.map(p => type === "followers" ? p.follower : p.followee).filter(p => p) as User[];
-        });
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx)
+            .then(relations => relations
+                .map(p => type === "followers" ? p.follower : p.followee)
+                .filter(p => p) as User[]);
     }
 
     public static async getUserFollowers(user: User, maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 40, ctx: MastoContext): Promise<User[]> {

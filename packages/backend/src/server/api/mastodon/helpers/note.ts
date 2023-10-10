@@ -15,7 +15,6 @@ import { genId } from "@/misc/gen-id.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
-import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js"
 import { addPinned, removePinned } from "@/services/i/pin.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { awaitAll } from "@/prelude/await-all.js";
@@ -171,15 +170,12 @@ export class NoteHelpers {
             .andWhere("reaction.noteId = :noteId", { noteId: note.id })
             .innerJoinAndSelect("reaction.user", "user");
 
-        return query.take(limit).getMany().then(async p => {
-            if (minId !== undefined) p = p.reverse();
-            const users = p
-                .map(p => p.user)
-                .filter(p => p) as User[];
-
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
-            return users;
-        });
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx)
+            .then(reactions => {
+                return reactions
+                    .map(p => p.user)
+                    .filter(p => p) as User[];
+            });
     }
 
     public static async getNoteEditHistory(note: Note, ctx: MastoContext): Promise<MastodonEntity.StatusEdit[]> {
@@ -243,15 +239,12 @@ export class NoteHelpers {
 
         generateVisibilityQuery(query, user);
 
-        return query.take(limit).getMany().then(async p => {
-            if (minId !== undefined) p = p.reverse();
-            const users = p
-                .map(p => p.user)
-                .filter(p => p) as User[];
-
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
-            return users;
-        });
+        return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx)
+            .then(renotes => {
+                return renotes
+                    .map(p => p.user)
+                    .filter(p => p) as User[];
+            });
     }
 
     public static async getNoteDescendants(note: Note | string, limit: number = 10, depth: number = 2, ctx: MastoContext): Promise<Note[]> {
