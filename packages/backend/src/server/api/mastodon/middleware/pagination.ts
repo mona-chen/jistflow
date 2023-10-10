@@ -18,7 +18,7 @@ export async function PaginationMiddleware(ctx: MastoContext, next: () => Promis
         link.push(l);
     }
     if (ctx.pagination.minId) {
-        const l = `<${config.url}/api${ctx.path}?limit=${limit}&min_id=${ctx.pagination.maxId}>; rel="prev"`;
+        const l = `<${config.url}/api${ctx.path}?limit=${limit}&min_id=${ctx.pagination.minId}>; rel="prev"`;
         link.push(l);
     }
     if (link.length > 0) {
