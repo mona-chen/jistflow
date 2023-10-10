@@ -615,7 +615,7 @@ emptyToDisableSmtpAuth: "ユーザー名とパスワードを空欄にするこ�
 smtpSecure: "SMTP 接続に暗黙的なSSL/TLSを使用する"
 smtpSecureInfo: "STARTTLS使用時はオフにします。"
 testEmail: "配信テスト"
-wordMute: "ワードミュート"
+wordMute: "単語または言語のミュート"
 regexpError: "正規表現エラー"
 regexpErrorDescription: "{tab}ワードミュートの{line}行目の正規表現にエラーが発生しました:"
 instanceMute: "サーバーミュート"
@@ -1990,3 +1990,4 @@ confirm: 確認
 exportZip: ZIPをエクスポート
 openServerInfo: "投稿内のサーバー名をクリックでサーバー情報を開く"
 indexableDescription: MastodonやFirefishなどの検索機能に、あなたの投稿が表示されるのを許可します。
+clickToShowPatterns: クリックしてトラックを表示
