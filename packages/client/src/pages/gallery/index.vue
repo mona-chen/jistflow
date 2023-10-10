@@ -24,7 +24,7 @@
 				@swiper="setSwiperRef"
 				@slide-change="onSlideChange"
 			>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<MkFolder class="_gap">
 						<template #header
 							><i class="ph-clock ph-bold ph-lg"></i>
@@ -66,7 +66,7 @@
 						</MkPagination>
 					</MkFolder>
 				</swiper-slide>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<MkPagination
 						v-slot="{ items }"
 						:pagination="likedPostsPagination"
@@ -81,7 +81,7 @@
 						</div>
 					</MkPagination>
 				</swiper-slide>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<MkA to="/gallery/new" class="_link" style="margin: 16px"
 						><i class="ph-plus ph-bold ph-lg"></i>
 						{{ i18n.ts.postToGallery }}</MkA
