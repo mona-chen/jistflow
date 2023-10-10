@@ -217,8 +217,7 @@ id: 'aid'
 #maxCaptionLength: 1500
 
 # Reserved usernames that only the administrator can register with
-reservedUsernames:
-{{ .Values.firefish.reservedUsernames | toYaml }}
+reservedUsernames: {{ .Values.firefish.reservedUsernames | toJson }}
 
 # Whether disable HSTS
 #disableHsts: true
@@ -265,8 +264,7 @@ reservedUsernames:
 # Proxy remote files (default: false)
 #proxyRemoteFiles: true
 
-allowedPrivateNetworks:
-{{ .Values.firefish.allowedPrivateNetworks | toYaml }}
+allowedPrivateNetworks: {{ .Values.firefish.allowedPrivateNetworks | toJson }}
 
 # TWA
 #twa:
