@@ -693,7 +693,7 @@ no: "いいえ"
 driveFilesCount: "ドライブのファイル数"
 driveUsage: "ドライブ使用量"
 noCrawle: "クローラーによるインデックスを拒否"
-noCrawleDescription: "検索エンジンにあなたのプロフィールや投稿、ページなどのコンテンツを登録(インデックス)しないよう要請します。"
+noCrawleDescription: "Web検索にあなたのプロフィールや投稿、ページなどのコンテンツを登録(インデックス)しないよう要請します。"
 lockedAccountInfo: "フォローを承認制にしても、投稿の公開範囲を「フォロワー」にしない限り、誰でもあなたの投稿を見られます。"
 alwaysMarkSensitive: "デフォルトでメディアを閲覧注意にする"
 loadRawImages: "添付画像のサムネイルをオリジナル画質にする"
@@ -810,7 +810,7 @@ instanceSecurity: "サーバーのセキュリティー"
 secureModeInfo: "認証情報の無いリモートサーバーからのリクエストに応えません。"
 privateMode: "非公開モード"
 privateModeInfo: "有効にすると、許可したサーバーのみからリクエストを受け付けます。"
-allowedInstances: "許可されたサーバー"
+allowedInstances: "許可するサーバー"
 allowedInstancesDescription: "許可したいサーバーのホストを改行で区切って設定します。非公開モードだけで有効です。"
 previewNoteText: "本文をプレビュー"
 customCss: "カスタムCSS"
@@ -1991,3 +1991,5 @@ exportZip: ZIPをエクスポート
 openServerInfo: "投稿内のサーバー名をクリックでサーバー情報を開く"
 indexableDescription: MastodonやFirefishなどの検索機能に、あなたの投稿が表示されるのを許可します。
 clickToShowPatterns: クリックしてトラックを表示
+vibrate: 振動を有効にする
+indexable: 投稿検索に登録
