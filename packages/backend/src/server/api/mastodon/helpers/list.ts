@@ -58,7 +58,7 @@ export class ListHelpers {
                 .map(p => p.user)
                 .filter(p => p) as User[];
 
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit, minId !== undefined);
+            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
             return users;
         });
     }

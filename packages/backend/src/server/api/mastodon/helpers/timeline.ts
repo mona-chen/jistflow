@@ -216,7 +216,7 @@ export class TimelineHelpers {
                 }
             });
 
-            ctx.pagination = generatePaginationData(p.map(p => p.threadId ?? p.id), limit, minId !== undefined);
+            ctx.pagination = generatePaginationData(p.map(p => p.threadId ?? p.id), limit);
             return Promise.all(conversations.map(c => awaitAll(c)));
         });
     }

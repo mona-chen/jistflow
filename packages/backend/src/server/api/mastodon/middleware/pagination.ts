@@ -26,12 +26,12 @@ export async function PaginationMiddleware(ctx: MastoContext, next: () => Promis
     }
 }
 
-export function generatePaginationData(ids: string[], limit: number, reverse: boolean): PaginationData | undefined {
+export function generatePaginationData(ids: string[], limit: number): PaginationData | undefined {
     if (ids.length < 1) return undefined;
 
     return {
         limit: limit,
-        maxId: ids.at(reverse ? 0 : -1),
-        minId: ids.at(reverse ? -1 : 0)
+        maxId: ids.at(-1),
+        minId: ids.at(0)
     }
 }

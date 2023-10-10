@@ -267,7 +267,7 @@ export class UserHelpers {
                     } as MastodonEntity.MutedAccount
                 }));
 
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit, minId !== undefined);
+            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
             return result;
         });
     }
@@ -292,7 +292,7 @@ export class UserHelpers {
                 .map(p => p.blockee)
                 .filter(p => p) as User[];
 
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit, minId !== undefined);
+            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
             return users;
         });
     }
@@ -317,7 +317,7 @@ export class UserHelpers {
                 .map(p => p.follower)
                 .filter(p => p) as User[];
 
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit, minId !== undefined);
+            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
             return users;
         });
     }
@@ -401,7 +401,7 @@ export class UserHelpers {
 
         return PaginationHelpers.execQuery(query, limit, minId !== undefined)
             .then(res => {
-                ctx.pagination = generatePaginationData(res.map(p => p.id), limit, minId !== undefined);
+                ctx.pagination = generatePaginationData(res.map(p => p.id), limit);
                 return res.map(p => p.note as Note);
             });
     }
@@ -423,7 +423,7 @@ export class UserHelpers {
 
         return PaginationHelpers.execQuery(query, limit, minId !== undefined)
             .then(res => {
-                ctx.pagination = generatePaginationData(res.map(p => p.id), limit, minId !== undefined);
+                ctx.pagination = generatePaginationData(res.map(p => p.id), limit);
                 return res.map(p => p.note as Note);
             });
     }
@@ -466,7 +466,7 @@ export class UserHelpers {
         return query.take(limit).getMany().then(p => {
             if (minId !== undefined) p = p.reverse();
 
-            ctx.pagination = generatePaginationData(p.map(p => p.id), limit, minId !== undefined);
+            ctx.pagination = generatePaginationData(p.map(p => p.id), limit);
             return p.map(p => type === "followers" ? p.follower : p.followee).filter(p => p) as User[];
         });
     }

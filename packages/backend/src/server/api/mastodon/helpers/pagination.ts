@@ -51,8 +51,8 @@ export class PaginationHelpers {
                 const ids = p.map(x => x.id);
                 ctx.pagination = p.length > 0 ? {
                     limit: limit,
-                    maxId: ids.at(reverse ? 0 : -1),
-                    minId: ids.at(reverse ? -1 : 0)
+                    maxId: ids.at(-1),
+                    minId: ids.at(0)
                 } : undefined;
                 return p;
             });
