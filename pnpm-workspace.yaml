@@ -4,3 +4,4 @@ packages:
  - 'packages/client'
  - 'packages/sw'
  - 'packages/firefish-js'
+ - 'packages/megalodon'

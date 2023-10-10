@@ -380,7 +380,7 @@ export function apiStatusMastodon(router: Router): void {
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.createEmojiReaction(
+				const data = await client.reactStatus(
 					convertId(ctx.params.id, IdType.FirefishId),
 					ctx.params.name,
 				);
@@ -400,7 +400,7 @@ export function apiStatusMastodon(router: Router): void {
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
 			try {
-				const data = await client.deleteEmojiReaction(
+				const data = await client.unreactStatus(
 					convertId(ctx.params.id, IdType.FirefishId),
 					ctx.params.name,
 				);

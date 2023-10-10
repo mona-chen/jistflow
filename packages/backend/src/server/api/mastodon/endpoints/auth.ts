@@ -68,7 +68,7 @@ export function apiAuthMastodon(router: Router): void {
 				website: body.website,
 				redirect_uri: red,
 				client_id: Buffer.from(appData.url || "").toString("base64"),
-				client_secret: appData.client_secret,
+				client_secret: appData.clientSecret,
 			};
 			console.log(returns);
 			ctx.body = returns;
