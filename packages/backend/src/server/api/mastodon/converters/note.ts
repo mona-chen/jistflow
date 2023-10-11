@@ -163,7 +163,7 @@ export class NoteConverter {
                 url: url,
                 static_url: url,
             };
-        });
+        }).filter(r => r.count > 0);
     }
 
     public static async encodeEvent(note: Note, user: ILocalUser | undefined): Promise<MastodonEntity.Status> {
