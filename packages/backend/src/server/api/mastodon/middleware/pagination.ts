@@ -31,7 +31,7 @@ export function generatePaginationData(ids: string[], limit: number): Pagination
 
     return {
         limit: limit,
-        maxId: ids.at(-1),
+        maxId: ids.length < limit ? undefined : ids.at(-1),
         minId: ids.at(0)
     }
 }
