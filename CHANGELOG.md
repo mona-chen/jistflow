@@ -1,3 +1,11 @@
+## v2023.10.11-rc1
+### Highlights
+- The Mastodon client API now supports the websocket streaming API
+- Various bugs in the HTTP Link header pagination implementation were fixed
+
+### Attribution
+This release was made possible by project contributors: Laura Hausmann
+
 ## v2023.10.08-rc1
 ### Breaking changes
 - The Mastodon client API now uses the standard alphanumeric ID format. This breaks pagination with existing Mastodon client sessions, if they cache user and/or post data. It is therefore strongly recommended that you either clear the client's cache (if it exposes such a button), its data (if your OS supports this), log out and in again, or in the worst case reinstall any clients with active sessions, especially if you notice strange timeline behavior or unexplained "Record not found" errors.
