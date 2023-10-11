@@ -139,12 +139,15 @@ export class MfmHelpers {
                         remoteUser.username === username && remoteUser.host === host,
                 );
                 const localpart = `@${username}`;
-                const acct = host === config.domain ? localpart: node.props.acct;
+                const isLocal = host === config.domain || host === null;
+                const acct = isLocal ? localpart: node.props.acct;
                 a.href = remoteUserInfo
                     ? remoteUserInfo.url
                         ? remoteUserInfo.url
                         : remoteUserInfo.uri
-                    : `${config.url}/${acct}`;
+                    : isLocal
+                        ? `${config.url}/${acct}`
+                        : `https://${host}/${localpart}`;
                 a.className = "u-url mention";
                 const span = doc.createElement("span");
                 span.textContent = username;
