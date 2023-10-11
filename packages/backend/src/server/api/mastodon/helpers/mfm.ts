@@ -68,7 +68,15 @@ export class MfmHelpers {
             blockCode(node) {
                 const pre = doc.createElement("pre");
                 const inner = doc.createElement("code");
-                inner.textContent = node.props.code;
+
+                const nodes = node.props.code
+                    .split(/\r\n|\r|\n/)
+                    .map((x) => doc.createTextNode(x));
+
+                for (const x of intersperse<FIXME | "br">("br", nodes)) {
+                    inner.appendChild(x === "br" ? doc.createElement("br") : x);
+                }
+
                 pre.appendChild(inner);
                 return pre;
             },
