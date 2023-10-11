@@ -21,7 +21,7 @@ import { resolveUser } from "@/remote/resolve-user.js";
 import { createNote } from "@/remote/activitypub/models/note.js";
 import { getUser } from "@/server/api/common/getters.js";
 import config from "@/config/index.js";
-import { MastoContext } from "@/server/api/mastodon/index.js";
+import { logger, MastoContext } from "@/server/api/mastodon/index.js";
 
 export class SearchHelpers {
     public static async search(q: string | undefined, type: string | undefined, resolve: boolean = false, following: boolean = false, accountId: string | undefined, excludeUnreviewed: boolean = false, maxId: string | undefined, minId: string | undefined, limit: number = 20, offset: number | undefined, ctx: MastoContext): Promise<MastodonEntity.Search> {
@@ -139,7 +139,7 @@ export class SearchHelpers {
                     return isPost(object) ? createNote(getApId(object), resolver.reset(), true).then(p => p ? [p] : []) : [];
                 }
             } catch (e: any) {
-                console.log(`[mastodon-client] resolve note '${q}' failed: ${e.message}`);
+                logger.warn(`Resolving note '${q}' failed: ${e.message}`);
                 return [];
             }
         }
