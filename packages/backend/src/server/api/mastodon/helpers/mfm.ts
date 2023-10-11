@@ -122,11 +122,12 @@ export class MfmHelpers {
 
             mention(node) {
                 const a = doc.createElement("a");
-                const { username, host, acct } = node.props;
+                const { username, host} = node.props;
                 const remoteUserInfo = mentionedRemoteUsers.find(
                     (remoteUser) =>
                         remoteUser.username === username && remoteUser.host === host,
                 );
+                const acct = host === config.domain ? `@${username}` : node.props.acct;
                 a.href = remoteUserInfo
                     ? remoteUserInfo.url
                         ? remoteUserInfo.url
