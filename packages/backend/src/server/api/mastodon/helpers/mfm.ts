@@ -129,6 +129,9 @@ export class MfmHelpers {
             },
 
             mention(node) {
+                const el = doc.createElement("span");
+                el.setAttribute("class", "h-card");
+                el.setAttribute("translate", "no");
                 const a = doc.createElement("a");
                 const { username, host} = node.props;
                 const remoteUserInfo = mentionedRemoteUsers.find(
@@ -143,8 +146,12 @@ export class MfmHelpers {
                         : remoteUserInfo.uri
                     : `${config.url}/${acct}`;
                 a.className = "u-url mention";
-                a.textContent = localpart;
-                return a;
+                const span = doc.createElement("span");
+                span.textContent = username;
+                a.textContent = '@';
+                a.appendChild(span);
+                el.appendChild(a);
+                return el;
             },
 
             quote(node) {

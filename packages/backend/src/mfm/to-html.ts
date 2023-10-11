@@ -112,6 +112,9 @@ export function toHtml(
 		},
 
 		mention(node) {
+			const el = doc.createElement("span");
+			el.setAttribute("class", "h-card");
+			el.setAttribute("translate", "no");
 			const a = doc.createElement("a");
 			const { username, host, acct } = node.props;
 			const remoteUserInfo = mentionedRemoteUsers.find(
@@ -124,8 +127,12 @@ export function toHtml(
 					: remoteUserInfo.uri
 				: `${config.url}/${acct}`;
 			a.className = "u-url mention";
-			a.textContent = acct;
-			return a;
+			const span = doc.createElement("span");
+			span.textContent = username;
+			a.textContent = '@';
+			a.appendChild(span);
+			el.appendChild(a);
+			return el;
 		},
 
 		quote(node) {
