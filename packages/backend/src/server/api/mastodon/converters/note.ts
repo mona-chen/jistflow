@@ -88,9 +88,11 @@ export class NoteConverter {
             .then(p => p.filter(m => m)) as Promise<MastodonEntity.Mention[]>;
 
         const text = Promise.resolve(renote).then(renote => {
-            return renote && note.text !== null
-                ? note.text + `\n\nRE: ${renote.uri ? renote.uri : `${config.url}/notes/${renote.id}`}`
-                : note.text;
+            if (!renote || note.text === null) return note.text
+            const uri = renote.uri ? renote.uri : `${config.url}/notes/${renote.id}`;
+            return note.text.includes(uri)
+                ? note.text
+                : note.text + `\n\nRE: ${uri}`;
         });
 
         const isPinned = user && note.userId === user.id
