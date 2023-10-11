@@ -57,6 +57,7 @@ export async function getResponse(args: {
 	headers: Record<string, string>;
 	timeout?: number;
 	size?: number;
+	redirect?: RequestRedirect;
 }) {
 	const timeout = args.timeout || 10 * 1000;
 
@@ -73,7 +74,12 @@ export async function getResponse(args: {
 		size: args.size || 10 * 1024 * 1024,
 		agent: getAgentByUrl,
 		signal: controller.signal,
+		redirect: args.redirect
 	});
+
+	if (args.redirect === "manual" && [301,302,307,308].includes(res.status)) {
+		return res;
+	}
 
 	if (!res.ok) {
 		throw new StatusError(

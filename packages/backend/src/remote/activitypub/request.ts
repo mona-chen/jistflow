@@ -34,8 +34,9 @@ export default async (user: { id: User["id"] }, url: string, object: any) => {
  * Get AP object with http-signature
  * @param user http-signature user
  * @param url URL to fetch
+ * @param redirects whether or not to accept redirects
  */
-export async function signedGet(url: string, user: { id: User["id"] }) {
+export async function signedGet(url: string, user: { id: User["id"] }, redirects: boolean = true) {
 	apLogger.debug(`Running signedGet on url: ${url}`);
 	const keypair = await getUserKeypair(user.id);
 
@@ -54,7 +55,15 @@ export async function signedGet(url: string, user: { id: User["id"] }) {
 		url,
 		method: req.request.method,
 		headers: req.request.headers,
+		redirect: redirects ? "manual" : "error"
 	});
+
+	if (redirects && [301,302,307,308].includes(res.status)) {
+		const newUrl = res.headers.get('location');
+		if (!newUrl) throw new Error('signedGet got redirect but no target location');
+		apLogger.debug(`signedGet is redirecting to ${newUrl}`);
+		return signedGet(newUrl, user, false);
+	}
 
 	return await res.json();
 }
