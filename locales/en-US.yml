@@ -123,7 +123,7 @@ pinnedNote: "Pinned post"
 pinned: "Pin to profile"
 you: "You"
 clickToShow: "Click to show"
-sensitive: "NSFW"
+sensitive: "Sensitive"
 add: "Add"
 reaction: "Reactions"
 removeReaction: "Remove your reaction"
@@ -133,8 +133,8 @@ reactionSetting: "Reactions to show in the reaction picker"
 reactionSettingDescription2: "Drag to reorder, click to delete, press \"+\" to add."
 rememberNoteVisibility: "Remember post visibility settings"
 attachCancel: "Remove attachment"
-markAsSensitive: "Mark as NSFW"
-unmarkAsSensitive: "Unmark as NSFW"
+markAsSensitive: "Mark as sensitive"
+unmarkAsSensitive: "Unmark as sensitive"
 enterFileName: "Enter filename"
 mute: "Mute"
 unmute: "Unmute"
@@ -349,7 +349,7 @@ copyUrl: "Copy URL"
 rename: "Rename"
 avatar: "Avatar"
 banner: "Banner"
-nsfw: "NSFW"
+nsfw: "Sensitive"
 whenServerDisconnected: "When losing connection to the server"
 disconnectedFromServer: "Connection to server has been lost"
 reload: "Refresh"
@@ -771,7 +771,7 @@ noCrawleDescription: "Ask search engines to not index your profile page, posts, 
   etc."
 lockedAccountInfo: "Unless you set your post visiblity to \"Followers only\", your
   posts will be visible to anyone, even if you require followers to be manually approved."
-alwaysMarkSensitive: "Mark as NSFW by default"
+alwaysMarkSensitive: "Mark as sensitive by default"
 loadRawImages: "Load original images instead of showing thumbnails"
 disableShowingAnimatedImages: "Don't play animated images"
 verificationEmailSent: "A verification email has been sent. Please follow the included
@@ -1012,18 +1012,18 @@ type: "Type"
 speed: "Speed"
 slow: "Slow"
 fast: "Fast"
-sensitiveMediaDetection: "Detection of NSFW media"
+sensitiveMediaDetection: "Detection of sensitive media"
 localOnly: "Local only"
 remoteOnly: "Remote only"
 failedToUpload: "Upload failed"
 cannotUploadBecauseInappropriate: "This file could not be uploaded because parts of
-  it have been detected as potentially NSFW."
+  it have been detected as potentially sensitive."
 cannotUploadBecauseNoFreeSpace: "Upload failed due to lack of Drive capacity."
 cannotUploadBecauseExceedsFileSizeLimit: "This file could not be uploaded because
   it exceeds the maximum allowed size."
 beta: "Beta"
-enableAutoSensitive: "Automatic NSFW-Marking"
-enableAutoSensitiveDescription: "Allows automatic detection and marking of NSFW media
+enableAutoSensitive: "Automatic sensitive-marking"
+enableAutoSensitiveDescription: "Allows automatic detection and marking of sensitive media
   through Machine Learning where possible. Even if this option is disabled, it may
   be enabled server-wide."
 activeEmailValidationDescription: "Enables stricter validation of email addresses,
@@ -1139,7 +1139,7 @@ searchNotLoggedIn_2: "However, you can search using hashtags, and search users."
 
 _sensitiveMediaDetection:
   description: "Reduces the effort of server moderation through automatically recognizing
-    NSFW media via Machine Learning. This will slightly increase the load on the server."
+    sensitive media via Machine Learning. This will slightly increase the load on the server."
   sensitivity: "Detection sensitivity"
   sensitivityDescription: "Reducing the sensitivity will lead to fewer misdetections
     (false positives) whereas increasing it will lead to fewer missed detections (false
@@ -1247,8 +1247,8 @@ _aboutIceshrimp:
   patronsList: "Listed chronologically, not by donation size. Donate with the link
     above to get your name on here!"
 _nsfw:
-  respect: "Hide NSFW media"
-  ignore: "Don't hide NSFW media"
+  respect: "Hide sensitive media"
+  ignore: "Don't hide sensitive media"
   force: "Hide all media"
 _mfm:
   play: "Play MFM"
