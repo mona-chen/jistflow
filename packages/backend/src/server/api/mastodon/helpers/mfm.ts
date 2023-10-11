@@ -127,14 +127,15 @@ export class MfmHelpers {
                     (remoteUser) =>
                         remoteUser.username === username && remoteUser.host === host,
                 );
-                const acct = host === config.domain ? `@${username}` : node.props.acct;
+                const localpart = `@${username}`;
+                const acct = host === config.domain ? localpart: node.props.acct;
                 a.href = remoteUserInfo
                     ? remoteUserInfo.url
                         ? remoteUserInfo.url
                         : remoteUserInfo.uri
                     : `${config.url}/${acct}`;
                 a.className = "u-url mention";
-                a.textContent = acct;
+                a.textContent = localpart;
                 return a;
             },
 
