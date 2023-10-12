@@ -106,7 +106,7 @@ export class SearchHelpers {
         query.andWhere(
             new Brackets((qb) => {
                 qb.where("user.name ILIKE :q", { q: `%${sqlLikeEscape(q)}%` });
-                qb.orWhere("user.usernameLower ILIKE :q", { q: `%${sqlLikeEscape(q)}%` });
+                qb.orWhere("concat_ws('@', user.usernameLower, user.host) ILIKE :q", { q: `%${sqlLikeEscape(q)}%` });
             })
         );
 
