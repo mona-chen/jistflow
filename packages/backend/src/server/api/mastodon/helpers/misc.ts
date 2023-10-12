@@ -55,6 +55,7 @@ export class MiscHelpers {
                 status_count: noteCount,
                 domain_count: instanceCount,
             }),
+            max_toot_chars: MAX_NOTE_TEXT_LENGTH,
             thumbnail: meta.bannerUrl || "/static-assets/transparent.png",
             languages: meta.langs,
             registrations: !meta.disableRegistration,
