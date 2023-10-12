@@ -14,7 +14,7 @@ This release was made possible by project contributors: Laura Hausmann
 - The Mastodon client API backend underwent a full rewrite, dropping megalodon as a dependency. Expect:
     + Rich text formatting (mentions, links, hashtags, etc. are now properly formatted)
     + Significantly improved API responsiveness - performance was improved by a factor of 2-5x (or more!) depending on the endpoint
-    + Better spec compliance & improved compatibility (we test against: Mona, toot!, Ice Cubes, Tusker, Feditext, Mastodon for iOS, Mastodon for Android/Megalodon/Moshidon, Tusky, Elk, Phanphy, Pinafore/Semaphore/Enafore and more)
+    + Better spec compliance & improved compatibility (we test against: Mona, toot!, Ice Cubes, Tusker, Feditext, Mastodon for iOS, Mastodon for Android/Megalodon/Moshidon, Tusky, Elk, Phanpy, Pinafore/Semaphore/Enafore and more)
 
 ### Bug Fixes
 - The update checker now works properly with the new versioning scheme
