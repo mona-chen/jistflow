@@ -936,7 +936,8 @@ _accountDelete:
   inProgress: "正在删除"
 _ad:
   back: "返回"
-  reduceFrequencyOfThisAd: "减少此广告的频率"
+  reduceFrequencyOfThisAd: "减少此横幅的频率"
+  adsBy: 社区横幅（作者：{by}）
 _forgotPassword:
   enterEmail: "请输入您注册账号时用的电子邮箱地址，密码重置链接将发送至该邮箱上。"
   ifNoEmail: "如果您在注册时没有输入电子邮件地址，请联系服务器管理员。"
@@ -1992,3 +1993,4 @@ indexable: 可索引的
 languageForTranslation: 帖子翻译语言
 vibrate: 播放振动
 openServerInfo: 点击帖子上的服务器滚动条时显示服务器信息
+clickToShowPatterns: 点击显示模块模式
