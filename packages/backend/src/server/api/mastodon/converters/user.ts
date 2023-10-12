@@ -110,7 +110,7 @@ export class UserConverter {
     private static encodeField(f: Field): MastodonEntity.Field {
         return {
             name: f.name,
-            value: MfmHelpers.toHtml(mfm.parse(f.value)) ?? escapeMFM(f.value),
+            value: MfmHelpers.toHtml(mfm.parse(f.value), undefined, true) ?? escapeMFM(f.value),
             verified_at: f.verified ? (new Date()).toISOString() : null,
         }
     }

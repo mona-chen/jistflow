@@ -7,7 +7,8 @@ import mfm from "mfm-js";
 export class MfmHelpers {
     public static toHtml(
         nodes: mfm.MfmNode[] | null,
-        mentionedRemoteUsers: IMentionedRemoteUsers = []
+        mentionedRemoteUsers: IMentionedRemoteUsers = [],
+        inline: boolean = false
     ) {
         if (nodes == null) {
             return null;
@@ -203,6 +204,6 @@ export class MfmHelpers {
 
         appendChildren(nodes, doc.body);
 
-        return `<p>${doc.body.innerHTML}</p>`;
+        return inline ? doc.body.innerHTML : `<p>${doc.body.innerHTML}</p>`;
     }
 }
