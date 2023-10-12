@@ -210,7 +210,7 @@ export class NoteHelpers {
                 media_attachments: files.then(files => files.length > 0 ? files.map((f) => FileConverter.encode(f)) : [])
             };
             lastDate = edit.updatedAt;
-            history.unshift(awaitAll(item));
+            history.push(awaitAll(item));
         }
 
         return Promise.all(history);
