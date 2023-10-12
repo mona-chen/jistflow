@@ -102,6 +102,7 @@ import { defaultStore } from "@/store";
 import { addSkinTone, emojilist } from "@/scripts/emojilist";
 import { instance } from "@/instance";
 import { i18n } from "@/i18n";
+import * as Acct from "iceshrimp-js/built/acct";
 
 interface EmojiDef {
 	emoji: string;
@@ -254,8 +255,10 @@ function exec() {
 			users.value = JSON.parse(cache);
 			fetching.value = false;
 		} else {
+      const acct = Acct.parse(props.q);
 			os.api("users/search-by-username-and-host", {
-				username: props.q,
+				username: acct.username,
+        host: acct.host ?? undefined,
 				limit: 10,
 				detail: false,
 			}).then((searchedUsers) => {

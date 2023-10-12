@@ -3,6 +3,8 @@ import getCaretCoordinates from "textarea-caret";
 import { toASCII } from "punycode/";
 import { popup } from "@/os";
 
+const mentionRegex = /@(?<user>[a-zA-Z0-9_]+|$)@?(?<host>[a-zA-Z0-9-.]+)?/g;
+
 export class Autocomplete {
 	private suggestion: {
 		x: Ref<number>;
@@ -70,7 +72,9 @@ export class Autocomplete {
 		const caretPos = this.textarea.selectionStart;
 		const text = this.text.substring(0, caretPos).split("\n").pop()!;
 
-		const mentionIndex = text.lastIndexOf("@");
+		const mentionArray = [...text.matchAll(mentionRegex)];
+		const mention = mentionArray.at(-1);
+		const mentionIndex = mention?.index ?? -1;
 		const hashtagIndex = text.lastIndexOf("#");
 		const emojiIndex = text.lastIndexOf(":");
 		const mfmTagIndex = text.lastIndexOf("$");
@@ -82,7 +86,6 @@ export class Autocomplete {
 			return;
 		}
 
-		const isMention = mentionIndex !== -1;
 		const isHashtag = hashtagIndex !== -1;
 		const isMfmTag = mfmTagIndex !== -1;
 		const isEmoji =
@@ -90,12 +93,14 @@ export class Autocomplete {
 
 		let opened = false;
 
-		if (isMention) {
-			const username = text.substring(mentionIndex + 1);
-			if (username !== "" && username.match(/^[a-zA-Z0-9_]+$/)) {
-				this.open("user", username);
+		if (mention?.groups) {
+			const username = mention.groups.user;
+			const host = mention.groups.host;
+			const acct = host ? `${username}@${host}` : username;
+			if (acct !== "") {
+				this.open("user", acct);
 				opened = true;
-			} else if (username === "") {
+			} else {
 				this.open("user", null);
 				opened = true;
 			}
@@ -216,7 +221,10 @@ export class Autocomplete {
 			const source = this.text;
 
 			const before = source.substring(0, caret);
-			const trimmedBefore = before.substring(0, before.lastIndexOf("@"));
+			const mentionArray = [...before.matchAll(mentionRegex)];
+			const mention = mentionArray.at(-1);
+			const mentionIndex = mention?.index ?? -1;
+			const trimmedBefore = before.substring(0, mentionIndex);
 			const after = source.substring(caret);
 
 			const acct =
