@@ -40,7 +40,7 @@ export const initializeStreamingServer = (server: http.Server) => {
 			return;
 		}
 
-		const connection = request.accept();
+		const connection = request.accept(request.requestedProtocols[0] ?? undefined);
 
 		const ev = new EventEmitter();
 
