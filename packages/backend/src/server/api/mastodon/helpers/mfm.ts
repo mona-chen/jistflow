@@ -123,6 +123,8 @@ export class MfmHelpers {
 
             link(node) {
                 const a = doc.createElement("a");
+                a.setAttribute("rel", "nofollow noopener noreferrer");
+                a.setAttribute("target", "_blank");
                 a.href = node.props.url;
                 appendChildren(node.children, a);
                 return a;
@@ -178,8 +180,10 @@ export class MfmHelpers {
 
             url(node) {
                 const a = doc.createElement("a");
+                a.setAttribute("rel", "nofollow noopener noreferrer");
+                a.setAttribute("target", "_blank");
                 a.href = node.props.url;
-                a.textContent = node.props.url;
+                a.textContent = node.props.url.replace(/^https?:\/\//, '');
                 return a;
             },
 
