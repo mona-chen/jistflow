@@ -35,16 +35,17 @@ export async function renderPerson(user: ILocalUser) {
 
 	if (profile.fields) {
 		for (const field of profile.fields) {
+			if (field.value?.match(/^https?:\/\//)) {
+				const hasTrailingSlash = field.value.endsWith('/');
+				field.value = new URL(field.value).href;
+				if (field.value.endsWith('/') && !hasTrailingSlash) field.value = field.value.slice(0, -1);
+				field.value = `<a href="${field.value}" rel="me nofollow noopener" target="_blank">${field.value}</a>`;
+			}
+
 			attachment.push({
 				type: "PropertyValue",
 				name: field.name,
-				value: field.value?.match(/^https?:/)
-					? `<a href="${
-							new URL(field.value).href
-					  }" rel="me nofollow noopener" target="_blank">${
-							new URL(field.value).href
-					  }</a>`
-					: field.value,
+				value: field.value,
 			});
 		}
 	}
