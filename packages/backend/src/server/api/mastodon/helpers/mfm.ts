@@ -8,6 +8,7 @@ export class MfmHelpers {
     public static toHtml(
         nodes: mfm.MfmNode[] | null,
         mentionedRemoteUsers: IMentionedRemoteUsers = [],
+        objectHost: string | null,
         inline: boolean = false
     ) {
         if (nodes == null) {
@@ -142,7 +143,7 @@ export class MfmHelpers {
                         remoteUser.username === username && remoteUser.host === host,
                 );
                 const localpart = `@${username}`;
-                const isLocal = host === config.domain || host === null;
+                const isLocal = host === config.domain || (host == null && objectHost == null);
                 const acct = isLocal ? localpart: node.props.acct;
                 a.href = remoteUserInfo
                     ? remoteUserInfo.url
@@ -150,7 +151,9 @@ export class MfmHelpers {
                         : remoteUserInfo.uri
                     : isLocal
                         ? `${config.url}/${acct}`
-                        : `https://${host}/${localpart}`;
+                        : host == null
+                            ? `https://${objectHost}/${localpart}`
+                            : `https://${host}/${localpart}`;
                 a.className = "u-url mention";
                 const span = doc.createElement("span");
                 span.textContent = username;

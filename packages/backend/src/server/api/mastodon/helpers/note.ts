@@ -179,8 +179,8 @@ export class NoteHelpers {
     }
 
     public static async getNoteEditHistory(note: Note, ctx: MastoContext): Promise<MastodonEntity.StatusEdit[]> {
-        const account = Promise.resolve(note.user ?? await UserHelpers.getUserCached(note.userId, ctx))
-            .then(p => UserConverter.encode(p, ctx));
+        const user = Promise.resolve(note.user ?? await UserHelpers.getUserCached(note.userId, ctx));
+        const account = user.then(p => UserConverter.encode(p, ctx));
         const edits = await NoteEdits.find({ where: { noteId: note.id }, order: { id: "ASC" } });
         const history: Promise<MastodonEntity.StatusEdit>[] = [];
 
@@ -201,7 +201,7 @@ export class NoteHelpers {
             const files = DriveFiles.packMany(edit.fileIds);
             const item = {
                 account: account,
-                content: MfmHelpers.toHtml(mfm.parse(edit.text ?? ''), JSON.parse(note.mentionedRemoteUsers)) ?? '',
+                content: user.then(user => MfmHelpers.toHtml(mfm.parse(edit.text ?? ''), JSON.parse(note.mentionedRemoteUsers), user.host) ?? ''),
                 created_at: lastDate.toISOString(),
                 emojis: [],
                 sensitive: files.then(files => files.length > 0 ? files.some((f) => f.isSensitive) : false),

@@ -6,7 +6,7 @@ export class AnnouncementConverter {
     public static encode(announcement: Announcement, isRead: boolean): MastodonEntity.Announcement {
         return {
             id: announcement.id,
-            content: `<h1>${MfmHelpers.toHtml(mfm.parse(announcement.title), []) ?? 'Announcement'}</h1>${MfmHelpers.toHtml(mfm.parse(announcement.text), []) ?? ''}`,
+            content: `<h1>${MfmHelpers.toHtml(mfm.parse(announcement.title), [], null) ?? 'Announcement'}</h1>${MfmHelpers.toHtml(mfm.parse(announcement.text), [], null) ?? ''}`,
             starts_at: null,
             ends_at: null,
             published: true,
