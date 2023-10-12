@@ -157,7 +157,7 @@ export function toHtml(
 		url(node) {
 			const a = doc.createElement("a");
 			a.href = node.props.url;
-			a.textContent = node.props.url;
+			a.textContent = node.props.url.replace(/^https?:\/\//, '');
 			return a;
 		},
 
