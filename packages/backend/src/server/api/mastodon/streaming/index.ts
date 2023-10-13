@@ -28,6 +28,8 @@ const channels: Record<string, any> = {
     "public:local:media": MastodonStreamPublic,
     "public:remote": MastodonStreamPublic,
     "public:remote:media": MastodonStreamPublic,
+    "public:allow_local_only": MastodonStreamPublic,
+    "public:allow_local_only:media": MastodonStreamPublic,
     "hashtag": MastodonStreamTag,
     "hashtag:local": MastodonStreamTag,
 }

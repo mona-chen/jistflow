@@ -13,12 +13,14 @@ export class MastodonStreamPublic extends MastodonStream {
     private readonly mediaOnly: boolean;
     private readonly localOnly: boolean;
     private readonly remoteOnly: boolean;
+    private readonly allowLocalOnly: boolean;
 
     constructor(connection: MastodonStream["connection"], name: string) {
         super(connection, name);
         this.mediaOnly = name.endsWith(":media");
         this.localOnly = name.startsWith("public:local");
         this.remoteOnly = name.startsWith("public:remote");
+        this.allowLocalOnly = name.startsWith("public:allow_local_only");
         this.onNote = this.onNote.bind(this);
         this.onNoteEvent = this.onNoteEvent.bind(this);
     }
@@ -64,6 +66,7 @@ export class MastodonStreamPublic extends MastodonStream {
         if (this.mediaOnly && note.fileIds.length < 1) return false;
         if (this.localOnly && note.userHost !== null) return false;
         if (this.remoteOnly && note.userHost === null) return false;
+        if (note.localOnly && !this.allowLocalOnly && !this.localOnly) return false;
         if (isInstanceMuted(note, new Set<string>(this.userProfile?.mutedInstances ?? []))) return false;
         if (isUserRelated(note, this.muting)) return false;
         if (isUserRelated(note, this.blocking)) return false;
