@@ -1,3 +1,51 @@
+## v2023.11-pre1
+### New versioning scheme
+From now on we will use a JetBrains-like versioning scheme. Since our release candidates are more of a release preview, they can now be identified by the `-pre` suffix, followed by a number that increments with each following release preview. To maintain lexical sort order with previous releases from this year, we're starting the release counter at 11. That makes this release `v2023.11-pre1`.
+
+### Breaking changes
+- The Mastodon client API now uses its own, separate OAuth backend. This means all existing sessions are now invalid. Please log out and back in again in your clients.
+
+### Highlights
+- The Mastodon client API now uses OAuth instead of MiAuth
+- ActivityPub object lookups now respect redirects
+
+### Mastodon client API
+- Reactions with 0 reacts are no longer returned
+- The 'next' part of the Link pagination header is no longer returned when there are less results than the set limit
+- Remote mentions of local users are now rendered correctly
+- Mentions now only display the handle, without the instance domain, mimicking Mastodon
+- Code blocks are now rendered properly
+- Mentions in user bios now work (most of the time)
+- Quote URIs are now only appended to the post if the post doesn't already contain them
+- Links are now rendered properly
+- The streaming API now works for webclients running in Chrome and its derivatives
+- /v1/instance now returns the field `max_toot_chars`, improving compatibility with some clients
+- Edit history is now returned in the correct order
+- Invalid remote mentions are now handled correctly
+- User search autocomplete now works as one would expect
+- The public:allow_local_only stream is now supported
+
+### UI/UX
+- "NSFW content" was renamed to "sensitive content"
+- The user mention picker now works correctly for remote users
+
+### Backend
+- All migrations are now written in TypeScript
+- Mentions in outgoing AP messages are now formatted correctly
+- Trailing slashes for links in user profile fields are now only sent in AP messages if explicitly set
+- Links in outgoing AP messages are now formatted correctly
+- Mention parsing in incoming & outgoing AP messages now matches usernames case-insensitively 
+- The required VAPID keys for WebPush are now generated automatically
+
+### Miscellaneous
+- A missing devDependency was added
+- The unused check:connect script was removed
+
+### Attribution
+This release was made possible by project contributors: aylamz, Laura Hausmann
+
+It also includes cherry-picked contributions from external contributors: Johann150
+
 ## v2023.10.11-rc1
 ### Highlights
 - The Mastodon client API now supports the websocket streaming API
