@@ -4,8 +4,9 @@ import { ApiError } from "@/server/api/error.js";
 
 export class MastoApiError extends Error {
     statusCode: number;
+    errorDescription?: string;
 
-    constructor(statusCode: number, message?: string) {
+    constructor(statusCode: number, message?: string, description?: string) {
         if (message == null) {
             switch (statusCode) {
                 case 404:
@@ -17,6 +18,7 @@ export class MastoApiError extends Error {
             }
         }
         super(message);
+        this.errorDescription = description;
         this.statusCode = statusCode;
     }
 }
@@ -27,6 +29,8 @@ export async function CatchErrorsMiddleware(ctx: MastoContext, next: () => Promi
     } catch (e: any) {
         if (e instanceof MastoApiError) {
             ctx.status = e.statusCode;
+            ctx.body = { error: e.message, error_description: e.errorDescription };
+            return;
         } else if (e instanceof IdentifiableError) {
             if (e.message.length < 1) e.message = e.id;
             ctx.status = 400;

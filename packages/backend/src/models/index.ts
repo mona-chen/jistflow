@@ -66,6 +66,8 @@ import { InstanceRepository } from "./repositories/instance.js";
 import { Webhook } from "./entities/webhook.js";
 import { UserIp } from "./entities/user-ip.js";
 import { NoteEdit } from "./entities/note-edit.js";
+import { OAuthApp } from "@/models/entities/oauth-app.js";
+import { OAuthToken } from "@/models/entities/oauth-token.js";
 
 export const Announcements = db.getRepository(Announcement);
 export const AnnouncementReads = db.getRepository(AnnouncementRead);
@@ -131,3 +133,5 @@ export const ChannelNotePinings = db.getRepository(ChannelNotePining);
 export const RegistryItems = db.getRepository(RegistryItem);
 export const Webhooks = db.getRepository(Webhook);
 export const PasswordResetRequests = db.getRepository(PasswordResetRequest);
+export const OAuthApps = db.getRepository(OAuthApp);
+export const OAuthTokens = db.getRepository(OAuthToken);

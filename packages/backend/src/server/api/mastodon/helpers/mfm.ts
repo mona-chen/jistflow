@@ -137,14 +137,14 @@ export class MfmHelpers {
                 el.setAttribute("class", "h-card");
                 el.setAttribute("translate", "no");
                 const a = doc.createElement("a");
-                const { username, host} = node.props;
+                const { username, host } = node.props;
                 const remoteUserInfo = mentionedRemoteUsers.find(
                     (remoteUser) =>
                         remoteUser.username.toLowerCase() === username.toLowerCase() && remoteUser.host === host,
                 );
                 const localpart = `@${username}`;
                 const isLocal = host === config.domain || (host == null && objectHost == null);
-                const acct = isLocal ? localpart: node.props.acct;
+                const acct = isLocal ? localpart : node.props.acct;
                 a.href = remoteUserInfo
                     ? remoteUserInfo.url
                         ? remoteUserInfo.url

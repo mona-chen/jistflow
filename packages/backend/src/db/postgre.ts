@@ -76,6 +76,8 @@ import { entities as charts } from "@/services/chart/entities.js";
 import { envOption } from "../env.js";
 import { dbLogger } from "./logger.js";
 import { redisClient } from "./redis.js";
+import { OAuthApp } from "@/models/entities/oauth-app.js";
+import { OAuthToken } from "@/models/entities/oauth-token.js";
 
 const sqlLogger = dbLogger.createSubLogger("sql", "gray", false);
 class MyCustomLogger implements Logger {
@@ -176,10 +178,12 @@ export const entities = [
 	UserPending,
 	Webhook,
 	UserIp,
+	OAuthApp,
+	OAuthToken,
 	...charts,
 ];
 
-const log = process.env.NODE_ENV !== "production";
+const log = process.env.LOG_SQL === "true";
 
 export const db = new DataSource({
 	type: "postgres",

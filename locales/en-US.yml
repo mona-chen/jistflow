@@ -1595,7 +1595,7 @@ _auth:
   pleaseGoBack: "Please go back to the application"
   callback: "Returning to the application"
   denied: "Access denied"
-  copyAsk: "Please paste the following authorization code to the application:"
+  copyAsk: "Please paste the following authorization code in the application:"
   allPermissions: "Full account access"
 _antennaSources:
   all: "All posts"

@@ -3,11 +3,10 @@
  * Response data when oauth request.
  **/
 namespace OAuth {
-    export type AppDataFromServer = {
-        id: string;
+    export type Application = {
         name: string;
         website: string | null;
-        redirect_uri: string;
+        vapid_key: string | undefined;
         client_id: string;
         client_secret: string;
     };
@@ -20,50 +19,6 @@ namespace OAuth {
         expires_in: number | null;
         refresh_token: string | null;
     };
-
-    export class AppData {
-        public url: string | null;
-        public session_token: string | null;
-
-        constructor(
-            public id: string,
-            public name: string,
-            public website: string | null,
-            public redirect_uri: string,
-            public client_id: string,
-            public client_secret: string,
-        ) {
-            this.url = null;
-            this.session_token = null;
-        }
-
-        /**
-         * Serialize raw application data from server
-         * @param raw from server
-         */
-        static from(raw: AppDataFromServer) {
-            return new this(
-                raw.id,
-                raw.name,
-                raw.website,
-                raw.redirect_uri,
-                raw.client_id,
-                raw.client_secret,
-            );
-        }
-
-        get redirectUri() {
-            return this.redirect_uri;
-        }
-
-        get clientId() {
-            return this.client_id;
-        }
-
-        get clientSecret() {
-            return this.client_secret;
-        }
-    }
 
     export class TokenData {
         public _scope: string;

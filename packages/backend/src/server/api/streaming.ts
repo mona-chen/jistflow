@@ -9,6 +9,11 @@ import MainStreamConnection from "./stream/index.js";
 import authenticate from "./authenticate.js";
 import { apiLogger } from "@/server/api/logger.js";
 import { MastodonStreamingConnection } from "@/server/api/mastodon/streaming/index.js";
+import { AccessToken } from "@/models/entities/access-token.js";
+import { OAuthApp } from "@/models/entities/oauth-app.js";
+import { ILocalUser } from "@/models/entities/user.js";
+import { getTokenFromOAuth } from "@/server/api/mastodon/middleware/auth.js";
+import { OAuthToken } from "@/models/entities/oauth-token.js";
 
 export const streamingLogger = apiLogger.createSubLogger("streaming");
 
@@ -23,15 +28,33 @@ export const initializeStreamingServer = (server: http.Server) => {
 		const headers = request.httpRequest.headers["sec-websocket-protocol"] || "";
 		const cred = q.i || q.access_token || headers;
 		const accessToken = cred.toString();
+		const isMastodon = request.resourceURL.pathname?.startsWith('/api/v1/streaming');
 
-		const [user, app] = await authenticate(
-			request.httpRequest.headers.authorization,
-			accessToken,
-		).catch((err) => {
-			request.reject(403, err.message);
-			return [];
-		});
-		if (typeof user === "undefined") {
+		let main: MainStreamConnection | MastodonStreamingConnection;
+		let user: ILocalUser | null | undefined;
+		let app: AccessToken | null | undefined;
+		let token: OAuthToken | null | undefined;
+
+		if (!isMastodon) {
+			[user, app] = await authenticate(
+				request.httpRequest.headers.authorization,
+				accessToken,
+			).catch((err) => {
+				request.reject(403, err.message);
+				return [];
+			});
+
+		} else {
+			token = await getTokenFromOAuth(accessToken);
+			if (!token || !token.user) {
+				request.reject(400);
+				return;
+			}
+
+			user = token.user as ILocalUser;
+		}
+
+		if (!user) {
 			return;
 		}
 
@@ -53,15 +76,13 @@ export const initializeStreamingServer = (server: http.Server) => {
 		const host = `https://${request.host}`;
 		const prepareStream = q.stream?.toString();
 
-		const isMastodon = request.resourceURL.pathname?.startsWith('/api/v1/streaming');
-
-		const main = isMastodon
-			? new MastodonStreamingConnection(connection, ev, user, app, q)
+		main = isMastodon
+			? new MastodonStreamingConnection(connection, ev, user, token, q)
 			: new MainStreamConnection(connection, ev, user, app, host, accessToken, prepareStream);
 
 		const intervalId = user
 			? setInterval(() => {
-					Users.update(user.id, {
+					Users.update(user!.id, {
 						lastActiveDate: new Date(),
 					});
 			  }, 1000 * 60 * 5)

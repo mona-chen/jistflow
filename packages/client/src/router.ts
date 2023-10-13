@@ -357,6 +357,18 @@ export const routes = [
 		component: page(() => import("./pages/auth.vue")),
 	},
 	{
+		path: "/oauth/authorize",
+		component: page(() => import("./pages/oauth.vue")),
+		query: {
+			response_type: "response_type",
+			client_id: "client_id",
+			redirect_uri: "redirect_uri",
+			scope: "scope",
+			force_login: "force_login",
+			lang: "lang"
+		}
+	},
+	{
 		path: "/miauth/:session",
 		component: page(() => import("./pages/miauth.vue")),
 		query: {

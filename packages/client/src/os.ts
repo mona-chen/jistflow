@@ -62,6 +62,50 @@ export const api = ((
 	return promise;
 }) as typeof apiClient.request;
 
+export const apiJson = ((
+	endpoint: string,
+	data: Record<string, any> = {},
+	token?: string | null | undefined,
+) => {
+	pendingApiRequestsCount.value++;
+
+	const onFinally = () => {
+		pendingApiRequestsCount.value--;
+	};
+
+	const authorizationToken = token ?? $i?.token ?? undefined;
+	const authorization = authorizationToken
+		? `Bearer ${authorizationToken}`
+		: undefined;
+	const authHeaders: {} | {authorization: string} = authorization ? { authorization } : {};
+
+	const promise = new Promise((resolve, reject) => {
+		fetch(endpoint.indexOf("://") > -1 ? endpoint : `${apiUrl}/${endpoint}`, {
+			method: "POST",
+			body: JSON.stringify(data),
+			credentials: "omit",
+			cache: "no-cache",
+			headers: {...authHeaders, "content-type": "application/json" },
+		})
+			.then(async (res) => {
+				const body = res.status === 204 ? null : await res.json();
+
+				if (res.status === 200) {
+					resolve(body);
+				} else if (res.status === 204) {
+					resolve();
+				} else {
+					reject(body.error);
+				}
+			})
+			.catch(reject);
+	});
+
+	promise.then(onFinally, onFinally);
+
+	return promise;
+}) as typeof apiClient.request;
+
 export const apiGet = ((
 	endpoint: string,
 	data: Record<string, any> = {},
