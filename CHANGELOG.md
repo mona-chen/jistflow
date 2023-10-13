@@ -1,3 +1,7 @@
+## v2023.11-pre2
+### Highlights
+- An oversight in the OAuth helper that was preventing login to work in some Mastodon clients was fixed.
+
 ## v2023.11-pre1
 ### New versioning scheme
 From now on we will use a JetBrains-like versioning scheme. Since our release candidates are more of a release preview, they can now be identified by the `-pre` suffix, followed by a number that increments with each following release preview. To maintain lexical sort order with previous releases from this year, we're starting the release counter at 11. That makes this release `v2023.11-pre1`.
