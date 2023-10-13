@@ -21,7 +21,7 @@ basicSettings: "基本設定"
 otherSettings: "其他設定"
 openInWindow: "在新視窗開啟"
 profile: "個人檔案"
-timeline: "時間線"
+timeline: "時間軸"
 noAccountDescription: "此用戶還沒有自我介紹。"
 login: "登入"
 loggingIn: "登入中"
@@ -145,12 +145,12 @@ flagAsBot: "標記此帳號是機器人"
 flagAsBotDescription: "如果本帳戶是由程式控制，請啟用此選項。啟用後，會作為標示幫助其他開發者防止機器人之間產生無限互動的行為，並會調整Firefish內部系統將本帳戶識別為機器人。"
 flagAsCat: "你是喵咪嗎？w😺"
 flagAsCatDescription: "如果想將本帳戶標示為一隻貓，請開啟此標示！"
-flagShowTimelineReplies: "在時間線上顯示貼文的回覆"
-flagShowTimelineRepliesDescription: "啟用時，時間線除了顯示用戶的貼文以外，還會顯示用戶對其他貼文的回覆。"
+flagShowTimelineReplies: "在時間軸上顯示貼文的回覆"
+flagShowTimelineRepliesDescription: "啟用時，時間軸除了顯示用戶的貼文以外，還會顯示用戶對其他貼文的回覆。"
 autoAcceptFollowed: "自動准予追隨中使用者的追隨請求"
 addAccount: "添加帳戶"
 loginFailed: "登入失敗"
-showOnRemote: "轉到所在伺服器顯示"
+showOnRemote: "開啟來源頁面"
 general: "一般"
 wallpaper: "桌布"
 setWallpaper: "設定桌布"
@@ -323,9 +323,9 @@ pages: "頁面"
 integration: "整合"
 connectService: "己連結"
 disconnectService: "己斷開"
-enableLocalTimeline: "開啟本地時間線"
-enableGlobalTimeline: "啟用公開時間線"
-disablingTimelinesInfo: "即使您關閉了時間線功能，管理員和板主仍可訪問所有的時間線。"
+enableLocalTimeline: "開啟本地時間軸"
+enableGlobalTimeline: "啟用公開時間軸"
+disablingTimelinesInfo: "即使您關閉了時間軸功能，管理員和板主仍可訪問所有的時間軸。"
 registration: "註冊"
 enableRegistration: "開啟新使用者註冊"
 invite: "邀請"
@@ -385,7 +385,7 @@ administrator: "管理員"
 token: "權杖"
 twoStepAuthentication: "兩階段驗證"
 moderator: "板主"
-moderation: "言論調節"
+moderation: "管理"
 nUsersMentioned: "提到了{n}"
 securityKey: "安全金鑰"
 securityKeyName: "金鑰名稱"
@@ -482,7 +482,7 @@ promotion: "推廣"
 promote: "推廣"
 numberOfDays: "有效天數"
 hideThisNote: "隱藏此貼文"
-showFeaturedNotesInTimeline: "在時間線上顯示熱門推薦"
+showFeaturedNotesInTimeline: "在時間軸上顯示熱門推薦"
 objectStorage: "Object Storage (物件儲存)"
 useObjectStorage: "使用Object Storage"
 objectStorageBaseUrl: "根URL"
@@ -502,7 +502,7 @@ objectStorageUseProxyDesc: "如果不使用代理進行API連接，請關閉"
 objectStorageSetPublicRead: "上傳時設定為\"public-read\""
 serverLogs: "伺服器日誌"
 deleteAll: "刪除所有記錄"
-showFixedPostForm: "於時間線頁頂顯示「發送貼文」方框"
+showFixedPostForm: "於時間軸頁頂顯示「發送貼文」方框"
 newNoteRecived: "發現新的貼文"
 sounds: "音效"
 listen: "聆聽"
@@ -670,7 +670,7 @@ no: "取消"
 driveFilesCount: "雲端硬碟檔案數量"
 driveUsage: "雲端硬碟使用量"
 noCrawle: "拒絕搜尋引擎索引"
-noCrawleDescription: "要求網路搜尋引擎不要索引你的個人資料頁、貼文及頁面等。"
+noCrawleDescription: "要求外部搜尋引擎不要收錄（索引）你的內容（個人檔案、貼文、頁面等）。"
 lockedAccountInfo: "即使你通過了追隨者請求，除非你將貼文的可見性設定為 「追隨者」，否則任何人都能看見你的貼文。"
 alwaysMarkSensitive: "默認將圖像/影像標記為敏感內容"
 loadRawImages: "以原始圖檔顯示附件圖檔的縮圖"
@@ -688,7 +688,7 @@ experimentalFeatures: "實驗中的功能"
 developer: "開發者"
 makeExplorable: "使自己的帳戶能夠在“探索”頁面中顯示"
 makeExplorableDescription: "如果關閉，帳戶將不會被顯示在\"探索\"頁面中。"
-showGapBetweenNotesInTimeline: "分開顯示時間線上的貼文"
+showGapBetweenNotesInTimeline: "分開顯示時間軸上的貼文"
 duplicate: "複製"
 left: "左"
 center: "置中"
@@ -734,7 +734,7 @@ inChannelSearch: "頻道内搜尋"
 useReactionPickerForContextMenu: "點擊右鍵開啟反應工具欄"
 typingUsers: "{users}輸入中"
 jumpToSpecifiedDate: "跳轉到特定日期"
-showingPastTimeline: "顯示過往的時間線"
+showingPastTimeline: "顯示過往的時間軸"
 clear: "清除"
 markAllAsRead: "全部標示為已讀"
 goBack: "返回"
@@ -786,7 +786,7 @@ previewNoteText: "預覽文本"
 customCss: "自定義 CSS"
 customCssWarn: "這個設定必須由具備相關知識的人員操作，不當的設定可能导致客戶端無法正常使用。"
 global: "公開"
-squareAvatars: "頭像以方形顯示"
+squareAvatars: "大頭貼以方形顯示"
 sent: "發送"
 received: "收取"
 searchResult: "搜尋結果"
@@ -822,7 +822,7 @@ unmuteThread: "將貼文串的靜音解除"
 ffVisibility: "連接的公開範圍"
 ffVisibilityDescription: "您可以設定您的關注/關注者資訊的公開範圍。"
 continueThread: "查看更多貼文"
-deleteAccountConfirm: "將要刪除帳戶。是否確定？"
+deleteAccountConfirm: "此帳戶將被刪除，是否繼續？"
 incorrectPassword: "密碼錯誤。"
 voteConfirm: "確定投給「{choice}」？"
 hide: "隱藏"
@@ -933,6 +933,7 @@ _accountDelete:
 _ad:
   back: "返回"
   reduceFrequencyOfThisAd: "降低此橫幅的頻率"
+  adsBy: 社群橫幅（作者：{by}）
 _forgotPassword:
   enterEmail: "請輸入您的帳戶註冊的電子郵件地址。 密碼重置連結將被發送到該電子郵件地址。"
   ifNoEmail: "如果您還沒有註冊您的電子郵件地址，請聯繫管理員。"
@@ -1109,14 +1110,14 @@ _wordMute:
   muteWords: "加入靜音文字"
   muteWordsDescription: "用空格分隔指定AND，用換行分隔指定OR。"
   muteWordsDescription2: "將關鍵字用斜線括起來表示正規表達式。"
-  softDescription: "隱藏時間線中指定條件的貼文。"
-  hardDescription: "具有指定條件的貼文將不添加到時間線。 即使您更改條件，未被添加的貼文也會被排除在外。"
+  softDescription: "隱藏時間軸中指定條件的貼文。"
+  hardDescription: "符合指定條件的貼文將不添加到時間軸。 即使您更改條件，未被添加的貼文也會被排除在外。"
   soft: "軟性靜音"
   hard: "硬性靜音"
   mutedNotes: "已靜音的貼文"
   muteLangsDescription2: '使用語言代碼。例: en, fr, ja, zh.'
   lang: 語言
-  langDescription: 將指定語言的貼文從時間線中隱藏。
+  langDescription: 將指定語言的貼文從時間軸中隱藏。
   muteLangs: 被靜音的語言
   muteLangsDescription: OR條件以空格或換行進行分隔。
 _instanceMute:
@@ -1228,16 +1229,16 @@ _tutorial:
   step2_1: "首先，請完成你的個人資料。"
   step2_2: "通過提供一些關於你自己的資料，其他人會更容易了解他們是否想看到你的貼文或關注你。"
   step3_1: "現在是時候追隨一些人了！"
-  step3_2: "你的主頁和社交時間線是基於你所追蹤的人，所以試著先追蹤幾個帳戶。\n點擊個人資料右上角的加號圈就可以關注它。"
+  step3_2: "你的主頁和社交時間軸是基於你所追蹤的人，所以試著先追蹤幾個帳戶。\n點擊個人資料右上角的加號按鈕就可以關注它。"
   step4_1: "讓我們出去找你。"
   step4_2: "作為第一則貼文，有些人喜歡發 {introduction} 或單純發一個 \"hello world!\""
-  step5_1: "時間線，到處都是時間線！"
-  step5_2: "您的伺服器已啟用了{timelines}個時間線。"
-  step5_3: "首頁 {icon} 時間線是顯示你追蹤的帳號的貼文。"
-  step5_4: "本地 {icon} 時間線是你可以看到伺服器中所有其他用戶的貼文的時間線。"
-  step5_5: "社交 {icon} 時間線是你的 首頁時間線 和 本地時間線 的結合體。"
-  step5_6: "推薦 {icon} 時間線是顯示你的伺服器管理員推薦的貼文。"
-  step5_7: "全球 {icon} 時間線是顯示來自所有其他連接的伺服器的貼文。"
+  step5_1: "時間軸，到處都是時間軸！"
+  step5_2: "您的伺服器已啟用了{timelines}個時間軸。"
+  step5_3: "首頁 {icon} 時間軸是顯示你追蹤的帳號的貼文。"
+  step5_4: "本地 {icon} 時間軸是你可以看到伺服器中所有其他用戶的貼文的時間軸。"
+  step5_5: "社交 {icon} 時間軸是你的 首頁時間軸 和 本地時間軸 的結合體。"
+  step5_6: "推薦 {icon} 時間軸是顯示你的伺服器管理員推薦的貼文。"
+  step5_7: "全球 {icon} 時間軸是顯示來自所有其他連接的伺服器的貼文。"
   step6_1: "那麼，這裡是什麼地方？"
   step6_2: "你不只是加入Firefish。你已經加入了Fediverse的一個門戶，這是一個由成千上萬台服務器組成的互聯網絡。"
   step6_3: "每個服務器也有不同，而並不是所有的服務器都運行Firefish。但這個服務器確實是運行Firefish的! 你可能會覺得有點複雜，但你很快就會明白的。"
@@ -1326,7 +1327,7 @@ _weekday:
 _widgets:
   memo: "備忘錄"
   notifications: "通知"
-  timeline: "時間線"
+  timeline: "時間軸"
   calendar: "行事曆"
   trends: "發燒貼文"
   clock: "時鐘"
@@ -1382,9 +1383,9 @@ _poll:
   remainingSeconds: "{s}秒後截止"
 _visibility:
   public: "公開"
-  publicDescription: "發佈至公開時間線"
+  publicDescription: "發佈至公開時間軸"
   home: "不在主頁顯示"
-  homeDescription: "僅發送至首頁的時間線"
+  homeDescription: "僅發送至首頁的時間軸"
   followers: "追隨者"
   followersDescription: "僅發佈至關注者"
   specified: "指定使用者"
@@ -1783,6 +1784,7 @@ _notification:
     renote: "轉發"
   reacted: 對您的貼文做出了反應
   renoted: 轉發了您的貼文
+  voted: 投了票
 _deck:
   alwaysShowMainColumn: "總是顯示主欄"
   columnAlign: "對齊欄位"
@@ -1806,7 +1808,7 @@ _deck:
     main: "主列"
     widgets: "小工具"
     notifications: "通知"
-    tl: "時間線"
+    tl: "時間軸"
     antenna: "天線"
     list: "清單"
     mentions: "提及"
@@ -1838,7 +1840,7 @@ accountMoved: '該使用者已遷移至新帳戶:'
 showAds: 顯示社群橫幅
 noThankYou: 不用了，謝謝
 selectInstance: 選擇伺服器
-enableRecommendedTimeline: 啟用推薦時間線
+enableRecommendedTimeline: 啟用推薦時間軸
 antennaInstancesDescription: 分行列出一個伺服器
 moveTo: 遷移此帳戶到新帳戶
 moveToLabel: '請輸入你將會遷移到的帳戶:'
@@ -1870,6 +1872,7 @@ silenced: 已靜音
 _experiments:
   title: 試驗功能
   enablePostImports: 啟用匯入貼文的功能
+  postImportsCaption: 允許用戶從舊有的Firefish・Misskey・Mastodon・Akkoma・Pleroma帳號匯入貼文。在伺服器佇列堵塞時匯入貼文可能會導致載入速度變慢。
 findOtherInstance: 找找另一個伺服器
 noGraze: 瀏覽器擴充元件 "Graze for Mastodon" 會與Firefish發生衝突，請停用該擴充元件。
 userSaysSomethingReasonRenote: '{name} 轉發了包含 {reason} 的貼文'
@@ -1891,7 +1894,7 @@ pushNotification: 推送通知
 subscribePushNotification: 啟用推送通知
 unsubscribePushNotification: 停用推送通知
 pushNotificationAlreadySubscribed: 推送通知已經啟用
-recommendedInstancesDescription: 以每行分隔的推薦伺服器出現在推薦的時間線中。
+recommendedInstancesDescription: 推薦的伺服器(將顯示在推薦時間軸中)，一行一個。
 searchPlaceholder: 在 Firefish 上搜尋
 cw: 內容警告
 selectChannel: 選擇一個頻道
@@ -1899,9 +1902,9 @@ newer: 較新
 older: 較舊
 jumpToPrevious: 跳到上一個
 removeReaction: 移除你的反應
-listsDesc: 清單可以創建一個只有您指定用戶的時間線。 可以從時間線頁面訪問它們。
+listsDesc: 清單可以創建一個只有您指定用戶的時間軸。 可以從時間軸頁面訪問它們。
 flagSpeakAsCatDescription: 在喵咪模式下你的貼文會被喵化ヾ(•ω•`)o
-antennasDesc: "天線會顯示符合您設置條件的新貼文！\n 可以從時間線訪問它們。"
+antennasDesc: "天線會顯示符合您設置條件的新貼文！\n 可以從時間軸訪問它們。"
 expandOnNoteClick: 點擊以打開貼文
 expandOnNoteClickDesc: 即使停用，您仍然可以從右鍵選單或單擊發文時間來打開貼文。
 hiddenTagsDescription: '列出您希望隱藏趨勢和探索的主題標籤（不帶 #）。 隱藏的主題標籤仍然可以通過其他方式發現。'
@@ -1920,7 +1923,7 @@ seperateRenoteQuote: 分開轉發及引用的按鈕
 clipsDesc: 摘錄就像一個可以分享的書籤。 你可以從每個貼文的菜單創建新摘錄或將貼文加入已有的摘錄。
 noteId: 貼文 ID
 sendModMail: 發送審核通知
-enableIdenticonGeneration: 啟用碎片生成
+enableIdenticonGeneration: 啟用Identicon生成
 enableServerMachineStats: 啟用伺服器硬體統計資訊
 reactionPickerSkinTone: 首選表情符號膚色
 indexFromDescription: 留空以索引每個貼文
@@ -1961,10 +1964,17 @@ _dialog:
   charactersExceeded: 超過字數限制！ 當前 {current} / 限制 {max}
 _skinTones:
   yellow: 黃色
+  medium: 中等
+  dark: 深色
+  mediumDark: 中等偏深
+  light: 淺色
+  mediumLight: 中等偏淺
 exportZip: 匯出ZIP
 _feeds:
   atom: Atom
   rss: RSS
+  copyFeed: 複製訂閱URL
+  jsonFeed: JSON Feed
 emojiPackCreator: 表情包的作者
 importZip: 匯入ZIP
 delete2fa: 停用二階段認證(2FA)
@@ -1977,3 +1987,9 @@ addRe: 在回覆有內容警告的貼文時，在標題前面加上 "re:"
 vibrate: 播放振動
 openServerInfo: 點擊貼文中的伺服器名稱以顯示伺服器資訊
 languageForTranslation: 貼文翻譯語言
+objectStorageS3ForcePathStyleDesc: 以 "s3.amazonaws.com/<bucket>/" 而非 "<bucket>.s3.amazonaws.com"
+  的格式建構端點（Endpoint）URL。
+indexable: 登錄至貼文搜尋引擎
+origin: 來源
+objectStorageS3ForcePathStyle: 使用基於路徑的端點（Endpoint）URL
+clickToShowPatterns: 點擊顯示模組模式（Module Pattern）
