@@ -1203,6 +1203,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:2019.3.0"\
       ],\
       [\
+        "@types/pg",\
+        "npm:8.10.5"\
+      ],\
+      [\
         "@types/picomatch",\
         "npm:2.3.0"\
       ],\
@@ -5083,6 +5087,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:1.1.1"\
       ],\
       [\
+        "obuf",\
+        "npm:1.1.2"\
+      ],\
+      [\
         "omggif",\
         "npm:1.0.10"\
       ],\
@@ -5319,6 +5327,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:1.0.1"\
       ],\
       [\
+        "pg-numeric",\
+        "npm:1.0.2"\
+      ],\
+      [\
         "pg-pool",\
         "virtual:bd80eaacaba4ac69e52ab40a70c2c4b13c6ce0a9346f8311e962f3e59c362840bf10abfde728731d045107c0c12c343c12db88e4d4947cbfbe342854b0e454f8#npm:3.6.1"\
       ],\
@@ -5328,7 +5340,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "pg-types",\
-        "npm:2.2.0"\
+        "npm:4.0.1"\
       ],\
       [\
         "pgpass",\
@@ -5528,19 +5540,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "postgres-array",\
-        "npm:2.0.0"\
+        "npm:3.0.2"\
       ],\
       [\
         "postgres-bytea",\
-        "npm:1.0.0"\
+        "npm:3.0.0"\
       ],\
       [\
         "postgres-date",\
-        "npm:1.0.7"\
+        "npm:2.0.1"\
       ],\
       [\
         "postgres-interval",\
-        "npm:1.2.0"\
+        "npm:3.0.0"\
+      ],\
+      [\
+        "postgres-range",\
+        "npm:1.1.3"\
       ],\
       [\
         "prebuild-install",\
@@ -11876,6 +11892,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/pg", [\
+        ["npm:8.10.5", {\
+          "packageLocation": "./.yarn/cache/@types-pg-npm-8.10.5-9e5f4e8cf1-532a3104ed.zip/node_modules/@types/pg/",\
+          "packageDependencies": [\
+            ["@types/pg", "npm:8.10.5"],\
+            ["@types/node", "npm:20.4.5"],\
+            ["pg-protocol", "npm:1.6.0"],\
+            ["pg-types", "npm:4.0.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/picomatch", [\
         ["npm:2.3.0", {\
           "packageLocation": "./.yarn/cache/@types-picomatch-npm-2.3.0-02d6bd0a9c-dde9572b6c.zip/node_modules/@types/picomatch/",\
@@ -14410,6 +14438,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node-fetch", "npm:3.0.3"],\
             ["@types/nodemailer", "npm:6.4.8"],\
             ["@types/oauth", "npm:0.9.1"],\
+            ["@types/pg", "npm:8.10.5"],\
             ["@types/probe-image-size", "npm:7.2.0"],\
             ["@types/pug", "npm:2.0.6"],\
             ["@types/punycode", "npm:2.1.0"],\
@@ -26250,6 +26279,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["obuf", [\
+        ["npm:1.1.2", {\
+          "packageLocation": "./.yarn/cache/obuf-npm-1.1.2-8db5fae8dd-41a2ba310e.zip/node_modules/obuf/",\
+          "packageDependencies": [\
+            ["obuf", "npm:1.1.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["omggif", [\
         ["npm:1.0.10", {\
           "packageLocation": "./.yarn/cache/omggif-npm-1.0.10-6ffa5bf343-15102e46b6.zip/node_modules/omggif/",\
@@ -26948,6 +26986,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["pg-numeric", [\
+        ["npm:1.0.2", {\
+          "packageLocation": "./.yarn/cache/pg-numeric-npm-1.0.2-9026ec3427-8899f8200c.zip/node_modules/pg-numeric/",\
+          "packageDependencies": [\
+            ["pg-numeric", "npm:1.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["pg-pool", [\
         ["npm:3.6.1", {\
           "packageLocation": "./.yarn/cache/pg-pool-npm-3.6.1-477c9660b9-8a6513e6f7.zip/node_modules/pg-pool/",\
@@ -26989,6 +27036,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postgres-bytea", "npm:1.0.0"],\
             ["postgres-date", "npm:1.0.7"],\
             ["postgres-interval", "npm:1.2.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:4.0.1", {\
+          "packageLocation": "./.yarn/cache/pg-types-npm-4.0.1-8f922557d3-05258ef2f2.zip/node_modules/pg-types/",\
+          "packageDependencies": [\
+            ["pg-types", "npm:4.0.1"],\
+            ["pg-int8", "npm:1.0.1"],\
+            ["pg-numeric", "npm:1.0.2"],\
+            ["postgres-array", "npm:3.0.2"],\
+            ["postgres-bytea", "npm:3.0.0"],\
+            ["postgres-date", "npm:2.0.1"],\
+            ["postgres-interval", "npm:3.0.0"],\
+            ["postgres-range", "npm:1.1.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -27593,6 +27654,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postgres-array", "npm:2.0.0"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:3.0.2", {\
+          "packageLocation": "./.yarn/cache/postgres-array-npm-3.0.2-da6a3f1fed-5955f9dffe.zip/node_modules/postgres-array/",\
+          "packageDependencies": [\
+            ["postgres-array", "npm:3.0.2"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["postgres-bytea", [\
@@ -27600,6 +27668,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/postgres-bytea-npm-1.0.0-8c2b81fa73-d844ae4ca7.zip/node_modules/postgres-bytea/",\
           "packageDependencies": [\
             ["postgres-bytea", "npm:1.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:3.0.0", {\
+          "packageLocation": "./.yarn/cache/postgres-bytea-npm-3.0.0-5de4c664f6-5f917a003f.zip/node_modules/postgres-bytea/",\
+          "packageDependencies": [\
+            ["postgres-bytea", "npm:3.0.0"],\
+            ["obuf", "npm:1.1.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -27611,6 +27687,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postgres-date", "npm:1.0.7"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:2.0.1", {\
+          "packageLocation": "./.yarn/cache/postgres-date-npm-2.0.1-00e0e0bc9e-0304bf8641.zip/node_modules/postgres-date/",\
+          "packageDependencies": [\
+            ["postgres-date", "npm:2.0.1"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["postgres-interval", [\
@@ -27619,6 +27702,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["postgres-interval", "npm:1.2.0"],\
             ["xtend", "npm:4.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:3.0.0", {\
+          "packageLocation": "./.yarn/cache/postgres-interval-npm-3.0.0-936c769b98-c7a1cf006d.zip/node_modules/postgres-interval/",\
+          "packageDependencies": [\
+            ["postgres-interval", "npm:3.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["postgres-range", [\
+        ["npm:1.1.3", {\
+          "packageLocation": "./.yarn/cache/postgres-range-npm-1.1.3-46f68e1a9e-bf7e194a18.zip/node_modules/postgres-range/",\
+          "packageDependencies": [\
+            ["postgres-range", "npm:1.1.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -31719,7 +31818,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/mssql", null],\
             ["@types/mysql2", null],\
             ["@types/oracledb", null],\
-            ["@types/pg", null],\
+            ["@types/pg", "npm:8.10.5"],\
             ["@types/pg-native", null],\
             ["@types/pg-query-stream", null],\
             ["@types/redis", "npm:4.0.11"],\
