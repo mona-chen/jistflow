@@ -9,7 +9,6 @@
 		"migrate": "typeorm migration:run -d built/ormconfig.js",
 		"revertmigration": "typeorm migration:revert -d built/ormconfig.js",
 		"generatemigration": "yarn build && typeorm migration:generate -d built/ormconfig.js",
-		"check:connect": "node ./check_connect.js",
 		"build": "swc src -d built -D",
 		"build:debug": "swc src -d built -s -D",
 		"watch": "swc src -d built -D -w",
