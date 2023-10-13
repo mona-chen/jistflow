@@ -6,10 +6,9 @@
 	"scripts": {
 		"start": "node ./built/index.js",
 		"start:test": "NODE_ENV=test node ./built/index.js",
-		"migrate": "yarn migrate:typeorm",
-		"migrate:typeorm": "typeorm migration:run -d ormconfig.js",
-		"revertmigration": "yarn revertmigration:typeorm",
-		"revertmigration:typeorm": "typeorm migration:revert -d ormconfig.js",
+		"migrate": "typeorm migration:run -d built/ormconfig.js",
+		"revertmigration": "typeorm migration:revert -d built/ormconfig.js",
+		"generatemigration": "yarn build && typeorm migration:generate -d built/ormconfig.js",
 		"check:connect": "node ./check_connect.js",
 		"build": "swc src -d built -D",
 		"build:debug": "swc src -d built -s -D",

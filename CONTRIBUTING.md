@@ -253,7 +253,7 @@ MongoDBは`null`で返してきてたので、その感覚で`if (x === null)`�
 ### Migration作成方法
 packages/backendで:
 ```sh
-pnpm dlx typeorm migration:generate -d ormconfig.js -o <migration name>
+yarn workspace backend run generatemigration src/migration/<migration name>
 ```
 
 - 生成後、ファイルをmigration下に移してください
