@@ -93,7 +93,6 @@ const nodeinfo2 = async () => {
 			enableGithubIntegration: meta.enableGithubIntegration,
 			enableDiscordIntegration: meta.enableDiscordIntegration,
 			enableEmail: meta.enableEmail,
-			enableServiceWorker: meta.enableServiceWorker,
 			proxyAccountName: proxyAccount ? proxyAccount.username : null,
 			themeColor: meta.themeColor || "#31748f",
 		},

@@ -148,7 +148,6 @@ export const paramDef = {
 		smtpPort: { type: "integer", nullable: true },
 		smtpUser: { type: "string", nullable: true },
 		smtpPass: { type: "string", nullable: true },
-		enableServiceWorker: { type: "boolean" },
 		swPublicKey: { type: "string", nullable: true },
 		swPrivateKey: { type: "string", nullable: true },
 		tosUrl: { type: "string", nullable: true },
@@ -461,10 +460,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (ps.errorImageUrl !== undefined) {
 		set.errorImageUrl = ps.errorImageUrl;
-	}
-
-	if (ps.enableServiceWorker !== undefined) {
-		set.enableServiceWorker = ps.enableServiceWorker;
 	}
 
 	if (ps.swPublicKey !== undefined) {

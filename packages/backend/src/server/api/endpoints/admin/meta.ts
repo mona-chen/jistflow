@@ -156,11 +156,6 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
-			enableServiceWorker: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
 			translatorAvailable: {
 				type: "boolean",
 				optional: false,
@@ -518,7 +513,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		enableTwitterIntegration: instance.enableTwitterIntegration,
 		enableGithubIntegration: instance.enableGithubIntegration,
 		enableDiscordIntegration: instance.enableDiscordIntegration,
-		enableServiceWorker: instance.enableServiceWorker,
 		translatorAvailable:
 			instance.deeplAuthKey != null || instance.libreTranslateApiUrl != null,
 		pinnedPages: instance.pinnedPages,

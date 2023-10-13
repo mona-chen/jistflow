@@ -15,12 +15,6 @@ This document describes things you can do after successfully installing Iceshrim
 - Install [LibreTranslate](https://libretranslate.com/)
 - Get an API URL and API key, copy and paste them into Control Panel > General > Libre Translate
 
-## Enabling push notifications
-
-- Run `npx web-push generate-vapid-keys`
-  - Docker Compose users: `docker compose exec web npx web-push generate-vapid-keys`
-- Put public and private keys into Control Panel > General > Service Worker
-
 ## Object Storage (S3)
 
 Recommended if using Docker

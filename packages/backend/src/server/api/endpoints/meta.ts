@@ -266,11 +266,6 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
-			enableServiceWorker: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
 			translatorAvailable: {
 				type: "boolean",
 				optional: false,
@@ -377,13 +372,13 @@ export const meta = {
 			},
 			defaultReaction: {
 				type: "string",
-				optional: "false",
+				optional: false,
 				nullable: false,
 				default: "⭐",
 			},
 			donationLink: {
 				type: "string",
-				optional: "true",
+				optional: true,
 				nullable: true,
 			},
 		},
@@ -472,8 +467,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		enableGithubIntegration: instance.enableGithubIntegration,
 		enableDiscordIntegration: instance.enableDiscordIntegration,
 
-		enableServiceWorker: instance.enableServiceWorker,
-
 		translatorAvailable:
 			instance.deeplAuthKey != null || instance.libreTranslateApiUrl != null,
 		defaultReaction: instance.defaultReaction,
@@ -515,7 +508,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			twitter: instance.enableTwitterIntegration,
 			github: instance.enableGithubIntegration,
 			discord: instance.enableDiscordIntegration,
-			serviceWorker: instance.enableServiceWorker,
+			serviceWorker: true,
 			postEditing: true,
 			postImports: instance.experimentalFeatures?.postImports || false,
 			miauth: true,
