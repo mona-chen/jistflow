@@ -3,7 +3,7 @@ import getCaretCoordinates from "textarea-caret";
 import { toASCII } from "punycode/";
 import { popup } from "@/os";
 
-const mentionRegex = /@(?<user>[a-zA-Z0-9_]+|$)@?(?<host>[a-zA-Z0-9-.]+)?/g;
+const mentionRegex = /@(?<user>[a-zA-Z0-9_]+|$)@?(?<host>[a-zA-Z0-9-.]+)?$/g;
 
 export class Autocomplete {
 	private suggestion: {
