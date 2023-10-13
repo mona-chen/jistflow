@@ -140,7 +140,7 @@ export class MfmHelpers {
                 const { username, host} = node.props;
                 const remoteUserInfo = mentionedRemoteUsers.find(
                     (remoteUser) =>
-                        remoteUser.username === username && remoteUser.host === host,
+                        remoteUser.username.toLowerCase() === username.toLowerCase() && remoteUser.host === host,
                 );
                 const localpart = `@${username}`;
                 const isLocal = host === config.domain || (host == null && objectHost == null);

@@ -119,7 +119,7 @@ export function toHtml(
 			const { username, host, acct } = node.props;
 			const remoteUserInfo = mentionedRemoteUsers.find(
 				(remoteUser) =>
-					remoteUser.username === username && remoteUser.host === host,
+					remoteUser.username.toLowerCase() === username.toLowerCase() && remoteUser.host === host,
 			);
 			a.href = remoteUserInfo
 				? remoteUserInfo.url
