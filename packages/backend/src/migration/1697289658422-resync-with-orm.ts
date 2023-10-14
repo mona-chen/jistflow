@@ -36,11 +36,11 @@ export class ResyncWithOrm1697289658422 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "user_profile" DROP CONSTRAINT IF EXISTS "UQ_51cb79b5555effaf7d69ba1cff9"`);
         await queryRunner.query(`ALTER TABLE "promo_note" DROP CONSTRAINT IF EXISTS "FK_e263909ca4fe5d57f8d4230dd5c"`);
         await queryRunner.query(`ALTER TABLE "promo_note" DROP CONSTRAINT IF EXISTS "UQ_e263909ca4fe5d57f8d4230dd5c"`);
-        await queryRunner.query(`CREATE INDEX "IDX_d1259a2c2b7bb413ff449e8711" ON "renote_muting" ("createdAt") `);
-        await queryRunner.query(`CREATE INDEX "IDX_7eac97594bcac5ffcf2068089b" ON "renote_muting" ("muteeId") `);
-        await queryRunner.query(`CREATE INDEX "IDX_7aa72a5fe76019bfe8e5e0e8b7" ON "renote_muting" ("muterId") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "IDX_0d801c609cec4e9eb4b6b4490c" ON "renote_muting" ("muterId", "muteeId") `);
-        await queryRunner.query(`CREATE INDEX "IDX_a9021cc2e1feb5f72d3db6e9f5" ON "abuse_user_report" ("targetUserId") `);
+        await queryRunner.query(`CREATE INDEX IF NOT EXISTS "IDX_d1259a2c2b7bb413ff449e8711" ON "renote_muting" ("createdAt") `);
+        await queryRunner.query(`CREATE INDEX IF NOT EXISTS "IDX_7eac97594bcac5ffcf2068089b" ON "renote_muting" ("muteeId") `);
+        await queryRunner.query(`CREATE INDEX IF NOT EXISTS "IDX_7aa72a5fe76019bfe8e5e0e8b7" ON "renote_muting" ("muterId") `);
+        await queryRunner.query(`CREATE UNIQUE INDEX IF NOT EXISTS "IDX_0d801c609cec4e9eb4b6b4490c" ON "renote_muting" ("muterId", "muteeId") `);
+        await queryRunner.query(`CREATE INDEX IF NOT EXISTS "IDX_a9021cc2e1feb5f72d3db6e9f5" ON "abuse_user_report" ("targetUserId") `);
         await queryRunner.query(`DELETE FROM "renote_muting" WHERE NOT EXISTS (select 1 from "user" where "user"."id" = "renote_muting"."muterId")`);
         await queryRunner.query(`DELETE FROM "renote_muting" WHERE NOT EXISTS (select 1 from "user" where "user"."id" = "renote_muting"."muteeId")`);
         await queryRunner.query(`ALTER TABLE "renote_muting" ADD CONSTRAINT "FK_7eac97594bcac5ffcf2068089b6" FOREIGN KEY ("muteeId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
