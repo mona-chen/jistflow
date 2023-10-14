@@ -45,7 +45,7 @@ export class OAuthApp {
 	public scopes: string[];
 
 	@Column("varchar", {
-		length: 64,
+		length: 512,
 		array: true,
 		comment: "The redirect URIs of the OAuth application",
 	})
