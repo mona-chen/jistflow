@@ -52,7 +52,7 @@ export class AuthHelpers {
         if (!user) throw new MastoApiError(401, "Unauthorized");
 
         const body = ctx.request.body as any;
-        const scopes = (typeof body.scopes === "string" ? body.scopes.split(' ') : body.scopes) ?? ['read'];
+        const scopes: string[] = (typeof body.scopes === "string" ? body.scopes.split(' ') : body.scopes) ?? ['read'];
         const clientId = toSingleLast(body.client_id);
 
         if (clientId == null) throw new MastoApiError(400, "Invalid client_id");
@@ -94,7 +94,7 @@ export class AuthHelpers {
 
     public static async getAuthToken(ctx: MastoContext) {
         const body: any = ctx.request.body || ctx.request.query;
-        const scopes = (typeof body.scopes === "string" ? body.scopes.split(' ') : body.scopes) ?? ['read'];
+        const scopes: string[] = (typeof body.scopes === "string" ? body.scopes.split(' ') : body.scopes) ?? ['read'];
         const clientId = toSingleLast(body.client_id);
         const code = toSingleLast(body.code);
 
