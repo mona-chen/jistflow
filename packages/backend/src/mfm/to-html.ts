@@ -3,8 +3,9 @@ import type * as mfm from "mfm-js";
 import config from "@/config/index.js";
 import { intersperse } from "@/prelude/array.js";
 import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
+import { resolveMentionWithFallback } from "@/remote/resolve-user.js";
 
-export function toHtml(
+export async function toHtml(
 	nodes: mfm.MfmNode[] | null,
 	mentionedRemoteUsers: IMentionedRemoteUsers = [],
 ) {
@@ -16,9 +17,9 @@ export function toHtml(
 
 	const doc = window.document;
 
-	function appendChildren(children: mfm.MfmNode[], targetElement: any): void {
+	async function appendChildren(children: mfm.MfmNode[], targetElement: any): Promise<void> {
 		if (children) {
-			for (const child of children.map((x) => (handlers as any)[x.type](x)))
+			for (const child of await Promise.all(children.map(async (x) => await (handlers as any)[x.type](x))))
 				targetElement.appendChild(child);
 		}
 	}
@@ -26,33 +27,33 @@ export function toHtml(
 	const handlers: {
 		[K in mfm.MfmNode["type"]]: (node: mfm.NodeType<K>) => any;
 	} = {
-		bold(node) {
+		async bold(node) {
 			const el = doc.createElement("b");
-			appendChildren(node.children, el);
+			await appendChildren(node.children, el);
 			return el;
 		},
 
-		small(node) {
+		async small(node) {
 			const el = doc.createElement("small");
-			appendChildren(node.children, el);
+			await appendChildren(node.children, el);
 			return el;
 		},
 
-		strike(node) {
+		async strike(node) {
 			const el = doc.createElement("del");
-			appendChildren(node.children, el);
+			await appendChildren(node.children, el);
 			return el;
 		},
 
-		italic(node) {
+		async italic(node) {
 			const el = doc.createElement("i");
-			appendChildren(node.children, el);
+			await appendChildren(node.children, el);
 			return el;
 		},
 
-		fn(node) {
+		async fn(node) {
 			const el = doc.createElement("i");
-			appendChildren(node.children, el);
+			await appendChildren(node.children, el);
 			return el;
 		},
 
@@ -64,9 +65,9 @@ export function toHtml(
 			return pre;
 		},
 
-		center(node) {
+		async center(node) {
 			const el = doc.createElement("div");
-			appendChildren(node.children, el);
+			await appendChildren(node.children, el);
 			return el;
 		},
 
@@ -104,28 +105,20 @@ export function toHtml(
 			return el;
 		},
 
-		link(node) {
+		async link(node) {
 			const a = doc.createElement("a");
 			a.href = node.props.url;
-			appendChildren(node.children, a);
+			await appendChildren(node.children, a);
 			return a;
 		},
 
-		mention(node) {
+		async mention(node) {
 			const el = doc.createElement("span");
 			el.setAttribute("class", "h-card");
 			el.setAttribute("translate", "no");
 			const a = doc.createElement("a");
 			const { username, host, acct } = node.props;
-			const remoteUserInfo = mentionedRemoteUsers.find(
-				(remoteUser) =>
-					remoteUser.username.toLowerCase() === username.toLowerCase() && remoteUser.host === host,
-			);
-			a.href = remoteUserInfo
-				? remoteUserInfo.url
-					? remoteUserInfo.url
-					: remoteUserInfo.uri
-				: `${config.url}/${acct}`;
+			a.href = await resolveMentionWithFallback(username, host, acct, mentionedRemoteUsers);
 			a.className = "u-url mention";
 			const span = doc.createElement("span");
 			span.textContent = username;
@@ -135,9 +128,9 @@ export function toHtml(
 			return el;
 		},
 
-		quote(node) {
+		async quote(node) {
 			const el = doc.createElement("blockquote");
-			appendChildren(node.children, el);
+			await appendChildren(node.children, el);
 			return el;
 		},
 
@@ -168,14 +161,14 @@ export function toHtml(
 			return a;
 		},
 
-		plain(node) {
+		async plain(node) {
 			const el = doc.createElement("span");
-			appendChildren(node.children, el);
+			await appendChildren(node.children, el);
 			return el;
 		},
 	};
 
-	appendChildren(nodes, doc.body);
+	await appendChildren(nodes, doc.body);
 
 	return `<p>${doc.body.innerHTML}</p>`;
 }

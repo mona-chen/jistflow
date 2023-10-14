@@ -108,7 +108,7 @@ export default async function renderNote(
 
 	const summary = note.cw === "" ? String.fromCharCode(0x200b) : note.cw;
 
-	const content = toHtml(
+	const content = await toHtml(
 		Object.assign({}, note, {
 			text: apText,
 		}),

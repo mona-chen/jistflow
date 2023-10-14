@@ -5,16 +5,16 @@ import { toHtml } from "../src/mfm/to-html.js";
 import { fromHtml } from "../src/mfm/from-html.js";
 
 describe("toHtml", () => {
-	it("br", () => {
+	it("br", async () => {
 		const input = "foo\nbar\nbaz";
 		const output = "<p><span>foo<br>bar<br>baz</span></p>";
-		assert.equal(toHtml(mfm.parse(input)), output);
+		assert.equal(await toHtml(mfm.parse(input)), output);
 	});
 
-	it("br alt", () => {
+	it("br alt", async () => {
 		const input = "foo\r\nbar\rbaz";
 		const output = "<p><span>foo<br>bar<br>baz</span></p>";
-		assert.equal(toHtml(mfm.parse(input)), output);
+		assert.equal(await toHtml(mfm.parse(input)), output);
 	});
 });
 

@@ -3,12 +3,13 @@ import chalk from "chalk";
 import { IsNull } from "typeorm";
 import config from "@/config/index.js";
 import type { User, IRemoteUser } from "@/models/entities/user.js";
-import { Users } from "@/models/index.js";
+import { UserProfiles, Users } from "@/models/index.js";
 import { toPuny } from "@/misc/convert-host.js";
 import webFinger from "./webfinger.js";
 import { createPerson, updatePerson } from "./activitypub/models/person.js";
 import { remoteLogger } from "./logger.js";
 import { Cache } from "@/misc/cache.js";
+import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 
 const logger = remoteLogger.createSubLogger("resolve-user");
 const uriHostCache = new Cache<string>("resolveUserUriHost", 60 * 60 * 24);
@@ -171,6 +172,21 @@ export async function resolveUser(
 
 	logger.info(`return existing remote user: ${acctLower}`);
 	return user;
+}
+
+export async function resolveMentionWithFallback(username: string, host: string | null, acct: string, cache: IMentionedRemoteUsers): Promise<string> {
+	const fallback = `${config.url}/${acct}`;
+	const cached = cache.find(r => r.username.toLowerCase() === username.toLowerCase() && r.host === host);
+	if (cached) return cached.url ?? cached.uri;
+	if (host === null) return fallback;
+	try {
+		const user = await resolveUser(username, host);
+		const profile = await UserProfiles.findOneBy({ userId: user.id });
+		return profile?.url ?? user.uri ?? fallback;
+	}
+	catch {
+		return fallback;
+	}
 }
 
 export async function getSubjectHostFromUri(uri: string): Promise<string | null> {
