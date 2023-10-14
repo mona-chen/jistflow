@@ -37,11 +37,13 @@ export class AuthHelpers {
         }).then((x) => OAuthApps.findOneByOrFail(x.identifiers[0]));
 
         return {
+            id: app.id,
             name: app.name,
-            website: website,
+            website: app.website,
+            redirect_uri: app.redirectUris.join('\n'),
             client_id: app.clientId,
             client_secret: app.clientSecret,
-            vapid_key: await fetchMeta().then(meta => meta.swPublicKey ?? undefined),
+            vapid_key: await fetchMeta().then(meta => meta.swPublicKey),
         };
     }
 

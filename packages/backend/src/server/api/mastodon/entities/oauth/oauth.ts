@@ -4,8 +4,10 @@
  **/
 namespace OAuth {
     export type Application = {
+        id: string;
         name: string;
         website: string | null;
+        redirect_uri: string;
         vapid_key: string | undefined;
         client_id: string;
         client_secret: string;
