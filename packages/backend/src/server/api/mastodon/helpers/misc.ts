@@ -107,7 +107,7 @@ export class MiscHelpers {
                     .then(p => p.map(x => x.announcementId))
             ]);
 
-            return announcements.map(p => AnnouncementConverter.encode(p, reads.includes(p.id)));
+            return Promise.all(announcements.map(async p => AnnouncementConverter.encode(p, reads.includes(p.id))));
         }
 
         const sq = AnnouncementReads.createQueryBuilder("reads")
@@ -120,7 +120,7 @@ export class MiscHelpers {
             .setParameter("userId", user.id);
 
         return query.getMany()
-            .then(p => p.map(x => AnnouncementConverter.encode(x, false)));
+            .then(p => Promise.all(p.map(async x => AnnouncementConverter.encode(x, false))));
     }
 
     public static async dismissAnnouncement(announcement: Announcement, ctx: MastoContext): Promise<void> {

@@ -31,7 +31,7 @@ export class UserConverter {
                 acctUrl = `https://${u.host}/@${u.username}`;
             }
             const profile = UserProfiles.findOneBy({ userId: u.id });
-            const bio = profile.then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), [], u.host) ?? escapeMFM(profile?.description ?? ""));
+            const bio = profile.then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), []).then(p => p ?? escapeMFM(profile?.description ?? "")));
             const avatar = u.avatarId
                 ? (DriveFiles.findOneBy({ id: u.avatarId }))
                     .then(p => p?.url ?? Users.getIdenticonUrl(u.id))
@@ -92,7 +92,7 @@ export class UserConverter {
                 header_static: banner,
                 emojis: populateEmojis(u.emojis, u.host).then(emoji => emoji.map((e) => EmojiConverter.encode(e))),
                 moved: null, //FIXME
-                fields: profile.then(profile => profile?.fields.map(p => this.encodeField(p, u.host)) ?? []),
+                fields: profile.then(profile => Promise.all(profile?.fields.map(async p => this.encodeField(p, u.host)) ?? [])),
                 bot: u.isBot,
                 discoverable: u.isExplorable
             }).then(p => {
@@ -107,10 +107,10 @@ export class UserConverter {
         return Promise.all(encoded);
     }
 
-    private static encodeField(f: Field, host: string | null): MastodonEntity.Field {
+    private static async encodeField(f: Field, host: string | null): Promise<MastodonEntity.Field> {
         return {
             name: f.name,
-            value: MfmHelpers.toHtml(mfm.parse(f.value), [], host, true) ?? escapeMFM(f.value),
+            value: await MfmHelpers.toHtml(mfm.parse(f.value), [], true) ?? escapeMFM(f.value),
             verified_at: f.verified ? (new Date()).toISOString() : null,
         }
     }

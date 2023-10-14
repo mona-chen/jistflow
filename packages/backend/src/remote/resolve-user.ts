@@ -178,7 +178,7 @@ export async function resolveMentionWithFallback(username: string, host: string 
 	const fallback = `${config.url}/${acct}`;
 	const cached = cache.find(r => r.username.toLowerCase() === username.toLowerCase() && r.host === host);
 	if (cached) return cached.url ?? cached.uri;
-	if (host === null) return fallback;
+	if (host === null || host === config.domain) return fallback;
 	try {
 		const user = await resolveUser(username, host);
 		const profile = await UserProfiles.findOneBy({ userId: user.id });

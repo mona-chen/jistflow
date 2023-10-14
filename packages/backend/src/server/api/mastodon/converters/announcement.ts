@@ -3,10 +3,10 @@ import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import mfm from "mfm-js";
 
 export class AnnouncementConverter {
-    public static encode(announcement: Announcement, isRead: boolean): MastodonEntity.Announcement {
+    public static async encode(announcement: Announcement, isRead: boolean): Promise<MastodonEntity.Announcement> {
         return {
             id: announcement.id,
-            content: `<h1>${MfmHelpers.toHtml(mfm.parse(announcement.title), [], null) ?? 'Announcement'}</h1>${MfmHelpers.toHtml(mfm.parse(announcement.text), [], null) ?? ''}`,
+            content: `<h1>${await MfmHelpers.toHtml(mfm.parse(announcement.title), []) ?? 'Announcement'}</h1>${await MfmHelpers.toHtml(mfm.parse(announcement.text), []) ?? ''}`,
             starts_at: null,
             ends_at: null,
             published: true,

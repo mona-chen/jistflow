@@ -201,7 +201,7 @@ export class NoteHelpers {
             const files = DriveFiles.packMany(edit.fileIds);
             const item = {
                 account: account,
-                content: user.then(user => MfmHelpers.toHtml(mfm.parse(edit.text ?? ''), JSON.parse(note.mentionedRemoteUsers), user.host) ?? ''),
+                content: MfmHelpers.toHtml(mfm.parse(edit.text ?? ''), JSON.parse(note.mentionedRemoteUsers)).then(p => p ?? ''),
                 created_at: lastDate.toISOString(),
                 emojis: [],
                 sensitive: files.then(files => files.length > 0 ? files.some((f) => f.isSensitive) : false),

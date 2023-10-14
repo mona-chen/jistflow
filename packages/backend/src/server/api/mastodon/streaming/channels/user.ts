@@ -76,7 +76,7 @@ export class MastodonStreamUser extends MastodonStream {
             case "announcementAdded":
                 // This shouldn't be necessary but is for some reason
                 data.body.createdAt = new Date(data.body.createdAt);
-                this.connection.send(this.chName, "announcement", AnnouncementConverter.encode(data.body, false));
+                this.connection.send(this.chName, "announcement", await AnnouncementConverter.encode(data.body, false));
                 break;
             case "announcementDeleted":
                 this.connection.send(this.chName, "announcement.delete", data.body);
