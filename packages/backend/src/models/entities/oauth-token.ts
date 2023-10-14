@@ -58,7 +58,7 @@ export class OAuthToken {
 	public scopes: string[];
 
 	@Column("varchar", {
-		length: 64,
+		length: 512,
 		comment: "The redirect URI of the OAuth token",
 	})
 	public redirectUri: string;
