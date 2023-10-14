@@ -4,10 +4,10 @@ export class ResyncWithOrm1697289658422 implements MigrationInterface {
     name = 'ResyncWithOrm1697289658422'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "abuse_user_report" DROP CONSTRAINT "fk_7f4e851a35d81b64dda28eee0"`);
-        await queryRunner.query(`DROP INDEX "public"."IDX_renote_muting_createdAt"`);
-        await queryRunner.query(`DROP INDEX "public"."IDX_renote_muting_muteeId"`);
-        await queryRunner.query(`DROP INDEX "public"."IDX_renote_muting_muterId"`);
+        await queryRunner.query(`ALTER TABLE "abuse_user_report" DROP CONSTRAINT IF EXISTS "fk_7f4e851a35d81b64dda28eee0"`);
+        await queryRunner.query(`DROP INDEX IF EXISTS "public"."IDX_renote_muting_createdAt"`);
+        await queryRunner.query(`DROP INDEX IF EXISTS "public"."IDX_renote_muting_muteeId"`);
+        await queryRunner.query(`DROP INDEX IF EXISTS "public"."IDX_renote_muting_muterId"`);
         await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "useStarForReactionFallback"`);
         await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "enableGuestTimeline"`);
         await queryRunner.query(`COMMENT ON COLUMN "notification"."isRead" IS 'Whether the notification was read.'`);
@@ -21,21 +21,21 @@ export class ResyncWithOrm1697289658422 implements MigrationInterface {
         await queryRunner.query(`COMMENT ON COLUMN "renote_muting"."createdAt" IS 'The created date of the Muting.'`);
         await queryRunner.query(`COMMENT ON COLUMN "renote_muting"."muteeId" IS 'The mutee user ID.'`);
         await queryRunner.query(`COMMENT ON COLUMN "renote_muting"."muterId" IS 'The muter user ID.'`);
-        await queryRunner.query(`ALTER TABLE "poll" DROP CONSTRAINT "FK_da851e06d0dfe2ef397d8b1bf1b"`);
-        await queryRunner.query(`ALTER TABLE "poll" DROP CONSTRAINT "UQ_da851e06d0dfe2ef397d8b1bf1b"`);
+        await queryRunner.query(`ALTER TABLE "poll" DROP CONSTRAINT IF EXISTS "FK_da851e06d0dfe2ef397d8b1bf1b"`);
+        await queryRunner.query(`ALTER TABLE "poll" DROP CONSTRAINT IF EXISTS "UQ_da851e06d0dfe2ef397d8b1bf1b"`);
         await queryRunner.query(`ALTER TYPE "public"."poll_notevisibility_enum" RENAME TO "poll_notevisibility_enum_old"`);
         await queryRunner.query(`CREATE TYPE "public"."poll_notevisibility_enum" AS ENUM('public', 'home', 'followers', 'specified', 'hidden')`);
         await queryRunner.query(`ALTER TABLE "poll" ALTER COLUMN "noteVisibility" TYPE "public"."poll_notevisibility_enum" USING "noteVisibility"::"text"::"public"."poll_notevisibility_enum"`);
         await queryRunner.query(`DROP TYPE "public"."poll_notevisibility_enum_old"`);
-        await queryRunner.query(`ALTER TABLE "user_keypair" DROP CONSTRAINT "FK_f4853eb41ab722fe05f81cedeb6"`);
-        await queryRunner.query(`ALTER TABLE "user_keypair" DROP CONSTRAINT "UQ_f4853eb41ab722fe05f81cedeb6"`);
-        await queryRunner.query(`ALTER TABLE "user_publickey" DROP CONSTRAINT "FK_10c146e4b39b443ede016f6736d"`);
-        await queryRunner.query(`ALTER TABLE "user_publickey" DROP CONSTRAINT "UQ_10c146e4b39b443ede016f6736d"`);
+        await queryRunner.query(`ALTER TABLE "user_keypair" DROP CONSTRAINT IF EXISTS "FK_f4853eb41ab722fe05f81cedeb6"`);
+        await queryRunner.query(`ALTER TABLE "user_keypair" DROP CONSTRAINT IF EXISTS "UQ_f4853eb41ab722fe05f81cedeb6"`);
+        await queryRunner.query(`ALTER TABLE "user_publickey" DROP CONSTRAINT IF EXISTS "FK_10c146e4b39b443ede016f6736d"`);
+        await queryRunner.query(`ALTER TABLE "user_publickey" DROP CONSTRAINT IF EXISTS "UQ_10c146e4b39b443ede016f6736d"`);
         await queryRunner.query(`ALTER TABLE "page" ALTER COLUMN "isPublic" DROP DEFAULT`);
-        await queryRunner.query(`ALTER TABLE "user_profile" DROP CONSTRAINT "FK_51cb79b5555effaf7d69ba1cff9"`);
-        await queryRunner.query(`ALTER TABLE "user_profile" DROP CONSTRAINT "UQ_51cb79b5555effaf7d69ba1cff9"`);
-        await queryRunner.query(`ALTER TABLE "promo_note" DROP CONSTRAINT "FK_e263909ca4fe5d57f8d4230dd5c"`);
-        await queryRunner.query(`ALTER TABLE "promo_note" DROP CONSTRAINT "UQ_e263909ca4fe5d57f8d4230dd5c"`);
+        await queryRunner.query(`ALTER TABLE "user_profile" DROP CONSTRAINT IF EXISTS "FK_51cb79b5555effaf7d69ba1cff9"`);
+        await queryRunner.query(`ALTER TABLE "user_profile" DROP CONSTRAINT IF EXISTS "UQ_51cb79b5555effaf7d69ba1cff9"`);
+        await queryRunner.query(`ALTER TABLE "promo_note" DROP CONSTRAINT IF EXISTS "FK_e263909ca4fe5d57f8d4230dd5c"`);
+        await queryRunner.query(`ALTER TABLE "promo_note" DROP CONSTRAINT IF EXISTS "UQ_e263909ca4fe5d57f8d4230dd5c"`);
         await queryRunner.query(`CREATE INDEX "IDX_d1259a2c2b7bb413ff449e8711" ON "renote_muting" ("createdAt") `);
         await queryRunner.query(`CREATE INDEX "IDX_7eac97594bcac5ffcf2068089b" ON "renote_muting" ("muteeId") `);
         await queryRunner.query(`CREATE INDEX "IDX_7aa72a5fe76019bfe8e5e0e8b7" ON "renote_muting" ("muterId") `);
