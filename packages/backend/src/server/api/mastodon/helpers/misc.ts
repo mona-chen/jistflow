@@ -48,7 +48,7 @@ export class MiscHelpers {
             email: meta.maintainerEmail || "",
             version: `4.1.0 (compatible; Iceshrimp ${config.version})`,
             urls: {
-                streaming_api: `${config.url.replace(/^http(?=s?:\/\/)/, "ws")}/mastodon`,
+                streaming_api: `${config.url.replace(/^http(?=s?:\/\/)/, "ws")}`,
             },
             stats: awaitAll({
                 user_count: userCount,
