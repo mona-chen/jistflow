@@ -179,15 +179,17 @@ export async function resolveUser(
 
 export async function resolveMentionWithFallback(username: string, host: string | null, objectHost: string | null, cache: IMentionedRemoteUsers): Promise<string> {
 	let fallback = `${config.url}/@${username}`;
-	if (host !== null) fallback += `@${host}`;
-	else if (objectHost !== null) fallback += `@${objectHost}`;
+	if (host !== null && host !== config.domain)
+		fallback += `@${host}`;
+	else if (objectHost !== null && objectHost !== config.domain && host !== config.domain)
+		fallback += `@${objectHost}`;
 
 	const cached = cache.find(r => r.username.toLowerCase() === username.toLowerCase() && r.host === host);
 	if (cached) return cached.url ?? cached.uri;
-	if (host === null || host === config.domain) return fallback;
+	if ((host === null && objectHost === null) || host === config.domain) return fallback;
 
 	try {
-		const user = await resolveUser(username, host, false);
+		const user = await resolveUser(username, host ?? objectHost, false);
 		const profile = await UserProfiles.findOneBy({ userId: user.id });
 		return profile?.url ?? user.uri ?? fallback;
 	}
