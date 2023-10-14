@@ -36,6 +36,9 @@ export class ResyncWithOrm1697289658422 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "user_profile" DROP CONSTRAINT IF EXISTS "UQ_51cb79b5555effaf7d69ba1cff9"`);
         await queryRunner.query(`ALTER TABLE "promo_note" DROP CONSTRAINT IF EXISTS "FK_e263909ca4fe5d57f8d4230dd5c"`);
         await queryRunner.query(`ALTER TABLE "promo_note" DROP CONSTRAINT IF EXISTS "UQ_e263909ca4fe5d57f8d4230dd5c"`);
+        await queryRunner.query(`ALTER TABLE "renote_muting" DROP CONSTRAINT IF EXISTS "FK_7eac97594bcac5ffcf2068089b6"`);
+        await queryRunner.query(`ALTER TABLE "renote_muting" DROP CONSTRAINT IF EXISTS "FK_7aa72a5fe76019bfe8e5e0e8b7d"`);
+        await queryRunner.query(`ALTER TABLE "abuse_user_report" DROP CONSTRAINT IF EXISTS "FK_a9021cc2e1feb5f72d3db6e9f5f"`);
         await queryRunner.query(`CREATE INDEX IF NOT EXISTS "IDX_d1259a2c2b7bb413ff449e8711" ON "renote_muting" ("createdAt") `);
         await queryRunner.query(`CREATE INDEX IF NOT EXISTS "IDX_7eac97594bcac5ffcf2068089b" ON "renote_muting" ("muteeId") `);
         await queryRunner.query(`CREATE INDEX IF NOT EXISTS "IDX_7aa72a5fe76019bfe8e5e0e8b7" ON "renote_muting" ("muterId") `);
