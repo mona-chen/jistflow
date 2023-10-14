@@ -17,6 +17,7 @@ const uriHostCache = new Cache<string>("resolveUserUriHost", 60 * 60 * 24);
 export async function resolveUser(
 	username: string,
 	host: string | null,
+	refresh: boolean = true
 ): Promise<User> {
 	const usernameLower = username.toLowerCase();
 
@@ -102,8 +103,10 @@ export async function resolveUser(
 
 	// If user information is out of date, return it by starting over from WebFilger
 	if (
-		user.lastFetchedAt == null ||
-		Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24
+		refresh && (
+			user.lastFetchedAt == null ||
+			Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24
+		)
 	) {
 		// Prevent multiple attempts to connect to unconnected instances, update before each attempt to prevent subsequent similar attempts
 		await Users.update(user.id, {
@@ -180,7 +183,7 @@ export async function resolveMentionWithFallback(username: string, host: string 
 	if (cached) return cached.url ?? cached.uri;
 	if (host === null || host === config.domain) return fallback;
 	try {
-		const user = await resolveUser(username, host);
+		const user = await resolveUser(username, host, false);
 		const profile = await UserProfiles.findOneBy({ userId: user.id });
 		return profile?.url ?? user.uri ?? fallback;
 	}
