@@ -5,7 +5,7 @@
 		"build": "pnpm vite build --emptyOutDir",
 		"build:debug": "pnpm run build",
 		"watch": "pnpm swc src -d built -D -w",
-		"lint": "pnpm biome check **/*.ts --apply",
+		"lint": "pnpm biome check *.ts --apply",
 		"format": "pnpm biome format * --write"
 	},
 	"devDependencies": {
