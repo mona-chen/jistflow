@@ -130,6 +130,7 @@ export class Note {
 	})
 	public uri: string | null;
 
+	@Index("IDX_note_url")
 	@Column("varchar", {
 		length: 512,
 		nullable: true,
