@@ -99,6 +99,9 @@ if ($i) {
 		client_id: props.client_id,
 	}).then(res => {
 		name = res.name;
+	}).catch(reason => {
+		message = reason;
+		state = 'error';
 	});
 }
 
