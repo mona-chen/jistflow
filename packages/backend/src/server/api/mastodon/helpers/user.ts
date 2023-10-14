@@ -193,7 +193,10 @@ export class UserHelpers {
         if (formData.discoverable) updates.isExplorable = formData.discoverable;
 
         if (Object.keys(updates).length > 0) await Users.update(user.id, updates);
-        if (Object.keys(profileUpdates).length > 0) await UserProfiles.update({ userId: user.id }, profileUpdates);
+        if (Object.keys(profileUpdates).length > 0) {
+            await UserProfiles.update({ userId: user.id }, profileUpdates);
+            await UserProfiles.updateMentions(user.id);
+        }
 
         return this.verifyCredentials(ctx);
     }

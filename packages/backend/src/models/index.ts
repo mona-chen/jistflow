@@ -68,6 +68,7 @@ import { UserIp } from "./entities/user-ip.js";
 import { NoteEdit } from "./entities/note-edit.js";
 import { OAuthApp } from "@/models/entities/oauth-app.js";
 import { OAuthToken } from "@/models/entities/oauth-token.js";
+import { UserProfileRepository } from "@/models/repositories/user-profile.js";
 
 export const Announcements = db.getRepository(Announcement);
 export const AnnouncementReads = db.getRepository(AnnouncementRead);
@@ -82,7 +83,7 @@ export const NoteUnreads = db.getRepository(NoteUnread);
 export const Polls = db.getRepository(Poll);
 export const PollVotes = db.getRepository(PollVote);
 export const Users = UserRepository;
-export const UserProfiles = db.getRepository(UserProfile);
+export const UserProfiles = UserProfileRepository;
 export const UserKeypairs = db.getRepository(UserKeypair);
 export const UserPendings = db.getRepository(UserPending);
 export const AttestationChallenges = db.getRepository(AttestationChallenge);

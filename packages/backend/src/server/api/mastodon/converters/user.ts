@@ -9,6 +9,7 @@ import { awaitAll } from "@/prelude/await-all.js";
 import { AccountCache } from "@/server/api/mastodon/helpers/user.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
+import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 
 type Field = {
     name: string;
@@ -31,7 +32,7 @@ export class UserConverter {
                 acctUrl = `https://${u.host}/@${u.username}`;
             }
             const profile = UserProfiles.findOneBy({ userId: u.id });
-            const bio = profile.then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), [], u.host).then(p => p ?? escapeMFM(profile?.description ?? "")));
+            const bio = profile.then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), profile?.mentions, u.host).then(p => p ?? escapeMFM(profile?.description ?? "")));
             const avatar = u.avatarId
                 ? (DriveFiles.findOneBy({ id: u.avatarId }))
                     .then(p => p?.url ?? Users.getIdenticonUrl(u.id))
@@ -92,7 +93,7 @@ export class UserConverter {
                 header_static: banner,
                 emojis: populateEmojis(u.emojis, u.host).then(emoji => emoji.map((e) => EmojiConverter.encode(e))),
                 moved: null, //FIXME
-                fields: profile.then(profile => Promise.all(profile?.fields.map(async p => this.encodeField(p, u.host)) ?? [])),
+                fields: profile.then(profile => Promise.all(profile?.fields.map(async p => this.encodeField(p, u.host, profile?.mentions)) ?? [])),
                 bot: u.isBot,
                 discoverable: u.isExplorable
             }).then(p => {
@@ -107,10 +108,10 @@ export class UserConverter {
         return Promise.all(encoded);
     }
 
-    private static async encodeField(f: Field, host: string | null): Promise<MastodonEntity.Field> {
+    private static async encodeField(f: Field, host: string | null, mentions: IMentionedRemoteUsers): Promise<MastodonEntity.Field> {
         return {
             name: f.name,
-            value: await MfmHelpers.toHtml(mfm.parse(f.value), [], host, true) ?? escapeMFM(f.value),
+            value: await MfmHelpers.toHtml(mfm.parse(f.value), mentions, host, true) ?? escapeMFM(f.value),
             verified_at: f.verified ? (new Date()).toISOString() : null,
         }
     }

@@ -10,7 +10,7 @@ export class MfmHelpers {
         nodes: mfm.MfmNode[] | null,
         mentionedRemoteUsers: IMentionedRemoteUsers = [],
         objectHost: string | null,
-        inline: boolean = false,
+        inline: boolean = false
     ) {
         if (nodes == null) {
             return null;

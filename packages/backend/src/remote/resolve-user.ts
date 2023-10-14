@@ -178,12 +178,32 @@ export async function resolveUser(
 	return user;
 }
 
-export async function resolveMentionWithFallback(username: string, host: string | null, objectHost: string | null, cache: IMentionedRemoteUsers): Promise<string> {
+export async function resolveMentionToUserAndProfile(username: string, host: string | null, objectHost: string | null) {
+	try {
+		//const fallback = getMentionFallbackUri(username, host, objectHost);
+		const user = await resolveUser(username, host ?? objectHost, false);
+		const profile = await UserProfiles.findOneBy({ userId: user.id });
+		const data = { username, host: host ?? objectHost };
+
+		return { user, profile, data };
+	}
+	catch {
+		return null;
+	}
+}
+
+export function getMentionFallbackUri(username: string, host: string | null, objectHost: string | null): string {
 	let fallback = `${config.url}/@${username}`;
 	if (host !== null && host !== config.domain)
 		fallback += `@${host}`;
 	else if (objectHost !== null && objectHost !== config.domain && host !== config.domain)
 		fallback += `@${objectHost}`;
+
+	return fallback;
+}
+
+export async function resolveMentionWithFallback(username: string, host: string | null, objectHost: string | null, cache: IMentionedRemoteUsers): Promise<string> {
+	const fallback = getMentionFallbackUri(username, host, objectHost);
 
 	const cached = cache.find(r => r.username.toLowerCase() === username.toLowerCase() && r.host === host);
 	if (cached) return cached.url ?? cached.uri;

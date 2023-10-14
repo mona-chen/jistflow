@@ -54,6 +54,11 @@ export class UserProfile {
 		verified?: boolean;
 	}[];
 
+	@Column("jsonb", {
+		default: [],
+	})
+	public mentions: IMentionedRemoteUsers;
+
 	@Column("varchar", {
 		length: 32,
 		nullable: true,
@@ -257,3 +262,10 @@ export class UserProfile {
 		}
 	}
 }
+
+type IMentionedRemoteUsers = {
+	uri: string;
+	url?: string;
+	username: string;
+	host: string;
+}[]

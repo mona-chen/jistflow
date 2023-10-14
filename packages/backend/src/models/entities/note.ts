@@ -269,9 +269,11 @@ export class Note {
 	}
 }
 
-export type IMentionedRemoteUsers = {
+export type IMentionedRemoteUser = {
 	uri: string;
 	url?: string;
 	username: string;
 	host: string;
-}[];
+};
+
+export type IMentionedRemoteUsers = IMentionedRemoteUser[];

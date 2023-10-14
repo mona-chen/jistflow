@@ -306,8 +306,10 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	//#endregion
 
 	if (Object.keys(updates).length > 0) await Users.update(user.id, updates);
-	if (Object.keys(profileUpdates).length > 0)
+	if (Object.keys(profileUpdates).length > 0) {
 		await UserProfiles.update(user.id, profileUpdates);
+		await UserProfiles.updateMentions(user.id);
+	}
 
 	const iObj = await Users.pack<true, true>(user.id, user, {
 		detail: true,
