@@ -102,6 +102,20 @@ if ($i) {
 	});
 }
 
+const getUrlParams = () =>
+		window.location.search
+				.substring(1)
+				.split("&")
+				.reduce((result, query) => {
+					const [k, v] = query.split("=");
+					result[k] = decodeURIComponent(v);
+					return result;
+				}, {});
+
+const redirectUri = getUrlParams()['redirect_uri'];
+if (redirectUri !== props.redirect_uri)
+	console.warn(`Mismatching redirect_uris between props (${props.redirect_uri}) and getUrlParams (${redirectUri})`);
+
 function getIcon(p: string) {
 	if (p.startsWith("write")) return "pencil-simple";
 	else if(p.startsWith("read")) return "eye";
@@ -114,7 +128,7 @@ async function accept(): Promise<void> {
 	state = "waiting";
 	const res = await os.apiJson("v1/iceshrimp/auth/code", {
 		client_id: props.client_id,
-		redirect_uri: props.redirect_uri,
+		redirect_uri: redirectUri,
 		scopes: _scopes,
 	}).catch(r => {
 		message = r;
@@ -125,7 +139,7 @@ async function accept(): Promise<void> {
 	if (props.redirect_uri !== 'urn:ietf:wg:oauth:2.0:oob') {
 		state = "accepted";
 		location.href = appendQuery(
-				props.redirect_uri,
+				redirectUri,
 				query({
 					code: res.code,
 				}),
