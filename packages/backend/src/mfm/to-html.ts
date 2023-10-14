@@ -8,6 +8,7 @@ import { resolveMentionWithFallback } from "@/remote/resolve-user.js";
 export async function toHtml(
 	nodes: mfm.MfmNode[] | null,
 	mentionedRemoteUsers: IMentionedRemoteUsers = [],
+	objectHost: string | null
 ) {
 	if (nodes == null) {
 		return null;
@@ -118,7 +119,7 @@ export async function toHtml(
 			el.setAttribute("translate", "no");
 			const a = doc.createElement("a");
 			const { username, host, acct } = node.props;
-			a.href = await resolveMentionWithFallback(username, host, acct, mentionedRemoteUsers);
+			a.href = await resolveMentionWithFallback(username, host, objectHost, mentionedRemoteUsers);
 			a.className = "u-url mention";
 			const span = doc.createElement("span");
 			span.textContent = username;

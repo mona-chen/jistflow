@@ -9,7 +9,8 @@ export class MfmHelpers {
     public static async toHtml(
         nodes: mfm.MfmNode[] | null,
         mentionedRemoteUsers: IMentionedRemoteUsers = [],
-        inline: boolean = false
+        objectHost: string | null,
+        inline: boolean = false,
     ) {
         if (nodes == null) {
             return null;
@@ -138,7 +139,7 @@ export class MfmHelpers {
                 el.setAttribute("translate", "no");
                 const a = doc.createElement("a");
                 const { username, host, acct } = node.props;
-                a.href = await resolveMentionWithFallback(username, host, acct, mentionedRemoteUsers);
+                a.href = await resolveMentionWithFallback(username, host, objectHost, mentionedRemoteUsers);
                 a.className = "u-url mention";
                 const span = doc.createElement("span");
                 span.textContent = username;

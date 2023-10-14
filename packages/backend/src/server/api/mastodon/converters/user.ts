@@ -31,7 +31,7 @@ export class UserConverter {
                 acctUrl = `https://${u.host}/@${u.username}`;
             }
             const profile = UserProfiles.findOneBy({ userId: u.id });
-            const bio = profile.then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), []).then(p => p ?? escapeMFM(profile?.description ?? "")));
+            const bio = profile.then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), [], u.host).then(p => p ?? escapeMFM(profile?.description ?? "")));
             const avatar = u.avatarId
                 ? (DriveFiles.findOneBy({ id: u.avatarId }))
                     .then(p => p?.url ?? Users.getIdenticonUrl(u.id))
@@ -110,7 +110,7 @@ export class UserConverter {
     private static async encodeField(f: Field, host: string | null): Promise<MastodonEntity.Field> {
         return {
             name: f.name,
-            value: await MfmHelpers.toHtml(mfm.parse(f.value), [], true) ?? escapeMFM(f.value),
+            value: await MfmHelpers.toHtml(mfm.parse(f.value), [], host, true) ?? escapeMFM(f.value),
             verified_at: f.verified ? (new Date()).toISOString() : null,
         }
     }

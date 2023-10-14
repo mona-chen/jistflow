@@ -8,13 +8,13 @@ describe("toHtml", () => {
 	it("br", async () => {
 		const input = "foo\nbar\nbaz";
 		const output = "<p><span>foo<br>bar<br>baz</span></p>";
-		assert.equal(await toHtml(mfm.parse(input)), output);
+		assert.equal(await toHtml(mfm.parse(input), [], null), output);
 	});
 
 	it("br alt", async () => {
 		const input = "foo\r\nbar\rbaz";
 		const output = "<p><span>foo<br>bar<br>baz</span></p>";
-		assert.equal(await toHtml(mfm.parse(input)), output);
+		assert.equal(await toHtml(mfm.parse(input), [], null), output);
 	});
 });
 
