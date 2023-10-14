@@ -190,8 +190,15 @@ export async function getSubjectHostFromUri(uri: string): Promise<string | null>
 }
 
 export async function getSubjectHostFromUriAndUsernameCached(uri: string, username: string): Promise<string | null> {
-	const hostname = new URL(uri).hostname;
+	const url = new URL(uri);
+	const hostname = url.hostname;
 	username = username.substring(1); // remove leading @ from username
+
+	// This resolves invalid mentions with the URL format https://host.tld/@user@otherhost.tld
+	const match = url.pathname.match(/^\/@(?<user>[a-zA-Z0-9_]+|$)@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)$/)
+	if (match && match.groups?.host) {
+		return match.groups.host;
+	}
 
 	if (hostname === config.hostname) {
 		// user is local, return local account domain
