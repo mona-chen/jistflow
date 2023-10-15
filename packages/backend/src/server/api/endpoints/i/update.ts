@@ -330,7 +330,9 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	}
 
 	// フォロワーにUpdateを配信
-	publishToFollowers(user.id);
+	UserProfiles.updateMentions(user.id).finally(() => {
+		publishToFollowers(user.id);
+	});
 
 	return iObj;
 });
