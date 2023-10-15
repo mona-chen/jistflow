@@ -1,5 +1,5 @@
 import { Note } from "@/models/entities/note.js";
-import { ILocalUser, User } from "@/models/entities/user.js";
+import { ILocalUser, IRemoteUser, User } from "@/models/entities/user.js";
 import {
     Blockings,
     Followings,
@@ -42,6 +42,7 @@ import { verifyLink } from "@/services/fetch-rel-me.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import { resolveUser } from "@/remote/resolve-user.js";
+import { updatePerson } from "@/remote/activitypub/models/person.js";
 
 export type AccountCache = {
     locks: AsyncLock;
@@ -515,7 +516,16 @@ export class UserHelpers {
     public static async getUserOr404(id: string): Promise<User> {
         return getUser(id).catch(_ => {
             throw new MastoApiError(404);
+        }).then(u => {
+            this.updateUserInBackground(u);
+            return u;
         });
+    }
+
+    public static updateUserInBackground(user: User) {
+        if (Users.isLocalUser(user)) return;
+        // noinspection JSIgnoredPromiseFromCall
+        updatePerson(user.uri!, undefined, undefined, user as IRemoteUser);
     }
 
     public static getFreshAccountCache(): AccountCache {
