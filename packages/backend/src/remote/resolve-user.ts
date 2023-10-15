@@ -102,7 +102,7 @@ export async function resolveUser(
 		return await createPerson(fingerRes.self.href, undefined, subjectHost);
 	}
 
-	// If user information is out of date, return it by starting over from WebFilger
+	// If user information is out of date, return it by starting over from WebFinger
 	if (
 		refresh && (
 			user.lastFetchedAt == null ||
