@@ -41,6 +41,7 @@ import { UserProfile } from "@/models/entities/user-profile.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
+import { resolveUser } from "@/remote/resolve-user.js";
 
 export type AccountCache = {
     locks: AsyncLock;
@@ -233,9 +234,13 @@ export class UserHelpers {
     public static async getUserFromAcct(acct: string): Promise<User> {
         const split = acct.toLowerCase().split('@');
         if (split.length > 2) throw new Error('Invalid acct');
-        return Users.findOneBy({ usernameLower: split[0], host: split[1] ?? IsNull() })
-            .then(p => {
-                if (p) return p;
+        return split[1] == null
+            ? Users.findOneBy({ usernameLower: split[0], host: split[1] ?? IsNull() })
+                .then(p => {
+                    if (p) return p;
+                    throw new MastoApiError(404);
+                })
+            : resolveUser(split[0], split[1], true, false).catch(() => {
                 throw new MastoApiError(404);
             });
     }

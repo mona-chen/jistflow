@@ -18,7 +18,8 @@ const mentionUriCache = new Cache<string>("resolveMentionUserUri", 60 * 60 * 72)
 export async function resolveUser(
 	username: string,
 	host: string | null,
-	refresh: boolean = true
+	refresh: boolean = true,
+	awaitRefresh: boolean = true
 ): Promise<User> {
 	const usernameLower = username.toLowerCase();
 
@@ -104,7 +105,7 @@ export async function resolveUser(
 
 	// If user information is out of date, return it by starting over from WebFinger
 	if (
-		refresh && (
+		refresh && awaitRefresh && (
 			user.lastFetchedAt == null ||
 			Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24
 		)
@@ -172,6 +173,10 @@ export async function resolveUser(
 				return u;
 			}
 		});
+	} else if (refresh && !awaitRefresh && (user.lastFetchedAt == null || Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24)) {
+		// Run the refresh in the background
+		// noinspection ES6MissingAwait
+		resolveUser(username, host, true, true);
 	}
 
 	logger.info(`return existing remote user: ${acctLower}`);
