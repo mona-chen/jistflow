@@ -62,7 +62,7 @@ export function setupEndpointsTimeline(router: Router): void {
         "/v1/timelines/tag/:hashtag",
         auth(false, ['read:statuses']),
         async (ctx, reply) => {
-            const tag = (ctx.params.hashtag ?? '').trim();
+            const tag = (ctx.params.hashtag ?? '').trim().toLowerCase();
             const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)), ['any[]', 'all[]', 'none[]']);
             const res = await TimelineHelpers.getTagTimeline(tag, args.max_id, args.since_id, args.min_id, args.limit, args['any[]'] ?? [], args['all[]'] ?? [], args['none[]'] ?? [], args.only_media, args.local, args.remote, ctx);
             ctx.body = await NoteConverter.encodeMany(res, ctx);
