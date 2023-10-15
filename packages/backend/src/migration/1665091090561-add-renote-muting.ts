@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 export class addRenoteMuting1665091090561 implements MigrationInterface {
-	constructor() {
-		this.name = "addRenoteMuting1665091090561";
-	}
+	name = "addRenoteMuting1665091090561";
 
 	async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
