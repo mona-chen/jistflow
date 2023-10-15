@@ -5,6 +5,7 @@ import { extractMentions } from "@/misc/extract-mentions.js";
 import { resolveMentionToUserAndProfile } from "@/remote/resolve-user.js";
 import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { unique } from "@/prelude/array.js";
+import config from "@/config/index.js";
 
 export const UserProfileRepository = db.getRepository(UserProfile).extend({
     async updateMentions(id: UserProfile["userId"]){
@@ -28,7 +29,8 @@ export const UserProfileRepository = db.getRepository(UserProfile).extend({
 async function populateMentions(tokens: mfm.MfmNode[], objectHost: string | null): Promise<IMentionedRemoteUsers> {
     const mentions = extractMentions(tokens);
     const resolved = await Promise.all(mentions.map(m => resolveMentionToUserAndProfile(m.username, m.host, objectHost)));
-    const remote = resolved.filter(p => p && p.data.host !== null).map(p => p!);
+    const remote = resolved.filter(p => p && p.data.host !== config.domain && (p.data.host !== null || objectHost !== null))
+        .map(p => p!);
     const res = remote.map(m => {
         return {
             uri: m.user.uri!,

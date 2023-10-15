@@ -211,7 +211,7 @@ export async function resolveMentionWithFallback(username: string, host: string 
 	const fallback = getMentionFallbackUri(username, host, objectHost);
 
 	const cached = cache.find(r => r.username.toLowerCase() === username.toLowerCase() && r.host === host);
-	if (cached) return cached.url ?? cached.uri;
+	if (cached) return cached.url ?? cached.uri ?? fallback;
 	if ((host === null && objectHost === null) || host === config.domain) return fallback;
 
 	return mentionUriCache.fetch(fallback, async () => {
