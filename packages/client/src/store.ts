@@ -41,23 +41,23 @@ export const defaultStore = markRaw(
 			default: 0,
 		},
 		tlHomeHintClosed: {
-			where: "device",
+			where: "account",
 			default: false,
 		},
 		tlLocalHintClosed: {
-			where: "device",
+			where: "account",
 			default: false,
 		},
 		tlRecommendedHintClosed: {
-			where: "device",
+			where: "account",
 			default: false,
 		},
 		tlSocialHintClosed: {
-			where: "device",
+			where: "account",
 			default: false,
 		},
 		tlGlobalHintClosed: {
-			where: "device",
+			where: "account",
 			default: false,
 		},
 		keepCw: {
