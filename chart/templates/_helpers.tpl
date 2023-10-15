@@ -122,7 +122,7 @@ db:
   port: 5432
   {{- else }}
   host: {{ .Values.postgresql.postgresqlHostname }}
-  port: {{ .Values.postgresql.postgresqlPort | default "5432" | quote }}
+  port: {{ .Values.postgresql.postgresqlPort | default 5432 }}
   {{- end }}
 
   # Database name
