@@ -312,9 +312,6 @@ importers:
       nsfwjs:
         specifier: 2.4.2
         version: 2.4.2(@tensorflow/tfjs@4.2.0)
-      oauth:
-        specifier: ^0.10.0
-        version: 0.10.0
       opencc-js:
         specifier: ^1.0.5
         version: 1.0.5

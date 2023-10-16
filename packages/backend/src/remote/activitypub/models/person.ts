@@ -185,7 +185,7 @@ export async function createPerson(
 
 	const host = toPuny(new URL(object.id).hostname);
 
-	const { fields } = analyzeAttachments(person.attachment || []);
+	const fields = analyzeAttachments(person.attachment || []);
 
 	const tags = extractApHashtags(person.tag)
 		.map((tag) => normalizeForSearch(tag))
@@ -642,39 +642,6 @@ export async function resolvePerson(
 	return await createPerson(uri, resolver);
 }
 
-const services: {
-	[x: string]: (id: string, username: string) => any;
-} = {
-	"misskey:authentication:twitter": (userId, screenName) => ({
-		userId,
-		screenName,
-	}),
-	"misskey:authentication:github": (id, login) => ({ id, login }),
-	"misskey:authentication:discord": (id, name) => $discord(id, name),
-};
-
-const $discord = (id: string, name: string) => {
-	if (typeof name !== "string") {
-		name = "unknown#0000";
-	}
-	const [username, discriminator] = name.split("#");
-	return { id, username, discriminator };
-};
-
-function addService(target: { [x: string]: any }, source: IApPropertyValue) {
-	const service = services[source.name];
-
-	if (typeof source.value !== "string") {
-		source.value = "unknown";
-	}
-
-	const [id, username] = source.value.split("@");
-
-	if (service) {
-		target[source.name.split(":")[2]] = service(id, username);
-	}
-}
-
 export function analyzeAttachments(
 	attachments: IObject | IObject[] | undefined,
 ) {
@@ -682,22 +649,17 @@ export function analyzeAttachments(
 		name: string;
 		value: string;
 	}[] = [];
-	const services: { [x: string]: any } = {};
 
 	if (Array.isArray(attachments)) {
 		for (const attachment of attachments.filter(isPropertyValue)) {
-			if (isPropertyValue(attachment.identifier)) {
-				addService(services, attachment.identifier);
-			} else {
-				fields.push({
-					name: attachment.name,
-					value: fromHtml(attachment.value),
-				});
-			}
+			fields.push({
+				name: attachment.name,
+				value: fromHtml(attachment.value),
+			});
 		}
 	}
 
-	return { fields, services };
+	return fields;
 }
 
 export async function updateFeatured(userId: User["id"], resolver?: Resolver) {

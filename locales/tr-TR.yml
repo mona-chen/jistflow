@@ -760,7 +760,6 @@ banner: Banner
 nsfw: NSFW
 doNothing: Görmezden Gel
 watch: İzle
-connectService: Bağlan
 registration: Kayıt
 hcaptcha: hCaptcha
 pinnedNotes: Sabitlenmiş gönderiler
@@ -885,7 +884,6 @@ deleteFolder: Bu klasörü sil
 addFile: Dosya ekle
 dayX: '{day}'
 enableLocalTimeline: Yerel zaman çizgisini aktif et
-disconnectService: Bağlantıyı kes
 enableGlobalTimeline: Global zaman çizgisini aktif et
 enableRegistration: Yeni kullanıcı kaydını aktif et
 invite: Davet et
@@ -1206,7 +1204,6 @@ location: Konum
 registeredDate: Katılım tarihi
 yearX: '{year}'
 pages: Sayfalar
-integration: Entegrasyonlar
 antennasDesc: "Antenler, belirlediğiniz kriterlere uyan yeni gönderiler görüntüler!\n
    Zaman çizelgeleri sayfasından erişilebilirler."
 notesAndReplies: Gönderiler ve yanıtlar

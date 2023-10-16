@@ -483,8 +483,6 @@ accept: Accepteren
 reject: Afwijzen
 normal: Normaal
 pages: Pagina's
-integration: Integraties
-connectService: Koppelen
 monthX: '{month}'
 yearX: '{year}'
 instanceName: Servernaam
@@ -492,7 +490,6 @@ instanceDescription: Server omschrijving
 maintainerName: Onderhouder
 maintainerEmail: Onderhouder email
 tosUrl: Algemene Voorwaarden URL
-disconnectService: Ontkoppelen
 unread: Ongelezen
 manageGroups: Beheer groepen
 subscribePushNotification: Pushmeldingen inschakelen

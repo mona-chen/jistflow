@@ -117,12 +117,6 @@ const menuDef = computed(() => [
 				active: currentPage.value?.route.name === "email",
 			},
 			{
-				icon: "ph-share-network ph-bold ph-lg",
-				text: i18n.ts.integration,
-				to: "/settings/integration",
-				active: currentPage.value?.route.name === "integration",
-			},
-			{
 				icon: "ph-lock ph-bold ph-lg",
 				text: i18n.ts.security,
 				to: "/settings/security",

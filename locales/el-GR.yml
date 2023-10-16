@@ -215,8 +215,6 @@ thisMonth: "Μήνας"
 today: "Σήμερα"
 dayX: "{day}"
 pages: "Σελίδες"
-connectService: "Σύνδεση"
-disconnectService: "Αποσύνδεση"
 registration: "Εγγραφή"
 pinnedPages: "Καρφιτσωμένες Σελίδες"
 pinnedNotes: "Καρφιτσωμένες δημοσιεύσεις"
@@ -730,7 +728,6 @@ lightThemes: Φωτεινά θέματα
 darkThemes: Σκοτεινά θέματα
 inputNewFolderName: Πληκτρολογήστε ένα νέο όνομα φακέλου
 hasChildFilesOrFolders: Εφόσον αυτός ο φάκελος δεν είναι άδειος, δεν μπορεί να διαγραφεί.
-integration: Ενσωματώσεις
 enableRecommendedTimeline: Ενεργοποίηση χρονολογίου προτεινόμενων
 driveCapacityPerLocalAccount: Μέγεθος Αποθηκευτικού Χώρου ανά τοπικό μέλος
 driveCapacityPerRemoteAccount: Μέγεθος Αποθηκευτικού Χώρου ανά απομακρυσμένο μέλος

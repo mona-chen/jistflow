@@ -124,38 +124,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="social _section">
-			<a
-				v-if="meta && meta.enableTwitterIntegration"
-				class="_borderButton _gap"
-				:href="`${apiUrl}/signin/twitter`"
-				><i
-					class="ph-twitter-logo ph-bold ph-lg"
-					style="margin-right: 4px"
-				></i
-				>{{ i18n.t("signinWith", { x: "Twitter" }) }}</a
-			>
-			<a
-				v-if="meta && meta.enableGithubIntegration"
-				class="_borderButton _gap"
-				:href="`${apiUrl}/signin/github`"
-				><i
-					class="ph-github-logo ph-bold ph-lg"
-					style="margin-right: 4px"
-				></i
-				>{{ i18n.t("signinWith", { x: "GitHub" }) }}</a
-			>
-			<a
-				v-if="meta && meta.enableDiscordIntegration"
-				class="_borderButton _gap"
-				:href="`${apiUrl}/signin/discord`"
-				><i
-					class="ph-discord-logo ph-bold ph-lg"
-					style="margin-right: 4px"
-				></i
-				>{{ i18n.t("signinWith", { x: "Discord" }) }}</a
-			>
-		</div>
 	</form>
 </template>
 
@@ -169,7 +137,6 @@ import { apiUrl, host as configHost } from "@/config";
 import { byteify, hexify } from "@/scripts/2fa";
 import * as os from "@/os";
 import { login } from "@/account";
-import { instance } from "@/instance";
 import { i18n } from "@/i18n";
 
 const signing = ref(false);
@@ -183,8 +150,6 @@ const challengeData = ref(null);
 const queryingKey = ref(false);
 const hCaptchaResponse = ref(null);
 const reCaptchaResponse = ref(null);
-
-const meta = computed(() => instance);
 
 const emit = defineEmits<{
 	(ev: "login", v: any): void;

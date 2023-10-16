@@ -339,8 +339,6 @@ instanceName: Instanssin nimi
 thisMonth: Kuukausi
 today: Tänään
 monthX: '{month}'
-connectService: Yhdistä
-disconnectService: Katkaise yhteys
 enableLocalTimeline: Ota käyttöön paikallinen aikajana
 enableGlobalTimeline: Ota käyttöön globaali aikajana
 enableRecommendedTimeline: Ota käyttöön suositellut -aikajana
@@ -385,7 +383,6 @@ disablingTimelinesInfo: Järjestelmänvalvojilla ja moderaattoreilla on aina pä
 dayX: '{day}'
 yearX: '{year}'
 pages: Sivut
-integration: Integraatiot
 instanceDescription: Instanssin kuvaus
 invite: Kutsu
 iconUrl: Ikoni URL-linkki

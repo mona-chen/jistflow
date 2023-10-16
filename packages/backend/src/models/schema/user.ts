@@ -459,11 +459,6 @@ export const packedMeDetailedOnlySchema = {
 			nullable: false,
 			optional: false,
 		},
-		integrations: {
-			type: "object",
-			nullable: true,
-			optional: false,
-		},
 		mutedWords: {
 			type: "array",
 			nullable: false,
