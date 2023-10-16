@@ -10,7 +10,8 @@ export class MfmHelpers {
         nodes: mfm.MfmNode[] | null,
         mentionedRemoteUsers: IMentionedRemoteUsers = [],
         objectHost: string | null,
-        inline: boolean = false
+        inline: boolean = false,
+        quoteUri: string | null = null
     ) {
         if (nodes == null) {
             return null;
@@ -193,6 +194,21 @@ export class MfmHelpers {
         };
 
         await appendChildren(nodes, doc.body);
+
+        if (quoteUri !== null) {
+            const a = doc.createElement("a");
+            a.href = quoteUri;
+            a.textContent = quoteUri.replace(/^https?:\/\//, '');
+
+            const quote = doc.createElement("span");
+            quote.setAttribute("class", "quote-inline");
+            quote.appendChild(doc.createElement("br"));
+            quote.appendChild(doc.createElement("br"));
+            quote.innerHTML += 'RE: ';
+            quote.appendChild(a);
+
+            doc.body.appendChild(quote);
+        }
 
         return inline ? doc.body.innerHTML : `<p>${doc.body.innerHTML}</p>`;
     }

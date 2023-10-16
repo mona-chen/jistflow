@@ -87,13 +87,15 @@ export class NoteConverter {
                 .catch(() => null)))
             .then(p => p.filter(m => m)) as Promise<MastodonEntity.Mention[]>;
 
-        const text = Promise.resolve(renote).then(renote => {
-            if (!renote || note.text === null) return note.text
-            const uri = renote.uri ? renote.uri : `${config.url}/notes/${renote.id}`;
-            return note.text.includes(uri)
-                ? note.text
-                : note.text + `\n\nRE: ${uri}`;
+        const quoteUri = Promise.resolve(renote).then(renote => {
+            if (!renote || note.text === null) return null;
+            return renote.uri ? renote.uri : `${config.url}/notes/${renote.id}`;
         });
+
+        const content = note.text !== null
+            ? quoteUri.then(quoteUri => MfmHelpers.toHtml(mfm.parse(note.text!), JSON.parse(note.mentionedRemoteUsers), note.userHost, false, quoteUri)
+                .then(p => p ?? escapeMFM(note.text!)))
+            : "";
 
         const isPinned = user && note.userId === user.id
             ? UserNotePinings.exist({ where: { userId: user.id, noteId: note.id } })
@@ -117,9 +119,9 @@ export class NoteConverter {
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: note.replyUserId,
             reblog: reblog.then(reblog => note.text === null ? reblog : null),
-            content: text.then(async text => text !== null ? MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers), note.userHost).then(p => p ?? escapeMFM(text)) : ""),
+            content: content,
             content_type: 'text/x.misskeymarkdown',
-            text: text,
+            text: note.text,
             created_at: note.createdAt.toISOString(),
             emojis: noteEmoji,
             replies_count: note.repliesCount,
