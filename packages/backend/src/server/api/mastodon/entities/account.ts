@@ -6,6 +6,7 @@ namespace MastodonEntity {
         id: string;
         username: string;
         acct: string;
+        fqn: string;
         display_name: string;
         locked: boolean;
         created_at: string;

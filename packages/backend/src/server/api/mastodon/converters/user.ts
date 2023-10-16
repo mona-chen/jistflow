@@ -25,6 +25,7 @@ export class UserConverter {
             const cacheHit = cache.accounts.find(p => p.id == u.id);
             if (cacheHit) return cacheHit;
 
+            let fqn = `${u.username}@${u.host ?? config.domain}`;
             let acct = u.username;
             let acctUrl = `https://${u.host || config.host}/@${u.username}`;
             if (u.host) {
@@ -79,6 +80,7 @@ export class UserConverter {
                 id: u.id,
                 username: u.username,
                 acct: acct,
+                fqn: fqn,
                 display_name: u.name || u.username,
                 locked: u.isLocked,
                 created_at: u.createdAt.toISOString(),
