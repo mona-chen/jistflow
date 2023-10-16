@@ -118,6 +118,7 @@ export class NoteConverter {
             in_reply_to_account_id: note.replyUserId,
             reblog: reblog.then(reblog => note.text === null ? reblog : null),
             content: text.then(async text => text !== null ? MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers), note.userHost).then(p => p ?? escapeMFM(text)) : ""),
+            content_type: 'text/x.misskeymarkdown',
             text: text,
             created_at: note.createdAt.toISOString(),
             emojis: noteEmoji,
