@@ -17,7 +17,7 @@ import { Cache } from "@/misc/cache.js";
 import { uriPersonCache, userByIdCache } from "@/services/user-cache.js";
 import type { IObject } from "./type.js";
 import { getApId } from "./type.js";
-import { resolvePerson } from "./models/person.js";
+import { resolvePerson, updatePerson } from "./models/person.js";
 import {redisClient, subscriber} from "@/db/redis.js";
 
 const publicKeyCache = new Cache<UserPublickey | null>("publicKey", 60 * 30);
@@ -152,7 +152,7 @@ export default class DbResolver {
 	 */
 	public async getAuthUserFromKeyId(keyId: string): Promise<{
 		user: CacheableRemoteUser;
-		key: UserPublickey;
+		key: UserPublickey | null;
 	} | null> {
 		const key = await publicKeyCache.fetch(
 			keyId,
@@ -203,6 +203,15 @@ export default class DbResolver {
 			user,
 			key,
 		};
+	}
+
+	public async refetchPublicKeyForApId(user: CacheableRemoteUser): Promise<UserPublickey | null> {
+		await updatePerson(user.uri!, undefined, undefined, user);
+		let key = await UserPublickeys.findOneBy({ userId: user.id });
+		if (key != null) {
+			await publicKeyByUserIdCache.set(user.id, key);
+		}
+		return key;
 	}
 }
 
