@@ -268,7 +268,7 @@ const isDeleted = ref(false);
 const muted = ref(
 	getWordSoftMute(
 		note.value,
-		$i,
+		$i.id,
 		defaultStore.state.mutedWords,
 		defaultStore.state.mutedLangs,
 	),

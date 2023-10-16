@@ -380,18 +380,16 @@ export default async (
 			)
 			.then((us) => {
 				for (const u of us) {
-					getWordHardMute(data, { id: u.userId }, u.mutedWords).then(
-						(shouldMute) => {
-							if (shouldMute) {
-								MutedNotes.insert({
-									id: genId(),
-									userId: u.userId,
-									noteId: note.id,
-									reason: "word",
-								});
-							}
-						},
-					);
+					getWordHardMute(data, u.userId, u.mutedWords).then((shouldMute) => {
+						if (shouldMute) {
+							MutedNotes.insert({
+								id: genId(),
+								userId: u.userId,
+								noteId: note.id,
+								reason: "word",
+							});
+						}
+					});
 				}
 			});
 

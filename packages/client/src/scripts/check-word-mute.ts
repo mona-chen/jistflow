@@ -1,3 +1,5 @@
+import type * as firefish from "firefish-js";
+
 export interface Muted {
 	muted: boolean;
 	matched: string[];
@@ -7,7 +9,7 @@ export interface Muted {
 const NotMuted = { muted: false, matched: [] };
 
 function checkLangMute(
-	note: NoteLike,
+	note: firefish.entities.Note,
 	mutedLangs: Array<string | string[]>,
 ): Muted {
 	const mutedLangList = new Set(
@@ -20,7 +22,7 @@ function checkLangMute(
 }
 
 function checkWordMute(
-	note: NoteLike,
+	note: firefish.entities.Note,
 	mutedWords: Array<string | string[]>,
 ): Muted {
 	let text = `${note.cw ?? ""} ${note.text ?? ""}`;
@@ -72,15 +74,12 @@ function checkWordMute(
 }
 
 export function getWordSoftMute(
-	note: Record<string, any>,
-	me: Record<string, any> | null | undefined,
+	note: firefish.entities.Note,
+	meId: string | null | undefined,
 	mutedWords: Array<string | string[]>,
 	mutedLangs: Array<string | string[]>,
 ): Muted {
-	// 自分自身
-	if (me && note.userId === me.id) {
-		return NotMuted;
-	}
+	if (note.userId === meId) return NotMuted;
 
 	if (mutedWords.length > 0) {
 		const noteMuted = checkWordMute(note, mutedWords);

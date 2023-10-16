@@ -273,7 +273,6 @@
 
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref } from "vue";
-import * as mfm from "mfm-js";
 import type { Ref } from "vue";
 import type * as firefish from "firefish-js";
 import MkSubNoteContent from "./MkSubNoteContent.vue";
@@ -360,7 +359,7 @@ const isDeleted = ref(false);
 const muted = ref(
 	getWordSoftMute(
 		note.value,
-		$i,
+		$i.id,
 		defaultStore.state.mutedWords,
 		defaultStore.state.mutedLangs,
 	),
