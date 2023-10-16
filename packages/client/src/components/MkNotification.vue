@@ -114,7 +114,7 @@
 				:to="notePage(notification.note)"
 				:title="getNoteSummary(notification.note)"
 			>
-				<span>{{ i18n.ts._notification.reacted }}</span>
+				<span>{{ i18n.ts._notification.reacted }}: </span>
 				<i class="ph-quotes ph-fill ph-lg"></i>
 				<Mfm
 					:text="getNoteSummary(notification.note)"
@@ -130,7 +130,7 @@
 				:to="notePage(notification.note)"
 				:title="getNoteSummary(notification.note.renote)"
 			>
-				<span>{{ i18n.ts._notification.renoted }}</span>
+				<span>{{ i18n.ts._notification.renoted }}: </span>
 				<i class="ph-quotes ph-fill ph-lg"></i>
 				<Mfm
 					:text="getNoteSummary(notification.note.renote)"
@@ -185,7 +185,7 @@
 				:to="notePage(notification.note)"
 				:title="getNoteSummary(notification.note)"
 			>
-				<span>{{ i18n.ts._notification.voted }}</span>
+				<span>{{ i18n.ts._notification.voted }}: </span>
 				<i class="ph-quotes ph-fill ph-lg"></i>
 				<Mfm
 					:text="getNoteSummary(notification.note)"
@@ -518,9 +518,6 @@ useTooltip(reactionRef, (showing) => {
 
 			> span:first-child {
 				opacity: 0.7;
-				&::after {
-					content: ": ";
-				}
 			}
 
 			> i {
