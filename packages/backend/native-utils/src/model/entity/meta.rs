@@ -71,24 +71,6 @@ pub struct Model {
     pub sw_public_key: Option<String>,
     #[sea_orm(column_name = "swPrivateKey")]
     pub sw_private_key: Option<String>,
-    #[sea_orm(column_name = "enableTwitterIntegration")]
-    pub enable_twitter_integration: bool,
-    #[sea_orm(column_name = "twitterConsumerKey")]
-    pub twitter_consumer_key: Option<String>,
-    #[sea_orm(column_name = "twitterConsumerSecret")]
-    pub twitter_consumer_secret: Option<String>,
-    #[sea_orm(column_name = "enableGithubIntegration")]
-    pub enable_github_integration: bool,
-    #[sea_orm(column_name = "githubClientId")]
-    pub github_client_id: Option<String>,
-    #[sea_orm(column_name = "githubClientSecret")]
-    pub github_client_secret: Option<String>,
-    #[sea_orm(column_name = "enableDiscordIntegration")]
-    pub enable_discord_integration: bool,
-    #[sea_orm(column_name = "discordClientId")]
-    pub discord_client_id: Option<String>,
-    #[sea_orm(column_name = "discordClientSecret")]
-    pub discord_client_secret: Option<String>,
     #[sea_orm(column_name = "pinnedUsers")]
     pub pinned_users: StringVec,
     #[sea_orm(column_name = "ToSUrl")]

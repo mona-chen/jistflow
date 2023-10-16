@@ -46,8 +46,6 @@ pub struct Model {
     pub pinned_page_id: Option<String>,
     #[sea_orm(column_type = "JsonBinary")]
     pub room: Json,
-    #[sea_orm(column_type = "JsonBinary")]
-    pub integrations: Json,
     #[sea_orm(column_name = "injectFeaturedNote")]
     pub inject_featured_note: bool,
     #[sea_orm(column_name = "enableWordMute")]

@@ -365,8 +365,6 @@ today: Idag
 dayX: '{day}'
 monthX: '{month}'
 yearX: '{year}'
-connectService: Anslut
-disconnectService: Bortkoppla
 enableLocalTimeline: Anslut till lokal tidslinje
 invite: Bjud in
 driveCapacityPerLocalAccount: Enhetens kapacitet per lokal användare
@@ -779,7 +777,6 @@ serverLogs: Serverloggar
 deleteAll: Radera alla
 removeAllFollowing: Sluta följa alla följda användare
 medium: Mellan
-integration: Integreringar
 xl: XL
 desktop: Skrivbord
 createNew: Skapa nya

@@ -944,7 +944,6 @@ dayX: '{day}'
 tosUrl: URL de les Condicions d'ús
 thisYear: Any
 thisMonth: Mes
-integration: Integracions
 driveCapacityPerRemoteAccount: Capacitat del Disc per usuari remot
 inMb: En megabytes
 iconUrl: Adreça URL de la icona
@@ -1036,8 +1035,6 @@ accept: Accepta
 reject: Rebutja
 yearX: '{year}'
 pages: Pàgines
-disconnectService: Desconnectar
-connectService: Connectar
 enableLocalTimeline: Activa la línea de temps local
 enableRecommendedTimeline: Activa la línea de temps de recomanacions
 pinnedClipId: ID del clip que vols fixar
