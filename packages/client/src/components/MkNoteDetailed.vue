@@ -36,30 +36,47 @@
 		<MkTab v-model="tab" :style="'underline'" @update:modelValue="loadTab">
 			<option value="replies">
 				<!-- <i class="ph-arrow-u-up-left ph-bold ph-lg"></i> -->
-				<span v-if="note.repliesCount > 0" class="count">{{
-					note.repliesCount
-				}}</span>
-				{{ i18n.ts._notification._types.reply }}
+				{{
+					wordWithCount(
+						note.repliesCount,
+						i18n.ts.reply,
+						i18n.ts.replies,
+					)
+				}}
 			</option>
 			<option v-if="note.renoteCount > 0" value="renotes">
 				<!-- <i class="ph-rocket-launch ph-bold ph-lg"></i> -->
-				<span class="count">{{ note.renoteCount }}</span>
-				{{ i18n.ts._notification._types.renote }}
+				{{
+					wordWithCount(
+						note.renoteCount,
+						i18n.ts.renote,
+						i18n.ts.renotes,
+					)
+				}}
 			</option>
 			<option v-if="reactionsCount > 0" value="reactions">
 				<!-- <i class="ph-smiley ph-bold ph-lg"></i> -->
-				<span class="count">{{ reactionsCount }}</span>
-				{{ i18n.ts.reaction }}
+				{{
+					wordWithCount(
+						reactionsCount,
+						i18n.ts.reaction,
+						i18n.ts.reactions,
+					)
+				}}
 			</option>
 			<option v-if="directQuotes?.length > 0" value="quotes">
 				<!-- <i class="ph-quotes ph-bold ph-lg"></i> -->
-				<span class="count">{{ directQuotes.length }}</span>
-				{{ i18n.ts._notification._types.quote }}
+				{{
+					wordWithCount(
+						directQuotes.length,
+						i18n.ts.quote,
+						i18n.ts.quotes,
+					)
+				}}
 			</option>
 			<option v-if="clips?.length > 0" value="clips">
 				<!-- <i class="ph-paperclip ph-bold ph-lg"></i> -->
-				<span class="count">{{ clips.length }}</span>
-				{{ i18n.ts.clips }}
+				{{ wordWithCount(clips.length, i18n.ts.clip, i18n.ts.clips) }}
 			</option>
 		</MkTab>
 
@@ -189,6 +206,11 @@ const softMuteReasonI18nSrc = (what?: string) => {
 
 	// I don't think here is reachable, but just in case
 	return i18n.ts.userSaysSomething;
+};
+
+const wordWithCount = (count: number, singular: string, plural: string) => {
+	if (count === 0) return plural;
+	return `${count} ${count === 1 ? singular : plural}`;
 };
 
 // plugin
