@@ -1,6 +1,6 @@
 import * as mfm from "mfm-js";
-import es from "../../db/elasticsearch.js";
-import sonic from "../../db/sonic.js";
+import es from "@/db/elasticsearch.js";
+import sonic from "@/db/sonic.js";
 import {
 	publishMainStream,
 	publishNotesStream,

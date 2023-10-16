@@ -9,8 +9,6 @@ import {
 } from "@/models/index.js";
 import { Not, IsNull, In } from "typeorm";
 import type { Channel } from "@/models/entities/channel.js";
-import { checkHitAntenna } from "@/misc/check-hit-antenna.js";
-import { getAntennas } from "@/misc/antenna-cache.js";
 import { readNotificationByQuery } from "@/server/api/common/read-notification.js";
 import type { Packed } from "@/misc/schema.js";
 
@@ -66,23 +64,6 @@ export default async function (
 		if (note.channelId && followingChannels.has(note.channelId)) {
 			readChannelNotes.push(note);
 		}
-
-		// if (note.user != null) {
-		// 	// たぶんnullになることは無いはずだけど一応
-		// 	for (const antenna of myAntennas) {
-		// 		if (
-		// 			await checkHitAntenna(
-		// 				antenna,
-		// 				note,
-		// 				note.user,
-		// 				undefined,
-		// 				Array.from(following),
-		// 			)
-		// 		) {
-		// 			readAntennaNotes.push(note);
-		// 		}
-		// 	}
-		// }
 	}
 
 	if (
