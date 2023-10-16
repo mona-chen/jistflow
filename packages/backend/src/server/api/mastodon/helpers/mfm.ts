@@ -103,6 +103,7 @@ export class MfmHelpers {
                 a.href = `${config.url}/tags/${node.props.hashtag}`;
                 a.textContent = `#${node.props.hashtag}`;
                 a.setAttribute("rel", "tag");
+                a.setAttribute("class", "hashtag");
                 return a;
             },
 
