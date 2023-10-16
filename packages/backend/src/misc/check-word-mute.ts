@@ -57,9 +57,9 @@ function checkWordMute(
 export async function getWordHardMute(
 	note: NoteLike,
 	meId: string | null | undefined,
-	mutedWords: Array<string | string[]>,
+	mutedWords?: Array<string | string[]>,
 ): Promise<boolean> {
-	if (note.userId === meId) return false;
+	if (note.userId === meId || mutedWords == null) return false;
 
 	if (mutedWords.length > 0) {
 		return (

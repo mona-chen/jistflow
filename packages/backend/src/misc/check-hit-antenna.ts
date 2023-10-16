@@ -1,11 +1,12 @@
 import type { Antenna } from "@/models/entities/antenna.js";
 import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
-import { Blockings } from "@/models/index.js";
+import { Blockings, UserProfiles } from "@/models/index.js";
 import { getFullApAccount } from "./convert-host.js";
 import * as Acct from "@/misc/acct.js";
 import type { Packed } from "./schema.js";
 import { Cache } from "./cache.js";
+import { getWordHardMute } from "./check-word-mute.js";
 
 const blockingCache = new Cache<User["id"][]>("blocking", 60 * 5);
 
@@ -16,6 +17,10 @@ export async function checkHitAntenna(
 ): Promise<boolean> {
 	if (note.visibility === "specified") return false;
 	if (note.visibility === "home") return false;
+	if (!antenna.withReplies && note.replyId != null) return false;
+	if (antenna.withFile) {
+		if (note.fileIds && note.fileIds.length === 0) return false;
+	}
 
 	// アンテナ作成者がノート作成者にブロックされていたらスキップ
 	const blockings = await blockingCache.fetch(noteUser.id, () =>
@@ -24,8 +29,6 @@ export async function checkHitAntenna(
 		),
 	);
 	if (blockings.some((blocking) => blocking === antenna.userId)) return false;
-
-	if (!antenna.withReplies && note.replyId != null) return false;
 
 	if (antenna.src === "users") {
 		const accts = antenna.users.map((x) => {
@@ -85,9 +88,16 @@ export async function checkHitAntenna(
 		if (matched) return false;
 	}
 
-	if (antenna.withFile) {
-		if (note.fileIds && note.fileIds.length === 0) return false;
-	}
+	if (
+		await getWordHardMute(
+			note,
+			antenna.userId,
+			(
+				await UserProfiles.findOneBy({ userId: antenna.userId })
+			)?.mutedWords,
+		)
+	)
+		return false;
 
 	// TODO: eval expression
 
