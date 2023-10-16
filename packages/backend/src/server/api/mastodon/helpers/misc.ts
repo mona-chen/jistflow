@@ -66,6 +66,7 @@ export class MiscHelpers {
                     max_featured_tags: 20,
                 },
                 statuses: {
+                    supported_mime_types: ['text/x.misskeymarkdown'],
                     max_characters: MAX_NOTE_TEXT_LENGTH,
                     max_media_attachments: 16,
                     characters_reserved_per_url: 23,
