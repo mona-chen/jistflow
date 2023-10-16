@@ -280,7 +280,7 @@ importers:
         specifier: 7.0.2
         version: 7.0.2(@types/koa@2.13.8)(ejs@3.1.9)(pug@3.0.2)
       megalodon:
-        specifier: ^8.1.1
+        specifier: 8.1.1
         version: 8.1.1
       meilisearch:
         specifier: 0.34.1
