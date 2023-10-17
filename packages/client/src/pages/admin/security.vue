@@ -11,7 +11,7 @@
 				<div class="_formRoot">
 					<FormFolder class="_formBlock">
 						<template #icon
-							><i class="ph-robot ph-bold ph-lg"></i
+							><i :class="icon('ph-robot')"></i
 						></template>
 						<template #label>{{ i18n.ts.botProtection }}</template>
 						<template v-if="enableHcaptcha" #suffix
@@ -31,7 +31,7 @@
 
 					<FormFolder class="_formBlock">
 						<template #icon
-							><i class="ph-eye-slash ph-bold ph-lg"></i
+							><i :class="icon('ph-eye-slash')"></i
 						></template>
 						<template #label>{{
 							i18n.ts.sensitiveMediaDetection
@@ -131,9 +131,7 @@
 						-->
 
 							<FormButton primary class="_formBlock" @click="save"
-								><i
-									class="ph-floppy-disk-back ph-bold ph-lg"
-								></i>
+								><i :class="icon('ph-floppy-disk-back')"></i>
 								{{ i18n.ts.save }}</FormButton
 							>
 						</div>
@@ -187,15 +185,13 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-link-simple ph-bold ph-lg"></i
+									><i :class="icon('ph-link-simple')"></i
 								></template>
 								<template #label>Summaly Proxy URL</template>
 							</FormInput>
 
 							<FormButton primary class="_formBlock" @click="save"
-								><i
-									class="ph-floppy-disk-back ph-bold ph-lg"
-								></i>
+								><i :class="icon('ph-floppy-disk-back')"></i>
 								{{ i18n.ts.save }}</FormButton
 							>
 						</div>
@@ -241,9 +237,7 @@
 								primary
 								class="_formBlock"
 								@click="saveInstance"
-								><i
-									class="ph-floppy-disk-back ph-bold ph-lg"
-								></i>
+								><i :class="icon('ph-floppy-disk-back')"></i>
 								{{ i18n.ts.save }}</FormButton
 							>
 						</div>
@@ -270,6 +264,7 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const summalyProxy = ref("");
 const enableHcaptcha = ref(false);
@@ -356,6 +351,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.security,
-	icon: "ph-lock ph-bold ph-lg",
+	icon: `${icon("ph-lock")}`,
 });
 </script>

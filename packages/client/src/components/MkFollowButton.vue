@@ -5,7 +5,7 @@
 		class="menu _button"
 		@click.stop="menu"
 	>
-		<i class="ph-dots-three-outline ph-bold ph-lg"></i>
+		<i :class="icon('ph-dots-three-outline')"></i>
 	</button>
 	<button
 		v-if="$i != null && $i.id != user.id"
@@ -25,37 +25,37 @@
 		<template v-if="!wait">
 			<template v-if="isBlocking">
 				<span>{{ (state = i18n.ts.blocked) }}</span
-				><i class="ph-prohibit ph-bold ph-lg"></i>
+				><i :class="icon('ph-prohibit')"></i>
 			</template>
 			<template
 				v-else-if="hasPendingFollowRequestFromYou && user.isLocked"
 			>
 				<span>{{ (state = i18n.ts.followRequestPending) }}</span
-				><i class="ph-hourglass-medium ph-bold ph-lg"></i>
+				><i :class="icon('ph-hourglass-medium')"></i>
 			</template>
 			<template
 				v-else-if="hasPendingFollowRequestFromYou && !user.isLocked"
 			>
 				<!-- つまりリモートフォローの場合。 -->
 				<span>{{ (state = i18n.ts.processing) }}</span
-				><i class="ph-circle-notch ph-bold ph-lg fa-pulse"></i>
+				><i :class="icon('ph-circle-notch fa-pulse')"></i>
 			</template>
 			<template v-else-if="isFollowing">
 				<span>{{ (state = i18n.ts.unfollow) }}</span
-				><i class="ph-minus ph-bold ph-lg"></i>
+				><i :class="icon('ph-minus')"></i>
 			</template>
 			<template v-else-if="!isFollowing && user.isLocked">
 				<span>{{ (state = i18n.ts.followRequest) }}</span
-				><i class="ph-lock-open ph-bold ph-lg"></i>
+				><i :class="icon('ph-lock-open')"></i>
 			</template>
 			<template v-else-if="!isFollowing && !user.isLocked">
 				<span>{{ (state = i18n.ts.follow) }}</span
-				><i class="ph-plus ph-bold ph-lg"></i>
+				><i :class="icon('ph-plus')"></i>
 			</template>
 		</template>
 		<template v-else>
 			<span>{{ (state = i18n.ts.processing) }}</span
-			><i class="ph-circle-notch ph-bold ph-lg fa-pulse ph-fw ph-lg"></i>
+			><i :class="icon('ph-circle-notch fa-pulse ph-fw')"></i>
 		</template>
 	</button>
 </template>
@@ -70,6 +70,7 @@ import { $i } from "@/account";
 import { getUserMenu } from "@/scripts/get-user-menu";
 import { useRouter } from "@/router";
 import { vibrate } from "@/scripts/vibrate";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 

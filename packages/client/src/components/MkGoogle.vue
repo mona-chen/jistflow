@@ -2,7 +2,7 @@
 	<div class="mk-google" @click.stop>
 		<input v-model="query" type="search" :placeholder="q" />
 		<button @click="search">
-			<i class="ph-magnifying-glass ph-bold ph-lg"></i>
+			<i :class="icon('ph-magnifying-glass')"></i>
 			{{ i18n.ts.searchByGoogle }}
 		</button>
 	</div>
@@ -12,6 +12,7 @@
 import { ref } from "vue";
 import { i18n } from "@/i18n";
 import { useRouter } from "@/router";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 

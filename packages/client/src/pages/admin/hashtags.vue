@@ -17,7 +17,7 @@
 				</FormTextarea>
 
 				<FormButton primary class="_formBlock" @click="save"
-					><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+					><i :class="icon('ph-floppy-disk-back')"></i>
 					{{ i18n.ts.save }}</FormButton
 				>
 			</FormSuspense>
@@ -35,6 +35,7 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const hiddenTags = ref("");
 
@@ -58,6 +59,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.hiddenTags,
-	icon: "ph-hash ph-bold ph-lg",
+	icon: `${icon("ph-hash")}`,
 });
 </script>

@@ -6,7 +6,7 @@
 		@parent-focus="($event) => emit('parent-focus', $event)"
 	>
 		<template #header>
-			<i class="ph-flying-saucer ph-bold ph-lg"></i
+			<i :class="icon('ph-flying-saucer')"></i
 			><span style="margin-left: 8px">{{ column.name }}</span>
 		</template>
 
@@ -28,6 +28,7 @@ import { updateColumn } from "./deck-store";
 import XTimeline from "@/components/MkTimeline.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	column: Column;
@@ -66,7 +67,7 @@ async function setAntenna() {
 
 const menu = [
 	{
-		icon: "ph-pencil ph-bold ph-lg",
+		icon: `${icon("ph-pencil")}`,
 		text: i18n.ts.selectAntenna,
 		action: setAntenna,
 	},

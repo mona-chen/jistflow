@@ -98,6 +98,7 @@ import MkPagination from "@/components/MkPagination.vue";
 import XAbuseReport from "@/components/MkAbuseReport.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const reports = ref<InstanceType<typeof MkPagination>>();
 
@@ -127,7 +128,7 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.abuseReports,
-	icon: "ph-warning-circle ph-bold ph-lg",
+	icon: `${icon("ph-warning-circle")}`,
 });
 </script>
 

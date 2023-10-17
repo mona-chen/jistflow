@@ -75,7 +75,7 @@
 
 					<section>
 						<header class="_acrylic">
-							<i class="ph-alarm ph-bold ph-fw ph-lg"></i>
+							<i :class="icon('ph-alarm ph-fw')"></i>
 							{{ i18n.ts.recentUsed }}
 						</header>
 						<div class="body">
@@ -135,28 +135,28 @@
 					:class="{ active: tab === 'index' }"
 					@click="tab = 'index'"
 				>
-					<i class="ph-asterisk ph-bold ph-lg ph-fw ph-lg"></i>
+					<i :class="icon('ph-asterisk ph-fw')"></i>
 				</button>
 				<button
 					class="_button tab"
 					:class="{ active: tab === 'custom' }"
 					@click="tab = 'custom'"
 				>
-					<i class="ph-smiley ph-bold ph-lg ph-fw ph-lg"></i>
+					<i :class="icon('ph-smiley ph-fw')"></i>
 				</button>
 				<button
 					class="_button tab"
 					:class="{ active: tab === 'unicode' }"
 					@click="tab = 'unicode'"
 				>
-					<i class="ph-leaf ph-bold ph-lg ph-fw ph-lg"></i>
+					<i :class="icon('ph-leaf ph-fw')"></i>
 				</button>
 				<button
 					class="_button tab"
 					:class="{ active: tab === 'tags' }"
 					@click="tab = 'tags'"
 				>
-					<i class="ph-hash ph-bold ph-lg ph-fw ph-lg"></i>
+					<i :class="icon('ph-hash ph-fw')"></i>
 				</button>
 			</div>
 		</div>
@@ -182,6 +182,7 @@ import { deviceKind } from "@/scripts/device-kind";
 import { emojiCategories, instance } from "@/instance";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{

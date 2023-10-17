@@ -1,7 +1,7 @@
 <template>
 	<MkContainer :show-header="widgetProps.showHeader" class="mkw-aiscript">
 		<template #header
-			><i class="ph-terminal-window ph-bold ph-lg"></i
+			><i :class="icon('ph-terminal-window')"></i
 			>{{ i18n.ts._widgets.aiscript }}</template
 		>
 
@@ -26,20 +26,17 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { ref } from "vue";
 import { AiScript, parse, utils } from "@syuilo/aiscript";
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
 import { createAiScriptEnv } from "@/scripts/aiscript/api";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const name = "aiscript";
 

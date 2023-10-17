@@ -1,5 +1,8 @@
 <template>
-	<transition :name="$store.state.animation ? 'fade' : ''" mode="out-in">
+	<transition
+		:name="defaultStore.state.animation ? 'fade' : ''"
+		mode="out-in"
+	>
 		<div v-if="pending">
 			<MkLoading />
 		</div>
@@ -9,11 +12,11 @@
 		<div v-else>
 			<div class="wszdbhzo">
 				<div>
-					<i class="ph-warning ph-bold ph-lg"></i>
+					<i :class="icon('ph-warning')"></i>
 					{{ i18n.ts.somethingHappened }}
 				</div>
 				<MkButton inline class="retry" @click="retry"
-					><i class="ph-arrow-clockwise ph-bold ph-lg"></i>
+					><i :class="icon('ph-arrow-clockwise')"></i>
 					{{ i18n.ts.retry }}</MkButton
 				>
 			</div>
@@ -26,6 +29,8 @@ import type { PropType } from "vue";
 import { defineComponent, ref, watch } from "vue";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 export default defineComponent({
 	components: {

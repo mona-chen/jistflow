@@ -9,7 +9,7 @@
 			class="reply-icon"
 			@click.stop
 		>
-			<i class="ph-quotes ph-bold ph-lg"></i>
+			<i :class="icon('ph-quotes')"></i>
 		</MkA>
 		<MkA
 			v-else-if="!detailed && note.replyId"
@@ -23,7 +23,7 @@
 			class="reply-icon"
 			@click.stop
 		>
-			<i class="ph-arrow-bend-left-up ph-bold ph-lg"></i>
+			<i :class="icon('ph-arrow-bend-left-up')"></i>
 		</MkA>
 		<Mfm
 			v-if="note.cw != ''"
@@ -81,7 +81,7 @@
 						class="reply-icon"
 						@click.stop
 					>
-						<i class="ph-quotes ph-bold ph-lg"></i>
+						<i :class="icon('ph-quotes')"></i>
 					</MkA>
 					<MkA
 						v-else-if="!detailed && note.replyId"
@@ -95,7 +95,7 @@
 						class="reply-icon"
 						@click.stop
 					>
-						<i class="ph-arrow-bend-left-up ph-bold ph-lg"></i>
+						<i :class="icon('ph-arrow-bend-left-up')"></i>
 					</MkA>
 				</template>
 				<Mfm
@@ -162,10 +162,12 @@
 			@click.stop="toggleMfm"
 		>
 			<template v-if="disableMfm">
-				<i class="ph-play ph-bold"></i> {{ i18n.ts._mfm.play }}
+				<i :class="icon('ph-play', false)"></i>
+				{{ i18n.ts._mfm.play }}
 			</template>
 			<template v-else>
-				<i class="ph-stop ph-bold"></i> {{ i18n.ts._mfm.stop }}
+				<i :class="icon('ph-stop', false)"></i>
+				{{ i18n.ts._mfm.stop }}
 			</template>
 		</MkButton>
 		<!-- <div
@@ -192,6 +194,7 @@ import { extractUrlFromMfm } from "@/scripts/extract-url-from-mfm";
 import { extractMfmWithAnimation } from "@/scripts/extract-mfm";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: firefish.entities.Note;

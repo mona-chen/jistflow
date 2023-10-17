@@ -31,13 +31,13 @@
 		</svg>
 		<i
 			v-else-if="instance.defaultReaction === '👍'"
-			class="ph-thumbs-up ph-bold ph-lg"
+			:class="icon('ph-thumbs-up')"
 		></i>
 		<i
 			v-else-if="instance.defaultReaction === '❤️'"
-			class="ph-heart ph-bold ph-lg"
+			:class="icon('ph-heart')"
 		></i>
-		<i v-else class="ph-star ph-bold ph-lg"></i>
+		<i v-else :class="icon('ph-star')"></i>
 	</button>
 </template>
 
@@ -49,6 +49,7 @@ import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: Note;

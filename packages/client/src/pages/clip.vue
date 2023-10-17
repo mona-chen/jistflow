@@ -35,6 +35,7 @@ import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	clipId: string;
@@ -71,7 +72,7 @@ const headerActions = computed(() =>
 	clip.value && isOwned.value
 		? [
 				{
-					icon: "ph-pencil ph-bold ph-lg",
+					icon: `${icon("ph-pencil")}`,
 					text: i18n.ts.edit,
 					handler: async (): Promise<void> => {
 						const { canceled, result } = await os.form(
@@ -105,7 +106,7 @@ const headerActions = computed(() =>
 					},
 				},
 				{
-					icon: "ph-trash ph-bold ph-lg",
+					icon: `${icon("ph-trash")}`,
 					text: i18n.ts.delete,
 					danger: true,
 					handler: async (): Promise<void> => {
@@ -131,7 +132,7 @@ definePageMetadata(
 		clip.value
 			? {
 					title: clip.value.name,
-					icon: "ph-paperclip ph-bold ph-lg",
+					icon: `${icon("ph-paperclip")}`,
 			  }
 			: null,
 	),

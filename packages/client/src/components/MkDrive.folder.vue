@@ -17,10 +17,10 @@
 	>
 		<p class="name">
 			<template v-if="hover"
-				><i class="ph-folder-notch-open ph-bold ph-lg ph-fw ph-lg"></i
+				><i :class="icon('ph-folder-notch-open ph-fw')"></i
 			></template>
 			<template v-if="!hover"
-				><i class="ph-folder-notch ph-bold ph-lg ph-fw ph-lg"></i
+				><i :class="icon('ph-folder-notch ph-fw')"></i
 			></template>
 			{{ folder.name }}
 		</p>
@@ -42,6 +42,7 @@ import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
@@ -248,7 +249,7 @@ function onContextmenu(ev: MouseEvent) {
 		[
 			{
 				text: i18n.ts.openInWindow,
-				icon: "ph-copy ph-bold ph-lg",
+				icon: `${icon("ph-copy")}`,
 				action: () => {
 					os.popup(
 						defineAsyncComponent(
@@ -265,13 +266,13 @@ function onContextmenu(ev: MouseEvent) {
 			null,
 			{
 				text: i18n.ts.rename,
-				icon: "ph-cursor-text ph-bold ph-lg",
+				icon: `${icon("ph-cursor-text")}`,
 				action: rename,
 			},
 			null,
 			{
 				text: i18n.ts.delete,
-				icon: "ph-trash ph-bold ph-lg",
+				icon: `${icon("ph-trash")}`,
 				danger: true,
 				action: deleteFolder,
 			},

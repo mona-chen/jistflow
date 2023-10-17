@@ -61,7 +61,7 @@
 								external
 							>
 								<template #icon
-									><i class="ph-code ph-bold ph-lg"></i
+									><i :class="icon('ph-code')"></i
 								></template>
 								{{ i18n.ts._aboutFirefish.source }}
 								<template #suffix>GitLab</template>
@@ -71,7 +71,7 @@
 								external
 							>
 								<template #icon
-									><i class="ph-money ph-bold ph-lg"></i
+									><i :class="icon('ph-money')"></i
 								></template>
 								{{ i18n.ts._aboutFirefish.donate }}
 								<template #suffix>Donate</template>
@@ -81,7 +81,7 @@
 								external
 							>
 								<template #icon
-									><i class="ph-translate ph-bold ph-lg"></i
+									><i :class="icon('ph-translate')"></i
 								></template>
 								{{ i18n.ts._aboutFirefish.translation }}
 								<template #suffix>Translate</template>
@@ -219,6 +219,7 @@ import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 let patrons = [],
 	sponsors = [];

@@ -32,6 +32,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import FormLink from "@/components/form/link.vue";
 import FormSection from "@/components/form/section.vue";
 import MkButton from "@/components/MkButton.vue";
+import icon from "@/scripts/icon";
 
 const scopes = ref(null);
 
@@ -77,6 +78,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.registry,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 });
 </script>

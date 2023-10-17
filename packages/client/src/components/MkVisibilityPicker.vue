@@ -15,7 +15,7 @@
 				@click="choose('public')"
 			>
 				<div :class="$style.icon">
-					<i class="ph-planet ph-bold ph-lg"></i>
+					<i :class="icon('ph-planet')"></i>
 				</div>
 				<div :class="$style.body">
 					<span :class="$style.itemTitle">{{
@@ -34,7 +34,7 @@
 				@click="choose('home')"
 			>
 				<div :class="$style.icon">
-					<i class="ph-house ph-bold ph-lg"></i>
+					<i :class="icon('ph-house')"></i>
 				</div>
 				<div :class="$style.body">
 					<span :class="$style.itemTitle">{{
@@ -53,7 +53,7 @@
 				@click="choose('followers')"
 			>
 				<div :class="$style.icon">
-					<i class="ph-lock ph-bold ph-lg"></i>
+					<i :class="icon('ph-lock')"></i>
 				</div>
 				<div :class="$style.body">
 					<span :class="$style.itemTitle">{{
@@ -73,7 +73,7 @@
 				@click="choose('specified')"
 			>
 				<div :class="$style.icon">
-					<i class="ph-envelope-simple-open ph-bold ph-lg"></i>
+					<i :class="icon('ph-envelope-simple-open')"></i>
 				</div>
 				<div :class="$style.body">
 					<span :class="$style.itemTitle">{{
@@ -97,7 +97,7 @@
 				@click="localOnly = !localOnly"
 			>
 				<div :class="$style.icon">
-					<i class="ph-users ph-bold ph-lg"></i>
+					<i :class="icon('ph-users')"></i>
 				</div>
 				<div :class="$style.body">
 					<span :class="$style.itemTitle">{{
@@ -110,9 +110,11 @@
 				<div :class="$style.toggle">
 					<i
 						:class="
-							localOnly
-								? 'ph-toggle-right ph-bold ph-lg'
-								: 'ph-toggle-left ph-bold ph-lg'
+							icon(
+								localOnly
+									? 'ph-toggle-right'
+									: 'ph-toggle-left',
+							)
 						"
 					></i>
 				</div>
@@ -126,6 +128,8 @@ import { nextTick, ref, shallowRef, watch } from "vue";
 import type * as firefish from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 

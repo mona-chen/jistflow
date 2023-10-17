@@ -15,14 +15,14 @@
 					class="_button"
 					@click="back()"
 				>
-					<i class="ph-caret-left ph-bold ph-lg"></i>
+					<i :class="icon('ph-caret-left')"></i>
 				</button>
 				<span v-else style="display: inline-block; width: 20px"></span>
 				<span v-if="pageMetadata?.value" class="title">
 					<i
 						v-if="pageMetadata?.value.icon"
 						class="icon"
-						:class="pageMetadata?.value.icon"
+						:class="icon(pageMetadata?.value.icon)"
 					></i>
 					<span>{{ pageMetadata?.value.title }}</span>
 				</span>
@@ -31,7 +31,7 @@
 					:aria-label="i18n.t('close')"
 					@click="$refs.modal.close()"
 				>
-					<i class="ph-x ph-bold ph-lg"></i>
+					<i :class="icon('ph-x')"></i>
 				</button>
 			</div>
 			<div class="body">
@@ -64,6 +64,8 @@ import { i18n } from "@/i18n";
 import type { PageMetadata } from "@/scripts/page-metadata";
 import { provideMetadataReceiver } from "@/scripts/page-metadata";
 import { Router } from "@/nirax";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	initialPath: string;
@@ -101,18 +103,18 @@ const contextmenu = computed(() => {
 			text: path.value,
 		},
 		{
-			icon: "ph-arrows-out-simple ph-bold ph-lg",
+			icon: `${icon("ph-arrows-out-simple")}`,
 			text: i18n.ts.showInPage,
 			action: expand,
 		},
 		{
-			icon: "ph-arrow-square-out ph-bold ph-lg",
+			icon: `${icon("ph-arrow-square-out")}`,
 			text: i18n.ts.popout,
 			action: popout,
 		},
 		null,
 		{
-			icon: "ph-arrow-square-out ph-bold ph-lg",
+			icon: `${icon("ph-arrow-square-out")}`,
 			text: i18n.ts.openInNewTab,
 			action: () => {
 				window.open(pageUrl.value, "_blank");
@@ -120,7 +122,7 @@ const contextmenu = computed(() => {
 			},
 		},
 		{
-			icon: "ph-link-simple ph-bold ph-lg",
+			icon: `${icon("ph-link-simple")}`,
 			text: i18n.ts.copyLink,
 			action: () => {
 				copyToClipboard(pageUrl.value);

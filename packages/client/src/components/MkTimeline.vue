@@ -12,16 +12,16 @@
 	<div v-if="queue > 0" class="new">
 		<button
 			class="_buttonPrimary _shadow"
-			:class="{ instant: !$store.state.animation }"
+			:class="{ instant: !defaultStore.state.animation }"
 			@click="tlComponent.scrollTop()"
 		>
 			{{ i18n.ts.newNoteRecived }}
-			<i class="ph-arrow-up ph-bold"></i>
+			<i :class="icon('ph-arrow-up', false)"></i>
 		</button>
 	</div>
 	<XNotes
 		ref="tlComponent"
-		:no-gap="!$store.state.showGapBetweenNotesInTimeline"
+		:no-gap="!defaultStore.state.showGapBetweenNotesInTimeline"
 		:pagination="pagination"
 		@queue="(x) => (queue = x)"
 	/>
@@ -36,6 +36,7 @@ import * as sound from "@/scripts/sound";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	src: string;

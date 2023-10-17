@@ -40,7 +40,7 @@
 							"
 						>
 							<i
-								class="ph-shield-warning ph-bold ph-xl"
+								:class="icon('ph-shield-warning ph-xl', false)"
 								style="margin-right: 0.5rem"
 							></i>
 							{{ i18n.ts._permissions.allPermissions }}
@@ -53,8 +53,7 @@
 							:class="[$style.permission]"
 						>
 							<i
-								:class="[`ph-${getIcon(p)}`]"
-								class="ph-bold ph-xl"
+								:class="icon(`ph-${getIcon(p)} ph-xl`, false)"
 								style="margin-right: 0.5rem"
 							></i>
 							{{ i18n.t(`_permissions.${p}`) }}
@@ -86,6 +85,7 @@ import * as os from "@/os";
 import { $i, login } from "@/account";
 import { appendQuery, query } from "@/scripts/url";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	session: string;

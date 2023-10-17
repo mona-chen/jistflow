@@ -11,7 +11,7 @@
 	>
 		<header>
 			<button v-if="!fixed" class="cancel _button" @click="cancel">
-				<i class="ph-x ph-bold ph-lg" :aria-label="i18n.t('close')"></i>
+				<i :class="icon('ph-x')" :aria-label="i18n.t('close')"></i>
 			</button>
 			<button
 				v-if="$props.editId == null"
@@ -29,7 +29,7 @@
 					>{{ maxTextLength - textLength }}</span
 				>
 				<span v-if="localOnly" class="local-only"
-					><i class="ph-users ph-bold ph-lg"></i
+					><i :class="icon('ph-users')"></i
 				></span>
 				<button
 					ref="visibilityButton"
@@ -39,16 +39,16 @@
 					@click="setVisibility"
 				>
 					<span v-if="visibility === 'public'"
-						><i class="ph-planet ph-bold ph-lg"></i
+						><i :class="icon('ph-planet')"></i
 					></span>
 					<span v-if="visibility === 'home'"
-						><i class="ph-house ph-bold ph-lg"></i
+						><i :class="icon('ph-house')"></i
 					></span>
 					<span v-if="visibility === 'followers'"
-						><i class="ph-lock ph-bold ph-lg"></i
+						><i :class="icon('ph-lock')"></i
 					></span>
 					<span v-if="visibility === 'specified'"
-						><i class="ph-envelope-simple-open ph-bold ph-lg"></i
+						><i :class="icon('ph-envelope-simple-open')"></i
 					></span>
 				</button>
 				<button
@@ -57,7 +57,7 @@
 					:class="{ active: showPreview }"
 					@click="showPreview = !showPreview"
 				>
-					<i class="ph-binoculars ph-bold ph-lg"></i>
+					<i :class="icon('ph-binoculars')"></i>
 				</button>
 				<button
 					class="submit _buttonGradate"
@@ -68,11 +68,13 @@
 					{{ submitText
 					}}<i
 						:class="
-							reply
-								? 'ph-arrow-u-up-left ph-bold ph-lg'
-								: renote
-								? 'ph-quotes ph-bold ph-lg'
-								: 'ph-paper-plane-tilt ph-bold ph-lg'
+							icon(
+								reply
+									? 'ph-arrow-u-up-left'
+									: renote
+									? 'ph-quotes'
+									: 'ph-paper-plane-tilt',
+							)
 						"
 					></i>
 				</button>
@@ -82,14 +84,14 @@
 			<XNoteSimple v-if="reply" class="preview" :note="reply" />
 			<XNoteSimple v-if="renote" class="preview" :note="renote" />
 			<div v-if="quoteId" class="with-quote">
-				<i class="ph-quotes ph-bold ph-lg"></i>
+				<i :class="icon('ph-quotes')"></i>
 				{{ i18n.ts.quoteAttached
 				}}<button
 					class="_button"
 					:aria-label="i18n.t('removeQuote')"
 					@click="quoteId = null"
 				>
-					<i class="ph-x ph-bold ph-lg"></i>
+					<i :class="icon('ph-x')"></i>
 				</button>
 			</div>
 			<div v-if="visibility === 'specified'" class="to-specified">
@@ -102,11 +104,11 @@
 							:aria-label="i18n.t('removeRecipient')"
 							@click="removeVisibleUser(u)"
 						>
-							<i class="ph-x ph-bold ph-lg"></i>
+							<i :class="icon('ph-x')"></i>
 						</button>
 					</span>
 					<button class="_button" @click="addVisibleUser">
-						<i class="ph-plus ph-bold ph-md ph-fw ph-lg"></i>
+						<i :class="icon('ph-plus ph-md ph-fw')"></i>
 					</button>
 				</div>
 			</div>
@@ -164,7 +166,7 @@
 					class="_button"
 					@click="chooseFileFrom"
 				>
-					<i class="ph-upload ph-bold ph-lg"></i>
+					<i :class="icon('ph-upload')"></i>
 				</button>
 				<button
 					v-tooltip="i18n.ts.poll"
@@ -172,7 +174,7 @@
 					:class="{ active: poll }"
 					@click="togglePoll"
 				>
-					<i class="ph-microphone-stage ph-bold ph-lg"></i>
+					<i :class="icon('ph-microphone-stage')"></i>
 				</button>
 				<button
 					v-tooltip="i18n.ts.useCw"
@@ -180,14 +182,14 @@
 					:class="{ active: useCw }"
 					@click="useCw = !useCw"
 				>
-					<i class="ph-eye-slash ph-bold ph-lg"></i>
+					<i :class="icon('ph-eye-slash')"></i>
 				</button>
 				<button
 					v-tooltip="i18n.ts.mention"
 					class="_button"
 					@click="insertMention"
 				>
-					<i class="ph-at ph-bold ph-lg"></i>
+					<i :class="icon('ph-at')"></i>
 				</button>
 				<button
 					v-tooltip="i18n.ts.hashtags"
@@ -195,14 +197,14 @@
 					:class="{ active: withHashtags }"
 					@click="withHashtags = !withHashtags"
 				>
-					<i class="ph-hash ph-bold ph-lg"></i>
+					<i :class="icon('ph-hash')"></i>
 				</button>
 				<button
 					v-tooltip="i18n.ts.emoji"
 					class="_button"
 					@click="insertEmoji"
 				>
-					<i class="ph-smiley ph-bold ph-lg"></i>
+					<i :class="icon('ph-smiley')"></i>
 				</button>
 				<button
 					v-if="postFormActions.length > 0"
@@ -210,7 +212,7 @@
 					class="_button"
 					@click="showActions"
 				>
-					<i class="ph-plug ph-bold ph-lg"></i>
+					<i :class="icon('ph-plug')"></i>
 				</button>
 				<!--	v-if="showMfmCheatsheet" -->
 				<button
@@ -218,7 +220,7 @@
 					class="_button right"
 					@click="openCheatSheet"
 				>
-					<i class="ph-question ph-bold ph-lg"></i>
+					<i :class="icon('ph-question')"></i>
 				</button>
 			</footer>
 			<datalist id="hashtags">
@@ -276,6 +278,7 @@ import { deepClone } from "@/scripts/clone";
 import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
 import preprocess from "@/scripts/preprocess";
 import { vibrate } from "@/scripts/vibrate";
+import icon from "@/scripts/icon";
 
 const modal = inject("modal");
 

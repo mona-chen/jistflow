@@ -67,7 +67,7 @@
 						class="button _button"
 						@click.stop="reply()"
 					>
-						<i class="ph-arrow-u-up-left ph-bold ph-lg"></i>
+						<i :class="icon('ph-arrow-u-up-left')"></i>
 						<template v-if="appearNote.repliesCount > 0">
 							<p class="count">{{ appearNote.repliesCount }}</p>
 						</template>
@@ -109,7 +109,7 @@
 						class="button _button"
 						@click.stop="react()"
 					>
-						<i class="ph-smiley ph-bold ph-lg"></i>
+						<i :class="icon('ph-smiley')"></i>
 					</button>
 					<button
 						v-if="
@@ -121,7 +121,7 @@
 						class="button _button reacted"
 						@click.stop="undoReact(appearNote)"
 					>
-						<i class="ph-minus ph-bold ph-lg"></i>
+						<i :class="icon('ph-minus')"></i>
 					</button>
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
@@ -134,7 +134,7 @@
 						class="button _button"
 						@click.stop="translate"
 					>
-						<i class="ph-translate ph-bold ph-lg"></i>
+						<i :class="icon('ph-translate')"></i>
 					</button>
 					<button
 						ref="menuButton"
@@ -142,7 +142,7 @@
 						class="button _button"
 						@click.stop="menu()"
 					>
-						<i class="ph-dots-three-outline ph-bold ph-lg"></i>
+						<i :class="icon('ph-dots-three-outline')"></i>
 					</button>
 				</footer>
 			</div>
@@ -165,7 +165,7 @@
 				<div class="line"></div>
 				<MkA class="text _link" :to="notePage(note)"
 					>{{ i18n.ts.continueThread }}
-					<i class="ph-caret-double-right ph-bold ph-lg"></i
+					<i :class="icon('ph-caret-double-right')"></i
 				></MkA>
 			</div>
 		</template>
@@ -192,7 +192,6 @@
 import { computed, inject, ref } from "vue";
 import type { Ref } from "vue";
 import type * as firefish from "firefish-js";
-import * as mfm from "mfm-js";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
 import MkSubNoteContent from "@/components/MkSubNoteContent.vue";
 import XReactionsViewer from "@/components/MkReactionsViewer.vue";
@@ -216,6 +215,7 @@ import { i18n } from "@/i18n";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { defaultStore } from "@/store";
 import { deepClone } from "@/scripts/clone";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
@@ -412,7 +412,7 @@ function onContextmenu(ev: MouseEvent): void {
 					text: notePage(appearNote.value),
 				},
 				{
-					icon: "ph-browser ph-bold ph-lg",
+					icon: `${icon("ph-browser")}`,
 					text: i18n.ts.openInWindow,
 					action: () => {
 						os.pageWindow(notePage(appearNote.value));
@@ -420,7 +420,7 @@ function onContextmenu(ev: MouseEvent): void {
 				},
 				notePage(appearNote.value) != location.pathname
 					? {
-							icon: "ph-arrows-out-simple ph-bold ph-lg",
+							icon: `${icon("ph-arrows-out-simple")}`,
 							text: i18n.ts.showInPage,
 							action: () => {
 								router.push(
@@ -433,13 +433,13 @@ function onContextmenu(ev: MouseEvent): void {
 				null,
 				{
 					type: "a",
-					icon: "ph-arrow-square-out ph-bold ph-lg",
+					icon: `${icon("ph-arrow-square-out")}`,
 					text: i18n.ts.openInNewTab,
 					href: notePage(appearNote.value),
 					target: "_blank",
 				},
 				{
-					icon: "ph-link-simple ph-bold ph-lg",
+					icon: `${icon("ph-link-simple")}`,
 					text: i18n.ts.copyLink,
 					action: () => {
 						copyToClipboard(`${url}${notePage(appearNote.value)}`);
@@ -448,7 +448,7 @@ function onContextmenu(ev: MouseEvent): void {
 				note.value.user.host != null
 					? {
 							type: "a",
-							icon: "ph-arrow-square-up-right ph-bold ph-lg",
+							icon: `${icon("ph-arrow-square-up-right")}`,
 							text: i18n.ts.showOnRemote,
 							href: note.value.url ?? note.value.uri ?? "",
 							target: "_blank",

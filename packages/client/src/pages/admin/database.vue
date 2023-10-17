@@ -45,6 +45,7 @@ import number from "@/filters/number";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { indexPosts } from "@/scripts/index-posts";
+import icon from "@/scripts/icon";
 
 const databasePromiseFactory = () =>
 	os
@@ -59,6 +60,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.database,
-	icon: "ph-database ph-bold ph-lg",
+	icon: `${icon("ph-database")}`,
 });
 </script>

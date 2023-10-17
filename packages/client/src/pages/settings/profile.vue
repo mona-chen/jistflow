@@ -58,9 +58,7 @@
 
 		<FormInput v-model="profile.location" manual-save class="_formBlock">
 			<template #label>{{ i18n.ts.location }}</template>
-			<template #prefix
-				><i class="ph-map-pin ph-bold ph-lg"></i
-			></template>
+			<template #prefix><i :class="icon('ph-map-pin')"></i></template>
 			<template #caption>{{
 				i18n.ts._profile.locationDescription
 			}}</template>
@@ -73,7 +71,7 @@
 			class="_formBlock"
 		>
 			<template #label>{{ i18n.ts.birthday }}</template>
-			<template #prefix><i class="ph-cake ph-bold ph-lg"></i></template>
+			<template #prefix><i :class="icon('ph-cake')"></i></template>
 		</FormInput>
 
 		<FormSelect v-model="profile.lang" class="_formBlock">
@@ -85,9 +83,7 @@
 
 		<FormSlot class="_formBlock">
 			<FormFolder>
-				<template #icon
-					><i class="ph-table ph-bold ph-lg"></i
-				></template>
+				<template #icon><i :class="icon('ph-table')"></i></template>
 				<template #label>{{ i18n.ts._profile.metadataEdit }}</template>
 
 				<div class="_formRoot">
@@ -116,11 +112,11 @@
 						inline
 						style="margin-right: 8px"
 						@click="addField"
-						><i class="ph-plus ph-bold ph-lg"></i>
+						><i :class="icon('ph-plus')"></i>
 						{{ i18n.ts.add }}</MkButton
 					>
 					<MkButton inline primary @click="saveFields"
-						><i class="ph-check ph-bold ph-lg"></i>
+						><i :class="icon('ph-check')"></i>
 						{{ i18n.ts.save }}</MkButton
 					>
 				</div>
@@ -178,6 +174,7 @@ import { $i } from "@/account";
 import { langmap } from "@/scripts/langmap";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { host } from "@/config";
+import icon from "@/scripts/icon";
 
 const profile = reactive({
 	name: $i?.name,
@@ -297,7 +294,7 @@ function changeBanner(ev) {
 
 definePageMetadata({
 	title: i18n.ts.profile,
-	icon: "ph-user ph-bold ph-lg",
+	icon: `${icon("ph-user")}`,
 });
 </script>
 

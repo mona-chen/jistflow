@@ -1,13 +1,14 @@
 <template>
 	<span class="mk-file-type-icon">
 		<template v-if="kind == 'image'"
-			><i class="ph-file-image ph-bold ph-lg"></i
+			><i :class="icon('ph-file-image')"></i
 		></template>
 	</span>
 </template>
 
 <script lang="ts" setup>
 import { computed } from "vue";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	type: string;

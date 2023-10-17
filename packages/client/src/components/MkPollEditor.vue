@@ -1,7 +1,7 @@
 <template>
 	<div class="zmdxowus">
 		<p v-if="choices.length < 2" class="caution">
-			<i class="ph-warning ph-bold ph-lg"></i
+			<i :class="icon('ph-warning')"></i
 			>{{ i18n.ts._poll.noOnlyOneChoice }}
 		</p>
 		<ul>
@@ -19,7 +19,7 @@
 					:aria-label="i18n.t('remove')"
 					@click="remove(i)"
 				>
-					<i class="ph-x ph-bold ph-lg"></i>
+					<i :class="icon('ph-x')"></i>
 				</button>
 			</li>
 		</ul>
@@ -83,6 +83,7 @@ import MkButton from "./MkButton.vue";
 import { formatDateTimeString } from "@/scripts/format-time-string";
 import { addTime } from "@/scripts/time";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	modelValue: {

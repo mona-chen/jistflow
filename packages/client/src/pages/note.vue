@@ -10,7 +10,7 @@
 		<MkSpacer :content-max="800" :margin-min="6">
 			<div class="fcuexfpr">
 				<transition
-					:name="$store.state.animation ? 'fade' : ''"
+					:name="defaultStore.state.animation ? 'fade' : ''"
 					mode="out-in"
 				>
 					<div v-if="appearNote" class="note">
@@ -28,7 +28,7 @@
 								class="load next"
 								@click="showNext = true"
 							>
-								<i class="ph-caret-up ph-bold ph-lg"></i>
+								<i :class="icon('ph-caret-up')"></i>
 								{{ `${i18n.ts.loadMore} (${i18n.ts.newer})` }}
 							</MkButton>
 							<div class="note _gap">
@@ -47,7 +47,7 @@
 								class="load prev"
 								@click="showPrev = true"
 							>
-								<i class="ph-caret-down ph-bold ph-lg"></i>
+								<i :class="icon('ph-caret-down')"></i>
 								{{ `${i18n.ts.loadMore} (${i18n.ts.older})` }}
 							</MkButton>
 						</div>
@@ -78,6 +78,8 @@ import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	noteId: string;

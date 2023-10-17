@@ -46,6 +46,7 @@ import bytes from "@/filters/bytes";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { $i } from "@/account";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
@@ -75,7 +76,7 @@ function getMenu() {
 	return [
 		{
 			text: i18n.ts.rename,
-			icon: "ph-cursor-text ph-bold ph-lg",
+			icon: `${icon("ph-cursor-text")}`,
 			action: rename,
 		},
 		{
@@ -83,19 +84,19 @@ function getMenu() {
 				? i18n.ts.unmarkAsSensitive
 				: i18n.ts.markAsSensitive,
 			icon: props.file.isSensitive
-				? "ph-eye ph-bold ph-lg"
-				: "ph-eye-slash ph-bold ph-lg",
+				? "ph-eye ph-lg"
+				: "ph-eye-slash ph-lg",
 			action: toggleSensitive,
 		},
 		{
 			text: i18n.ts.describeFile,
-			icon: "ph-subtitles ph-bold ph-lg",
+			icon: `${icon("ph-subtitles")}`,
 			action: describe,
 		},
 		null,
 		{
 			text: i18n.ts.copyUrl,
-			icon: "ph-link-simple ph-bold ph-lg",
+			icon: `${icon("ph-link-simple")}`,
 			action: copyUrl,
 		},
 		{
@@ -103,13 +104,13 @@ function getMenu() {
 			href: props.file.url,
 			target: "_blank",
 			text: i18n.ts.download,
-			icon: "ph-download-simple ph-bold ph-lg",
+			icon: `${icon("ph-download-simple")}`,
 			download: props.file.name,
 		},
 		null,
 		{
 			text: i18n.ts.delete,
-			icon: "ph-trash ph-bold ph-lg",
+			icon: `${icon("ph-trash")}`,
 			danger: true,
 			action: deleteFile,
 		},

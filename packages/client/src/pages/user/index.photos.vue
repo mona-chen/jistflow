@@ -1,7 +1,7 @@
 <template>
 	<MkContainer id="photos-container" :max-height="300" :foldable="true">
 		<template #header
-			><i class="ph-image ph-bold ph-lg" style="margin-right: 0.5em"></i
+			><i :class="icon('ph-image')" style="margin-right: 0.5em"></i
 			>{{ i18n.ts.images }}</template
 		>
 		<div class="ujigsodd">
@@ -37,6 +37,7 @@ import MkContainer from "@/components/MkContainer.vue";
 import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	user: firefish.entities.UserDetailed;

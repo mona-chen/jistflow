@@ -32,7 +32,7 @@
 						</div>
 					</VueDraggable>
 					<button class="_button add" @click="chooseEmoji">
-						<i class="ph-plus ph-bold ph-lg"></i>
+						<i :class="icon('ph-plus')"></i>
 					</button>
 				</div>
 				<template #caption
@@ -97,13 +97,11 @@
 			<FormSection>
 				<div style="display: flex; gap: var(--margin); flex-wrap: wrap">
 					<FormButton inline @click="preview"
-						><i class="ph-eye ph-bold ph-lg"></i>
+						><i :class="icon('ph-eye')"></i>
 						{{ i18n.ts.preview }}</FormButton
 					>
 					<FormButton inline danger @click="setDefault"
-						><i
-							class="ph-arrow-counter-clockwise ph-bold ph-lg"
-						></i>
+						><i :class="icon('ph-arrow-counter-clockwise')"></i>
 						{{ i18n.ts.default }}</FormButton
 					>
 				</div>
@@ -135,6 +133,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { deepClone } from "@/scripts/clone";
 import { unisonReload } from "@/scripts/unison-reload";
 import { addSkinTone } from "@/scripts/emojilist";
+import icon from "@/scripts/icon";
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({
@@ -239,7 +238,7 @@ watch(reactionPickerSkinTone.value, async () => {
 
 definePageMetadata({
 	title: i18n.ts.reaction,
-	icon: "ph-smiley ph-bold ph-lg",
+	icon: `${icon("ph-smiley")}`,
 });
 </script>
 

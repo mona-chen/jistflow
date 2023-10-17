@@ -35,9 +35,7 @@
 							type="search"
 						>
 							<template #prefix
-								><i
-									class="ph-magnifying-glass ph-bold ph-lg"
-								></i
+								><i :class="icon('ph-magnifying-glass')"></i
 							></template>
 						</MkInput>
 						<MkRadios
@@ -97,7 +95,7 @@
 				<swiper-slide>
 					<div class="_content grwlizim owned">
 						<MkButton class="new" @click="create()"
-							><i class="ph-plus ph-bold ph-lg"></i
+							><i :class="icon('ph-plus')"></i
 						></MkButton>
 						<MkChannelList
 							key="owned"
@@ -124,6 +122,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
@@ -181,7 +180,7 @@ function create() {
 
 const headerActions = computed(() => [
 	{
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.create,
 		handler: create,
 	},
@@ -191,29 +190,29 @@ const headerTabs = computed(() => [
 	{
 		key: "search",
 		title: i18n.ts.search,
-		icon: "ph-magnifying-glass ph-bold ph-lg",
+		icon: `${icon("ph-magnifying-glass")}`,
 	},
 	{
 		key: "featured",
 		title: i18n.ts._channel.featured,
-		icon: "ph-fire-simple ph-bold ph-lg",
+		icon: `${icon("ph-fire-simple")}`,
 	},
 	{
 		key: "following",
 		title: i18n.ts._channel.following,
-		icon: "ph-heart ph-bold ph-lg",
+		icon: `${icon("ph-heart")}`,
 	},
 	{
 		key: "owned",
 		title: i18n.ts._channel.owned,
-		icon: "ph-crown-simple ph-bold ph-lg",
+		icon: `${icon("ph-crown-simple")}`,
 	},
 ]);
 
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.channel,
-		icon: "ph-television ph-bold ph-lg",
+		icon: `${icon("ph-television")}`,
 	})),
 );
 

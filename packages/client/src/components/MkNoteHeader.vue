@@ -30,7 +30,7 @@
 									).toLocaleTimeString(),
 								})
 							"
-							class="ph-pencil ph-bold"
+							:class="icon('ph-pencil', false)"
 							style="margin-left: 0.4rem"
 						></i>
 					</MkA>
@@ -58,6 +58,7 @@ import { notePage } from "@/filters/note";
 import { userPage } from "@/filters/user";
 import { i18n } from "@/i18n";
 import { pageWindow } from "@/os";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: firefish.entities.Note;

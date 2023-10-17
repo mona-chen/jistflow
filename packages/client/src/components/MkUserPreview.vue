@@ -1,6 +1,6 @@
 <template>
 	<transition
-		:name="$store.state.animation ? 'popup' : ''"
+		:name="defaultStore.state.animation ? 'popup' : ''"
 		appear
 		@after-leave="emit('closed')"
 	>
@@ -33,6 +33,7 @@ import * as Acct from "firefish-js/built/acct";
 import type * as firefish from "firefish-js";
 import MkUserInfo from "@/components/MkUserInfo.vue";
 import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 const props = defineProps<{
 	showing: boolean;

@@ -4,7 +4,7 @@
 			<template #label>{{ i18n.ts.emailAddress }}</template>
 			<FormInput v-model="emailAddress" type="email" manual-save>
 				<template #prefix
-					><i class="ph-envelope-simple-open ph-bold ph-lg"></i
+					><i :class="icon('ph-envelope-simple-open')"></i
 				></template>
 				<template v-if="$i.email && !$i.emailVerified" #caption>{{
 					i18n.ts.verificationEmailSent
@@ -13,7 +13,7 @@
 					v-else-if="emailAddress === $i.email && $i.emailVerified"
 					#caption
 					><i
-						class="ph-check ph-bold ph-lg"
+						:class="icon('ph-check')"
 						style="color: var(--success)"
 					></i>
 					{{ i18n.ts.emailVerified }}</template
@@ -69,6 +69,7 @@ import * as os from "@/os";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const emailAddress = ref($i!.email);
 
@@ -149,6 +150,6 @@ onMounted(() => {
 
 definePageMetadata({
 	title: i18n.ts.email,
-	icon: "ph-envelope-simple-open ph-bold ph-lg",
+	icon: `${icon("ph-envelope-simple-open")}`,
 });
 </script>

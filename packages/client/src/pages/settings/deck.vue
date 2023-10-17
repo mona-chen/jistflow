@@ -24,6 +24,7 @@ import FormRadios from "@/components/form/radios.vue";
 import { deckStore } from "@/ui/deck/deck-store";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const navWindow = computed(deckStore.makeGetterSetter("navWindow"));
 const alwaysShowMainColumn = computed(
@@ -33,6 +34,6 @@ const columnAlign = computed(deckStore.makeGetterSetter("columnAlign"));
 
 definePageMetadata({
 	title: i18n.ts.deck,
-	icon: "ph-layout ph-bold ph-lg",
+	icon: `${icon("ph-layout")}`,
 });
 </script>

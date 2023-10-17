@@ -1,7 +1,7 @@
 <template>
 	<XContainer :draggable="true" @remove="() => $emit('remove')">
 		<template #header
-			><i class="ph-lightning ph-bold ph-lg"></i>
+			><i :class="icon('ph-lightning')"></i>
 			{{ i18n.ts._pages.blocks.button }}</template
 		>
 
@@ -101,6 +101,7 @@ import MkSelect from "@/components/form/select.vue";
 import MkInput from "@/components/form/input.vue";
 import MkSwitch from "@/components/form/switch.vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 withDefaults(
 	defineProps<{

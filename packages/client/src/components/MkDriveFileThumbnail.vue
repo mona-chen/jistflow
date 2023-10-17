@@ -8,33 +8,21 @@
 			:title="file.name"
 			:cover="fit !== 'contain'"
 		/>
-		<i
-			v-else-if="is === 'image'"
-			class="ph-file-image ph-bold ph-lg icon"
-		></i>
-		<i
-			v-else-if="is === 'video'"
-			class="ph-file-video ph-bold ph-lg icon"
-		></i>
+		<i v-else-if="is === 'image'" :class="icon('ph-file-image icon')"></i>
+		<i v-else-if="is === 'video'" :class="icon('ph-file-video icon')"></i>
 		<i
 			v-else-if="is === 'audio' || is === 'midi'"
-			class="ph-file-audio ph-bold ph-lg icon"
+			:class="icon('ph-file-audio icon')"
 		></i>
-		<i v-else-if="is === 'csv'" class="ph-file-csv ph-bold ph-lg icon"></i>
-		<i v-else-if="is === 'pdf'" class="ph-file-pdf ph-bold ph-lg icon"></i>
-		<i
-			v-else-if="is === 'textfile'"
-			class="ph-file-text ph-bold ph-lg icon"
-		></i>
-		<i
-			v-else-if="is === 'archive'"
-			class="ph-file-zip ph-bold ph-lg icon"
-		></i>
-		<i v-else class="ph-file ph-bold ph-lg icon"></i>
+		<i v-else-if="is === 'csv'" :class="icon('ph-file-csv icon')"></i>
+		<i v-else-if="is === 'pdf'" :class="icon('ph-file-pdf icon')"></i>
+		<i v-else-if="is === 'textfile'" :class="icon('ph-file-text icon')"></i>
+		<i v-else-if="is === 'archive'" :class="icon('ph-file-zip icon')"></i>
+		<i v-else :class="icon('ph-file icon')"></i>
 
 		<i
 			v-if="isThumbnailAvailable && is === 'video'"
-			class="ph-file-video ph-bold ph-lg icon-sub"
+			:class="icon('ph-file-video icon-sub')"
 		></i>
 	</button>
 </template>
@@ -43,6 +31,7 @@
 import { computed } from "vue";
 import type * as firefish from "firefish-js";
 import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	file: firefish.entities.DriveFile;

@@ -10,30 +10,26 @@
 		<span v-if="!reacted">
 			<i
 				v-if="instance.defaultReaction === '👍'"
-				class="ph-thumbs-up ph-bold ph-lg"
+				:class="icon('ph-thumbs-up')"
 			></i>
 			<i
 				v-else-if="instance.defaultReaction === '❤️'"
-				class="ph-heart ph-bold ph-lg"
+				:class="icon('ph-heart')"
 			></i>
-			<i v-else class="ph-star ph-bold ph-lg"></i>
+			<i v-else :class="icon('ph-star')"></i>
 		</span>
 		<span v-else>
 			<i
 				v-if="instance.defaultReaction === '👍'"
-				class="ph-thumbs-up ph-bold ph-lg ph-fill"
+				class="ph-thumbs-up ph-lg ph-fill"
 				:class="$style.yellow"
 			></i>
 			<i
 				v-else-if="instance.defaultReaction === '❤️'"
-				class="ph-heart ph-bold ph-lg ph-fill"
+				class="ph-heart ph-lg ph-fill"
 				:class="$style.red"
 			></i>
-			<i
-				v-else
-				class="ph-star ph-bold ph-lg ph-fill"
-				:class="$style.yellow"
-			></i>
+			<i v-else class="ph-star ph-lg ph-fill" :class="$style.yellow"></i>
 		</span>
 		<template v-if="count > 0"
 			><p class="count">{{ count }}</p></template
@@ -51,6 +47,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import { useTooltip } from "@/scripts/use-tooltip";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: Note;

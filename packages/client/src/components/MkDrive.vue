@@ -12,7 +12,7 @@
 				/>
 				<template v-for="f in hierarchyFolders">
 					<span class="separator"
-						><i class="ph-caret-right ph-bold ph-lg"></i
+						><i :class="icon('ph-caret-right')"></i
 					></span>
 					<XNavFolder
 						:folder="f"
@@ -24,14 +24,14 @@
 					/>
 				</template>
 				<span v-if="folder != null" class="separator"
-					><i class="ph-caret-right ph-bold ph-lg"></i
+					><i :class="icon('ph-caret-right')"></i
 				></span>
 				<span v-if="folder != null" class="folder current">{{
 					folder.name
 				}}</span>
 			</div>
 			<button class="menu _button" @click="showMenu">
-				<i class="ph-dots-three-outline ph-bold ph-lg"></i>
+				<i :class="icon('ph-dots-three-outline')"></i>
 			</button>
 		</nav>
 		<div
@@ -149,6 +149,7 @@ import { stream } from "@/stream";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { uploadFile, uploads } from "@/scripts/upload";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
@@ -677,14 +678,14 @@ function getMenu() {
 		},
 		{
 			text: i18n.ts.upload,
-			icon: "ph-upload-simple ph-bold ph-lg",
+			icon: `${icon("ph-upload-simple")}`,
 			action: () => {
 				selectLocalFile();
 			},
 		},
 		{
 			text: i18n.ts.fromUrl,
-			icon: "ph-link-simple ph-bold ph-lg",
+			icon: `${icon("ph-link-simple")}`,
 			action: () => {
 				urlUpload();
 			},
@@ -697,7 +698,7 @@ function getMenu() {
 		folder.value
 			? {
 					text: i18n.ts.renameFolder,
-					icon: "ph-cursor-text ph-bold ph-lg",
+					icon: `${icon("ph-cursor-text")}`,
 					action: () => {
 						renameFolder(folder.value);
 					},
@@ -706,7 +707,7 @@ function getMenu() {
 		folder.value
 			? {
 					text: i18n.ts.deleteFolder,
-					icon: "ph-trash ph-bold ph-lg",
+					icon: `${icon("ph-trash")}`,
 					action: () => {
 						deleteFolder(
 							folder.value as firefish.entities.DriveFolder,
@@ -716,7 +717,7 @@ function getMenu() {
 			: undefined,
 		{
 			text: i18n.ts.createFolder,
-			icon: "ph-folder-notch-plus ph-bold ph-lg",
+			icon: `${icon("ph-folder-notch-plus")}`,
 			action: () => {
 				createFolder();
 			},

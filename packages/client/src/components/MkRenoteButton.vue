@@ -7,7 +7,7 @@
 		:class="{ renoted: hasRenotedBefore }"
 		@click.stop="renote(false, $event)"
 	>
-		<i class="ph-rocket-launch ph-bold ph-lg"></i>
+		<i :class="icon('ph-rocket-launch')"></i>
 		<p v-if="count > 0 && !detailedView" class="count">{{ count }}</p>
 	</button>
 	<button
@@ -16,7 +16,7 @@
 		class="_button"
 		disabled="true"
 	>
-		<i class="ph-rocket-launch ph-bold ph-lg"></i>
+		<i :class="icon('ph-rocket-launch')"></i>
 	</button>
 </template>
 
@@ -33,6 +33,7 @@ import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import type { MenuItem } from "@/types/menu";
 import { vibrate } from "@/scripts/vibrate";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: firefish.entities.Note;
@@ -88,7 +89,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	if (props.note.visibility === "public") {
 		buttonActions.push({
 			text: i18n.ts.renote,
-			icon: "ph-rocket-launch ph-bold ph-lg",
+			icon: `${icon("ph-rocket-launch")}`,
 			danger: false,
 			action: () => {
 				os.api("notes/create", {
@@ -115,7 +116,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	if (["public", "home"].includes(props.note.visibility)) {
 		buttonActions.push({
 			text: `${i18n.ts.renote} (${i18n.ts._visibility.home})`,
-			icon: "ph-house ph-bold ph-lg",
+			icon: `${icon("ph-house")}`,
 			danger: false,
 			action: () => {
 				os.api("notes/create", {
@@ -142,7 +143,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	if (props.note.visibility === "specified") {
 		buttonActions.push({
 			text: `${i18n.ts.renote} (${i18n.ts.recipient})`,
-			icon: "ph-envelope-simple-open ph-bold ph-lg",
+			icon: `${icon("ph-envelope-simple-open")}`,
 			danger: false,
 			action: () => {
 				os.api("notes/create", {
@@ -168,7 +169,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	} else {
 		buttonActions.push({
 			text: `${i18n.ts.renote} (${i18n.ts._visibility.followers})`,
-			icon: "ph-lock ph-bold ph-lg",
+			icon: `${icon("ph-lock")}`,
 			danger: false,
 			action: () => {
 				os.api("notes/create", {
@@ -195,7 +196,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	if (canRenote.value) {
 		buttonActions.push({
 			text: `${i18n.ts.renote} (${i18n.ts.local})`,
-			icon: "ph-users ph-bold ph-lg",
+			icon: `${icon("ph-users")}`,
 			danger: false,
 			action: () => {
 				vibrate([30, 30, 60]);
@@ -234,7 +235,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	if (!defaultStore.state.seperateRenoteQuote) {
 		buttonActions.push({
 			text: i18n.ts.quote,
-			icon: "ph-quotes ph-bold ph-lg",
+			icon: `${icon("ph-quotes")}`,
 			danger: false,
 			action: () => {
 				os.post({
@@ -247,7 +248,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	if (hasRenotedBefore.value) {
 		buttonActions.push({
 			text: i18n.ts.unrenote,
-			icon: "ph-trash ph-bold ph-lg",
+			icon: `${icon("ph-trash")}`,
 			danger: true,
 			action: () => {
 				os.api("notes/unrenote", {

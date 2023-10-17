@@ -44,7 +44,7 @@
 					data-cy-signin-password
 				>
 					<template #prefix
-						><i class="ph-lock ph-bold ph-lg"></i
+						><i :class="icon('ph-lock')"></i
 					></template>
 					<template #caption
 						><button
@@ -96,7 +96,7 @@
 					>
 						<template #label>{{ i18n.ts.password }}</template>
 						<template #prefix
-							><i class="ph-lock ph-bold ph-lg"></i
+							><i :class="icon('ph-lock')"></i
 						></template>
 					</MkInput>
 					<MkInput
@@ -109,7 +109,7 @@
 					>
 						<template #label>{{ i18n.ts._2fa.token }}</template>
 						<template #prefix
-							><i class="ph-poker-chip ph-bold ph-lg"></i
+							><i :class="icon('ph-poker-chip')"></i
 						></template>
 					</MkInput>
 					<MkButton
@@ -138,6 +138,7 @@ import { byteify, hexify } from "@/scripts/2fa";
 import * as os from "@/os";
 import { login } from "@/account";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const signing = ref(false);
 const user = ref(null);

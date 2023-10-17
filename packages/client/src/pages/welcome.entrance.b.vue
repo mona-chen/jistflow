@@ -80,6 +80,7 @@ import { host, instanceName } from "@/config";
 import * as os from "@/os";
 import number from "@/filters/number";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 export default defineComponent({
 	components: {
@@ -150,14 +151,14 @@ export default defineComponent({
 				[
 					{
 						text: i18n.t("aboutX", { x: instanceName }),
-						icon: "ph-info ph-bold ph-lg",
+						icon: `${icon("ph-info")}`,
 						action: () => {
 							os.pageWindow("/about");
 						},
 					},
 					{
 						text: i18n.ts.aboutFirefish,
-						icon: "ph-info ph-bold ph-lg",
+						icon: `${icon("ph-info")}`,
 						action: () => {
 							os.pageWindow("/about-firefish");
 						},
@@ -165,7 +166,7 @@ export default defineComponent({
 					null,
 					{
 						text: i18n.ts.help,
-						icon: "ph-question ph-bold ph-lg",
+						icon: `${icon("ph-question")}`,
 						action: () => {
 							window.open(
 								`https://misskey-hub.net/help.md`,

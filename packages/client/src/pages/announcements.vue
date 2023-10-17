@@ -38,7 +38,7 @@
 					</div>
 					<div v-if="$i && !announcement.isRead" class="_footer">
 						<MkButton primary @click="read(announcement.id)"
-							><i class="ph-check ph-bold ph-lg"></i>
+							><i :class="icon('ph-check')"></i>
 							{{ i18n.ts.gotIt }}</MkButton
 						>
 					</div>
@@ -55,6 +55,7 @@ import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const pagination = {
 	endpoint: "announcements" as const,
@@ -77,7 +78,7 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.announcements,
-	icon: "ph-megaphone-simple ph-bold ph-lg",
+	icon: `${icon("ph-megaphone-simple")}`,
 });
 </script>
 

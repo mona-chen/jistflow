@@ -21,7 +21,7 @@
 					primary
 					class="mk-widget-add"
 					@click="addWidget"
-					><i class="ph-plus ph-bold ph-lg"></i>
+					><i :class="icon('ph-plus')"></i>
 					{{ i18n.ts.add }}</MkButton
 				>
 				<MkButton inline @click="$emit('exit')">{{
@@ -35,14 +35,14 @@
 							class="config _button"
 							@click.prevent.stop="configWidget(element.id)"
 						>
-							<i class="ph-gear-six ph-bold ph-lg"></i>
+							<i :class="icon('ph-gear-six')"></i>
 						</button>
 						<button
 							class="remove _button"
 							:aria-label="i18n.t('close')"
 							@click.prevent.stop="removeWidget(element)"
 						>
-							<i class="ph-x ph-bold ph-lg"></i>
+							<i :class="icon('ph-x')"></i>
 						</button>
 						<div class="handle">
 							<component
@@ -80,6 +80,7 @@ import MkButton from "@/components/MkButton.vue";
 import { widgets as widgetDefs } from "@/widgets";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 interface Widget {
 	name: string;
@@ -153,7 +154,7 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 				text: i18n.t(`_widgets.${widget.name}`),
 			},
 			{
-				icon: "ph-gear-six ph-bold ph-lg",
+				icon: `${icon("ph-gear-six")}`,
 				text: i18n.ts.settings,
 				action: () => {
 					configWidget(widget.id);

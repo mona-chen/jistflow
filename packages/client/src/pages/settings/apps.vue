@@ -36,7 +36,7 @@
 						</div>
 						<div class="actions">
 							<button class="_button" @click="revoke(token)">
-								<i class="ph-trash ph-bold ph-lg"></i>
+								<i :class="icon('ph-trash')"></i>
 							</button>
 						</div>
 						<details>
@@ -60,6 +60,7 @@ import FormPagination from "@/components/MkPagination.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const list = ref<any>(null);
 
@@ -79,7 +80,7 @@ function revoke(token) {
 
 definePageMetadata({
 	title: i18n.ts.installedApps,
-	icon: "ph-plug ph-bold ph-lg",
+	icon: `${icon("ph-plug")}`,
 });
 </script>
 

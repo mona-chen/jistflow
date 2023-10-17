@@ -5,6 +5,7 @@
 import autobind from "autobind-decorator";
 import type { Hpml } from "./evaluator";
 import { funcDefs } from "./lib";
+import icon from "@/scripts/icon";
 
 export interface Fn {
 	slots: string[];
@@ -17,32 +18,40 @@ export const literalDefs: Record<
 	string,
 	{ out: any; category: string; icon: any }
 > = {
-	text: { out: "string", category: "value", icon: "ph-quotes ph-bold ph-lg" },
+	text: {
+		out: "string",
+		category: "value",
+		icon: `${icon("ph-quotes")}`,
+	},
 	multiLineText: {
 		out: "string",
 		category: "value",
-		icon: "ph-align-left ph-bold ph-lg",
+		icon: `${icon("ph-align-left")}`,
 	},
 	textList: {
 		out: "stringArray",
 		category: "value",
-		icon: "ph-list ph-bold ph-lg",
+		icon: `${icon("ph-list")}`,
 	},
 	number: {
 		out: "number",
 		category: "value",
-		icon: "ph-sort-descending-up ph-bold ph-lg",
+		icon: `${icon("ph-sort-descending-up")}`,
 	},
-	ref: { out: null, category: "value", icon: "ph-magic-wand ph-bold ph-lg" },
+	ref: {
+		out: null,
+		category: "value",
+		icon: `${icon("ph-magic-wand")}`,
+	},
 	aiScriptVar: {
 		out: null,
 		category: "value",
-		icon: "ph-magic-wand ph-bold ph-lg",
+		icon: `${icon("ph-magic-wand")}`,
 	},
 	fn: {
 		out: "function",
 		category: "value",
-		icon: "ph-radical ph-bold ph-lg",
+		icon: `${icon("ph-radical")}`,
 	},
 };
 

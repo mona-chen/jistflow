@@ -31,7 +31,7 @@
 								primary
 								class="start"
 								@click="startUser"
-								><i class="ph-plus ph-bold ph-lg"></i>
+								><i :class="icon('ph-plus')"></i>
 								{{ i18n.ts.startMessaging }}</MkButton
 							>
 							<MkPagination
@@ -56,7 +56,7 @@
 									:link="true"
 									to="/my/groups"
 									><i
-										class="ph-user-circle-gear ph-bold ph-lg"
+										:class="icon('ph-user-circle-gear')"
 									></i>
 									{{ i18n.ts.manageGroups }}</MkButton
 								>
@@ -64,7 +64,7 @@
 									primary
 									class="start"
 									@click="startGroup"
-									><i class="ph-plus ph-bold ph-lg"></i>
+									><i :class="icon('ph-plus')"></i>
 									{{ i18n.ts.startMessaging }}</MkButton
 								>
 							</div>
@@ -103,6 +103,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { $i } from "@/account";
 import { deviceKind } from "@/scripts/device-kind";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
@@ -130,7 +131,7 @@ async function readAllMessagingMessages() {
 
 const headerActions = computed(() => [
 	{
-		icon: "ph-check ph-bold ph-lg",
+		icon: `${icon("ph-check")}`,
 		text: i18n.ts.markAllAsRead,
 		handler: readAllMessagingMessages,
 	},
@@ -140,18 +141,18 @@ const headerTabs = computed(() => [
 	{
 		key: "dms",
 		title: i18n.ts._messaging.dms,
-		icon: "ph-user ph-bold ph-lg",
+		icon: `${icon("ph-user")}`,
 	},
 	{
 		key: "groups",
 		title: i18n.ts._messaging.groups,
-		icon: "ph-users-three ph-bold ph-lg",
+		icon: `${icon("ph-users-three")}`,
 	},
 ]);
 
 definePageMetadata({
 	title: i18n.ts.messaging,
-	icon: "ph-chats-teardrop ph-bold ph-lg",
+	icon: `${icon("ph-chats-teardrop")}`,
 });
 
 const dmsPagination = {

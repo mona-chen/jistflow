@@ -16,7 +16,7 @@
 					class="_formBlock"
 				>
 					<template #prefix
-						><i class="ph-lock ph-bold ph-lg"></i
+						><i :class="icon('ph-lock')"></i
 					></template>
 					<template #label>{{ i18n.ts.newPassword }}</template>
 				</FormInput>
@@ -37,6 +37,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { mainRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	token?: string;
@@ -72,6 +73,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.resetPassword,
-	icon: "ph-lock ph-bold ph-lg",
+	icon: `${icon("ph-lock")}`,
 });
 </script>

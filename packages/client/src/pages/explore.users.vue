@@ -1,4 +1,3 @@
-4.8 KiB
 <template>
 	<MkSpacer :content-max="1200">
 		<MkTab v-model="origin" style="margin-bottom: var(--margin)">
@@ -10,7 +9,7 @@
 				<MkFolder class="_gap" persist-key="explore-pinned-users">
 					<template #header
 						><i
-							class="ph-bookmark ph-bold ph-lg ph-fw"
+							:class="icon('ph-bookmark ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.pinnedUsers }}</template
@@ -24,7 +23,7 @@
 				>
 					<template #header
 						><i
-							class="ph-chart-line-up ph-bold ph-lg ph-fw"
+							:class="icon('ph-chart-line-up ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.popularUsers }}</template
@@ -38,7 +37,7 @@
 				>
 					<template #header
 						><i
-							class="ph-activity ph-bold ph-lg ph-fw"
+							:class="icon('ph-activity ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.recentlyUpdatedUsers }}</template
@@ -52,7 +51,7 @@
 				>
 					<template #header
 						><i
-							class="ph-butterfly ph-bold ph-lg ph-fw"
+							:class="icon('ph-butterfly ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.recentlyRegisteredUsers }}</template
@@ -70,7 +69,7 @@
 			>
 				<template #header
 					><i
-						class="ph-compass ph-bold ph-lg ph-fw"
+						:class="icon('ph-compass ph-fw')"
 						style="margin-right: 0.5em"
 					></i
 					>{{ i18n.ts.popularTags }}</template
@@ -96,7 +95,7 @@
 			<MkFolder v-if="tag != null" :key="`${tag}`" class="_gap">
 				<template #header
 					><i
-						class="ph-hash ph-bold ph-lg ph-fw"
+						:class="icon('ph-hash ph-fw')"
 						style="margin-right: 0.5em"
 					></i
 					>{{ tag }}</template
@@ -108,7 +107,7 @@
 				<MkFolder class="_gap">
 					<template #header
 						><i
-							class="ph-chart-line-up ph-bold ph-lg ph-fw"
+							:class="icon('ph-chart-line-up ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.popularUsers }}</template
@@ -118,7 +117,7 @@
 				<MkFolder class="_gap">
 					<template #header
 						><i
-							class="ph-activity ph-bold ph-lg ph-fw"
+							:class="icon('ph-activity ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.recentlyUpdatedUsers }}</template
@@ -128,7 +127,7 @@
 				<MkFolder class="_gap">
 					<template #header
 						><i
-							class="ph-rocket-launch ph-bold ph-lg ph-fw"
+							:class="icon('ph-rocket-launch ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.recentlyDiscoveredUsers }}</template
@@ -148,6 +147,7 @@ import MkTab from "@/components/MkTab.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { $i } from "@/account";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	tag?: string;

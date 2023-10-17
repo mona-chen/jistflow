@@ -20,7 +20,7 @@
 			<div v-if="!fetching" class="items">
 				<div class="item _panel sub">
 					<div class="icon">
-						<i class="ph-download ph-bold ph-xl"></i>
+						<i :class="icon('ph-download ph-xl', false)"></i>
 					</div>
 					<div class="body">
 						<div class="value">
@@ -36,7 +36,7 @@
 				</div>
 				<div class="item _panel pub">
 					<div class="icon">
-						<i class="ph-upload ph-bold ph-xl"></i>
+						<i :class="icon('ph-upload ph-xl', false)"></i>
 					</div>
 					<div class="body">
 						<div class="value">
@@ -63,6 +63,7 @@ import number from "@/filters/number";
 import MkNumberDiff from "@/components/MkNumberDiff.vue";
 import { i18n } from "@/i18n";
 import { useChartTooltip } from "@/scripts/use-chart-tooltip";
+import icon from "@/scripts/icon";
 
 const topSubInstancesForPie = ref<any>(null);
 const topPubInstancesForPie = ref<any>(null);

@@ -3,7 +3,7 @@
 		<div class="query">
 			<MkInput v-model="host" :debounce="true" class="">
 				<template #prefix
-					><i class="ph-magnifying-glass ph-bold ph-lg"></i
+					><i :class="icon('ph-magnifying-glass')"></i
 				></template>
 				<template #label>{{ i18n.ts.host }}</template>
 			</MkInput>
@@ -112,6 +112,7 @@ import MkPagination from "@/components/MkPagination.vue";
 import MkInstanceCardMini from "@/components/MkInstanceCardMini.vue";
 import FormSplit from "@/components/form/split.vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const host = ref("");
 const state = ref("federating");

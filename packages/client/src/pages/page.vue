@@ -8,7 +8,7 @@
 		/></template>
 		<MkSpacer :content-max="800">
 			<transition
-				:name="$store.state.animation ? 'fade' : ''"
+				:name="defaultStore.state.animation ? 'fade' : ''"
 				mode="out-in"
 			>
 				<div
@@ -19,12 +19,12 @@
 				>
 					<div class="footer">
 						<div>
-							<i class="ph-alarm ph-bold" />
+							<i :class="icon('ph-alarm', false)" />
 							{{ i18n.ts.createdAt }}:
 							<MkTime :time="page.createdAt" mode="detail" />
 						</div>
 						<div v-if="page.createdAt != page.updatedAt">
-							<i class="ph-alarm ph-bold"></i>
+							<i :class="icon('ph-alarm', false)"></i>
 							{{ i18n.ts.updatedAt }}:
 							<MkTime :time="page.updatedAt" mode="detail" />
 						</div>
@@ -41,16 +41,14 @@
 										class="menu _button"
 										@click="copyUrl"
 									>
-										<i
-											class="ph-link-simple ph-bold ph-lg"
-										/>
+										<i :class="icon('ph-link-simple')" />
 									</button>
 									<MkA
 										v-tooltip="i18n.ts._pages.viewSource"
 										:to="`/@${username}/pages/${pageName}/view-source`"
 										class="menu _button"
 										style="transform: translateY(2px)"
-										><i class="ph-code ph-bold ph-lg"
+										><i :class="icon('ph-code')"
 									/></MkA>
 									<template
 										v-if="$i && $i.id === page.userId"
@@ -60,7 +58,7 @@
 											class="menu _button"
 											:to="`/pages/edit/${page.id}`"
 											style="transform: translateY(2px)"
-											><i class="ph-pencil ph-bold ph-lg"
+											><i :class="icon('ph-pencil')"
 										/></MkA>
 										<button
 											v-if="$i.pinnedPageId === page.id"
@@ -69,7 +67,9 @@
 											@click="pin(false)"
 										>
 											<i
-												class="ph-push-pin-slash ph-bold ph-lg"
+												:class="
+													icon('ph-push-pin-slash')
+												"
 											/>
 										</button>
 										<button
@@ -78,9 +78,7 @@
 											class="menu _button"
 											@click="pin(true)"
 										>
-											<i
-												class="ph-push-pin ph-bold ph-lg"
-											/>
+											<i :class="icon('ph-push-pin')" />
 										</button>
 									</template>
 								</div>
@@ -97,7 +95,7 @@
 									class="button"
 									primary
 									@click="unlike()"
-									><i class="ph-heart ph-fill ph-lg"></i
+									><i class="ph-heart ph-fill"></i
 									><span
 										v-if="page.likedCount > 0"
 										class="count"
@@ -109,7 +107,7 @@
 									v-tooltip="i18n.ts._pages.like"
 									class="button"
 									@click="like()"
-									><i class="ph-heart ph-bold"></i
+									><i :class="icon('ph-heart', false)"></i
 									><span
 										v-if="page.likedCount > 0"
 										class="count"
@@ -125,7 +123,7 @@
 									@click="shareWithNote"
 								>
 									<i
-										class="ph-rocket-launch ph-bold ph-lg ph-fw ph-lg"
+										:class="icon('ph-rocket-launch ph-fw')"
 									></i>
 								</button>
 								<button
@@ -136,7 +134,7 @@
 									@click="share"
 								>
 									<i
-										class="ph-share-network ph-bold ph-lg ph-fw ph-lg"
+										:class="icon('ph-share-network ph-fw')"
 									></i>
 								</button>
 							</div>
@@ -176,7 +174,7 @@
 						class="other"
 					>
 						<template #header
-							><i class="ph-clock ph-bold ph-lg"></i>
+							><i :class="icon('ph-clock')"></i>
 							{{ i18n.ts.recentPosts }}</template
 						>
 						<MkPagination
@@ -213,6 +211,8 @@ import { i18n } from "@/i18n";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { shareAvailable } from "@/scripts/share-available";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	pageName: string;

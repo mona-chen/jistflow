@@ -35,7 +35,7 @@
 
 		<MkTab v-model="tab" :style="'underline'" @update:modelValue="loadTab">
 			<option value="replies">
-				<!-- <i class="ph-arrow-u-up-left ph-bold ph-lg"></i> -->
+				<!-- <i :class="icon('ph-arrow-u-up-left')"></i> -->
 				{{
 					wordWithCount(
 						note.repliesCount,
@@ -45,7 +45,7 @@
 				}}
 			</option>
 			<option v-if="note.renoteCount > 0" value="renotes">
-				<!-- <i class="ph-rocket-launch ph-bold ph-lg"></i> -->
+				<!-- <i :class="icon('ph-rocket-launch')"></i> -->
 				{{
 					wordWithCount(
 						note.renoteCount,
@@ -55,7 +55,7 @@
 				}}
 			</option>
 			<option v-if="reactionsCount > 0" value="reactions">
-				<!-- <i class="ph-smiley ph-bold ph-lg"></i> -->
+				<!-- <i :class="icon('ph-smiley')"></i> -->
 				{{
 					wordWithCount(
 						reactionsCount,
@@ -65,7 +65,7 @@
 				}}
 			</option>
 			<option v-if="directQuotes?.length > 0" value="quotes">
-				<!-- <i class="ph-quotes ph-bold ph-lg"></i> -->
+				<!-- <i :class="icon('ph-quotes')"></i> -->
 				{{
 					wordWithCount(
 						directQuotes.length,
@@ -75,7 +75,7 @@
 				}}
 			</option>
 			<option v-if="clips?.length > 0" value="clips">
-				<!-- <i class="ph-paperclip ph-bold ph-lg"></i> -->
+				<!-- <i :class="icon('ph-paperclip')"></i> -->
 				{{ wordWithCount(clips.length, i18n.ts.clip, i18n.ts.clips) }}
 			</option>
 		</MkTab>
@@ -188,6 +188,7 @@ import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { deepClone } from "@/scripts/clone";
 import { stream } from "@/stream";
+// import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: firefish.entities.Note;

@@ -22,6 +22,7 @@ import * as os from "@/os";
 import { unisonReload } from "@/scripts/unison-reload";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const localCustomCss = ref(localStorage.getItem("customCss") ?? "");
 
@@ -43,6 +44,6 @@ watch(localCustomCss, async () => {
 
 definePageMetadata({
 	title: i18n.ts.customCss,
-	icon: "ph-code ph-bold ph-lg",
+	icon: `${icon("ph-code")}`,
 });
 </script>

@@ -102,9 +102,7 @@
 				</FormFolder>
 
 				<FormFolder :default-open="false" class="_formBlock">
-					<template #icon
-						><i class="ph-code ph-bold ph-lg"></i
-					></template>
+					<template #icon><i :class="icon('ph-code')"></i></template>
 					<template #label>{{ i18n.ts.editCode }}</template>
 
 					<div class="_formRoot">
@@ -165,6 +163,7 @@ import { addTheme } from "@/theme-store";
 import { i18n } from "@/i18n";
 import { useLeaveGuard } from "@/scripts/use-leave-guard";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const bgColors = [
 	{ color: "#f5f5f5", kind: "light", forPreview: "#f5f5f5" },
@@ -337,13 +336,13 @@ watch(theme, apply, { deep: true });
 const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-eye ph-bold ph-lg",
+		icon: `${icon("ph-eye")}`,
 		text: i18n.ts.preview,
 		handler: showPreview,
 	},
 	{
 		asFullButton: true,
-		icon: "ph-check ph-bold ph-lg",
+		icon: `${icon("ph-check")}`,
 		text: i18n.ts.saveAs,
 		handler: saveAs,
 	},
@@ -353,7 +352,7 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.themeEditor,
-	icon: "ph-palette ph-bold ph-lg",
+	icon: `${icon("ph-palette")}`,
 });
 </script>
 

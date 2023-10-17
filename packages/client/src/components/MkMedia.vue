@@ -9,7 +9,7 @@
 			<div class="text">
 				<div class="wrapper">
 					<b style="display: block"
-						><i class="ph-warning ph-bold ph-lg"></i>
+						><i :class="icon('ph-warning')"></i>
 						{{ i18n.ts.sensitive }}</b
 					>
 					<span style="display: block">{{
@@ -74,7 +74,7 @@
 				class="_button"
 				@click.stop="captionPopup"
 			>
-				<i class="ph-subtitles ph-bold ph-lg"></i>
+				<i :class="icon('ph-subtitles')"></i>
 			</button>
 			<button
 				v-if="!hide"
@@ -82,7 +82,7 @@
 				class="_button"
 				@click.stop="hide = true"
 			>
-				<i class="ph-eye-slash ph-bold ph-lg"></i>
+				<i :class="icon('ph-eye-slash')"></i>
 			</button>
 		</div>
 	</div>
@@ -98,6 +98,7 @@ import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	media: firefish.entities.DriveFile;
