@@ -55,7 +55,7 @@
 						{{ i18n.ts._aboutIceshrimp.about }}
 					</div>
 					<FormSection>
-						<div class="_formLinks">
+						<div class="_formLinksGrid">
 							<FormLink
 								to="https://iceshrimp.dev/iceshrimp/iceshrimp"
 								external
