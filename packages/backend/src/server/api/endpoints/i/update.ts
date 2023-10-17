@@ -2,7 +2,7 @@ import RE2 from "re2";
 import * as mfm from "mfm-js";
 import { publishMainStream, publishUserEvent } from "@/services/stream.js";
 import acceptAllFollowRequests from "@/services/following/requests/accept-all.js";
-import { publishToFollowers } from "@/services/i/update.js";
+import { publishToFollowers, updateUserProfileData } from "@/services/i/update.js";
 import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { updateUsertags } from "@/services/update-hashtag.js";
@@ -274,65 +274,5 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 			});
 	}
 
-	//#region emojis/tags
-
-	let emojis = [] as string[];
-	let tags = [] as string[];
-
-	const newName = updates.name === undefined ? user.name : updates.name;
-	const newDescription =
-		profileUpdates.description === undefined
-			? profile.description
-			: profileUpdates.description;
-
-	if (newName != null) {
-		const tokens = mfm.parseSimple(newName);
-		emojis = emojis.concat(extractCustomEmojisFromMfm(tokens!));
-	}
-
-	if (newDescription != null) {
-		const tokens = mfm.parse(newDescription);
-		emojis = emojis.concat(extractCustomEmojisFromMfm(tokens!));
-		tags = extractHashtags(tokens!)
-			.map((tag) => normalizeForSearch(tag))
-			.splice(0, 32);
-	}
-
-	updates.emojis = emojis;
-	updates.tags = tags;
-
-	// ハッシュタグ更新
-	updateUsertags(user, tags);
-	//#endregion
-
-	if (Object.keys(updates).length > 0) await Users.update(user.id, updates);
-	if (Object.keys(profileUpdates).length > 0) {
-		await UserProfiles.update(user.id, profileUpdates);
-		await UserProfiles.updateMentions(user.id);
-	}
-
-	const iObj = await Users.pack<true, true>(user.id, user, {
-		detail: true,
-		includeSecrets: isSecure,
-	});
-
-	// Publish meUpdated event
-	publishMainStream(user.id, "meUpdated", iObj);
-	publishUserEvent(
-		user.id,
-		"updateUserProfile",
-		await UserProfiles.findOneBy({ userId: user.id }),
-	);
-
-	// 鍵垢を解除したとき、溜まっていたフォローリクエストがあるならすべて承認
-	if (user.isLocked && ps.isLocked === false) {
-		acceptAllFollowRequests(user);
-	}
-
-	// フォロワーにUpdateを配信
-	UserProfiles.updateMentions(user.id).finally(() => {
-		publishToFollowers(user.id);
-	});
-
-	return iObj;
+	return updateUserProfileData(user, profile, updates, profileUpdates, isSecure);
 });

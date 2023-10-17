@@ -44,6 +44,7 @@ import { MastoContext } from "@/server/api/mastodon/index.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { updatePerson } from "@/remote/activitypub/models/person.js";
 import { promiseEarlyReturn } from "@/prelude/promise.js";
+import { updateUserProfileData } from "@/services/i/update.js";
 
 export type AccountCache = {
     locks: AsyncLock;
@@ -181,12 +182,18 @@ export class UserHelpers {
 
         if (formData.fields_attributes) {
             profileUpdates.fields = await Promise.all(formData.fields_attributes.map(async field => {
-                const verified = field.value.startsWith("http") ? await verifyLink(field.value, user.username) : undefined;
+                if (!(field.name.trim() === "" && field.value.trim() === "")) {
+                    if (field.name.trim() === "") throw new MastoApiError(400, "Field name can not be empty");
+                    if (field.value.trim() === "") throw new MastoApiError(400, "Field value can not be empty");
+                }
+                const verified = field.value.startsWith("http")
+                    ? (await promiseEarlyReturn(verifyLink(field.value, user.username), 1500)) ?? false
+                    : undefined;
                 return {
                     ...field,
                     verified
                 };
-            }));
+            })).then(p => p.filter(field => field.name.trim().length > 0 && field.value.length > 0));
         }
 
         if (formData.display_name) updates.name = formData.display_name;
@@ -195,11 +202,7 @@ export class UserHelpers {
         if (formData.bot) updates.isBot = formData.bot;
         if (formData.discoverable) updates.isExplorable = formData.discoverable;
 
-        if (Object.keys(updates).length > 0) await Users.update(user.id, updates);
-        if (Object.keys(profileUpdates).length > 0) {
-            await UserProfiles.update({ userId: user.id }, profileUpdates);
-            await promiseEarlyReturn(UserProfiles.updateMentions(user.id), 1500);
-        }
+        await updateUserProfileData(user, null, updates, profileUpdates, false);
 
         return this.verifyCredentials(ctx);
     }
