@@ -20,6 +20,7 @@ import { IsNull } from "typeorm";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import { getStubMastoContext, MastoContext } from "@/server/api/mastodon/index.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
+import isQuote from "@/misc/is-quote.js";
 
 export class NoteConverter {
     public static async encode(note: Note, ctx: MastoContext, recurse: boolean = true): Promise<MastodonEntity.Status> {
@@ -88,7 +89,7 @@ export class NoteConverter {
             .then(p => p.filter(m => m)) as Promise<MastodonEntity.Mention[]>;
 
         const quoteUri = Promise.resolve(renote).then(renote => {
-            if (!renote || note.text === null) return null;
+            if (!renote || !isQuote(note)) return null;
             return renote.uri ? renote.uri : `${config.url}/notes/${renote.id}`;
         });
 
@@ -118,7 +119,7 @@ export class NoteConverter {
             account: Promise.resolve(noteUser).then(p => UserConverter.encode(p, ctx)),
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: note.replyUserId,
-            reblog: reblog.then(reblog => note.text === null ? reblog : null),
+            reblog: reblog.then(reblog => !isQuote(note) ? reblog : null),
             content: content,
             content_type: 'text/x.misskeymarkdown',
             text: note.text,
@@ -143,7 +144,7 @@ export class NoteConverter {
             pinned: isPinned,
             reactions: populated.then(populated => Promise.resolve(reaction).then(reaction => this.encodeReactions(note.reactions, reaction?.reaction, populated))),
             bookmarked: isBookmarked,
-            quote: reblog.then(reblog => note.text !== null ? reblog : null),
+            quote: reblog.then(reblog => isQuote(note) ? reblog : null),
             edited_at: note.updatedAt?.toISOString()
         });
     }

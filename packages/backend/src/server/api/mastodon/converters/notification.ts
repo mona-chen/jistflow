@@ -8,6 +8,7 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { getStubMastoContext, MastoContext } from "@/server/api/mastodon/index.js";
 import { Notifications } from "@/models/index.js";
+import isQuote from "@/misc/is-quote.js";
 
 type NotificationType = typeof notificationTypes[number];
 
@@ -30,7 +31,7 @@ export class NotificationConverter {
         const note = notification.note ?? (notification.noteId ? await getNote(notification.noteId, localUser) : null);
 
         if (note) {
-            const isPureRenote = note.renoteId !== null && note.text === null;
+            const isPureRenote = note.renoteId !== null && !isQuote(note);
             const encodedNote = isPureRenote
                 ? getNote(note.renoteId!, localUser).then(note => NoteConverter.encode(note, ctx))
                 : NoteConverter.encode(note, ctx);

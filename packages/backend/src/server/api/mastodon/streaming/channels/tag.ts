@@ -5,6 +5,7 @@ import { isInstanceMuted } from "@/misc/is-instance-muted.js";
 import { Note } from "@/models/entities/note.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { StreamMessages } from "@/server/api/stream/types.js";
+import isQuote from "@/misc/is-quote.js";
 
 export class MastodonStreamTag extends MastodonStream {
     public static shouldShare = false;
@@ -62,7 +63,7 @@ export class MastodonStreamTag extends MastodonStream {
         if (isInstanceMuted(note, new Set<string>(this.userProfile?.mutedInstances ?? []))) return false;
         if (isUserRelated(note, this.muting)) return false;
         if (isUserRelated(note, this.blocking)) return false;
-        if (note.renote && !note.text && this.renoteMuting.has(note.userId)) return false;
+        if (note.renote && !isQuote(note) && this.renoteMuting.has(note.userId)) return false;
         if (this.userProfile && (await getWordHardMute(note, this.user, this.userProfile.mutedWords))) return false;
 
         return true;

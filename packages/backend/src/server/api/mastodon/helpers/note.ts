@@ -236,6 +236,8 @@ export class NoteHelpers {
         )
             .andWhere("note.renoteId = :noteId", { noteId: note.id })
             .andWhere("note.text IS NULL") // We don't want to count quotes as renotes
+            .andWhere('note.hasPoll = FALSE')
+            .andWhere("note.fileIds = '{}'")
             .innerJoinAndSelect("note.user", "user");
 
         generateVisibilityQuery(query, user);

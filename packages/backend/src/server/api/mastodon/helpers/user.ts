@@ -353,7 +353,9 @@ export class UserHelpers {
             query.andWhere(
                 new Brackets(qb => {
                     qb.where('note.renoteId IS NULL')
-                        .orWhere('note.text IS NOT NULL');
+                        .orWhere('note.text IS NOT NULL')
+                        .orWhere('note.hasPoll = TRUE')
+                        .orWhere("note.fileIds != '{}'");
                 }));
         }
 
