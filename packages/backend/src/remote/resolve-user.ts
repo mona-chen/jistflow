@@ -219,11 +219,6 @@ export async function resolveMentionFromCache(username: string, host: string | n
 		if (finalUsername === null) return null;
 		username = finalUsername;
 	}
-	try {
-		if (isLocal) username = await resolveUser(username, null).then(p => p?.username ?? username);
-	} catch {
-		return null;
-	}
 
 	const fallback = getMentionFallbackUri(username, host, objectHost);
 	const cached = cache.find(r => r.username.toLowerCase() === username.toLowerCase() && r.host === host);
