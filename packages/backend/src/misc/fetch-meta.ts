@@ -1,5 +1,6 @@
 import { db } from "@/db/postgre.js";
 import { Meta } from "@/models/entities/meta.js";
+import push from 'web-push';
 
 let cache: Meta;
 
@@ -46,12 +47,16 @@ export async function fetchMeta(noCache = false): Promise<Meta> {
 			cache = meta;
 			return meta;
 		} else {
+			const { publicKey, privateKey } = push.generateVAPIDKeys();
+
 			// If fetchMeta is called at the same time when meta is empty, this part may be called at the same time, so use fail-safe upsert.
 			const saved = await transactionalEntityManager
 				.upsert(
 					Meta,
 					{
 						id: "x",
+						swPublicKey: publicKey,
+						swPrivateKey: privateKey,
 					},
 					["id"],
 				)
