@@ -86,10 +86,24 @@ export async function checkFetch(req: IncomingMessage): Promise<number> {
 		}
 
 		// HTTP-Signatureの検証
-		const httpSignatureValidated = httpSignature.verifySignature(
+		let httpSignatureValidated = httpSignature.verifySignature(
 			signature,
 			authUser.key.keyPem,
 		);
+
+		// If signature validation failed, try refetching the actor
+		if (!httpSignatureValidated) {
+			authUser.key = await dbResolver.refetchPublicKeyForApId(authUser.user);
+
+			if (authUser.key == null) {
+				return 403;
+			}
+
+			httpSignatureValidated = httpSignature.verifySignature(
+				signature,
+				authUser.key.keyPem,
+			);
+		}
 
 		if (!httpSignatureValidated) {
 			return 403;
