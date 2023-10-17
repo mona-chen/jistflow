@@ -3,7 +3,7 @@ import type * as mfm from "mfm-js";
 import config from "@/config/index.js";
 import { intersperse } from "@/prelude/array.js";
 import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
-import { resolveMentionWithFallback } from "@/remote/resolve-user.js";
+import { resolveMentionFromCache } from "@/remote/resolve-user.js";
 
 export async function toHtml(
 	nodes: mfm.MfmNode[] | null,
@@ -113,19 +113,26 @@ export async function toHtml(
 			return a;
 		},
 
-		async mention(node) {
-			const el = doc.createElement("span");
-			el.setAttribute("class", "h-card");
-			el.setAttribute("translate", "no");
-			const a = doc.createElement("a");
+		mention(node) {
 			const { username, host, acct } = node.props;
-			a.href = await resolveMentionWithFallback(username, host, objectHost, mentionedRemoteUsers);
-			a.className = "u-url mention";
-			const span = doc.createElement("span");
-			span.textContent = username;
-			a.textContent = '@';
-			a.appendChild(span);
-			el.appendChild(a);
+			const href = resolveMentionFromCache(username, host, objectHost, mentionedRemoteUsers);
+
+			const el = doc.createElement("span");
+			if (href === null) {
+				el.textContent = acct;
+			} else {
+				el.setAttribute("class", "h-card");
+				el.setAttribute("translate", "no");
+				const a = doc.createElement("a");
+				a.href = href;
+				a.className = "u-url mention";
+				const span = doc.createElement("span");
+				span.textContent = username;
+				a.textContent = '@';
+				a.appendChild(span);
+				el.appendChild(a);
+			}
+
 			return el;
 		},
 

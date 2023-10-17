@@ -3,7 +3,7 @@ import { JSDOM } from "jsdom";
 import config from "@/config/index.js";
 import { intersperse } from "@/prelude/array.js";
 import mfm from "mfm-js";
-import { resolveMentionWithFallback } from "@/remote/resolve-user.js";
+import { resolveMentionFromCache } from "@/remote/resolve-user.js";
 
 export class MfmHelpers {
     public static async toHtml(
@@ -135,20 +135,18 @@ export class MfmHelpers {
                 return a;
             },
 
-            async mention(node) {
+            mention(node) {
                 const { username, host, acct } = node.props;
-                const fallback = await resolveMentionWithFallback(username, host, objectHost, mentionedRemoteUsers, true);
-                const isLocal = (host === null && objectHost === null) || host === config.domain;
-                const isInvalid = fallback.startsWith(config.url) && !isLocal;
+                const href = resolveMentionFromCache(username, host, objectHost, mentionedRemoteUsers);
 
                 const el = doc.createElement("span");
-                if (isInvalid) {
+                if (href === null) {
                     el.textContent = acct;
                 } else {
                     el.setAttribute("class", "h-card");
                     el.setAttribute("translate", "no");
                     const a = doc.createElement("a");
-                    a.href = fallback;
+                    a.href = href;
                     a.className = "u-url mention";
                     const span = doc.createElement("span");
                     span.textContent = username;

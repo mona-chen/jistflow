@@ -13,7 +13,6 @@ import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 
 const logger = remoteLogger.createSubLogger("resolve-user");
 const uriHostCache = new Cache<string>("resolveUserUriHost", 60 * 60 * 24);
-const mentionUriCache = new Cache<string>("resolveMentionUserUri", 60 * 60 * 72);
 
 export async function resolveUser(
 	username: string,
@@ -207,24 +206,13 @@ export function getMentionFallbackUri(username: string, host: string | null, obj
 	return fallback;
 }
 
-export async function resolveMentionWithFallback(username: string, host: string | null, objectHost: string | null, cache: IMentionedRemoteUsers, cachedOnly: boolean = false): Promise<string> {
+export function resolveMentionFromCache(username: string, host: string | null, objectHost: string | null, cache: IMentionedRemoteUsers): string | null {
 	const fallback = getMentionFallbackUri(username, host, objectHost);
 
 	const cached = cache.find(r => r.username.toLowerCase() === username.toLowerCase() && r.host === host);
 	if (cached) return cached.url ?? cached.uri ?? fallback;
 	if ((host === null && objectHost === null) || host === config.domain) return fallback;
-	if (cachedOnly) return fallback;
-
-	return mentionUriCache.fetch(fallback, async () => {
-		try {
-			const user = await resolveUser(username, host ?? objectHost, false);
-			const profile = await UserProfiles.findOneBy({ userId: user.id });
-			return profile?.url ?? user.uri ?? fallback;
-		}
-		catch {
-			return fallback;
-		}
-	});
+	return null;
 }
 
 export async function getSubjectHostFromUri(uri: string): Promise<string | null> {
