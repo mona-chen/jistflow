@@ -43,6 +43,7 @@ import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js"
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { updatePerson } from "@/remote/activitypub/models/person.js";
+import { promiseEarlyReturn } from "@/prelude/promise.js";
 
 export type AccountCache = {
     locks: AsyncLock;
@@ -197,7 +198,7 @@ export class UserHelpers {
         if (Object.keys(updates).length > 0) await Users.update(user.id, updates);
         if (Object.keys(profileUpdates).length > 0) {
             await UserProfiles.update({ userId: user.id }, profileUpdates);
-            await UserProfiles.updateMentions(user.id);
+            await promiseEarlyReturn(UserProfiles.updateMentions(user.id), 1500);
         }
 
         return this.verifyCredentials(ctx);
