@@ -80,7 +80,7 @@
 							class="_button button"
 							@click="changeProfile"
 						>
-							<i class="ph-caret-down ph-bold ph-lg"></i>
+							<i :class="icon('ph-caret-down')"></i>
 						</button>
 						<button
 							v-if="deckStore.state.profile !== 'default'"
@@ -88,7 +88,7 @@
 							class="_button button"
 							@click="renameProfile"
 						>
-							<i class="ph-pencil ph-bold ph-lg"></i>
+							<i :class="icon('ph-pencil')"></i>
 						</button>
 						<button
 							v-if="deckStore.state.profile !== 'default'"
@@ -96,7 +96,7 @@
 							class="_button button"
 							@click="deleteProfile"
 						>
-							<i class="ph-trash ph-bold ph-lg"></i>
+							<i :class="icon('ph-trash')"></i>
 						</button>
 					</div>
 					<div class="middle">
@@ -105,7 +105,7 @@
 							class="_button button new"
 							@click="addColumn"
 						>
-							<i class="ph-plus ph-bold ph-lg"></i>
+							<i :class="icon('ph-plus')"></i>
 						</button>
 					</div>
 					<div class="bottom">
@@ -114,7 +114,7 @@
 							class="_button button settings"
 							@click="showSettings"
 						>
-							<i class="ph-gear-six ph-bold ph-lg"></i>
+							<i :class="icon('ph-gear-six')"></i>
 						</button>
 					</div>
 				</div>
@@ -127,11 +127,13 @@
 				class="button nav _button"
 				@click="drawerMenuShowing = true"
 			>
-				<i class="ph-list ph-bold ph-lg"></i
+				<i :class="icon('ph-list')"></i
 				><span
 					v-if="menuIndicated"
 					class="indicator"
-					:class="{ animateIndicator: $store.state.animation }"
+					:class="{
+						animateIndicator: defaultStore.state.animation,
+					}"
 					><i class="ph-circle ph-fill"></i
 				></span>
 			</button>
@@ -140,18 +142,20 @@
 				class="button home _button"
 				@click="mainRouter.push('/')"
 			>
-				<i class="ph-house ph-bold ph-lg"></i>
+				<i :class="icon('ph-house')"></i>
 			</button>
 			<button
 				:aria-label="i18n.t('notifications')"
 				class="button notifications _button"
 				@click="mainRouter.push('/my/notifications')"
 			>
-				<i class="ph-bell ph-bold ph-lg"></i
+				<i :class="icon('ph-bell')"></i
 				><span
 					v-if="$i?.hasUnreadNotification"
 					class="indicator"
-					:class="{ animateIndicator: $store.state.animation }"
+					:class="{
+						animateIndicator: defaultStore.state.animation,
+					}"
 					><i class="ph-circle ph-fill"></i
 				></span>
 			</button>
@@ -160,11 +164,11 @@
 				class="button post _button"
 				@click="os.post()"
 			>
-				<i class="ph-pencil ph-bold ph-lg"></i>
+				<i :class="icon('ph-pencil')"></i>
 			</button>
 		</div>
 
-		<transition :name="$store.state.animation ? 'menu-back' : ''">
+		<transition :name="defaultStore.state.animation ? 'menu-back' : ''">
 			<div
 				v-if="drawerMenuShowing"
 				class="menu-back _modalBg"
@@ -173,7 +177,7 @@
 			></div>
 		</transition>
 
-		<transition :name="$store.state.animation ? 'menu' : ''">
+		<transition :name="defaultStore.state.animation ? 'menu' : ''">
 			<XDrawerMenu v-if="drawerMenuShowing" class="menu" />
 		</transition>
 
@@ -182,14 +186,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	computed,
-	defineAsyncComponent,
-	onMounted,
-	provide,
-	ref,
-	watch,
-} from "vue";
+import { computed, defineAsyncComponent, ref, watch } from "vue";
 import { v4 as uuid } from "uuid";
 import XCommon from "./_common_/common.vue";
 import {
@@ -204,13 +201,15 @@ import DeckColumnCore from "@/ui/deck/column-core.vue";
 import XSidebar from "@/ui/_common_/navbar.vue";
 import XDrawerMenu from "@/ui/_common_/navbar-for-mobile.vue";
 import MkButton from "@/components/MkButton.vue";
-import { getScrollContainer } from "@/scripts/scroll";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { mainRouter } from "@/router";
 import { unisonReload } from "@/scripts/unison-reload";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
+
 const XStatusBars = defineAsyncComponent(
 	() => import("@/ui/_common_/statusbars.vue"),
 );
@@ -337,7 +336,7 @@ function changeProfile(ev: MouseEvent) {
 			null,
 			{
 				text: i18n.ts._deck.newProfile,
-				icon: "ph-plus ph-bold ph-lg",
+				icon: `${icon("ph-plus")}`,
 				action: async () => {
 					const { canceled, result: name } = await os.inputText({
 						title: i18n.ts._deck.profile,

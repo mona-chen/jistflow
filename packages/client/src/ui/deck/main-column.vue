@@ -29,10 +29,8 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { mainRouter } from "@/router";
 import type { PageMetadata } from "@/scripts/page-metadata";
-import {
-	provideMetadataReceiver,
-	setPageMetadata,
-} from "@/scripts/page-metadata";
+import { provideMetadataReceiver } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 defineProps<{
 	column: Column;
@@ -81,7 +79,7 @@ function onContextmenu(ev: MouseEvent) {
 				text: path,
 			},
 			{
-				icon: "ph-browser ph-bold ph-lg",
+				icon: `${icon("ph-browser")}`,
 				text: i18n.ts.openInWindow,
 				action: () => {
 					os.pageWindow(path);

@@ -6,7 +6,7 @@
 		<MkSpacer :content-max="700">
 			<div class="mk-list-page">
 				<transition
-					:name="$store.state.animation ? 'zoom' : ''"
+					:name="defaultStore.state.animation ? 'zoom' : ''"
 					mode="out-in"
 				>
 					<div v-if="list" class="_section">
@@ -25,7 +25,7 @@
 				</transition>
 
 				<transition
-					:name="$store.state.animation ? 'zoom' : ''"
+					:name="defaultStore.state.animation ? 'zoom' : ''"
 					mode="out-in"
 				>
 					<div v-if="list" class="_section members _gap">
@@ -52,7 +52,7 @@
 											:aria-label="i18n.t('removeMember')"
 											@click="removeUser(user)"
 										>
-											<i class="ph-x ph-bold ph-lg"></i>
+											<i :class="icon('ph-x')"></i>
 										</button>
 									</div>
 								</div>
@@ -72,6 +72,8 @@ import * as os from "@/os";
 import { mainRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	listId: string;
@@ -153,7 +155,7 @@ definePageMetadata(
 		list.value
 			? {
 					title: list.value.name,
-					icon: "ph-list-bullets ph-bold ph-lg",
+					icon: `${icon("ph-list-bullets")}`,
 			  }
 			: null,
 	),

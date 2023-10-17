@@ -85,6 +85,7 @@ import {
 	definePageMetadata,
 	provideMetadataReceiver,
 } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const isEmpty = (x: string | null) => x == null || x === "";
 const el = ref<HTMLElement | null>(null);
@@ -92,7 +93,7 @@ const router = useRouter();
 
 const indexInfo = {
 	title: i18n.ts.controlPanel,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 	hideHeader: true,
 };
 
@@ -141,7 +142,7 @@ const menuDef = computed(() => [
 		items: [
 			{
 				type: "button",
-				icon: "ph-magnifying-glass ph-bold ph-lg",
+				icon: `${icon("ph-magnifying-glass")}`,
 				text: i18n.ts.lookup,
 				action: lookup,
 			},
@@ -149,7 +150,7 @@ const menuDef = computed(() => [
 				? [
 						{
 							type: "button",
-							icon: "ph-user-plus ph-bold ph-lg",
+							icon: `${icon("ph-user-plus")}`,
 							text: i18n.ts.invite,
 							action: invite,
 						},
@@ -159,7 +160,7 @@ const menuDef = computed(() => [
 				? [
 						{
 							type: "button",
-							icon: "ph-list-magnifying-glass ph-bold ph-lg",
+							icon: `${icon("ph-list-magnifying-glass")}`,
 							text: i18n.ts.indexPosts,
 							action: indexPosts,
 						},
@@ -171,55 +172,55 @@ const menuDef = computed(() => [
 		title: i18n.ts.administration,
 		items: [
 			{
-				icon: "ph-gauge ph-bold ph-lg",
+				icon: `${icon("ph-gauge")}`,
 				text: i18n.ts.dashboard,
 				to: "/admin/overview",
 				active: currentPage.value?.route.name === "overview",
 			},
 			{
-				icon: "ph-users ph-bold ph-lg",
+				icon: `${icon("ph-users")}`,
 				text: i18n.ts.users,
 				to: "/admin/users",
 				active: currentPage.value?.route.name === "users",
 			},
 			{
-				icon: "ph-smiley ph-bold ph-lg",
+				icon: `${icon("ph-smiley")}`,
 				text: i18n.ts.customEmojis,
 				to: "/admin/emojis",
 				active: currentPage.value?.route.name === "emojis",
 			},
 			{
-				icon: "ph-planet ph-bold ph-lg",
+				icon: `${icon("ph-planet")}`,
 				text: i18n.ts.federation,
 				to: "/admin/federation",
 				active: currentPage.value?.route.name === "federation",
 			},
 			{
-				icon: "ph-queue ph-bold ph-lg",
+				icon: `${icon("ph-queue")}`,
 				text: i18n.ts.jobQueue,
 				to: "/admin/queue",
 				active: currentPage.value?.route.name === "queue",
 			},
 			{
-				icon: "ph-cloud ph-bold ph-lg",
+				icon: `${icon("ph-cloud")}`,
 				text: i18n.ts.files,
 				to: "/admin/files",
 				active: currentPage.value?.route.name === "files",
 			},
 			{
-				icon: "ph-megaphone-simple ph-bold ph-lg",
+				icon: `${icon("ph-megaphone-simple")}`,
 				text: i18n.ts.announcements,
 				to: "/admin/announcements",
 				active: currentPage.value?.route.name === "announcements",
 			},
 			{
-				icon: "ph-money ph-bold ph-lg",
+				icon: `${icon("ph-money")}`,
 				text: i18n.ts.ads,
 				to: "/admin/ads",
 				active: currentPage.value?.route.name === "ads",
 			},
 			{
-				icon: "ph-warning-circle ph-bold ph-lg",
+				icon: `${icon("ph-warning-circle")}`,
 				text: i18n.ts.abuseReports,
 				to: "/admin/abuses",
 				active: currentPage.value?.route.name === "abuses",
@@ -232,14 +233,14 @@ const menuDef = computed(() => [
 					title: i18n.ts.settings,
 					items: [
 						{
-							icon: "ph-gear-six ph-bold ph-lg",
+							icon: `${icon("ph-gear-six")}`,
 							text: i18n.ts.general,
 							to: "/admin/settings",
 							active:
 								currentPage.value?.route.name === "settings",
 						},
 						{
-							icon: "ph-envelope-simple-open ph-bold ph-lg",
+							icon: `${icon("ph-envelope-simple-open")}`,
 							text: i18n.ts.emailServer,
 							to: "/admin/email-settings",
 							active:
@@ -247,7 +248,7 @@ const menuDef = computed(() => [
 								"email-settings",
 						},
 						{
-							icon: "ph-cloud ph-bold ph-lg",
+							icon: `${icon("ph-cloud")}`,
 							text: i18n.ts.objectStorage,
 							to: "/admin/object-storage",
 							active:
@@ -255,20 +256,20 @@ const menuDef = computed(() => [
 								"object-storage",
 						},
 						{
-							icon: "ph-lock ph-bold ph-lg",
+							icon: `${icon("ph-lock")}`,
 							text: i18n.ts.security,
 							to: "/admin/security",
 							active:
 								currentPage.value?.route.name === "security",
 						},
 						{
-							icon: "ph-arrows-merge ph-bold ph-lg",
+							icon: `${icon("ph-arrows-merge")}`,
 							text: i18n.ts.relays,
 							to: "/admin/relays",
 							active: currentPage.value?.route.name === "relays",
 						},
 						{
-							icon: "ph-prohibit ph-bold ph-lg",
+							icon: `${icon("ph-prohibit")}`,
 							text: i18n.ts.instanceBlocking,
 							to: "/admin/instance-block",
 							active:
@@ -276,14 +277,14 @@ const menuDef = computed(() => [
 								"instance-block",
 						},
 						{
-							icon: "ph-hash ph-bold ph-lg",
+							icon: `${icon("ph-hash")}`,
 							text: i18n.ts.hiddenTags,
 							to: "/admin/hashtags",
 							active:
 								currentPage.value?.route.name === "hashtags",
 						},
 						{
-							icon: "ph-ghost ph-bold ph-lg",
+							icon: `${icon("ph-ghost")}`,
 							text: i18n.ts.proxyAccount,
 							to: "/admin/proxy-account",
 							active:
@@ -291,14 +292,14 @@ const menuDef = computed(() => [
 								"proxy-account",
 						},
 						{
-							icon: "ph-database ph-bold ph-lg",
+							icon: `${icon("ph-database")}`,
 							text: i18n.ts.database,
 							to: "/admin/database",
 							active:
 								currentPage.value?.route.name === "database",
 						},
 						{
-							icon: "ph-flask ph-bold ph-lg",
+							icon: `${icon("ph-flask")}`,
 							text: i18n.ts._experiments.title,
 							to: "/admin/experiments",
 							active:
@@ -401,28 +402,28 @@ const lookup = (ev) => {
 		[
 			{
 				text: i18n.ts.user,
-				icon: "ph-user ph-bold ph-lg",
+				icon: `${icon("ph-user")}`,
 				action: () => {
 					lookupUser();
 				},
 			},
 			{
 				text: i18n.ts.note,
-				icon: "ph-pencil ph-bold ph-lg",
+				icon: `${icon("ph-pencil")}`,
 				action: () => {
 					lookupNote();
 				},
 			},
 			{
 				text: i18n.ts.file,
-				icon: "ph-cloud ph-bold ph-lg",
+				icon: `${icon("ph-cloud")}`,
 				action: () => {
 					lookupFile();
 				},
 			},
 			{
 				text: i18n.ts.instance,
-				icon: "ph-planet ph-bold ph-lg",
+				icon: `${icon("ph-planet")}`,
 				action: () => {
 					lookupInstance();
 				},

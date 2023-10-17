@@ -8,7 +8,7 @@
 		@dragleave="onDragleave"
 		@drop.stop="onDrop"
 	>
-		<i v-if="folder == null" class="ph-cloud ph-bold ph-lg"></i>
+		<i v-if="folder == null" :class="icon('ph-cloud')"></i>
 		<span>{{ folder == null ? i18n.ts.drive : folder.name }}</span>
 	</div>
 </template>
@@ -18,6 +18,7 @@ import { ref } from "vue";
 import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	folder?: firefish.entities.DriveFolder;

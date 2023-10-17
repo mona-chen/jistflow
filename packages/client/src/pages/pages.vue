@@ -57,7 +57,7 @@
 					<div class="rknalgpo my">
 						<div class="buttoncontainer">
 							<MkButton class="new primary" @click="create()"
-								><i class="ph-plus ph-bold ph-lg"></i>
+								><i :class="icon('ph-plus')"></i>
 								{{ i18n.ts._pages.newPage }}</MkButton
 							>
 						</div>
@@ -91,6 +91,7 @@ import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
@@ -119,7 +120,7 @@ function create() {
 
 const headerActions = computed(() => [
 	{
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.create,
 		handler: create,
 	},
@@ -129,24 +130,24 @@ const headerTabs = computed(() => [
 	{
 		key: "featured",
 		title: i18n.ts._pages.featured,
-		icon: "ph-fire-simple ph-bold ph-lg",
+		icon: `${icon("ph-fire-simple")}`,
 	},
 	{
 		key: "liked",
 		title: i18n.ts._pages.liked,
-		icon: "ph-heart ph-bold ph-lg",
+		icon: `${icon("ph-heart")}`,
 	},
 	{
 		key: "my",
 		title: i18n.ts._pages.my,
-		icon: "ph-crown-simple ph-bold ph-lg",
+		icon: `${icon("ph-crown-simple")}`,
 	},
 ]);
 
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.pages,
-		icon: "ph-file-text ph-bold ph-lg",
+		icon: `${icon("ph-file-text")}`,
 	})),
 );
 

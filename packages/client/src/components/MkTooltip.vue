@@ -1,6 +1,6 @@
 <template>
 	<transition
-		:name="$store.state.animation ? 'tooltip' : ''"
+		:name="defaultStore.state.animation ? 'tooltip' : ''"
 		appear
 		@after-leave="emit('closed')"
 	>
@@ -22,6 +22,7 @@
 import { nextTick, onMounted, onUnmounted, ref } from "vue";
 import * as os from "@/os";
 import { calcPopupPosition } from "@/scripts/popup-position";
+import { defaultStore } from "@/store";
 
 const props = withDefaults(
 	defineProps<{

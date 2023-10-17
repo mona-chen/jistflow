@@ -49,6 +49,7 @@ import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { defaultStore } from "@/store";
 import { deviceKind } from "@/scripts/device-kind";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
@@ -82,12 +83,12 @@ const headerActions = computed(() => []);
 const headerTabs = computed(() => [
 	{
 		key: "notes",
-		icon: "ph-note ph-bold ph-lg",
+		icon: `${icon("ph-note")}`,
 		title: i18n.ts.notes,
 	},
 	{
 		key: "users",
-		icon: "ph-users ph-bold ph-lg",
+		icon: `${icon("ph-users")}`,
 		title: i18n.ts.users,
 	},
 ]);
@@ -114,7 +115,7 @@ onMounted(() => {
 definePageMetadata(
 	computed(() => ({
 		title: props.tag,
-		icon: "ph-hash ph-bold ph-lg",
+		icon: `${icon("ph-hash")}`,
 	})),
 );
 </script>

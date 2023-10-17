@@ -44,7 +44,7 @@
 							primary
 							style="margin-right: 12px"
 							@click="save(ad)"
-							><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+							><i :class="icon('ph-floppy-disk-back')"></i>
 							{{ i18n.ts.save }}</MkButton
 						>
 						<MkButton
@@ -52,7 +52,7 @@
 							inline
 							danger
 							@click="remove(ad)"
-							><i class="ph-trash ph-bold ph-lg"></i>
+							><i :class="icon('ph-trash')"></i>
 							{{ i18n.ts.remove }}</MkButton
 						>
 					</div>
@@ -74,6 +74,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { formatDateTimeString } from "@/scripts/format-time-string";
+import icon from "@/scripts/icon";
 
 const ads = ref([]);
 
@@ -132,7 +133,7 @@ function save(ad) {
 const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.add,
 		handler: add,
 	},
@@ -142,7 +143,7 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.ads,
-	icon: "ph-money ph-bold ph-lg",
+	icon: `${icon("ph-money")}`,
 });
 </script>
 

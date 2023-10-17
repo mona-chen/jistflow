@@ -6,8 +6,12 @@
 import "vite/modulepreload-polyfill";
 
 import "@/style.scss";
-import "@phosphor-icons/web/bold";
+
 import "@phosphor-icons/web/fill";
+import "@phosphor-icons/web/bold";
+import "@phosphor-icons/web/regular";
+import "@phosphor-icons/web/light";
+import "@phosphor-icons/web/duotone";
 
 // #region account indexedDB migration
 import { set } from "@/scripts/idb-proxy";
@@ -72,7 +76,6 @@ function checkForSplash() {
 		console.info(`vue ${vueVersion}`);
 
 		(window as any).$i = $i;
-		(window as any).$store = defaultStore;
 
 		window.addEventListener("error", (event) => {
 			console.error(event);
@@ -201,10 +204,7 @@ function checkForSplash() {
 
 	app.config.globalProperties = {
 		$i,
-		$store: defaultStore,
 		$instance: instance,
-		$t: i18n.t,
-		$ts: i18n.ts,
 	};
 
 	widgets(app);

@@ -42,6 +42,7 @@ import * as os from "@/os";
 import { mainRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const urlParams = new URLSearchParams(window.location.search);
 const localOnlyQuery = urlParams.get("localOnly");
@@ -189,7 +190,7 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.share,
-	icon: "ph-share-network ph-bold ph-lg",
+	icon: `${icon("ph-share-network")}`,
 });
 </script>
 

@@ -27,23 +27,22 @@
 		>
 			<div class="line"></div>
 			<div v-if="appearNote._prId_" class="info">
-				<i class="ph-megaphone-simple-bold ph-lg"></i>
+				<i :class="icon('ph-megaphone-simple-bold')"></i>
 				{{ i18n.ts.promotion
 				}}<button class="_textButton hide" @click.stop="readPromo()">
 					{{ i18n.ts.hideThisNote }}
-					<i class="ph-x ph-bold ph-lg"></i>
+					<i :class="icon('ph-x')"></i>
 				</button>
 			</div>
 			<div v-if="appearNote._featuredId_" class="info">
-				<i class="ph-lightning ph-bold ph-lg"></i>
+				<i :class="icon('ph-lightning')"></i>
 				{{ i18n.ts.featured }}
 			</div>
 			<div v-if="pinned" class="info">
-				<i class="ph-push-pin ph-bold ph-lg"></i
-				>{{ i18n.ts.pinnedNote }}
+				<i :class="icon('ph-push-pin')"></i>{{ i18n.ts.pinnedNote }}
 			</div>
 			<div v-if="isRenote" class="renote">
-				<i class="ph-rocket-launch ph-bold ph-lg"></i>
+				<i :class="icon('ph-rocket-launch')"></i>
 				<I18n :src="i18n.ts.renotedBy" tag="span">
 					<template #user>
 						<MkA
@@ -64,7 +63,7 @@
 					>
 						<i
 							v-if="isMyRenote"
-							class="ph-dots-three-outline ph-bold ph-lg dropdownIcon"
+							:class="icon('ph-dots-three-outline dropdownIcon')"
 						></i>
 						<MkTime :time="note.createdAt" />
 					</button>
@@ -149,7 +148,7 @@
 						class="channel"
 						:to="`/channels/${appearNote.channel.id}`"
 						@click.stop
-						><i class="ph-television ph-bold"></i>
+						><i :class="icon('ph-television', false)"></i>
 						{{ appearNote.channel.name }}</MkA
 					>
 				</div>
@@ -164,7 +163,7 @@
 						class="button _button"
 						@click.stop="reply()"
 					>
-						<i class="ph-arrow-u-up-left ph-bold ph-lg"></i>
+						<i :class="icon('ph-arrow-u-up-left')"></i>
 						<template
 							v-if="appearNote.repliesCount > 0 && !detailedView"
 						>
@@ -209,7 +208,7 @@
 						class="button _button"
 						@click.stop="react()"
 					>
-						<i class="ph-smiley ph-bold ph-lg"></i>
+						<i :class="icon('ph-smiley')"></i>
 					</button>
 					<button
 						v-if="
@@ -221,7 +220,7 @@
 						class="button _button reacted"
 						@click.stop="undoReact(appearNote)"
 					>
-						<i class="ph-minus ph-bold ph-lg"></i>
+						<i :class="icon('ph-minus')"></i>
 					</button>
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
@@ -234,7 +233,7 @@
 						class="button _button"
 						@click.stop="translate"
 					>
-						<i class="ph-translate ph-bold ph-lg"></i>
+						<i :class="icon('ph-translate')"></i>
 					</button>
 					<button
 						ref="menuButton"
@@ -242,7 +241,7 @@
 						class="button _button"
 						@click.stop="menu()"
 					>
-						<i class="ph-dots-three-outline ph-bold ph-lg"></i>
+						<i :class="icon('ph-dots-three-outline')"></i>
 					</button>
 				</footer>
 			</div>
@@ -302,6 +301,7 @@ import { useNoteCapture } from "@/scripts/use-note-capture";
 import { notePage } from "@/filters/note";
 import { deepClone } from "@/scripts/clone";
 import { getNoteSummary } from "@/scripts/get-note-summary";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
@@ -494,7 +494,7 @@ function onContextmenu(ev: MouseEvent): void {
 					text: notePage(appearNote.value),
 				},
 				{
-					icon: "ph-browser ph-bold ph-lg",
+					icon: `${icon("ph-browser")}`,
 					text: i18n.ts.openInWindow,
 					action: () => {
 						os.pageWindow(notePage(appearNote.value));
@@ -502,7 +502,7 @@ function onContextmenu(ev: MouseEvent): void {
 				},
 				notePage(appearNote.value) != location.pathname
 					? {
-							icon: "ph-arrows-out-simple ph-bold ph-lg",
+							icon: `${icon("ph-arrows-out-simple")}`,
 							text: i18n.ts.showInPage,
 							action: () => {
 								router.push(
@@ -515,13 +515,13 @@ function onContextmenu(ev: MouseEvent): void {
 				null,
 				{
 					type: "a",
-					icon: "ph-arrow-square-out ph-bold ph-lg",
+					icon: `${icon("ph-arrow-square-out")}`,
 					text: i18n.ts.openInNewTab,
 					href: notePage(appearNote.value),
 					target: "_blank",
 				},
 				{
-					icon: "ph-link-simple ph-bold ph-lg",
+					icon: `${icon("ph-link-simple")}`,
 					text: i18n.ts.copyLink,
 					action: () => {
 						copyToClipboard(`${url}${notePage(appearNote.value)}`);
@@ -530,7 +530,7 @@ function onContextmenu(ev: MouseEvent): void {
 				appearNote.value.user.host != null
 					? {
 							type: "a",
-							icon: "ph-arrow-square-up-right ph-bold ph-lg",
+							icon: `${icon("ph-arrow-square-up-right")}`,
 							text: i18n.ts.showOnRemote,
 							href:
 								appearNote.value.url ??
@@ -568,7 +568,7 @@ function showRenoteMenu(viaKeyboard = false): void {
 		[
 			{
 				text: i18n.ts.unrenote,
-				icon: "ph-trash ph-bold ph-lg",
+				icon: `${icon("ph-trash")}`,
 				danger: true,
 				action: () => {
 					os.api("notes/delete", {

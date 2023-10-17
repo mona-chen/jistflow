@@ -13,6 +13,7 @@ import XAntenna from "./editor.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { useRouter } from "@/router";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
@@ -37,6 +38,6 @@ function onAntennaCreated() {
 
 definePageMetadata({
 	title: i18n.ts.manageAntennas,
-	icon: "ph-flying-saucer ph-bold ph-lg",
+	icon: `${icon("ph-flying-saucer")}`,
 });
 </script>

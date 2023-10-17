@@ -4,10 +4,10 @@
 		:show-header="widgetProps.showHeader"
 		class="mkw-rss-ticker"
 	>
-		<template #header><i class="ph-rss ph-bold ph-lg"></i>RSS</template>
+		<template #header><i :class="icon('ph-rss')"></i>RSS</template>
 		<template #func
 			><button class="_button" @click="configure">
-				<i class="ph-gear-six ph-bold ph-lg"></i></button
+				<i :class="icon('ph-gear-six')"></i></button
 		></template>
 
 		<div class="ekmkgxbk">
@@ -37,19 +37,15 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import MarqueeText from "@/components/MkMarquee.vue";
 import type { GetFormResultType } from "@/scripts/form";
-import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
 import { useInterval } from "@/scripts/use-interval";
 import { shuffle } from "@/scripts/shuffle";
+import icon from "@/scripts/icon";
 
 const name = "rssTicker";
 

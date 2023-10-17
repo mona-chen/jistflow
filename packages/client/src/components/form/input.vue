@@ -40,7 +40,7 @@
 			primary
 			class="save"
 			@click="updated"
-			><i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.save }}</MkButton
+			><i :class="icon('ph-check')"></i> {{ i18n.ts.save }}</MkButton
 		>
 	</div>
 </template>
@@ -51,6 +51,7 @@ import { debounce } from "throttle-debounce";
 import MkButton from "@/components/MkButton.vue";
 import { useInterval } from "@/scripts/use-interval";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	modelValue: string | number | null;

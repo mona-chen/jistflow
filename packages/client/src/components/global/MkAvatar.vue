@@ -3,7 +3,10 @@
 		v-if="disableLink"
 		v-user-preview="disablePreview ? undefined : user.id"
 		class="eiwwqkts _noSelect"
-		:class="{ cat: user.isCat, square: $store.state.squareAvatars }"
+		:class="{
+			cat: user.isCat,
+			square: defaultStore.state.squareAvatars,
+		}"
 		:style="{ color }"
 		:title="acct(user)"
 		@click="onClick"
@@ -19,7 +22,10 @@
 		v-else
 		v-user-preview="disablePreview ? undefined : user.id"
 		class="eiwwqkts _noSelect"
-		:class="{ cat: user.isCat, square: $store.state.squareAvatars }"
+		:class="{
+			cat: user.isCat,
+			square: defaultStore.state.squareAvatars,
+		}"
 		:style="{ color }"
 		:to="userPage(user)"
 		:title="acct(user)"

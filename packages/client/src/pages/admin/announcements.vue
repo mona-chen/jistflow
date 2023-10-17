@@ -44,16 +44,14 @@
 								inline
 								primary
 								@click="save(announcement)"
-								><i
-									class="ph-floppy-disk-back ph-bold ph-lg"
-								></i>
+								><i :class="icon('ph-floppy-disk-back')"></i>
 								{{ i18n.ts.save }}</MkButton
 							>
 							<MkButton
 								class="button"
 								inline
 								@click="remove(announcement)"
-								><i class="ph-trash ph-bold ph-lg"></i>
+								><i :class="icon('ph-trash')"></i>
 								{{ i18n.ts.remove }}</MkButton
 							>
 						</div>
@@ -74,6 +72,7 @@ import MkTextarea from "@/components/form/textarea.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const announcements = ref<any[]>([]);
 
@@ -140,7 +139,7 @@ function save(announcement) {
 const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.add,
 		handler: add,
 	},
@@ -150,7 +149,7 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.announcements,
-	icon: "ph-megaphone-simple ph-bold ph-lg",
+	icon: `${icon("ph-megaphone-simple")}`,
 });
 </script>
 

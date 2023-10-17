@@ -4,6 +4,7 @@ import { TransitionGroup, defineComponent, h } from "vue";
 import MkAd from "@/components/global/MkAd.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 export default defineComponent({
 	props: {
@@ -75,14 +76,14 @@ export default defineComponent({
 							[
 								h("span", [
 									h("i", {
-										class: "ph-caret-up ph-bold ph-lg icon",
+										class: `${icon("ph-caret-up")} icon`,
 									}),
 									getDateText(item.createdAt),
 								]),
 								h("span", [
 									getDateText(props.items[i + 1].createdAt),
 									h("i", {
-										class: "ph-caret-down ph-bold ph-lg icon",
+										class: `${icon("ph-caret-down")} icon`,
 									}),
 								]),
 							],

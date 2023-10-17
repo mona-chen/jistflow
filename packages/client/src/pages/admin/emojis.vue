@@ -13,9 +13,7 @@
 					<div v-if="tab === 'local'" class="local">
 						<MkInput v-model="query" :debounce="true" type="search">
 							<template #prefix
-								><i
-									class="ph-magnifying-glass ph-bold ph-lg"
-								></i
+								><i :class="icon('ph-magnifying-glass')"></i
 							></template>
 							<template #label>{{ i18n.ts.search }}</template>
 						</MkInput>
@@ -105,9 +103,7 @@
 								type="search"
 							>
 								<template #prefix
-									><i
-										class="ph-magnifying-glass ph-bold ph-lg"
-									></i
+									><i :class="icon('ph-magnifying-glass')"></i
 								></template>
 								<template #label>{{ i18n.ts.search }}</template>
 							</MkInput>
@@ -164,6 +160,7 @@ import { selectFile, selectFiles } from "@/scripts/select-file";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const emojisPaginationComponent = ref<InstanceType<typeof MkPagination>>();
 
@@ -272,7 +269,7 @@ const remoteMenu = (emoji, ev: MouseEvent) => {
 			},
 			{
 				text: i18n.ts.import,
-				icon: "ph-plus ph-bold ph-lg",
+				icon: `${icon("ph-plus")}`,
 				action: () => {
 					im(emoji);
 				},
@@ -286,7 +283,7 @@ const menu = (ev: MouseEvent) => {
 	os.popupMenu(
 		[
 			{
-				icon: "ph-download-simple ph-bold ph-lg",
+				icon: `${icon("ph-download-simple")}`,
 				text: i18n.ts.exportZip,
 				action: async () => {
 					os.api("export-custom-emojis", {})
@@ -305,7 +302,7 @@ const menu = (ev: MouseEvent) => {
 				},
 			},
 			{
-				icon: "ph-upload-simple ph-bold ph-lg",
+				icon: `${icon("ph-upload-simple")}`,
 				text: i18n.ts.importZip,
 				action: async () => {
 					const file = await selectFile(
@@ -329,7 +326,7 @@ const menu = (ev: MouseEvent) => {
 				},
 			},
 			{
-				icon: "ph-info ph-bold ph-lg",
+				icon: `${icon("ph-info")}`,
 				text: i18n.ts.emojiPackCreator,
 				action: () => {
 					window.open(
@@ -418,12 +415,12 @@ const delBulk = async () => {
 const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.addEmoji,
 		handler: add,
 	},
 	{
-		icon: "ph-file-zip ph-bold ph-lg",
+		icon: `${icon("ph-file-zip")}`,
 		handler: menu,
 	},
 ]);
@@ -431,12 +428,12 @@ const headerActions = computed(() => [
 const headerTabs = computed(() => [
 	{
 		key: "local",
-		icon: "ph-users ph-bold ph-lg",
+		icon: `${icon("ph-users")}`,
 		title: i18n.ts.local,
 	},
 	{
 		key: "remote",
-		icon: "ph-planet ph-bold ph-lg",
+		icon: `${icon("ph-planet")}`,
 		title: i18n.ts.remote,
 	},
 ]);
@@ -444,7 +441,7 @@ const headerTabs = computed(() => [
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.customEmojis,
-		icon: "ph-smiley ph-bold ph-lg",
+		icon: `${icon("ph-smiley")}`,
 	})),
 );
 </script>

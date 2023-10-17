@@ -7,7 +7,7 @@
 		class="mkw-photos"
 	>
 		<template #header
-			><i class="ph-camera ph-bold ph-lg"></i
+			><i :class="icon('ph-camera')"></i
 			>{{ i18n.ts._widgets.photos }}</template
 		>
 
@@ -26,13 +26,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, reactive, ref } from "vue";
+import { onUnmounted, ref } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import { stream } from "@/stream";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
@@ -40,6 +36,7 @@ import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const name = "photos";
 

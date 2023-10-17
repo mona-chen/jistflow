@@ -45,6 +45,7 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const proxyAccount = ref<any>(null);
 const proxyAccountId = ref<any>(null);
@@ -89,6 +90,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.proxyAccount,
-	icon: "ph-ghost ph-bold ph-lg",
+	icon: `${icon("ph-ghost")}`,
 });
 </script>

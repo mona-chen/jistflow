@@ -159,6 +159,7 @@ import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { $i } from "@/account";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const isLocked = ref($i.isLocked);
 const autoAcceptFollowed = ref($i.autoAcceptFollowed);
@@ -198,6 +199,6 @@ function save() {
 
 definePageMetadata({
 	title: i18n.ts.privacy,
-	icon: "ph-keyhole ph-bold ph-lg",
+	icon: `${icon("ph-keyhole")}`,
 });
 </script>

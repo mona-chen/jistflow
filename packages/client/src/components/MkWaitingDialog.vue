@@ -15,7 +15,7 @@
 			<i
 				v-if="success"
 				:class="[$style.icon, $style.success]"
-				class="ph-check ph-bold ph-lg"
+				class="ph-check ph-lg"
 			></i>
 			<MkLoading
 				v-else

@@ -17,7 +17,7 @@
 				></div>
 				<span>
 					<template v-if="choice.isVoted"
-						><i class="ph-check ph-bold ph-lg"></i
+						><i :class="icon('ph-check')"></i
 					></template>
 					<Mfm
 						:text="choice.text"
@@ -59,6 +59,7 @@ import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { useInterval } from "@/scripts/use-interval";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: firefish.entities.Note;

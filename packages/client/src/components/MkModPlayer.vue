@@ -5,10 +5,7 @@
 	</div>
 	<div class="mod-player-disabled" v-else-if="hide" @click="toggleVisible()">
 		<div>
-			<b
-				><i class="ph-warning ph-bold ph-lg"></i>
-				{{ i18n.ts.sensitive }}</b
-			>
+			<b><i class="ph-warning"></i> {{ i18n.ts.sensitive }}</b>
 			<span>{{ i18n.ts.clickToShow }}</span>
 		</div>
 	</div>
@@ -40,16 +37,16 @@
 		</div>
 		<div class="controls">
 			<button class="play" @click="playPause()" v-if="!loading">
-				<i class="ph-pause ph-fill ph-lg" v-if="playing"></i>
-				<i class="ph-play ph-fill ph-lg" v-else></i>
+				<i class="ph-pause ph-fill" v-if="playing"></i>
+				<i class="ph-play ph-fill" v-else></i>
 			</button>
 			<MkLoading v-else :em="true" />
 			<button class="stop" @click="stop()">
-				<i class="ph-stop ph-fill ph-lg"></i>
+				<i class="ph-stop ph-fill"></i>
 			</button>
 			<button class="loop" @click="toggleLoop()">
-				<i class="ph-repeat ph-fill ph-lg" v-if="loop === -1"></i>
-				<i class="ph-repeat-once ph-fill ph-lg" v-else></i>
+				<i class="ph-repeat ph-fill" v-if="loop === -1"></i>
+				<i class="ph-repeat-once ph-fill" v-else></i>
 			</button>
 			<FormRange
 				class="progress"
@@ -64,8 +61,8 @@
 				@update:modelValue="performSeek()"
 			></FormRange>
 			<button class="mute" @click="toggleMute()">
-				<i class="ph-speaker-simple-x ph-fill ph-lg" v-if="muted"></i>
-				<i class="ph-speaker-simple-high ph-fill ph-lg" v-else></i>
+				<i class="ph-speaker-simple-x ph-fill" v-if="muted"></i>
+				<i class="ph-speaker-simple-high ph-fill" v-else></i>
 			</button>
 			<FormRange
 				class="volume"
@@ -84,7 +81,7 @@
 				:href="module.url"
 				target="_blank"
 			>
-				<i class="ph-download-simple ph-fill ph-lg"></i>
+				<i class="ph-download-simple ph-fill"></i>
 			</a>
 		</div>
 		<div class="buttons">
@@ -94,7 +91,7 @@
 				class="_button"
 				@click.stop="captionPopup"
 			>
-				<i class="ph-subtitles ph-bold ph-lg"></i>
+				<i class="ph-subtitles"></i>
 			</button>
 			<button
 				v-if="!hide"
@@ -102,7 +99,7 @@
 				class="_button"
 				@click.stop="toggleVisible()"
 			>
-				<i class="ph-eye-slash ph-bold ph-lg"></i>
+				<i class="ph-eye-slash"></i>
 			</button>
 		</div>
 	</div>
@@ -116,6 +113,7 @@ import { i18n } from "@/i18n";
 import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { ChiptuneJsPlayer, ChiptuneJsConfig } from "@/scripts/chiptune2";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	module: firefish.entities.DriveFile;

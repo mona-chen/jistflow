@@ -19,6 +19,7 @@ import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const statusbars = defaultStore.reactiveState.statusbars;
 
@@ -42,7 +43,7 @@ async function add() {
 
 definePageMetadata({
 	title: i18n.ts.statusbar,
-	icon: "ph-list-bullets ph-bold ph-lg",
+	icon: `${icon("ph-list-bullets")}`,
 	bg: "var(--bg)",
 });
 </script>

@@ -3,11 +3,12 @@
 		<div class="banner" :style="bannerStyle">
 			<div class="fade"></div>
 			<div class="name">
-				<i class="ph-television ph-bold ph-lg"></i> {{ channel.name }}
+				<i :class="icon('ph-television')"></i>
+				{{ channel.name }}
 			</div>
 			<div class="status">
 				<div>
-					<i class="ph-users ph-bold ph-lg ph-fw ph-lg"></i>
+					<i :class="icon('ph-users ph-fw')"></i>
 					<I18n
 						:src="i18n.ts._channel.usersCount"
 						tag="span"
@@ -19,7 +20,7 @@
 					</I18n>
 				</div>
 				<div>
-					<i class="ph-pencil ph-bold ph-lg ph-fw ph-lg"></i>
+					<i :class="icon('ph-pencil ph-fw')"></i>
 					<I18n
 						:src="i18n.ts._channel.notesCount"
 						tag="span"
@@ -52,6 +53,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	channel: Record<string, any>;

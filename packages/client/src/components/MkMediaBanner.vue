@@ -5,7 +5,7 @@
 			class="sensitive"
 			@click="hide = false"
 		>
-			<span class="icon"><i class="ph-warning ph-bold ph-lg"></i></span>
+			<span class="icon"><i :class="icon('ph-warning')"></i></span>
 			<b>{{ i18n.ts.sensitive }}</b>
 			<span>{{ i18n.ts.clickToShow }}</span>
 		</div>
@@ -48,7 +48,7 @@
 			:download="media.name"
 		>
 			<span class="icon"
-				><i class="ph-download-simple ph-bold ph-lg"></i
+				><i :class="icon('ph-download-simple')"></i
 			></span>
 			<b>{{ media.name }}</b>
 		</a>
@@ -62,6 +62,7 @@ import type * as firefish from "firefish-js";
 import { ColdDeviceStorage } from "@/store";
 import "vue-plyr/dist/vue-plyr.css";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{

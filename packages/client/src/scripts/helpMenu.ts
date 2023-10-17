@@ -4,6 +4,7 @@ import { instance } from "@/instance";
 import { host } from "@/config";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 export function openHelpMenu_(ev: MouseEvent) {
 	os.popupMenu(
@@ -15,20 +16,20 @@ export function openHelpMenu_(ev: MouseEvent) {
 			{
 				type: "link",
 				text: i18n.ts.instanceInfo,
-				icon: "ph-info ph-bold ph-lg",
+				icon: `${icon("ph-info")}`,
 				to: "/about",
 			},
 			{
 				type: "link",
 				text: i18n.ts.aboutFirefish,
-				icon: "ph-lightbulb ph-bold ph-lg",
+				icon: `${icon("ph-lightbulb")}`,
 				to: "/about-firefish",
 			},
 			instance.tosUrl
 				? {
 						type: "button",
 						text: i18n.ts.tos,
-						icon: "ph-scroll ph-bold ph-lg",
+						icon: `${icon("ph-scroll")}`,
 						action: () => {
 							window.open(instance.tosUrl, "_blank");
 						},
@@ -37,7 +38,7 @@ export function openHelpMenu_(ev: MouseEvent) {
 			{
 				type: "button",
 				text: i18n.ts.apps,
-				icon: "ph-device-mobile ph-bold ph-lg",
+				icon: `${icon("ph-device-mobile")}`,
 				action: () => {
 					window.open("https://joinfirefish.org/apps", "_blank");
 				},
@@ -49,23 +50,23 @@ export function openHelpMenu_(ev: MouseEvent) {
 					os.popup(XTutorial, {}, {}, "closed");
 				},
 				text: i18n.ts.replayTutorial,
-				icon: "ph-circle-wavy-question ph-bold ph-lg",
+				icon: `${icon("ph-circle-wavy-question")}`,
 			},
 			null,
 			{
 				type: "parent",
 				text: i18n.ts.developer,
-				icon: "ph-code ph-bold ph-lg",
+				icon: `${icon("ph-code")}`,
 				children: [
 					{
 						type: "link",
 						to: "/api-console",
 						text: "API Console",
-						icon: "ph-terminal-window ph-bold ph-lg",
+						icon: `${icon("ph-terminal-window")}`,
 					},
 					{
 						text: i18n.ts.document,
-						icon: "ph-file-doc ph-bold ph-lg",
+						icon: `${icon("ph-file-doc")}`,
 						action: () => {
 							window.open("/api-doc", "_blank");
 						},
@@ -74,7 +75,7 @@ export function openHelpMenu_(ev: MouseEvent) {
 						type: "link",
 						to: "/scratchpad",
 						text: "AiScript Scratchpad",
-						icon: "ph-scribble-loop ph-bold ph-lg",
+						icon: `${icon("ph-scribble-loop")}`,
 					},
 				],
 			},

@@ -21,7 +21,7 @@
 					fit="cover"
 				/>
 				<div v-if="element.isSensitive" class="sensitive">
-					<i class="ph-warning ph-bold ph-lg icon"></i>
+					<i :class="icon('ph-warning icon')"></i>
 				</div>
 			</div>
 		</VueDraggable>
@@ -30,11 +30,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref } from "vue";
+import { computed, defineAsyncComponent } from "vue";
 import { VueDraggable } from "vue-draggable-plus";
 import MkDriveFileThumbnail from "@/components/MkDriveFileThumbnail.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps({
 	files: {
@@ -124,7 +126,7 @@ function showFileMenu(file, ev: MouseEvent) {
 		[
 			{
 				text: i18n.ts.renameFile,
-				icon: "ph-cursor-text ph-bold ph-lg",
+				icon: `${icon("ph-cursor-text")}`,
 				action: () => {
 					rename(file);
 				},
@@ -133,23 +135,21 @@ function showFileMenu(file, ev: MouseEvent) {
 				text: file.isSensitive
 					? i18n.ts.unmarkAsSensitive
 					: i18n.ts.markAsSensitive,
-				icon: file.isSensitive
-					? "ph-eye ph-bold ph-lg"
-					: "ph-eye-slash ph-bold ph-lg",
+				icon: file.isSensitive ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
 				action: () => {
 					toggleSensitive(file);
 				},
 			},
 			{
 				text: i18n.ts.describeFile,
-				icon: "ph-subtitles ph-bold ph-lg",
+				icon: `${icon("ph-subtitles")}`,
 				action: () => {
 					describe(file);
 				},
 			},
 			{
 				text: i18n.ts.attachCancel,
-				icon: "ph-x ph-bold ph-lg",
+				icon: `${icon("ph-x")}`,
 				action: () => {
 					detachMedia(file.id);
 				},

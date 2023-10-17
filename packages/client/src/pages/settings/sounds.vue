@@ -24,14 +24,14 @@
 						sounds[type].type || i18n.ts.none
 					}}</template>
 					<template #suffixIcon
-						><i class="ph-caret-down ph-bold ph-lg"></i
+						><i :class="icon('ph-caret-down')"></i
 					></template>
 				</FormButton>
 			</div>
 		</FormSection>
 
 		<FormButton danger class="_formBlock" @click="reset()"
-			><i class="ph-arrow-clockwise ph-bold ph-lg"></i>
+			><i :class="icon('ph-arrow-clockwise')"></i>
 			{{ i18n.ts.default }}</FormButton
 		>
 	</div>
@@ -47,6 +47,7 @@ import { ColdDeviceStorage } from "@/store";
 import { playFile } from "@/scripts/sound";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const masterVolume = computed({
 	get: () => {
@@ -118,6 +119,6 @@ function reset() {
 
 definePageMetadata({
 	title: i18n.ts.sounds,
-	icon: "ph-speaker-high ph-bold ph-lg",
+	icon: `${icon("ph-speaker-high")}`,
 });
 </script>

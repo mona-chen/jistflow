@@ -7,11 +7,15 @@
 					:key="index"
 					class="item"
 				>
-					<i class="itemHandle ph-list ph-bold ph-lg"></i>
+					<i class="itemHandle ph-list ph-lg"></i>
 					<i
 						:class="
-							navbarItemDef[element]?.icon ??
-							'ph-arrows-out-line-vertical ph-bold ph-lg'
+							icon(
+								`${
+									navbarItemDef[element]?.icon ??
+									'ph-arrows-out-line-vertical'
+								}`,
+							)
 						"
 					></i>
 					<span class="itemText">{{
@@ -22,18 +26,18 @@
 						class="_button itemRemove"
 						@click="removeItem(index)"
 					>
-						<i class="ph-x ph-bold ph-lg"></i>
+						<i :class="icon('ph-x')"></i>
 					</button>
 				</div>
 			</VueDraggable>
 			<FormSection>
 				<div style="display: flex; gap: var(--margin); flex-wrap: wrap">
 					<FormButton primary @click="addItem">
-						<i class="ph-plus ph-bold ph-lg"></i>
+						<i :class="icon('ph-plus')"></i>
 						{{ i18n.ts.addItem }}
 					</FormButton>
 					<FormButton @click="reloadAsk">
-						<i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+						<i :class="icon('ph-floppy-disk-back')"></i>
 						{{ i18n.ts.apply }}
 					</FormButton>
 				</div>
@@ -54,7 +58,7 @@
 		</FormRadios>
 
 		<FormButton danger class="_formBlock" @click="reset()"
-			><i class="ph-arrow-clockwise ph-bold ph-lg"></i>
+			><i :class="icon('ph-arrow-clockwise')"></i>
 			{{ i18n.ts.default }}</FormButton
 		>
 	</div>
@@ -73,6 +77,7 @@ import { defaultStore } from "@/store";
 import { unisonReload } from "@/scripts/unison-reload";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const items = ref(defaultStore.state.menu);
 
@@ -132,7 +137,7 @@ watch(menuDisplay, async () => {
 
 definePageMetadata({
 	title: i18n.ts.navbar,
-	icon: "ph-list-bullets ph-bold ph-lg",
+	icon: `${icon("ph-list-bullets")}`,
 });
 </script>
 

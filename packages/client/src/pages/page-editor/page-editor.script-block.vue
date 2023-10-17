@@ -17,7 +17,7 @@
 		>
 		<template #func>
 			<button class="_button" @click="changeType()">
-				<i class="ph-pencil ph-bold ph-lg"></i>
+				<i :class="icon('ph-pencil')"></i>
 			</button>
 		</template>
 
@@ -158,6 +158,7 @@ import * as os from "@/os";
 import { isLiteralValue } from "@/scripts/hpml/expr";
 import { funcDefs } from "@/scripts/hpml/lib";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 export default defineComponent({
 	components: {
@@ -212,8 +213,7 @@ export default defineComponent({
 	computed: {
 		icon(): any {
 			if (this.modelValue.type === null) return null;
-			if (this.modelValue.type.startsWith("fn:"))
-				return "ph-plug ph-bold ph-lg";
+			if (this.modelValue.type.startsWith("fn:")) return "ph-plug ph-lg";
 			return blockDefs.find((x) => x.type === this.modelValue.type).icon;
 		},
 		typeText(): any {

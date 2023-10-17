@@ -15,7 +15,7 @@
 			<a :href="chosen.url" target="_blank">
 				<img :src="chosen.imageUrl" />
 				<button class="_button menu" @click.prevent.stop="toggleMenu">
-					<span class="ph-info ph-bold ph-lg info-circle"></span>
+					<span :class="icon('ph-info info-circle')"></span>
 				</button>
 			</a>
 		</div>
@@ -46,6 +46,7 @@ import MkButton from "@/components/MkButton.vue";
 import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 type Ad = (typeof instance)["ads"][number];
 

@@ -23,6 +23,7 @@ import XFollowList from "./follow-list.vue";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
@@ -58,7 +59,7 @@ definePageMetadata(
 	computed(() =>
 		user.value
 			? {
-					icon: "ph-user ph-bold ph-lg",
+					icon: `${icon("ph-user")}`,
 					title: user.value.name
 						? `${user.value.name} (@${user.value.username})`
 						: `@${user.value.username}`,

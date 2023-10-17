@@ -3,7 +3,7 @@
 		:is="self ? 'MkA' : 'a'"
 		ref="el"
 		class="xlcxczvw _link"
-		:[attr]="self ? url.substr(local.length) : url"
+		:[attr]="self ? url.substring(local.length) : url"
 		:rel="rel"
 		:target="target"
 		:title="url"
@@ -12,7 +12,7 @@
 		<slot></slot>
 		<i
 			v-if="target === '_blank'"
-			class="ph-arrow-square-out ph-bold ph-lg icon"
+			:class="icon('ph-arrow-square-out icon')"
 		></i>
 	</component>
 </template>
@@ -22,6 +22,7 @@ import { defineAsyncComponent, ref } from "vue";
 import { url as local } from "@/config";
 import { useTooltip } from "@/scripts/use-tooltip";
 import * as os from "@/os";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{

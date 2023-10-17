@@ -1,5 +1,5 @@
 <template>
-	<transition :name="$store.state.animation ? 'fade' : ''" appear>
+	<transition :name="defaultStore.state.animation ? 'fade' : ''" appear>
 		<div
 			ref="rootEl"
 			class="nvlagfpb"
@@ -17,6 +17,7 @@ import MkMenu from "@/components/MkMenu.vue";
 import type { MenuItem } from "@/types/menu";
 import contains from "@/scripts/contains";
 import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 const props = defineProps<{
 	items: MenuItem[];

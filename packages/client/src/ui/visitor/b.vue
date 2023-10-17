@@ -26,7 +26,7 @@
 			</div>
 		</div>
 
-		<transition :name="$store.state.animation ? 'tray-back' : ''">
+		<transition :name="defaultStore.state.animation ? 'tray-back' : ''">
 			<div
 				v-if="showMenu"
 				class="menu-back _modalBg"
@@ -35,26 +35,26 @@
 			></div>
 		</transition>
 
-		<transition :name="$store.state.animation ? 'tray' : ''">
+		<transition :name="defaultStore.state.animation ? 'tray' : ''">
 			<div v-if="showMenu" class="menu">
 				<MkA to="/" class="link" active-class="active"
-					><i class="ph-house ph-bold ph-lg icon"></i
+					><i :class="icon('ph-house icon')"></i
 					>{{ i18n.ts.home }}</MkA
 				>
 				<MkA to="/explore" class="link" active-class="active"
-					><i class="ph-compass ph-bold ph-lg icon"></i
+					><i :class="icon('ph-compass icon')"></i
 					>{{ i18n.ts.explore }}</MkA
 				>
 				<MkA to="/channels" class="link" active-class="active"
-					><i class="ph-television ph-bold ph-lg icon"></i
+					><i :class="icon('ph-television icon')"></i
 					>{{ i18n.ts.channel }}</MkA
 				>
 				<MkA to="/pages" class="link" active-class="active"
-					><i class="ph-file-text ph-bold ph-lg icon"></i
+					><i :class="icon('ph-file-text icon')"></i
 					>{{ i18n.ts.pages }}</MkA
 				>
 				<MkA to="/gallery" class="link" active-class="active"
-					><i class="ph-image-square ph-bold ph-lg icon"></i
+					><i :class="icon('ph-image-square icon')"></i
 					>{{ i18n.ts.gallery }}</MkA
 				>
 				<button
@@ -62,7 +62,7 @@
 					active-class="active"
 					@click="search()"
 				>
-					<i class="ph-magnifying-glass ph-bold ph-lg icon"></i
+					<i :class="icon('ph-magnifying-glass icon')"></i
 					><span>{{ i18n.ts.search }}</span>
 				</button>
 				<div class="action">
@@ -87,18 +87,14 @@ import { host, instanceName } from "@/config";
 import { search } from "@/scripts/search";
 import * as os from "@/os";
 import { instance } from "@/instance";
-import MkPagination from "@/components/MkPagination.vue";
 import XSigninDialog from "@/components/MkSigninDialog.vue";
 import XSignupDialog from "@/components/MkSignupDialog.vue";
-import MkButton from "@/components/MkButton.vue";
 import { ColdDeviceStorage, defaultStore } from "@/store";
 import { mainRouter } from "@/router";
 import type { PageMetadata } from "@/scripts/page-metadata";
-import {
-	provideMetadataReceiver,
-	setPageMetadata,
-} from "@/scripts/page-metadata";
+import { provideMetadataReceiver } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const DESKTOP_THRESHOLD = 1000;
 

@@ -129,7 +129,7 @@
 										class="_link"
 										>{{ user.host }}
 										<i
-											class="ph-caret-right ph-bold ph-lg"
+											:class="icon('ph-caret-right')"
 										></i></MkA
 								></template>
 							</MkKeyValue>
@@ -165,7 +165,7 @@
 							v-if="user.host != null"
 							class="_formBlock"
 							@click="updateRemoteUser"
-							><i class="ph-arrows-clockwise ph-bold ph-lg"></i>
+							><i :class="icon('ph-arrows-clockwise')"></i>
 							{{ i18n.ts.updateRemoteUser }}</FormButton
 						>
 
@@ -208,14 +208,14 @@
 							inline
 							style="margin-bottom: 0.4rem"
 							@click="resetPassword"
-							><i class="ph-password ph-bold ph-lg"></i>
+							><i :class="icon('ph-password')"></i>
 							{{ i18n.ts.resetPassword }}</FormButton
 						>
 						<FormButton
 							v-if="user.host == null && iAmModerator"
 							inline
 							@click="sendModMail"
-							><i class="ph-warning-diamond ph-bold ph-lg"></i>
+							><i :class="icon('ph-warning-diamond')"></i>
 							{{ i18n.ts.sendModMail }}</FormButton
 						>
 						<FormButton
@@ -223,7 +223,7 @@
 							inline
 							danger
 							@click="delete2fa"
-							><i class="ph-key ph-bold ph-lg"></i>
+							><i :class="icon('ph-key')"></i>
 							{{ i18n.ts.delete2fa }}</FormButton
 						>
 						<FormButton
@@ -231,7 +231,7 @@
 							inline
 							danger
 							@click="deletePasskeys"
-							><i class="ph-poker-chip ph-bold ph-lg"></i>
+							><i :class="icon('ph-poker-chip')"></i>
 							{{ i18n.ts.deletePasskeys }}</FormButton
 						>
 						<FormButton
@@ -240,7 +240,7 @@
 							primary
 							danger
 							@click="deleteAccount"
-							><i class="ph-user-minus ph-bold ph-lg"></i>
+							><i :class="icon('ph-user-minus')"></i>
 							{{ i18n.ts.deleteAccount }}</FormButton
 						>
 					</div>
@@ -380,6 +380,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import { iAmAdmin, iAmModerator } from "@/account";
 import { instance } from "@/instance";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	userId: string;
@@ -637,24 +638,24 @@ const headerTabs = computed(() =>
 		{
 			key: "overview",
 			title: i18n.ts.overview,
-			icon: "ph-info ph-bold ph-lg",
+			icon: `${icon("ph-info")}`,
 		},
 		iAmModerator
 			? {
 					key: "moderation",
 					title: i18n.ts.moderation,
-					icon: "ph-shield ph-bold ph-lg",
+					icon: `${icon("ph-shield")}`,
 			  }
 			: null,
 		{
 			key: "chart",
 			title: i18n.ts.charts,
-			icon: "ph-chart-bar ph-bold ph-lg",
+			icon: `${icon("ph-chart-bar")}`,
 		},
 		{
 			key: "raw",
 			title: "Raw",
-			icon: "ph-code ph-bold ph-lg",
+			icon: `${icon("ph-code")}`,
 		},
 	].filter((x) => x != null),
 );
@@ -662,7 +663,7 @@ const headerTabs = computed(() =>
 definePageMetadata(
 	computed(() => ({
 		title: user.value ? acct(user.value) : i18n.ts.userInfo,
-		icon: "ph-info ph-bold ph-lg",
+		icon: `${icon("ph-info")}`,
 	})),
 );
 </script>

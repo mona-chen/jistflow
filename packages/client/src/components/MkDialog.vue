@@ -16,27 +16,27 @@
 				<i
 					v-if="type === 'success'"
 					:class="$style.iconInner"
-					class="ph-check ph-bold ph-lg"
+					class="ph-check ph-lg"
 				></i>
 				<i
 					v-else-if="type === 'error'"
 					:class="$style.iconInner"
-					class="ph-circle-wavy-warning ph-bold ph-lg"
+					class="ph-circle-wavy-warning ph-lg"
 				></i>
 				<i
 					v-else-if="type === 'warning'"
 					:class="$style.iconInner"
-					class="ph-warning ph-bold ph-lg"
+					class="ph-warning ph-lg"
 				></i>
 				<i
 					v-else-if="type === 'info'"
 					:class="$style.iconInner"
-					class="ph-info ph-bold ph-lg"
+					class="ph-info ph-lg"
 				></i>
 				<i
 					v-else-if="type === 'question'"
 					:class="$style.iconInner"
-					class="ph-circle-question ph-bold ph-lg"
+					class="ph-circle-question ph-lg"
 				></i>
 				<MkLoading
 					v-else-if="type === 'waiting'"
@@ -75,7 +75,7 @@
 				@keydown="onInputKeydown"
 			>
 				<template v-if="input.type === 'password'" #prefix
-					><i class="ph-password ph-bold ph-lg"></i
+					><i :class="iconClass('ph-password')"></i
 				></template>
 				<template #caption>
 					<span
@@ -109,7 +109,7 @@
 						class="_buttonIcon"
 						@click.stop="openSearchFilters"
 					>
-						<i class="ph-funnel ph-bold"></i>
+						<i :class="iconClass('ph-funnel', false)"></i>
 					</button>
 				</template>
 			</MkInput>
@@ -213,6 +213,7 @@ import MkTextarea from "@/components/form/textarea.vue";
 import MkSelect from "@/components/form/select.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import iconClass from "@/scripts/icon";
 
 interface Input {
 	type: HTMLInputElement["type"];
@@ -364,7 +365,7 @@ async function openSearchFilters(ev) {
 	await os.popupMenu(
 		[
 			{
-				icon: "ph-user ph-bold ph-lg",
+				icon: `${icon("ph-user")}`,
 				text: i18n.ts._filters.fromUser,
 				action: () => {
 					os.selectUser().then((user) => {
@@ -375,32 +376,32 @@ async function openSearchFilters(ev) {
 			{
 				type: "parent",
 				text: i18n.ts._filters.withFile,
-				icon: "ph-paperclip ph-bold ph-lg",
+				icon: `${icon("ph-paperclip")}`,
 				children: [
 					{
 						text: i18n.ts.image,
-						icon: "ph-image-square ph-bold ph-lg",
+						icon: `${icon("ph-image-square")}`,
 						action: () => {
 							inputValue.value += " has:image";
 						},
 					},
 					{
 						text: i18n.ts.video,
-						icon: "ph-video-camera ph-bold ph-lg",
+						icon: `${icon("ph-video-camera")}`,
 						action: () => {
 							inputValue.value += " has:video";
 						},
 					},
 					{
 						text: i18n.ts.audio,
-						icon: "ph-music-note ph-bold ph-lg",
+						icon: `${icon("ph-music-note")}`,
 						action: () => {
 							inputValue.value += " has:audio";
 						},
 					},
 					{
 						text: i18n.ts.file,
-						icon: "ph-file ph-bold ph-lg",
+						icon: `${icon("ph-file")}`,
 						action: () => {
 							inputValue.value += " has:file";
 						},
@@ -408,14 +409,14 @@ async function openSearchFilters(ev) {
 				],
 			},
 			{
-				icon: "ph-link ph-bold ph-lg",
+				icon: `${icon("ph-link")}`,
 				text: i18n.ts._filters.fromDomain,
 				action: () => {
 					inputValue.value += " domain:";
 				},
 			},
 			{
-				icon: "ph-calendar-blank ph-bold ph-lg",
+				icon: `${icon("ph-calendar-blank")}`,
 				text: i18n.ts._filters.notesBefore,
 				action: () => {
 					os.inputDate({
@@ -428,7 +429,7 @@ async function openSearchFilters(ev) {
 				},
 			},
 			{
-				icon: "ph-calendar-blank ph-bold ph-lg",
+				icon: `${icon("ph-calendar-blank")}`,
 				text: i18n.ts._filters.notesAfter,
 				action: () => {
 					os.inputDate({
@@ -441,14 +442,14 @@ async function openSearchFilters(ev) {
 				},
 			},
 			{
-				icon: "ph-eye ph-bold ph-lg",
+				icon: `${icon("ph-eye")}`,
 				text: i18n.ts._filters.followingOnly,
 				action: () => {
 					inputValue.value += " filter:following ";
 				},
 			},
 			{
-				icon: "ph-users-three ph-bold ph-lg",
+				icon: `${icon("ph-users-three")}`,
 				text: i18n.ts._filters.followersOnly,
 				action: () => {
 					inputValue.value += " filter:followers ";

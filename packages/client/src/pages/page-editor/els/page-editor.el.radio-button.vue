@@ -1,14 +1,14 @@
 <template>
 	<XContainer :draggable="true" @remove="() => $emit('remove')">
 		<template #header
-			><i class="ph-lightning ph-bold ph-lg"></i>
+			><i :class="icon('ph-lightning')"></i>
 			{{ i18n.ts._pages.blocks.radioButton }}</template
 		>
 
 		<section style="padding: 0 16px 16px 16px">
 			<MkInput v-model="value.name"
 				><template #prefix
-					><i class="ph-magic-wand ph-bold ph-lg"></i></template
+					><i :class="icon('ph-magic-wand')"></i></template
 				><template #label>{{
 					i18n.ts._pages.blocks._radioButton.name
 				}}</template></MkInput
@@ -38,6 +38,7 @@ import XContainer from "../page-editor.container.vue";
 import MkTextarea from "@/components/form/textarea.vue";
 import MkInput from "@/components/form/input.vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{

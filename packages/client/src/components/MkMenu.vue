@@ -57,7 +57,7 @@
 							v-if="item.indicate"
 							class="indicator"
 							:class="{
-								animateIndicator: $store.state.animation,
+								animateIndicator: defaultStore.state.animation,
 							}"
 							><i class="ph-circle ph-fill"></i
 						></span>
@@ -74,8 +74,7 @@
 					>
 						<i
 							v-if="item.icon"
-							class="ph-fw ph-lg"
-							:class="item.icon"
+							:class="icon(`${item.icon} ph-fw`)"
 						></i>
 						<span :style="item.textStyle || ''">{{
 							item.text
@@ -84,7 +83,7 @@
 							v-if="item.indicate"
 							class="indicator"
 							:class="{
-								animateIndicator: $store.state.animation,
+								animateIndicator: defaultStore.state.animation,
 							}"
 							><i class="ph-circle ph-fill"></i
 						></span>
@@ -107,7 +106,7 @@
 							v-if="item.indicate"
 							class="indicator"
 							:class="{
-								animateIndicator: $store.state.animation,
+								animateIndicator: defaultStore.state.animation,
 							}"
 							><i class="ph-circle ph-fill"></i
 						></span>
@@ -135,16 +134,13 @@
 					>
 						<i
 							v-if="item.icon"
-							class="ph-fw ph-lg"
-							:class="item.icon"
+							:class="icon(`${item.icon} ph-fw`)"
 						></i>
 						<span :style="item.textStyle || ''">{{
 							item.text
 						}}</span>
 						<span class="caret"
-							><i
-								class="ph-caret-right ph-bold ph-lg ph-fw ph-lg"
-							></i
+							><i :class="icon('ph-caret-right ph-fw')"></i
 						></span>
 					</button>
 					<button
@@ -162,8 +158,7 @@
 					>
 						<i
 							v-if="item.icon"
-							class="ph-fw ph-lg"
-							:class="item.icon"
+							:class="icon(`${item.icon} ph-fw`)"
 						></i>
 						<MkAvatar
 							v-if="item.avatar"
@@ -178,7 +173,7 @@
 							v-if="item.indicate"
 							class="indicator"
 							:class="{
-								animateIndicator: $store.state.animation,
+								animateIndicator: defaultStore.state.animation,
 							}"
 							><i class="ph-circle ph-fill"></i
 						></span>
@@ -190,6 +185,7 @@
 			</div>
 			<div v-if="childMenu" class="child">
 				<XChild
+					v-if="childTarget && itemsEl"
 					ref="child"
 					:items="childMenu"
 					:target-element="childTarget"
@@ -221,6 +217,8 @@ import type {
 } from "@/types/menu";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const XChild = defineAsyncComponent(() => import("./MkMenu.child.vue"));
 const focusTrap = ref();

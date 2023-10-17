@@ -23,11 +23,13 @@
 							<header>
 								<i
 									v-if="item.success"
-									class="ph-check ph-bold ph-lg icon succ"
+									:class="icon('ph-check icon succ')"
 								></i>
 								<i
 									v-else
-									class="ph-circle-wavy-warning ph-bold ph-lg icon fail"
+									:class="
+										icon('ph-circle-wavy-warning icon fail')
+									"
 								></i>
 								<code class="ip _monospace">{{ item.ip }}</code>
 								<MkTime :time="item.createdAt" class="time" />
@@ -41,7 +43,7 @@
 		<FormSection>
 			<FormSlot>
 				<MkButton danger @click="regenerateToken"
-					><i class="ph-arrows-clockwise ph-bold ph-lg"></i>
+					><i :class="icon('ph-arrows-clockwise')"></i>
 					{{ i18n.ts.regenerateLoginToken }}</MkButton
 				>
 				<template #caption>{{
@@ -61,6 +63,7 @@ import MkPagination from "@/components/MkPagination.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const pagination = {
 	endpoint: "i/signin-history" as const,
@@ -119,7 +122,7 @@ function regenerateToken() {
 
 definePageMetadata({
 	title: i18n.ts.security,
-	icon: "ph-lock ph-bold ph-lg",
+	icon: `${icon("ph-lock")}`,
 });
 </script>
 

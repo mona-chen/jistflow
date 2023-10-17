@@ -8,25 +8,25 @@
 		@parent-focus="($event) => emit('parent-focus', $event)"
 	>
 		<template #header>
-			<i v-if="column.tl === 'home'" class="ph-house ph-bold ph-lg"></i>
+			<i v-if="column.tl === 'home'" :class="icon('ph-house')"></i>
 			<i
 				v-else-if="column.tl === 'local'"
-				class="ph-chats-circle ph-bold ph-lg"
+				:class="icon('ph-chats-circle')"
 			></i>
 			<i
 				v-else-if="column.tl === 'social'"
-				class="ph-share-network ph-bold ph-lg"
+				:class="icon('ph-share-network')"
 			></i>
 			<i
 				v-else-if="column.tl === 'global'"
-				class="ph-planet ph-bold ph-lg"
+				:class="icon('ph-planet')"
 			></i>
 			<span style="margin-left: 8px">{{ column.name }}</span>
 		</template>
 
 		<div v-if="disabled" class="iwaalbte">
 			<p>
-				<i class="ph-minus-circle ph-bold ph-lg"></i>
+				<i :class="icon('ph-minus-circle')"></i>
 				{{ i18n.t("disabled-timeline.title") }}
 			</p>
 			<p class="desc">{{ i18n.t("disabled-timeline.description") }}</p>
@@ -53,6 +53,7 @@ import * as os from "@/os";
 import { $i } from "@/account";
 import { instance } from "@/instance";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	column: Column;
@@ -143,7 +144,7 @@ function onChangeActiveState(state) {
 
 const menu = [
 	{
-		icon: "ph-pencil ph-bold ph-lg",
+		icon: `${icon("ph-pencil")}`,
 		text: i18n.ts.timeline,
 		action: setType,
 	},

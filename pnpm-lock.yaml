@@ -689,6 +689,9 @@ importers:
       '@vue/compiler-sfc':
         specifier: 3.3.4
         version: 3.3.4
+      '@vue/runtime-core':
+        specifier: 3.3.4
+        version: 3.3.4
       autobind-decorator:
         specifier: 2.4.0
         version: 2.4.0

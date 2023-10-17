@@ -1,12 +1,12 @@
 <template>
 	<XContainer :draggable="true" @remove="() => $emit('remove')">
 		<template #header
-			><i class="ph-question ph-bold ph-lg"></i>
+			><i :class="icon('ph-question')"></i>
 			{{ i18n.ts._pages.blocks.if }}</template
 		>
 		<template #func>
 			<button class="_button" @click="add()">
-				<i class="ph-plus ph-bold ph-lg"></i>
+				<i :class="icon('ph-plus')"></i>
 			</button>
 		</template>
 
@@ -51,6 +51,7 @@ import XContainer from "../page-editor.container.vue";
 import MkSelect from "@/components/form/select.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const XBlocks = defineAsyncComponent(() => import("../page-editor.blocks.vue"));
 

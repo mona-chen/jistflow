@@ -8,6 +8,7 @@ import { userActions } from "@/store";
 import { $i, iAmModerator } from "@/account";
 import { mainRouter } from "@/router";
 import type { Router } from "@/nirax";
+import icon from "@/scripts/icon";
 
 export function getUserMenu(user, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -232,40 +233,40 @@ export function getUserMenu(user, router: Router = mainRouter) {
 				: `@${user.username}`,
 		},
 		{
-			icon: "ph-at ph-bold ph-lg",
+			icon: `${icon("ph-at")}`,
 			text: i18n.ts.copyUsername,
 			action: () => {
 				copyToClipboard(`@${user.username}@${user.host || host}`);
 			},
 		},
 		{
-			icon: "ph-info ph-bold ph-lg",
+			icon: `${icon("ph-info")}`,
 			text: i18n.ts.info,
 			action: () => {
 				router.push(`/user-info/${user.id}`);
 			},
 		},
 		{
-			icon: "ph-newspaper ph-bold ph-lg",
+			icon: `${icon("ph-newspaper")}`,
 			text: i18n.ts._feeds.copyFeed,
 			type: "parent",
 			children: [
 				{
-					icon: "ph-rss ph-bold ph-lg",
+					icon: `${icon("ph-rss")}`,
 					text: i18n.ts._feeds.rss,
 					action: () => {
 						copyToClipboard(`https://${host}/@${user.username}.rss`);
 					},
 				},
 				{
-					icon: "ph-atom ph-bold ph-lg",
+					icon: `${icon("ph-atom")}`,
 					text: i18n.ts._feeds.atom,
 					action: () => {
 						copyToClipboard(`https://${host}/@${user.username}.atom`);
 					},
 				},
 				{
-					icon: "ph-brackets-curly ph-bold ph-lg",
+					icon: `${icon("ph-brackets-curly")}`,
 					text: i18n.ts._feeds.jsonFeed,
 					action: () => {
 						copyToClipboard(`https://${host}/@${user.username}.json`);
@@ -274,7 +275,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			],
 		},
 		{
-			icon: "ph-envelope-simple-open ph-bold ph-lg",
+			icon: `${icon("ph-envelope-simple-open")}`,
 			text: i18n.ts.sendMessage,
 			action: () => {
 				os.post({ specified: user });
@@ -283,7 +284,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		meId !== user.id
 			? {
 					type: "link",
-					icon: "ph-chats-teardrop ph-bold ph-lg",
+					icon: `${icon("ph-chats-teardrop")}`,
 					text: i18n.ts.startMessaging,
 					to: `/my/messaging/${Acct.toString(user)}`,
 			  }
@@ -291,7 +292,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		user.host != null && user.url
 			? {
 					type: "a",
-					icon: "ph-arrow-square-out ph-bold ph-lg",
+					icon: `${icon("ph-arrow-square-out")}`,
 					text: i18n.ts.showOnRemote,
 					href: user.url,
 					target: "_blank",
@@ -299,22 +300,20 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			: undefined,
 		null,
 		{
-			icon: "ph-list-bullets ph-bold ph-lg",
+			icon: `${icon("ph-list-bullets")}`,
 			text: i18n.ts.addToList,
 			action: pushList,
 		},
 		meId !== user.id
 			? {
-					icon: "ph-users-three ph-bold ph-lg",
+					icon: `${icon("ph-users-three")}`,
 					text: i18n.ts.inviteToGroup,
 					action: inviteGroup,
 			  }
 			: undefined,
 		null,
 		{
-			icon: user.isRenoteMuted
-				? "ph-eye ph-bold ph-lg"
-				: "ph-eye-slash ph-bold ph-lg",
+			icon: user.isRenoteMuted ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
 			text: user.isRenoteMuted ? i18n.ts.renoteUnmute : i18n.ts.renoteMute,
 			action: toggleRenoteMute,
 		},
@@ -323,15 +322,13 @@ export function getUserMenu(user, router: Router = mainRouter) {
 	if ($i && meId !== user.id) {
 		menu = menu.concat([
 			{
-				icon: user.isMuted
-					? "ph-eye ph-bold ph-lg"
-					: "ph-eye-slash ph-bold ph-lg",
+				icon: user.isMuted ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
 				text: user.isMuted ? i18n.ts.unmute : i18n.ts.mute,
 				hidden: user.isBlocking === true,
 				action: toggleMute,
 			},
 			{
-				icon: "ph-prohibit ph-bold ph-lg",
+				icon: `${icon("ph-prohibit")}`,
 				text: user.isBlocking ? i18n.ts.unblock : i18n.ts.block,
 				action: toggleBlock,
 			},
@@ -340,7 +337,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		if (user.isFollowed) {
 			menu = menu.concat([
 				{
-					icon: "ph-link-break ph-bold ph-lg",
+					icon: `${icon("ph-link-break")}`,
 					text: i18n.ts.breakFollow,
 					action: invalidateFollow,
 				},
@@ -350,7 +347,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		menu = menu.concat([
 			null,
 			{
-				icon: "ph-warning-circle ph-bold ph-lg",
+				icon: `${icon("ph-warning-circle")}`,
 				text: i18n.ts.reportAbuse,
 				action: reportAbuse,
 			},
@@ -360,12 +357,12 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			menu = menu.concat([
 				null,
 				{
-					icon: "ph-microphone-slash ph-bold ph-lg",
+					icon: `${icon("ph-microphone-slash")}`,
 					text: user.isSilenced ? i18n.ts.unsilence : i18n.ts.silence,
 					action: toggleSilence,
 				},
 				{
-					icon: "ph-snowflake ph-bold ph-lg",
+					icon: `${icon("ph-snowflake")}`,
 					text: user.isSuspended ? i18n.ts.unsuspend : i18n.ts.suspend,
 					action: toggleSuspend,
 				},
@@ -377,7 +374,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		menu = menu.concat([
 			null,
 			{
-				icon: "ph-pencil ph-bold ph-lg",
+				icon: `${icon("ph-pencil")}`,
 				text: i18n.ts.editProfile,
 				action: () => {
 					router.push("/settings/profile");
@@ -390,7 +387,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		menu = menu.concat([
 			null,
 			...userActions.map((action) => ({
-				icon: "ph-plug ph-bold ph-lg",
+				icon: `${icon("ph-plug")}`,
 				text: action.title,
 				action: () => {
 					action.handler(user);

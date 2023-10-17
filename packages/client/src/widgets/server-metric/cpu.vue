@@ -2,7 +2,7 @@
 	<div class="vrvdvrys">
 		<XPie class="pie" :value="usage" />
 		<div>
-			<p><i class="ph-cpu ph-bold ph-lg"></i>CPU</p>
+			<p><i :class="icon('ph-cpu')"></i>CPU</p>
 			<p>{{ meta.cpu.cores }} Logical cores</p>
 			<p>{{ meta.cpu.model }}</p>
 		</div>
@@ -12,6 +12,7 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import XPie from "./pie.vue";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	connection: any;

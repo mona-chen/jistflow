@@ -77,7 +77,7 @@
 								@click="onIndicatorClick"
 							>
 								<i
-									class="fas ph-fw ph-lg ph-arrow-circle-down-bold ph-lg"
+									class="fas ph-fw ph-arrow-circle-down-bold ph-lg"
 								></i
 								>{{ i18n.ts.newMessageExists }}
 							</button>
@@ -125,6 +125,7 @@ import { i18n } from "@/i18n";
 import { $i } from "@/account";
 import { defaultStore } from "@/store";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	userAcct?: string;
@@ -353,7 +354,7 @@ onMounted(() => {
 	definePageMetadata(
 		computed(() => ({
 			title: group.value != null ? group.value.name : user.value?.name,
-			icon: "ph-chats-teardrop-bold ph-lg",
+			icon: `${icon("ph-chats-teardrop-bold")}`,
 		})),
 	);
 });

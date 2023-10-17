@@ -62,14 +62,14 @@
 										:aria-label="i18n.t('accept')"
 										@click="accept(req.follower)"
 									>
-										<i class="ph-check ph-bold ph-lg"></i>
+										<i :class="icon('ph-check')"></i>
 									</button>
 									<button
 										class="_button"
 										:aria-label="i18n.t('reject')"
 										@click="reject(req.follower)"
 									>
-										<i class="ph-x ph-bold ph-lg"></i>
+										<i :class="icon('ph-x')"></i>
 									</button>
 								</div>
 							</div>
@@ -89,6 +89,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { $i } from "@/account";
+import icon from "@/scripts/icon";
 
 const paginationComponent = ref<InstanceType<typeof MkPagination>>();
 
@@ -113,7 +114,7 @@ function reject(user) {
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.followRequests,
-		icon: "ph-hand-waving ph-bold ph-lg",
+		icon: `${icon("ph-hand-waving")}`,
 	})),
 );
 </script>

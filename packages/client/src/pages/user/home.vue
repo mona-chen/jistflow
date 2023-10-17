@@ -51,9 +51,7 @@
 												padding: 5px;
 											"
 										>
-											<i
-												class="ph-warning ph-bold ph-lg"
-											></i>
+											<i :class="icon('ph-warning')"></i>
 											{{ i18n.ts.silenced }}
 										</span>
 										<span
@@ -63,9 +61,7 @@
 												padding: 5px;
 											"
 										>
-											<i
-												class="ph-warning ph-bold ph-lg"
-											></i>
+											<i :class="icon('ph-warning')"></i>
 											{{ i18n.ts.suspended }}
 										</span>
 									</div>
@@ -87,23 +83,23 @@
 										v-if="user.isAdmin"
 										v-tooltip.noDelay="i18n.ts.isAdmin"
 										style="color: var(--badge)"
-										><i class="ph-crown ph-bold ph-lg"></i
+										><i :class="icon('ph-crown')"></i
 									></span>
 									<span
 										v-if="!user.isAdmin && user.isModerator"
 										v-tooltip.noDelay="i18n.ts.isModerator"
 										style="color: var(--badge)"
-										><i class="ph-gavel ph-bold ph-lg"></i
+										><i :class="icon('ph-gavel')"></i
 									></span>
 									<span
 										v-if="user.isLocked"
 										v-tooltip.noDelay="i18n.ts.isLocked"
-										><i class="ph-lock ph-bold ph-lg"></i
+										><i :class="icon('ph-lock')"></i
 									></span>
 									<span
 										v-if="user.isBot"
 										v-tooltip.noDelay="i18n.ts.isBot"
-										><i class="ph-robot ph-bold ph-lg"></i
+										><i :class="icon('ph-robot')"></i
 									></span>
 									<span
 										v-if="
@@ -115,9 +111,7 @@
 										"
 										v-tooltip.noDelay="i18n.ts.isPatron"
 										style="color: var(--badge)"
-										><i
-											class="ph-hand-coins ph-bold ph-lg"
-										></i
+										><i :class="icon('ph-hand-coins')"></i
 									></span>
 								</div>
 							</div>
@@ -149,7 +143,7 @@
 										v-if="user.isSilenced"
 										style="color: var(--warn); padding: 5px"
 									>
-										<i class="ph-warning ph-bold ph-lg"></i>
+										<i :class="icon('ph-warning')"></i>
 										{{ i18n.ts.silenced }}
 									</span>
 									<span
@@ -159,7 +153,7 @@
 											padding: 5px;
 										"
 									>
-										<i class="ph-warning ph-bold ph-lg"></i>
+										<i :class="icon('ph-warning')"></i>
 										{{ i18n.ts.suspended }}
 									</span>
 								</div>
@@ -172,7 +166,7 @@
 									v-if="user.isAdmin"
 									v-tooltip.noDelay="i18n.ts.isAdmin"
 									style="color: var(--badge)"
-									><i class="ph-crown ph-bold ph-lg"></i
+									><i :class="icon('ph-crown')"></i
 								></span>
 								<span
 									v-if="!user.isAdmin && user.isModerator"
@@ -181,17 +175,17 @@
 										color: var(--badge);
 										margin-left: 0.5rem;
 									"
-									><i class="ph-gavel ph-bold ph-lg"></i
+									><i :class="icon('ph-gavel')"></i
 								></span>
 								<span
 									v-if="user.isLocked"
 									v-tooltip.noDelay="i18n.ts.isLocked"
-									><i class="ph-lock ph-bold ph-lg"></i
+									><i :class="icon('ph-lock')"></i
 								></span>
 								<span
 									v-if="user.isBot"
 									v-tooltip.noDelay="i18n.ts.isBot"
-									><i class="ph-robot ph-bold ph-lg"></i
+									><i :class="icon('ph-robot')"></i
 								></span>
 								<span
 									v-if="
@@ -203,7 +197,7 @@
 									"
 									v-tooltip.noDelay="i18n.ts.isPatron"
 									style="color: var(--badge)"
-									><i class="ph-hand-coins ph-bold ph-lg"></i
+									><i :class="icon('ph-hand-coins')"></i
 								></span>
 							</div>
 						</div>
@@ -235,9 +229,7 @@
 						<div class="fields system">
 							<dl v-if="user.location" class="field">
 								<dt class="name">
-									<i
-										class="ph-map-pin ph-bold ph-lg ph-fw ph-lg"
-									></i>
+									<i :class="icon('ph-map-pin ph-fw')"></i>
 									{{ i18n.ts.location }}
 								</dt>
 								<dd class="value">
@@ -246,9 +238,7 @@
 							</dl>
 							<dl v-if="user.birthday" class="field">
 								<dt class="name">
-									<i
-										class="ph-cake ph-bold ph-lg ph-fw ph-lg"
-									></i>
+									<i :class="icon('ph-cake ph-fw')"></i>
 									{{ i18n.ts.birthday }}
 								</dt>
 								<dd class="value">
@@ -263,7 +253,7 @@
 							<dl class="field">
 								<dt class="name">
 									<i
-										class="ph-calendar-blank ph-bold ph-lg ph-fw ph-lg"
+										:class="icon('ph-calendar-blank ph-fw')"
 									></i>
 									{{ i18n.ts.registeredDate }}
 								</dt>
@@ -288,7 +278,7 @@
 									<i
 										v-if="field.verified"
 										v-tooltip="i18n.ts.verifiedLink"
-										class="ph-bold ph-seal-check ph-lg ph-fw"
+										:class="icon('ph-seal-check ph-fw')"
 										style="padding: 5px"
 									></i>
 									<Mfm
@@ -404,6 +394,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { $i } from "@/account";
 import { host } from "@/config";
+import icon from "@/scripts/icon";
 
 const XPhotos = defineAsyncComponent(() => import("./index.photos.vue"));
 const XActivity = defineAsyncComponent(() => import("./index.activity.vue"));

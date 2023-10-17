@@ -22,14 +22,14 @@
 					:aria-label="i18n.t('attachFile')"
 					@click="chooseFile"
 				>
-					<i class="ph-upload ph-bold ph-lg"></i>
+					<i :class="icon('ph-upload')"></i>
 				</button>
 				<button
 					class="_button"
 					:aria-label="i18n.t('chooseEmoji')"
 					@click="insertEmoji"
 				>
-					<i class="ph-smiley ph-bold ph-lg"></i>
+					<i :class="icon('ph-smiley')"></i>
 				</button>
 				<button
 					class="send _button"
@@ -39,13 +39,9 @@
 					@click="send"
 				>
 					<template v-if="!sending"
-						><i
-							class="ph-paper-plane-tilt ph-bold ph-lg"
-						></i></template
+						><i :class="icon('ph-paper-plane-tilt')"></i></template
 					><template v-if="sending"
-						><i
-							class="ph-circle-notch ph-bold ph-lg fa-pulse ph-fw ph-lg"
-						></i
+						><i :class="icon('ph-circle-notch fa-pulse ph-fw')"></i
 					></template>
 				</button>
 			</div>
@@ -68,6 +64,7 @@ import { stream } from "@/stream";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { uploadFile } from "@/scripts/upload";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	user?: firefish.entities.UserDetailed | null;

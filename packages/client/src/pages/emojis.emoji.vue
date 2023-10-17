@@ -12,6 +12,7 @@
 import * as os from "@/os";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	emoji: Record<string, unknown>; // TODO
@@ -26,7 +27,7 @@ function menu(ev) {
 			},
 			{
 				text: i18n.ts.copy,
-				icon: "ph-clipboard-text ph-bold ph-lg",
+				icon: `${icon("ph-clipboard-text")}`,
 				action: () => {
 					copyToClipboard(`:${props.emoji.name}:`);
 					os.success();
@@ -34,7 +35,7 @@ function menu(ev) {
 			},
 			{
 				text: i18n.ts.license,
-				icon: "ph-info ph-bold ph-lg",
+				icon: `${icon("ph-info")}`,
 				action: () => {
 					os.apiGet("emoji", { name: props.emoji.name }).then(
 						(res) => {

@@ -1,9 +1,6 @@
 <template>
 	<div class="msjugskd _block">
-		<i
-			class="ph-airplane-takeoff ph-bold ph-lg"
-			style="margin-right: 8px"
-		/>
+		<i :class="icon('ph-airplane-takeoff')" style="margin-right: 8px" />
 		{{ i18n.ts.accountMoved }}
 		<MkMention class="link" :username="acct" :host="host" />
 	</div>
@@ -12,6 +9,7 @@
 <script lang="ts" setup>
 import MkMention from "./MkMention.vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 defineProps<{
 	acct: string;

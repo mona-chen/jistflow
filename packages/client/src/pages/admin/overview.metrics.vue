@@ -4,7 +4,7 @@
 			<div class="_panel">
 				<XPie class="pie" :value="cpuUsage" />
 				<div>
-					<p><i class="ph-cpu ph-bold ph-lg"></i>CPU</p>
+					<p><i :class="icon('ph-cpu')"></i>CPU</p>
 					<p>{{ meta.cpu.cores }} Logical cores</p>
 					<p>{{ meta.cpu.model }}</p>
 				</div>
@@ -13,7 +13,7 @@
 			<div class="_panel">
 				<XPie class="pie" :value="memUsage" />
 				<div>
-					<p><i class="ph-microchip ph-bold ph-lg"></i>RAM</p>
+					<p><i :class="icon('ph-microchip')"></i>RAM</p>
 					<p>Total: {{ bytes(memTotal, 1) }}</p>
 					<p>Used: {{ bytes(memUsed, 1) }}</p>
 					<p>Free: {{ bytes(memFree, 1) }}</p>
@@ -23,7 +23,7 @@
 			<div class="_panel">
 				<XPie class="pie" :value="diskUsage" />
 				<div>
-					<p><i class="ph-hard-drives ph-bold ph-lg"></i>Disk</p>
+					<p><i :class="icon('ph-hard-drives')"></i>Disk</p>
 					<p>Total: {{ bytes(diskTotal, 1) }}</p>
 					<p>Free: {{ bytes(diskAvailable, 1) }}</p>
 					<p>Used: {{ bytes(diskUsed, 1) }}</p>
@@ -33,9 +33,7 @@
 			<div class="_panel">
 				<XPie class="pie" :value="meiliProgress" />
 				<div>
-					<p>
-						<i class="ph-file-search ph-bold ph-lg"></i>MeiliSearch
-					</p>
+					<p><i :class="icon('ph-file-search')"></i>MeiliSearch</p>
 					<p>
 						{{ i18n.ts._widgets.meiliStatus }}: {{ meiliAvailable }}
 					</p>
@@ -60,6 +58,7 @@ import bytes from "@/filters/bytes";
 import { stream } from "@/stream";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const meta = await os.api("server-info", {});
 const serverStats = await os.api("stats");

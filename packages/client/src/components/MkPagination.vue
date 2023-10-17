@@ -1,5 +1,8 @@
 <template>
-	<transition :name="$store.state.animation ? 'fade' : ''" mode="out-in">
+	<transition
+		:name="defaultStore.state.animation ? 'fade' : ''"
+		mode="out-in"
+	>
 		<MkLoading v-if="fetching" />
 
 		<MkError v-else-if="error" @retry="init()" />
@@ -44,7 +47,8 @@
 				<MkButton
 					v-if="!moreFetching"
 					v-appear="
-						$store.state.enableInfiniteScroll && !disableAutoLoad
+						defaultStore.state.enableInfiniteScroll &&
+						!disableAutoLoad
 							? fetchMore
 							: null
 					"
@@ -75,6 +79,7 @@ import {
 } from "@/scripts/scroll";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
 
 export interface Paging<
 	E extends keyof firefish.Endpoints = keyof firefish.Endpoints,

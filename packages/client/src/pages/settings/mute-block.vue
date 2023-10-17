@@ -49,6 +49,7 @@ import FormLink from "@/components/form/link.vue";
 import { userPage } from "@/filters/user";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const tab = ref("mute");
 
@@ -64,6 +65,6 @@ const blockingPagination = {
 
 definePageMetadata({
 	title: i18n.ts.muteAndBlock,
-	icon: "ph-prohibit ph-bold ph-lg",
+	icon: `${icon("ph-prohibit")}`,
 });
 </script>

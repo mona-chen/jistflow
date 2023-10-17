@@ -24,7 +24,7 @@
 
 						<FormInput v-model="tosUrl" class="_formBlock">
 							<template #prefix
-								><i class="ph-link-simple ph-bold ph-lg"></i
+								><i :class="icon('ph-link-simple')"></i
 							></template>
 							<template #label>{{ i18n.ts.tosUrl }}</template>
 						</FormInput>
@@ -46,7 +46,7 @@
 							>
 								<template #prefix
 									><i
-										class="ph-envelope-simple-open ph-bold ph-lg"
+										:class="icon('ph-envelope-simple-open')"
 									></i
 								></template>
 								<template #label>{{
@@ -59,7 +59,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-hand-heart ph-bold ph-lg"></i
+									><i :class="icon('ph-hand-heart')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.donationLink
@@ -167,7 +167,7 @@
 
 							<FormInput v-model="iconUrl" class="_formBlock">
 								<template #prefix
-									><i class="ph-link-simple ph-bold ph-lg"></i
+									><i :class="icon('ph-link-simple')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.iconUrl
@@ -176,7 +176,7 @@
 
 							<FormInput v-model="bannerUrl" class="_formBlock">
 								<template #prefix
-									><i class="ph-link-simple ph-bold ph-lg"></i
+									><i :class="icon('ph-link-simple')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.bannerUrl
@@ -188,7 +188,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-link-simple ph-bold ph-lg"></i
+									><i :class="icon('ph-link-simple')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.logoImageUrl
@@ -200,7 +200,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-link-simple ph-bold ph-lg"></i
+									><i :class="icon('ph-link-simple')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.backgroundImageUrl
@@ -209,7 +209,7 @@
 
 							<FormInput v-model="themeColor" class="_formBlock">
 								<template #prefix
-									><i class="ph-paconstte ph-bold ph-lg"></i
+									><i :class="icon('ph-paconstte')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.themeColor
@@ -338,7 +338,7 @@
 									class="_formBlock"
 								>
 									<template #prefix
-										><i class="ph-key ph-bold ph-lg"></i
+										><i :class="icon('ph-key')"></i
 									></template>
 									<template #label>Public key</template>
 								</FormInput>
@@ -348,7 +348,7 @@
 									class="_formBlock"
 								>
 									<template #prefix
-										><i class="ph-key ph-bold ph-lg"></i
+										><i :class="icon('ph-key')"></i
 									></template>
 									<template #label>Private key</template>
 								</FormInput>
@@ -384,7 +384,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-key ph-bold ph-lg"></i
+									><i :class="icon('ph-key')"></i
 								></template>
 								<template #label>DeepL Auth Key</template>
 							</FormInput>
@@ -401,7 +401,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-link ph-bold ph-lg"></i
+									><i :class="icon('ph-link')"></i
 								></template>
 								<template #label
 									>Libre Translate API URL</template
@@ -413,7 +413,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-key ph-bold ph-lg"></i
+									><i :class="icon('ph-key')"></i
 								></template>
 								<template #label
 									>Libre Translate API Key</template
@@ -441,6 +441,7 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const name = ref<string | null>(null);
 const description = ref<string | null>(null);
@@ -576,7 +577,7 @@ function save() {
 const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-check ph-bold ph-lg",
+		icon: `${icon("ph-check")}`,
 		text: i18n.ts.save,
 		handler: save,
 	},
@@ -586,6 +587,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.general,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 });
 </script>

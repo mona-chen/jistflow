@@ -5,17 +5,17 @@
 			<div class="buttons">
 				<slot name="func"></slot>
 				<button v-if="removable" class="_button" @click="remove()">
-					<i class="ph-trash ph-bold ph-lg"></i>
+					<i :class="icon('ph-trash')"></i>
 				</button>
 				<button v-if="draggable" class="drag-handle _button">
-					<i class="ph-list ph-bold ph-lg"></i>
+					<i :class="icon('ph-list')"></i>
 				</button>
 				<button class="_button" @click="toggleContent(!showBody)">
 					<template v-if="showBody"
-						><i class="ph-caret-up ph-bold ph-lg"></i
+						><i :class="icon('ph-caret-up')"></i
 					></template>
 					<template v-else
-						><i class="ph-caret-down ph-bold ph-lg"></i
+						><i :class="icon('ph-caret-down')"></i
 					></template>
 				</button>
 			</div>
@@ -45,6 +45,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 export default defineComponent({
 	props: {

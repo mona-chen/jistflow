@@ -1153,6 +1153,7 @@ detectPostLanguage: "Automatically detect the language and show a translate butt
   for posts in foreign languages"
 vibrate: "Play vibrations"
 openServerInfo: "Show server information by clicking the server ticker on a post"
+iconSet: "Icon set"
 
 _sensitiveMediaDetection:
   description: "Reduces the effort of server moderation through automatically recognizing
@@ -2152,3 +2153,9 @@ _feeds:
   rss: "RSS"
   atom: "Atom"
   jsonFeed: "JSON feed"
+_iconSets:
+  bold: "Bold"
+  light: "Light"
+  regular: "Regular"
+  fill: "Filled"
+  duotone: "Duotone"

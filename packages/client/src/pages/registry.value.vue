@@ -33,7 +33,7 @@
 				</FormTextarea>
 
 				<MkButton class="_formBlock" primary @click="save"
-					><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+					><i :class="icon('ph-floppy-disk-back')"></i>
 					{{ i18n.ts.save }}</MkButton
 				>
 
@@ -45,7 +45,7 @@
 				</MkKeyValue>
 
 				<MkButton danger @click="del"
-					><i class="ph-trash ph-bold ph-lg"></i>
+					><i :class="icon('ph-trash')"></i>
 					{{ i18n.ts.delete }}</MkButton
 				>
 			</template>
@@ -64,6 +64,7 @@ import MkKeyValue from "@/components/MkKeyValue.vue";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormSplit from "@/components/form/split.vue";
 import FormInfo from "@/components/MkInfo.vue";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	path: string;
@@ -129,6 +130,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.registry,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 });
 </script>

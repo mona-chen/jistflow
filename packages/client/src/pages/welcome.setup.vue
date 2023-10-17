@@ -22,9 +22,7 @@
 				class="_formBlock"
 			>
 				<template #label>{{ i18n.ts.password }}</template>
-				<template #prefix
-					><i class="ph-lock ph-bold ph-lg"></i
-				></template>
+				<template #prefix><i :class="icon('ph-lock')"></i></template>
 			</MkInput>
 			<div class="bottom _formBlock">
 				<MkButton
@@ -50,6 +48,7 @@ import { host } from "@/config";
 import * as os from "@/os";
 import { login } from "@/account";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const username = ref("");
 const password = ref("");

@@ -50,6 +50,7 @@ import FormSection from "@/components/form/section.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
 import FormSplit from "@/components/form/split.vue";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	path: string;
@@ -104,7 +105,7 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.registry,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 });
 </script>
 
