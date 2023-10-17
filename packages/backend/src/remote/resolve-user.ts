@@ -13,6 +13,7 @@ import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 
 const logger = remoteLogger.createSubLogger("resolve-user");
 const uriHostCache = new Cache<string>("resolveUserUriHost", 60 * 60 * 24);
+const localUsernameCache = new Cache<string | null>("localUserNameCapitalization", 60 * 60 * 24);
 
 export async function resolveUser(
 	username: string,
@@ -184,7 +185,6 @@ export async function resolveUser(
 
 export async function resolveMentionToUserAndProfile(username: string, host: string | null, objectHost: string | null) {
 	try {
-		//const fallback = getMentionFallbackUri(username, host, objectHost);
 		const user = await resolveUser(username, host ?? objectHost, false);
 		const profile = await UserProfiles.findOneBy({ userId: user.id });
 		const data = { username, host: host ?? objectHost };
@@ -206,12 +206,30 @@ export function getMentionFallbackUri(username: string, host: string | null, obj
 	return fallback;
 }
 
-export function resolveMentionFromCache(username: string, host: string | null, objectHost: string | null, cache: IMentionedRemoteUsers): string | null {
-	const fallback = getMentionFallbackUri(username, host, objectHost);
+async function getLocalUsernameCached(username: string): Promise<string | null> {
+	return localUsernameCache.fetch(username.toLowerCase(), () =>
+		Users.findOneBy({ usernameLower: username.toLowerCase(), host: IsNull() })
+			.then(p => p ? p.username : null));
+}
 
+export async function resolveMentionFromCache(username: string, host: string | null, objectHost: string | null, cache: IMentionedRemoteUsers): Promise<{ username: string, href: string } | null> {
+	const isLocal = (host === null && objectHost === null) || host === config.domain;
+	if (isLocal) {
+		const finalUsername = await getLocalUsernameCached(username);
+		if (finalUsername === null) return null;
+		username = finalUsername;
+	}
+	try {
+		if (isLocal) username = await resolveUser(username, null).then(p => p?.username ?? username);
+	} catch {
+		return null;
+	}
+
+	const fallback = getMentionFallbackUri(username, host, objectHost);
 	const cached = cache.find(r => r.username.toLowerCase() === username.toLowerCase() && r.host === host);
-	if (cached) return cached.url ?? cached.uri ?? fallback;
-	if ((host === null && objectHost === null) || host === config.domain) return fallback;
+	const href = cached?.url ?? cached?.uri;
+	if (cached && href != null) return { username: cached.username, href: href };
+	if (isLocal) return { username: username, href: fallback };
 	return null;
 }
 

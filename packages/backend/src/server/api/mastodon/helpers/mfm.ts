@@ -135,21 +135,21 @@ export class MfmHelpers {
                 return a;
             },
 
-            mention(node) {
+            async mention(node) {
                 const { username, host, acct } = node.props;
-                const href = resolveMentionFromCache(username, host, objectHost, mentionedRemoteUsers);
+                const resolved = await resolveMentionFromCache(username, host, objectHost, mentionedRemoteUsers);
 
                 const el = doc.createElement("span");
-                if (href === null) {
+                if (resolved === null) {
                     el.textContent = acct;
                 } else {
                     el.setAttribute("class", "h-card");
                     el.setAttribute("translate", "no");
                     const a = doc.createElement("a");
-                    a.href = href;
+                    a.href = resolved.href;
                     a.className = "u-url mention";
                     const span = doc.createElement("span");
-                    span.textContent = username;
+                    span.textContent = resolved.username;
                     a.textContent = '@';
                     a.appendChild(span);
                     el.appendChild(a);
