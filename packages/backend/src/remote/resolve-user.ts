@@ -207,12 +207,13 @@ export function getMentionFallbackUri(username: string, host: string | null, obj
 	return fallback;
 }
 
-export async function resolveMentionWithFallback(username: string, host: string | null, objectHost: string | null, cache: IMentionedRemoteUsers): Promise<string> {
+export async function resolveMentionWithFallback(username: string, host: string | null, objectHost: string | null, cache: IMentionedRemoteUsers, cachedOnly: boolean = false): Promise<string> {
 	const fallback = getMentionFallbackUri(username, host, objectHost);
 
 	const cached = cache.find(r => r.username.toLowerCase() === username.toLowerCase() && r.host === host);
 	if (cached) return cached.url ?? cached.uri ?? fallback;
 	if ((host === null && objectHost === null) || host === config.domain) return fallback;
+	if (cachedOnly) return fallback;
 
 	return mentionUriCache.fetch(fallback, async () => {
 		try {

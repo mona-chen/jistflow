@@ -136,18 +136,27 @@ export class MfmHelpers {
             },
 
             async mention(node) {
-                const el = doc.createElement("span");
-                el.setAttribute("class", "h-card");
-                el.setAttribute("translate", "no");
-                const a = doc.createElement("a");
                 const { username, host, acct } = node.props;
-                a.href = await resolveMentionWithFallback(username, host, objectHost, mentionedRemoteUsers);
-                a.className = "u-url mention";
-                const span = doc.createElement("span");
-                span.textContent = username;
-                a.textContent = '@';
-                a.appendChild(span);
-                el.appendChild(a);
+                const fallback = await resolveMentionWithFallback(username, host, objectHost, mentionedRemoteUsers, true);
+                const isLocal = (host === null && objectHost === null) || host === config.domain;
+                const isInvalid = fallback.startsWith(config.url) && !isLocal;
+
+                const el = doc.createElement("span");
+                if (isInvalid) {
+                    el.textContent = acct;
+                } else {
+                    el.setAttribute("class", "h-card");
+                    el.setAttribute("translate", "no");
+                    const a = doc.createElement("a");
+                    a.href = fallback;
+                    a.className = "u-url mention";
+                    const span = doc.createElement("span");
+                    span.textContent = username;
+                    a.textContent = '@';
+                    a.appendChild(span);
+                    el.appendChild(a);
+                }
+
                 return el;
             },
 
