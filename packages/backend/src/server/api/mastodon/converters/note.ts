@@ -23,7 +23,7 @@ import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import isQuote from "@/misc/is-quote.js";
 
 export class NoteConverter {
-    public static async encode(note: Note, ctx: MastoContext, recurse: boolean = true): Promise<MastodonEntity.Status> {
+    public static async encode(note: Note, ctx: MastoContext, recurseCounter: number = 2): Promise<MastodonEntity.Status> {
         const user = ctx.user as ILocalUser | null;
         const noteUser = note.user ?? UserHelpers.getUserCached(note.userId, ctx);
 
@@ -63,7 +63,7 @@ export class NoteConverter {
             }
         }) : null;
 
-        const renote = note.renote ?? (note.renoteId && recurse ? getNote(note.renoteId, user) : null);
+        const renote = note.renote ?? (note.renoteId && recurseCounter > 0 ? getNote(note.renoteId, user) : null);
 
         const isBookmarked = user ? NoteFavorites.exist({
             where: {
@@ -109,7 +109,7 @@ export class NoteConverter {
             } as MastodonEntity.Tag;
         });
 
-        const reblog = Promise.resolve(renote).then(renote => recurse && renote ? this.encode(renote, ctx, false) : null);
+        const reblog = Promise.resolve(renote).then(renote => recurseCounter > 0 && renote ? this.encode(renote, ctx, isQuote(renote) && !isQuote(note) ? --recurseCounter : 0) : null);
 
         // noinspection ES6MissingAwait
         return await awaitAll({
