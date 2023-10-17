@@ -52,17 +52,7 @@
 						/></span>
 					</div>
 					<div class="_formBlock" style="text-align: center">
-						{{ i18n.ts._aboutIceshrimp.about }}<br /><a
-							href="https://iceshrimp.dev/"
-							target="_blank"
-							class="_link"
-							>{{ i18n.ts.learnMore }}</a
-						>
-					</div>
-					<div class="_formBlock" style="text-align: center">
-						<MkButton primary rounded inline @click="iLoveMisskey"
-							>I <Mfm text="$[jelly ❤]" /> #Iceshrimp</MkButton
-						>
+						{{ i18n.ts._aboutIceshrimp.about }}
 					</div>
 					<FormSection>
 						<div class="_formLinks">
@@ -75,7 +65,67 @@
 								></template>
 								{{ i18n.ts._aboutIceshrimp.source }}
 								<template #suffix
-									>Iceshrimp development</template
+									>Git Forgejo</template
+								>
+							</FormLink>
+							<FormLink
+								to="https://translate.iceshrimp.dev/"
+								external
+							>
+								<template #icon
+									><i class="ph-translate ph-bold ph-lg"></i
+								></template>
+								{{ i18n.ts._aboutIceshrimp.translation }}
+								<template #suffix
+									>Weblate</template
+								>
+							</FormLink>
+							<FormLink
+								to="https://matrix.to/#/%23iceshrimp-dev:161.rocks"
+								external
+							>
+								<template #icon
+									><i class="ph-chats-circle ph-bold ph-lg"></i
+								></template>
+								{{ i18n.ts._aboutIceshrimp.chatroom }}
+								<template #suffix
+									>Matrix</template
+								>
+							</FormLink>
+							<!-- <FormLink
+								to="#"
+								external
+							>
+								<template #icon
+									><i class="ph-book-bookmark ph-bold ph-lg"></i
+								></template>
+								{{ i18n.ts._aboutIceshrimp.documentation }}
+								<template #suffix
+									>MkDocs</template
+								>
+							</FormLink> -->
+							<!-- <FormLink
+								to="#"
+								external
+							>
+								<template #icon
+									><i class="ph-road-horizon ph-bold ph-lg"></i
+								></template>
+								{{ i18n.ts._aboutIceshrimp.roadmap }}
+								<template #suffix
+									>Markdown</template
+								>
+							</FormLink> -->
+							<FormLink
+								to="https://iceshrimp.dev/iceshrimp/iceshrimp/src/branch/dev/CHANGELOG.md"
+								external
+							>
+								<template #icon
+									><i class="ph-newspaper ph-bold ph-lg"></i
+								></template>
+								{{ i18n.ts._aboutIceshrimp.changelog }}
+								<template #suffix
+									>Markdown</template
 								>
 							</FormLink>
 						</div>

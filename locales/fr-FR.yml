@@ -998,6 +998,10 @@ _aboutIceshrimp:
   allContributors: "Tous les contributeurs"
   source: "Code source"
   translation: "Traduire Iceshrimp"
+  chatroom: "Salon de discussion"
+  documentation: "Documentation"
+  roadmap: "Roadmap"
+  changelog: "Changelog"
   donate: "Soutenir Iceshrimp"
   donateTitle: Iceshrimp vous plaît ?
   pleaseDonateToIceshrimp: Merci de considérer de faire un don pour soutenir le développement
