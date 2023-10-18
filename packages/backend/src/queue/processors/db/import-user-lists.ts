@@ -10,7 +10,7 @@ import {
 	DriveFiles,
 	Users,
 	UserLists,
-	UserListJoinings,
+	UserListJoinings, Blockings, Followings,
 } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
@@ -76,6 +76,21 @@ export async function importUserLists(
 			if (target == null) {
 				target = await resolveUser(username, host);
 			}
+
+			const isBlocked = await Blockings.exist({
+				where: {
+					blockerId: target.id,
+					blockeeId: user.id,
+				},
+			});
+			const isFollowed = await Followings.exist({
+				where: {
+					followerId: user.id,
+					followeeId: target.id,
+				},
+			});
+
+			if (isBlocked || !isFollowed) continue;
 
 			if (
 				(await UserListJoinings.findOneBy({

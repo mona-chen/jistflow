@@ -1,5 +1,5 @@
 import { pushUserToUserList } from "@/services/user-list/push.js";
-import { UserLists, UserListJoinings, Blockings } from "@/models/index.js";
+import { UserLists, UserListJoinings, Blockings, Followings } from "@/models/index.js";
 import define from "../../../define.js";
 import { ApiError } from "../../../error.js";
 import { getUser } from "../../../common/getters.js";
@@ -38,6 +38,13 @@ export const meta = {
 			code: "YOU_HAVE_BEEN_BLOCKED",
 			id: "990232c5-3f9d-4d83-9f3f-ef27b6332a4b",
 		},
+
+		notFollowing: {
+			message:
+				"You cannot push this user because you are not following this user.",
+			code: "NOT_FOLLOWING",
+			id: "0a2e4d73-fe61-41fb-822c-d365ec81ba2a",
+		},
 	},
 } as const;
 
@@ -68,7 +75,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		throw e;
 	});
 
-	// Check blocking
+	// Check blocking and following status
 	if (user.id !== me.id) {
 		const isBlocked = await Blockings.exist({
 			where: {
@@ -76,8 +83,17 @@ export default define(meta, paramDef, async (ps, me) => {
 				blockeeId: me.id,
 			},
 		});
+		const isFollowed = await Followings.exist({
+			where: {
+				followerId: me.id,
+				followeeId: user.id,
+			},
+		});
 		if (isBlocked) {
 			throw new ApiError(meta.errors.youHaveBeenBlocked);
+		}
+		if (!isFollowed) {
+			throw new ApiError(meta.errors.notFollowing);
 		}
 	}
 

@@ -1,5 +1,5 @@
 import { ILocalUser, User } from "@/models/entities/user.js";
-import { Blockings, UserListJoinings, UserLists, Users } from "@/models/index.js";
+import { Blockings, Followings, UserListJoinings, UserLists, Users } from "@/models/index.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
@@ -76,7 +76,14 @@ export class ListHelpers {
                         blockeeId: localUser.id,
                     },
                 });
+                const isFollowed = await Followings.exist({
+                    where: {
+                        followeeId: user.id,
+                        followerId: localUser.id,
+                    },
+                });
                 if (isBlocked) throw Error("Can't add users you've been blocked by to list");
+                if (!isFollowed) throw Error("Can't add users you're not following to list");
             }
 
             const exist = await UserListJoinings.exist({
