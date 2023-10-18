@@ -124,7 +124,7 @@ export class Meta {
 	public silencedHosts: string[];
 
 	@Column("boolean", {
-		default: false,
+		default: true,
 	})
 	public secureMode: boolean;
 
