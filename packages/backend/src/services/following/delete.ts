@@ -7,7 +7,7 @@ import { deliver, webhookDeliver } from "@/queue/index.js";
 import Logger from "../logger.js";
 import { registerOrFetchInstanceDoc } from "../register-or-fetch-instance-doc.js";
 import type { User } from "@/models/entities/user.js";
-import { Followings, Users, Instances } from "@/models/index.js";
+import { Followings, Users, Instances, UserListJoinings } from "@/models/index.js";
 import {
 	instanceChart,
 	perUserFollowingChart,
@@ -45,6 +45,7 @@ export default async function (
 		return;
 	}
 
+	await UserListJoinings.delete({ userId: followee.id, userList: { userId: follower.id } });
 	await Followings.delete(following.id);
 
 	decrementFollowing(follower, followee);
