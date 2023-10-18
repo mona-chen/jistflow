@@ -296,12 +296,6 @@ const menuDef = $computed(() => [
 							active: currentPage?.route.name === "hashtags",
 						},
 						{
-							icon: "ph-ghost ph-bold ph-lg",
-							text: i18n.ts.proxyAccount,
-							to: "/admin/proxy-account",
-							active: currentPage?.route.name === "proxy-account",
-						},
-						{
 							icon: "ph-database ph-bold ph-lg",
 							text: i18n.ts.database,
 							to: "/admin/database",

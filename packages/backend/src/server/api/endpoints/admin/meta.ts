@@ -160,11 +160,6 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
-			proxyAccountName: {
-				type: "string",
-				optional: false,
-				nullable: true,
-			},
 			recommendedInstances: {
 				type: "array",
 				optional: true,
@@ -264,12 +259,6 @@ export const meta = {
 				type: "string",
 				optional: true,
 				nullable: true,
-			},
-			proxyAccountId: {
-				type: "string",
-				optional: true,
-				nullable: true,
-				format: "id",
 			},
 			twitterConsumerKey: {
 				type: "string",
@@ -510,7 +499,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		secureMode: instance.secureMode,
 		hcaptchaSecretKey: instance.hcaptchaSecretKey,
 		recaptchaSecretKey: instance.recaptchaSecretKey,
-		proxyAccountId: instance.proxyAccountId,
 		twitterConsumerKey: instance.twitterConsumerKey,
 		twitterConsumerSecret: instance.twitterConsumerSecret,
 		githubClientId: instance.githubClientId,

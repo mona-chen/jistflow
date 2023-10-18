@@ -1,20 +1,20 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class RemoteNsfwDetection1697663824168 implements MigrationInterface {
-    name = 'RemoteNsfwDetection1697663824168'
+export class RemoveNsfwDetection1697663824168 implements MigrationInterface {
+    name = 'RemoveNsfwDetection1697663824168'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP INDEX "public"."IDX_3b33dff77bb64b23c88151d23e"`);
-        await queryRunner.query(`DROP INDEX "public"."IDX_8bdcd3dd2bddb78014999a16ce"`);
-        await queryRunner.query(`ALTER TABLE "drive_file" DROP COLUMN "maybeSensitive"`);
-        await queryRunner.query(`ALTER TABLE "drive_file" DROP COLUMN "maybePorn"`);
-        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "sensitiveMediaDetection"`);
-        await queryRunner.query(`DROP TYPE "public"."meta_sensitivemediadetection_enum"`);
-        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "sensitiveMediaDetectionSensitivity"`);
-        await queryRunner.query(`DROP TYPE "public"."meta_sensitivemediadetectionsensitivity_enum"`);
-        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "setSensitiveFlagAutomatically"`);
-        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "enableSensitiveMediaDetectionForVideos"`);
-        await queryRunner.query(`ALTER TABLE "user_profile" DROP COLUMN "autoSensitive"`);
+        await queryRunner.query(`DROP INDEX IF EXISTS "public"."IDX_3b33dff77bb64b23c88151d23e"`);
+        await queryRunner.query(`DROP INDEX IF EXISTS "public"."IDX_8bdcd3dd2bddb78014999a16ce"`);
+        await queryRunner.query(`ALTER TABLE "drive_file" DROP COLUMN IF EXISTS "maybeSensitive"`);
+        await queryRunner.query(`ALTER TABLE "drive_file" DROP COLUMN IF EXISTS "maybePorn"`);
+        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN IF EXISTS "sensitiveMediaDetection"`);
+        await queryRunner.query(`DROP TYPE IF EXISTS "public"."meta_sensitivemediadetection_enum"`);
+        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN IF EXISTS "sensitiveMediaDetectionSensitivity"`);
+        await queryRunner.query(`DROP TYPE IF EXISTS "public"."meta_sensitivemediadetectionsensitivity_enum"`);
+        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN IF EXISTS "setSensitiveFlagAutomatically"`);
+        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN IF EXISTS "enableSensitiveMediaDetectionForVideos"`);
+        await queryRunner.query(`ALTER TABLE "user_profile" DROP COLUMN IF EXISTS "autoSensitive"`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

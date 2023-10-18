@@ -101,7 +101,6 @@ export const paramDef = {
 		enableRecaptcha: { type: "boolean" },
 		recaptchaSiteKey: { type: "string", nullable: true },
 		recaptchaSecretKey: { type: "string", nullable: true },
-		proxyAccountId: { type: "string", format: "misskey:id", nullable: true },
 		maintainerName: { type: "string", nullable: true },
 		maintainerEmail: { type: "string", nullable: true },
 		pinnedPages: {
@@ -334,10 +333,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (ps.recaptchaSecretKey !== undefined) {
 		set.recaptchaSecretKey = ps.recaptchaSecretKey;
-	}
-
-	if (ps.proxyAccountId !== undefined) {
-		set.proxyAccountId = ps.proxyAccountId;
 	}
 
 	if (ps.maintainerName !== undefined) {

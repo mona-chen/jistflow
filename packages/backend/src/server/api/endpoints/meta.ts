@@ -271,11 +271,6 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
-			proxyAccountName: {
-				type: "string",
-				optional: false,
-				nullable: true,
-			},
 			images: {
 				type: 'object',
 				optional: false, nullable: false,
@@ -488,20 +483,13 @@ export default define(meta, paramDef, async (ps, me) => {
 	};
 
 	if (ps.detail) {
-		if (!instance.privateMode || me) {
-			const proxyAccount = instance.proxyAccountId
-				? await Users.pack(instance.proxyAccountId).catch(() => null)
-				: null;
-			response.proxyAccountName = proxyAccount ? proxyAccount.username : null;
-		}
-
 		response.features = {
 			registration: !instance.disableRegistration,
 			localTimeLine: !instance.disableLocalTimeline,
 			recommendedTimeline: !instance.disableRecommendedTimeline,
 			globalTimeLine: !instance.disableGlobalTimeline,
 			emailRequiredForSignup: instance.emailRequiredForSignup,
-			searchFilters: config.meilisearch ? true : false,
+			searchFilters: !!config.meilisearch,
 			hcaptcha: instance.enableHcaptcha,
 			recaptcha: instance.enableRecaptcha,
 			objectStorage: instance.useObjectStorage,

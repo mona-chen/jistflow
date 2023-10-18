@@ -44,10 +44,6 @@ const nodeinfo2 = async () => {
 			Notes.count({ where: { userHost: IsNull() } }),
 		]);
 
-	const proxyAccount = meta.proxyAccountId
-		? await Users.pack(meta.proxyAccountId).catch(() => null)
-		: null;
-
 	return {
 		software: {
 			name: "iceshrimp",
@@ -93,7 +89,6 @@ const nodeinfo2 = async () => {
 			enableGithubIntegration: meta.enableGithubIntegration,
 			enableDiscordIntegration: meta.enableDiscordIntegration,
 			enableEmail: meta.enableEmail,
-			proxyAccountName: proxyAccount ? proxyAccount.username : null,
 			themeColor: meta.themeColor || "#31748f",
 		},
 	};

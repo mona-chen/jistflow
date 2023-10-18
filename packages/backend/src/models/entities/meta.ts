@@ -202,18 +202,6 @@ export class Meta {
 	})
 	public cacheRemoteFiles: boolean;
 
-	@Column({
-		...id(),
-		nullable: true,
-	})
-	public proxyAccountId: User["id"] | null;
-
-	@ManyToOne((type) => User, {
-		onDelete: "SET NULL",
-	})
-	@JoinColumn()
-	public proxyAccount: User | null;
-
 	@Column("boolean", {
 		default: false,
 	})

@@ -530,11 +530,6 @@ export const routes = [
 				component: page(() => import("./pages/admin/instance-block.vue")),
 			},
 			{
-				path: "/proxy-account",
-				name: "proxy-account",
-				component: page(() => import("./pages/admin/proxy-account.vue")),
-			},
-			{
 				path: "/other-settings",
 				name: "other-settings",
 				component: page(() => import("./pages/admin/other-settings.vue")),
