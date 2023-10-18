@@ -528,9 +528,15 @@ export class UserHelpers {
         });
     }
 
-    public static updateUserInBackground(user: User) {
+    public static async updateUserInBackground(user: User) {
         if (Users.isLocalUser(user)) return;
-        // noinspection JSIgnoredPromiseFromCall
+        if (user.lastFetchedAt != null && Date.now() - user.lastFetchedAt.getTime() < 1000 * 60 * 60 * 24) return;
+
+        await Users.update(user.id, {
+            lastFetchedAt: new Date(),
+        });
+
+        // noinspection ES6MissingAwait
         updatePerson(user.uri!, undefined, undefined, user as IRemoteUser);
     }
 
