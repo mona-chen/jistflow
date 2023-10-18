@@ -123,7 +123,6 @@ export const paramDef = {
 		injectFeaturedNote: { type: "boolean" },
 		receiveAnnouncementEmail: { type: "boolean" },
 		alwaysMarkNsfw: { type: "boolean" },
-		autoSensitive: { type: "boolean" },
 		ffVisibility: { type: "string", enum: ["public", "followers", "private"] },
 		pinnedPageId: { type: "string", format: "misskey:id", nullable: true },
 		mutedWords: { type: "array" },
@@ -213,8 +212,6 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 		profileUpdates.receiveAnnouncementEmail = ps.receiveAnnouncementEmail;
 	if (typeof ps.alwaysMarkNsfw === "boolean")
 		profileUpdates.alwaysMarkNsfw = ps.alwaysMarkNsfw;
-	if (typeof ps.autoSensitive === "boolean")
-		profileUpdates.autoSensitive = ps.autoSensitive;
 	if (ps.emailNotificationTypes !== undefined)
 		profileUpdates.emailNotificationTypes = ps.emailNotificationTypes;
 

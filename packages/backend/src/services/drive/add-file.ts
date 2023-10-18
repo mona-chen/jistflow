@@ -396,7 +396,7 @@ async function expireOldFile(user: IRemoteUser, driveCapacity: number) {
 
 	for (const fileId of exceedFileIds) {
 		const file = await DriveFiles.findOneBy({ id: fileId });
-		deleteFile(file, true);
+		if (file) deleteFile(file, true);
 	}
 }
 
@@ -448,39 +448,7 @@ export async function addFile({
 	requestIp = null,
 	requestHeaders = null,
 }: AddFileArgs): Promise<DriveFile> {
-	let skipNsfwCheck = false;
-	const instance = await fetchMeta();
-	if (user == null) skipNsfwCheck = true;
-	if (instance.sensitiveMediaDetection === "none") skipNsfwCheck = true;
-	if (
-		user &&
-		instance.sensitiveMediaDetection === "local" &&
-		Users.isRemoteUser(user)
-	)
-		skipNsfwCheck = true;
-	if (
-		user &&
-		instance.sensitiveMediaDetection === "remote" &&
-		Users.isLocalUser(user)
-	)
-		skipNsfwCheck = true;
-
-	const info = await getFileInfo(path, {
-		skipSensitiveDetection: skipNsfwCheck,
-		sensitiveThreshold: // 感度が高いほどしきい値は低くすることになる
-			instance.sensitiveMediaDetectionSensitivity === "veryHigh"
-				? 0.1
-				: instance.sensitiveMediaDetectionSensitivity === "high"
-				? 0.3
-				: instance.sensitiveMediaDetectionSensitivity === "low"
-				? 0.7
-				: instance.sensitiveMediaDetectionSensitivity === "veryLow"
-				? 0.9
-				: 0.5,
-		sensitiveThresholdForPorn: 0.75,
-		enableSensitiveMediaDetectionForVideos:
-			instance.enableSensitiveMediaDetectionForVideos,
-	});
+	const info = await getFileInfo(path);
 	logger.info(`${JSON.stringify(info)}`);
 
 	// 現状 false positive が多すぎて実用に耐えない
@@ -595,8 +563,6 @@ export async function addFile({
 	file.isLink = isLink;
 	file.requestIp = requestIp;
 	file.requestHeaders = requestHeaders;
-	file.maybeSensitive = info.sensitive;
-	file.maybePorn = info.porn;
 	file.isSensitive = user
 		? Users.isLocalUser(user) && profile!.alwaysMarkNsfw
 			? true
@@ -604,10 +570,6 @@ export async function addFile({
 			? sensitive
 			: false
 		: false;
-
-	if (info.sensitive && profile!.autoSensitive) file.isSensitive = true;
-	if (info.sensitive && instance.setSensitiveFlagAutomatically)
-		file.isSensitive = true;
 
 	if (url !== null) {
 		file.src = url;

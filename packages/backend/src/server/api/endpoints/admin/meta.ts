@@ -2,7 +2,6 @@ import config from "@/config/index.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
 import define from "../../define.js";
-import { Exp } from "@tensorflow/tfjs";
 
 export const meta = {
 	tags: ["meta"],
@@ -266,26 +265,6 @@ export const meta = {
 				optional: true,
 				nullable: true,
 			},
-			sensitiveMediaDetection: {
-				type: "string",
-				optional: true,
-				nullable: false,
-			},
-			sensitiveMediaDetectionSensitivity: {
-				type: "string",
-				optional: true,
-				nullable: false,
-			},
-			setSensitiveFlagAutomatically: {
-				type: "boolean",
-				optional: true,
-				nullable: false,
-			},
-			enableSensitiveMediaDetectionForVideos: {
-				type: "boolean",
-				optional: true,
-				nullable: false,
-			},
 			proxyAccountId: {
 				type: "string",
 				optional: true,
@@ -531,12 +510,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		secureMode: instance.secureMode,
 		hcaptchaSecretKey: instance.hcaptchaSecretKey,
 		recaptchaSecretKey: instance.recaptchaSecretKey,
-		sensitiveMediaDetection: instance.sensitiveMediaDetection,
-		sensitiveMediaDetectionSensitivity:
-			instance.sensitiveMediaDetectionSensitivity,
-		setSensitiveFlagAutomatically: instance.setSensitiveFlagAutomatically,
-		enableSensitiveMediaDetectionForVideos:
-			instance.enableSensitiveMediaDetectionForVideos,
 		proxyAccountId: instance.proxyAccountId,
 		twitterConsumerKey: instance.twitterConsumerKey,
 		twitterConsumerSecret: instance.twitterConsumerSecret,
