@@ -75,6 +75,7 @@ export default defineComponent({
 		return {
 			showBody: this.expanded,
 			i18n,
+			icon,
 		};
 	},
 	methods: {

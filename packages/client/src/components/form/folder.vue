@@ -18,11 +18,14 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from "vue";
 import icon from "@/scripts/icon";
 
-defineProps<{
+const props = defineProps<{
 	defaultOpen: boolean;
 }>();
+
+const opened = ref(props.defaultOpen);
 </script>
 
 <style lang="scss" scoped>

@@ -17,7 +17,7 @@
 		>
 		<template #func>
 			<button class="_button" @click="changeType()">
-				<i :class="icon('ph-pencil')"></i>
+				<i :class="iconClass('ph-pencil')"></i>
 			</button>
 		</template>
 
@@ -158,7 +158,7 @@ import * as os from "@/os";
 import { isLiteralValue } from "@/scripts/hpml/expr";
 import { funcDefs } from "@/scripts/hpml/lib";
 import { i18n } from "@/i18n";
-import icon from "@/scripts/icon";
+import iconClass from "@/scripts/icon";
 
 export default defineComponent({
 	components: {
@@ -207,6 +207,7 @@ export default defineComponent({
 			warn: null,
 			slots: "",
 			i18n,
+			iconClass,
 		};
 	},
 
