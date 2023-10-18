@@ -387,7 +387,7 @@ export async function createPerson(
 	updateUsertags(user!, tags);
 
 	// Mentions update
-	await UserProfiles.updateMentions(user!.id);
+	UserProfiles.updateMentions(user!.id);
 
 	//#region Fetch avatar and header image
 	const [avatar, banner] = await Promise.all(
@@ -607,7 +607,7 @@ export async function updatePerson(
 	updateUsertags(user, tags);
 
 	// Mentions update
-	await UserProfiles.updateMentions(user!.id);
+	UserProfiles.updateMentions(user!.id);
 
 	// If the user in question is a follower, followers will also be updated.
 	await Followings.update(
