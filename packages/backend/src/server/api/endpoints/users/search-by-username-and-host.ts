@@ -36,7 +36,7 @@ export const paramDef = {
 			type: "integer",
 			minimum: 1,
 			maximum: 1000,
-			default: 30,
+			nullable: true
 		},
 		detail: { type: "boolean", default: true },
 	},
