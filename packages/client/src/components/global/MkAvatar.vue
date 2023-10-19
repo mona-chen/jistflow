@@ -3,7 +3,10 @@
 		v-if="disableLink"
 		v-user-preview="disablePreview ? undefined : user.id"
 		class="eiwwqkts _noSelect"
-		:class="{ cat: user.isCat, square: $store.state.squareAvatars }"
+		:class="{
+			cat: user.isCat,
+			square: defaultStore.state.squareAvatars,
+		}"
 		:style="{ color }"
 		:title="acct(user)"
 		@click="onClick"
@@ -19,7 +22,10 @@
 		v-else
 		v-user-preview="disablePreview ? undefined : user.id"
 		class="eiwwqkts _noSelect"
-		:class="{ cat: user.isCat, square: $store.state.squareAvatars }"
+		:class="{
+			cat: user.isCat,
+			square: defaultStore.state.squareAvatars,
+		}"
 		:style="{ color }"
 		:to="userPage(user)"
 		:title="acct(user)"
@@ -36,8 +42,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, watch } from "vue";
-import type * as misskey from "firefish-js";
+import { computed, ref, watch } from "vue";
+import type * as firefish from "firefish-js";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import { extractAvgColorFromBlurhash } from "@/scripts/extract-avg-color-from-blurhash";
 import { acct, userPage } from "@/filters/user";
@@ -46,7 +52,7 @@ import { defaultStore } from "@/store";
 
 const props = withDefaults(
 	defineProps<{
-		user: misskey.entities.User;
+		user: firefish.entities.User;
 		target?: string | null;
 		disableLink?: boolean;
 		disablePreview?: boolean;
@@ -64,7 +70,7 @@ const emit = defineEmits<{
 	(ev: "click", v: MouseEvent): void;
 }>();
 
-const url = $computed(() =>
+const url = computed(() =>
 	defaultStore.state.disableShowingAnimatedImages
 		? getStaticImageUrl(props.user.avatarUrl)
 		: props.user.avatarUrl,
@@ -74,12 +80,12 @@ function onClick(ev: MouseEvent) {
 	emit("click", ev);
 }
 
-let color = $ref();
+const color = ref();
 
 watch(
 	() => props.user.avatarBlurhash,
 	() => {
-		color = extractAvgColorFromBlurhash(props.user.avatarBlurhash);
+		color.value = extractAvgColorFromBlurhash(props.user.avatarBlurhash);
 	},
 	{
 		immediate: true,
@@ -89,7 +95,7 @@ watch(
 
 <style lang="scss" scoped>
 @keyframes earwiggleleft {
-	from {
+	0% {
 		transform: rotate(37.6deg) skew(30deg);
 	}
 	25% {
@@ -101,13 +107,13 @@ watch(
 	75% {
 		transform: rotate(0deg) skew(30deg);
 	}
-	to {
+	100% {
 		transform: rotate(37.6deg) skew(30deg);
 	}
 }
 
 @keyframes earwiggleright {
-	from {
+	0% {
 		transform: rotate(-37.6deg) skew(-30deg);
 	}
 	30% {
@@ -119,7 +125,7 @@ watch(
 	75% {
 		transform: rotate(0deg) skew(-30deg);
 	}
-	to {
+	100% {
 		transform: rotate(-37.6deg) skew(-30deg);
 	}
 }
@@ -176,12 +182,12 @@ watch(
 		}
 
 		&:before {
-			border-radius: 0 75% 75%;
+			border-radius: 25% 75% 75%;
 			transform: rotate(37.5deg) skew(30deg);
 		}
 
 		&:after {
-			border-radius: 75% 0 75% 75%;
+			border-radius: 75% 25% 75% 75%;
 			transform: rotate(-37.5deg) skew(-30deg);
 		}
 

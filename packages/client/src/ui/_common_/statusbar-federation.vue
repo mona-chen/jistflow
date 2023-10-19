@@ -40,7 +40,7 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, toRef, watch } from "vue";
-import * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MarqueeText from "@/components/MkMarquee.vue";
 import * as os from "@/os";
 import { useInterval } from "@/scripts/use-interval";
@@ -57,9 +57,9 @@ const props = defineProps<{
 	refreshIntervalSec?: number;
 }>();
 
-const instances = ref<misskey.entities.Instance[]>([]);
+const instances = ref<firefish.entities.Instance[]>([]);
 const fetching = ref(true);
-let key = $ref(0);
+const key = ref(0);
 
 const tick = () => {
 	os.api("federation/instances", {
@@ -68,7 +68,7 @@ const tick = () => {
 	}).then((res) => {
 		instances.value = res;
 		fetching.value = false;
-		key++;
+		key.value++;
 	});
 };
 

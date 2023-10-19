@@ -16,7 +16,7 @@
 						<template #icon>
 							<i
 								v-if="webhook.active === false"
-								class="ph-pause-circle ph-bold ph-lg"
+								:class="icon('ph-pause-circle')"
 							></i>
 							<i
 								v-else-if="webhook.latestStatus === null"
@@ -28,12 +28,12 @@
 										webhook.latestStatus,
 									)
 								"
-								class="ph-check ph-bold ph-lg"
+								:class="icon('ph-check')"
 								:style="{ color: 'var(--success)' }"
 							></i>
 							<i
 								v-else
-								class="ph-warning ph-bold ph-lg"
+								:class="icon('ph-warning')"
 								:style="{ color: 'var(--error)' }"
 							></i>
 						</template>
@@ -52,26 +52,19 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
 import MkPagination from "@/components/MkPagination.vue";
 import FormSection from "@/components/form/section.vue";
 import FormLink from "@/components/form/link.vue";
-import { userPage } from "@/filters/user";
-import * as os from "@/os";
-import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const pagination = {
 	endpoint: "i/webhooks/list" as const,
 	limit: 10,
 };
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: "Webhook",
-	icon: "ph-webhooks-logo ph-bold ph-lg",
+	icon: `${icon("ph-webhooks-logo")}`,
 });
 </script>

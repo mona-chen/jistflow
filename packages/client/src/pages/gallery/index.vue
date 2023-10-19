@@ -12,7 +12,7 @@
 				:round-lengths="true"
 				:touch-angle="25"
 				:threshold="10"
-				:centeredSlides="true"
+				:centered-slides="true"
 				:modules="[Virtual]"
 				:space-between="20"
 				:virtual="true"
@@ -24,10 +24,10 @@
 				@swiper="setSwiperRef"
 				@slide-change="onSlideChange"
 			>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<MkFolder class="_gap">
 						<template #header
-							><i class="ph-clock ph-bold ph-lg"></i>
+							><i :class="icon('ph-clock')"></i>
 							{{ i18n.ts.recentPosts }}</template
 						>
 						<MkPagination
@@ -47,7 +47,7 @@
 					</MkFolder>
 					<MkFolder class="_gap">
 						<template #header
-							><i class="ph-fire-simple ph-bold ph-lg"></i>
+							><i :class="icon('ph-fire-simple')"></i>
 							{{ i18n.ts.popularPosts }}</template
 						>
 						<MkPagination
@@ -66,7 +66,7 @@
 						</MkPagination>
 					</MkFolder>
 				</swiper-slide>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<MkPagination
 						v-slot="{ items }"
 						:pagination="likedPostsPagination"
@@ -81,9 +81,9 @@
 						</div>
 					</MkPagination>
 				</swiper-slide>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<MkA to="/gallery/new" class="_link" style="margin: 16px"
-						><i class="ph-plus ph-bold ph-lg"></i>
+						><i :class="icon('ph-plus')"></i>
 						{{ i18n.ts.postToGallery }}</MkA
 					>
 					<MkPagination
@@ -106,7 +106,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineComponent, watch, onMounted } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import MkFolder from "@/components/MkFolder.vue";
@@ -117,6 +117,7 @@ import { deviceKind } from "@/scripts/device-kind";
 import { i18n } from "@/i18n";
 import { useRouter } from "@/router";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
@@ -127,10 +128,10 @@ const props = defineProps<{
 }>();
 
 const tabs = ["explore", "liked", "my"];
-let tab = $ref(tabs[0]);
-watch($$(tab), () => syncSlide(tabs.indexOf(tab)));
+const tab = ref(tabs[0]);
+watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
 
-let tagsRef = $ref();
+const tagsRef = ref();
 
 const recentPostsPagination = {
 	endpoint: "gallery/posts" as const,
@@ -152,13 +153,13 @@ const likedPostsPagination = {
 watch(
 	() => props.tag,
 	() => {
-		if (tagsRef) tagsRef.tags.toggleContent(props.tag == null);
+		if (tagsRef.value) tagsRef.value.tags.toggleContent(props.tag == null);
 	},
 );
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.create,
 		handler: () => {
 			router.push("/gallery/new");
@@ -166,38 +167,38 @@ const headerActions = $computed(() => [
 	},
 ]);
 
-const headerTabs = $computed(() => [
+const headerTabs = computed(() => [
 	{
 		key: "explore",
 		title: i18n.ts.gallery,
-		icon: "ph-image-square ph-bold ph-lg",
+		icon: `${icon("ph-image-square")}`,
 	},
 	{
 		key: "liked",
 		title: i18n.ts._gallery.liked,
-		icon: "ph-heart ph-bold ph-lg",
+		icon: `${icon("ph-heart")}`,
 	},
 	{
 		key: "my",
 		title: i18n.ts._gallery.my,
-		icon: "ph-crown-simple ph-bold ph-lg",
+		icon: `${icon("ph-crown-simple")}`,
 	},
 ]);
 
 definePageMetadata({
 	title: i18n.ts.gallery,
-	icon: "ph-image-square ph-bold ph-lg",
+	icon: `${icon("ph-image-square")}`,
 });
 
 let swiperRef = null;
 
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
-	syncSlide(tabs.indexOf(tab));
+	syncSlide(tabs.indexOf(tab.value));
 }
 
 function onSlideChange() {
-	tab = tabs[swiperRef.activeIndex];
+	tab.value = tabs[swiperRef.activeIndex];
 }
 
 function syncSlide(index) {

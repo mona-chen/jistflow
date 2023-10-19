@@ -10,80 +10,97 @@
 		:class="{ renote: isRenote }"
 	>
 		<MkNoteSub
-			v-if="conversation"
 			v-for="note in conversation"
+			v-if="conversation"
 			:key="note.id"
 			class="reply-to"
 			:note="note"
-			:detailedView="true"
+			:detailed-view="true"
 		/>
 		<MkLoading v-else-if="note.reply" mini />
 		<MkNoteSub
 			v-if="note.reply"
 			:note="note.reply"
 			class="reply-to"
-			:detailedView="true"
+			:detailed-view="true"
 		/>
 
 		<MkNote
 			ref="noteEl"
-			@contextmenu.stop="onContextmenu"
 			tabindex="-1"
 			:note="note"
-			detailedView
+			detailed-view
+			@contextmenu.stop="onContextmenu"
 		></MkNote>
 
 		<MkTab v-model="tab" :style="'underline'" @update:modelValue="loadTab">
 			<option value="replies">
-				<!-- <i class="ph-arrow-u-up-left ph-bold ph-lg"></i> -->
-				<span v-if="note.repliesCount > 0" class="count">{{
-					note.repliesCount
-				}}</span>
-				{{ i18n.ts._notification._types.reply }}
+				<!-- <i :class="icon('ph-arrow-u-up-left')"></i> -->
+				{{
+					wordWithCount(
+						note.repliesCount,
+						i18n.ts.reply,
+						i18n.ts.replies,
+					)
+				}}
 			</option>
-			<option value="renotes" v-if="note.renoteCount > 0">
-				<!-- <i class="ph-repeat ph-bold ph-lg"></i> -->
-				<span class="count">{{ note.renoteCount }}</span>
-				{{ i18n.ts._notification._types.renote }}
+			<option v-if="note.renoteCount > 0" value="renotes">
+				<!-- <i :class="icon('ph-rocket-launch')"></i> -->
+				{{
+					wordWithCount(
+						note.renoteCount,
+						i18n.ts.renote,
+						i18n.ts.renotes,
+					)
+				}}
 			</option>
-			<option value="reactions" v-if="reactionsCount > 0">
-				<!-- <i class="ph-smiley ph-bold ph-lg"></i> -->
-				<span class="count">{{ reactionsCount }}</span>
-				{{ i18n.ts.reaction }}
+			<option v-if="reactionsCount > 0" value="reactions">
+				<!-- <i :class="icon('ph-smiley')"></i> -->
+				{{
+					wordWithCount(
+						reactionsCount,
+						i18n.ts.reaction,
+						i18n.ts.reactions,
+					)
+				}}
 			</option>
-			<option value="quotes" v-if="directQuotes?.length > 0">
-				<!-- <i class="ph-quotes ph-bold ph-lg"></i> -->
-				<span class="count">{{ directQuotes.length }}</span>
-				{{ i18n.ts._notification._types.quote }}
+			<option v-if="directQuotes?.length > 0" value="quotes">
+				<!-- <i :class="icon('ph-quotes')"></i> -->
+				{{
+					wordWithCount(
+						directQuotes.length,
+						i18n.ts.quote,
+						i18n.ts.quotes,
+					)
+				}}
 			</option>
-			<option value="clips" v-if="clips?.length > 0">
-				<!-- <i class="ph-paperclip ph-bold ph-lg"></i> -->
-				<span class="count">{{ clips.length }}</span>
-				{{ i18n.ts.clips }}
+			<option v-if="clips?.length > 0" value="clips">
+				<!-- <i :class="icon('ph-paperclip')"></i> -->
+				{{ wordWithCount(clips.length, i18n.ts.clip, i18n.ts.clips) }}
 			</option>
 		</MkTab>
 
 		<MkNoteSub
-			v-if="directReplies && tab === 'replies'"
 			v-for="note in directReplies"
+			v-if="directReplies && tab === 'replies'"
 			:key="note.id"
 			:note="note"
 			class="reply"
 			:conversation="replies"
-			:detailedView="true"
-			:parentId="note.id"
+			:detailed-view="true"
+			:parent-id="note.id"
 		/>
 		<MkLoading v-else-if="tab === 'replies' && note.repliesCount > 0" />
 
 		<MkNoteSub
-			v-if="directQuotes && tab === 'quotes'"
 			v-for="note in directQuotes"
+			v-if="directQuotes && tab === 'quotes'"
 			:key="note.id"
 			:note="note"
 			class="reply"
 			:conversation="replies"
-			:detailedView="true"
-			:parentId="note.id"
+			:detailed-view="true"
+			:parent-id="note.id"
 		/>
 		<MkLoading v-else-if="tab === 'quotes' && directQuotes.length > 0" />
 
@@ -94,8 +111,8 @@
 			:pagination="pagination"
 		> -->
 		<MkUserCardMini
-			v-if="tab === 'renotes' && renotes"
 			v-for="item in renotes"
+			v-if="tab === 'renotes' && renotes"
 			:key="item.user.id"
 			:user="item.user"
 			:with-chart="false"
@@ -150,22 +167,13 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	computed,
-	inject,
-	onMounted,
-	onUnmounted,
-	onUpdated,
-	reactive,
-	ref,
-} from "vue";
-import * as misskey from "firefish-js";
+import { onMounted, onUnmounted, onUpdated, ref } from "vue";
+import type * as firefish from "firefish-js";
+import type { NoteUpdatedEvent } from "firefish-js/built/streaming.types";
 import MkTab from "@/components/MkTab.vue";
 import MkNote from "@/components/MkNote.vue";
 import MkNoteSub from "@/components/MkNoteSub.vue";
-import XStarButton from "@/components/MkStarButton.vue";
-import XRenoteButton from "@/components/MkRenoteButton.vue";
-import MkPagination from "@/components/MkPagination.vue";
+import type XRenoteButton from "@/components/MkRenoteButton.vue";
 import MkUserCardMini from "@/components/MkUserCardMini.vue";
 import MkReactedUsers from "@/components/MkReactedUsers.vue";
 import { pleaseLogin } from "@/scripts/please-login";
@@ -180,17 +188,16 @@ import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { deepClone } from "@/scripts/clone";
 import { stream } from "@/stream";
-import { NoteUpdatedEvent } from "firefish-js/built/streaming.types";
-import appear from "@/directives/appear";
+// import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 	pinned?: boolean;
 }>();
 
-let tab = $ref("replies");
+const tab = ref("replies");
 
-let note = $ref(deepClone(props.note));
+const note = ref(deepClone(props.note));
 
 const softMuteReasonI18nSrc = (what?: string) => {
 	if (what === "note") return i18n.ts.userSaysSomethingReason;
@@ -202,33 +209,45 @@ const softMuteReasonI18nSrc = (what?: string) => {
 	return i18n.ts.userSaysSomething;
 };
 
+const wordWithCount = (count: number, singular: string, plural: string) => {
+	if (count === 0) return plural;
+	return `${count} ${count === 1 ? singular : plural}`;
+};
+
 // plugin
 if (noteViewInterruptors.length > 0) {
 	onMounted(async () => {
-		let result = deepClone(note);
+		let result = deepClone(note.value);
 		for (const interruptor of noteViewInterruptors) {
 			result = await interruptor.handler(result);
 		}
-		note = result;
+		note.value = result;
 	});
 }
 
 const el = ref<HTMLElement>();
-const noteEl = $ref();
+const noteEl = ref();
 const menuButton = ref<HTMLElement>();
 const renoteButton = ref<InstanceType<typeof XRenoteButton>>();
 const reactButton = ref<HTMLElement>();
 const showContent = ref(false);
 const isDeleted = ref(false);
-const muted = ref(getWordSoftMute(note, $i, defaultStore.state.mutedWords));
+const muted = ref(
+	getWordSoftMute(
+		note.value,
+		$i?.id,
+		defaultStore.state.mutedWords,
+		defaultStore.state.mutedLangs,
+	),
+);
 const translation = ref(null);
 const translating = ref(false);
-let conversation = $ref<null | misskey.entities.Note[]>([]);
-const replies = ref<misskey.entities.Note[]>([]);
-let directReplies = $ref<null | misskey.entities.Note[]>([]);
-let directQuotes = $ref<null | misskey.entities.Note[]>([]);
-let clips = $ref();
-let renotes = $ref();
+const conversation = ref<null | firefish.entities.Note[]>([]);
+const replies = ref<firefish.entities.Note[]>([]);
+const directReplies = ref<null | firefish.entities.Note[]>([]);
+const directQuotes = ref<null | firefish.entities.Note[]>([]);
+const clips = ref();
+const renotes = ref();
 let isScrolling;
 
 const reactionsCount = Object.values(props.note.reactions).reduce(
@@ -247,14 +266,14 @@ const keymap = {
 
 useNoteCapture({
 	rootEl: el,
-	note: $$(note),
+	note,
 	isDeletedRef: isDeleted,
 });
 
 function reply(viaKeyboard = false): void {
 	pleaseLogin();
 	os.post({
-		reply: note,
+		reply: note.value,
 		animation: !viaKeyboard,
 	}).then(() => {
 		focus();
@@ -268,8 +287,8 @@ function react(viaKeyboard = false): void {
 		reactButton.value,
 		(reaction) => {
 			os.api("notes/reactions/create", {
-				noteId: note.id,
-				reaction: reaction,
+				noteId: note.value.id,
+				reaction,
 			});
 		},
 		() => {
@@ -302,7 +321,7 @@ function onContextmenu(ev: MouseEvent): void {
 	} else {
 		os.contextMenu(
 			getNoteMenu({
-				note: note,
+				note: note.value,
 				translating,
 				translation,
 				menuButton,
@@ -316,7 +335,7 @@ function onContextmenu(ev: MouseEvent): void {
 function menu(viaKeyboard = false): void {
 	os.popupMenu(
 		getNoteMenu({
-			note: note,
+			note: note.value,
 			translating,
 			translation,
 			menuButton,
@@ -330,48 +349,50 @@ function menu(viaKeyboard = false): void {
 }
 
 function focus() {
-	noteEl.focus();
+	noteEl.value.focus();
 }
 
 function blur() {
-	noteEl.blur();
+	noteEl.value.blur();
 }
 
-directReplies = null;
+directReplies.value = null;
 os.api("notes/children", {
-	noteId: note.id,
+	noteId: note.value.id,
 	limit: 30,
 	depth: 12,
 }).then((res) => {
 	res = res.reduce((acc, resNote) => {
-		if (resNote.userId == note.userId) {
+		if (resNote.userId == note.value.userId) {
 			return [...acc, resNote];
 		}
 		return [resNote, ...acc];
 	}, []);
 	replies.value = res;
-	directReplies = res
-		.filter((resNote) => resNote.replyId === note.id)
+	directReplies.value = res
+		.filter((resNote) => resNote.replyId === note.value.id)
 		.reverse();
-	directQuotes = res.filter((resNote) => resNote.renoteId === note.id);
+	directQuotes.value = res.filter(
+		(resNote) => resNote.renoteId === note.value.id,
+	);
 });
 
-conversation = null;
-if (note.replyId) {
+conversation.value = null;
+if (note.value.replyId) {
 	os.api("notes/conversation", {
-		noteId: note.replyId,
+		noteId: note.value.replyId,
 		limit: 30,
 	}).then((res) => {
-		conversation = res.reverse();
+		conversation.value = res.reverse();
 		focus();
 	});
 }
 
-clips = null;
+clips.value = null;
 os.api("notes/clips", {
-	noteId: note.id,
+	noteId: note.value.id,
 }).then((res) => {
-	clips = res;
+	clips.value = res;
 });
 
 // const pagination = {
@@ -382,14 +403,14 @@ os.api("notes/clips", {
 
 // const pagingComponent = $ref<InstanceType<typeof MkPagination>>();
 
-renotes = null;
+renotes.value = null;
 function loadTab() {
-	if (tab === "renotes" && !renotes) {
+	if (tab.value === "renotes" && !renotes.value) {
 		os.api("notes/renotes", {
-			noteId: note.id,
+			noteId: note.value.id,
 			limit: 100,
 		}).then((res) => {
-			renotes = res;
+			renotes.value = res;
 		});
 	}
 }
@@ -398,7 +419,7 @@ async function onNoteUpdated(noteData: NoteUpdatedEvent): Promise<void> {
 	const { type, id, body } = noteData;
 
 	let found = -1;
-	if (id === note.id) {
+	if (id === note.value.id) {
 		found = 0;
 	} else {
 		for (let i = 0; i < replies.value.length; i++) {
@@ -423,7 +444,7 @@ async function onNoteUpdated(noteData: NoteUpdatedEvent): Promise<void> {
 
 			replies.value.splice(found, 0, replyNote);
 			if (found === 0) {
-				directReplies.push(replyNote);
+				directReplies.value.push(replyNote);
 			}
 			break;
 
@@ -444,12 +465,12 @@ document.addEventListener("wheel", () => {
 onMounted(() => {
 	stream.on("noteUpdated", onNoteUpdated);
 	isScrolling = false;
-	noteEl.scrollIntoView();
+	noteEl.value.scrollIntoView();
 });
 
 onUpdated(() => {
 	if (!isScrolling) {
-		noteEl.scrollIntoView();
+		noteEl.value.scrollIntoView();
 		if (location.hash) {
 			location.replace(location.hash); // Jump to highlighted reply
 		}

@@ -3,7 +3,7 @@
 		<template #empty>
 			<div class="_fullinfo">
 				<img
-					src="/static-assets/badges/info.png"
+					src="/static-assets/badges/info.webp"
 					class="_ghost"
 					alt="Info"
 				/>
@@ -27,8 +27,8 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import MkUserInfo from "@/components/MkUserInfo.vue";
-import MkPagination, { Paging } from "@/components/MkPagination.vue";
-import { userPage } from "@/filters/user";
+import type { Paging } from "@/components/MkPagination.vue";
+import MkPagination from "@/components/MkPagination.vue";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{

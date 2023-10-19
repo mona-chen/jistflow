@@ -102,9 +102,7 @@
 				</FormFolder>
 
 				<FormFolder :default-open="false" class="_formBlock">
-					<template #icon
-						><i class="ph-code ph-bold ph-lg"></i
-					></template>
+					<template #icon><i :class="icon('ph-code')"></i></template>
 					<template #label>{{ i18n.ts.editCode }}</template>
 
 					<div class="_formRoot">
@@ -143,7 +141,7 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { toUnicode } from "punycode/";
 import tinycolor from "tinycolor2";
 import { v4 as uuid } from "uuid";
@@ -154,7 +152,8 @@ import FormTextarea from "@/components/form/textarea.vue";
 import FormFolder from "@/components/form/folder.vue";
 
 import { $i } from "@/account";
-import { Theme, applyTheme } from "@/scripts/theme";
+import type { Theme } from "@/scripts/theme";
+import { applyTheme } from "@/scripts/theme";
 import lightTheme from "@/themes/_light.json5";
 import darkTheme from "@/themes/_dark.json5";
 import { host } from "@/config";
@@ -164,6 +163,7 @@ import { addTheme } from "@/theme-store";
 import { i18n } from "@/i18n";
 import { useLeaveGuard } from "@/scripts/use-leave-guard";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const bgColors = [
 	{ color: "#f5f5f5", kind: "light", forPreview: "#f5f5f5" },
@@ -238,62 +238,63 @@ const fgColors = [
 	},
 ];
 
-let theme = $ref<Partial<Theme>>({
+const theme = ref<Partial<Theme>>({
 	base: "light",
 	props: lightTheme.props,
 });
-let description = $ref<string | null>(null);
-let themeCode = $ref<string | null>(null);
-let changed = $ref(false);
+const description = ref<string | null>(null);
+const themeCode = ref<string | null>(null);
+const changed = ref(false);
 
-useLeaveGuard($$(changed));
+useLeaveGuard(changed);
 
 function showPreview() {
 	os.pageWindow("/preview");
 }
 
 function setBgColor(color: (typeof bgColors)[number]) {
-	if (theme.base !== color.kind) {
+	if (theme.value.base !== color.kind) {
 		const base = color.kind === "dark" ? darkTheme : lightTheme;
 		for (const prop of Object.keys(base.props)) {
 			if (prop === "accent") continue;
 			if (prop === "fg") continue;
-			theme.props[prop] = base.props[prop];
+			theme.value.props[prop] = base.props[prop];
 		}
 	}
-	theme.base = color.kind;
-	theme.props.bg = color.color;
+	theme.value.base = color.kind;
+	theme.value.props.bg = color.color;
 
-	if (theme.props.fg) {
+	if (theme.value.props.fg) {
 		const matchedFgColor = fgColors.find((x) =>
 			[
 				tinycolor(x.forLight).toRgbString(),
 				tinycolor(x.forDark).toRgbString(),
-			].includes(tinycolor(theme.props.fg).toRgbString()),
+			].includes(tinycolor(theme.value.props.fg).toRgbString()),
 		);
 		if (matchedFgColor) setFgColor(matchedFgColor);
 	}
 }
 
 function setAccentColor(color) {
-	theme.props.accent = color;
+	theme.value.props.accent = color;
 }
 
 function setFgColor(color) {
-	theme.props.fg = theme.base === "light" ? color.forLight : color.forDark;
+	theme.value.props.fg =
+		theme.value.base === "light" ? color.forLight : color.forDark;
 }
 
 function apply() {
-	themeCode = JSON5.stringify(theme, null, "\t");
-	applyTheme(theme, false);
-	changed = true;
+	themeCode.value = JSON5.stringify(theme.value, null, "\t");
+	applyTheme(theme.value, false);
+	changed.value = true;
 }
 
 function applyThemeCode() {
 	let parsed;
 
 	try {
-		parsed = JSON5.parse(themeCode);
+		parsed = JSON5.parse(themeCode.value);
 	} catch (err) {
 		os.alert({
 			type: "error",
@@ -302,7 +303,7 @@ function applyThemeCode() {
 		return;
 	}
 
-	theme = parsed;
+	theme.value = parsed;
 }
 
 async function saveAs() {
@@ -312,46 +313,46 @@ async function saveAs() {
 	});
 	if (canceled) return;
 
-	theme.id = uuid();
-	theme.name = name;
-	theme.author = `@${$i.username}@${toUnicode(host)}`;
-	if (description) theme.desc = description;
-	await addTheme(theme);
-	applyTheme(theme);
+	theme.value.id = uuid();
+	theme.value.name = name;
+	theme.value.author = `@${$i.username}@${toUnicode(host)}`;
+	if (description.value) theme.value.desc = description.value;
+	await addTheme(theme.value);
+	applyTheme(theme.value);
 	if (defaultStore.state.darkMode) {
-		ColdDeviceStorage.set("darkTheme", theme);
+		ColdDeviceStorage.set("darkTheme", theme.value);
 	} else {
-		ColdDeviceStorage.set("lightTheme", theme);
+		ColdDeviceStorage.set("lightTheme", theme.value);
 	}
-	changed = false;
+	changed.value = false;
 	os.alert({
 		type: "success",
-		text: i18n.t("_theme.installed", { name: theme.name }),
+		text: i18n.t("_theme.installed", { name: theme.value.name }),
 	});
 }
 
-watch($$(theme), apply, { deep: true });
+watch(theme, apply, { deep: true });
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-eye ph-bold ph-lg",
+		icon: `${icon("ph-eye")}`,
 		text: i18n.ts.preview,
 		handler: showPreview,
 	},
 	{
 		asFullButton: true,
-		icon: "ph-check ph-bold ph-lg",
+		icon: `${icon("ph-check")}`,
 		text: i18n.ts.saveAs,
 		handler: saveAs,
 	},
 ]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.themeEditor,
-	icon: "ph-palette ph-bold ph-lg",
+	icon: `${icon("ph-palette")}`,
 });
 </script>
 

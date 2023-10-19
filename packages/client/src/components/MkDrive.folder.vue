@@ -17,10 +17,10 @@
 	>
 		<p class="name">
 			<template v-if="hover"
-				><i class="ph-folder-notch-open ph-bold ph-lg ph-fw ph-lg"></i
+				><i :class="icon('ph-folder-notch-open ph-fw')"></i
 			></template>
 			<template v-if="!hover"
-				><i class="ph-folder-notch ph-bold ph-lg ph-fw ph-lg"></i
+				><i :class="icon('ph-folder-notch ph-fw')"></i
 			></template>
 			{{ folder.name }}
 		</p>
@@ -38,14 +38,15 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from "vue";
-import * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
-		folder: Misskey.entities.DriveFolder;
+		folder: firefish.entities.DriveFolder;
 		isSelected?: boolean;
 		selectMode?: boolean;
 	}>(),
@@ -56,11 +57,11 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(ev: "chosen", v: Misskey.entities.DriveFolder): void;
-	(ev: "move", v: Misskey.entities.DriveFolder): void;
-	(ev: "upload", file: File, folder: Misskey.entities.DriveFolder);
-	(ev: "removeFile", v: Misskey.entities.DriveFile["id"]): void;
-	(ev: "removeFolder", v: Misskey.entities.DriveFolder["id"]): void;
+	(ev: "chosen", v: firefish.entities.DriveFolder): void;
+	(ev: "move", v: firefish.entities.DriveFolder): void;
+	(ev: "upload", file: File, folder: firefish.entities.DriveFolder);
+	(ev: "removeFile", v: firefish.entities.DriveFile["id"]): void;
+	(ev: "removeFolder", v: firefish.entities.DriveFolder["id"]): void;
 	(ev: "dragstart"): void;
 	(ev: "dragend"): void;
 }>();
@@ -131,7 +132,7 @@ function onDrop(ev: DragEvent) {
 		return;
 	}
 
-	//#region ドライブのファイル
+	// #region ドライブのファイル
 	const driveFile = ev.dataTransfer.getData(_DATA_TRANSFER_DRIVE_FILE_);
 	if (driveFile != null && driveFile !== "") {
 		const file = JSON.parse(driveFile);
@@ -141,9 +142,9 @@ function onDrop(ev: DragEvent) {
 			folderId: props.folder.id,
 		});
 	}
-	//#endregion
+	// #endregion
 
-	//#region ドライブのフォルダ
+	// #region ドライブのフォルダ
 	const driveFolder = ev.dataTransfer.getData(_DATA_TRANSFER_DRIVE_FOLDER_);
 	if (driveFolder != null && driveFolder !== "") {
 		const folder = JSON.parse(driveFolder);
@@ -175,7 +176,7 @@ function onDrop(ev: DragEvent) {
 				}
 			});
 	}
-	//#endregion
+	// #endregion
 }
 
 function onDragstart(ev: DragEvent) {
@@ -198,10 +199,6 @@ function onDragend() {
 	emit("dragend");
 }
 
-function go() {
-	emit("move", props.folder.id);
-}
-
 function rename() {
 	os.inputText({
 		title: i18n.ts.renameFolder,
@@ -211,7 +208,7 @@ function rename() {
 		if (canceled) return;
 		os.api("drive/folders/update", {
 			folderId: props.folder.id,
-			name: name,
+			name,
 		});
 	});
 }
@@ -252,7 +249,7 @@ function onContextmenu(ev: MouseEvent) {
 		[
 			{
 				text: i18n.ts.openInWindow,
-				icon: "ph-copy ph-bold ph-lg",
+				icon: `${icon("ph-copy")}`,
 				action: () => {
 					os.popup(
 						defineAsyncComponent(
@@ -269,13 +266,13 @@ function onContextmenu(ev: MouseEvent) {
 			null,
 			{
 				text: i18n.ts.rename,
-				icon: "ph-cursor-text ph-bold ph-lg",
+				icon: `${icon("ph-cursor-text")}`,
 				action: rename,
 			},
 			null,
 			{
 				text: i18n.ts.delete,
-				icon: "ph-trash ph-bold ph-lg",
+				icon: `${icon("ph-trash")}`,
 				danger: true,
 				action: deleteFolder,
 			},

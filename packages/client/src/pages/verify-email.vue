@@ -10,6 +10,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { useRouter } from "@/router";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
@@ -28,12 +29,8 @@ onMounted(async () => {
 	router.push("/");
 });
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: "Verify email",
-	icon: "ph-user ph-bold ph-lg",
+	icon: `${icon("ph-user")}`,
 });
 </script>

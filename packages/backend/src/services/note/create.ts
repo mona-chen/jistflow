@@ -1,6 +1,6 @@
 import * as mfm from "mfm-js";
-import es from "../../db/elasticsearch.js";
-import sonic from "../../db/sonic.js";
+import es from "@/db/elasticsearch.js";
+import sonic from "@/db/sonic.js";
 import {
 	publishMainStream,
 	publishNotesStream,
@@ -64,9 +64,11 @@ import type { UserProfile } from "@/models/entities/user-profile.js";
 import { db } from "@/db/postgre.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
-import meilisearch from "../../db/meilisearch.js";
+import meilisearch from "@/db/meilisearch.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
+import { langmap } from "@/misc/langmap.js";
+import detectLanguage from "@/misc/detect-language.js";
 
 const mutedWordsCache = new Cache<
 	{ userId: UserProfile["userId"]; mutedWords: UserProfile["mutedWords"] }[]
@@ -139,6 +141,7 @@ type Option = {
 	createdAt?: Date | null;
 	name?: string | null;
 	text?: string | null;
+	lang?: string | null;
 	reply?: Note | null;
 	renote?: Note | null;
 	files?: DriveFile[] | null;
@@ -165,14 +168,14 @@ export default async (
 		createdAt: User["createdAt"];
 		isBot: User["isBot"];
 		inbox?: User["inbox"];
+		isIndexable?: User["isIndexable"];
 	},
 	data: Option,
 	silent = false,
 ) =>
 	// rome-ignore lint/suspicious/noAsyncPromiseExecutor: FIXME
 	new Promise<Note>(async (res, rej) => {
-		const dontFederateInitially =
-			data.localOnly || data.visibility === "hidden";
+		const dontFederateInitially = data.visibility === "hidden";
 
 		// If you reply outside the channel, match the scope of the target.
 		// TODO (I think it's a process that could be done on the client side, but it's server side for now.)
@@ -206,7 +209,8 @@ export default async (
 		if (data.channel != null) data.visibility = "public";
 		if (data.channel != null) data.visibleUsers = [];
 		if (data.channel != null) data.localOnly = true;
-		if (data.visibility === "hidden") data.visibility = "public";
+		if (data.visibility.startsWith("hidden"))
+			data.visibility = data.visibility.slice(6);
 
 		// enforce silent clients on server
 		if (
@@ -273,6 +277,16 @@ export default async (
 			data.text = data.text.trim();
 		} else {
 			data.text = null;
+		}
+
+		if (data.lang) {
+			if (!Object.keys(langmap).includes(data.lang.trim()))
+				throw new Error("invalid param");
+			data.lang = data.lang.trim().split("-")[0].split("@")[0];
+		} else if (data.text) {
+			data.lang = detectLanguage(data.text);
+		} else {
+			data.lang = null;
 		}
 
 		let tags = data.apHashtags;
@@ -366,18 +380,16 @@ export default async (
 			)
 			.then((us) => {
 				for (const u of us) {
-					getWordHardMute(data, { id: u.userId }, u.mutedWords).then(
-						(shouldMute) => {
-							if (shouldMute) {
-								MutedNotes.insert({
-									id: genId(),
-									userId: u.userId,
-									noteId: note.id,
-									reason: "word",
-								});
-							}
-						},
-					);
+					getWordHardMute(data, u.userId, u.mutedWords).then((shouldMute) => {
+						if (shouldMute) {
+							MutedNotes.insert({
+								id: genId(),
+								userId: u.userId,
+								noteId: note.id,
+								reason: "word",
+							});
+						}
+					});
 				}
 			});
 
@@ -652,7 +664,9 @@ export default async (
 		}
 
 		// Register to search database
-		await index(note, false);
+		if (user.isIndexable) {
+			await index(note, false);
+		}
 	});
 
 async function renderNoteOrRenoteActivity(data: Option, note: Note) {
@@ -709,6 +723,7 @@ async function insertNote(
 			: null,
 		name: data.name,
 		text: data.text,
+		lang: data.lang,
 		hasPoll: data.poll != null,
 		cw: data.cw == null ? null : data.cw,
 		tags: tags.map((tag) => normalizeForSearch(tag)),
@@ -805,7 +820,7 @@ async function insertNote(
 }
 
 export async function index(note: Note, reindexing: boolean): Promise<void> {
-	if (!note.text) return;
+	if (!note.text || note.visibility !== "public") return;
 
 	if (config.elasticsearch && es) {
 		es.index({

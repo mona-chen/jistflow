@@ -61,17 +61,17 @@
 								external
 							>
 								<template #icon
-									><i class="ph-code ph-bold ph-lg"></i
+									><i :class="icon('ph-code')"></i
 								></template>
 								{{ i18n.ts._aboutFirefish.source }}
-								<template #suffix>Codeberg</template>
+								<template #suffix>GitLab</template>
 							</FormLink>
 							<FormLink
 								to="https://opencollective.com/firefish"
 								external
 							>
 								<template #icon
-									><i class="ph-money ph-bold ph-lg"></i
+									><i :class="icon('ph-money')"></i
 								></template>
 								{{ i18n.ts._aboutFirefish.donate }}
 								<template #suffix>Donate</template>
@@ -81,7 +81,7 @@
 								external
 							>
 								<template #icon
-									><i class="ph-translate ph-bold ph-lg"></i
+									><i :class="icon('ph-translate')"></i
 								></template>
 								{{ i18n.ts._aboutFirefish.translation }}
 								<template #suffix>Translate</template>
@@ -106,26 +106,57 @@
 									:text="'@namekuji@firefish.social (Backend)'"
 							/></FormLink>
 							<FormLink to="/@dev@post.naskya.net"
-								><Mfm :text="'@dev@post.naskya.net (Backend)'"
+								><Mfm
+									:text="'@dev@post.naskya.net (Fullstack)'"
 							/></FormLink>
 							<FormLink to="/@panos@firefish.social"
 								><Mfm
-									:text="'@panos@firefish.social (Project Coordinator)'"
+									:text="'@panos@firefish.social (Project coordinator)'"
 							/></FormLink>
-							<FormLink
-								to="https://www.youtube.com/c/Henkiwashere"
-								external
-								>Henki (error images artist)</FormLink
-							>
+							<FormLink to="/@blackspike@mastodon.cloud"
+								><Mfm
+									:text="'@blackspike@mastodon.cloud (Logo design)'"
+							/></FormLink>
+							<FormLink to="/@magi@minazukey.uk"
+								><Mfm
+									:text="'@magi@minazukey.uk (Error images)'"
+							/></FormLink>
 						</div>
-						<template #caption
-							><MkLink
-								url="https://git.joinfirefish.org/firefish/firefish/activity"
-								>{{
-									i18n.ts._aboutFirefish.allContributors
-								}}</MkLink
-							></template
+						<h3
+							style="
+								font-weight: 700;
+								margin: 1.5em 0 16px;
+								font-size: 1em;
+							"
 						>
+							{{ i18n.ts._aboutFirefish.misskeyContributors }}
+						</h3>
+						<div class="_formLinks">
+							<FormLink to="/@syuilo@misskey.io"
+								><Mfm :text="'@syuilo@misskey.io'"
+							/></FormLink>
+							<FormLink to="/@aqz@p1.a9z.dev"
+								><Mfm :text="'@aqz@p1.a9z.dev'"
+							/></FormLink>
+							<FormLink to="/@ac@misskey.cloud"
+								><Mfm :text="'@ac@misskey.cloud'"
+							/></FormLink>
+							<FormLink to="/@rinsuki@mstdn.rinsuki.net"
+								><Mfm :text="'@rinsuki@mstdn.rinsuki.net'"
+							/></FormLink>
+							<FormLink to="/@mei23@misskey.m544.net"
+								><Mfm :text="'@mei23@misskey.m544.net'"
+							/></FormLink>
+							<FormLink to="/@robflop@misskey.io"
+								><Mfm :text="'@robflop@misskey.io'"
+							/></FormLink>
+						</div>
+						<h3>
+							<MkLink
+								url="https://git.joinfirefish.org/firefish/firefish/activity"
+								>{{ i18n.ts._aboutFirefish.allContributors }}
+							</MkLink>
+						</h3>
 					</FormSection>
 					<FormSection>
 						<template #label
@@ -176,7 +207,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount } from "vue";
+import { computed, nextTick, onBeforeUnmount, ref } from "vue";
 import { version } from "@/config";
 import FormLink from "@/components/form/link.vue";
 import FormSection from "@/components/form/section.vue";
@@ -188,9 +219,10 @@ import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let patrons = [];
-let sponsors = [];
+let patrons = [],
+	sponsors = [];
 const patronsResp = await os.api("patrons", { forceUpdate: true });
 patrons = patronsResp.patrons;
 sponsors = patronsResp.sponsors;
@@ -198,15 +230,15 @@ sponsors = patronsResp.sponsors;
 patrons = patrons.filter((patron) => !sponsors.includes(patron));
 
 let easterEggReady = false;
-let easterEggEmojis = $ref([]);
-let easterEggEngine = $ref(null);
-const containerEl = $ref<HTMLElement>();
+const easterEggEmojis = ref([]);
+const easterEggEngine = ref(null);
+const containerEl = ref<HTMLElement>();
 
 function iconLoaded() {
 	const emojis = defaultStore.state.reactions;
-	const containerWidth = containerEl?.offsetWidth;
+	const containerWidth = containerEl.value?.offsetWidth;
 	for (let i = 0; i < 32; i++) {
-		easterEggEmojis.push({
+		easterEggEmojis.value.push({
 			id: i.toString(),
 			top: -(128 + Math.random() * 256),
 			left: Math.random() * containerWidth,
@@ -222,7 +254,7 @@ function iconLoaded() {
 function gravity() {
 	if (!easterEggReady) return;
 	easterEggReady = false;
-	easterEggEngine = physics(containerEl);
+	easterEggEngine.value = physics(containerEl.value);
 }
 
 function iLoveMisskey() {
@@ -233,14 +265,14 @@ function iLoveMisskey() {
 }
 
 onBeforeUnmount(() => {
-	if (easterEggEngine) {
-		easterEggEngine.stop();
+	if (easterEggEngine.value) {
+		easterEggEngine.value.stop();
 	}
 });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.aboutFirefish,

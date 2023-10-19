@@ -454,6 +454,7 @@ export const UserRepository = db.getRepository(User).extend({
 			isModerator: user.isModerator || falsy,
 			isBot: user.isBot || falsy,
 			isLocked: user.isLocked,
+			isIndexable: user.isIndexable,
 			isCat: user.isCat || falsy,
 			speakAsCat: user.speakAsCat || falsy,
 			instance: user.host
@@ -564,7 +565,6 @@ export const UserRepository = db.getRepository(User).extend({
 						hasUnreadNotification: this.getHasUnreadNotification(user.id),
 						hasPendingReceivedFollowRequest:
 							this.getHasPendingReceivedFollowRequest(user.id),
-						integrations: profile!.integrations,
 						mutedWords: profile!.mutedWords,
 						mutedInstances: profile!.mutedInstances,
 						mutingNotificationTypes: profile!.mutingNotificationTypes,

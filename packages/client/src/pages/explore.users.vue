@@ -1,4 +1,3 @@
-4.8 KiB
 <template>
 	<MkSpacer :content-max="1200">
 		<MkTab v-model="origin" style="margin-bottom: var(--margin)">
@@ -10,7 +9,7 @@
 				<MkFolder class="_gap" persist-key="explore-pinned-users">
 					<template #header
 						><i
-							class="ph-bookmark ph-bold ph-lg ph-fw"
+							:class="icon('ph-bookmark ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.pinnedUsers }}</template
@@ -24,7 +23,7 @@
 				>
 					<template #header
 						><i
-							class="ph-chart-line-up ph-bold ph-lg ph-fw"
+							:class="icon('ph-chart-line-up ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.popularUsers }}</template
@@ -38,7 +37,7 @@
 				>
 					<template #header
 						><i
-							class="ph-activity ph-bold ph-lg ph-fw"
+							:class="icon('ph-activity ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.recentlyUpdatedUsers }}</template
@@ -52,7 +51,7 @@
 				>
 					<template #header
 						><i
-							class="ph-butterfly ph-bold ph-lg ph-fw"
+							:class="icon('ph-butterfly ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.recentlyRegisteredUsers }}</template
@@ -70,7 +69,7 @@
 			>
 				<template #header
 					><i
-						class="ph-compass ph-bold ph-lg ph-fw"
+						:class="icon('ph-compass ph-fw')"
 						style="margin-right: 0.5em"
 					></i
 					>{{ i18n.ts.popularTags }}</template
@@ -96,7 +95,7 @@
 			<MkFolder v-if="tag != null" :key="`${tag}`" class="_gap">
 				<template #header
 					><i
-						class="ph-hash ph-bold ph-lg ph-fw"
+						:class="icon('ph-hash ph-fw')"
 						style="margin-right: 0.5em"
 					></i
 					>{{ tag }}</template
@@ -108,7 +107,7 @@
 				<MkFolder class="_gap">
 					<template #header
 						><i
-							class="ph-chart-line-up ph-bold ph-lg ph-fw"
+							:class="icon('ph-chart-line-up ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.popularUsers }}</template
@@ -118,7 +117,7 @@
 				<MkFolder class="_gap">
 					<template #header
 						><i
-							class="ph-activity ph-bold ph-lg ph-fw"
+							:class="icon('ph-activity ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.recentlyUpdatedUsers }}</template
@@ -128,7 +127,7 @@
 				<MkFolder class="_gap">
 					<template #header
 						><i
-							class="ph-rocket-launch ph-bold ph-lg ph-fw"
+							:class="icon('ph-rocket-launch ph-fw')"
 							style="margin-right: 0.5em"
 						></i
 						>{{ i18n.ts.recentlyDiscoveredUsers }}</template
@@ -141,33 +140,32 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import XUserList from "@/components/MkUserList.vue";
 import MkFolder from "@/components/MkFolder.vue";
 import MkTab from "@/components/MkTab.vue";
-import number from "@/filters/number";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { $i } from "@/account";
-import { instance } from "@/instance";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	tag?: string;
 }>();
 
-let origin = $ref("local");
-let tagsEl = $ref<InstanceType<typeof MkFolder>>();
-let tagsLocal = $ref([]);
-let tagsRemote = $ref([]);
+const origin = ref("local");
+const tagsEl = ref<InstanceType<typeof MkFolder>>();
+const tagsLocal = ref([]);
+const tagsRemote = ref([]);
 
 watch(
 	() => props.tag,
 	() => {
-		if (tagsEl) tagsEl.toggleContent(props.tag == null);
+		if (tagsEl.value) tagsEl.value.toggleContent(props.tag == null);
 	},
 );
 
-const tagUsers = $computed(() => ({
+const tagUsers = computed(() => ({
 	endpoint: "hashtags/users" as const,
 	limit: 30,
 	params: {
@@ -241,14 +239,14 @@ os.api("hashtags/list", {
 	attachedToLocalUserOnly: true,
 	limit: 30,
 }).then((tags) => {
-	tagsLocal = tags;
+	tagsLocal.value = tags;
 });
 os.api("hashtags/list", {
 	sort: "+attachedRemoteUsers",
 	attachedToRemoteUserOnly: true,
 	limit: 30,
 }).then((tags) => {
-	tagsRemote = tags;
+	tagsRemote.value = tags;
 });
 </script>
 

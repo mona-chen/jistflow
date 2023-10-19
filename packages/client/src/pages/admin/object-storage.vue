@@ -80,7 +80,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-key ph-bold ph-lg"></i
+									><i :class="icon('ph-key')"></i
 								></template>
 								<template #label>Access key</template>
 							</FormInput>
@@ -91,7 +91,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-key ph-bold ph-lg"></i
+									><i :class="icon('ph-key')"></i
 								></template>
 								<template #label>Secret key</template>
 							</FormInput>
@@ -134,7 +134,12 @@
 							v-model="objectStorageS3ForcePathStyle"
 							class="_formBlock"
 						>
-							<template #label>s3ForcePathStyle</template>
+							<template #label>{{
+								i18n.ts.objectStorageS3ForcePathStyle
+							}}</template>
+							<template #caption>{{
+								i18n.ts.objectStorageS3ForcePathStyleDesc
+							}}</template>
 						</FormSwitch>
 					</template>
 				</div>
@@ -144,81 +149,82 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
+
 import FormSwitch from "@/components/form/switch.vue";
 import FormInput from "@/components/form/input.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import FormSplit from "@/components/form/split.vue";
-import FormSection from "@/components/form/section.vue";
 import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let useObjectStorage: boolean = $ref(false);
-let objectStorageBaseUrl: string | null = $ref(null);
-let objectStorageBucket: string | null = $ref(null);
-let objectStoragePrefix: string | null = $ref(null);
-let objectStorageEndpoint: string | null = $ref(null);
-let objectStorageRegion: string | null = $ref(null);
-let objectStoragePort: number | null = $ref(null);
-let objectStorageAccessKey: string | null = $ref(null);
-let objectStorageSecretKey: string | null = $ref(null);
-let objectStorageUseSSL: boolean = $ref(false);
-let objectStorageUseProxy: boolean = $ref(false);
-let objectStorageSetPublicRead: boolean = $ref(false);
-let objectStorageS3ForcePathStyle: boolean = $ref(true);
+const useObjectStorage = ref(false);
+const objectStorageBaseUrl = ref<string | null>(null);
+const objectStorageBucket = ref<string | null>(null);
+const objectStoragePrefix = ref<string | null>(null);
+const objectStorageEndpoint = ref<string | null>(null);
+const objectStorageRegion = ref<string | null>(null);
+const objectStoragePort = ref<string | null>(null);
+const objectStorageAccessKey = ref<string | null>(null);
+const objectStorageSecretKey = ref<string | null>(null);
+const objectStorageUseSSL = ref(false);
+const objectStorageUseProxy = ref(false);
+const objectStorageSetPublicRead = ref(false);
+const objectStorageS3ForcePathStyle = ref(true);
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	useObjectStorage = meta.useObjectStorage;
-	objectStorageBaseUrl = meta.objectStorageBaseUrl;
-	objectStorageBucket = meta.objectStorageBucket;
-	objectStoragePrefix = meta.objectStoragePrefix;
-	objectStorageEndpoint = meta.objectStorageEndpoint;
-	objectStorageRegion = meta.objectStorageRegion;
-	objectStoragePort = meta.objectStoragePort;
-	objectStorageAccessKey = meta.objectStorageAccessKey;
-	objectStorageSecretKey = meta.objectStorageSecretKey;
-	objectStorageUseSSL = meta.objectStorageUseSSL;
-	objectStorageUseProxy = meta.objectStorageUseProxy;
-	objectStorageSetPublicRead = meta.objectStorageSetPublicRead;
-	objectStorageS3ForcePathStyle = meta.objectStorageS3ForcePathStyle;
+	useObjectStorage.value = meta.useObjectStorage;
+	objectStorageBaseUrl.value = meta.objectStorageBaseUrl;
+	objectStorageBucket.value = meta.objectStorageBucket;
+	objectStoragePrefix.value = meta.objectStoragePrefix;
+	objectStorageEndpoint.value = meta.objectStorageEndpoint;
+	objectStorageRegion.value = meta.objectStorageRegion;
+	objectStoragePort.value = meta.objectStoragePort;
+	objectStorageAccessKey.value = meta.objectStorageAccessKey;
+	objectStorageSecretKey.value = meta.objectStorageSecretKey;
+	objectStorageUseSSL.value = meta.objectStorageUseSSL;
+	objectStorageUseProxy.value = meta.objectStorageUseProxy;
+	objectStorageSetPublicRead.value = meta.objectStorageSetPublicRead;
+	objectStorageS3ForcePathStyle.value = meta.objectStorageS3ForcePathStyle;
 }
 
 function save() {
 	os.apiWithDialog("admin/update-meta", {
-		useObjectStorage,
-		objectStorageBaseUrl,
-		objectStorageBucket,
-		objectStoragePrefix,
-		objectStorageEndpoint,
-		objectStorageRegion,
-		objectStoragePort,
-		objectStorageAccessKey,
-		objectStorageSecretKey,
-		objectStorageUseSSL,
-		objectStorageUseProxy,
-		objectStorageSetPublicRead,
-		objectStorageS3ForcePathStyle,
+		useObjectStorage: useObjectStorage.value,
+		objectStorageBaseUrl: objectStorageBaseUrl.value,
+		objectStorageBucket: objectStorageBucket.value,
+		objectStoragePrefix: objectStoragePrefix.value,
+		objectStorageEndpoint: objectStorageEndpoint.value,
+		objectStorageRegion: objectStorageRegion.value,
+		objectStoragePort: objectStoragePort.value,
+		objectStorageAccessKey: objectStorageAccessKey.value,
+		objectStorageSecretKey: objectStorageSecretKey.value,
+		objectStorageUseSSL: objectStorageUseSSL.value,
+		objectStorageUseProxy: objectStorageUseProxy.value,
+		objectStorageSetPublicRead: objectStorageSetPublicRead.value,
+		objectStorageS3ForcePathStyle: objectStorageS3ForcePathStyle.value,
 	}).then(() => {
 		fetchInstance();
 	});
 }
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-check ph-bold ph-lg",
+		icon: `${icon("ph-check")}`,
 		text: i18n.ts.save,
 		handler: save,
 	},
 ]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.objectStorage,
-	icon: "ph-cloud ph-bold ph-lg",
+	icon: `${icon("ph-cloud")}`,
 });
 </script>

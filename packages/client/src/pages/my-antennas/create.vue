@@ -7,14 +7,17 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from "vue";
+
 import XAntenna from "./editor.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { useRouter } from "@/router";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
-let draft = $ref({
+const draft = ref({
 	name: "",
 	src: "all",
 	userListId: null,
@@ -35,8 +38,6 @@ function onAntennaCreated() {
 
 definePageMetadata({
 	title: i18n.ts.manageAntennas,
-	icon: "ph-flying-saucer ph-bold ph-lg",
+	icon: `${icon("ph-flying-saucer")}`,
 });
 </script>
-
-<style lang="scss" scoped></style>

@@ -5,7 +5,7 @@
 		class="mkw-activity"
 	>
 		<template #header
-			><i class="ph-chart-bar ph-bold ph-lg"></i
+			><i :class="icon('ph-chart-bar')"></i
 			>{{ i18n.ts._widgets.activity }}</template
 		>
 		<template #func
@@ -14,7 +14,7 @@
 				class="_button"
 				@click="toggleView()"
 			>
-				<i class="ph-sort-ascending ph-bold ph-lg"></i></button
+				<i :class="icon('ph-sort-ascending')"></i></button
 		></template>
 
 		<div v-if="widgetProps.newStyle">
@@ -37,13 +37,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import { ref } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import XCalendar from "./activity.calendar.vue";
 import XChart from "./activity.chart.vue";
 import MkHeatmap from "@/components/MkHeatmap.vue";
@@ -52,6 +48,7 @@ import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const name = "activity";
 

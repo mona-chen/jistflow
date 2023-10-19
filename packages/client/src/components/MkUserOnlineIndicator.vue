@@ -3,15 +3,16 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
-import * as misskey from "firefish-js";
+import { computed } from "vue";
+
+import type * as firefish from "firefish-js";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{
-	user: misskey.entities.User;
+	user: firefish.entities.User;
 }>();
 
-const text = $computed(() => {
+const text = computed(() => {
 	switch (props.user.onlineStatus) {
 		case "online":
 			return i18n.ts.online;

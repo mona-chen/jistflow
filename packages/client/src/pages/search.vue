@@ -12,9 +12,9 @@
 				:round-lengths="true"
 				:touch-angle="25"
 				:threshold="10"
-				:centeredSlides="true"
+				:centered-slides="true"
 				:modules="[Virtual]"
-				:space-between="20"
+				:space-between="30"
 				:virtual="true"
 				:allow-touch-move="
 					defaultStore.state.swipeOnMobile &&
@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onMounted } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import XNotes from "@/components/MkNotes.vue";
@@ -49,6 +49,7 @@ import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { defaultStore } from "@/store";
 import { deviceKind } from "@/scripts/device-kind";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
@@ -76,20 +77,20 @@ const usersPagination = {
 };
 
 const tabs = ["notes", "users"];
-let tab = $ref(tabs[0]);
-watch($$(tab), () => syncSlide(tabs.indexOf(tab)));
+const tab = ref(tabs[0]);
+watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => [
+const headerTabs = computed(() => [
 	{
 		key: "notes",
-		icon: "ph-magnifying-glass ph-bold ph-lg",
+		icon: `${icon("ph-magnifying-glass")}`,
 		title: i18n.ts.notes,
 	},
 	{
 		key: "users",
-		icon: "ph-users ph-bold ph-lg",
+		icon: `${icon("ph-users")}`,
 		title: i18n.ts.users,
 	},
 ]);
@@ -98,11 +99,11 @@ let swiperRef = null;
 
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
-	syncSlide(tabs.indexOf(tab));
+	syncSlide(tabs.indexOf(tab.value));
 }
 
 function onSlideChange() {
-	tab = tabs[swiperRef.activeIndex];
+	tab.value = tabs[swiperRef.activeIndex];
 }
 
 function syncSlide(index) {
@@ -116,7 +117,7 @@ onMounted(() => {
 definePageMetadata(
 	computed(() => ({
 		title: i18n.t("searchWith", { q: props.query }),
-		icon: "ph-magnifying-glass ph-bold ph-lg",
+		icon: `${icon("ph-magnifying-glass")}`,
 	})),
 );
 </script>

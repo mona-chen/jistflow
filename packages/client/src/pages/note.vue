@@ -7,10 +7,10 @@
 				:display-back-button="true"
 				:to="`#${noteId}`"
 		/></template>
-		<MkSpacer :content-max="800" :marginMin="6">
+		<MkSpacer :content-max="800" :margin-min="6">
 			<div class="fcuexfpr">
 				<transition
-					:name="$store.state.animation ? 'fade' : ''"
+					:name="defaultStore.state.animation ? 'fade' : ''"
 					mode="out-in"
 				>
 					<div v-if="appearNote" class="note">
@@ -28,7 +28,7 @@
 								class="load next"
 								@click="showNext = true"
 							>
-								<i class="ph-caret-up ph-bold ph-lg"></i>
+								<i :class="icon('ph-caret-up')"></i>
 								{{ `${i18n.ts.loadMore} (${i18n.ts.newer})` }}
 							</MkButton>
 							<div class="note _gap">
@@ -47,7 +47,7 @@
 								class="load prev"
 								@click="showPrev = true"
 							>
-								<i class="ph-caret-down ph-bold ph-lg"></i>
+								<i :class="icon('ph-caret-down')"></i>
 								{{ `${i18n.ts.loadMore} (${i18n.ts.older})` }}
 							</MkButton>
 						</div>
@@ -69,8 +69,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineComponent, watch } from "vue";
-import * as misskey from "firefish-js";
+import { computed, ref, watch } from "vue";
+import type * as firefish from "firefish-js";
 import XNoteDetailed from "@/components/MkNoteDetailed.vue";
 import XNotes from "@/components/MkNotes.vue";
 import MkRemoteCaution from "@/components/MkRemoteCaution.vue";
@@ -78,28 +78,30 @@ import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	noteId: string;
 }>();
 
-let note = $ref<null | misskey.entities.Note>();
-let hasPrev = $ref(false);
-let hasNext = $ref(false);
-let showPrev = $ref(false);
-let showNext = $ref(false);
-let error = $ref();
-let isRenote = $ref(false);
-let appearNote = $ref<null | misskey.entities.Note>();
+const note = ref<null | firefish.entities.Note>();
+const hasPrev = ref(false);
+const hasNext = ref(false);
+const showPrev = ref(false);
+const showNext = ref(false);
+const error = ref();
+const isRenote = ref(false);
+const appearNote = ref<null | firefish.entities.Note>();
 
 const prevPagination = {
 	endpoint: "users/notes" as const,
 	limit: 10,
 	params: computed(() =>
-		appearNote
+		appearNote.value
 			? {
-					userId: appearNote.userId,
-					untilId: appearNote.id,
+					userId: appearNote.value.userId,
+					untilId: appearNote.value.id,
 			  }
 			: null,
 	),
@@ -110,53 +112,53 @@ const nextPagination = {
 	endpoint: "users/notes" as const,
 	limit: 10,
 	params: computed(() =>
-		appearNote
+		appearNote.value
 			? {
-					userId: appearNote.userId,
-					sinceId: appearNote.id,
+					userId: appearNote.value.userId,
+					sinceId: appearNote.value.id,
 			  }
 			: null,
 	),
 };
 
 function fetchNote() {
-	hasPrev = false;
-	hasNext = false;
-	showPrev = false;
-	showNext = false;
-	note = null;
+	hasPrev.value = false;
+	hasNext.value = false;
+	showPrev.value = false;
+	showNext.value = false;
+	note.value = null;
 	os.api("notes/show", {
 		noteId: props.noteId,
 	})
 		.then((res) => {
-			note = res;
-			isRenote =
-				note.renote != null &&
-				note.text == null &&
-				note.fileIds.length === 0 &&
-				note.poll == null;
-			appearNote = isRenote
-				? (note.renote as misskey.entities.Note)
-				: note;
+			note.value = res;
+			isRenote.value =
+				note.value.renote != null &&
+				note.value.text == null &&
+				note.value.fileIds.length === 0 &&
+				note.value.poll == null;
+			appearNote.value = isRenote.value
+				? (note.value.renote as firefish.entities.Note)
+				: note.value;
 
 			Promise.all([
 				os.api("users/notes", {
-					userId: note.userId,
-					untilId: note.id,
+					userId: note.value.userId,
+					untilId: note.value.id,
 					limit: 1,
 				}),
 				os.api("users/notes", {
-					userId: note.userId,
-					sinceId: note.id,
+					userId: note.value.userId,
+					sinceId: note.value.id,
 					limit: 1,
 				}),
 			]).then(([prev, next]) => {
-				hasPrev = prev.length !== 0;
-				hasNext = next.length !== 0;
+				hasPrev.value = prev.length !== 0;
+				hasNext.value = next.length !== 0;
 			});
 		})
 		.catch((err) => {
-			error = err;
+			error.value = err;
 		});
 }
 
@@ -164,27 +166,31 @@ watch(() => props.noteId, fetchNote, {
 	immediate: true,
 });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata(
 	computed(() =>
-		appearNote
+		appearNote.value
 			? {
 					title: i18n.t("noteOf", {
-						user: appearNote.user.name || appearNote.user.username,
+						user:
+							appearNote.value.user.name ||
+							appearNote.value.user.username,
 					}),
-					subtitle: new Date(appearNote.createdAt).toLocaleString(),
-					avatar: appearNote.user,
-					path: `/notes/${appearNote.id}`,
+					subtitle: new Date(
+						appearNote.value.createdAt,
+					).toLocaleString(),
+					avatar: appearNote.value.user,
+					path: `/notes/${appearNote.value.id}`,
 					share: {
 						title: i18n.t("noteOf", {
 							user:
-								appearNote.user.name ||
-								appearNote.user.username,
+								appearNote.value.user.name ||
+								appearNote.value.user.username,
 						}),
-						text: appearNote.text,
+						text: appearNote.value.text,
 					},
 			  }
 			: null,

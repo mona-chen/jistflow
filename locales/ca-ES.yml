@@ -944,7 +944,6 @@ dayX: '{day}'
 tosUrl: URL de les Condicions d'ús
 thisYear: Any
 thisMonth: Mes
-integration: Integracions
 driveCapacityPerRemoteAccount: Capacitat del Disc per usuari remot
 inMb: En megabytes
 iconUrl: Adreça URL de la icona
@@ -1036,8 +1035,6 @@ accept: Accepta
 reject: Rebutja
 yearX: '{year}'
 pages: Pàgines
-disconnectService: Desconnectar
-connectService: Connectar
 enableLocalTimeline: Activa la línea de temps local
 enableRecommendedTimeline: Activa la línea de temps de recomanacions
 pinnedClipId: ID del clip que vols fixar
@@ -1179,7 +1176,7 @@ emptyToDisableSmtpAuth: Deixa el nom d'usuari i la contrasenya sense emplenar pe
   desactivar la verificació SMTP
 smtpSecureInfo: Desactiva això quant facis servir STARTTLS
 testEmail: Envia un correu electrònic de verificació
-wordMute: Silenciar paraules
+wordMute: Paraules i llenguatge silenciats
 regexpError: Error a la Expressió Regular
 regexpErrorDescription: 'Hi ha un error a la expressió regular a la línea {line} de
   la teva {tab} de paraules silenciades:'
@@ -1311,8 +1308,7 @@ yes: Sí
 no: No
 noCrawle: Rebutjar la indexació dels restrejadors
 driveUsage: Espai fet servir al Disk
-noCrawleDescription: No permetre que els buscadors guardin la informació de les pàgines
-  de perfil, publicacions, Pàgines, etc.
+noCrawleDescription: Demanar als motors de cerca externs no indexar el teu contingut.
 alwaysMarkSensitive: Marcar per defecte com a NSFW
 lockedAccountInfo: Si has configurat la visibilitat del compte per "Només seguidors"
   les teves publicacions no serien visibles per a ningú més, inclús si has d'aprovar
@@ -1350,7 +1346,7 @@ switchAccount: Canvia de compte
 enabled: Activat
 configure: Configurar
 noBotProtectionWarning: La protecció contra bots no està configurada.
-ads: Publicitat
+ads: Bàners comunitaris
 ratio: Ràtio
 global: Global
 sent: Enviat
@@ -1442,7 +1438,8 @@ _accountDelete:
   requestAccountDelete: Sol·licitar la supressió del compte
 _ad:
   back: Enrera
-  reduceFrequencyOfThisAd: Mostrar aquest anunci menys
+  reduceFrequencyOfThisAd: Mostrar menys aquest anunci
+  adsBy: Anunci comunitari per {by}
 _gallery:
   my: La meva Galeria
   liked: Publicacions que m'han agradat
@@ -1540,8 +1537,8 @@ low: Baixa
 emailNotConfiguredWarning: L'adreça de correu electrònic no està definida.
 instanceSecurity: Seguretat del servidor
 privateMode: Mode Privat
-allowedInstances: Servidors a la llista blanca
-allowedInstancesDescription: Llista blanca de Hosts amb qui federar, cadascún separat
+allowedInstances: Servidors permesos
+allowedInstancesDescription: Llista permesa de Hosts amb qui federar, cadascún separat
   per una línia nova (només s'aplica en mode privat).
 previewNoteText: Mostra la vista prèvia
 customCss: CSS personalitzat
@@ -1553,7 +1550,7 @@ troubleshooting: Resolució de problemes
 learnMore: Més informació
 misskeyUpdated: Firefish s'ha actualitzat!
 translate: Tradueix
-translatedFrom: Traduït per {x}
+translatedFrom: Traduït desde {x}
 aiChanMode: Ai-chan a la interfície d'usuari clàssica
 keepCw: Mantenir els avisos de contingut
 pubSub: Comptes Pub/Sub
@@ -1611,6 +1608,7 @@ _aboutFirefish:
     per ajudar-lo a suportar els costos de funcionament.
   donateHost: Fes una donació a {host}
   sponsors: Patrocinadors de Calckey
+  misskeyContributors: Col·laboradors de Misskey
 unknown: Desconegut
 pageLikesCount: Nombre de pàgines amb M'agrada
 youAreRunningUpToDateClient: Estás fent servir la versió del client més nova.
@@ -1646,12 +1644,12 @@ customCssWarn: Aquesta configuració només s'ha d'utilitzar si sabeu què fa. L
 squareAvatars: Mostra avatars quadrats
 secureModeInfo: Quan es faci una solicitut d'altres servidors no contestar sense una
   prova.
-privateModeInfo: Quan està activat, només els servidors a la llista blanca es poden
-  federar amb el vostre servidor. Totes les publicacions s'amagaran al públic.
+privateModeInfo: Quan està activat, només els servidors a la llista es poden federar
+  amb el vostre servidor. Totes les publicacions s'amagaran al públic.
 useBlurEffect: Utilitzeu efectes de desenfocament a la interfície d'usuari
 accountDeletionInProgress: La supressió del compte està en curs
 unmuteThread: Desfés el silenci al fil
-deleteAccountConfirm: Això suprimirà el vostre compte de manera irreversible. Procedir?
+deleteAccountConfirm: Això suprimirà aquest compte de manera irreversible. Procedir?
 requireAdminForView: Heu d'iniciar sessió amb un compte d'administrador per veure-ho.
 enableAutoSensitiveDescription: Permet la detecció i el marcatge automàtics dels mitjans
   NSFW mitjançant Machine Learning sempre que sigui possible. Fins i tot si aquesta
@@ -1761,7 +1759,7 @@ sendPushNotificationReadMessage: Suprimeix les notificacions push un cop s'hagin
 sendPushNotificationReadMessageCaption: Es mostrarà una notificació amb el text "{emptyPushNotificationMessage}"
   durant un breu temps. Això pot augmentar l'ús de la bateria del vostre dispositiu,
   si escau.
-showAds: Mostrar publicitat
+showAds: Mostrar bàners de la comunitat
 enterSendsMessage: Pren retorn al formulari del missatge per enviar (quant no s'activa
   es Ctrl + Return)
 customMOTD: MOTD personalitzat (missatges de la pantalla de benvinguda)
@@ -2040,6 +2038,13 @@ _wordMute:
     s'afegeixin a la línia de temps. A més, aquestes publicacions no s'afegiran a
     la línia de temps encara que es modifiquin les condicions.
   mutedNotes: Publicacions silenciades
+  muteLangsDescription2: Fes servir el codi del l'idioma. Per exemple en, fr, ja,
+    zh.
+  lang: Idioma
+  langDescription: Amagar les publicacions que coincideixin amb l'idioma a la línia
+    de temps.
+  muteLangs: Llenguatges silenciats
+  muteLangsDescription: Separar amb espais o línies no es per una condició OR.
 _auth:
   shareAccessAsk: Estàs segur que vols autoritzar aquesta aplicació per accedir al
     teu compte?
@@ -2073,7 +2078,7 @@ _relayStatus:
   accepted: Acceptat
   rejected: Rebutjat
 deleted: Eliminat
-editNote: Edita la nota
+editNote: Edita la publicació
 edited: 'Editat a {date} {time}'
 findOtherInstance: Cercar un altre servidor
 signupsDisabled: Actualment, les inscripcions en aquest servidor estan desactivades,
@@ -2169,3 +2174,28 @@ _feeds:
   atom: Atom
   jsonFeed: Feed JSON
   copyFeed: Copiar feed
+origin: Origen
+objectStorageS3ForcePathStyle: Feu servir rutes URLs per a endpoints
+objectStorageS3ForcePathStyleDesc: Activeu aquesta opció per crear URL per endpoints
+  en el format "s3.amazonaws.com/<bucket>/" sobre "<bucket>.s3.amazonaws.com".
+deletePasskeys: Suprimeix les contrasenyes
+deletePasskeysConfirm: Això suprimirà de manera irreversible totes les contrasenyes
+  i claus de seguretat d'aquest compte. Procedir?
+inputNotMatch: L'entrada no coincideix
+delete2fa: Desactivar 2FA
+delete2faConfirm: Això suprimirà irreversiblement 2FA en aquest compte. Procedir?
+addRe: Afegeix "re:" al començament del comentari quant responguis a un missatge amb
+  avís de contingut
+confirm: Confirmar
+importZip: Importar ZIP
+exportZip: Exportar ZIP
+emojiPackCreator: Creador de paquets Emoji
+detectPostLanguage: Detecta l'idioma automàticament i mostra un botó per els articles
+  en altres idiomes
+indexableDescription: Permet al cercador intern mostrar els missatges públics
+indexable: Indexable
+languageForTranslation: Idioma de traducció d'articles
+openServerInfo: Mostra la informació del servidor fent clic al símbol del servidor
+  en un missatge
+vibrate: Activar vibracions
+clickToShowPatterns: Fes clic per veure patrons de mòduls

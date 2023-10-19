@@ -46,8 +46,6 @@ pub struct Model {
     pub pinned_page_id: Option<String>,
     #[sea_orm(column_type = "JsonBinary")]
     pub room: Json,
-    #[sea_orm(column_type = "JsonBinary")]
-    pub integrations: Json,
     #[sea_orm(column_name = "injectFeaturedNote")]
     pub inject_featured_note: bool,
     #[sea_orm(column_name = "enableWordMute")]
@@ -75,6 +73,8 @@ pub struct Model {
     pub moderation_note: String,
     #[sea_orm(column_name = "preventAiLearning")]
     pub prevent_ai_learning: bool,
+    #[sea_orm(column_name = "isIndexable")]
+    pub is_indexable: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

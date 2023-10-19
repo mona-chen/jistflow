@@ -56,31 +56,21 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	computed,
-	onMounted,
-	onUnmounted,
-	ref,
-	inject,
-	watch,
-	nextTick,
-} from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import tinycolor from "tinycolor2";
 import { popupMenu } from "@/os";
-import { url } from "@/config";
 import { scrollToTop } from "@/scripts/scroll";
 import MkButton from "@/components/MkButton.vue";
-import { i18n } from "@/i18n";
 import { globalEvents } from "@/events";
 import { injectPageMetadata } from "@/scripts/page-metadata";
 
-type Tab = {
+interface Tab {
 	key?: string | null;
 	title: string;
 	icon?: string;
 	iconOnly?: boolean;
 	onClick?: (ev: MouseEvent) => void;
-};
+}
 
 const props = defineProps<{
 	tabs?: Tab[];
@@ -100,11 +90,10 @@ const emit = defineEmits<{
 
 const metadata = injectPageMetadata();
 
-const el = ref<HTMLElement>(null);
+const el = ref<HTMLElement>();
 const tabRefs = {};
-const tabHighlightEl = $ref<HTMLElement | null>(null);
-const bg = ref(null);
-const height = ref(0);
+const tabHighlightEl = ref<HTMLElement | null>(null);
+const bg = ref<string>();
 const hasTabs = computed(() => {
 	return props.tabs && props.tabs.length > 0;
 });
@@ -172,14 +161,14 @@ onMounted(() => {
 		() => {
 			nextTick(() => {
 				const tabEl = tabRefs[props.tab];
-				if (tabEl && tabHighlightEl) {
+				if (tabEl && tabHighlightEl.value) {
 					// offsetWidth や offsetLeft は少数を丸めてしまうため getBoundingClientRect を使う必要がある
 					// https://developer.mozilla.org/ja/docs/Web/API/HTMLElement/offsetWidth#%E5%80%A4
 					const parentRect =
 						tabEl.parentElement.getBoundingClientRect();
 					const rect = tabEl.getBoundingClientRect();
-					tabHighlightEl.style.width = rect.width + "px";
-					tabHighlightEl.style.left =
+					tabHighlightEl.value.style.width = rect.width + "px";
+					tabHighlightEl.value.style.left =
 						rect.left - parentRect.left + "px";
 				}
 			});

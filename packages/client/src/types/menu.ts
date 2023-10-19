@@ -1,25 +1,25 @@
-import * as Misskey from "firefish-js";
-import { Ref } from "vue";
+import type * as firefish from "firefish-js";
+import type { Ref } from "vue";
 
 export type MenuAction = (ev: MouseEvent) => void;
 
 export type MenuDivider = null;
 export type MenuNull = undefined;
-export type MenuLabel = {
+export interface MenuLabel {
 	type: "label";
 	text: string;
 	textStyle?: string;
-};
-export type MenuLink = {
+}
+export interface MenuLink {
 	type: "link";
 	to: string;
 	text: string;
 	textStyle?: string;
 	icon?: string;
 	indicate?: boolean;
-	avatar?: Misskey.entities.User;
-};
-export type MenuA = {
+	avatar?: firefish.entities.User;
+}
+export interface MenuA {
 	type: "a";
 	href: string;
 	target?: string;
@@ -28,23 +28,23 @@ export type MenuA = {
 	textStyle?: string;
 	icon?: string;
 	indicate?: boolean;
-};
-export type MenuUser = {
+}
+export interface MenuUser {
 	type: "user";
-	user: Misskey.entities.User;
+	user: firefish.entities.User;
 	active?: boolean;
 	indicate?: boolean;
 	hidden?: boolean;
 	action: MenuAction;
-};
-export type MenuSwitch = {
+}
+export interface MenuSwitch {
 	type: "switch";
 	ref: Ref<boolean>;
 	text: string;
 	textStyle?: string;
 	disabled?: boolean;
-};
-export type MenuButton = {
+}
+export interface MenuButton {
 	type?: "button";
 	text: string;
 	textStyle?: string;
@@ -54,18 +54,20 @@ export type MenuButton = {
 	accent?: boolean;
 	active?: boolean;
 	hidden?: boolean;
-	avatar?: Misskey.entities.User;
+	avatar?: firefish.entities.User;
 	action: MenuAction;
-};
-export type MenuParent = {
+}
+export interface MenuParent {
 	type: "parent";
 	text: string;
 	textStyle?: string;
 	icon?: string;
 	children: OuterMenuItem[];
-};
+}
 
-export type MenuPending = { type: "pending" };
+export interface MenuPending {
+	type: "pending";
+}
 
 type OuterMenuItem =
 	| MenuDivider

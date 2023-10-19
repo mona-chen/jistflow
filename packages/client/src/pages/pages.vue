@@ -11,7 +11,7 @@
 				:round-lengths="true"
 				:touch-angle="25"
 				:threshold="10"
-				:centeredSlides="true"
+				:centered-slides="true"
 				:modules="[Virtual]"
 				:space-between="20"
 				:virtual="true"
@@ -23,7 +23,7 @@
 				@swiper="setSwiperRef"
 				@slide-change="onSlideChange"
 			>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<div class="rknalgpo">
 						<MkPagination
 							v-slot="{ items }"
@@ -38,7 +38,7 @@
 						</MkPagination>
 					</div>
 				</swiper-slide>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<div class="rknalgpo liked">
 						<MkPagination
 							v-slot="{ items }"
@@ -53,11 +53,11 @@
 						</MkPagination>
 					</div>
 				</swiper-slide>
-				<swiper-slide>
+				<swiper-slide v-if="true">
 					<div class="rknalgpo my">
 						<div class="buttoncontainer">
 							<MkButton class="new primary" @click="create()"
-								><i class="ph-plus ph-bold ph-lg"></i>
+								><i :class="icon('ph-plus')"></i>
 								{{ i18n.ts._pages.newPage }}</MkButton
 							>
 						</div>
@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onMounted } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import MkPagePreview from "@/components/MkPagePreview.vue";
@@ -91,14 +91,15 @@ import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
 const router = useRouter();
 
-let tab = $ref("featured");
+const tab = ref("featured");
 const tabs = ["featured", "liked", "my"];
-watch($$(tab), () => syncSlide(tabs.indexOf(tab)));
+watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
 
 const featuredPagesPagination = {
 	endpoint: "pages/featured" as const,
@@ -117,36 +118,36 @@ function create() {
 	router.push("/pages/new");
 }
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.create,
 		handler: create,
 	},
 ]);
 
-const headerTabs = $computed(() => [
+const headerTabs = computed(() => [
 	{
 		key: "featured",
 		title: i18n.ts._pages.featured,
-		icon: "ph-fire-simple ph-bold ph-lg",
+		icon: `${icon("ph-fire-simple")}`,
 	},
 	{
 		key: "liked",
 		title: i18n.ts._pages.liked,
-		icon: "ph-heart ph-bold ph-lg",
+		icon: `${icon("ph-heart")}`,
 	},
 	{
 		key: "my",
 		title: i18n.ts._pages.my,
-		icon: "ph-crown-simple ph-bold ph-lg",
+		icon: `${icon("ph-crown-simple")}`,
 	},
 ]);
 
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.pages,
-		icon: "ph-file-text ph-bold ph-lg",
+		icon: `${icon("ph-file-text")}`,
 	})),
 );
 
@@ -154,11 +155,11 @@ let swiperRef = null;
 
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
-	syncSlide(tabs.indexOf(tab));
+	syncSlide(tabs.indexOf(tab.value));
 }
 
 function onSlideChange() {
-	tab = tabs[swiperRef.activeIndex];
+	tab.value = tabs[swiperRef.activeIndex];
 }
 
 function syncSlide(index) {

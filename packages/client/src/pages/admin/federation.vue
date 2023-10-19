@@ -19,15 +19,16 @@ import { computed } from "vue";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import XFederation from "@/pages/about.federation.vue";
+import icon from "@/scripts/icon";
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.federation,
-		icon: "ph-planet ph-bold ph-lg",
+		icon: `${icon("ph-planet")}`,
 	})),
 );
 </script>

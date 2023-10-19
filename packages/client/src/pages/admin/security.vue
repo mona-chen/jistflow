@@ -11,7 +11,7 @@
 				<div class="_formRoot">
 					<FormFolder class="_formBlock">
 						<template #icon
-							><i class="ph-robot ph-bold ph-lg"></i
+							><i :class="icon('ph-robot')"></i
 						></template>
 						<template #label>{{ i18n.ts.botProtection }}</template>
 						<template v-if="enableHcaptcha" #suffix
@@ -31,7 +31,7 @@
 
 					<FormFolder class="_formBlock">
 						<template #icon
-							><i class="ph-eye-slash ph-bold ph-lg"></i
+							><i :class="icon('ph-eye-slash')"></i
 						></template>
 						<template #label>{{
 							i18n.ts.sensitiveMediaDetection
@@ -131,9 +131,7 @@
 						-->
 
 							<FormButton primary class="_formBlock" @click="save"
-								><i
-									class="ph-floppy-disk-back ph-bold ph-lg"
-								></i>
+								><i :class="icon('ph-floppy-disk-back')"></i>
 								{{ i18n.ts.save }}</FormButton
 							>
 						</div>
@@ -187,15 +185,13 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-link-simple ph-bold ph-lg"></i
+									><i :class="icon('ph-link-simple')"></i
 								></template>
 								<template #label>Summaly Proxy URL</template>
 							</FormInput>
 
 							<FormButton primary class="_formBlock" @click="save"
-								><i
-									class="ph-floppy-disk-back ph-bold ph-lg"
-								></i>
+								><i :class="icon('ph-floppy-disk-back')"></i>
 								{{ i18n.ts.save }}</FormButton
 							>
 						</div>
@@ -241,9 +237,7 @@
 								primary
 								class="_formBlock"
 								@click="saveInstance"
-								><i
-									class="ph-floppy-disk-back ph-bold ph-lg"
-								></i>
+								><i :class="icon('ph-floppy-disk-back')"></i>
 								{{ i18n.ts.save }}</FormButton
 							>
 						</div>
@@ -255,12 +249,12 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
+
 import XBotProtection from "./bot-protection.vue";
 import FormFolder from "@/components/form/folder.vue";
 import FormRadios from "@/components/form/radios.vue";
 import FormSwitch from "@/components/form/switch.vue";
-import FormInfo from "@/components/MkInfo.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import FormRange from "@/components/form/range.vue";
 import FormInput from "@/components/form/input.vue";
@@ -270,28 +264,29 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let summalyProxy: string = $ref("");
-let enableHcaptcha: boolean = $ref(false);
-let enableRecaptcha: boolean = $ref(false);
-let sensitiveMediaDetection: string = $ref("none");
-let sensitiveMediaDetectionSensitivity: number = $ref(0);
-let setSensitiveFlagAutomatically: boolean = $ref(false);
-let enableSensitiveMediaDetectionForVideos: boolean = $ref(false);
-let enableIpLogging: boolean = $ref(false);
-let enableActiveEmailValidation: boolean = $ref(false);
+const summalyProxy = ref("");
+const enableHcaptcha = ref(false);
+const enableRecaptcha = ref(false);
+const sensitiveMediaDetection = ref("none");
+const sensitiveMediaDetectionSensitivity = ref(0);
+const setSensitiveFlagAutomatically = ref(false);
+const enableSensitiveMediaDetectionForVideos = ref(false);
+const enableIpLogging = ref(false);
+const enableActiveEmailValidation = ref(false);
 
-let secureMode: boolean = $ref(false);
-let privateMode: boolean = $ref(false);
-let allowedHosts: string = $ref("");
+const secureMode = ref(false);
+const privateMode = ref(false);
+const allowedHosts = ref("");
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	summalyProxy = meta.summalyProxy;
-	enableHcaptcha = meta.enableHcaptcha;
-	enableRecaptcha = meta.enableRecaptcha;
-	sensitiveMediaDetection = meta.sensitiveMediaDetection;
-	sensitiveMediaDetectionSensitivity =
+	summalyProxy.value = meta.summalyProxy;
+	enableHcaptcha.value = meta.enableHcaptcha;
+	enableRecaptcha.value = meta.enableRecaptcha;
+	sensitiveMediaDetection.value = meta.sensitiveMediaDetection;
+	sensitiveMediaDetectionSensitivity.value =
 		meta.sensitiveMediaDetectionSensitivity === "veryLow"
 			? 0
 			: meta.sensitiveMediaDetectionSensitivity === "low"
@@ -303,37 +298,38 @@ async function init() {
 			: meta.sensitiveMediaDetectionSensitivity === "veryHigh"
 			? 4
 			: 0;
-	setSensitiveFlagAutomatically = meta.setSensitiveFlagAutomatically;
-	enableSensitiveMediaDetectionForVideos =
+	setSensitiveFlagAutomatically.value = meta.setSensitiveFlagAutomatically;
+	enableSensitiveMediaDetectionForVideos.value =
 		meta.enableSensitiveMediaDetectionForVideos;
-	enableIpLogging = meta.enableIpLogging;
-	enableActiveEmailValidation = meta.enableActiveEmailValidation;
+	enableIpLogging.value = meta.enableIpLogging;
+	enableActiveEmailValidation.value = meta.enableActiveEmailValidation;
 
-	secureMode = meta.secureMode;
-	privateMode = meta.privateMode;
-	allowedHosts = meta.allowedHosts.join("\n");
+	secureMode.value = meta.secureMode;
+	privateMode.value = meta.privateMode;
+	allowedHosts.value = meta.allowedHosts.join("\n");
 }
 
 function save() {
 	os.apiWithDialog("admin/update-meta", {
-		summalyProxy,
-		sensitiveMediaDetection,
+		summalyProxy: summalyProxy.value,
+		sensitiveMediaDetection: sensitiveMediaDetection.value,
 		sensitiveMediaDetectionSensitivity:
-			sensitiveMediaDetectionSensitivity === 0
+			sensitiveMediaDetectionSensitivity.value === 0
 				? "veryLow"
-				: sensitiveMediaDetectionSensitivity === 1
+				: sensitiveMediaDetectionSensitivity.value === 1
 				? "low"
-				: sensitiveMediaDetectionSensitivity === 2
+				: sensitiveMediaDetectionSensitivity.value === 2
 				? "medium"
-				: sensitiveMediaDetectionSensitivity === 3
+				: sensitiveMediaDetectionSensitivity.value === 3
 				? "high"
-				: sensitiveMediaDetectionSensitivity === 4
+				: sensitiveMediaDetectionSensitivity.value === 4
 				? "veryHigh"
 				: 0,
-		setSensitiveFlagAutomatically,
-		enableSensitiveMediaDetectionForVideos,
-		enableIpLogging,
-		enableActiveEmailValidation,
+		setSensitiveFlagAutomatically: setSensitiveFlagAutomatically.value,
+		enableSensitiveMediaDetectionForVideos:
+			enableSensitiveMediaDetectionForVideos.value,
+		enableIpLogging: enableIpLogging.value,
+		enableActiveEmailValidation: enableActiveEmailValidation.value,
 	}).then(() => {
 		fetchInstance();
 	});
@@ -341,20 +337,20 @@ function save() {
 
 function saveInstance() {
 	os.apiWithDialog("admin/update-meta", {
-		secureMode,
-		privateMode,
-		allowedHosts: allowedHosts.split("\n"),
+		secureMode: secureMode.value,
+		privateMode: privateMode.value,
+		allowedHosts: allowedHosts.value.split("\n"),
 	}).then(() => {
 		fetchInstance();
 	});
 }
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.security,
-	icon: "ph-lock ph-bold ph-lg",
+	icon: `${icon("ph-lock")}`,
 });
 </script>

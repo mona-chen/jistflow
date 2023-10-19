@@ -36,8 +36,8 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted } from "vue";
-import type * as misskey from "firefish-js";
+import { onMounted, ref } from "vue";
+import type * as firefish from "firefish-js";
 import Cropper from "cropperjs";
 import tinycolor from "tinycolor2";
 import XModalWindow from "@/components/MkModalWindow.vue";
@@ -49,26 +49,26 @@ import { query } from "@/scripts/url";
 import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
-	(ev: "ok", cropped: misskey.entities.DriveFile): void;
+	(ev: "ok", cropped: firefish.entities.DriveFile): void;
 	(ev: "cancel"): void;
 	(ev: "closed"): void;
 }>();
 
 const props = defineProps<{
-	file: misskey.entities.DriveFile;
+	file: firefish.entities.DriveFile;
 	aspectRatio: number;
 }>();
 
 const imgUrl = `${url}/proxy/image.webp?${query({
 	url: props.file.url,
 })}`;
-const dialogEl = $ref<InstanceType<typeof XModalWindow>>();
-const imgEl = $ref<HTMLImageElement>();
+const dialogEl = ref<InstanceType<typeof XModalWindow>>();
+const imgEl = ref<HTMLImageElement>();
 let cropper: Cropper | null = null,
-	loading = $ref(true);
+	loading = ref(true);
 
 const ok = async () => {
-	const promise = new Promise<misskey.entities.DriveFile>(async (res) => {
+	const promise = new Promise<firefish.entities.DriveFile>(async (res) => {
 		const croppedCanvas = await cropper?.getCropperSelection()?.$toCanvas();
 		croppedCanvas.toBlob((blob) => {
 			const formData = new FormData();
@@ -96,16 +96,16 @@ const ok = async () => {
 	const f = await promise;
 
 	emit("ok", f);
-	dialogEl.close();
+	dialogEl.value.close();
 };
 
 const cancel = () => {
 	emit("cancel");
-	dialogEl.close();
+	dialogEl.value.close();
 };
 
 const onImageLoad = () => {
-	loading = false;
+	loading.value = false;
 
 	if (cropper) {
 		cropper.getCropperImage()!.$center("contain");
@@ -114,7 +114,7 @@ const onImageLoad = () => {
 };
 
 onMounted(() => {
-	cropper = new Cropper(imgEl, {});
+	cropper = new Cropper(imgEl.value, {});
 
 	const computedStyle = getComputedStyle(document.documentElement);
 

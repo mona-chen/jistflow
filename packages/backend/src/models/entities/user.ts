@@ -201,7 +201,7 @@ export class User {
 
 	@Index()
 	@Column("varchar", {
-		length: 128,
+		length: 512,
 		nullable: true,
 		comment:
 			"The host of the User. It will be null if the origin of the user is local.",
@@ -264,6 +264,13 @@ export class User {
 		comment: "Overrides user drive capacity limit",
 	})
 	public driveCapacityOverrideMb: number | null;
+
+	@Index()
+	@Column("boolean", {
+		default: true,
+		comment: "Whether the User is indexable.",
+	})
+	public isIndexable: boolean;
 
 	constructor(data: Partial<User>) {
 		if (data == null) return;

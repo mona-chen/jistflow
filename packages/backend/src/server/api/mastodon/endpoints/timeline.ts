@@ -1,7 +1,12 @@
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
 import { ParsedUrlQuery } from "querystring";
-import { convertAccount, convertList, convertStatus } from "../converters.js";
+import {
+	convertAccount,
+	convertConversation,
+	convertList,
+	convertStatus,
+} from "../converters.js";
 import { convertId, IdType } from "../../index.js";
 
 export function limitToInt(q: ParsedUrlQuery) {
@@ -18,6 +23,10 @@ export function argsToBools(q: ParsedUrlQuery) {
 	const toBoolean = (value: string) =>
 		!["0", "f", "F", "false", "FALSE", "off", "OFF"].includes(value);
 
+	// Keys taken from:
+	// - https://docs.joinmastodon.org/methods/accounts/#statuses
+	// - https://docs.joinmastodon.org/methods/timelines/#public
+	// - https://docs.joinmastodon.org/methods/timelines/#tag
 	let object: any = q;
 	if (q.only_media)
 		if (typeof q.only_media === "string")
@@ -25,6 +34,13 @@ export function argsToBools(q: ParsedUrlQuery) {
 	if (q.exclude_replies)
 		if (typeof q.exclude_replies === "string")
 			object.exclude_replies = toBoolean(q.exclude_replies);
+	if (q.exclude_reblogs)
+		if (typeof q.exclude_reblogs === "string")
+			object.exclude_reblogs = toBoolean(q.exclude_reblogs);
+	if (q.pinned)
+		if (typeof q.pinned === "string") object.pinned = toBoolean(q.pinned);
+	if (q.local)
+		if (typeof q.local === "string") object.local = toBoolean(q.local);
 	return q;
 }
 
@@ -125,7 +141,9 @@ export function apiTimelineMastodon(router: Router): void {
 			const data = await client.getConversationTimeline(
 				convertTimelinesArgsId(limitToInt(ctx.query)),
 			);
-			ctx.body = data.data;
+			ctx.body = data.data.map((conversation) =>
+				convertConversation(conversation),
+			);
 		} catch (e: any) {
 			console.error(e);
 			console.error(e.response.data);

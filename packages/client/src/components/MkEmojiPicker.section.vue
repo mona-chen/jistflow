@@ -4,9 +4,7 @@
 			<i
 				class="toggle ph-fw ph-lg"
 				:class="
-					shown
-						? 'ph-caret-down ph-bold ph-lg'
-						: 'ph-caret-up ph-bold ph-lg'
+					icon(shown ? 'ph-caret-down ph-lg' : 'ph-caret-up ph-lg')
 				"
 			></i>
 			<slot></slot> ({{ emojis.length }})
@@ -21,7 +19,7 @@
 					"
 				>
 					<i
-						class="ph-circle ph-fill ph-fw ph-lg"
+						class="ph-circle ph-fill ph-fw"
 						:style="{ color: skinTone + ' !important' }"
 						:aria-label="
 							props.skinToneLabels
@@ -48,8 +46,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { addSkinTone } from "@/scripts/emojilist";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	emojis: string[];

@@ -62,7 +62,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { ref } from "vue";
+
 import XModalWindow from "@/components/MkModalWindow.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
@@ -75,20 +76,20 @@ const emit = defineEmits<{
 	(ev: "closed"): void;
 }>();
 
-let dialog: InstanceType<typeof XModalWindow> = $ref();
+const dialog: InstanceType<typeof XModalWindow> = ref();
 
-let username = $ref("");
-let email = $ref("");
-let processing = $ref(false);
+const username = ref("");
+const email = ref("");
+const processing = ref(false);
 
 async function onSubmit() {
-	processing = true;
+	processing.value = true;
 	await os.apiWithDialog("request-reset-password", {
-		username,
-		email,
+		username: username.value,
+		email: email.value,
 	});
 	emit("done");
-	dialog.close();
+	dialog.value.close();
 }
 </script>
 

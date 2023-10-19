@@ -7,7 +7,7 @@
 			:reverse="true"
 		/>
 		<div>
-			<p><i class="ph-file-search ph-bold ph-lg"></i>MeiliSearch</p>
+			<p><i :class="icon('ph-file-search')"></i>MeiliSearch</p>
 			<p>{{ i18n.ts._widgets.meiliStatus }}: {{ available }}</p>
 			<p>{{ i18n.ts._widgets.meiliSize }}: {{ bytes(totalSize, 1) }}</p>
 			<p>{{ i18n.ts._widgets.meiliIndexCount }}: {{ indexCount }}</p>
@@ -17,33 +17,34 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import XPie from "./pie.vue";
 import bytes from "@/filters/bytes";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	connection: any;
 	meta: any;
 }>();
 
-let progress: number = $ref(0),
-	serverStats = $ref(null),
-	totalSize: number = $ref(0),
-	indexCount: number = $ref(0),
-	available: string = $ref("unavailable");
+const progress = ref<number>(0);
+const serverStats = ref(null);
+const totalSize = ref<number>(0);
+const indexCount = ref<number>(0);
+const available = ref<string>("unavailable");
 
 function onStats(stats) {
-	totalSize = stats.meilisearch.size;
-	indexCount = stats.meilisearch.indexed_count;
-	available = stats.meilisearch.health;
-	progress = indexCount / serverStats.notesCount;
+	totalSize.value = stats.meilisearch.size;
+	indexCount.value = stats.meilisearch.indexed_count;
+	available.value = stats.meilisearch.health;
+	progress.value = indexCount.value / serverStats.value.notesCount;
 }
 
 onMounted(() => {
 	os.api("stats", {}).then((res) => {
-		serverStats = res;
+		serverStats.value = res;
 	});
 	props.connection.on("stats", onStats);
 });

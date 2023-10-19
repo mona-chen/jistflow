@@ -1,13 +1,28 @@
-export type Muted = {
+import type * as firefish from "firefish-js";
+
+export interface Muted {
 	muted: boolean;
 	matched: string[];
 	what?: string; // "note" || "reply" || "renote" || "quote"
-};
+}
 
 const NotMuted = { muted: false, matched: [] };
 
+function checkLangMute(
+	note: firefish.entities.Note,
+	mutedLangs: Array<string | string[]>,
+): Muted {
+	const mutedLangList = new Set(
+		mutedLangs.reduce((arr, x) => [...arr, ...(Array.isArray(x) ? x : [x])]),
+	);
+	if (mutedLangList.has((note.lang?.[0]?.lang || "").split("-")[0])) {
+		return { muted: true, matched: [note.lang?.[0]?.lang] };
+	}
+	return NotMuted;
+}
+
 function checkWordMute(
-	note: NoteLike,
+	note: firefish.entities.Note,
 	mutedWords: Array<string | string[]>,
 ): Muted {
 	let text = `${note.cw ?? ""} ${note.text ?? ""}`;
@@ -17,7 +32,7 @@ function checkWordMute(
 
 	if (text === "") return NotMuted;
 
-	let result = { muted: false, matched: [] };
+	const result = { muted: false, matched: [] };
 
 	for (const mutePattern of mutedWords) {
 		if (Array.isArray(mutePattern)) {
@@ -26,7 +41,9 @@ function checkWordMute(
 
 			if (
 				keywords.length > 0 &&
-				keywords.every((keyword) => text.includes(keyword))
+				keywords.every((keyword) =>
+					text.toLowerCase().includes(keyword.toLowerCase()),
+				)
 			) {
 				result.muted = true;
 				result.matched.push(...keywords);
@@ -57,24 +74,22 @@ function checkWordMute(
 }
 
 export function getWordSoftMute(
-	note: Record<string, any>,
-	me: Record<string, any> | null | undefined,
+	note: firefish.entities.Note,
+	meId: string | null | undefined,
 	mutedWords: Array<string | string[]>,
+	mutedLangs: Array<string | string[]>,
 ): Muted {
-	// 自分自身
-	if (me && note.userId === me.id) {
-		return NotMuted;
-	}
+	if (meId == null || note.userId === meId) return NotMuted;
 
 	if (mutedWords.length > 0) {
-		let noteMuted = checkWordMute(note, mutedWords);
+		const noteMuted = checkWordMute(note, mutedWords);
 		if (noteMuted.muted) {
 			noteMuted.what = "note";
 			return noteMuted;
 		}
 
 		if (note.renote) {
-			let renoteMuted = checkWordMute(note.renote, mutedWords);
+			const renoteMuted = checkWordMute(note.renote, mutedWords);
 			if (renoteMuted.muted) {
 				renoteMuted.what = note.text == null ? "renote" : "quote";
 				return renoteMuted;
@@ -82,10 +97,33 @@ export function getWordSoftMute(
 		}
 
 		if (note.reply) {
-			let replyMuted = checkWordMute(note.reply, mutedWords);
+			const replyMuted = checkWordMute(note.reply, mutedWords);
 			if (replyMuted.muted) {
 				replyMuted.what = "reply";
 				return replyMuted;
+			}
+		}
+	}
+	if (mutedLangs.length > 0) {
+		let noteLangMuted = checkLangMute(note, mutedLangs);
+		if (noteLangMuted.muted) {
+			noteLangMuted.what = "note";
+			return noteLangMuted;
+		}
+
+		if (note.renote) {
+			let renoteLangMuted = checkLangMute(note, mutedLangs);
+			if (renoteLangMuted.muted) {
+				renoteLangMuted.what = note.text == null ? "renote" : "quote";
+				return renoteLangMuted;
+			}
+		}
+
+		if (note.reply) {
+			let replyLangMuted = checkLangMute(note, mutedLangs);
+			if (replyLangMuted.muted) {
+				replyLangMuted.what = "reply";
+				return replyLangMuted;
 			}
 		}
 	}

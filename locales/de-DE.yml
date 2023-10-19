@@ -77,7 +77,7 @@ lists: "Listen"
 noLists: "Du hast keine Listen angelegt"
 note: "Beitrag"
 notes: "Beiträge"
-following: "Folge ich"
+following: "Folgen"
 followers: "Folgen mir"
 followsYou: "Folgt dir"
 createList: "Liste erstellen"
@@ -97,7 +97,7 @@ enterListName: "Gib einen Namen für die Liste ein"
 privacy: "Privatsphäre"
 makeFollowManuallyApprove: "Folgeanfragen bedürfen der Genehmigung"
 defaultNoteVisibility: "Standard-Sichtbarkeit"
-follow: "Folge ich"
+follow: "Folgen"
 followRequest: "Follow anfragen"
 followRequests: "Follow-Anfragen"
 unfollow: "Nicht mehr folgen"
@@ -350,9 +350,6 @@ dayX: "{day}"
 monthX: "{month}"
 yearX: "{year}"
 pages: "Nutzer-Seiten"
-integration: "Integration"
-connectService: "Verbinden"
-disconnectService: "Trennen"
 enableLocalTimeline: "Local-Timeline aktivieren"
 enableGlobalTimeline: "Global-Timeline aktivieren"
 disablingTimelinesInfo: "Administratoren und Moderatoren haben immer Zugriff auf alle
@@ -474,7 +471,7 @@ invitations: "Einladungen"
 invitationCode: "Einladungscode"
 checking: "Wird überprüft …"
 available: "Verfügbar"
-unavailable: "Unverfügbar"
+unavailable: "Nicht verfügbar"
 usernameInvalidFormat: "Du kannst Klein- und Großbuchstaben, Zahlen sowie Unterstriche
   verwenden."
 tooShort: "Zu kurz"
@@ -529,12 +526,12 @@ objectStorageBaseUrl: "Basis-URL"
 objectStorageBaseUrlDesc: "Die als Referenz verwendete URL. Verwendest du einen CDN
   oder Proxy, gib dessen URL an. \nFür S3 verwende 'https://<bucket>.s3.amazonaws.com'.
   Für GCS o.ä. verwende 'https://storage.googleapis.com/<bucket>'."
-objectStorageBucket: "Eimer"
+objectStorageBucket: "Bucket"
 objectStorageBucketDesc: "Bitte gib den Namen des Buckets an, der bei deinem Anbieter
   verwendet wird."
 objectStoragePrefix: "Prefix"
 objectStoragePrefixDesc: "Dateien werden in Ordnern unter diesem Prefix gespeichert."
-objectStorageEndpoint: "Limit"
+objectStorageEndpoint: "Endpunkt"
 objectStorageEndpointDesc: "Im Falle von S3 leerlassen, für andere Anbieter den relevanten
   Endpoint im Format „<host>“ oder „<host>:<port>“ angeben."
 objectStorageRegion: "Region"
@@ -737,8 +734,7 @@ no: "Nein"
 driveFilesCount: "Anzahl der Dateien in Cloud-Drive"
 driveUsage: "Cloud-Drive-Auslastung"
 noCrawle: "Crawler-Indexierung ablehnen"
-noCrawleDescription: "Suchmaschinen bitten, die eigene Profilseite, Beiträge, Nutzer-Seiten
-  usw. nicht zu indexieren."
+noCrawleDescription: "Externe Suchmaschinen auffordern, Ihre Inhalte nicht zu indizieren."
 lockedAccountInfo: "Auch wenn du Follow-Anfragen auf manuelle Bestätigung setzt, wird
   jeder deiner Posts öffentlich sichtbar sein, sofern du ihre Sichtbarkeit nicht auf
   \"Nur Follower\" setzt."
@@ -853,7 +849,7 @@ gallery: "Bilder-Galerie"
 recentPosts: "Neue Beiträge"
 popularPosts: "Beliebte Beiträge"
 shareWithNote: "Mit Beitrag teilen"
-ads: "Werbeanzeigen"
+ads: "Community-Banner"
 expiration: "Frist"
 memo: "Merkzettel"
 priority: "Priorität"
@@ -907,7 +903,7 @@ ffVisibility: "Sichtbarkeit von Gefolgten/Followern"
 ffVisibilityDescription: "Konfiguriere wer sehen kann, wem du folgst sowie wer dir
   folgt."
 continueThread: "Beitrag fortsetzen"
-deleteAccountConfirm: "Dein Nutzerkonto wird unwiderruflich gelöscht. Trotzdem fortfahren?"
+deleteAccountConfirm: "Das Nutzerkonto wird unwiderruflich gelöscht. Trotzdem fortfahren?"
 incorrectPassword: "Falsches Passwort."
 voteConfirm: "Wirklich für „{choice}“ abstimmen?"
 hide: "Inhalt verbergen"
@@ -953,9 +949,9 @@ driveCapOverrideCaption: "Gib einen Wert von 0 oder weniger ein, um die Kapazit�
   auf den Standard zurückzusetzen."
 requireAdminForView: "Du musst dich mit einem Administratorkonto anmelden um dies
   zu sehen."
-isSystemAccount: "Dieses Konto wird vom System erstellt und automatisch verwaltet.
-  Bitte moderieren, bearbeiten, löschen oder manipulieren Sie dieses Konto nicht,
-  da es sonst zu einem Server-Absturz kommen könnte."
+isSystemAccount: "Ein Nutzerkonto, dass durch das System erstellt und automatisch
+  kontrolliert wird. Jede Anpassung, Veränderung oder Löschung dieses Nutzerkontos,
+  kann zu schwerwiegenden Fehlern auf diesem Server führen."
 typeToConfirm: "Bitte gib zur Bestätigung {x} ein"
 deleteAccount: "Nutzerkonto löschen"
 document: "Dokumentation"
@@ -966,7 +962,7 @@ logoutConfirm: "Wirklich abmelden?"
 lastActiveDate: "Zuletzt verwendet am"
 statusbar: "Statusleiste"
 pleaseSelect: "Wähle eine Option"
-reverse: "Umkehren"
+reverse: "Rückgängig machen"
 colored: "Farbig"
 refreshInterval: "Aktualisierungsintervall "
 label: "Beschriftung"
@@ -979,7 +975,7 @@ localOnly: "Nur Lokal"
 remoteOnly: "Nur für andere/fremde Server"
 failedToUpload: "Hochladen fehlgeschlagen"
 cannotUploadBecauseInappropriate: "Diese Datei kann nicht hochgeladen werden, da Teile
-  der Datei möglicherweise NSFW-Inhalt enthalten"
+  der Datei möglicherweise NSFW-Inhalt enthalten."
 cannotUploadBecauseNoFreeSpace: "Die Datei konnte nicht hochgeladen werden, da dein
   Cloud-Drive-Speicherplatz aufgebraucht ist."
 beta: "Beta"
@@ -1038,6 +1034,7 @@ _accountDelete:
 _ad:
   back: "Zurück"
   reduceFrequencyOfThisAd: "Diese Werbeanzeige weniger anzeigen"
+  adsBy: Community-Banner von {by}
 _forgotPassword:
   enterEmail: "Gib die Email-Adresse ein, mit der du dich registriert hast. An diese
     wird ein Link gesendet, mit dem du dein Passwort zurücksetzen kannst."
@@ -1106,6 +1103,7 @@ _aboutFirefish:
     um bei der Deckung der Betriebskosten zu helfen.
   sponsors: Firefish-Sponsoren
   donateHost: Spende an {host}
+  misskeyContributors: Misskey-Mitwirkende
 _nsfw:
   respect: "Mit NSFW gekennzeichnete Mediendateien verbergen"
   ignore: "Mit NSFW gekennzeichnete Mediendateien nicht verbergen"
@@ -1128,7 +1126,7 @@ _mfm:
   bold: "Fett"
   boldDescription: "Zeichen zur Betonung dicker erscheinen lassen."
   small: "Klein"
-  smallDescription: "Inhalt klein und dünn erscheinen lassen."
+  smallDescription: "Inhalt klein und dünn anzeigen."
   center: "Zentrieren"
   centerDescription: "Inhalt zentriert anzeigen."
   inlineCode: "Code (Eingebettet)"
@@ -1148,7 +1146,7 @@ _mfm:
   search: "Suche"
   searchDescription: "Eine vorgefertige Suchanfragebox anzeigen."
   flip: "Spiegelung"
-  flipDescription: "Spiegelt den Inhalt horizontal oder vertikal."
+  flipDescription: "Inhalt horizontal oder vertikal spiegeln."
   jelly: "Animation (Dehnen)"
   jellyDescription: "Verleiht Inhalt eine sich dehnende Animation."
   tada: "Animation (Tada)"
@@ -1243,6 +1241,7 @@ _wordMute:
   soft: "Leicht"
   hard: "Schwer"
   mutedNotes: "Stummgeschaltete Beiträge"
+  muteLangs: Stummgeschaltete Sprachen
 _instanceMute:
   instanceMuteDescription: "Schaltet alle Beiträge/Boosts stumm, die von den gelisteten
     Servern stammen, inklusive Antworten von Nutzern an einen Nutzer eines stummgeschalteten
@@ -1944,7 +1943,7 @@ _notification:
     renote: "Renote"
   voted: haben bei deiner Umfrage abgestimmt
   reacted: hat auf deinen Beitrag reagiert
-  renoted: hat Ihren Beitrag geteilt
+  renoted: hat deinen Beitrag geteilt
 _deck:
   alwaysShowMainColumn: "Hauptspalte immer zeigen"
   columnAlign: "Spaltenausrichtung"
@@ -2053,7 +2052,7 @@ userSaysSomethingReasonReply: '{name} hat auf einen Beitrag geantwortet der {rea
 userSaysSomethingReasonRenote: '{name} hat einen Beitrag geteilt der {reason} beinhaltet'
 userSaysSomethingReasonQuote: '{name} hat einen Beitrag zitiert der {reason} beinhaltet'
 seperateRenoteQuote: Getrennte Boost- und Zitat-Schaltflächen
-showAds: Anzeigen anzeigen
+showAds: Community-Banner anzeigen
 splash: Begrüßungsbildschirm
 customSplashIconsDescription: URLs für benutzerdefinierte Splash-Screen-Symbole, die
   durch Zeilenumbrüche getrennt sind und nach dem Zufallsprinzip jedes Mal angezeigt
@@ -2098,12 +2097,12 @@ customKaTeXMacro: Individuelle KaTeX Makros
 enableCustomKaTeXMacro: Individuelle KaTeX-Makros aktivieren
 replayTutorial: Wiederhole die Benutzeranleitung
 apps: Apps
-caption: Automatische Untertitelung
+caption: Automatische Beschreibung
 pwa: PWA installieren
 cw: Inhaltswarnung
 older: älter
 newer: neuer
-accessibility: Erreichbarkeit
+accessibility: Barrierefreiheit
 jumpToPrevious: Zum Vorherigen springen
 silencedWarning: Diese Meldung wird angezeigt, weil diese Nutzer von Servern stammen,
   die Ihr Administrator abgeschaltet hat, so dass es sich möglicherweise um Spam handelt.
@@ -2191,3 +2190,29 @@ _skinTones:
 showPopup: Benutzer mit Popup benachrichtigen
 showWithSparkles: Mit Glitzer anzeigen
 removeQuote: Zitat entfernen
+objectStorageS3ForcePathStyle: Verwende pfadbasierte Endpunkt-URLs
+objectStorageS3ForcePathStyleDesc: Wenn aktiviert, werden Endpunkt-URLs im Format
+  's3.amazonaws.com/<bucket>/' statt '<bucket>.s3.amazonaws.com' erstellt.
+origin: Herkunft
+delete2fa: 2FA deaktivieren
+deletePasskeys: Passkeys löschen
+delete2faConfirm: Passkeys werden unwiderruflich von diesem Account gelöscht. Fortfahren?
+deletePasskeysConfirm: Alle Passkeys und Security-Keys werden unwiderruflich von diesem
+  Account gelöscht. Fortfahren?
+inputNotMatch: Eingabe stimmt nicht überein
+addRe: Ein "re:" am Anfang des Kommentars hinzufügen, um einem Beitrag mit einer Inhaltswarnung
+  zu antworten
+confirm: Bestätigen
+importZip: ZIP Importieren
+emojiPackCreator: Emoji-Pack Ersteller
+exportZip: ZIP exportieren
+detectPostLanguage: Sprache automatisch erkennen und eine Schaltfläche zum Übersetzen
+  von Beiträgen in Fremdsprachen anzeigen
+indexableDescription: Der integrierten Suche erlauben, Ihre öffentlichen Beiträge
+  anzuzeigen
+indexable: Indexierbar
+languageForTranslation: Übersetzungssprache veröffentlichen
+openServerInfo: Anzeigen von Serverinformationen durch Anklicken des Server-Tickers
+  in einem Beitrag
+vibrate: Vibrationen abspielen
+clickToShowPatterns: Klicken um Modul-Muster anzuzeigen

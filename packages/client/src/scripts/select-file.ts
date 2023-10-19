@@ -1,10 +1,11 @@
 import { ref } from "vue";
-import { DriveFile } from "firefish-js/built/entities";
+import type { DriveFile } from "firefish-js/built/entities";
 import * as os from "@/os";
 import { stream } from "@/stream";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import { uploadFile } from "@/scripts/upload";
+import icon from "@/scripts/icon";
 
 function select(
 	src: any,
@@ -72,7 +73,7 @@ function select(
 				});
 
 				os.api("drive/files/upload-from-url", {
-					url: url,
+					url,
 					folderId: defaultStore.state.uploadFolder,
 					marker,
 				});
@@ -99,17 +100,17 @@ function select(
 				},
 				{
 					text: i18n.ts.upload,
-					icon: "ph-upload-simple ph-bold ph-lg",
+					icon: `${icon("ph-upload-simple")}`,
 					action: chooseFileFromPc,
 				},
 				{
 					text: i18n.ts.fromDrive,
-					icon: "ph-cloud ph-bold ph-lg",
+					icon: `${icon("ph-cloud")}`,
 					action: chooseFileFromDrive,
 				},
 				{
 					text: i18n.ts.fromUrl,
-					icon: "ph-link-simple ph-bold ph-lg",
+					icon: `${icon("ph-link-simple")}`,
 					action: chooseFileFromUrl,
 				},
 			],

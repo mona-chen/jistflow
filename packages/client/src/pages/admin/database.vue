@@ -34,7 +34,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed } from "vue";
+
 import FormSuspense from "@/components/form/suspense.vue";
 import FormButton from "@/components/MkButton.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
@@ -44,6 +45,7 @@ import number from "@/filters/number";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { indexPosts } from "@/scripts/index-posts";
+import icon from "@/scripts/icon";
 
 const databasePromiseFactory = () =>
 	os
@@ -52,12 +54,12 @@ const databasePromiseFactory = () =>
 			Object.entries(res).sort((a, b) => b[1].size - a[1].size),
 		);
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.database,
-	icon: "ph-database ph-bold ph-lg",
+	icon: `${icon("ph-database")}`,
 });
 </script>

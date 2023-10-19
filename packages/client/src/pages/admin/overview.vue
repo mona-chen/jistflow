@@ -62,10 +62,11 @@
 <script lang="ts" setup>
 import {
 	markRaw,
-	version as vueVersion,
-	onMounted,
-	onBeforeUnmount,
 	nextTick,
+	onBeforeUnmount,
+	onMounted,
+	ref,
+	shallowRef,
 } from "vue";
 import XFederation from "./overview.federation.vue";
 import XInstances from "./overview.instances.vue";
@@ -77,37 +78,24 @@ import XStats from "./overview.stats.vue";
 import XModerators from "./overview.moderators.vue";
 import XHeatmap from "./overview.heatmap.vue";
 // import XMetrics from "./overview.metrics.vue";
-import MkTagCloud from "@/components/MkTagCloud.vue";
-import { version, url } from "@/config";
 import * as os from "@/os";
 import { stream } from "@/stream";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { defaultStore } from "@/store";
-import MkFileListForAdmin from "@/components/MkFileListForAdmin.vue";
 import MkFolder from "@/components/MkFolder.vue";
+import icon from "@/scripts/icon";
 
-const rootEl = $shallowRef<HTMLElement>();
-let serverInfo: any = $ref(null);
-let topSubInstancesForPie: any = $ref(null);
-let topPubInstancesForPie: any = $ref(null);
-let federationPubActive = $ref<number | null>(null);
-let federationPubActiveDiff = $ref<number | null>(null);
-let federationSubActive = $ref<number | null>(null);
-let federationSubActiveDiff = $ref<number | null>(null);
-let newUsers = $ref(null);
-let activeInstances = $shallowRef(null);
+const rootEl = shallowRef<HTMLElement>();
+const serverInfo = ref<any>(null);
+const topSubInstancesForPie = ref<any>(null);
+const topPubInstancesForPie = ref<any>(null);
+const federationPubActive = ref<number | null>(null);
+const federationPubActiveDiff = ref<number | null>(null);
+const federationSubActive = ref<number | null>(null);
+const federationSubActiveDiff = ref<number | null>(null);
+const newUsers = ref(null);
+const activeInstances = shallowRef(null);
 const queueStatsConnection = markRaw(stream.useChannel("queueStats"));
-const now = new Date();
-const filesPagination = {
-	endpoint: "admin/drive/files" as const,
-	limit: 9,
-	noPaging: true,
-};
-
-function onInstanceClick(i) {
-	os.pageWindow(`/instance-info/${i.host}`);
-}
 
 onMounted(async () => {
 	/*
@@ -121,14 +109,14 @@ onMounted(async () => {
 	*/
 
 	os.apiGet("charts/federation", { limit: 2, span: "day" }).then((chart) => {
-		federationPubActive = chart.pubActive[0];
-		federationPubActiveDiff = chart.pubActive[0] - chart.pubActive[1];
-		federationSubActive = chart.subActive[0];
-		federationSubActiveDiff = chart.subActive[0] - chart.subActive[1];
+		federationPubActive.value = chart.pubActive[0];
+		federationPubActiveDiff.value = chart.pubActive[0] - chart.pubActive[1];
+		federationSubActive.value = chart.subActive[0];
+		federationSubActiveDiff.value = chart.subActive[0] - chart.subActive[1];
 	});
 
 	os.apiGet("federation/stats", { limit: 10 }).then((res) => {
-		topSubInstancesForPie = res.topSubInstances
+		topSubInstancesForPie.value = res.topSubInstances
 			.map((x) => ({
 				name: x.host,
 				color: x.themeColor,
@@ -144,7 +132,7 @@ onMounted(async () => {
 					value: res.otherFollowersCount,
 				},
 			]);
-		topPubInstancesForPie = res.topPubInstances
+		topPubInstancesForPie.value = res.topPubInstances
 			.map((x) => ({
 				name: x.host,
 				color: x.themeColor,
@@ -163,26 +151,26 @@ onMounted(async () => {
 	});
 
 	os.api("admin/server-info").then((serverInfoResponse) => {
-		serverInfo = serverInfoResponse;
+		serverInfo.value = serverInfoResponse;
 	});
 
 	os.api("admin/show-users", {
 		limit: 5,
 		sort: "+createdAt",
 	}).then((res) => {
-		newUsers = res;
+		newUsers.value = res;
 	});
 
 	os.api("federation/instances", {
 		sort: "+latestRequestReceivedAt",
 		limit: 25,
 	}).then((res) => {
-		activeInstances = res;
+		activeInstances.value = res;
 	});
 
 	nextTick(() => {
 		queueStatsConnection.send("requestLog", {
-			id: Math.random().toString().substr(2, 8),
+			id: Math.random().toString().slice(2, 10),
 			length: 100,
 		});
 	});
@@ -192,13 +180,9 @@ onBeforeUnmount(() => {
 	queueStatsConnection.dispose();
 });
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.dashboard,
-	icon: "ph-gauge ph-bold ph-lg",
+	icon: `${icon("ph-gauge")}`,
 });
 </script>
 

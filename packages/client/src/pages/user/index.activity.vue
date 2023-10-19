@@ -1,15 +1,12 @@
 <template>
 	<MkContainer>
 		<template #header
-			><i
-				class="ph-chart-bar ph-bold ph-lg"
-				style="margin-right: 0.5em"
-			></i
+			><i :class="icon('ph-chart-bar')" style="margin-right: 0.5em"></i
 			>{{ i18n.ts.activity }}</template
 		>
 		<template #func>
 			<button class="_button" @click="showMenu">
-				<i class="ph-dots-three-outline ph-bold ph-lg"></i>
+				<i :class="icon('ph-dots-three-outline')"></i>
 			</button>
 		</template>
 
@@ -29,16 +26,18 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
-import * as misskey from "firefish-js";
+import { ref } from "vue";
+
+import type * as firefish from "firefish-js";
 import MkContainer from "@/components/MkContainer.vue";
 import MkChart from "@/components/MkChart.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
-		user: misskey.entities.User;
+		user: firefish.entities.User;
 		limit?: number;
 	}>(),
 	{
@@ -46,7 +45,7 @@ const props = withDefaults(
 	},
 );
 
-let chartSrc = $ref("per-user-notes");
+const chartSrc = ref("per-user-notes");
 
 function showMenu(ev: MouseEvent) {
 	os.popupMenu(
@@ -55,7 +54,7 @@ function showMenu(ev: MouseEvent) {
 				text: i18n.ts.notes,
 				active: true,
 				action: () => {
-					chartSrc = "per-user-notes";
+					chartSrc.value = "per-user-notes";
 				},
 			} /*, {
 		text: i18n.ts.following,
@@ -67,7 +66,7 @@ function showMenu(ev: MouseEvent) {
 		action: () => {
 			chartSrc = 'per-user-followers';
 		}
-	}*/,
+	} */,
 		],
 		ev.currentTarget ?? ev.target,
 	);

@@ -9,15 +9,12 @@ import { computed } from "vue";
 import MkSample from "@/components/MkSample.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
+import icon from "@/scripts/icon";
 
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.preview,
-		icon: "ph-eye ph-bold ph-lg",
+		icon: `${icon("ph-eye")}`,
 	})),
 );
 </script>

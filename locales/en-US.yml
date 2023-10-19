@@ -54,13 +54,14 @@ deleteAndEdit: "Delete and edit"
 deleteAndEditConfirm:
   "Are you sure you want to delete this post and edit it? You
   will lose all reactions, boosts and replies to it."
-editNote: "Edit note"
+editNote: "Edit post"
 edited: "Edited at {date} {time}"
 addToList: "Add to list"
 sendMessage: "Send a message"
 copyUsername: "Copy username"
 searchUser: "Search for a user"
 reply: "Reply"
+replies: "Replies"
 jumpToPrevious: "Jump to previous"
 loadMore: "Load more"
 showMore: "Show more"
@@ -88,7 +89,9 @@ exportRequested:
   to your Drive once completed."
 importRequested: "You've requested an import. This may take a while."
 lists: "Lists"
-listsDesc: "Lists let you create timelines with specified users. They can be accessed from the timelines page."
+listsDesc:
+  "Lists let you create timelines with specified users. They can be accessed
+  from the timelines page."
 noLists: "You don't have any lists"
 note: "Post"
 notes: "Posts"
@@ -117,18 +120,21 @@ unfollow: "Unfollow"
 followRequestPending: "Follow request pending"
 enterEmoji: "Enter an emoji"
 renote: "Boost"
+renotes: "Boosts"
 unrenote: "Take back boost"
 renoted: "Boosted."
 cantRenote: "This post can't be boosted."
 cantReRenote: "A boost can't be boosted."
 quote: "Quote"
+quotes: "Quotes"
 pinnedNote: "Pinned post"
 pinned: "Pin to profile"
 you: "You"
 clickToShow: "Click to show"
 sensitive: "NSFW"
 add: "Add"
-reaction: "Reactions"
+reaction: "Reaction"
+reactions: "Reactions"
 removeReaction: "Remove your reaction"
 enableEmojiReactions: "Enable emoji reactions"
 showEmojisInReactionNotifications: "Show emojis in reaction notifications"
@@ -138,6 +144,7 @@ rememberNoteVisibility: "Remember post visibility settings"
 attachCancel: "Remove attachment"
 markAsSensitive: "Mark as NSFW"
 unmarkAsSensitive: "Unmark as NSFW"
+clickToShowPatterns: "Click to show module patterns"
 enterFileName: "Enter filename"
 mute: "Mute"
 unmute: "Unmute"
@@ -352,12 +359,12 @@ emptyDrive: "Your Drive is empty"
 emptyFolder: "This folder is empty"
 unableToDelete: "Unable to delete"
 inputNewFileName: "Enter a new filename"
-inputNewDescription: "Enter new caption"
+inputNewDescription: "Enter new description"
 inputNewFolderName: "Enter a new folder name"
 circularReferenceFolder:
   "The destination folder is a subfolder of the folder you
   wish to move."
-hasChildFilesOrFolders: "Since this folder is not empty, it can not be deleted."
+hasChildFilesOrFolders: "Since this folder is not empty, it cannot be deleted."
 copyUrl: "Copy URL"
 rename: "Rename"
 avatar: "Avatar"
@@ -385,9 +392,6 @@ dayX: "{day}"
 monthX: "{month}"
 yearX: "{year}"
 pages: "Pages"
-integration: "Integrations"
-connectService: "Connect"
-disconnectService: "Disconnect"
 enableLocalTimeline: "Enable local timeline"
 enableGlobalTimeline: "Enable global timeline"
 enableRecommendedTimeline: "Enable recommended timeline"
@@ -427,7 +431,9 @@ avoidMultiCaptchaConfirm:
   them. Would you like to disable the other Captcha systems currently active? If you
   would like them to stay enabled, press cancel."
 antennas: "Antennas"
-antennasDesc: "Antennas display new posts matching the criteria you set!\n They can be accessed from the timelines page."
+antennasDesc:
+  "Antennas display new posts matching the criteria you set!\n They can
+  be accessed from the timelines page."
 manageAntennas: "Manage Antennas"
 name: "Name"
 antennaSource: "Antenna source"
@@ -592,6 +598,10 @@ objectStorageUseProxyDesc:
   "Turn this off if you are not going to use a Proxy for
   API connections"
 objectStorageSetPublicRead: 'Set "public-read" on upload'
+objectStorageS3ForcePathStyle: "Use path-based endpoint URLs"
+objectStorageS3ForcePathStyleDesc:
+  "Turn this on to construct endpoint URLs in the
+  format of 's3.amazonaws.com/<bucket>/' over '<bucket>.s3.amazonaws.com'."
 serverLogs: "Server logs"
 deleteAll: "Delete all"
 showFixedPostForm: "Display the posting form at the top of the timeline"
@@ -626,7 +636,9 @@ output: "Output"
 script: "Script"
 disablePagesScript: "Disable AiScript on Pages"
 expandOnNoteClick: "Open post on click"
-expandOnNoteClickDesc: "If disabled, you can still open posts in the right-click menu or by clicking the timestamp."
+expandOnNoteClickDesc:
+  "If disabled, you can still open posts in the right-click menu
+  or by clicking the timestamp."
 updateRemoteUser: "Update remote user information"
 deleteAllFiles: "Delete all files"
 deleteAllFilesConfirm: "Are you sure that you want to delete all files?"
@@ -660,8 +672,8 @@ disablePlayer: "Close video player"
 expandTweet: "Expand tweet"
 themeEditor: "Theme editor"
 description: "Description"
-describeFile: "Add caption"
-enterFileDescription: "Enter caption"
+describeFile: "Add description"
+enterFileDescription: "Enter description"
 author: "Author"
 leaveConfirm: "There are unsaved changes. Do you want to discard them?"
 manage: "Management"
@@ -703,7 +715,7 @@ emptyToDisableSmtpAuth: "Leave username and password empty to disable SMTP verif
 smtpSecure: "Use implicit SSL/TLS for SMTP connections"
 smtpSecureInfo: "Turn this off when using STARTTLS"
 testEmail: "Test email delivery"
-wordMute: "Word mute"
+wordMute: "Word and language mutes"
 regexpError: "Regular Expression error"
 regexpErrorDescription:
   "An error occurred in the regular expression on line {line}
@@ -768,6 +780,7 @@ system: "System"
 switchUi: "Layout"
 desktop: "Desktop"
 clip: "Clip"
+clips: "Clips"
 createNew: "Create new"
 optional: "Optional"
 createNewClip: "Create new clip"
@@ -797,9 +810,7 @@ no: "No"
 driveFilesCount: "Number of Drive files"
 driveUsage: "Drive space usage"
 noCrawle: "Reject crawler indexing"
-noCrawleDescription:
-  "Ask search engines to not index your profile page, posts, Pages,
-  etc."
+noCrawleDescription: "Ask external search engines to not index your content."
 lockedAccountInfo: 'Unless you set your post visiblity to "Followers only", your
   posts will be visible to anyone, even if you require followers to be manually approved.'
 alwaysMarkSensitive: "Mark as NSFW by default"
@@ -815,8 +826,9 @@ pageLikesCount: "Number of liked Pages"
 pageLikedCount: "Number of received Page likes"
 contact: "Contact"
 useSystemFont: "Use the system's default font"
-clips: "Clips"
-clipsDesc: "Clips are like share-able categorized bookmarks. You can create clips from the menu of individual posts."
+clipsDesc:
+  "Clips are like share-able categorized bookmarks. You can create clips
+  from the menu of individual posts."
 experimentalFeatures: "Experimental features"
 developer: "Developer"
 makeExplorable: 'Make account visible in "Explore"'
@@ -917,7 +929,7 @@ gallery: "Gallery"
 recentPosts: "Recent pages"
 popularPosts: "Popular pages"
 shareWithNote: "Share with post"
-ads: "Advertisements"
+ads: "Community banners"
 expiration: "Deadline"
 memo: "Memo"
 priority: "Priority"
@@ -931,11 +943,11 @@ instanceSecurity: "Server Security"
 secureModeInfo: "When requesting from other servers, do not send back without proof."
 privateMode: "Private Mode"
 privateModeInfo:
-  "When enabled, only whitelisted servers can federate with your server.
+  "When enabled, only allowlisted servers can federate with your server.
   All posts will be hidden from the public."
-allowedInstances: "Whitelisted Servers"
+allowedInstances: "Allowlisted Servers"
 allowedInstancesDescription:
-  "Hosts of servers to be whitelisted for federation, each
+  "Hosts of servers to be allowlisted for federation, each
   separated by a new line (only applies in private mode)."
 previewNoteText: "Show preview"
 customCss: "Custom CSS"
@@ -1095,7 +1107,7 @@ sendPushNotificationReadMessageCaption:
   "A notification containing the text \"{emptyPushNotificationMessage}\"\
   \ will be displayed for a short time. This may increase the battery usage of your
   device, if applicable."
-showAds: "Show ads"
+showAds: "Show community banners"
 enterSendsMessage: "Press Return in Messaging to send message (off is Ctrl + Return)"
 adminCustomCssWarn:
   "This setting should only be used if you know what it does. Entering
@@ -1115,7 +1127,7 @@ recommendedInstances: "Recommended servers"
 recommendedInstancesDescription:
   "Recommended servers separated by line breaks to
   appear in the recommended timeline."
-caption: "Auto Caption"
+caption: "Auto description"
 splash: "Splash Screen"
 updateAvailable: "There might be an update available!"
 swipeOnMobile: "Allow swiping between pages"
@@ -1148,8 +1160,8 @@ indexPosts: "Index Posts"
 indexFrom: "Index from Post ID onwards"
 indexFromDescription: "Leave blank to index every post"
 indexNotice:
-  "Now indexing. This will probably take a while, please don't restart\
-  \ your server for at least an hour."
+  "Now indexing. This will probably take a while, please don't restart
+  your server for at least an hour."
 customKaTeXMacro: "Custom KaTeX macros"
 customKaTeXMacroDescription:
   "Set up macros to write mathematical expressions easily!
@@ -1199,6 +1211,28 @@ removeRecipient: "Remove recipient"
 removeMember: "Remove member"
 verifiedLink: "Verified link"
 origin: "Origin"
+delete2fa: "Disable 2FA"
+deletePasskeys: "Delete passkeys"
+delete2faConfirm: "This will irreversibly delete 2FA on this account. Proceed?"
+deletePasskeysConfirm:
+  "This will irreversibly delete all passkeys and security keys
+  on this account. Proceed?"
+inputNotMatch: "Input does not match"
+addRe: 'Add "re:" at the beginning of comment in reply to a post with a content
+  warning'
+confirm: "Confirm"
+importZip: "Import ZIP"
+exportZip: "Export ZIP"
+emojiPackCreator: "Emoji pack creator"
+indexable: "Indexable"
+indexableDescription: "Allow built-in search to show your public posts"
+languageForTranslation: "Post translation language"
+detectPostLanguage:
+  "Automatically detect the language and show a translate button
+  for posts in foreign languages"
+vibrate: "Play vibrations"
+openServerInfo: "Show server information by clicking the server ticker on a post"
+iconSet: "Icon set"
 
 _sensitiveMediaDetection:
   description:
@@ -1247,7 +1281,8 @@ _accountDelete:
   inProgress: "Deletion is currently in progress"
 _ad:
   back: "Back"
-  reduceFrequencyOfThisAd: "Show this ad less"
+  adsBy: "Community banner by {by}"
+  reduceFrequencyOfThisAd: "Show this banner less"
 _forgotPassword:
   enterEmail:
     "Enter the email address you used to register. A link with which you
@@ -1303,23 +1338,28 @@ _registry:
   createKey: "Create key"
 _aboutFirefish:
   about:
-    "Jistflow is a fork of Misskey made by ThatOneCalculator, which has been in
-    development since 2022."
+    "Firefish is a fork of Misskey made by ThatOneCalculator, which has been
+    in development since 2022."
   contributors: "Main contributors"
   allContributors: "All contributors"
+  misskeyContributors: "Misskey contributors"
   source: "Source code"
-  translation: "Translate Jistflow"
-  donate: "Donate to Jistflow"
-  donateTitle: "Enjoying Jistflow?"
-  pleaseDonateToFirefish: "Please consider donating to Jistflow to support its development."
-  pleaseDonateToHost: "Please also consider donating to your home server, {host}, to help support its operation costs."
+  translation: "Translate Firefish"
+  donate: "Donate to Firefish"
+  donateTitle: "Enjoying Firefish?"
+  pleaseDonateToFirefish: "Please consider donating to Firefish to support its development."
+  pleaseDonateToHost:
+    "Please also consider donating to your home server, {host},
+    to help support its operation costs."
   donateHost: "Donate to {host}"
   morePatrons:
     "We also appreciate the support of many other helpers not listed here.
     Thank you! 🥰"
-  sponsors: "Jistflow sponsors"
-  patrons: "Jistflow patrons"
-  patronsList: "Listed chronologically, not by donation size. Donate with the link above to get your name on here!"
+  sponsors: "Firefish sponsors"
+  patrons: "Firefish patrons"
+  patronsList:
+    "Listed chronologically, not by donation size. Donate with the link
+    above to get your name on here!"
 _nsfw:
   respect: "Hide NSFW media"
   ignore: "Don't hide NSFW media"
@@ -1335,7 +1375,9 @@ _mfm:
     can be used in many places. Here you can view a list of all available MFM syntax."
   dummy: "Jistflow expands the world of the Fediverse"
   advanced: "Advanced MFM"
-  advancedDescription: "If disabled, only allows for basic markup unless animated MFM is playing"
+  advancedDescription:
+    "If disabled, only allows for basic markup unless animated
+    MFM is playing"
   mention: "Mention"
   mentionDescription: "You can specify a user by using an At-Symbol and a username."
   hashtag: "Hashtag"
@@ -1447,16 +1489,21 @@ _menuDisplay:
   hide: "Hide"
 _wordMute:
   muteWords: "Muted words"
+  muteLangs: "Muted Languages"
   muteWordsDescription:
     "Separate with spaces for an AND condition or with line breaks
     for an OR condition."
   muteWordsDescription2: "Surround keywords with slashes to use regular expressions."
+  muteLangsDescription: "Separate with spaces or line breaks for an OR condition."
+  muteLangsDescription2: "Use language code e.g. en, fr, ja, zh."
   softDescription: "Hide posts that fulfil the set conditions from the timeline."
+  langDescription: "Hide posts that match set language from the timeline."
   hardDescription:
     "Prevents posts fulfilling the set conditions from being added
     to the timeline. In addition, these posts will not be added to the timeline even
     if the conditions are changed."
   soft: "Soft"
+  lang: "Language"
   hard: "Hard"
   mutedNotes: "Muted posts"
 _instanceMute:
@@ -1598,11 +1645,11 @@ _tutorial:
     on this server."
   step5_5: "The Social {icon} timeline is a combination of the Home and Local timelines."
   step5_6:
-    "The Recommended {icon} timeline is where you can see posts from servers\
-    \ the admins recommend."
+    "The Recommended {icon} timeline is where you can see posts from servers
+    the admins recommend."
   step5_7:
-    "The Global {icon} timeline is where you can see posts from every other\
-    \ connected server."
+    "The Global {icon} timeline is where you can see posts from every other
+    connected server."
   step6_1: "So, what is this place?"
   step6_2:
     "Well, you didn't just join Jistflow. You joined a portal to the Fediverse,
@@ -1617,23 +1664,34 @@ _2fa:
   registerTOTP: "Register authenticator app"
   step1: "First, install an authentication app (such as {a} or {b}) on your device."
   step2: "Then, scan the QR code displayed on this screen."
-  step2Click: "Clicking on this QR code will allow you to register 2FA to your security key or phone authenticator app."
+  step2Click:
+    "Clicking on this QR code will allow you to register 2FA to your security
+    key or phone authenticator app."
   step2Url: "You can also enter this URL if you're using a desktop program:"
   step3Title: "Enter an authentication code"
   step3: "Enter the token provided by your app to finish setup."
   step4: "From now on, any future login attempts will ask for such a login token."
   securityKeyNotSupported: "Your browser does not support security keys."
-  registerTOTPBeforeKey: "Please set up an authenticator app to register a security or pass key."
-  securityKeyInfo: "Besides fingerprint or PIN authentication, you can also setup authentication via hardware security keys that support FIDO2 to further secure your account."
+  registerTOTPBeforeKey:
+    "Please set up an authenticator app to register a security
+    or pass key."
+  securityKeyInfo:
+    "Besides fingerprint or PIN authentication, you can also setup
+    authentication via hardware security keys that support FIDO2 to further secure
+    your account."
   chromePasskeyNotSupported: "Chrome passkeys are currently not supported."
   registerSecurityKey: "Register a security or pass key"
   securityKeyName: "Enter a key name"
   tapSecurityKey: "Please follow your browser to register the security or pass key"
   removeKey: "Remove security key"
   removeKeyConfirm: "Really delete the {name} key?"
-  whyTOTPOnlyRenew: "The authenticator app cannot be removed as long as a security key is registered."
+  whyTOTPOnlyRenew:
+    "The authenticator app cannot be removed as long as a security
+    key is registered."
   renewTOTP: "Reconfigure authenticator app"
-  renewTOTPConfirm: "This will cause verification codes from your previous app to stop working"
+  renewTOTPConfirm:
+    "This will cause verification codes from your previous app to
+    stop working"
   renewTOTPOk: "Reconfigure"
   renewTOTPCancel: "Cancel"
   token: "2FA Token"
@@ -1784,8 +1842,8 @@ _profile:
   metadataEdit: "Edit additional Information"
   metadataDescription:
     "Using these, you can display additional information fields
-    in your profile. You can add an {a} tag or {l} tag with {rel}
-    to verify the link on your profile!"
+    in your profile. You can add an {a} tag or {l} tag with {rel} to verify the link
+    on your profile!"
   metadataLabel: "Label"
   metadataContent: "Content"
   changeAvatar: "Change avatar"
@@ -2216,3 +2274,9 @@ _feeds:
   rss: "RSS"
   atom: "Atom"
   jsonFeed: "JSON feed"
+_iconSets:
+  bold: "Bold"
+  light: "Light"
+  regular: "Regular"
+  fill: "Filled"
+  duotone: "Duotone"

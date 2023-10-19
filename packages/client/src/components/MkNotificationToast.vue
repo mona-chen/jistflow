@@ -1,7 +1,7 @@
 <template>
 	<div class="mk-notification-toast" :style="{ zIndex }">
 		<transition
-			:name="$store.state.animation ? 'notification-toast' : ''"
+			:name="defaultStore.state.animation ? 'notification-toast' : ''"
 			appear
 			@after-leave="$emit('closed')"
 		>
@@ -15,9 +15,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import XNotification from "@/components/MkNotification.vue";
 import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 defineProps<{
 	notification: any; // TODO
@@ -28,11 +29,11 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex("high");
-let showing = $ref(true);
+const showing = ref(true);
 
 onMounted(() => {
 	window.setTimeout(() => {
-		showing = false;
+		showing.value = false;
 	}, 6000);
 });
 </script>

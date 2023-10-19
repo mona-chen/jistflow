@@ -24,12 +24,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import XTimeline from "@/components/MkTimeline.vue";
 import * as os from "@/os";
 import { useRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
@@ -37,86 +38,63 @@ const props = defineProps<{
 	antennaId: string;
 }>();
 
-let antenna = $ref(null);
-let rootEl = $ref<HTMLElement>();
-let tlEl = $ref<InstanceType<typeof XTimeline>>();
-const keymap = $computed(() => ({
+const antenna = ref(null);
+const rootEl = ref<HTMLElement>();
+const tlEl = ref<InstanceType<typeof XTimeline>>();
+const keymap = computed(() => ({
 	t: focus,
 }));
-
-async function timetravel() {
-	const { canceled, result: date } = await os.inputDate({
-		title: i18n.ts.date,
-	});
-	if (canceled) return;
-
-	tlEl.timetravel(date);
-}
 
 function settings() {
 	router.push(`/my/antennas/${props.antennaId}`);
 }
 
-async function doMarkRead() {
-	const ret = await os.api("antennas/mark-read", {
-		antennaId: props.antennaId,
-	});
-
-	if (ret) {
-		return true;
-	}
-
-	throw new Error("Failed to mark all as read");
-}
-
-async function markRead() {
-	await os.promiseDialog(doMarkRead());
-}
+// async function doMarkRead() {
+// 	const ret = await os.api("antennas/mark-read", {
+// 		antennaId: props.antennaId,
+// 	});
+//
+// 	if (ret) {
+// 		return true;
+// 	}
+//
+//	throw new Error("Failed to mark all as read");
+// }
 
 function focus() {
-	tlEl.focus();
+	tlEl.value.focus();
 }
 
 watch(
 	() => props.antennaId,
 	async () => {
-		antenna = await os.api("antennas/show", {
+		antenna.value = await os.api("antennas/show", {
 			antennaId: props.antennaId,
 		});
 	},
 	{ immediate: true },
 );
 
-const headerActions = $computed(() =>
-	antenna
+const headerActions = computed(() =>
+	antenna.value
 		? [
-				// {
-				// 	icon: "ph-calendar-blank ph-bold ph-lg",
-				// 	text: i18n.ts.jumpToSpecifiedDate,
-				// 	handler: timetravel,
-				// },
 				{
-					icon: "ph-gear-six ph-bold ph-lg",
+					icon: `${icon("ph-gear-six")}`,
 					text: i18n.ts.settings,
 					handler: settings,
 				},
-				// {
-				// 	icon: "ph-check ph-bold ph-lg",
-				// 	text: i18n.ts.markAllAsRead,
-				// 	handler: markRead,
-				// },
 		  ]
 		: [],
 );
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata(
 	computed(() =>
-		antenna
+		antenna.value
 			? {
-					title: antenna.name,
-					icon: "ph-flying-saucer ph-bold ph-lg",
+					title: antenna.value.name,
+					icon: `${icon("ph-flying-saucer")}`,
 			  }
 			: null,
 	),

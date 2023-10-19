@@ -15,7 +15,7 @@
 			<i
 				v-if="success"
 				:class="[$style.icon, $style.success]"
-				class="ph-check ph-bold ph-lg"
+				class="ph-check ph-lg"
 			></i>
 			<MkLoading
 				v-else
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, shallowRef } from "vue";
+import { shallowRef, watch } from "vue";
 import MkModal from "@/components/MkModal.vue";
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();

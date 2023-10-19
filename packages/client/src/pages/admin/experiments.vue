@@ -10,11 +10,11 @@
 			<FormSuspense :p="init">
 				<FormSwitch
 					v-model="enablePostImports"
-					@update:modelValue="save"
 					class="_formBlock"
+					@update:modelValue="save"
 				>
 					<template #label>
-						<i class="ph-download-simple ph-bold ph-lg"></i>
+						<i :class="icon('ph-download-simple')"></i>
 						{{ i18n.ts._experiments.enablePostImports }}
 					</template>
 					<template #caption>{{
@@ -27,7 +27,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
+
 import MkStickyContainer from "@/components/global/MkStickyContainer.vue";
 import FormSuspense from "@/components/form/suspense.vue";
 import FormSwitch from "@/components/form/switch.vue";
@@ -35,27 +36,29 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let enablePostImports = $ref(false);
-let meta = $ref<MetaExperiments | null>(null);
+const enablePostImports = ref(false);
+const meta = ref<MetaExperiments | null>(null);
 
-type MetaExperiments = {
+interface MetaExperiments {
 	experimentalFeatures?: {
 		postImports?: boolean;
 	};
-};
+}
 
 async function init() {
-	meta = (await os.api("admin/meta")) as MetaExperiments;
-	if (!meta) return;
+	meta.value = (await os.api("admin/meta")) as MetaExperiments;
+	if (!meta.value) return;
 
-	enablePostImports = meta.experimentalFeatures?.postImports ?? false;
+	enablePostImports.value =
+		meta.value.experimentalFeatures?.postImports ?? false;
 }
 
 function save() {
 	const experiments: MetaExperiments = {
 		experimentalFeatures: {
-			postImports: enablePostImports,
+			postImports: enablePostImports.value,
 		},
 	};
 	os.apiWithDialog("admin/update-meta", experiments).then(() => {
@@ -63,12 +66,12 @@ function save() {
 	});
 }
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts._experiments.title,
-	icon: "ph-flask ph-bold ph-lg",
+	icon: `${icon("ph-flask")}`,
 });
 </script>

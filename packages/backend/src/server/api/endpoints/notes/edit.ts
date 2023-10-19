@@ -35,6 +35,8 @@ import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { deliverToRelays } from "@/services/relay.js";
 // import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
+import { langmap } from "@/misc/langmap.js";
+import detectLanguage from "@/misc/detect-language.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -70,7 +72,7 @@ export const meta = {
 		},
 
 		cannotReRenote: {
-			message: "You can not Renote a pure Renote.",
+			message: "You cannot Renote a pure Renote.",
 			code: "CANNOT_RENOTE_TO_A_PURE_RENOTE",
 			id: "fd4cc33e-2a37-48dd-99cc-9b806eb2031a",
 		},
@@ -82,7 +84,7 @@ export const meta = {
 		},
 
 		cannotReplyToPureRenote: {
-			message: "You can not reply to a pure Renote.",
+			message: "You cannot reply to a pure Renote.",
 			code: "CANNOT_REPLY_TO_A_PURE_RENOTE",
 			id: "3ac74a84-8fd5-4bb0-870f-01804f82ce15",
 		},
@@ -130,7 +132,7 @@ export const meta = {
 		},
 
 		cannotPrivateRenote: {
-			message: "You can not perform a private renote.",
+			message: "You cannot perform a private renote.",
 			code: "CANNOT_PRIVATE_RENOTE",
 			id: "19a50f1c-84fa-4e33-81d3-17834ccc0ad8",
 		},
@@ -139,6 +141,18 @@ export const meta = {
 			message: "You are not a local user.",
 			code: "NOT_LOCAL_USER",
 			id: "b907f407-2aa0-4283-800b-a2c56290b822",
+		},
+
+		cannotChangeVisibility: {
+			message: "You cannot change the visibility of a note.",
+			code: "CANNOT_CHANGE_VISIBILITY",
+			id: "2917fd0b-da04-41de-949f-146835a006c6",
+		},
+
+		cannotQuoteOwnNote: {
+			message: "You cannot quote your own note.",
+			code: "CANNOT_QUOTE_OWN_NOTE",
+			id: "070eee98-5f8a-4eca-9dc0-830b4d4e52ac",
 		},
 	},
 } as const;
@@ -157,6 +171,7 @@ export const paramDef = {
 			},
 		},
 		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
+		lang: { type: "string", nullable: true, maxLength: 10 },
 		cw: { type: "string", nullable: true, maxLength: 250 },
 		localOnly: { type: "boolean", default: false },
 		noExtractMentions: { type: "boolean", default: false },
@@ -268,6 +283,10 @@ export default define(meta, paramDef, async (ps, user) => {
 			throw e;
 		});
 
+		if (ps.renoteId === note.id) {
+			throw new ApiError(meta.errors.cannotQuoteOwnNote);
+		}
+
 		if (renote.renoteId && !renote.text && !renote.fileIds && !renote.hasPoll) {
 			throw new ApiError(meta.errors.cannotReRenote);
 		}
@@ -357,6 +376,16 @@ export default define(meta, paramDef, async (ps, user) => {
 		ps.text = ps.text.trim();
 	} else {
 		ps.text = null;
+	}
+
+	if (ps.lang) {
+		if (!Object.keys(langmap).includes(ps.lang.trim()))
+			throw new Error("invalid param");
+		ps.lang = ps.lang.trim().split("-")[0].split("@")[0];
+	} else if (ps.text) {
+		ps.lang = detectLanguage(ps.text);
+	} else {
+		ps.lang = null;
 	}
 
 	let tags = [];
@@ -516,6 +545,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (ps.text !== note.text) {
 		update.text = ps.text;
 	}
+	if (ps.lang !== note.lang) {
+		update.lang = ps.lang;
+	}
 	if (ps.cw !== note.cw || (ps.cw && !note.cw)) {
 		update.cw = ps.cw;
 	}
@@ -523,7 +555,8 @@ export default define(meta, paramDef, async (ps, user) => {
 		update.cw = null;
 	}
 	if (ps.visibility !== note.visibility) {
-		update.visibility = ps.visibility;
+		// update.visibility = ps.visibility;
+		throw new ApiError(meta.errors.cannotChangeVisibility);
 	}
 	if (ps.localOnly !== note.localOnly) {
 		update.localOnly = ps.localOnly;
@@ -591,7 +624,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.noSuchNote);
 	}
 
-	if (publishing) {
+	if (publishing && user.isIndexable) {
 		index(note, true);
 
 		// Publish update event for the updated note details

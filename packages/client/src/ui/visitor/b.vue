@@ -26,7 +26,7 @@
 			</div>
 		</div>
 
-		<transition :name="$store.state.animation ? 'tray-back' : ''">
+		<transition :name="defaultStore.state.animation ? 'tray-back' : ''">
 			<div
 				v-if="showMenu"
 				class="menu-back _modalBg"
@@ -35,28 +35,36 @@
 			></div>
 		</transition>
 
-		<transition :name="$store.state.animation ? 'tray' : ''">
+		<transition :name="defaultStore.state.animation ? 'tray' : ''">
 			<div v-if="showMenu" class="menu">
 				<MkA to="/" class="link" active-class="active"
-					><i class="ph-house ph-bold ph-lg icon"></i
+					><i :class="icon('ph-house icon')"></i
 					>{{ i18n.ts.home }}</MkA
 				>
 				<MkA to="/explore" class="link" active-class="active"
-					><i class="ph-compass ph-bold ph-lg icon"></i
+					><i :class="icon('ph-compass icon')"></i
 					>{{ i18n.ts.explore }}</MkA
 				>
 				<MkA to="/channels" class="link" active-class="active"
-					><i class="ph-television ph-bold ph-lg icon"></i
+					><i :class="icon('ph-television icon')"></i
 					>{{ i18n.ts.channel }}</MkA
 				>
 				<MkA to="/pages" class="link" active-class="active"
-					><i class="ph-file-text ph-bold ph-lg icon"></i
+					><i :class="icon('ph-file-text icon')"></i
 					>{{ i18n.ts.pages }}</MkA
 				>
 				<MkA to="/gallery" class="link" active-class="active"
-					><i class="ph-image-square ph-bold ph-lg icon"></i
+					><i :class="icon('ph-image-square icon')"></i
 					>{{ i18n.ts.gallery }}</MkA
 				>
+				<button
+					class="_button link"
+					active-class="active"
+					@click="search()"
+				>
+					<i :class="icon('ph-magnifying-glass icon')"></i
+					><span>{{ i18n.ts.search }}</span>
+				</button>
 				<div class="action">
 					<button class="_buttonPrimary" @click="signup()">
 						{{ i18n.ts.signup }}
@@ -72,35 +80,31 @@
 
 <script lang="ts" setup>
 import type { ComputedRef } from "vue";
-import { onMounted, provide } from "vue";
+import { computed, onMounted, provide, ref } from "vue";
 import XHeader from "./header.vue";
 import XKanban from "./kanban.vue";
 import { host, instanceName } from "@/config";
 import { search } from "@/scripts/search";
 import * as os from "@/os";
 import { instance } from "@/instance";
-import MkPagination from "@/components/MkPagination.vue";
 import XSigninDialog from "@/components/MkSigninDialog.vue";
 import XSignupDialog from "@/components/MkSignupDialog.vue";
-import MkButton from "@/components/MkButton.vue";
 import { ColdDeviceStorage, defaultStore } from "@/store";
 import { mainRouter } from "@/router";
 import type { PageMetadata } from "@/scripts/page-metadata";
-import {
-	provideMetadataReceiver,
-	setPageMetadata,
-} from "@/scripts/page-metadata";
+import { provideMetadataReceiver } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const DESKTOP_THRESHOLD = 1000;
 
-let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
+const pageMetadata = ref<null | ComputedRef<PageMetadata>>();
 
 provide("router", mainRouter);
 provideMetadataReceiver((info) => {
-	pageMetadata = info;
-	if (pageMetadata.value) {
-		document.title = `${pageMetadata.value.title} | ${instanceName}`;
+	pageMetadata.value = info;
+	if (pageMetadata.value.value) {
+		document.title = `${pageMetadata.value.value.title} | ${instanceName}`;
 	}
 });
 
@@ -112,12 +116,12 @@ const isTimelineAvailable =
 	!instance.disableLocalTimeline ||
 	!instance.disableRecommendedTimeline ||
 	!instance.disableGlobalTimeline;
-const showMenu = $ref(false);
-let isDesktop = $ref(window.innerWidth >= DESKTOP_THRESHOLD),
-	narrow = $ref(window.innerWidth < 1280),
-	meta = $ref();
+const showMenu = ref(false);
+const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
+const narrow = ref(window.innerWidth < 1280);
+const meta = ref();
 
-const keymap = $computed(() => {
+const keymap = computed(() => {
 	return {
 		d: () => {
 			if (ColdDeviceStorage.get("syncDeviceDarkMode")) return;
@@ -127,10 +131,10 @@ const keymap = $computed(() => {
 	};
 });
 
-const root = $computed(() => mainRouter.currentRoute.value.name === "index");
+const root = computed(() => mainRouter.currentRoute.value.name === "index");
 
 os.api("meta", { detail: true }).then((res) => {
-	meta = res;
+	meta.value = res;
 });
 
 function signin() {
@@ -156,11 +160,12 @@ function signup() {
 }
 
 onMounted(() => {
-	if (!isDesktop) {
+	if (!isDesktop.value) {
 		window.addEventListener(
 			"resize",
 			() => {
-				if (window.innerWidth >= DESKTOP_THRESHOLD) isDesktop = true;
+				if (window.innerWidth >= DESKTOP_THRESHOLD)
+					isDesktop.value = true;
 			},
 			{ passive: true },
 		);
@@ -168,7 +173,7 @@ onMounted(() => {
 });
 
 defineExpose({
-	showMenu: $$(showMenu),
+	showMenu,
 });
 </script>
 

@@ -3,7 +3,7 @@
 		<template #empty>
 			<div class="_fullinfo">
 				<img
-					src="/static-assets/badges/info.png"
+					src="/static-assets/badges/info.webp"
 					class="_ghost"
 					alt="Info"
 				/>
@@ -26,7 +26,7 @@
 					"
 					:key="notification.id"
 					:note="notification.note"
-					:collapsedReply="
+					:collapsed-reply="
 						notification.type === 'reply' ||
 						(notification.type === 'mention' &&
 							notification.note.replyId != null)
@@ -46,20 +46,13 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	defineComponent,
-	markRaw,
-	onUnmounted,
-	onMounted,
-	computed,
-	ref,
-} from "vue";
-import { notificationTypes } from "firefish-js";
-import MkPagination, { Paging } from "@/components/MkPagination.vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+import type { notificationTypes } from "firefish-js";
+import type { Paging } from "@/components/MkPagination.vue";
+import MkPagination from "@/components/MkPagination.vue";
 import XNotification from "@/components/MkNotification.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";
-import * as os from "@/os";
 import { stream } from "@/stream";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";

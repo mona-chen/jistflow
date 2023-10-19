@@ -22,10 +22,10 @@
 						@click="() => (showBanner = !showBanner)"
 					>
 						<template v-if="showBanner"
-							><i class="ph-caret-up ph-bold ph-lg"></i
+							><i :class="icon('ph-caret-up')"></i
 						></template>
 						<template v-else
-							><i class="ph-caret-down ph-bold ph-lg"></i
+							><i :class="icon('ph-caret-down')"></i
 						></template>
 					</button>
 					<div v-if="!showBanner" class="hideOverlay"></div>
@@ -39,9 +39,7 @@
 					>
 						<div class="status">
 							<div>
-								<i
-									class="ph-users ph-bold ph-lg ph-fw ph-lg"
-								></i
+								<i :class="icon('ph-users ph-fw')"></i
 								><I18n
 									:src="i18n.ts._channel.usersCount"
 									tag="span"
@@ -54,9 +52,7 @@
 								>
 							</div>
 							<div>
-								<i
-									class="ph-pencil ph-bold ph-lg ph-fw ph-lg"
-								></i
+								<i :class="icon('ph-pencil ph-fw')"></i
 								><I18n
 									:src="i18n.ts._channel.notesCount"
 									tag="span"
@@ -101,8 +97,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, watch } from "vue";
-import MkContainer from "@/components/MkContainer.vue";
+import { computed, ref, watch } from "vue";
 import XPostForm from "@/components/MkPostForm.vue";
 import XTimeline from "@/components/MkTimeline.vue";
 import XChannelFollowButton from "@/components/MkChannelFollowButton.vue";
@@ -111,6 +106,7 @@ import { useRouter } from "@/router";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
@@ -118,13 +114,13 @@ const props = defineProps<{
 	channelId: string;
 }>();
 
-let channel = $ref(null);
-let showBanner = $ref(true);
+const channel = ref(null);
+const showBanner = ref(true);
 
 watch(
 	() => props.channelId,
 	async () => {
-		channel = await os.api("channels/show", {
+		channel.value = await os.api("channels/show", {
 			channelId: props.channelId,
 		});
 	},
@@ -132,14 +128,14 @@ watch(
 );
 
 function edit() {
-	router.push(`/channels/${channel?.id}/edit`);
+	router.push(`/channels/${channel.value?.id}/edit`);
 }
 
-const headerActions = $computed(() => [
-	...(channel && channel?.userId === $i?.id
+const headerActions = computed(() => [
+	...(channel.value && channel.value?.userId === $i?.id
 		? [
 				{
-					icon: "ph-gear-six ph-bold ph-lg",
+					icon: `${icon("ph-gear-six")}`,
 					text: i18n.ts.edit,
 					handler: edit,
 				},
@@ -147,14 +143,14 @@ const headerActions = $computed(() => [
 		: []),
 ]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata(
 	computed(() =>
-		channel
+		channel.value
 			? {
-					title: channel.name,
-					icon: "ph-television ph-bold ph-lg",
+					title: channel.value.name,
+					icon: `${icon("ph-television")}`,
 			  }
 			: null,
 	),

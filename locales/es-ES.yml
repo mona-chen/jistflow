@@ -161,7 +161,7 @@ autoAcceptFollowed: "Aceptar automáticamente las solicitudes de seguimiento de 
   usuarios que sigues"
 addAccount: "Agregar Cuenta"
 loginFailed: "Error al iniciar sesión"
-showOnRemote: "Ver en servidor remoto"
+showOnRemote: "Abrir página original"
 general: "General"
 wallpaper: "Fondo de pantalla"
 setWallpaper: "Establecer fondo de pantalla"
@@ -340,9 +340,6 @@ dayX: "Día {day}"
 monthX: "Mes {month}"
 yearX: "Año {year}"
 pages: "Páginas"
-integration: "Integraciones"
-connectService: "Conectar"
-disconnectService: "Desconectar"
 enableLocalTimeline: "Habilitar linea de tiempo local"
 enableGlobalTimeline: "Habilitar linea de tiempo global"
 disablingTimelinesInfo: "Aunque se desactiven estas lineas de tiempo, por conveniencia
@@ -540,7 +537,7 @@ objectStorageSetPublicRead: "Seleccionar \"public-read\" al subir "
 serverLogs: "Registros del servidor"
 deleteAll: "Eliminar todos"
 showFixedPostForm: "Mostrar el formulario de las entradas encima de la línea de tiempo"
-newNoteRecived: "Tienes unas publicaciones nuevas"
+newNoteRecived: "Hay publicaciones nuevas"
 sounds: "Sonidos"
 listen: "Escuchar"
 none: "Ninguna"
@@ -572,8 +569,8 @@ updateRemoteUser: "Actualizar información de usuario remoto"
 deleteAllFiles: "Borrar todos los archivos"
 deleteAllFilesConfirm: "¿Desea borrar todos los archivos?"
 removeAllFollowing: "Retener todos los siguientes"
-removeAllFollowingDescription: "Cancelar todos los siguientes del servidor {host}.
-  Ejecutar en caso de que esta instancia haya dejado de existir."
+removeAllFollowingDescription: "Al ejecutar esto todas las cuentas de {host} dejarán
+  de seguirse. Por favor, ejecuta esto si el servidor ya no existe."
 userSuspended: "Este usuario ha sido suspendido."
 userSilenced: "Este usuario ha sido silenciado."
 yourAccountSuspendedTitle: "Esta cuenta ha sido suspendida"
@@ -690,7 +687,7 @@ instanceTicker: "Información de publicaciones de el servidor"
 waitingFor: "Esperando a {x}"
 random: "Aleatorio"
 system: "Sistema"
-switchUi: "Cambiar interfaz de usuario"
+switchUi: "Interfaz"
 desktop: "Escritorio"
 clip: "Clip"
 createNew: "Crear"
@@ -700,15 +697,15 @@ unclip: "Quitar clip"
 confirmToUnclipAlreadyClippedNote: "Esta publicación ya está incluida en el clip \"\
   {name}\". ¿Quiere quitar la nota del clip?"
 public: "Público"
-i18nInfo: "Firefish está siendo traducido a varios idiomas gracias a voluntarios. Se
-  puede colaborar traduciendo en {link}"
+i18nInfo: "Firefish está siendo traducido a varios idiomas gracias a voluntarios.
+  Se puede colaborar traduciendo en {link}"
 manageAccessTokens: "Administrar tokens de acceso"
 accountInfo: "Información de la Cuenta"
 notesCount: "Cantidad de publicaciones"
 repliesCount: "Cantidad de respuestas hechas"
-renotesCount: "Cantidad de renotas hechas"
+renotesCount: "Número de impulsos enviados"
 repliedCount: "Cantidad de respuestas recibidas"
-renotedCount: "Cantidad de renotas recibidas"
+renotedCount: "Cantidad de impulsos recibidos"
 followingCount: "Cantidad de seguidos"
 followersCount: "Cantidad de seguidores"
 sentReactionsCount: "Cantidad de reacciones hechas"
@@ -722,9 +719,9 @@ driveUsage: "Uso del drive"
 noCrawle: "Rechazar indexación del crawler"
 noCrawleDescription: "Pedir a los motores de búsqueda que no indexen tu perfil, publicaciones,
   páginas, etc."
-lockedAccountInfo: "A menos que configures la visibilidad de tus notas como \"Sólo
-  seguidores\", tus notas serán visibles para cualquiera, incluso si requieres que
-  los seguidores sean aprobados manualmente."
+lockedAccountInfo: "A menos que configures la visibilidad de tus publicaciones como
+  \"Sólo seguidores\", tus publicaciones serán visibles para cualquiera, incluso si
+  requieres que los seguidores sean aprobados manualmente."
 alwaysMarkSensitive: "Marcar los medios de comunicación como contenido sensible por
   defecto"
 loadRawImages: "Cargar las imágenes originales en lugar de mostrar las miniaturas"
@@ -758,7 +755,7 @@ showTitlebar: "Mostrar la barra de título"
 clearCache: "Limpiar caché"
 onlineUsersCount: "{n} usuarios en línea"
 nUsers: "{n} Usuarios"
-nNotes: "{n} Notas"
+nNotes: "{n} Publicaciones"
 sendErrorReports: "Envíar informe de errores"
 sendErrorReportsDescription: "Si habilita esta opción, los detalles de los errores
   serán compartidos con Firefish cuando ocurra un problema, lo que ayudará a mejorar
@@ -788,7 +785,7 @@ capacity: "Capacidad"
 inUse: "Usado"
 editCode: "Editar código"
 apply: "Aplicar"
-receiveAnnouncementFromInstance: "Recibir notificaciones de la instancia"
+receiveAnnouncementFromInstance: "Recibir notificaciones de este servidor"
 emailNotification: "Notificaciones por correo electrónico"
 publish: "Publicar"
 inChannelSearch: "Buscar en el canal"
@@ -804,9 +801,10 @@ unlikeConfirm: "¿Quitar como favorito?"
 fullView: "Vista completa"
 quitFullView: "quitar vista completa"
 addDescription: "Agregar descripción"
-userPagePinTip: "Puede mantener sus notas visibles aquí seleccionando Pin en el menú
-  de notas individuales"
-notSpecifiedMentionWarning: "Algunas menciones no están incluidas en el destino"
+userPagePinTip: "Puede mantener tus publicaciones visibles aquí seleccionando Pin
+  en el menú de notas individuales."
+notSpecifiedMentionWarning: "Esta publicacion contiene menciones a usuarios no incluídos
+  como destinatarios"
 info: "Información"
 userInfo: "Información del usuario"
 unknown: "Desconocido"
@@ -819,7 +817,7 @@ active: "Activo"
 offline: "Sin conexión"
 notRecommended: "obsoleto"
 botProtection: "Protección contra bots"
-instanceBlocking: "Instancias bloqueadas"
+instanceBlocking: "Gestión de la Federación"
 selectAccount: "Elija una cuenta"
 switchAccount: "Cambiar de cuenta"
 enabled: "Activado"
@@ -836,8 +834,8 @@ postToGallery: "Crear una nueva publicación en la galería"
 gallery: "Galería"
 recentPosts: "Posts recientes"
 popularPosts: "Más vistos"
-shareWithNote: "Compartir con una nota"
-ads: "Anuncios"
+shareWithNote: "Compartir con una publicación"
+ads: "Banners de la comunidad"
 expiration: "Termina el"
 memo: "Notas"
 priority: "Prioridad"
@@ -873,7 +871,7 @@ pubSub: "Cuentas Pub/Sub"
 lastCommunication: "Última comunicación"
 resolved: "Resuelto"
 unresolved: "Sin resolver"
-breakFollow: "Dejar de seguir"
+breakFollow: "Quitar seguidor"
 itsOn: "¡Está encendido!"
 itsOff: "¡Está apagado!"
 emailRequiredForSignup: "Se requere una dirección de correo electrónico para el registro
@@ -885,14 +883,14 @@ manageAccounts: "Administrar cuenta"
 makeReactionsPublic: "Hacer el historial de reacciones público"
 makeReactionsPublicDescription: "Todas las reacciones que hayas hecho serán públicamente
   visibles."
-classic: "Clásico"
+classic: "Centrado"
 muteThread: "Ocultar hilo"
 unmuteThread: "Mostrar hilo"
 ffVisibility: "Visibilidad de seguidores y seguidos"
 ffVisibilityDescription: "Puedes configurar quien puede ver a quienes sigues y quienes
   te siguen"
-continueThread: "Ver la continuación del hilo"
-deleteAccountConfirm: "La cuenta será borrada. ¿Está seguro?"
+continueThread: "Continuar hilo"
+deleteAccountConfirm: "La cuenta será borrada irreversiblemente. ¿Está seguro?"
 incorrectPassword: "La contraseña es incorrecta"
 voteConfirm: "¿Confirma su voto a {choice}?"
 hide: "Ocultar"
@@ -905,12 +903,12 @@ overridedDeviceKind: "Tipo de dispositivo"
 smartphone: "Teléfono smartphone"
 tablet: "Tablet"
 auto: "Automático"
-themeColor: "Color del tema"
+themeColor: "Color de la marquesina del servidor"
 size: "Tamaño"
 numberOfColumn: "Cantidad de columnas"
 searchByGoogle: "Buscar"
-instanceDefaultLightTheme: "Tema claro por defecto de la instancia"
-instanceDefaultDarkTheme: "Tema oscuro por defecto de la instancia"
+instanceDefaultLightTheme: "Tema claro por defecto del servidor"
+instanceDefaultDarkTheme: "Tema oscuro por defecto del servidor"
 instanceDefaultThemeDescription: "Ingrese el código del tema en formato objeto"
 mutePeriod: "Período de silenciamiento"
 indefinitely: "Sin límite de tiempo"
@@ -934,7 +932,9 @@ driveCapOverrideLabel: "Cambiar la capacidad de la unidad para este usuario"
 driveCapOverrideCaption: "Restablecer la capacidad a su predeterminado ingresando
   un valor de 0 o menos"
 requireAdminForView: "Necesitas iniciar sesión como administrador para ver esto."
-isSystemAccount: "Cuenta creada y operada automáticamente por el sistema"
+isSystemAccount: "Esta cuenta es creada y operada automaticamente por el sistema.
+  Porfavor no moderar, editar, borrar o manipular de ninguna forma esta cuenta, o
+  podría romper tu servidor."
 typeToConfirm: "Ingrese {x} para confirmar"
 deleteAccount: "Borrar cuenta"
 document: "Documento"
@@ -965,7 +965,7 @@ beta: "Beta"
 enableAutoSensitive: "Marcar automáticamente contenido NSFW"
 enableAutoSensitiveDescription: "Permite la detección y marcado automático de contenido
   NSFW usando 'Machine Learning' cuando sea posible. Incluso si esta opción está desactivada,
-  puede ser activado para toda la instancia."
+  puede ser activado para todo el servidor."
 activeEmailValidationDescription: "Habilita la validación estricta de direcciones
   de correo electrónico, lo cual incluye la revisión de direcciones desechables y
   si se puede comunicar con éstas. Cuando está deshabilitado, sólo el formato de la
@@ -1019,8 +1019,9 @@ _forgotPassword:
   enterEmail: "Ingrese el correo usado para registrar la cuenta. Se enviará un link
     para resetear la contraseña."
   ifNoEmail: "Si no utilizó un correo para crear la cuenta, contáctese con el administrador."
-  contactAdmin: "Esta instancia no admite el uso de direcciones de correo electrónico,
-    póngase en contacto con el administrador de la instancia para restablecer su contraseña"
+  contactAdmin: "Este servidor no admite el uso de direcciones de correo electrónico,
+    póngase en contacto con la persona que administra el servidor para restablecer
+    su contraseña."
 _gallery:
   my: "Mi galería"
   liked: "Publicaciones que me gustan"
@@ -1073,6 +1074,15 @@ _aboutFirefish:
   morePatrons: "También apreciamos el apoyo de muchos más que no están enlistados
     aquí. ¡Gracias! 🥰"
   patrons: "Mecenas de Firefish"
+  pleaseDonateToFirefish: Por favor considera donar a Firefish para apollar su desarrollo.
+  donateHost: Dona a {host}
+  patronsList: Listados cronológicamente no por monto de la donación. ¡Dona con el
+    vínculo de arriba para que tu nombre aparezca aquí!
+  donateTitle: ¿Te gusta Firefish?
+  pleaseDonateToHost: También considera donar a tu propio servidor , {host}, para
+    ayudar con los costos de operación.
+  sponsors: Patrocinadores de Firefish
+  misskeyContributors: Contribuidores de Misskey
 _nsfw:
   respect: "Ocultar medios NSFW"
   ignore: "No esconder medios NSFW "
@@ -1080,8 +1090,8 @@ _nsfw:
 _mfm:
   cheatSheet: "Hoja de referencia de MFM"
   intro: "MFM es un lenguaje de marcado dedicado que se puede usar en varios lugares
-    dentro de Misskey, Firefish, Akkoma, y mucho más. Aquí puede ver una lista de sintaxis
-    disponibles en MFM."
+    dentro de Misskey, Firefish, Akkoma, y mucho más. Aquí puede ver una lista de
+    sintaxis disponibles en MFM."
   dummy: "Firefish expande el mundo de la Fediverso"
   mention: "Menciones"
   mentionDescription: "El signo @ seguido de un nombre de usuario se puede utilizar
@@ -1106,7 +1116,7 @@ _mfm:
   inlineMath: "Fórmula (insertado)"
   inlineMathDescription: "Muestra fórmulas (KaTeX) insertadas"
   blockMath: "Fórmula (bloque)"
-  blockMathDescription: "Muestra fórmulas (KaTeX) de varias líneas en un bloque"
+  blockMathDescription: "Muestra fórmulas matemáticas (KaTeX) en un bloque"
   quote: "Citar"
   quoteDescription: "Muestra el contenido como una cita"
   emoji: "Emojis personalizados"
@@ -1151,6 +1161,24 @@ _mfm:
   plainDescription: "Desactiva los efectos de todo el contenido MFM con este efecto
     MFM."
   position: Posición
+  warn: MFM podría contener movimientos rápidos o animaciones destellantes
+  advancedDescription: Si está desactivado, solo permitir markup básico, excepto cuando
+    un MFM animado se reproduce
+  scale: Escalar
+  foreground: Color en primer plano
+  scaleDescription: Ajustar el contenido según un valor especificado.
+  stop: Detener MFM
+  crop: Recortar
+  cropDescription: Recortar contenido.
+  backgroundDescription: Cambiar el color de fondo del texto.
+  alwaysPlay: Siempre reproducir todos los MFM animados
+  fade: Fundido
+  advanced: MFM avanzado
+  play: Reproducir MFM
+  foregroundDescription: Cambiar el color del texto en primer plano.
+  background: Color de fondo
+  positionDescription: Mueve el contenido en una cantidad especificada.
+  fadeDescription: Funde el contenido dentro y fuera.
 _instanceTicker:
   none: "No mostrar"
   remote: "Mostrar a usuarios remotos"
@@ -1169,7 +1197,7 @@ _channel:
   owned: "Dueño"
   following: "Siguiendo"
   usersCount: "{n} participantes"
-  notesCount: "{n} notas"
+  notesCount: "{n} Publicaciones"
   nameOnly: Nombre solamente
   nameAndDescription: Nombre y descripción
 _menuDisplay:
@@ -1183,18 +1211,20 @@ _wordMute:
     con lineas nuevas indica una declaracion Or。"
   muteWordsDescription2: "Encerrar las palabras clave entre numerales para usar expresiones
     regulares"
-  softDescription: "Ocultar en la linea de tiempo las notas que cumplen las condiciones"
-  hardDescription: "Evitar que se agreguen a la linea de tiempo las notas que cumplen
-    las condiciones. Las notas no agregadas seguirán quitadas aunque cambien las condiciones."
+  softDescription: "Ocultar en la linea de tiempo las publicaciones que cumplen las
+    condiciones"
+  hardDescription: "Evitar que se agreguen a la linea de tiempo las publicaciones
+    que cumplen las condiciones, estas no serán agregadas a la linea de tiempo incluso
+    si cambian las condiciones."
   soft: "Suave"
   hard: "Duro"
-  mutedNotes: "Notas silenciadas"
+  mutedNotes: "Publicaciones silenciadas"
 _instanceMute:
-  instanceMuteDescription: "Silencia todas las notas y reposts de la instancias seleccionadas,
-    incluyendo respuestas a los usuarios de las mismas"
+  instanceMuteDescription: "Silencia todas las publicaciones e impusos de los servidores
+    seleccionados, incluyendo respuestas a los usuarios de las mismas."
   instanceMuteDescription2: "Separar por líneas"
-  title: "Oculta las notas de las instancias listadas."
-  heading: "Instancias a silenciar"
+  title: "Oculta las publicaciones de los servidores listados."
+  heading: "Servidores a silenciar"
 _theme:
   explore: "Explorar temas"
   install: "Instalar tema"
@@ -1243,7 +1273,7 @@ _theme:
     hashtag: "Hashtag"
     mention: "Menciones"
     mentionMe: "Menciones (yo)"
-    renote: "Renotar"
+    renote: "Impulsar"
     modalBg: "Fondo modal"
     divider: "Divisor"
     scrollbarHandle: "Cuadro de la barra de desplazamiento"
@@ -1270,23 +1300,23 @@ _theme:
     accentLighten: "Acento (claro)"
     fgHighlighted: "Texto resaltado"
 _sfx:
-  note: "Notas"
-  noteMy: "Nota (a mí mismo)"
+  note: "Nueva publicación"
+  noteMy: "Publicación propia"
   notification: "Notificaciones"
   chat: "Chat"
   chatBg: "Chat (Fondo)"
-  antenna: "Antena receptora"
+  antenna: "Antenas"
   channel: "Notificaciones del canal"
 _ago:
   future: "Futuro"
   justNow: "Recién ahora"
-  secondsAgo: "Hace {n} segundos"
-  minutesAgo: "Hace {n} minutos"
-  hoursAgo: "Hace {n} horas"
-  daysAgo: "Hace {n} días"
-  weeksAgo: "Hace {n} semanas"
-  monthsAgo: "Hace {n} meses"
-  yearsAgo: "Hace {n} años"
+  secondsAgo: "Hace {n} s"
+  minutesAgo: "Hace {n} m"
+  hoursAgo: "Hace {n} hora(s)"
+  daysAgo: "Hace {n} d"
+  weeksAgo: "Hace {n} sem"
+  monthsAgo: "Hace {n} mes(es)"
+  yearsAgo: "Hace {n} año(s)"
 _time:
   second: "Segundos"
   minute: "Minutos"
@@ -1298,26 +1328,26 @@ _tutorial:
   step1_2: "Vamos a configurarte. ¡Estarás listo y funcionando en poco tiempo!"
   step2_1: "En primer lugar, rellena tu perfil"
   step2_2: "Proporcionar algo de información sobre quién eres hará que sea más fácil
-    para los demás saber si quieren ver tus notas o seguirte."
+    para los demás saber si quieren ver tus publicaciones o seguirte."
   step3_1: "¡Ahora es el momento de seguir a algunas personas!"
   step3_2: "Tu página de inicio y tus líneas de tiempo sociales se basan en quién
     sigues, así que intenta seguir un par de cuentas para empezar.\nHaz clic en el
     círculo más en la parte superior derecha de un perfil para seguirlos."
   step4_1: "Vamos a salir a la calle"
-  step4_2: "Para tu primer post, a algunas personas les gusta hacer un post de {introduction}
-    o un simple \"¡Hola mundo!\""
+  step4_2: "Para tu primer publicación, a algunas personas les gusta escribir una
+    {introduction} o un simple \"¡Hola mundo!\""
   step5_1: "¡Líneas de tiempo, líneas de tiempo por todas partes!"
-  step5_2: "Su instancia tiene {timelines} diferentes líneas de tiempo habilitadas"
+  step5_2: "Tu servidor tiene {timelines} diferentes líneas de tiempo habilitadas."
   step5_3: "La línea de tiempo Inicio {icon} es donde puedes ver las publicaciones
-    de tus seguidores."
+    de personas que sigues."
   step5_4: "La línea de tiempo Local {icon} es donde puedes ver las publicaciones
-    de todos los demás en esta instancia."
-  step5_5: "La línea de tiempo {icon} recomendada es donde puedes ver las publicaciones
-    de las instancias que los administradores recomiendan."
-  step5_6: "La línea de tiempo Social {icon} es donde puedes ver las publicaciones
-    de los amigos de tus seguidores."
-  step5_7: "La línea de tiempo Global {icon} es donde puedes ver las publicaciones
-    de todas las demás instancias conectadas."
+    de todos los demás en este servidor."
+  step5_5: "La línea de tiempo {icon} social es una combinación de las líneas de tiempo
+    Inicio y Local."
+  step5_6: "La línea de tiempo {icon} recomendada es donde puedes ver las publicaciones
+    de los servidores que los administradores recomiendan."
+  step5_7: "La línea de tiempo {icon} global es donde puedes ver las publicaciones
+    de todos los demás servidores a los cuales este servidor conecta."
   step6_1: "Entonces, ¿qué es este lugar?"
   step6_2: "Bueno, no sólo te has unido a Firefish. Te has unido a un portal del Fediverso,
     una red interconectada de miles de servidores, llamada \"instancias\""
@@ -1338,6 +1368,26 @@ _2fa:
   securityKeyInfo: "Se puede configurar el inicio de sesión usando una clave de seguridad
     de hardware que soporte FIDO2 o con un certificado de huella digital o con un
     PIN"
+  chromePasskeyNotSupported: Contraseñas de Chrome no están soportadas.
+  removeKeyConfirm: ¿Realmente deseas borrar la clave {name}?
+  step3Title: Ingresa un código de autorización
+  renewTOTP: Reconfigurar la aplicación autorizadora
+  whyTOTPOnlyRenew: La aplicación autorizadora no puede ser quitada mientras la clave
+    de seguridad siga registrada.
+  renewTOTPConfirm: Esto causará que los códigos de verificación de la aplicación
+    anterior dejen de funcionar
+  renewTOTPOk: Reconfigurar
+  securityKeyNotSupported: Tu navegador no soporta claves de seguridad.
+  step2Click: Presionar este código QR te permitirá registrar la autorización 2FA
+    a tu clave de seguridad o aplicación autorizadora.
+  registerTOTPBeforeKey: Por favor configura una aplicación autorizadora para registrar
+    una clave de seguridad o de paso.
+  securityKeyName: Ingresa el nombre de la clave
+  tapSecurityKey: Por favor, espera al navegador para registrar la clave de seguridad
+    o de paso
+  renewTOTPCancel: Cancelar
+  token: Token 2FA
+  removeKey: Quitar clave de seguridad
 _permissions:
   "read:account": "Ver información de la cuenta"
   "write:account": "Editar información de la cuenta"
@@ -1353,7 +1403,7 @@ _permissions:
   "write:messaging": "Administrar chat"
   "read:mutes": "Ver usuarios silenciados"
   "write:mutes": "Administrar usuarios silenciados"
-  "write:notes": "Crear/borrar notas"
+  "write:notes": "Crear o borrar publicaciones"
   "read:notifications": "Ver notificaciones"
   "write:notifications": "Administrar notificaciones"
   "read:reactions": "Ver reacciones"
@@ -1375,16 +1425,19 @@ _auth:
   shareAccess: "¿Desea permitir el acceso a la cuenta \"{name}\"?"
   shareAccessAsk: "¿Está seguro de que desea autorizar esta aplicación para acceder
     a su cuenta?"
-  permissionAsk: "Esta aplicación requiere los siguientes permisos"
+  permissionAsk: "Esta aplicación requiere los siguientes permisos:"
   pleaseGoBack: "Por favor, vuelve a la aplicación"
   callback: "Volviendo a la aplicación"
   denied: "Acceso denegado"
+  copyAsk: 'Por favor, pega el siguiente código de autorización en la aplicación:'
+  allPermissions: Acceso completo
 _antennaSources:
-  all: "Todas las notas"
-  homeTimeline: "Notas de los usuarios que sigues"
-  users: "Notas de un usuario o varios"
-  userList: "Notas de los usuarios de una lista"
-  userGroup: "Notas de los usuarios de una grupo"
+  all: "Todas las publicaciones"
+  homeTimeline: "Publicaciones de los usuarios que sigues"
+  users: "Publicaciones de usuarios específicos"
+  userList: "Publicaciones de una lista de usuarios específica"
+  userGroup: "Publicaciones de usuarios de un grupo"
+  instances: Publicaciones de todos los usuarios en un servidor
 _weekday:
   sunday: "Domingo"
   monday: "Lunes"
@@ -1401,24 +1454,28 @@ _widgets:
   trends: "Tendencias"
   clock: "Reloj"
   rss: "Lector RSS"
-  rssTicker: "Ticker-RSS"
+  rssTicker: "Marquesina RSS"
   activity: "Actividad"
   photos: "Fotos"
   digitalClock: "Reloj digital"
   unixClock: "Reloj UNIX"
   federation: "Federación"
-  instanceCloud: "Nube de palabras de la instancia"
+  instanceCloud: "Nube de servidores"
   postForm: "Formulario"
   slideshow: "Diapositivas"
   button: "Botón"
-  onlineUsers: "Usuarios en linea"
+  onlineUsers: "Usuarios en línea"
   jobQueue: "Cola de trabajos"
   serverMetric: "Estadísticas del servidor"
   aiscript: "Consola de AiScript"
   aichan: "indigo"
-  userList: Lista Usuarios
+  userList: Lista de usuarios
   _userList:
     chooseList: Seleccione una lista
+  serverInfo: Información del servidor
+  meiliStatus: Estado del servidor
+  meiliSize: Tamaño del índice
+  meiliIndexCount: Publicaciones indizadas
 _cw:
   hide: "Ocultar"
   show: "Ver más"
@@ -1448,18 +1505,18 @@ _poll:
   remainingSeconds: "Quedan {s} segundos para que finalice"
 _visibility:
   public: "Público"
-  publicDescription: "Visible para todos los usuarios"
-  home: "Inicio"
+  publicDescription: "Tu publicación será visible en todas las líneas de tiempo"
+  home: "Sin listar (Inicio)"
   homeDescription: "Visible sólo en la linea de tiempo de inicio"
   followers: "Seguidores"
-  followersDescription: "Visible sólo para tus seguidores"
+  followersDescription: "Hacer sólo visible sólo para tus seguidores y usuarios mencionados"
   specified: "Mensaje directo"
   specifiedDescription: "Visible sólo para los usuarios elegidos"
   localOnly: "Solo local"
   localOnlyDescription: "Oculto para usuarios remotos"
 _postForm:
-  replyPlaceholder: "Responder a esta nota"
-  quotePlaceholder: "Citar esta nota"
+  replyPlaceholder: "Responder a esta publicación..."
+  quotePlaceholder: "Citar esta publicación..."
   channelPlaceholder: "Postear en el canal"
   _placeholders:
     a: "¿Qué haces?"
@@ -1475,7 +1532,8 @@ _profile:
   youCanIncludeHashtags: "Puedes añadir hashtags"
   metadata: "información adicional"
   metadataEdit: "Editar información adicional"
-  metadataDescription: "Muestra la información adicional en el perfil. ¡Puede agregar una etiqueta {a} o una etiqueta {l} con {rel} para verificar el enlace en su perfil!"
+  metadataDescription: "Muestra la información adicional en el perfil. ¡Puede agregar
+    una etiqueta {a} o una etiqueta {l} con {rel} para verificar el enlace en su perfil!"
   metadataLabel: "Etiqueta"
   metadataContent: "Contenido"
   changeAvatar: "Cambiar avatar"
@@ -1483,7 +1541,7 @@ _profile:
   locationDescription: Si ingresas tu ciudad primero, el tiempo local tuyo será visible
     para otros usuarios.
 _exportOrImport:
-  allNotes: "Todas las notas"
+  allNotes: "Todas las publicaciones"
   followingList: "Siguiendo"
   muteList: "Silenciados"
   blockingList: "Bloqueados"
@@ -1496,10 +1554,10 @@ _charts:
   usersIncDec: "Variación de usuarios"
   usersTotal: "Total de usuarios"
   activeUsers: "Cantidad de usuarios activos"
-  notesIncDec: "Variación de la cantidad de notas"
-  localNotesIncDec: "Variación de la cantidad de notas locales"
-  remoteNotesIncDec: "Variación de la cantidad de notas remotas"
-  notesTotal: "Total de notas"
+  notesIncDec: "Diferencia en la cantidad de publicaciones"
+  localNotesIncDec: "Diferencia en la cantidad de publicaciones locales"
+  remoteNotesIncDec: "Diferencia en el número de publicaciones remotas"
+  notesTotal: "Total de publicaciones"
   filesIncDec: "Variación de cantidad de archivos"
   filesTotal: "Total de archivos"
   storageUsageIncDec: "Variación de uso del almacenamiento"
@@ -1508,8 +1566,8 @@ _instanceCharts:
   requests: "Pedidos"
   users: "Variación de usuarios"
   usersTotal: "Total acumulado de usuarios"
-  notes: "Variación de la cantidad de notas"
-  notesTotal: "Total acumulado de la cantidad de notas"
+  notes: "Diferencia en el número de publicaciones"
+  notesTotal: "Total acumulado de publicaciones"
   ff: "Variación de cantidad de seguidos/seguidores"
   ffTotal: "Total acumulado de cantidad de seguidos/seguidores"
   cacheSize: "Variación del tamaño de la caché"
@@ -1596,10 +1654,10 @@ _pages:
       id: "Lienzo ID"
       width: "Ancho"
       height: "Altura"
-    note: "Nota embebida"
+    note: "Publicación incrustada"
     _note:
-      id: "Id de la nota"
-      idDescription: "Pega la URL de la nota para configurarla"
+      id: "ID de la publicación"
+      idDescription: "Puedes también pegar la URL de la publicación aquí."
       detailed: "Ver Detalles"
     switch: "Interruptor"
     _switch:
@@ -1822,7 +1880,7 @@ _notification:
   youGotMention: "Mención de {name}"
   youGotReply: "Respuesta de {name}"
   youGotQuote: "Citado por {name}"
-  youRenoted: "Renotado por {name}"
+  youRenoted: "Impulsado por {name}"
   youGotPoll: "Encuestado por {name}"
   youGotMessagingMessageFromUser: "{name} comenzó un chat contigo"
   youGotMessagingMessageFromGroup: "Tienes un chat de {name}"
@@ -1837,7 +1895,7 @@ _notification:
     follow: "Siguiendo"
     mention: "Menciones"
     reply: "Respuestas"
-    renote: "Renotar"
+    renote: "Impulsos"
     quote: "Citar"
     reaction: "Reacción"
     pollVote: "Votado en la encuesta"
@@ -1849,7 +1907,10 @@ _notification:
   _actions:
     followBack: "Te sigue de vuelta"
     reply: "Responder"
-    renote: "Renotar"
+    renote: "Impulsos"
+  renoted: impulsó tu publicación
+  reacted: reaccionó a tu publicación
+  voted: votó en tu encuesta
 _deck:
   alwaysShowMainColumn: "Siempre mostrar la columna principal"
   columnAlign: "Alinear columnas"
@@ -1861,9 +1922,9 @@ _deck:
   swapDown: "Mover abajo"
   stackLeft: "Apilar a la izquierda"
   popRight: "Sacar a la derecha"
-  profile: "Perfil"
-  newProfile: "Nuevo perfil"
-  deleteProfile: "Eliminar perfil"
+  profile: "Espacio de trabajo"
+  newProfile: "Nuevo espacio de trabajo"
+  deleteProfile: "Eliminar espacio de trabajo"
   introduction: "¡Crea la interfaz perfecta para tí organizando las columnas libremente!"
   introduction2: "Presiona en la  + de la derecha de la pantalla para añadir nuevas
     columnas donde quieras."
@@ -1874,10 +1935,13 @@ _deck:
     widgets: "Widgets"
     notifications: "Notificaciones"
     tl: "Linea de tiempo"
-    antenna: "Antenas"
+    antenna: "Antena"
     list: "Listas"
     mentions: "Menciones"
-    direct: "Mensaje directo"
+    direct: "Mensajes directos"
+    channel: Canal
+  renameProfile: Renombrar espacio de trabajo
+  nameAlreadyExists: Este nombre de espacio de trabajo ya existe.
 manageGroups: Administrar grupos
 replayTutorial: Repetir Tutorial
 privateMode: Modo privado
@@ -1887,16 +1951,18 @@ renoteUnmute: Dejar de silenciar impulsos
 flagSpeakAsCat: Habla como un gato
 selectInstance: Selecciona un servidor
 flagSpeakAsCatDescription: Tu publicación se "nyanified" cuando esté en modo gato
-allowedInstances: Instancias en la lista blanca
+allowedInstances: Servidores autorizados
 breakFollowConfirm: ¿Estás seguro de que quieres eliminar el seguidor?
 subscribePushNotification: Habilitar notificaciones
 unsubscribePushNotification: Desactivar notificaciones
 pushNotificationAlreadySubscribed: Las notificaciones ya están activados
-pushNotificationNotSupported: Su navegador o instancia no admite notificaciones
+pushNotificationNotSupported: Su navegador o servidor no admite notificaciones
 moveAccount: ¡Mover cuenta!
 moveFrom: Mueve a esta cuenta de una cuenta antigua
 moveFromLabel: 'La cuenta que estás moviendo de:'
-moveAccountDescription: ''
+moveAccountDescription: 'Este proceso es irreversible. Asegúrate de configurar un
+  alias para ésta cuenta en tu cuenta nueva antes de comenzar. Por favor, ingresa
+  la etiqueta de la cuenta en el formato siguiente: @persona@servidor.tld'
 license: Licencia
 noThankYou: No gracias
 userSaysSomethingReason: '{name} dijo {reason}'
@@ -1904,12 +1970,12 @@ hiddenTags: Etiquetas Ocultas
 noInstances: No hay servidores
 accountMoved: 'Usuario ha movido a una cuenta nueva:'
 caption: Auto Subtítulos
-showAds: Mostrar Anuncios
+showAds: Mostrar banners
 enterSendsMessage: Presione "RETORNO" en los mensajes para enviar el mensaje (para
   apagarlo es Ctrl + RETORNO)
-recommendedInstances: Instancias Recomendadas
-instanceSecurity: Seguridad de la instancia
-seperateRenoteQuote: Separar impulsados y Citar botones
+recommendedInstances: Servidores recomendados
+instanceSecurity: Seguridad del servidor
+seperateRenoteQuote: Separar botones de Impulsar y Citar
 _messaging:
   groups: Grupos
   dms: Privado
@@ -1919,7 +1985,7 @@ migration: Migración
 silenced: Silenciado
 deleted: Eliminado
 edited: 'Editado a las {date} {time}'
-editNote: Editar nota
+editNote: Editar publicación
 silenceThisInstance: Silenciar este servidor
 findOtherInstance: Buscar otro servidor
 userSaysSomethingReasonRenote: '{name} impulsó una publicación que contiene {reason]'
@@ -1941,3 +2007,158 @@ hiddenTagsDescription: 'Escriba los hashtags (sin el #) que desea ocultar de las
 jumpToPrevious: Ver anterior
 enableEmojiReactions: Habilitar reacciones de emoji
 cw: Aviso de contenido
+sendPushNotificationReadMessage: Eliminar notificaciones una vez que la notificación
+  o mensaje ha sido leído
+sendPushNotificationReadMessageCaption: Una notificación con el texto "{emptyPushNotificationMessage}"
+  será mostrada por un breve período. Esto podría aumentar el uso de batería de tu
+  dispositivo.
+enableServerMachineStats: Permitir estadísticas del hardware del servidor
+customMOTD: Mensaje del día personalizado (mensajes de la pantalla de presentación)
+antennasDesc: "Las Antennas muestran nuevas publicaciones que conciden con los criterios
+  que estableciste.\nPueden ser accedidas desde la sección de Lineas de tiempo."
+antennaInstancesDescription: Escribe un servidor por cada linea
+expandOnNoteClickDesc: Si está desactivado, puedes abrir publicaciones usando el menú
+  del botón derecho del ratón o presionando sobre la fecha.
+channelFederationWarn: Los Canales aún no federan con otras instancias
+clipsDesc: Los clips como marcadores categorizados que pueden ser compartidos. Puedes
+  crear clips desde el menú de publicaciones.
+verifiedLink: Vínculo verificado
+cannotUploadBecauseExceedsFileSizeLimit: Este archivo no pudo ser cargado porque excede
+  el tamaño máximo permitido.
+accessibility: Accesibilidad
+_filters:
+  fromUser: Del usuario
+  fromDomain: Desde el dominio
+  notesAfter: Publicaciones posteriores
+  followingOnly: Sólo seguidos
+  withFile: Con archivo
+  followersOnly: Sólo seguidores
+  notesBefore: Publicaciones anteriores
+userSaysSomethingReasonReply: '{name} respondió a una publicación que contiene {reason}'
+userSaysSomethingReasonQuote: '{name} citó una publicación que contiene {reason}'
+privateModeInfo: Al activar, solo servidores autorizados podrán federar con tu servidor.
+  Todas las publicaiones estáran ocultas del público.
+customMOTDDescription: Mensajes del día personalizados (MOTD) de la pantalla de presentación,
+  separados cada salto de linea. Para ser mostrados aleatoriamente cada vez que un
+  usuario carga/recarga una página.
+customSplashIcons: Icono personalizado de la pantalla de presentación (url)
+donationLink: Vinculo a página de donación
+delete2fa: Desactivar autentificación en dos pasos
+delete2faConfirm: Esto eliminara irreversiblemente la autentificación en dos pasos
+  de esta cuenta. ¿Quieres continuar?
+allowedInstancesDescription: Host de los servidores autorizados para federar, cada
+  uno separado por una nueva linea (solo aplica en modo pivado).
+adminCustomCssWarn: Está configuración solo debería ser utilizado si sabes lo que
+  hace. Ingresar valores erroneos podría causar que TODOS los clientes dejaran de
+  funcionar normalmente. Porfavor asegurate que tus CSS funcionan adecuadamente al
+  probar los en tus configuraciones de usuario.
+image: Imagen
+showPopup: Notificar a los usuarios con una ventana emergente
+showWithSparkles: Mostrar con destellos
+youHaveUnreadAnnouncements: Tienes anuncios sin leer
+neverShow: No mostrar nuevamente
+remindMeLater: Recordar nuevamente
+removeQuote: Eliminar cita
+removeRecipient: Eliminar destinatario
+removeMember: Eliminar miembro
+_skinTones:
+  light: Claro
+  dark: Obscuro
+  yellow: Amarillo
+  medium: Medio
+  mediumLight: Claro medio
+  mediumDark: Obscuro medio
+secureModeInfo: Al pedir a otros servidores, no mandar si no hay prueba de confianza.
+enableIdenticonGeneration: Activar la generación de Identicon
+sendModMail: Enviar aviso de moderación
+reactionPickerSkinTone: Tono de piel preferido en emojis
+_dialog:
+  charactersExceeded: '¡Límite de caracteres excedido! Actual: {current}/Límite: {max}'
+  charactersBelow: '¡Caracteres insuficientes! Actual: {current}/Límite: {min}'
+expandOnNoteClick: Abrir publicación al hacer click
+_experiments:
+  enablePostImports: Habilitar importación de publicaciones
+  title: Experimentos
+  postImportsCaption: Permite a los usuarios importar sus publicaciones desde Firefish,
+    Misskey, Mastodon, Akkoma y Pleroma. Puede causar una bajada en el rendimiento
+    del servidor si la cola de trabajos está atascada.
+showUpdates: Mostrar una notificación emergente cuando Firefish se actualice
+recommendedInstancesDescription: Servidores recomendados separador por saltos de línea
+  para que aparezcan el la línea de tiempo recomendados.
+swipeOnMobile: Permitir el pase entre páginas
+addRe: Añadir "re:" al comienzo del comentario en una respuesta a una publicación
+  sin aviso de contenido
+showAdminUpdates: Avisar si hay una nueva versión de Firefish disponible (sólo adminsitrador)
+_feeds:
+  rss: RSS
+  copyFeed: Copiar feed
+  atom: Atom
+  jsonFeed: Feed JSON
+secureMode: Modo seguro (Recuperación Autorizada)
+splash: Pantalla de bienvenida
+moveToLabel: 'Cuenta a la cual estás migrando:'
+alt: ALT
+video: Video
+audio: Audio
+swipeOnDesktop: Permitir el pase de páginas del estilo móvil en el escritorio
+enableCustomKaTeXMacro: Habilitar macros KaTeX personalizadas
+noteId: ID de publicación
+preventAiLearning: Prevenir el uso por parte de bots de IA
+isLocked: Esta cuenta requiere aprobación de seguidores
+origin: Origen
+newer: reciente
+older: antiguo
+objectStorageS3ForcePathStyle: Usar URL de punto final basada en rutas
+objectStorageS3ForcePathStyleDesc: Activa esto para construir puntos finales URL en
+  el formato 's3.amazonaws.com/<bucket>/' en lugar de '<bucket>.s3.amazonaws.com'.
+customSplashIconsDescription: URL para los iconos de la pantalla de bienvenida separadas
+  por saltos de línea para ser mostrados al azar cada vez que el usuario carga/recarga
+  la página. Por favor, asegúrate que las imágenes sean URL estáticas, preferentemente
+  a 192x192.
+updateAvailable: ¡Quizá hay una actualización disponible!
+moveTo: Mover la cuenta actual a una cuenta nueva
+moveFromDescription: 'Esto pondrá un alias en tu cuenta antigua para así poder migrar
+  desde esa cuenta a la nueva. Haz esto ANTES de migrar tu cuenta antigua. Por favor,
+  ingresa la etiqueta de la cuenta con el formato siguiente: @persona@servidor.tld'
+defaultReaction: Emoji por defecto para reaccionar a las publicaciones entrantes y
+  salientes
+indexFromDescription: Deja en blanco para indizar todas las publicaciones
+deletePasskeys: Borrar claves de paso
+deletePasskeysConfirm: Esto borrará irreversiblemente todas las claves de paso y de
+  seguridad en esta cuenta, ¿Proceder?
+inputNotMatch: Las entradas no coinciden
+indexFrom: Indizar desde la ID de la publicación en adelante
+indexPosts: Indizar publicaciones
+isModerator: Moderador
+isAdmin: Administrador
+isPatron: Mecenas de Firefish
+logoImageUrl: URL de la imagen del logotipo
+xl: XL
+migrationConfirm: "¿Estás absolutamente seguro de que quieres migrar a tu cuenta a
+  {account}? Una vez hecho esto, no podrás revertir el cambio, ni tampoco usar tu
+  cuenta normalmente.\nTambién, asegúrate de que has configurado ésta cuenta como
+  la cuenta desde la cual estás migrando."
+indexNotice: Indizando ahora. Esto puede llevar bastante tiempo, por favor, no reinicies
+  el servidor por lo menos hasta dentro de una hora.
+customKaTeXMacro: Macros KaTeX personalizadas
+customKaTeXMacroDescription: '¡Configura macros para escribir expresiones matemáticas
+  fácilmente! La notación es conforme la las definiciones de comandos LaTeX y puede
+  ser escrita como \nuevocomando{\ nombre}{contenido} o \nuevocomando{\nombre}[número
+  de argumentos]{contenido}. Por ejemplo, \nuevocomando{\añadir}[2]{#1 + #2} expanderá
+  \añadir{3}{foo} a 3 + foo. Las llaves que contienen al nombre de la macro serán
+  cambiadas a paréntesis o corchetes. Esto afecta a los corchetes usados para argumentos.
+  Una (y sólo una) macro puede ser definida por línea, y no podrás saltar la línea
+  en medio de la definición. Líneas erróneas son ignoradas. Sólo funciones de sustitución
+  simple son soportadas; sintaxis avanzada, como ramificación condicional no puede
+  ser usada aquí.'
+signupsDisabled: Los registros en esta instancia están desactivados, pero, ¡siempre
+  podrás registrarte en otro servidor! Si tienes un código de invitación para este
+  servidor, por favor, rellena el campo siguiente.
+preventAiLearningDescription: Pedir a los modelos de IA no analizar el contenido de
+  publicas, como publicaciones e imágenes.
+noGraze: Por favor desactiva la extensión de navegador "Graze for Mastodon" ya que
+  interfiere con Firefish.
+silencedWarning: Esta página se muestra debido a que estos usuarios son de servidores
+  que tu administrador ha silenciado, ya que son presumiblemente fuente de spam.
+isBot: Esta cuenta es un bot
+clickToShowPatterns: Haz clic para mostrar patrones de módulos

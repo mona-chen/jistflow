@@ -1,4 +1,4 @@
-import { JSDOM } from "jsdom";
+import { Window } from "happy-dom";
 import type * as mfm from "mfm-js";
 import config from "@/config/index.js";
 import { intersperse } from "@/prelude/array.js";
@@ -12,7 +12,7 @@ export function toHtml(
 		return null;
 	}
 
-	const { window } = new JSDOM("");
+	const { window } = new Window();
 
 	const doc = window.document;
 
@@ -156,7 +156,7 @@ export function toHtml(
 
 		search(node) {
 			const a = doc.createElement("a");
-			a.href = `https://search.annoyingorange.xyz/search?q=${node.props.query}`;
+			a.href = `/search/${node.props.query}`;
 			a.textContent = node.props.content;
 			return a;
 		},

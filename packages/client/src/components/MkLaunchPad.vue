@@ -33,7 +33,7 @@
 							v-if="item.indicate"
 							class="indicator"
 							:class="{
-								animateIndicator: $store.state.animation,
+								animateIndicator: defaultStore.state.animation,
 							}"
 							><i class="ph-circle ph-fill"></i
 						></span>
@@ -50,7 +50,7 @@
 							v-if="item.indicate"
 							class="indicator"
 							:class="{
-								animateIndicator: $store.state.animation,
+								animateIndicator: defaultStore.state.animation,
 							}"
 							><i class="ph-circle ph-fill"></i
 						></span>
@@ -62,14 +62,13 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { ref } from "vue";
+
 import MkModal from "@/components/MkModal.vue";
 import { navbarItemDef } from "@/navbar";
-import { instanceName } from "@/config";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { deviceKind } from "@/scripts/device-kind";
-import * as os from "@/os";
 
 const props = withDefaults(
 	defineProps<{
@@ -92,7 +91,7 @@ const preferedModalType =
 		? "drawer"
 		: "dialog";
 
-const modal = $ref<InstanceType<typeof MkModal>>();
+const modal = ref<InstanceType<typeof MkModal>>();
 
 const menu = defaultStore.state.menu;
 
@@ -110,7 +109,7 @@ const items = Object.keys(navbarItemDef)
 	}));
 
 function close() {
-	modal.close();
+	modal.value.close();
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
 	<div class="vjoppmmu">
 		<template v-if="edit">
-			<header tabindex="-1" v-focus>
+			<header v-focus tabindex="-1">
 				<MkSelect
 					v-model="widgetAdderSelected"
 					style="margin-bottom: var(--margin)"
@@ -21,28 +21,28 @@
 					primary
 					class="mk-widget-add"
 					@click="addWidget"
-					><i class="ph-plus ph-bold ph-lg"></i>
+					><i :class="icon('ph-plus')"></i>
 					{{ i18n.ts.add }}</MkButton
 				>
 				<MkButton inline @click="$emit('exit')">{{
 					i18n.ts.close
 				}}</MkButton>
 			</header>
-			<VueDraggable v-model="widgets_" handle=".handle" animation="150">
+			<VueDraggable v-model="widgets_" handle=".handle" :animation="150">
 				<div v-for="element in widgets_" :key="element.id">
 					<div class="customize-container">
 						<button
 							class="config _button"
 							@click.prevent.stop="configWidget(element.id)"
 						>
-							<i class="ph-gear-six ph-bold ph-lg"></i>
+							<i :class="icon('ph-gear-six')"></i>
 						</button>
 						<button
 							class="remove _button"
-							@click.prevent.stop="removeWidget(element)"
 							:aria-label="i18n.t('close')"
+							@click.prevent.stop="removeWidget(element)"
 						>
-							<i class="ph-x ph-bold ph-lg"></i>
+							<i :class="icon('ph-x')"></i>
 						</button>
 						<div class="handle">
 							<component
@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, reactive, ref, computed } from "vue";
+import { computed, ref } from "vue";
 import { v4 as uuid } from "uuid";
 import { VueDraggable } from "vue-draggable-plus";
 import MkSelect from "@/components/form/select.vue";
@@ -80,12 +80,13 @@ import MkButton from "@/components/MkButton.vue";
 import { widgets as widgetDefs } from "@/widgets";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
-type Widget = {
+interface Widget {
 	name: string;
 	id: string;
 	data: Record<string, any>;
-};
+}
 
 const props = defineProps<{
 	widgets: Widget[];
@@ -141,7 +142,7 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 		["INPUT", "TEXTAREA", "IMG", "VIDEO", "CANVAS"].includes(
 			ev.target.tagName,
 		) ||
-		ev.target.attributes["contenteditable"]
+		ev.target.attributes.contenteditable
 	)
 		return;
 	if (window.getSelection()?.toString() !== "") return;
@@ -153,7 +154,7 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 				text: i18n.t(`_widgets.${widget.name}`),
 			},
 			{
-				icon: "ph-gear-six ph-bold ph-lg",
+				icon: `${icon("ph-gear-six")}`,
 				text: i18n.ts.settings,
 				action: () => {
 					configWidget(widget.id);

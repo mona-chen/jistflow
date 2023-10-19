@@ -1,7 +1,7 @@
 <template>
 	<div class="_formRoot">
 		<FormButton class="_formBlock" @click="configure"
-			><template #icon><i class="ph-gear-six ph-bold ph-lg"></i></template
+			><template #icon><i :class="icon('ph-gear-six')"></i></template
 			>{{ i18n.ts.notificationSetting }}</FormButton
 		>
 		<FormSection>
@@ -49,24 +49,24 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent, shallowRef } from "vue";
 import { notificationTypes } from "firefish-js";
 import FormButton from "@/components/MkButton.vue";
-import FormLink from "@/components/form/link.vue";
 import FormSection from "@/components/form/section.vue";
 import * as os from "@/os";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import MkPushNotificationAllowButton from "@/components/MkPushNotificationAllowButton.vue";
+import icon from "@/scripts/icon";
 
-let allowButton =
-	$shallowRef<InstanceType<typeof MkPushNotificationAllowButton>>();
-let pushRegistrationInServer = $computed(
-	() => allowButton?.pushRegistrationInServer,
+const allowButton =
+	shallowRef<InstanceType<typeof MkPushNotificationAllowButton>>();
+const pushRegistrationInServer = computed(
+	() => allowButton.value?.pushRegistrationInServer,
 );
-let sendReadMessage = $computed(
-	() => pushRegistrationInServer?.sendReadMessage || false,
+const sendReadMessage = computed(
+	() => pushRegistrationInServer.value?.sendReadMessage || false,
 );
 
 async function readAllUnreadNotes() {
@@ -112,23 +112,19 @@ function configure() {
 }
 
 function onChangeSendReadMessage(v: boolean) {
-	if (!pushRegistrationInServer) return;
+	if (!pushRegistrationInServer.value) return;
 
 	os.apiWithDialog("sw/update-registration", {
-		endpoint: pushRegistrationInServer.endpoint,
+		endpoint: pushRegistrationInServer.value.endpoint,
 		sendReadMessage: v,
 	}).then((res) => {
-		if (!allowButton) return;
-		allowButton.pushRegistrationInServer = res;
+		if (!allowButton.value) return;
+		allowButton.value.pushRegistrationInServer = res;
 	});
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.notifications,
-	icon: "ph-bell ph-bold ph-lg",
+	icon: `${icon("ph-bell")}`,
 });
 </script>

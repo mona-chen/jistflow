@@ -8,8 +8,8 @@
 		:buttons-left="buttonsLeft"
 		:buttons-right="buttonsRight"
 		:contextmenu="contextmenu"
-		@closed="$emit('closed')"
 		class="page-window"
+		@closed="$emit('closed')"
 	>
 		<template #header>
 			<template v-if="pageMetadata?.value">
@@ -30,21 +30,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ComputedRef, inject, provide } from "vue";
+import type { ComputedRef } from "vue";
+import { computed, provide, ref } from "vue";
 import RouterView from "@/components/global/RouterView.vue";
 import XWindow from "@/components/MkWindow.vue";
 import { popout as _popout } from "@/scripts/popout";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
 import { url } from "@/config";
-import * as os from "@/os";
 import { mainRouter, routes } from "@/router";
 import { Router } from "@/nirax";
 import { i18n } from "@/i18n";
-import {
-	PageMetadata,
-	provideMetadataReceiver,
-	setPageMetadata,
-} from "@/scripts/page-metadata";
+import type { PageMetadata } from "@/scripts/page-metadata";
+import { provideMetadataReceiver } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	initialPath: string;
@@ -56,30 +54,30 @@ defineEmits<{
 
 const router = new Router(routes, props.initialPath);
 
-let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
-let windowEl = $ref<InstanceType<typeof XWindow>>();
-const history = $ref<{ path: string; key: any }[]>([
+const pageMetadata = ref<null | ComputedRef<PageMetadata>>();
+const windowEl = ref<InstanceType<typeof XWindow>>();
+const history = ref<{ path: string; key: any }[]>([
 	{
 		path: router.getCurrentPath(),
 		key: router.getCurrentKey(),
 	},
 ]);
-const buttonsLeft = $computed(() => {
+const buttonsLeft = computed(() => {
 	const buttons = [];
 
-	if (history.length > 1) {
+	if (history.value.length > 1) {
 		buttons.push({
-			icon: "ph-caret-left ph-bold ph-lg",
+			icon: `${icon("ph-caret-left")}`,
 			onClick: back,
 		});
 	}
 
 	return buttons;
 });
-const buttonsRight = $computed(() => {
+const buttonsRight = computed(() => {
 	const buttons = [
 		{
-			icon: "ph-arrows-out-simple ph-bold ph-lg",
+			icon: `${icon("ph-arrows-out-simple")}`,
 			title: i18n.ts.showInPage,
 			onClick: expand,
 		},
@@ -89,38 +87,38 @@ const buttonsRight = $computed(() => {
 });
 
 router.addListener("push", (ctx) => {
-	history.push({ path: ctx.path, key: ctx.key });
+	history.value.push({ path: ctx.path, key: ctx.key });
 });
 
 provide("router", router);
 provideMetadataReceiver((info) => {
-	pageMetadata = info;
+	pageMetadata.value = info;
 });
 provide("shouldOmitHeaderTitle", true);
 provide("shouldBackButton", false);
 provide("shouldHeaderThin", true);
 
-const contextmenu = $computed(() => [
+const contextmenu = computed(() => [
 	{
-		icon: "ph-arrows-out-simple ph-bold ph-lg",
+		icon: `${icon("ph-arrows-out-simple")}`,
 		text: i18n.ts.showInPage,
 		action: expand,
 	},
 	{
-		icon: "ph-arrow-square-out ph-bold ph-lg",
+		icon: `${icon("ph-arrow-square-out")}`,
 		text: i18n.ts.popout,
 		action: popout,
 	},
 	{
-		icon: "ph-arrow-square-out ph-bold ph-lg",
+		icon: `${icon("ph-arrow-square-out")}`,
 		text: i18n.ts.openInNewTab,
 		action: () => {
 			window.open(url + router.getCurrentPath(), "_blank");
-			windowEl.close();
+			windowEl.value.close();
 		},
 	},
 	{
-		icon: "ph-link-simple ph-bold ph-lg",
+		icon: `${icon("ph-link-simple")}`,
 		text: i18n.ts.copyLink,
 		action: () => {
 			copyToClipboard(url + router.getCurrentPath());
@@ -128,30 +126,26 @@ const contextmenu = $computed(() => [
 	},
 ]);
 
-function menu(ev) {
-	os.popupMenu(contextmenu, ev.currentTarget ?? ev.target);
-}
-
 function back() {
-	history.pop();
+	history.value.pop();
 	router.replace(
-		history[history.length - 1].path,
-		history[history.length - 1].key,
+		history.value[history.value.length - 1].path,
+		history.value[history.value.length - 1].key,
 	);
 }
 
 function close() {
-	windowEl.close();
+	windowEl.value.close();
 }
 
 function expand() {
 	mainRouter.push(router.getCurrentPath(), "forcePage");
-	windowEl.close();
+	windowEl.value.close();
 }
 
 function popout() {
-	_popout(router.getCurrentPath(), windowEl.$el);
-	windowEl.close();
+	_popout(router.getCurrentPath(), windowEl.value.$el);
+	windowEl.value.close();
 }
 
 defineExpose({

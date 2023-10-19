@@ -1,14 +1,14 @@
 <template>
 	<div>
 		<Transition
-			:name="$store.state.animation ? '_transition_zoom' : ''"
+			:name="defaultStore.state.animation ? '_transition_zoom' : ''"
 			mode="out-in"
 		>
 			<MkLoading v-if="fetching" />
 			<div v-else :class="$style.root">
 				<div class="item _panel users">
 					<div class="icon">
-						<i class="ph-users ph-bold ph-xl"></i>
+						<i :class="icon('ph-users ph-xl', false)"></i>
 					</div>
 					<div class="body">
 						<div class="value">
@@ -27,7 +27,7 @@
 				</div>
 				<div class="item _panel notes">
 					<div class="icon">
-						<i class="ph-pencil ph-bold ph-xl"></i>
+						<i :class="icon('ph-pencil ph-xl', false)"></i>
 					</div>
 					<div class="body">
 						<div class="value">
@@ -46,7 +46,7 @@
 				</div>
 				<div class="item _panel instances">
 					<div class="icon">
-						<i class="ph-planet ph-bold ph-xl"></i>
+						<i :class="icon('ph-planet ph-xl', false)"></i>
 					</div>
 					<div class="body">
 						<div class="value">
@@ -60,7 +60,7 @@
 				</div>
 				<div class="item _panel online">
 					<div class="icon">
-						<i class="ph-broadcast ph-bold ph-xl"></i>
+						<i :class="icon('ph-broadcast ph-xl', false)"></i>
 					</div>
 					<div class="body">
 						<div class="value">
@@ -74,7 +74,7 @@
 				</div>
 				<div class="item _panel emojis">
 					<div class="icon">
-						<i class="ph-smiley ph-bold ph-xl"></i>
+						<i :class="icon('ph-smiley ph-xl', false)"></i>
 					</div>
 					<div class="body">
 						<div class="value">
@@ -94,44 +94,44 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
-import MkMiniChart from "@/components/MkMiniChart.vue";
+import { onMounted, ref } from "vue";
 import * as os from "@/os";
-import number from "@/filters/number";
 import MkNumberDiff from "@/components/MkNumberDiff.vue";
 import MkNumber from "@/components/MkNumber.vue";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
-let stats: any = $ref(null);
-let usersComparedToThePrevDay = $ref<number>();
-let notesComparedToThePrevDay = $ref<number>();
-let onlineUsersCount = $ref(0);
-let emojiCount = $ref(0);
-let fetching = $ref(true);
+const stats = ref(null);
+const usersComparedToThePrevDay = ref<number>();
+const notesComparedToThePrevDay = ref<number>();
+const onlineUsersCount = ref(0);
+const emojiCount = ref(0);
+const fetching = ref(true);
 
 onMounted(async () => {
 	const [_stats, _onlineUsersCount] = await Promise.all([
 		os.api("stats", {}),
 		os.api("get-online-users-count").then((res) => res.count),
 	]);
-	stats = _stats;
-	onlineUsersCount = _onlineUsersCount;
+	stats.value = _stats;
+	onlineUsersCount.value = _onlineUsersCount;
 
 	os.apiGet("charts/users", { limit: 2, span: "day" }).then((chart) => {
-		usersComparedToThePrevDay =
-			stats.originalUsersCount - chart.local.total[1];
+		usersComparedToThePrevDay.value =
+			stats.value.originalUsersCount - chart.local.total[1];
 	});
 
 	os.apiGet("charts/notes", { limit: 2, span: "day" }).then((chart) => {
-		notesComparedToThePrevDay =
-			stats.originalNotesCount - chart.local.total[1];
+		notesComparedToThePrevDay.value =
+			stats.value.originalNotesCount - chart.local.total[1];
 	});
 
 	os.api("meta", { detail: false }).then((meta) => {
-		emojiCount = meta.emojis.length;
+		emojiCount.value = meta.emojis.length;
 	});
 
-	fetching = false;
+	fetching.value = false;
 });
 </script>
 

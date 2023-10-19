@@ -6,7 +6,7 @@
 			<MkFolder>
 				<template #icon
 					><i
-						class="ph-shield-check ph-bold ph-lg"
+						:class="icon('ph-shield-check')"
 						style="margin-right: 0.5rem"
 					></i
 				></template>
@@ -17,7 +17,7 @@
 					<template v-if="$i.securityKeysList.length > 0">
 						<MkButton @click="renewTOTP"
 							><i
-								class="ph-shield-check ph-bold ph-lg"
+								:class="icon('ph-shield-check')"
 								style="margin-right: 0.5rem"
 							></i
 							>{{ i18n.ts._2fa.renewTOTP }}</MkButton
@@ -26,7 +26,7 @@
 					</template>
 					<MkButton v-else @click="unregisterTOTP"
 						><i
-							class="ph-shield-slash ph-bold ph-lg"
+							:class="icon('ph-shield-slash')"
 							style="margin-right: 0.5rem"
 						></i
 						>{{ i18n.ts.unregister }}</MkButton
@@ -42,10 +42,7 @@
 
 			<MkFolder>
 				<template #icon
-					><i
-						class="ph-key ph-bold ph-lg"
-						style="margin-right: 0.5rem"
-					></i
+					><i :class="icon('ph-key')" style="margin-right: 0.5rem"></i
 				></template>
 				<template #label>{{ i18n.ts.securityKeyAndPasskey }}</template>
 				<div class="_gaps_s">
@@ -69,7 +66,7 @@
 					<template v-else>
 						<MkButton primary @click="addSecurityKey"
 							><i
-								class="ph-key ph-bold ph-lg"
+								:class="icon('ph-key')"
 								style="margin-right: 0.5rem"
 							></i
 							>{{ i18n.ts._2fa.registerSecurityKey }}</MkButton
@@ -84,13 +81,11 @@
 							</p>
 							<div class="_flexList">
 								<MkButton @click="renameKey(key)"
-									><i
-										class="ph-pencil-line ph-bold ph-lg"
-									></i>
+									><i :class="icon('ph-pencil-line')"></i>
 									{{ i18n.ts.rename }}</MkButton
 								>
 								<MkButton danger @click="unregisterKey(key)"
-									><i class="ph-trash ph-bold ph-lg"></i>
+									><i :class="icon('ph-trash')"></i>
 									{{ i18n.ts.unregister }}</MkButton
 								>
 							</div>
@@ -103,7 +98,7 @@
 				:disabled="
 					!$i.twoFactorEnabled || $i.securityKeysList.length === 0
 				"
-				:modelValue="usePasswordLessLogin"
+				:model-value="usePasswordLessLogin"
 				@update:modelValue="(v) => updatePasswordLessLogin(v)"
 			>
 				<template #label>{{ i18n.ts.passwordLessLogin }}</template>
@@ -116,7 +111,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent, ref } from "vue";
 import { hostname } from "@/config";
 import { byteify, hexify, stringify } from "@/scripts/2fa";
 import MkButton from "@/components/MkButton.vue";
@@ -127,6 +122,7 @@ import MkFolder from "@/components/MkFolder.vue";
 import * as os from "@/os";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 // メモ: 各エンドポイントはmeUpdatedを発行するため、refreshAccountは不要
 
@@ -141,7 +137,7 @@ withDefaults(
 
 const twoFactorData = ref<any>(null);
 const supportsCredentials = ref(!!navigator.credentials);
-const usePasswordLessLogin = $computed(() => $i!.usePasswordLessLogin);
+const usePasswordLessLogin = computed(() => $i!.usePasswordLessLogin);
 
 async function registerTOTP() {
 	const password = await os.inputText({
@@ -196,7 +192,7 @@ function unregisterTOTP() {
 	}).then(({ canceled, result: password }) => {
 		if (canceled) return;
 		os.apiWithDialog("i/2fa/unregister", {
-			password: password,
+			password,
 		}).catch((error) => {
 			os.alert({
 				type: "error",

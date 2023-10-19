@@ -1,18 +1,14 @@
 <template>
 	<div class="civpbkhh">
-		<div
-			ref="scroll"
-			class="scrollbox"
-			v-bind:class="{ scroll: isScrolling }"
-		>
+		<div ref="scroll" class="scrollbox" :class="{ scroll: isScrolling }">
 			<div v-for="note in notes" class="note">
-				<div class="content _panel" v-if="note.cw == null">
+				<div v-if="note.cw == null" class="content _panel">
 					<div class="body">
 						<MkA
 							v-if="note.replyId"
 							class="reply"
 							:to="`/notes/${note.replyId}`"
-							><i class="ph-arrow-bend-up-left ph-bold ph-lg"></i
+							><i :class="icon('ph-arrow-bend-up-left')"></i
 						></MkA>
 						<Mfm
 							v-if="note.text"
@@ -27,7 +23,7 @@
 						<XMediaList :media-list="note.files" />
 					</div>
 					<div v-if="note.poll">
-						<XPoll :note="note" :readOnly="true" />
+						<XPoll :note="note" :read-only="true" />
 					</div>
 				</div>
 				<XReactionsViewer ref="reactionsViewer" :note="note" />
@@ -42,6 +38,7 @@ import XReactionsViewer from "@/components/MkReactionsViewer.vue";
 import XMediaList from "@/components/MkMediaList.vue";
 import XPoll from "@/components/MkPoll.vue";
 import * as os from "@/os";
+import icon from "@/scripts/icon";
 
 export default defineComponent({
 	components: {

@@ -11,7 +11,7 @@
 		<span class="main">
 			<span class="username">@{{ username }}</span>
 			<span
-				v-if="host != localHost || $store.state.showFullAcct"
+				v-if="host != localHost || defaultStore.state.showFullAcct"
 				class="host"
 				>@{{ toUnicode(host) }}</span
 			>
@@ -38,6 +38,7 @@ import { toUnicode } from "punycode";
 import {} from "vue";
 import { host as localHost } from "@/config";
 import { $i } from "@/account";
+import { defaultStore } from "@/store";
 
 const props = defineProps<{
 	username: string;

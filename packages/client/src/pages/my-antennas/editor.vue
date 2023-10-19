@@ -98,7 +98,7 @@
 		</div>
 		<div class="actions">
 			<MkButton inline primary @click="saveAntenna()"
-				><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+				><i :class="icon('ph-floppy-disk-back')"></i>
 				{{ i18n.ts.save }}</MkButton
 			>
 			<MkButton
@@ -106,7 +106,7 @@
 				inline
 				danger
 				@click="deleteAntenna()"
-				><i class="ph-trash ph-bold ph-lg"></i>
+				><i :class="icon('ph-trash')"></i>
 				{{ i18n.ts.delete }}</MkButton
 			>
 		</div>
@@ -114,7 +114,7 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from "vue";
+import { ref, watch } from "vue";
 import * as Acct from "firefish-js/built/acct";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
@@ -123,6 +123,7 @@ import MkSelect from "@/components/form/select.vue";
 import MkSwitch from "@/components/form/switch.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	antenna: any;
@@ -134,64 +135,64 @@ const emit = defineEmits<{
 	(ev: "deleted"): void;
 }>();
 
-let name: string = $ref(props.antenna.name);
-let src: string = $ref(props.antenna.src);
-let userListId: any = $ref(props.antenna.userListId);
-let userGroupId: any = $ref(props.antenna.userGroupId);
-let users: string = $ref(props.antenna.users.join("\n"));
-let instances: string = $ref(props.antenna.instances.join("\n"));
-let keywords: string = $ref(
+const name = ref<string>(props.antenna.name);
+const src = ref<string>(props.antenna.src);
+const userListId = ref(props.antenna.userListId);
+const userGroupId = ref(props.antenna.userGroupId);
+const users = ref<string>(props.antenna.users.join("\n"));
+const instances = ref<string>(props.antenna.instances.join("\n"));
+const keywords = ref<string>(
 	props.antenna.keywords.map((x) => x.join(" ")).join("\n"),
 );
-let excludeKeywords: string = $ref(
+const excludeKeywords = ref<string>(
 	props.antenna.excludeKeywords.map((x) => x.join(" ")).join("\n"),
 );
-let caseSensitive: boolean = $ref(props.antenna.caseSensitive);
-let withReplies: boolean = $ref(props.antenna.withReplies);
-let withFile: boolean = $ref(props.antenna.withFile);
-let notify: boolean = $ref(props.antenna.notify);
-let userLists: any = $ref(null);
-let userGroups: any = $ref(null);
+const caseSensitive = ref<boolean>(props.antenna.caseSensitive);
+const withReplies = ref<boolean>(props.antenna.withReplies);
+const withFile = ref<boolean>(props.antenna.withFile);
+const notify = ref<boolean>(props.antenna.notify);
+const userLists = ref<any>(null);
+const userGroups = ref<any>(null);
 
 watch(
-	() => src,
+	() => src.value,
 	async () => {
-		if (src === "list" && userLists === null) {
-			userLists = await os.api("users/lists/list");
+		if (src.value === "list" && userLists.value === null) {
+			userLists.value = await os.api("users/lists/list");
 		}
 
-		if (src === "group" && userGroups === null) {
+		if (src.value === "group" && userGroups.value === null) {
 			const groups1 = await os.api("users/groups/owned");
 			const groups2 = await os.api("users/groups/joined");
 
-			userGroups = [...groups1, ...groups2];
+			userGroups.value = [...groups1, ...groups2];
 		}
 	},
 );
 
 async function saveAntenna() {
 	const antennaData = {
-		name,
-		src,
-		userListId,
-		userGroupId,
-		withReplies,
-		withFile,
-		notify,
-		caseSensitive,
-		users: users
+		name: name.value,
+		src: src.value,
+		userListId: userListId.value,
+		userGroupId: userGroupId.value,
+		withReplies: withReplies.value,
+		withFile: withFile.value,
+		notify: notify.value,
+		caseSensitive: caseSensitive.value,
+		users: users.value
 			.trim()
 			.split("\n")
 			.map((x) => x.trim()),
-		instances: instances
+		instances: instances.value
 			.trim()
 			.split("\n")
 			.map((x) => x.trim()),
-		keywords: keywords
+		keywords: keywords.value
 			.trim()
 			.split("\n")
 			.map((x) => x.trim().split(" ")),
-		excludeKeywords: excludeKeywords
+		excludeKeywords: excludeKeywords.value
 			.trim()
 			.split("\n")
 			.map((x) => x.trim().split(" ")),
@@ -201,7 +202,7 @@ async function saveAntenna() {
 		await os.apiWithDialog("antennas/create", antennaData);
 		emit("created");
 	} else {
-		antennaData["antennaId"] = props.antenna.id;
+		antennaData.antennaId = props.antenna.id;
 		await os.apiWithDialog("antennas/update", antennaData);
 		emit("updated");
 	}
@@ -224,17 +225,17 @@ async function deleteAntenna() {
 
 function addUser() {
 	os.selectUser().then((user) => {
-		users = users.trim();
-		users += `\n@${Acct.toString(user as any)}`;
-		users = users.trim();
+		users.value = users.value.trim();
+		users.value += `\n@${Acct.toString(user as any)}`;
+		users.value = users.value.trim();
 	});
 }
 
 function addInstance() {
 	os.selectInstance().then((instance) => {
-		instances = instances.trim();
-		instances += "\n" + instance.host;
-		instances = instances.trim();
+		instances.value = instances.value.trim();
+		instances.value += "\n" + instance.host;
+		instances.value = instances.value.trim();
 	});
 }
 </script>

@@ -10,7 +10,7 @@
 
 		<div class="_formBlock">
 			<FormButton :disabled="code == null" primary inline @click="install"
-				><i class="ph-check ph-bold ph-lg"></i>
+				><i :class="icon('ph-check')"></i>
 				{{ i18n.ts.install }}</FormButton
 			>
 		</div>
@@ -30,6 +30,7 @@ import { ColdDeviceStorage } from "@/store";
 import { unisonReload } from "@/scripts/unison-reload";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const code = ref(null);
 
@@ -41,8 +42,8 @@ function installPlugin({ id, meta, ast, token }) {
 			id,
 			active: true,
 			configData: {},
-			token: token,
-			ast: ast,
+			token,
+			ast,
 		}),
 	);
 }
@@ -112,7 +113,7 @@ async function install() {
 									"miauth/gen-token",
 									{
 										session: null,
-										name: name,
+										name,
 										permission: permissions,
 									},
 								);
@@ -144,12 +145,8 @@ async function install() {
 	});
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts._plugin.install,
-	icon: "ph-download-simple ph-bold ph-lg",
+	icon: `${icon("ph-download-simple")}`,
 });
 </script>

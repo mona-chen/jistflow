@@ -7,36 +7,31 @@
 			<div class="shape2"></div>
 			<img src="/client-assets/misskey.svg" class="misskey" />
 			<div class="emojis">
-				<MkEmoji :normal="true" :no-style="true" emoji="⭐" />
-				<MkEmoji :normal="true" :no-style="true" emoji="❤️" />
-				<MkEmoji :normal="true" :no-style="true" emoji="😆" />
-				<MkEmoji :normal="true" :no-style="true" emoji="🤔" />
-				<MkEmoji :normal="true" :no-style="true" emoji="😮" />
-				<MkEmoji :normal="true" :no-style="true" emoji="🎉" />
-				<MkEmoji :normal="true" :no-style="true" emoji="💢" />
-				<MkEmoji :normal="true" :no-style="true" emoji="😥" />
-				<MkEmoji :normal="true" :no-style="true" emoji="😇" />
-				<MkEmoji :normal="true" :no-style="true" emoji="🥴" />
-				<MkEmoji :normal="true" :no-style="true" emoji="🍮" />
+				<MkEmoji
+					v-for="reaction in defaultReactions"
+					:normal="true"
+					:no-style="true"
+					:emoji="reaction"
+				/>
 			</div>
 			<div class="main">
 				<img
 					:src="
-						$instance.iconUrl ||
-						$instance.faviconUrl ||
+						instance.iconUrl ||
+						instance.faviconUrl ||
 						'/favicon.ico'
 					"
 					alt=""
 					class="icon"
 				/>
 				<button class="_button _acrylic menu" @click="showMenu">
-					<i class="ph-dots-three-outline ph-bold ph-lg"></i>
+					<i :class="icon('ph-dots-three-outline')"></i>
 				</button>
 				<div class="fg">
 					<h1>
 						<img
-							class="logo"
 							v-if="meta.logoImageUrl"
+							class="logo"
 							:src="meta.logoImageUrl"
 							alt="logo"
 						/>
@@ -100,50 +95,51 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
-import { toUnicode } from "punycode/";
+import { ref } from "vue";
+
 import XTimeline from "./welcome.timeline.vue";
 import MarqueeText from "@/components/MkMarquee.vue";
 import XSigninDialog from "@/components/MkSigninDialog.vue";
 import XSignupDialog from "@/components/MkSignupDialog.vue";
 import MkButton from "@/components/MkButton.vue";
-import XNote from "@/components/MkNote.vue";
 import MkFeaturedPhotos from "@/components/MkFeaturedPhotos.vue";
-import { host, instanceName } from "@/config";
+import { instanceName } from "@/config";
 import * as os from "@/os";
-import number from "@/filters/number";
+import { instance } from "@/instance";
 import { i18n } from "@/i18n";
+import { defaultReactions } from "@/store";
+import icon from "@/scripts/icon";
 
-let meta = $ref();
-let stats = $ref();
-let tags = $ref();
-let onlineUsersCount = $ref();
-let instances = $ref();
+const meta = ref();
+const stats = ref();
+const tags = ref();
+const onlineUsersCount = ref();
+const instances = ref();
 
 os.api("meta", { detail: true }).then((_meta) => {
-	meta = _meta;
+	meta.value = _meta;
 });
 
 os.api("stats").then((_stats) => {
-	stats = _stats;
+	stats.value = _stats;
 });
 
 os.api("get-online-users-count").then((res) => {
-	onlineUsersCount = res.count;
+	onlineUsersCount.value = res.count;
 });
 
 os.api("hashtags/list", {
 	sort: "+mentionedLocalUsers",
 	limit: 8,
 }).then((_tags) => {
-	tags = _tags;
+	tags.value = _tags;
 });
 
 os.api("federation/instances", {
 	sort: "+pubSub",
 	limit: 20,
 }).then((_instances) => {
-	instances = _instances;
+	instances.value = _instances;
 });
 
 function signin() {
@@ -173,18 +169,27 @@ function showMenu(ev) {
 		[
 			{
 				text: i18n.ts.instanceInfo,
-				icon: "ph-info ph-bold ph-lg",
+				icon: `${icon("ph-info")}`,
 				action: () => {
 					os.pageWindow("/about");
 				},
 			},
 			{
 				text: i18n.ts.aboutFirefish,
-				icon: "ph-info ph-bold ph-lg",
+				icon: `${icon("ph-info")}`,
 				action: () => {
 					os.pageWindow("/about-firefish");
 				},
 			},
+			instance.tosUrl
+				? {
+						text: i18n.ts.tos,
+						icon: `${icon("ph-scroll")}`,
+						action: () => {
+							window.open(instance.tosUrl, "_blank");
+						},
+				  }
+				: null,
 		],
 		ev.currentTarget ?? ev.target,
 	);

@@ -11,7 +11,7 @@
 				:round-lengths="true"
 				:touch-angle="25"
 				:threshold="10"
-				:centeredSlides="true"
+				:centered-slides="true"
 				:modules="[Virtual]"
 				:space-between="20"
 				:virtual="true"
@@ -95,7 +95,7 @@
 								external
 							>
 								<template #icon
-									><i class="ph-money ph-bold ph-lg"></i
+									><i :class="icon('ph-money')"></i
 								></template>
 								{{
 									i18n.t("_aboutFirefish.donateHost", {
@@ -173,12 +173,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import XEmojis from "./about.emojis.vue";
 import XFederation from "./about.federation.vue";
-import { version, instanceName, host } from "@/config";
+import { host, version } from "@/config";
 import FormLink from "@/components/form/link.vue";
 import FormSection from "@/components/form/section.vue";
 import FormSuspense from "@/components/form/suspense.vue";
@@ -193,6 +193,7 @@ import { deviceKind } from "@/scripts/device-kind";
 import { iAmModerator } from "@/account";
 import { instance } from "@/instance";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
@@ -205,39 +206,39 @@ withDefaults(
 	},
 );
 
-let stats = $ref(null);
-let instanceIcon = $ref<HTMLImageElement>();
+const stats = ref(null);
+const instanceIcon = ref<HTMLImageElement>();
 let iconClicks = 0;
-let iconSrc = ref(instance.iconUrl || instance.faviconUrl || "/favicon.ico");
-let instanceIconAnimation = ref("");
-let tabs = ["overview", "emojis", "charts"];
-let tab = $ref(tabs[0]);
-watch($$(tab), () => syncSlide(tabs.indexOf(tab)));
+const iconSrc = ref(instance.iconUrl || instance.faviconUrl || "/favicon.ico");
+const instanceIconAnimation = ref("");
+const tabs = ["overview", "emojis", "charts"];
+const tab = ref(tabs[0]);
+watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
 
 if (iAmModerator) tabs.push("federation");
 
 const initStats = () =>
 	os.api("stats", {}).then((res) => {
-		stats = res;
+		stats.value = res;
 	});
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-let theTabs = [
+const theTabs = [
 	{
 		key: "overview",
 		title: i18n.ts.overview,
-		icon: "ph-map-trifold ph-bold ph-lg",
+		icon: `${icon("ph-map-trifold")}`,
 	},
 	{
 		key: "emojis",
 		title: i18n.ts.customEmojis,
-		icon: "ph-smiley ph-bold ph-lg",
+		icon: `${icon("ph-smiley")}`,
 	},
 	{
 		key: "charts",
 		title: i18n.ts.charts,
-		icon: "ph-chart-bar ph-bold ph-lg",
+		icon: `${icon("ph-chart-bar")}`,
 	},
 ];
 
@@ -245,23 +246,23 @@ if (iAmModerator) {
 	theTabs.push({
 		key: "federation",
 		title: i18n.ts.federation,
-		icon: "ph-planet ph-bold ph-lg",
+		icon: `${icon("ph-planet")}`,
 	});
 }
 
-let headerTabs = $computed(() => theTabs);
+const headerTabs = computed(() => theTabs);
 
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.instanceInfo,
-		icon: "ph-info ph-bold ph-lg",
+		icon: `${icon("ph-info")}`,
 	})),
 );
 
 onMounted(() => {
 	if (defaultStore.state.woozyMode === true) {
 		iconSrc.value = "/static-assets/woozy.png";
-		instanceIcon.src = iconSrc.value;
+		instanceIcon.value.src = iconSrc.value;
 	}
 });
 
@@ -270,7 +271,7 @@ function easterEgg() {
 	if (iconClicks % 3 === 0) {
 		defaultStore.state.woozyMode = !defaultStore.state.woozyMode;
 		defaultStore.set("woozyMode", defaultStore.state.woozyMode);
-		if (instanceIcon) {
+		if (instanceIcon.value) {
 			instanceIconAnimation.value = "spin";
 			setTimeout(() => {
 				if (iconClicks % 6 === 0) {
@@ -281,7 +282,7 @@ function easterEgg() {
 				} else {
 					iconSrc.value = "/static-assets/woozy.png";
 				}
-				instanceIcon.src = iconSrc.value;
+				instanceIcon.value.src = iconSrc.value;
 			}, 500);
 		}
 	}
@@ -299,11 +300,11 @@ let swiperRef = null;
 
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
-	syncSlide(tabs.indexOf(tab));
+	syncSlide(tabs.indexOf(tab.value));
 }
 
 function onSlideChange() {
-	tab = tabs[swiperRef.activeIndex];
+	tab.value = tabs[swiperRef.activeIndex];
 }
 
 function syncSlide(index) {

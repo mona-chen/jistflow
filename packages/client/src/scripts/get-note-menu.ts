@@ -1,5 +1,6 @@
-import { defineAsyncComponent, Ref, inject } from "vue";
-import * as misskey from "firefish-js";
+import type { Ref } from "vue";
+import { defineAsyncComponent, inject } from "vue";
+import type * as firefish from "firefish-js";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
@@ -9,14 +10,15 @@ import { url } from "@/config";
 import { noteActions } from "@/store";
 import { shareAvailable } from "@/scripts/share-available";
 import { getUserMenu } from "@/scripts/get-user-menu";
+import icon from "@/scripts/icon";
 
 export function getNoteMenu(props: {
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 	menuButton: Ref<HTMLElement | undefined>;
 	translation: Ref<any>;
 	translating: Ref<boolean>;
 	isDeleted: Ref<boolean>;
-	currentClipPage?: Ref<misskey.entities.Clip>;
+	currentClipPage?: Ref<firefish.entities.Clip>;
 }) {
 	const isRenote =
 		props.note.renote != null &&
@@ -25,7 +27,7 @@ export function getNoteMenu(props: {
 		props.note.poll == null;
 
 	const appearNote = isRenote
-		? (props.note.renote as misskey.entities.Note)
+		? (props.note.renote as firefish.entities.Note)
 		: props.note;
 
 	function del(): void {
@@ -135,7 +137,7 @@ export function getNoteMenu(props: {
 		os.popupMenu(
 			[
 				{
-					icon: "ph-plus ph-bold ph-lg",
+					icon: `${icon("ph-plus")}`,
 					text: i18n.ts.createNew,
 					action: async () => {
 						const { canceled, result } = await os.form(i18n.ts.createNewClip, {
@@ -236,15 +238,35 @@ export function getNoteMenu(props: {
 		});
 	}
 
+	async function translate_(noteId: number, targetLang: string) {
+		return await os.api("notes/translate", {
+			noteId,
+			targetLang,
+		});
+	}
+
 	async function translate(): Promise<void> {
+		const translateLang = localStorage.getItem("translateLang");
+		const lang = localStorage.getItem("lang");
+
 		if (props.translation.value != null) return;
 		props.translating.value = true;
-		const res = await os.api("notes/translate", {
-			noteId: appearNote.id,
-			targetLang: localStorage.getItem("lang") || navigator.language,
-		});
+		props.translation.value = await translate_(
+			appearNote.id,
+			translateLang || lang || navigator.language,
+		);
+
+		// use UI language as the second translation target
+		if (
+			translateLang != null &&
+			lang != null &&
+			translateLang !== lang &&
+			(!props.translation.value ||
+				props.translation.value.sourceLang.toLowerCase() ===
+					translateLang.slice(0, 2))
+		)
+			props.translation.value = await translate_(appearNote.id, lang);
 		props.translating.value = false;
-		props.translation.value = res;
 	}
 
 	let menu;
@@ -260,7 +282,7 @@ export function getNoteMenu(props: {
 			...(props.currentClipPage?.value.userId === $i.id
 				? [
 						{
-							icon: "ph-minus-circle ph-bold ph-lg",
+							icon: `${icon("ph-minus-circle")}`,
 							text: i18n.ts.unclip,
 							danger: true,
 							action: unclip,
@@ -271,18 +293,18 @@ export function getNoteMenu(props: {
 			statePromise.then((state) =>
 				state?.isFavorited
 					? {
-							icon: "ph-bookmark-simple ph-bold ph-lg",
+							icon: `${icon("ph-bookmark-simple")}`,
 							text: i18n.ts.unfavorite,
 							action: () => toggleFavorite(false),
 					  }
 					: {
-							icon: "ph-bookmark-simple ph-bold ph-lg",
+							icon: `${icon("ph-bookmark-simple")}`,
 							text: i18n.ts.favorite,
 							action: () => toggleFavorite(true),
 					  },
 			),
 			{
-				icon: "ph-paperclip ph-bold ph-lg",
+				icon: `${icon("ph-paperclip")}`,
 				text: i18n.ts.clip,
 				action: () => clip(),
 			},
@@ -290,12 +312,12 @@ export function getNoteMenu(props: {
 				? statePromise.then((state) =>
 						state.isWatching
 							? {
-									icon: "ph-eye-slash ph-bold ph-lg",
+									icon: `${icon("ph-eye-slash")}`,
 									text: i18n.ts.unwatch,
 									action: () => toggleWatch(false),
 							  }
 							: {
-									icon: "ph-eye ph-bold ph-lg",
+									icon: `${icon("ph-eye")}`,
 									text: i18n.ts.watch,
 									action: () => toggleWatch(true),
 							  },
@@ -304,12 +326,12 @@ export function getNoteMenu(props: {
 			statePromise.then((state) =>
 				state.isMutedThread
 					? {
-							icon: "ph-speaker-x ph-bold ph-lg",
+							icon: `${icon("ph-speaker-x")}`,
 							text: i18n.ts.unmuteThread,
 							action: () => toggleThreadMute(false),
 					  }
 					: {
-							icon: "ph-speaker-x ph-bold ph-lg",
+							icon: `${icon("ph-speaker-x")}`,
 							text: i18n.ts.muteThread,
 							action: () => toggleThreadMute(true),
 					  },
@@ -317,26 +339,26 @@ export function getNoteMenu(props: {
 			isAppearAuthor
 				? ($i.pinnedNoteIds || []).includes(appearNote.id)
 					? {
-							icon: "ph-push-pin ph-bold ph-lg",
+							icon: `${icon("ph-push-pin")}`,
 							text: i18n.ts.unpin,
 							action: () => togglePin(false),
 					  }
 					: {
-							icon: "ph-push-pin ph-bold ph-lg",
+							icon: `${icon("ph-push-pin")}`,
 							text: i18n.ts.pin,
 							action: () => togglePin(true),
 					  }
 				: undefined,
 			instance.translatorAvailable
 				? {
-						icon: "ph-translate ph-bold ph-lg",
+						icon: `${icon("ph-translate")}`,
 						text: i18n.ts.translate,
 						action: translate,
 				  }
 				: undefined,
 			appearNote.url || appearNote.uri
 				? {
-						icon: "ph-arrow-square-out ph-bold ph-lg",
+						icon: `${icon("ph-arrow-square-out")}`,
 						text: i18n.ts.showOnRemote,
 						action: () => {
 							window.open(appearNote.url || appearNote.uri, "_blank");
@@ -345,29 +367,29 @@ export function getNoteMenu(props: {
 				: undefined,
 			{
 				type: "parent",
-				icon: "ph-share-network ph-bold ph-lg",
+				icon: `${icon("ph-share-network")}`,
 				text: i18n.ts.share,
 				children: [
 					{
-						icon: "ph-clipboard-text ph-bold ph-lg",
+						icon: `${icon("ph-clipboard-text")}`,
 						text: i18n.ts.copyContent,
 						action: copyContent,
 					},
 					{
-						icon: "ph-link-simple ph-bold ph-lg",
+						icon: `${icon("ph-link-simple")}`,
 						text: i18n.ts.copyLink,
 						action: copyLink,
 					},
 					appearNote.url || appearNote.uri
 						? {
-								icon: "ph-link-simple ph-bold ph-lg",
+								icon: `${icon("ph-link-simple")}`,
 								text: `${i18n.ts.copyLink} (${i18n.ts.origin})`,
 								action: copyOriginal,
 						  }
 						: undefined,
 					shareAvailable()
 						? {
-								icon: "ph-share-network ph-bold ph-lg",
+								icon: `${icon("ph-share-network")}`,
 								text: i18n.ts.share,
 								action: share,
 						  }
@@ -378,16 +400,16 @@ export function getNoteMenu(props: {
 		...($i.isModerator || $i.isAdmin ? [
 			null,
 			{
-				icon: 'ph-megaphone-simple ph-bold ph-lg',
+				icon: `${icon('ph-megaphone-simple')}`,
 				text: i18n.ts.promote,
 				action: promote
 			}]
 			: []
-		),*/
+		), */
 			null,
 			!isAppearAuthor
 				? {
-						icon: "ph-warning-circle ph-bold ph-lg",
+						icon: `${icon("ph-warning-circle")}`,
 						text: i18n.ts.reportAbuse,
 						action: () => {
 							const u =
@@ -410,7 +432,7 @@ export function getNoteMenu(props: {
 				: undefined,
 			isAppearAuthor
 				? {
-						icon: "ph-pencil-line ph-bold ph-lg",
+						icon: `${icon("ph-pencil-line")}`,
 						text: i18n.ts.edit,
 						accent: true,
 						action: edit,
@@ -418,7 +440,7 @@ export function getNoteMenu(props: {
 				: undefined,
 			isAppearAuthor
 				? {
-						icon: "ph-eraser ph-bold ph-lg",
+						icon: `${icon("ph-eraser")}`,
 						text: i18n.ts.deleteAndEdit,
 						danger: true,
 						action: delEdit,
@@ -426,7 +448,7 @@ export function getNoteMenu(props: {
 				: undefined,
 			isAppearAuthor || isModerator
 				? {
-						icon: "ph-trash ph-bold ph-lg",
+						icon: `${icon("ph-trash")}`,
 						text: i18n.ts.delete,
 						danger: true,
 						action: del,
@@ -436,7 +458,7 @@ export function getNoteMenu(props: {
 			!isAppearAuthor
 				? {
 						type: "parent",
-						icon: "ph-user ph-bold ph-lg",
+						icon: `${icon("ph-user")}`,
 						text: i18n.ts.user,
 						children: getUserMenu(appearNote.user),
 				  }
@@ -446,7 +468,7 @@ export function getNoteMenu(props: {
 		menu = [
 			appearNote.url || appearNote.uri
 				? {
-						icon: "ph-arrow-square-out ph-bold ph-lg",
+						icon: `${icon("ph-arrow-square-out")}`,
 						text: i18n.ts.showOnRemote,
 						action: () => {
 							window.open(appearNote.url || appearNote.uri, "_blank");
@@ -454,25 +476,25 @@ export function getNoteMenu(props: {
 				  }
 				: undefined,
 			{
-				icon: "ph-clipboard-text ph-bold ph-lg",
+				icon: `${icon("ph-clipboard-text")}`,
 				text: i18n.ts.copyContent,
 				action: copyContent,
 			},
 			{
-				icon: "ph-link-simple ph-bold ph-lg",
+				icon: `${icon("ph-link-simple")}`,
 				text: i18n.ts.copyLink,
 				action: copyLink,
 			},
 			appearNote.url || appearNote.uri
 				? {
-						icon: "ph-link-simple ph-bold ph-lg",
+						icon: `${icon("ph-link-simple")}`,
 						text: `${i18n.ts.copyLink} (${i18n.ts.origin})`,
 						action: copyOriginal,
 				  }
 				: undefined,
 			shareAvailable()
 				? {
-						icon: "ph-share-network ph-bold ph-lg",
+						icon: `${icon("ph-share-network")}`,
 						text: i18n.ts.share,
 						action: share,
 				  }
@@ -484,7 +506,7 @@ export function getNoteMenu(props: {
 		menu = menu.concat([
 			null,
 			...noteActions.map((action) => ({
-				icon: "ph-plug ph-bold ph-lg",
+				icon: `${icon("ph-plug")}`,
 				text: action.title,
 				action: () => {
 					action.handler(appearNote);

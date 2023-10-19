@@ -4,7 +4,7 @@
 			<div class="_panel">
 				<XPie class="pie" :value="cpuUsage" />
 				<div>
-					<p><i class="ph-cpu ph-bold ph-lg"></i>CPU</p>
+					<p><i :class="icon('ph-cpu')"></i>CPU</p>
 					<p>{{ meta.cpu.cores }} Logical cores</p>
 					<p>{{ meta.cpu.model }}</p>
 				</div>
@@ -13,7 +13,7 @@
 			<div class="_panel">
 				<XPie class="pie" :value="memUsage" />
 				<div>
-					<p><i class="ph-microchip ph-bold ph-lg"></i>RAM</p>
+					<p><i :class="icon('ph-microchip')"></i>RAM</p>
 					<p>Total: {{ bytes(memTotal, 1) }}</p>
 					<p>Used: {{ bytes(memUsed, 1) }}</p>
 					<p>Free: {{ bytes(memFree, 1) }}</p>
@@ -23,7 +23,7 @@
 			<div class="_panel">
 				<XPie class="pie" :value="diskUsage" />
 				<div>
-					<p><i class="ph-hard-drives ph-bold ph-lg"></i>Disk</p>
+					<p><i :class="icon('ph-hard-drives')"></i>Disk</p>
 					<p>Total: {{ bytes(diskTotal, 1) }}</p>
 					<p>Free: {{ bytes(diskAvailable, 1) }}</p>
 					<p>Used: {{ bytes(diskUsed, 1) }}</p>
@@ -33,9 +33,7 @@
 			<div class="_panel">
 				<XPie class="pie" :value="meiliProgress" />
 				<div>
-					<p>
-						<i class="ph-file-search ph-bold ph-lg"></i>MeiliSearch
-					</p>
+					<p><i :class="icon('ph-file-search')"></i>MeiliSearch</p>
 					<p>
 						{{ i18n.ts._widgets.meiliStatus }}: {{ meiliAvailable }}
 					</p>
@@ -54,45 +52,46 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import XPie from "../../widgets/server-metric/pie.vue";
 import bytes from "@/filters/bytes";
 import { stream } from "@/stream";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const meta = await os.api("server-info", {});
 const serverStats = await os.api("stats");
 
-let cpuUsage: number = $ref(0);
+const cpuUsage = ref(0);
 
-let memUsage: number = $ref(0);
-let memTotal: number = $ref(0);
-let memUsed: number = $ref(0);
-let memFree: number = $ref(0);
+const memUsage = ref(0);
+const memTotal = ref(0);
+const memUsed = ref(0);
+const memFree = ref(0);
 
-let meiliProgress: number = $ref(0);
-let meiliTotalSize: number = $ref(0);
-let meiliIndexCount: number = $ref(0);
-let meiliAvailable: string = $ref("unavailable");
+const meiliProgress = ref(0);
+const meiliTotalSize = ref(0);
+const meiliIndexCount = ref(0);
+const meiliAvailable = ref("unavailable");
 
-const diskUsage = $computed(() => meta.fs.used / meta.fs.total);
-const diskTotal = $computed(() => meta.fs.total);
-const diskUsed = $computed(() => meta.fs.used);
-const diskAvailable = $computed(() => meta.fs.total - meta.fs.used);
+const diskUsage = computed(() => meta.fs.used / meta.fs.total);
+const diskTotal = computed(() => meta.fs.total);
+const diskUsed = computed(() => meta.fs.used);
+const diskAvailable = computed(() => meta.fs.total - meta.fs.used);
 
 function onStats(stats) {
-	cpuUsage = stats.cpu;
+	cpuUsage.value = stats.cpu;
 
-	memUsage = stats.mem.active / stats.mem.total;
-	memTotal = stats.mem.total;
-	memUsed = stats.mem.active;
-	memFree = memTotal - memUsed;
+	memUsage.value = stats.mem.active / stats.mem.total;
+	memTotal.value = stats.mem.total;
+	memUsed.value = stats.mem.active;
+	memFree.value = memTotal.value - memUsed.value;
 
-	meiliTotalSize = stats.meilisearch.size;
-	meiliIndexCount = stats.meilisearch.indexed_count;
-	meiliAvailable = stats.meilisearch.health;
-	meiliProgress = meiliIndexCount / serverStats.notesCount;
+	meiliTotalSize.value = stats.meilisearch.size;
+	meiliIndexCount.value = stats.meilisearch.indexed_count;
+	meiliAvailable.value = stats.meilisearch.health;
+	meiliProgress.value = meiliIndexCount.value / serverStats.notesCount;
 }
 
 const connection = stream.useChannel("serverStats");

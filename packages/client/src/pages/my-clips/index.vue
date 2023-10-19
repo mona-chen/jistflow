@@ -38,20 +38,21 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
+
 import MkPagination from "@/components/MkPagination.vue";
-import MkButton from "@/components/MkButton.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const pagination = {
 	endpoint: "clips/list" as const,
 	limit: 10,
 };
 
-const pagingComponent = $ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
 async function create() {
 	const { canceled, result } = await os.form(i18n.ts.createNewClip, {
@@ -75,26 +76,18 @@ async function create() {
 
 	os.apiWithDialog("clips/create", result);
 
-	pagingComponent.reload();
+	pagingComponent.value.reload();
 }
 
-function onClipCreated() {
-	pagingComponent.reload();
-}
+const headerActions = computed(() => []);
 
-function onClipDeleted() {
-	pagingComponent.reload();
-}
-
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.clip,
-	icon: "ph-paperclip ph-bold ph-lg",
+	icon: `${icon("ph-paperclip")}`,
 	action: {
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		handler: create,
 	},
 });

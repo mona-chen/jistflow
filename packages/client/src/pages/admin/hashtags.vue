@@ -17,7 +17,7 @@
 				</FormTextarea>
 
 				<FormButton primary class="_formBlock" @click="save"
-					><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+					><i :class="icon('ph-floppy-disk-back')"></i>
 					{{ i18n.ts.save }}</FormButton
 				>
 			</FormSuspense>
@@ -26,7 +26,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
+
 import FormButton from "@/components/MkButton.vue";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormSuspense from "@/components/form/suspense.vue";
@@ -34,28 +35,30 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let hiddenTags: string = $ref("");
+const hiddenTags = ref("");
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	hiddenTags = meta.hiddenTags.join("\n");
+	hiddenTags.value = meta.hiddenTags.join("\n");
 }
 
 function save() {
 	os.apiWithDialog("admin/update-meta", {
-		hiddenTags: hiddenTags.split("\n").map((h: string) => h.trim()) || [],
+		hiddenTags:
+			hiddenTags.value.split("\n").map((h: string) => h.trim()) || [],
 	}).then(() => {
 		fetchInstance();
 	});
 }
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.hiddenTags,
-	icon: "ph-hash ph-bold ph-lg",
+	icon: `${icon("ph-hash")}`,
 });
 </script>

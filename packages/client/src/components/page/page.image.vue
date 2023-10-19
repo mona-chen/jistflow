@@ -12,11 +12,10 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, PropType } from "vue";
+import type { PropType } from "vue";
 import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
-import * as os from "@/os";
-import { ImageBlock } from "@/scripts/hpml/block";
-import { Hpml } from "@/scripts/hpml/evaluator";
+import type { ImageBlock } from "@/scripts/hpml/block";
+import type { Hpml } from "@/scripts/hpml/evaluator";
 
 const props = defineProps<{
 	block: PropType<ImageBlock>;
@@ -30,8 +29,7 @@ const image = props.hpml.page.attachedFiles.find(
 
 <style lang="scss" scoped>
 .lzyxtsnt {
-	> img {
-		max-width: 100%;
-	}
+	display: flex;
+	justify-content: center;
 }
 </style>

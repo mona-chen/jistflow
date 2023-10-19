@@ -53,6 +53,14 @@
 			}}</template>
 		</FormSwitch>
 		<FormSwitch
+			v-model="isIndexable"
+			class="_formBlock"
+			@update:modelValue="save()"
+		>
+			{{ i18n.ts.indexable }}
+			<template #caption>{{ i18n.ts.indexableDescription }}</template>
+		</FormSwitch>
+		<FormSwitch
 			v-model="noCrawle"
 			class="_formBlock"
 			@update:modelValue="save()"
@@ -130,11 +138,18 @@
 			@update:modelValue="save()"
 			>{{ i18n.ts.keepCw }}</FormSwitch
 		>
+		<FormSwitch
+			v-model="addRe"
+			class="_formBlock"
+			@update:modelValue="save()"
+			>{{ i18n.ts.addRe }}
+		</FormSwitch>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
+
 import FormSwitch from "@/components/form/switch.vue";
 import FormSelect from "@/components/form/select.vue";
 import FormSection from "@/components/form/section.vue";
@@ -144,46 +159,46 @@ import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { $i } from "@/account";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let isLocked = $ref($i.isLocked);
-let autoAcceptFollowed = $ref($i.autoAcceptFollowed);
-let noCrawle = $ref($i.noCrawle);
-let isExplorable = $ref($i.isExplorable);
-let hideOnlineStatus = $ref($i.hideOnlineStatus);
-let publicReactions = $ref($i.publicReactions);
-let ffVisibility = $ref($i.ffVisibility);
-let preventAiLearning = $ref($i.preventAiLearning);
+const isLocked = ref($i.isLocked);
+const autoAcceptFollowed = ref($i.autoAcceptFollowed);
+const noCrawle = ref($i.noCrawle);
+const isIndexable = ref($i.isIndexable);
+const isExplorable = ref($i.isExplorable);
+const hideOnlineStatus = ref($i.hideOnlineStatus);
+const publicReactions = ref($i.publicReactions);
+const ffVisibility = ref($i.ffVisibility);
+const preventAiLearning = ref($i.preventAiLearning);
 
-let defaultNoteVisibility = $computed(
+const defaultNoteVisibility = computed(
 	defaultStore.makeGetterSetter("defaultNoteVisibility"),
 );
-let defaultNoteLocalOnly = $computed(
+const defaultNoteLocalOnly = computed(
 	defaultStore.makeGetterSetter("defaultNoteLocalOnly"),
 );
-let rememberNoteVisibility = $computed(
+const rememberNoteVisibility = computed(
 	defaultStore.makeGetterSetter("rememberNoteVisibility"),
 );
-let keepCw = $computed(defaultStore.makeGetterSetter("keepCw"));
+const keepCw = computed(defaultStore.makeGetterSetter("keepCw"));
+const addRe = computed(defaultStore.makeGetterSetter("addRe"));
 
 function save() {
 	os.api("i/update", {
-		isLocked: !!isLocked,
-		autoAcceptFollowed: !!autoAcceptFollowed,
-		noCrawle: !!noCrawle,
-		isExplorable: !!isExplorable,
-		hideOnlineStatus: !!hideOnlineStatus,
-		publicReactions: !!publicReactions,
-		preventAiLearning: !!preventAiLearning,
-		ffVisibility: ffVisibility,
+		isLocked: !!isLocked.value,
+		autoAcceptFollowed: !!autoAcceptFollowed.value,
+		noCrawle: !!noCrawle.value,
+		isIndexable: !!isIndexable.value,
+		isExplorable: !!isExplorable.value,
+		hideOnlineStatus: !!hideOnlineStatus.value,
+		publicReactions: !!publicReactions.value,
+		preventAiLearning: !!preventAiLearning.value,
+		ffVisibility: ffVisibility.value,
 	});
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.privacy,
-	icon: "ph-keyhole ph-bold ph-lg",
+	icon: `${icon("ph-keyhole")}`,
 });
 </script>

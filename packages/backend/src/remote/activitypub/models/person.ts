@@ -185,7 +185,7 @@ export async function createPerson(
 
 	const host = toPuny(new URL(object.id).hostname);
 
-	const { fields } = analyzeAttachments(person.attachment || []);
+	const fields = analyzeAttachments(person.attachment || []);
 
 	const tags = extractApHashtags(person.tag)
 		.map((tag) => normalizeForSearch(tag))
@@ -205,10 +205,10 @@ export async function createPerson(
 
 	if (typeof person.followers === "string") {
 		try {
-			let data = await fetch(person.followers, {
+			const data = await fetch(person.followers, {
 				headers: { Accept: "application/json" },
 			});
-			let json_data = JSON.parse(await data.text());
+			const json_data = JSON.parse(await data.text());
 
 			followersCount = json_data.totalItems;
 		} catch {
@@ -220,14 +220,29 @@ export async function createPerson(
 
 	if (typeof person.following === "string") {
 		try {
-			let data = await fetch(person.following, {
+			const data = await fetch(person.following, {
 				headers: { Accept: "application/json" },
 			});
-			let json_data = JSON.parse(await data.text());
+			const json_data = JSON.parse(await data.text());
 
 			followingCount = json_data.totalItems;
 		} catch (e) {
 			followingCount = undefined;
+		}
+	}
+
+	let notesCount: number | undefined;
+
+	if (typeof person.outbox === "string") {
+		try {
+			const data = await fetch(person.outbox, {
+				headers: { Accept: "application/json" },
+			});
+			const json_data = JSON.parse(await data.text());
+
+			notesCount = json_data.totalItems;
+		} catch (e) {
+			notesCount = undefined;
 		}
 	}
 
@@ -274,11 +289,24 @@ export async function createPerson(
 							  isCollectionOrOrderedCollection(person.following)
 							? person.following.totalItems
 							: undefined,
+					notesCount:
+						notesCount !== undefined
+							? notesCount
+							: person.outbox &&
+							  typeof person.outbox !== "string" &&
+							  isCollectionOrOrderedCollection(person.outbox)
+							? person.outbox.totalItems
+							: undefined,
 					featured: person.featured ? getApId(person.featured) : undefined,
 					uri: person.id,
 					tags,
 					isBot,
 					isCat: (person as any).isCat === true,
+					speakAsCat:
+						person.speakAsCat != null
+							? person.speakAsCat === true
+							: (person as any).isCat === true,
+					isIndexable: person.indexable,
 				}),
 			)) as IRemoteUser;
 
@@ -472,6 +500,21 @@ export async function updatePerson(
 		}
 	}
 
+	let notesCount: number | undefined;
+
+	if (typeof person.outbox === "string") {
+		try {
+			let data = await fetch(person.outbox, {
+				headers: { Accept: "application/json" },
+			});
+			let json_data = JSON.parse(await data.text());
+
+			notesCount = json_data.totalItems;
+		} catch (e) {
+			notesCount = undefined;
+		}
+	}
+
 	const updates = {
 		lastFetchedAt: new Date(),
 		inbox: person.inbox,
@@ -495,12 +538,25 @@ export async function updatePerson(
 				  isCollectionOrOrderedCollection(person.following)
 				? person.following.totalItems
 				: undefined,
+		notesCount:
+			notesCount !== undefined
+				? notesCount
+				: person.outbox &&
+				  typeof person.outbox !== "string" &&
+				  isCollectionOrOrderedCollection(person.outbox)
+				? person.outbox.totalItems
+				: undefined,
 		featured: person.featured,
 		emojis: emojiNames,
 		name: truncate(person.name, nameLength),
 		tags,
 		isBot: getApType(object) !== "Person",
 		isCat: (person as any).isCat === true,
+		speakAsCat:
+			person.speakAsCat != null
+				? person.speakAsCat === true
+				: (person as any).isCat === true,
+		isIndexable: person.indexable,
 		isLocked: !!person.manuallyApprovesFollowers,
 		movedToUri: person.movedTo || null,
 		alsoKnownAs: person.alsoKnownAs || null,
@@ -554,7 +610,7 @@ export async function updatePerson(
 		{
 			followerSharedInbox:
 				person.sharedInbox ||
-				(person.endpoints ? person.endpoints.sharedInbox : undefined),
+				(person.endpoints ? person.endpoints.sharedInbox : null),
 		},
 	);
 
@@ -586,39 +642,6 @@ export async function resolvePerson(
 	return await createPerson(uri, resolver);
 }
 
-const services: {
-	[x: string]: (id: string, username: string) => any;
-} = {
-	"misskey:authentication:twitter": (userId, screenName) => ({
-		userId,
-		screenName,
-	}),
-	"misskey:authentication:github": (id, login) => ({ id, login }),
-	"misskey:authentication:discord": (id, name) => $discord(id, name),
-};
-
-const $discord = (id: string, name: string) => {
-	if (typeof name !== "string") {
-		name = "unknown#0000";
-	}
-	const [username, discriminator] = name.split("#");
-	return { id, username, discriminator };
-};
-
-function addService(target: { [x: string]: any }, source: IApPropertyValue) {
-	const service = services[source.name];
-
-	if (typeof source.value !== "string") {
-		source.value = "unknown";
-	}
-
-	const [id, username] = source.value.split("@");
-
-	if (service) {
-		target[source.name.split(":")[2]] = service(id, username);
-	}
-}
-
 export function analyzeAttachments(
 	attachments: IObject | IObject[] | undefined,
 ) {
@@ -626,22 +649,17 @@ export function analyzeAttachments(
 		name: string;
 		value: string;
 	}[] = [];
-	const services: { [x: string]: any } = {};
 
 	if (Array.isArray(attachments)) {
 		for (const attachment of attachments.filter(isPropertyValue)) {
-			if (isPropertyValue(attachment.identifier)) {
-				addService(services, attachment.identifier);
-			} else {
-				fields.push({
-					name: attachment.name,
-					value: fromHtml(attachment.value),
-				});
-			}
+			fields.push({
+				name: attachment.name,
+				value: fromHtml(attachment.value),
+			});
 		}
 	}
 
-	return { fields, services };
+	return fields;
 }
 
 export async function updateFeatured(userId: User["id"], resolver?: Resolver) {
@@ -663,7 +681,7 @@ export async function updateFeatured(userId: User["id"], resolver?: Resolver) {
 		? collection.items
 		: collection.orderedItems;
 	const items = await Promise.all(
-		toArray(unresolvedItems).map((x) => resolver.resolve(x)),
+		toArray(unresolvedItems).map((x) => resolver?.resolve(x)),
 	);
 
 	// Resolve and regist Notes

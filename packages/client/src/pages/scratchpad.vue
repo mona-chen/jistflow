@@ -12,7 +12,7 @@
 				style="position: absolute; top: 8px; right: 8px"
 				primary
 				@click="run()"
-				><i class="ph-play ph-bold ph-lg"></i
+				><i :class="icon('ph-play')"></i
 			></MkButton>
 		</div>
 
@@ -53,6 +53,7 @@ import * as os from "@/os";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const code = ref("");
 const logs = ref<any[]>([]);
@@ -133,13 +134,9 @@ function highlighter(code) {
 	return highlight(code, languages.js, "javascript");
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.scratchpad,
-	icon: "ph-terminal-window ph-bold ph-lg",
+	icon: `${icon("ph-terminal-window")}`,
 });
 </script>
 

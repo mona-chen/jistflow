@@ -16,20 +16,14 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	defineAsyncComponent,
-	computed,
-	inject,
-	onMounted,
-	onUnmounted,
-	watch,
-} from "vue";
+import { computed, ref, watch } from "vue";
 import * as Acct from "firefish-js/built/acct";
-import * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XFollowList from "./follow-list.vue";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
@@ -38,18 +32,18 @@ const props = withDefaults(
 	{},
 );
 
-let user = $ref<null | misskey.entities.UserDetailed>(null);
-let error = $ref(null);
+const user = ref<null | firefish.entities.UserDetailed>(null);
+const error = ref(null);
 
 function fetchUser(): void {
 	if (props.acct == null) return;
-	user = null;
+	user.value = null;
 	os.api("users/show", Acct.parse(props.acct))
 		.then((u) => {
-			user = u;
+			user.value = u;
 		})
 		.catch((err) => {
-			error = err;
+			error.value = err;
 		});
 }
 
@@ -57,21 +51,21 @@ watch(() => props.acct, fetchUser, {
 	immediate: true,
 });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata(
 	computed(() =>
-		user
+		user.value
 			? {
-					icon: "ph-user ph-bold ph-lg",
-					title: user.name
-						? `${user.name} (@${user.username})`
-						: `@${user.username}`,
+					icon: `${icon("ph-user")}`,
+					title: user.value.name
+						? `${user.value.name} (@${user.value.username})`
+						: `@${user.value.username}`,
 					subtitle: i18n.ts.following,
-					userName: user,
-					avatar: user,
+					userName: user.value,
+					avatar: user.value,
 			  }
 			: null,
 	),

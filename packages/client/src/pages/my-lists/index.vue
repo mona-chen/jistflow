@@ -11,7 +11,7 @@
 				<MkInfo class="_gap" :icon="'list-bullets'" :card="true">
 					<p>{{ i18n.ts.listsDesc }}</p>
 					<MkButton primary class="add" @click="create"
-						><i class="ph-plus ph-bold ph-lg"></i>
+						><i :class="icon('ph-plus')"></i>
 						{{ i18n.ts.createList }}</MkButton
 					>
 				</MkInfo>
@@ -32,7 +32,7 @@
 						<MkAvatars :user-ids="list.userIds" />
 					</MkA>
 					<MkButton @click="deleteAll"
-						><i class="ph-trash ph-bold ph-lg"></i>
+						><i :class="icon('ph-trash')"></i>
 						{{ i18n.ts.deleteAll }}</MkButton
 					>
 				</MkPagination>
@@ -42,7 +42,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
+
 import MkPagination from "@/components/MkPagination.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkAvatars from "@/components/MkAvatars.vue";
@@ -50,8 +51,9 @@ import MkInfo from "@/components/MkInfo.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-const pagingComponent = $ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
 const pagination = {
 	endpoint: "users/lists/list" as const,
@@ -63,8 +65,8 @@ async function create() {
 		title: i18n.ts.enterListName,
 	});
 	if (canceled) return;
-	await os.apiWithDialog("users/lists/create", { name: name });
-	pagingComponent.reload();
+	await os.apiWithDialog("users/lists/create", { name });
+	pagingComponent.value.reload();
 }
 
 async function deleteAll() {
@@ -78,15 +80,15 @@ async function deleteAll() {
 	os.success();
 }
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.manageLists,
-	icon: "ph-list-bullets ph-bold ph-lg",
+	icon: `${icon("ph-list-bullets")}`,
 	action: {
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		handler: create,
 	},
 });

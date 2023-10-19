@@ -9,21 +9,21 @@
 			class="reply-icon"
 			@click.stop
 		>
-			<i class="ph-quotes ph-bold ph-lg"></i>
+			<i :class="icon('ph-quotes')"></i>
 		</MkA>
 		<MkA
 			v-else-if="!detailed && note.replyId"
+			v-tooltip="i18n.ts.jumpToPrevious"
 			:to="
 				detailedView
 					? `#${note.replyId}`
 					: `${notePage(note)}#${note.replyId}`
 			"
 			behavior="browser"
-			v-tooltip="i18n.ts.jumpToPrevious"
 			class="reply-icon"
 			@click.stop
 		>
-			<i class="ph-arrow-bend-left-up ph-bold ph-lg"></i>
+			<i :class="icon('ph-arrow-bend-left-up')"></i>
 		</MkA>
 		<Mfm
 			v-if="note.cw != ''"
@@ -46,18 +46,18 @@
 			}"
 		>
 			<XShowMoreButton
-				ref="showMoreButton"
 				v-if="isLong && collapsed"
+				ref="showMoreButton"
 				v-model="collapsed"
-				v-on:keydown="focusFooter"
+				@keydown="focusFooter"
 			></XShowMoreButton>
 			<XCwButton
-				ref="cwButton"
 				v-if="note.cw && !showContent"
+				ref="cwButton"
 				v-model="showContent"
 				:note="note"
-				v-on:keydown="focusFooter"
-				v-on:update:model-value="(val) => emit('expanded', val)"
+				@keydown="focusFooter"
+				@update:model-value="(val) => emit('expanded', val)"
 			/>
 			<div
 				class="body"
@@ -81,21 +81,21 @@
 						class="reply-icon"
 						@click.stop
 					>
-						<i class="ph-quotes ph-bold ph-lg"></i>
+						<i :class="icon('ph-quotes')"></i>
 					</MkA>
 					<MkA
 						v-else-if="!detailed && note.replyId"
+						v-tooltip="i18n.ts.jumpToPrevious"
 						:to="
 							detailedView
 								? `#${note.replyId}`
 								: `${notePage(note)}#${note.replyId}`
 						"
 						behavior="browser"
-						v-tooltip="i18n.ts.jumpToPrevious"
 						class="reply-icon"
 						@click.stop
 					>
-						<i class="ph-arrow-bend-left-up ph-bold ph-lg"></i>
+						<i :class="icon('ph-arrow-bend-left-up')"></i>
 					</MkA>
 				</template>
 				<Mfm
@@ -139,7 +139,7 @@
 						(showMoreButton && collapsed)
 					"
 					tabindex="0"
-					v-on:focus="
+					@focus="
 						cwButton?.focus();
 						showMoreButton?.focus();
 					"
@@ -157,15 +157,17 @@
 		</div>
 		<MkButton
 			v-if="hasMfm && defaultStore.state.animatedMfm"
-			@click.stop="toggleMfm"
 			mini
 			rounded
+			@click.stop="toggleMfm"
 		>
 			<template v-if="disableMfm">
-				<i class="ph-play ph-bold"></i> {{ i18n.ts._mfm.play }}
+				<i :class="icon('ph-play', false)"></i>
+				{{ i18n.ts._mfm.play }}
 			</template>
 			<template v-else>
-				<i class="ph-stop ph-bold"></i> {{ i18n.ts._mfm.stop }}
+				<i :class="icon('ph-stop', false)"></i>
+				{{ i18n.ts._mfm.stop }}
 			</template>
 		</MkButton>
 		<!-- <div
@@ -177,7 +179,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import * as mfm from "mfm-js";
 import * as os from "@/os";
 import XNoteSimple from "@/components/MkNoteSimple.vue";
@@ -192,9 +194,10 @@ import { extractUrlFromMfm } from "@/scripts/extract-url-from-mfm";
 import { extractMfmWithAnimation } from "@/scripts/extract-mfm";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 	parentId?;
 	conversation?;
 	detailed?: boolean;
@@ -217,23 +220,23 @@ const isLong =
 		(props.note.text.split("\n").length > 10 ||
 			props.note.text.length > 800)) ||
 		props.note.files.length > 4);
-const collapsed = $ref(props.note.cw == null && isLong);
+const collapsed = ref(props.note.cw == null && isLong);
 const urls = props.note.text
 	? extractUrlFromMfm(mfm.parse(props.note.text)).slice(0, 5)
 	: null;
 
-let showContent = $ref(false);
+const showContent = ref(false);
 
 const mfms = props.note.text
 	? extractMfmWithAnimation(mfm.parse(props.note.text))
 	: null;
 
-const hasMfm = $ref(mfms && mfms.length > 0);
+const hasMfm = ref(mfms && mfms.length > 0);
 
-let disableMfm = $ref(defaultStore.state.animatedMfm);
+const disableMfm = ref(defaultStore.state.animatedMfm);
 
 async function toggleMfm() {
-	if (disableMfm) {
+	if (disableMfm.value) {
 		if (!defaultStore.state.animatedMfmWarnShown) {
 			const { canceled } = await os.confirm({
 				type: "warning",
@@ -244,9 +247,9 @@ async function toggleMfm() {
 			defaultStore.set("animatedMfmWarnShown", true);
 		}
 
-		disableMfm = false;
+		disableMfm.value = false;
 	} else {
-		disableMfm = true;
+		disableMfm.value = true;
 	}
 }
 

@@ -87,8 +87,12 @@ export default define(meta, paramDef, async (ps, user) => {
 		.andWhere(
 			new Brackets((qb) => {
 				qb.where("note.userId = :meId", { meId: user.id });
-				if (hasFollowing)
-					qb.orWhere(`note.userId IN (${followingQuery.getQuery()})`);
+				if (hasFollowing) {
+					qb.orWhere(
+						`note.userId IN (${followingQuery.getQuery()})`,
+						followingQuery.getParameters(),
+					);
+				}
 			}),
 		)
 		.innerJoinAndSelect("note.user", "user")

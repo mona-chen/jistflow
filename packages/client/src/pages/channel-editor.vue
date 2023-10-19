@@ -15,20 +15,20 @@
 
 				<div class="banner">
 					<MkButton v-if="bannerId == null" @click="setBannerImage"
-						><i class="ph-plus ph-bold ph-lg"></i>
+						><i :class="icon('ph-plus')"></i>
 						{{ i18n.ts._channel.setBanner }}</MkButton
 					>
 					<div v-else-if="bannerUrl">
 						<img :src="bannerUrl" style="width: 100%" />
 						<MkButton @click="removeBannerImage()"
-							><i class="ph-trash ph-bold ph-lg"></i>
+							><i :class="icon('ph-trash')"></i>
 							{{ i18n.ts._channel.removeBanner }}</MkButton
 						>
 					</div>
 				</div>
 				<div class="_formBlock">
 					<MkButton primary @click="save()"
-						><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+						><i :class="icon('ph-floppy-disk-back')"></i>
 						{{
 							channelId ? i18n.ts.save : i18n.ts.create
 						}}</MkButton
@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import MkTextarea from "@/components/form/textarea.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
@@ -49,6 +49,7 @@ import * as os from "@/os";
 import { useRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
@@ -56,21 +57,21 @@ const props = defineProps<{
 	channelId?: string;
 }>();
 
-let channel = $ref(null);
-let name = $ref(null);
-let description = $ref(null);
-let bannerUrl = $ref<string | null>(null);
-let bannerId = $ref<string | null>(null);
+const channel = ref(null);
+const name = ref(null);
+const description = ref(null);
+const bannerUrl = ref<string | null>(null);
+const bannerId = ref<string | null>(null);
 
 watch(
-	() => bannerId,
+	() => bannerId.value,
 	async () => {
-		if (bannerId == null) {
-			bannerUrl = null;
+		if (bannerId.value == null) {
+			bannerUrl.value = null;
 		} else {
-			bannerUrl = (
+			bannerUrl.value = (
 				await os.api("drive/files/show", {
-					fileId: bannerId,
+					fileId: bannerId.value,
 				})
 			).url;
 		}
@@ -80,23 +81,23 @@ watch(
 async function fetchChannel() {
 	if (props.channelId == null) return;
 
-	channel = await os.api("channels/show", {
+	channel.value = await os.api("channels/show", {
 		channelId: props.channelId,
 	});
 
-	name = channel.name;
-	description = channel.description;
-	bannerId = channel.bannerId;
-	bannerUrl = channel.bannerUrl;
+	name.value = channel.value.name;
+	description.value = channel.value.description;
+	bannerId.value = channel.value.bannerId;
+	bannerUrl.value = channel.value.bannerUrl;
 }
 
 fetchChannel();
 
 function save() {
 	const params = {
-		name: name,
-		description: description,
-		bannerId: bannerId,
+		name: name.value,
+		description: description.value,
+		bannerId: bannerId.value,
 	};
 
 	if (props.channelId) {
@@ -114,31 +115,29 @@ function save() {
 
 function setBannerImage(evt) {
 	selectFile(evt.currentTarget ?? evt.target, null).then((file) => {
-		bannerId = file.id;
+		bannerId.value = file.id;
 	});
 }
 
 function removeBannerImage() {
-	bannerId = null;
+	bannerId.value = null;
 }
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata(
 	computed(() =>
 		props.channelId
 			? {
 					title: i18n.ts._channel.edit,
-					icon: "ph-television ph-bold ph-lg",
+					icon: `${icon("ph-television")}`,
 			  }
 			: {
 					title: i18n.ts._channel.create,
-					icon: "ph-television ph-bold ph-lg",
+					icon: `${icon("ph-television")}`,
 			  },
 	),
 );
 </script>
-
-<style lang="scss" scoped></style>

@@ -7,7 +7,7 @@
 		@parent-focus="($event) => emit('parent-focus', $event)"
 	>
 		<template #header
-			><i class="ph-browser ph-bold ph-lg" style="margin-right: 8px"></i
+			><i :class="icon('ph-browser')" style="margin-right: 8px"></i
 			>{{ column.name }}</template
 		>
 		<div class="wtdtxvec">
@@ -32,7 +32,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { ref } from "vue";
+
 import XColumn from "./column.vue";
 import type { Column } from "./deck-store";
 import {
@@ -43,6 +44,7 @@ import {
 } from "./deck-store";
 import XWidgets from "@/components/MkWidgets.vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	column: Column;
@@ -53,7 +55,7 @@ const emit = defineEmits<{
 	(ev: "parent-focus", direction: "up" | "down" | "left" | "right"): void;
 }>();
 
-let edit = $ref(false);
+const edit = ref(false);
 
 function addWidget(widget) {
 	addColumnWidget(props.column.id, widget);
@@ -72,12 +74,12 @@ function updateWidgets(widgets) {
 }
 
 function func() {
-	edit = !edit;
+	edit.value = !edit.value;
 }
 
 const menu = [
 	{
-		icon: "ph-pencil ph-bold ph-lg",
+		icon: `${icon("ph-pencil")}`,
 		text: i18n.ts.editWidgets,
 		action: func,
 	},

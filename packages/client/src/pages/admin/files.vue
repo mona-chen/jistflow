@@ -80,9 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent } from "vue";
-import * as Acct from "firefish-js/built/acct";
-import MkButton from "@/components/MkButton.vue";
+import { computed, ref } from "vue";
 import MkInput from "@/components/form/input.vue";
 import MkSelect from "@/components/form/select.vue";
 import MkFileListForAdmin from "@/components/MkFileListForAdmin.vue";
@@ -90,20 +88,24 @@ import { lookupFile } from "@/scripts/lookup-file";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let origin = $ref("local");
-let type = $ref(null);
-let searchHost = $ref("");
-let userId = $ref("");
-let viewMode = $ref("grid");
+const origin = ref("local");
+const type = ref(null);
+const searchHost = ref("");
+const userId = ref("");
+const viewMode = ref("grid");
 const pagination = {
 	endpoint: "admin/drive/files" as const,
 	limit: 10,
 	params: computed(() => ({
-		type: type && type !== "" ? type : null,
-		userId: userId && userId !== "" ? userId : null,
-		origin: origin,
-		hostname: searchHost && searchHost !== "" ? searchHost : null,
+		type: type.value && type.value !== "" ? type.value : null,
+		userId: userId.value && userId.value !== "" ? userId.value : null,
+		origin: origin.value,
+		hostname:
+			searchHost.value && searchHost.value !== ""
+				? searchHost.value
+				: null,
 	})),
 };
 
@@ -118,25 +120,23 @@ function clear() {
 	});
 }
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
 		text: i18n.ts.lookup,
-		icon: "ph-magnifying-glass ph-bold ph-lg",
+		icon: `${icon("ph-magnifying-glass")}`,
 		handler: lookupFile,
 	},
 	{
 		text: i18n.ts.clearCachedFiles,
-		icon: "ph-trash ph-bold ph-lg",
+		icon: `${icon("ph-trash")}`,
 		handler: clear,
 	},
 ]);
 
-const headerTabs = $computed(() => []);
-
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.files,
-		icon: "ph-cloud ph-bold ph-lg",
+		icon: `${icon("ph-cloud")}`,
 	})),
 );
 </script>

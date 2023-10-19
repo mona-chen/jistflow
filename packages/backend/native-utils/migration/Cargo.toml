@@ -24,6 +24,7 @@ urlencoding = "2.1.2"
 redis = { version = "0.23.0", features = ["tokio-rustls-comp"] }
 sea-orm = "0.11.3"
 url = { version = "2.4.0", features = ["serde"] }
+basen = "0.1.0"
 
 [dependencies.sea-orm-migration]
 version = "0.11.0"

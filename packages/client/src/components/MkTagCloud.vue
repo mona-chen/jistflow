@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch, PropType, onBeforeUnmount } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import tinycolor from "tinycolor2";
 
 const loaded = !!window.TagCanvas;
@@ -39,13 +39,13 @@ const idForTags = Array.from(Array(16))
 			],
 	)
 	.join("");
-let available = $ref(false);
-let rootEl = $ref<HTMLElement | null>(null);
-let canvasEl = $ref<HTMLCanvasElement | null>(null);
-let tagsEl = $ref<HTMLElement | null>(null);
-let width = $ref(300);
+const available = ref(false);
+const rootEl = ref<HTMLElement | null>(null);
+const canvasEl = ref<HTMLCanvasElement | null>(null);
+const tagsEl = ref<HTMLElement | null>(null);
+const width = ref(300);
 
-watch($$(available), () => {
+watch(available, () => {
 	try {
 		window.TagCanvas.Start(idForCanvas, idForTags, {
 			textColour: "#ffffff",
@@ -56,7 +56,7 @@ watch($$(available), () => {
 			initial: [-0.03, -0.01],
 			frontSelect: true,
 			imageRadius: 8,
-			//dragControl: true,
+			// dragControl: true,
 			dragThreshold: 3,
 			wheelZoom: false,
 			reverse: true,
@@ -70,10 +70,10 @@ watch($$(available), () => {
 });
 
 onMounted(() => {
-	width = rootEl.offsetWidth;
+	width.value = rootEl.value.offsetWidth;
 
 	if (loaded) {
-		available = true;
+		available.value = true;
 	} else {
 		document.head
 			.appendChild(
@@ -82,7 +82,7 @@ onMounted(() => {
 					src: "/client-assets/tagcanvas.min.js",
 				}),
 			)
-			.addEventListener("load", () => (available = true));
+			.addEventListener("load", () => (available.value = true));
 	}
 });
 

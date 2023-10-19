@@ -2,7 +2,7 @@
 	<div class="_formRoot">
 		<FormLink to="/settings/plugin/install"
 			><template #icon
-				><i class="ph-download-simple ph-bold ph-lg"></i></template
+				><i :class="icon('ph-download-simple')"></i></template
 			>{{ i18n.ts._plugin.install }}</FormLink
 		>
 
@@ -46,11 +46,11 @@
 						v-if="plugin.config"
 						inline
 						@click="config(plugin)"
-						><i class="ph-gear-six ph-bold ph-lg"></i>
+						><i :class="icon('ph-gear-six')"></i>
 						{{ i18n.ts.settings }}</MkButton
 					>
 					<MkButton inline danger @click="uninstall(plugin)"
-						><i class="ph-trash ph-bold ph-lg"></i>
+						><i :class="icon('ph-trash')"></i>
 						{{ i18n.ts.uninstall }}</MkButton
 					>
 				</div>
@@ -71,6 +71,7 @@ import { ColdDeviceStorage } from "@/store";
 import { unisonReload } from "@/scripts/unison-reload";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const plugins = ref(ColdDeviceStorage.get("plugins"));
 
@@ -114,14 +115,8 @@ function changeActive(plugin, active) {
 	});
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.plugins,
-	icon: "ph-plug ph-bold ph-lg",
+	icon: `${icon("ph-plug")}`,
 });
 </script>
-
-<style lang="scss" scoped></style>

@@ -1,15 +1,19 @@
 import { getHtml } from "@/misc/fetch.js";
-import { JSDOM } from "jsdom";
+import { Window } from "happy-dom";
 import config from "@/config/index.js";
 
 async function getRelMeLinks(url: string): Promise<string[]> {
 	try {
-		const html = await getHtml(url);
-		const dom = new JSDOM(html);
-		const relMeLinks = [
-			...dom.window.document.querySelectorAll("a[rel='me']"),
-			...dom.window.document.querySelectorAll("link[rel='me']"),
-		].map((a) => (a as HTMLAnchorElement | HTMLLinkElement).href);
+		const dom = new Window({
+			url: url,
+		});
+		const allLinks = [...dom.window.document.querySelectorAll("a, link")];
+		const relMeLinks = allLinks
+			.filter((a) => {
+				const relAttribute = a.getAttribute("rel");
+				return relAttribute ? relAttribute.split(" ").includes("me") : false;
+			})
+			.map((a) => (a as HTMLAnchorElement | HTMLLinkElement).href);
 		return relMeLinks;
 	} catch {
 		return [];

@@ -86,7 +86,9 @@
 </template>
 
 <script lang="ts" setup>
-import * as misskey from "firefish-js";
+import { ref } from "vue";
+
+import type * as firefish from "firefish-js";
 import MkFollowButton from "@/components/MkFollowButton.vue";
 import XShowMoreButton from "@/components/MkShowMoreButton.vue";
 import MkNumber from "@/components/MkNumber.vue";
@@ -94,17 +96,17 @@ import { userPage } from "@/filters/user";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{
-	user: misskey.entities.UserDetailed;
+	user: firefish.entities.UserDetailed;
 	detailed?: boolean;
 }>();
 
-let isLong = $ref(
+const isLong = ref(
 	props.detailed &&
 		props.user.description &&
 		(props.user.description.split("\n").length > 9 ||
 			props.user.description.length > 400),
 );
-let collapsed = $ref(isLong);
+const collapsed = ref(isLong.value);
 </script>
 
 <style lang="scss" scoped>

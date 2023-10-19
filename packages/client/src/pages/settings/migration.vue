@@ -7,7 +7,7 @@
 			}}</FormInfo>
 			<FormInput v-model="moveToAccount" class="_formBlock">
 				<template #prefix
-					><i class="ph-airplane-takeoff ph-bold ph-lg"></i
+					><i :class="icon('ph-airplane-takeoff')"></i
 				></template>
 				<template #label>{{ i18n.ts.moveToLabel }}</template>
 			</FormInput>
@@ -27,7 +27,7 @@
 				class="_formBlock"
 			>
 				<template #prefix
-					><i class="ph-airplane-landing ph-bold ph-lg"></i
+					><i :class="icon('ph-airplane-landing')"></i
 				></template>
 				<template #label>{{
 					`#${i + 1} ${i18n.ts.moveFromLabel}`
@@ -39,11 +39,10 @@
 				inline
 				style="margin-right: 8px"
 				@click="add"
-				><i class="ph-plus ph-bold ph-lg"></i>
-				{{ i18n.ts.add }}</FormButton
+				><i :class="icon('ph-plus')"></i> {{ i18n.ts.add }}</FormButton
 			>
 			<FormButton class="button" inline primary @click="save">
-				<i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+				<i :class="icon('ph-floppy-disk-back')"></i>
 				{{ i18n.ts.save }}
 			</FormButton>
 		</FormSection>
@@ -51,6 +50,9 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from "vue";
+
+import { toString } from "firefish-js/built/acct";
 import FormSection from "@/components/form/section.vue";
 import FormInput from "@/components/form/input.vue";
 import FormButton from "@/components/MkButton.vue";
@@ -59,35 +61,37 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { $i } from "@/account";
-import { toString } from "firefish-js/built/acct";
+import icon from "@/scripts/icon";
 
-let moveToAccount = $ref("");
-let accountAlias = $ref([""]);
+const moveToAccount = ref("");
+const accountAlias = ref([""]);
 
 await init();
 
 async function init() {
 	if ($i?.alsoKnownAs && $i.alsoKnownAs.length > 0) {
 		const aka = await os.api("users/show", { userIds: $i.alsoKnownAs });
-		accountAlias =
+		accountAlias.value =
 			aka && aka.length > 0
 				? aka.map((user) => `@${toString(user)}`)
 				: [""];
 	} else {
-		accountAlias = [""];
+		accountAlias.value = [""];
 	}
 }
 
 async function save(): Promise<void> {
 	const i = await os.apiWithDialog("i/known-as", {
-		alsoKnownAs: accountAlias.map((e) => e.trim()).filter((e) => e !== ""),
+		alsoKnownAs: accountAlias.value
+			.map((e) => e.trim())
+			.filter((e) => e !== ""),
 	});
 	$i.alsoKnownAs = i.alsoKnownAs;
 	await init();
 }
 
 function add(): void {
-	accountAlias.push("");
+	accountAlias.value.push("");
 }
 
 async function move(account): Promise<void> {
@@ -103,6 +107,6 @@ async function move(account): Promise<void> {
 
 definePageMetadata({
 	title: i18n.ts.security,
-	icon: "ph-lock ph-bold ph-lg",
+	icon: `${icon("ph-lock")}`,
 });
 </script>

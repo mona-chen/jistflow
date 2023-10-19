@@ -6,7 +6,7 @@
 				<template #empty>
 					<div class="_fullinfo">
 						<img
-							src="/static-assets/badges/info.png"
+							src="/static-assets/badges/info.webp"
 							aria-label="none"
 							class="_ghost"
 						/>
@@ -27,7 +27,7 @@
 								class="avatar"
 								:user="req.follower"
 								:show-indicator="true"
-								disableLink
+								disable-link
 							/>
 							<div class="body">
 								<div class="name">
@@ -59,17 +59,17 @@
 								<div class="actions">
 									<button
 										class="_button"
-										@click="accept(req.follower)"
 										:aria-label="i18n.t('accept')"
+										@click="accept(req.follower)"
 									>
-										<i class="ph-check ph-bold ph-lg"></i>
+										<i :class="icon('ph-check')"></i>
 									</button>
 									<button
 										class="_button"
-										@click="reject(req.follower)"
 										:aria-label="i18n.t('reject')"
+										@click="reject(req.follower)"
 									>
-										<i class="ph-x ph-bold ph-lg"></i>
+										<i :class="icon('ph-x')"></i>
 									</button>
 								</div>
 							</div>
@@ -82,19 +82,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { computed, ref } from "vue";
 import MkPagination from "@/components/MkPagination.vue";
-import { userPage, acct } from "@/filters/user";
+import { acct, userPage } from "@/filters/user";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { $i } from "@/account";
+import icon from "@/scripts/icon";
 
 const paginationComponent = ref<InstanceType<typeof MkPagination>>();
 
 const pagination = {
 	endpoint: "following/requests/list" as const,
 	limit: 10,
+	noPaging: true,
 };
 
 function accept(user) {
@@ -109,14 +111,10 @@ function reject(user) {
 	});
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.followRequests,
-		icon: "ph-hand-waving ph-bold ph-lg",
+		icon: `${icon("ph-hand-waving")}`,
 	})),
 );
 </script>

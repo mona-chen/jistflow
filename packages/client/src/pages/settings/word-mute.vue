@@ -17,6 +17,17 @@
 						}}</template
 					>
 				</FormTextarea>
+				<MkInfo class="_formBlock">{{
+					i18n.ts._wordMute.langDescription
+				}}</MkInfo>
+				<FormTextarea v-model="softMutedLangs" class="_formBlock">
+					<span>{{ i18n.ts._wordMute.muteLangs }}</span>
+					<template #caption
+						>{{ i18n.ts._wordMute.muteLangsDescription }}<br />{{
+							i18n.ts._wordMute.muteLangsDescription2
+						}}</template
+					>
+				</FormTextarea>
 			</div>
 			<div v-show="tab === 'hard'">
 				<MkInfo class="_formBlock"
@@ -43,7 +54,7 @@
 			</div>
 		</div>
 		<MkButton primary inline :disabled="!changed" @click="save()"
-			><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+			><i :class="icon('ph-floppy-disk-back')"></i>
 			{{ i18n.ts.save }}</MkButton
 		>
 	</div>
@@ -62,6 +73,7 @@ import { defaultStore } from "@/store";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const render = (mutedWords) =>
 	mutedWords
@@ -76,6 +88,7 @@ const render = (mutedWords) =>
 
 const tab = ref("soft");
 const softMutedWords = ref(render(defaultStore.state.mutedWords));
+const softMutedLangs = ref(render(defaultStore.state.mutedLangs));
 const hardMutedWords = ref(render($i!.mutedWords));
 const hardWordMutedNotesCount = ref(null);
 const changed = ref(false);
@@ -88,6 +101,10 @@ watch(softMutedWords, () => {
 	changed.value = true;
 });
 
+watch(softMutedLangs, () => {
+	changed.value = true;
+});
+
 watch(hardMutedWords, () => {
 	changed.value = true;
 });
@@ -95,7 +112,7 @@ watch(hardMutedWords, () => {
 async function save() {
 	const parseMutes = (mutes, tab) => {
 		// split into lines, remove empty lines and unnecessary whitespace
-		let lines = mutes
+		const lines = mutes
 			.trim()
 			.split("\n")
 			.map((line) => line.trim())
@@ -134,9 +151,10 @@ async function save() {
 		return lines;
 	};
 
-	let softMutes, hardMutes;
+	let softMutes, softMLangs, hardMutes;
 	try {
 		softMutes = parseMutes(softMutedWords.value, i18n.ts._wordMute.soft);
+		softMLangs = parseMutes(softMutedLangs.value, i18n.ts._wordMute.lang);
 		hardMutes = parseMutes(hardMutedWords.value, i18n.ts._wordMute.hard);
 	} catch (err) {
 		// already displayed error message in parseMutes
@@ -144,6 +162,7 @@ async function save() {
 	}
 
 	defaultStore.set("mutedWords", softMutes);
+	defaultStore.set("mutedLangs", softMLangs);
 	await os.api("i/update", {
 		mutedWords: hardMutes,
 	});
@@ -151,12 +170,8 @@ async function save() {
 	changed.value = false;
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.wordMute,
-	icon: "ph-speaker-x ph-bold ph-lg",
+	icon: `${icon("ph-speaker-x")}`,
 });
 </script>

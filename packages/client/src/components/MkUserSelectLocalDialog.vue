@@ -42,7 +42,7 @@
 							:user="user"
 							class="avatar"
 							:show-indicator="true"
-							disableLink
+							disable-link
 						/>
 						<div class="body">
 							<MkUserName :user="user" class="name" />
@@ -70,7 +70,7 @@
 							:user="user"
 							class="avatar"
 							:show-indicator="true"
-							disableLink
+							disable-link
 						/>
 						<div class="body">
 							<MkUserName :user="user" class="name" />
@@ -84,8 +84,8 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted } from "vue";
-import * as misskey from "firefish-js";
+import { onMounted, ref } from "vue";
+import type * as firefish from "firefish-js";
 import MkInput from "@/components/form/input.vue";
 import FormSplit from "@/components/form/split.vue";
 import XModalWindow from "@/components/MkModalWindow.vue";
@@ -94,54 +94,54 @@ import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
-	(ev: "ok", selected: misskey.entities.UserDetailed): void;
+	(ev: "ok", selected: firefish.entities.UserDetailed): void;
 	(ev: "cancel"): void;
 	(ev: "closed"): void;
 }>();
 
-let username = $ref("");
-let users: misskey.entities.UserDetailed[] = $ref([]);
-let recentUsers: misskey.entities.UserDetailed[] = $ref([]);
-let selected: misskey.entities.UserDetailed | null = $ref(null);
-let dialogEl = $ref();
+const username = ref("");
+const users: firefish.entities.UserDetailed[] = ref([]);
+const recentUsers: firefish.entities.UserDetailed[] = ref([]);
+const selected: firefish.entities.UserDetailed | null = ref(null);
+const dialogEl = ref();
 
 const search = () => {
-	if (username === "") {
-		users = [];
+	if (username.value === "") {
+		users.value = [];
 		return;
 	}
 	os.api("users/search", {
-		query: username,
+		query: username.value,
 		origin: "local",
 		limit: 10,
 		detail: false,
 	}).then((_users) => {
-		users = _users;
+		users.value = _users;
 	});
 };
 
 const ok = () => {
-	if (selected == null) return;
-	emit("ok", selected);
-	dialogEl.close();
+	if (selected.value == null) return;
+	emit("ok", selected.value);
+	dialogEl.value.close();
 
 	// 最近使ったユーザー更新
 	let recents = defaultStore.state.recentlyUsedUsers;
-	recents = recents.filter((x) => x !== selected.id);
-	recents.unshift(selected.id);
+	recents = recents.filter((x) => x !== selected.value.id);
+	recents.unshift(selected.value.id);
 	defaultStore.set("recentlyUsedUsers", recents.splice(0, 16));
 };
 
 const cancel = () => {
 	emit("cancel");
-	dialogEl.close();
+	dialogEl.value.close();
 };
 
 onMounted(() => {
 	os.api("users/show", {
 		userIds: defaultStore.state.recentlyUsedUsers,
 	}).then((users) => {
-		recentUsers = users;
+		recentUsers.value = users;
 	});
 });
 </script>

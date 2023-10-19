@@ -167,7 +167,6 @@ mastoRouter.post("/oauth/token", async (ctx) => {
 	const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
 	const generator = (megalodon as any).default;
 	const client = generator(BASE_URL, null) as MegalodonInterface;
-	let m = null;
 	let token = null;
 	if (body.code) {
 		//m = body.code.match(/^([a-zA-Z0-9]{8})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{12})/);
@@ -221,7 +220,10 @@ export const startServer = () => {
 
 	initializeStreamingServer(server);
 
-	server.listen(config.port);
+	server.listen({
+		port: config.port,
+		host: config.bind,
+	});
 
 	return server;
 };
@@ -257,6 +259,11 @@ export default () =>
 			}
 		});
 
-		// @ts-ignore
-		server.listen(config.port, resolve);
+		server.listen(
+			{
+				port: config.port,
+				host: config.bind,
+			},
+			() => resolve(undefined),
+		);
 	});

@@ -8,7 +8,7 @@
 				primary
 				style="margin: 0 auto var(--margin) auto"
 				@click="create"
-				><i class="ph-plus ph-bold ph-lg"></i>
+				><i :class="icon('ph-plus')"></i>
 				{{ i18n.ts.createGroup }}</MkButton
 			>
 			<MkPagination
@@ -57,6 +57,7 @@ import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import MkStickyContainer from "@/components/global/MkStickyContainer.vue";
+import icon from "@/scripts/icon";
 
 const owned = ref("owned");
 const joined = ref("joined");
@@ -71,9 +72,9 @@ const joinedPagination = {
 	limit: 10,
 };
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.createGroup,
 		handler: create,
 	},
@@ -82,7 +83,7 @@ const headerActions = $computed(() => [
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.groups,
-		icon: "ph-users-three ph-bold ph-lg",
+		icon: `${icon("ph-users-three")}`,
 	})),
 );
 
@@ -91,7 +92,7 @@ async function create() {
 		title: i18n.ts.groupName,
 	});
 	if (canceled) return;
-	await os.api("users/groups/create", { name: name });
+	await os.api("users/groups/create", { name });
 	owned.value.reload();
 	os.success();
 }

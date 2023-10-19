@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import JSON5 from "json5";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
@@ -50,20 +50,23 @@ import FormSection from "@/components/form/section.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
 import FormSplit from "@/components/form/split.vue";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	path: string;
 }>();
 
-const scope = $computed(() => props.path.split("/"));
+const scope = computed(() => props.path.split("/"));
 
-let keys = $ref(null);
+const keys = ref(null);
 
 function fetchKeys() {
 	os.api("i/registry/keys-with-type", {
-		scope: scope,
+		scope: scope.value,
 	}).then((res) => {
-		keys = Object.entries(res).sort((a, b) => a[0].localeCompare(b[0]));
+		keys.value = Object.entries(res).sort((a, b) =>
+			a[0].localeCompare(b[0]),
+		);
 	});
 }
 
@@ -81,7 +84,7 @@ async function createKey() {
 		scope: {
 			type: "string",
 			label: i18n.ts._registry.scope,
-			default: scope.join("/"),
+			default: scope.value.join("/"),
 		},
 	});
 	if (canceled) return;
@@ -96,13 +99,13 @@ async function createKey() {
 
 watch(() => props.path, fetchKeys, { immediate: true });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.registry,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 });
 </script>
 

@@ -3,7 +3,7 @@
 		<template #empty>
 			<div class="_fullinfo">
 				<img
-					src="/static-assets/badges/info.png"
+					src="/static-assets/badges/info.webp"
 					class="_ghost"
 					alt="Info"
 				/>
@@ -12,7 +12,7 @@
 		</template>
 
 		<template #default="{ items: notes }">
-			<div class="giivymft" :class="{ noGap }" ref="tlEl">
+			<div ref="tlEl" class="giivymft" :class="{ noGap }">
 				<XList
 					ref="notes"
 					v-slot="{ item: note }"

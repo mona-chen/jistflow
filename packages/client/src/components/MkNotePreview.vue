@@ -1,6 +1,6 @@
 <template>
 	<div v-size="{ min: [350, 500] }" class="fefdfafb">
-		<MkAvatar class="avatar" :user="$i" disableLink />
+		<MkAvatar class="avatar" :user="$i" disable-link />
 		<div class="main">
 			<div class="header">
 				<MkUserName :user="$i" />
@@ -11,7 +11,7 @@
 						:text="preprocess(text).trim()"
 						:author="$i"
 						:i="$i"
-						advancedMfm
+						advanced-mfm
 					/>
 				</div>
 			</div>
@@ -20,8 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
-import { preprocess } from "@/scripts/preprocess";
+import preprocess from "@/scripts/preprocess";
 
 const props = defineProps<{
 	text: string;

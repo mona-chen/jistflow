@@ -1,7 +1,7 @@
 <template>
 	<label class="timctyfi" :class="{ disabled, easing }">
 		<div class="label"><slot name="label"></slot></div>
-		<div v-adaptive-border class="body">
+		<div v-adaptive-border class="body" :class="{ background }">
 			<div class="container">
 				<input
 					ref="inputEl"
@@ -19,7 +19,12 @@
 					@touchend="tooltipHide"
 					@mouseenter="tooltipShow"
 					@mouseleave="tooltipHide"
-					@input="(x) => (inputVal = x.target.value)"
+					@input="
+						(x) => {
+							inputVal = x.target.value;
+							if (instant) onChange(x);
+						}
+					"
 				/>
 				<datalist v-if="showTicks && steps" :id="id">
 					<option
@@ -50,16 +55,22 @@ const props = withDefaults(
 		textConverter?: (value: number) => string;
 		showTicks?: boolean;
 		easing?: boolean;
+		background?: boolean;
+		tooltips?: boolean;
+		instant?: boolean;
 	}>(),
 	{
 		step: 1,
 		textConverter: (v) => v.toString(),
 		easing: false,
+		background: true,
+		tooltips: true,
+		instant: false,
 	},
 );
 
 const inputEl = ref<HTMLElement>();
-const inputVal = $ref(props.modelValue);
+const inputVal = ref(props.modelValue);
 
 const emit = defineEmits<{
 	(ev: "update:modelValue", value: number): void;
@@ -74,18 +85,19 @@ const steps = computed(() => {
 });
 
 function onChange(x) {
-	emit("update:modelValue", inputVal);
+	emit("update:modelValue", inputVal.value);
 }
 
 const tooltipShowing = ref(false);
 function tooltipShow() {
+	if (!props.tooltips) return;
 	tooltipShowing.value = true;
 	os.popup(
 		defineAsyncComponent(() => import("@/components/MkTooltip.vue")),
 		{
 			showing: tooltipShowing,
 			text: computed(() => {
-				return props.textConverter(inputVal);
+				return props.textConverter(inputVal.value);
 			}),
 			targetElement: inputEl,
 		},
@@ -94,6 +106,7 @@ function tooltipShow() {
 	);
 }
 function tooltipHide() {
+	if (!props.tooltips) return;
 	tooltipShowing.value = false;
 }
 </script>
@@ -128,13 +141,21 @@ function tooltipHide() {
 	$thumbWidth: 20px;
 
 	> .body {
-		padding: 10px 12px;
-		background: var(--panel);
-		border: solid 1px var(--panel);
+		padding: 10px 0;
+		background: none;
+		border: none;
 		border-radius: 6px;
+
+		&.background {
+			padding: 10px 12px;
+			background: var(--panel);
+			border: solid 1px var(--panel);
+		}
 
 		> .container {
 			position: relative;
+			display: flex;
+			align-items: center;
 			height: $thumbHeight;
 
 			@mixin track {
@@ -155,6 +176,7 @@ function tooltipHide() {
 
 				&:hover {
 					background: var(--accentLighten);
+					cursor: pointer;
 				}
 			}
 			> input {

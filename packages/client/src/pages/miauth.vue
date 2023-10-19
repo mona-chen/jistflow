@@ -40,7 +40,7 @@
 							"
 						>
 							<i
-								class="ph-shield-warning ph-bold ph-xl"
+								:class="icon('ph-shield-warning ph-xl', false)"
 								style="margin-right: 0.5rem"
 							></i>
 							{{ i18n.ts._permissions.allPermissions }}
@@ -53,8 +53,7 @@
 							:class="[$style.permission]"
 						>
 							<i
-								:class="[`ph-${getIcon(p)}`]"
-								class="ph-bold ph-xl"
+								:class="icon(`ph-${getIcon(p)} ph-xl`, false)"
 								style="margin-right: 0.5rem"
 							></i>
 							{{ i18n.t(`_permissions.${p}`) }}
@@ -78,13 +77,15 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { ref } from "vue";
+
 import MkSignin from "@/components/MkSignin.vue";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { $i, login } from "@/account";
 import { appendQuery, query } from "@/scripts/url";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	session: string;
@@ -96,14 +97,14 @@ const props = defineProps<{
 
 const _permissions = props.permission.split(",");
 
-let state = $ref<string | null>(null);
+const state = ref<string | null>(null);
 
 function getIcon(p: string) {
 	return p.includes("write") ? "pencil-simple" : "eye";
 }
 
 async function accept(): Promise<void> {
-	state = "waiting";
+	state.value = "waiting";
 	await os.api("miauth/gen-token", {
 		session: props.session,
 		name: props.name,
@@ -111,7 +112,7 @@ async function accept(): Promise<void> {
 		permission: _permissions,
 	});
 
-	state = "accepted";
+	state.value = "accepted";
 	if (props.callback) {
 		const cbUrl = new URL(props.callback);
 		if (
@@ -130,7 +131,7 @@ async function accept(): Promise<void> {
 }
 
 function deny(): void {
-	state = "denied";
+	state.value = "denied";
 }
 
 function onLogin(res): void {

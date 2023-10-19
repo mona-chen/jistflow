@@ -18,7 +18,7 @@
 					<MkAvatar
 						:user="$i"
 						class="icon"
-						disableLink
+						disable-link
 					/><!-- <MkAcct class="text" :user="$i"/> -->
 				</button>
 			</div>
@@ -26,12 +26,12 @@
 				<MkA
 					v-click-anime
 					v-tooltip.noDelay.right="i18n.ts.timeline"
-					class="item index"
+					class="item _button index"
 					active-class="active"
 					to="/"
 					exact
 				>
-					<i class="icon ph-house ph-bold ph-fw ph-lg"></i
+					<i :class="icon('ph-house icon ph-fw')"></i
 					><span class="text">{{ i18n.ts.timeline }}</span>
 				</MkA>
 				<template v-for="item in menu">
@@ -89,7 +89,7 @@
 						"
 						class="indicator"
 					></span
-					><i class="icon ph-door ph-bold ph-fw ph-lg"></i
+					><i :class="icon('ph-door icon ph-fw')"></i
 					><span class="text">{{ i18n.ts.controlPanel }}</span>
 				</MkA>
 				<button
@@ -98,9 +98,7 @@
 					class="item _button"
 					@click="more"
 				>
-					<i
-						class="icon ph-dots-three-outline ph-bold ph-fw ph-lg"
-					></i
+					<i :class="icon('ph-dots-three-outline icon ph-fw')"></i
 					><span class="text">{{ i18n.ts.more }}</span>
 					<span v-if="otherMenuItemIndicated" class="indicator"
 						><i class="icon ph-circle ph-fill"></i
@@ -113,7 +111,7 @@
 					active-class="active"
 					to="/settings"
 				>
-					<i class="icon ph-gear-six ph-bold ph-fw ph-lg"></i
+					<i :class="icon('ph-gear icon ph-fw')"></i
 					><span class="text">{{ i18n.ts.settings }}</span>
 				</MkA>
 			</nav>
@@ -124,7 +122,7 @@
 					data-cy-open-post-form
 					@click="os.post"
 				>
-					<i class="icon ph-pencil ph-bold ph-fw ph-lg"></i
+					<i :class="icon('icon ph-pencil ph-fw ph-lg')"></i
 					><span class="text">{{ i18n.ts.note }}</span>
 				</button>
 				<button
@@ -132,7 +130,9 @@
 					class="item _button help"
 					@click="openHelpMenu"
 				>
-					<i class="help icon ph-info ph-bold ph-xl ph-fw"></i>
+					<i
+						:class="icon('help icon ph-info ph-xl ph-fw', false)"
+					></i>
 				</button>
 				<!-- <button v-click-anime v-tooltip.noDelay.right="$instance.name ?? i18n.ts.instance" class="item _button instance" @click="openInstanceMenu">
 				<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" alt="" class="icon"/>
@@ -155,6 +155,7 @@ import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import { version } from "@/config";
+import icon from "@/scripts/icon";
 
 const isEmpty = (x: string | null) => x == null || x === "";
 
@@ -183,22 +184,22 @@ watch(defaultStore.reactiveState.menuDisplay, () => {
 	calcViewState();
 });
 
-let noMaintainerInformation =
+const noMaintainerInformation =
 	isEmpty(instance.maintainerName) || isEmpty(instance.maintainerEmail);
-let noBotProtection =
+const noBotProtection =
 	!instance.disableRegistration &&
 	!instance.enableHcaptcha &&
 	!instance.enableRecaptcha;
-let noEmailServer = !instance.enableEmail;
-let thereIsUnresolvedAbuseReport = $ref(false);
-let updateAvailable = $ref(false);
+const noEmailServer = !instance.enableEmail;
+const thereIsUnresolvedAbuseReport = ref(false);
+const updateAvailable = ref(false);
 
 if ($i?.isAdmin) {
 	os.api("admin/abuse-user-reports", {
 		state: "unresolved",
 		limit: 1,
 	}).then((reports) => {
-		if (reports?.length > 0) thereIsUnresolvedAbuseReport = true;
+		if (reports?.length > 0) thereIsUnresolvedAbuseReport.value = true;
 	});
 }
 
@@ -207,7 +208,7 @@ if (defaultStore.state.showAdminUpdates) {
 		const cleanRes = parseInt(res?.tag_name.replace(/[^0-9]/g, ""));
 		const cleanVersion = parseInt(version.replace(/[^0-9]/g, ""));
 		if (cleanRes > cleanVersion) {
-			updateAvailable = true;
+			updateAvailable.value = true;
 		}
 	});
 }

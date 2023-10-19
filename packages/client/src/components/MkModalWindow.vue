@@ -25,12 +25,12 @@
 				<div ref="headerEl" class="header">
 					<button
 						v-if="props.withOkButton"
+						v-tooltip="i18n.ts.close"
 						:aria-label="i18n.t('close')"
 						class="_button"
 						@click="$emit('close')"
-						v-tooltip="i18n.ts.close"
 					>
-						<i class="ph-x ph-bold ph-lg"></i>
+						<i :class="icon('ph-x')"></i>
 					</button>
 					<span class="title">
 						<slot name="header"></slot>
@@ -41,7 +41,7 @@
 						class="_button"
 						@click="$emit('close')"
 					>
-						<i class="ph-x ph-bold ph-lg"></i>
+						<i :class="icon('ph-x')"></i>
 					</button>
 					<button
 						v-if="props.withOkButton"
@@ -50,7 +50,7 @@
 						:disabled="props.okButtonDisabled"
 						@click="$emit('ok')"
 					>
-						<i class="ph-check ph-bold ph-lg"></i>
+						<i :class="icon('ph-check')"></i>
 					</button>
 				</div>
 				<div class="body">
@@ -62,9 +62,12 @@
 </template>
 
 <script lang="ts" setup>
+import { shallowRef } from "vue";
+
 import { FocusTrap } from "focus-trap-vue";
 import MkModal from "./MkModal.vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
@@ -90,12 +93,12 @@ const emit = defineEmits<{
 	(event: "ok"): void;
 }>();
 
-let modal = $shallowRef<InstanceType<typeof MkModal>>();
-let rootEl = $shallowRef<HTMLElement>();
-let headerEl = $shallowRef<HTMLElement>();
+const modal = shallowRef<InstanceType<typeof MkModal>>();
+const rootEl = shallowRef<HTMLElement>();
+const headerEl = shallowRef<HTMLElement>();
 
 const close = (ev) => {
-	modal?.close(ev);
+	modal.value?.close(ev);
 };
 
 const onBgClick = () => {

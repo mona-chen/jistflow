@@ -1,7 +1,7 @@
 <template>
 	<MkContainer id="photos-container" :max-height="300" :foldable="true">
 		<template #header
-			><i class="ph-image ph-bold ph-lg" style="margin-right: 0.5em"></i
+			><i :class="icon('ph-image')" style="margin-right: 0.5em"></i
 			>{{ i18n.ts.images }}</template
 		>
 		<div class="ujigsodd">
@@ -28,8 +28,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from "vue";
-import * as misskey from "firefish-js";
+import { onMounted, ref } from "vue";
+import type * as firefish from "firefish-js";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import { notePage } from "@/filters/note";
 import * as os from "@/os";
@@ -37,20 +37,21 @@ import MkContainer from "@/components/MkContainer.vue";
 import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	user: misskey.entities.UserDetailed;
+	user: firefish.entities.UserDetailed;
 }>();
 
-let fetching = $ref(true);
-let images = $ref<
+const fetching = ref(true);
+const images = ref<
 	{
-		note: misskey.entities.Note;
-		file: misskey.entities.DriveFile;
+		note: firefish.entities.Note;
+		file: firefish.entities.DriveFile;
 	}[]
 >([]);
 
-function thumbnail(image: misskey.entities.DriveFile): string {
+function thumbnail(image: firefish.entities.DriveFile): string {
 	return defaultStore.state.disableShowingAnimatedImages
 		? getStaticImageUrl(image.thumbnailUrl)
 		: image.thumbnailUrl;
@@ -73,13 +74,13 @@ onMounted(() => {
 	}).then((notes) => {
 		for (const note of notes) {
 			for (const file of note.files) {
-				images.push({
+				images.value.push({
 					note,
 					file,
 				});
 			}
 		}
-		fetching = false;
+		fetching.value = false;
 	});
 });
 </script>
@@ -98,6 +99,9 @@ onMounted(() => {
 		grid-gap: 6px;
 
 		> .img {
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			position: relative;
 			height: 128px;
 			border-radius: 6px;

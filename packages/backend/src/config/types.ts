@@ -6,6 +6,7 @@ export type Source = {
 	feedback_url?: string;
 	url: string;
 	port: number;
+	bind?: string;
 	disableHsts?: boolean;
 	db: {
 		host: string;
@@ -68,15 +69,17 @@ export type Source = {
 
 	accesslog?: string;
 
-	clusterLimit?: number;
-
-	onlyQueueProcessor?: boolean;
+	clusterLimits?: {
+		web?: number;
+		queue?: number;
+	};
 
 	cuid?: {
 		length?: number;
 		fingerprint?: string;
 	};
 
+	outgoingAddress?: string;
 	outgoingAddressFamily?: "ipv4" | "ipv6" | "dual";
 
 	deliverJobConcurrency?: number;

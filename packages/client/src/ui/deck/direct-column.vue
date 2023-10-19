@@ -6,7 +6,7 @@
 	>
 		<template #header
 			><i
-				class="ph-envelope-simple-open ph-bold ph-lg"
+				:class="icon('ph-envelope-simple-open')"
 				style="margin-right: 8px"
 			></i
 			>{{ column.name }}</template
@@ -17,10 +17,10 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
 import XColumn from "./column.vue";
 import type { Column } from "./deck-store";
 import XNotes from "@/components/MkNotes.vue";
+import icon from "@/scripts/icon";
 
 defineProps<{
 	column: Column;

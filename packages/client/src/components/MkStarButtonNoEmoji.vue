@@ -1,38 +1,35 @@
 <template>
 	<button
+		ref="buttonRef"
 		v-tooltip.noDelay.bottom="i18n.ts._gallery.like"
+		v-vibrate="[30, 50, 50]"
 		class="button _button"
 		:class="$style.root"
-		ref="buttonRef"
 		@click.stop="toggleStar($event)"
 	>
 		<span v-if="!reacted">
 			<i
 				v-if="instance.defaultReaction === '👍'"
-				class="ph-thumbs-up ph-bold ph-lg"
+				:class="icon('ph-thumbs-up')"
 			></i>
 			<i
 				v-else-if="instance.defaultReaction === '❤️'"
-				class="ph-heart ph-bold ph-lg"
+				:class="icon('ph-heart')"
 			></i>
-			<i v-else class="ph-star ph-bold ph-lg"></i>
+			<i v-else :class="icon('ph-star')"></i>
 		</span>
 		<span v-else>
 			<i
 				v-if="instance.defaultReaction === '👍'"
-				class="ph-thumbs-up ph-bold ph-lg ph-fill"
+				class="ph-thumbs-up ph-lg ph-fill"
 				:class="$style.yellow"
 			></i>
 			<i
 				v-else-if="instance.defaultReaction === '❤️'"
-				class="ph-heart ph-bold ph-lg ph-fill"
+				class="ph-heart ph-lg ph-fill"
 				:class="$style.red"
 			></i>
-			<i
-				v-else
-				class="ph-star ph-bold ph-lg ph-fill"
-				:class="$style.yellow"
-			></i>
+			<i v-else class="ph-star ph-lg ph-fill" :class="$style.yellow"></i>
 		</span>
 		<template v-if="count > 0"
 			><p class="count">{{ count }}</p></template
@@ -47,10 +44,10 @@ import Ripple from "@/components/MkRipple.vue";
 import XDetails from "@/components/MkUsersTooltip.vue";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
-import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import { useTooltip } from "@/scripts/use-tooltip";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: Note;

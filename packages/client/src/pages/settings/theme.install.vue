@@ -12,7 +12,7 @@
 				:disabled="installThemeCode == null"
 				inline
 				@click="() => preview(installThemeCode)"
-				><i class="ph-eye ph-bold ph-lg"></i>
+				><i :class="icon('ph-eye')"></i>
 				{{ i18n.ts.preview }}</FormButton
 			>
 			<FormButton
@@ -20,7 +20,7 @@
 				primary
 				inline
 				@click="() => install(installThemeCode)"
-				><i class="ph-check ph-bold ph-lg"></i>
+				><i :class="icon('ph-check')"></i>
 				{{ i18n.ts.install }}</FormButton
 			>
 		</div>
@@ -28,7 +28,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { ref } from "vue";
+
 import JSON5 from "json5";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormButton from "@/components/MkButton.vue";
@@ -37,8 +38,9 @@ import * as os from "@/os";
 import { addTheme, getThemes } from "@/theme-store";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let installThemeCode = $ref(null);
+const installThemeCode = ref(null);
 
 function parseThemeCode(code: string) {
 	let theme;
@@ -85,12 +87,8 @@ async function install(code: string): Promise<void> {
 	});
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts._theme.install,
-	icon: "ph-download-simple ph-bold ph-lg",
+	icon: `${icon("ph-download-simple")}`,
 });
 </script>

@@ -1,8 +1,8 @@
 <template>
 	<div
-		class="hpaizdrt"
-		v-tooltip="capitalize(instance.softwareName)"
 		ref="ticker"
+		v-tooltip="capitalize(instance.softwareName)"
+		class="hpaizdrt"
 		:style="bg"
 	>
 		<img class="icon" :src="getInstanceIcon(instance)" aria-hidden="true" />
@@ -11,6 +11,8 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from "vue";
+
 import { instanceName } from "@/config";
 import { instance as Instance } from "@/instance";
 import { getProxiedImageUrlNullable } from "@/scripts/media-proxy";
@@ -24,7 +26,7 @@ const props = defineProps<{
 	};
 }>();
 
-let ticker = $ref<HTMLElement | null>(null);
+const ticker = ref<HTMLElement | null>(null);
 
 // if no instance data is given, this is for the local instance
 const instance = props.instance ?? {
@@ -35,10 +37,36 @@ const instance = props.instance ?? {
 			'meta[name="theme-color-orig"]',
 		) as HTMLMetaElement
 	)?.content,
-	softwareName: Instance.softwareName || "Firefish",
+	softwareName: Instance.softwareName ?? "Firefish",
 };
 
-const capitalize = (s: string) => s && s[0].toUpperCase() + s.slice(1);
+const commonNames = new Map<string, string>([
+	["birdsitelive", "BirdsiteLIVE"],
+	["bookwyrm", "BookWyrm"],
+	["bridgy-fed", "Bridgy Fed"],
+	["castopod", "CastoPod"],
+	["foundkey", "FoundKey"],
+	["gnusocial", "GNU social"],
+	["gotosocial", "GoToSocial"],
+	["kbin", "/kbin"],
+	["microblogpub", "microblog.pub"],
+	["nextcloud social", "Nextcloud Social"],
+	["peertube", "PeerTube"],
+	["reel2bits", "reel2bits"],
+	["snac", "snac"],
+	["snac2", "snac2"],
+	["takahe", "Takahē"],
+	["wafrn", "WAFRN"],
+	["wordpress", "WordPress"],
+	["writefreely", "WriteFreely"],
+	["wxwclub", "wxwClub"],
+]);
+
+const capitalize = (s: string) => {
+	if (s == null) return "Unknown";
+	if (commonNames.has(s)) return commonNames.get(s);
+	return s[0].toUpperCase() + s.slice(1);
+};
 
 const computedStyle = getComputedStyle(document.documentElement);
 const themeColor =

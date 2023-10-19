@@ -53,6 +53,7 @@ import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import { truncate } from "@/misc/truncate.js";
 import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
+import { langmap } from "@/misc/langmap.js";
 
 const logger = apLogger;
 
@@ -247,7 +248,7 @@ export async function createNote(
 	// Quote
 	let quote: Note | undefined | null;
 
-	if (note._misskey_quote || note.quoteUrl || note.quoteUri) {
+	if (note.quoteUrl || note.quoteUri) {
 		const tryResolveNote = async (
 			uri: string,
 		): Promise<
@@ -284,7 +285,7 @@ export async function createNote(
 		};
 
 		const uris = unique(
-			[note._misskey_quote, note.quoteUrl, note.quoteUri].filter(
+			[note.quoteUrl, note.quoteUri].filter(
 				(x): x is string => typeof x === "string",
 			),
 		);
@@ -305,13 +306,24 @@ export async function createNote(
 
 	// Text parsing
 	let text: string | null = null;
+	let lang: string | null = null;
 	if (
 		note.source?.mediaType === "text/x.misskeymarkdown" &&
 		typeof note.source?.content === "string"
 	) {
 		text = note.source.content;
-	} else if (typeof note._misskey_content !== "undefined") {
-		text = note._misskey_content;
+		if (note.contentMap != null) {
+			const key = Object.keys(note.contentMap)[0];
+			lang = Object.keys(langmap).includes(key)
+				? key.trim().split("-")[0].split("@")[0]
+				: null;
+		}
+	} else if (note.contentMap != null) {
+		const entry = Object.entries(note.contentMap)[0];
+		lang = Object.keys(langmap).includes(entry[0])
+			? entry[0].trim().split("-")[0].split("@")[0]
+			: null;
+		text = htmlToMfm(entry[1], note.tag);
 	} else if (typeof note.content === "string") {
 		text = htmlToMfm(note.content, note.tag);
 	}
@@ -380,6 +392,7 @@ export async function createNote(
 			name: note.name,
 			cw,
 			text,
+			lang,
 			localOnly: false,
 			visibility,
 			visibleUsers,
@@ -415,7 +428,7 @@ export async function resolveNote(
 			`host ${extractDbHost(uri)} is blocked`,
 		);
 
-	const unlock = await getApLock(uri);
+	const lock = await getApLock(uri);
 
 	try {
 		//#region Returns if already registered with this server
@@ -439,7 +452,7 @@ export async function resolveNote(
 		// Since the attached Note Object may be disguised, always specify the uri and fetch it from the server.
 		return await createNote(uri, resolver, true);
 	} finally {
-		unlock();
+		await lock.release();
 	}
 }
 
@@ -567,13 +580,24 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 
 	// Text parsing
 	let text: string | null = null;
+	let lang: string | null = null;
 	if (
 		post.source?.mediaType === "text/x.misskeymarkdown" &&
 		typeof post.source?.content === "string"
 	) {
 		text = post.source.content;
-	} else if (typeof post._misskey_content !== "undefined") {
-		text = post._misskey_content;
+		if (post.contentMap != null) {
+			const key = Object.keys(post.contentMap)[0];
+			lang = Object.keys(langmap).includes(key)
+				? key.trim().split("-")[0].split("@")[0]
+				: null;
+		}
+	} else if (post.contentMap != null) {
+		const entry = Object.entries(post.contentMap)[0];
+		lang = Object.keys(langmap).includes(entry[0])
+			? entry[0].trim().split("-")[0].split("@")[0]
+			: null;
+		text = htmlToMfm(entry[1], post.tag);
 	} else if (typeof post.content === "string") {
 		text = htmlToMfm(post.content, post.tag);
 	}
@@ -666,6 +690,9 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 	const update = {} as Partial<Note>;
 	if (text && text !== note.text) {
 		update.text = text;
+	}
+	if (lang && lang !== note.lang) {
+		update.lang = lang;
 	}
 	if (cw !== note.cw) {
 		update.cw = cw ? cw : null;

@@ -47,7 +47,7 @@
 				class="_formBlock"
 				danger
 				@click="uninstall()"
-				><i class="ph-trash ph-bold ph-lg"></i>
+				><i :class="icon('ph-trash')"></i>
 				{{ i18n.ts.uninstall }}</FormButton
 			>
 		</template>
@@ -61,12 +61,14 @@ import FormTextarea from "@/components/form/textarea.vue";
 import FormSelect from "@/components/form/select.vue";
 import FormInput from "@/components/form/input.vue";
 import FormButton from "@/components/MkButton.vue";
-import { Theme, getBuiltinThemesRef } from "@/scripts/theme";
+import type { Theme } from "@/scripts/theme";
+import { getBuiltinThemesRef } from "@/scripts/theme";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
 import * as os from "@/os";
 import { getThemes, removeTheme } from "@/theme-store";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const installedThemes = ref(getThemes());
 const builtinThemes = getBuiltinThemesRef();
@@ -101,12 +103,8 @@ function uninstall() {
 	os.success();
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts._theme.manage,
-	icon: "ph-folder-notch-open ph-bold ph-lg",
+	icon: `${icon("ph-folder-notch-open")}`,
 });
 </script>

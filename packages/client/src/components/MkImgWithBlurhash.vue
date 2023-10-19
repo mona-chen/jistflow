@@ -12,7 +12,11 @@
 		:title="title"
 		:type="type"
 		:alt="alt"
-		:class="{ cover }"
+		:class="{
+			cover,
+			wide: largestDimension === 'width',
+			tall: largestDimension === 'height',
+		}"
 		:style="{ 'object-fit': cover ? 'cover' : null }"
 		loading="lazy"
 		@load="onLoad"
@@ -20,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { decodeBlurHash } from "fast-blurhash";
 
 const props = withDefaults(
@@ -32,6 +36,7 @@ const props = withDefaults(
 		title?: string | null;
 		size?: number;
 		cover?: boolean;
+		largestDimension?: "width" | "height";
 	}>(),
 	{
 		src: null,
@@ -43,20 +48,20 @@ const props = withDefaults(
 	},
 );
 
-const canvas = $ref<HTMLCanvasElement>();
-let loaded = $ref(false);
+const canvas = ref<HTMLCanvasElement>();
+const loaded = ref(false);
 
 function draw() {
-	if (props.hash == null || canvas == null) return;
+	if (props.hash == null || canvas.value == null) return;
 	const pixels = decodeBlurHash(props.hash, props.size, props.size);
-	const ctx = canvas.getContext("2d");
+	const ctx = canvas.value.getContext("2d");
 	const imageData = ctx!.createImageData(props.size, props.size);
 	imageData.data.set(pixels);
 	ctx!.putImageData(imageData, 0, 0);
 }
 
 function onLoad() {
-	loaded = true;
+	loaded.value = true;
 }
 
 onMounted(() => {
@@ -68,17 +73,27 @@ onMounted(() => {
 canvas,
 img {
 	display: block;
-	width: 100%;
-	height: 100%;
+	max-width: 100%;
+	max-height: 100%;
 }
 
 canvas {
 	position: absolute;
 	inset: 0;
 	object-fit: cover;
+	width: 100%;
+	height: 100%;
 }
 
 img {
 	object-fit: contain;
+
+	&.wide {
+		width: 100%;
+	}
+
+	&.tall {
+		height: 100%;
+	}
 }
 </style>

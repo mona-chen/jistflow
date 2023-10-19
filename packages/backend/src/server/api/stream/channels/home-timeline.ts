@@ -16,7 +16,7 @@ export default class extends Channel {
 	}
 
 	public async init(params: any) {
-		this.withReplies = params.withReplies as boolean;
+		this.withReplies = params != null ? !!params.withReplies : true;
 
 		// Subscribe events
 		this.subscriber.on("notesStream", this.onNote);
@@ -67,7 +67,7 @@ export default class extends Channel {
 		// そのためレコードが存在するかのチェックでは不十分なので、改めてgetWordHardMuteを呼んでいる
 		if (
 			this.userProfile &&
-			(await getWordHardMute(note, this.user, this.userProfile.mutedWords))
+			(await getWordHardMute(note, this.user?.id, this.userProfile.mutedWords))
 		)
 			return;
 

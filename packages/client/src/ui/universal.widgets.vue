@@ -16,7 +16,8 @@
 			style="font-size: 0.9em"
 			@click="editMode = false"
 		>
-			<i class="ph-check ph-bold ph-lg"></i> {{ i18n.ts.editWidgetsExit }}
+			<i :class="icon('ph-check')"></i>
+			{{ i18n.ts.editWidgetsExit }}
 		</button>
 		<button
 			v-else
@@ -24,26 +25,28 @@
 			style="font-size: 0.9em"
 			@click="editMode = true"
 		>
-			<i class="ph-pencil ph-bold ph-lg"></i> {{ i18n.ts.editWidgets }}
+			<i :class="icon('ph-pencil')"></i>
+			{{ i18n.ts.editWidgets }}
 		</button>
 	</aside>
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import XWidgets from "@/components/MkWidgets.vue";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const emit = defineEmits<{
 	(ev: "mounted", el: Element): void;
 }>();
 
-const editMode = $ref(false);
-const rootEl = $ref<HTMLDivElement>();
+const editMode = ref(false);
+const rootEl = ref<HTMLDivElement>();
 
 onMounted(() => {
-	emit("mounted", rootEl);
+	emit("mounted", rootEl.value);
 });
 
 function addWidget(widget) {

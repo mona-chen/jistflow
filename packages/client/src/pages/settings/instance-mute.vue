@@ -14,7 +14,7 @@
 			:disabled="!changed"
 			class="_formBlock"
 			@click="save()"
-			><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+			><i :class="icon('ph-floppy-disk-back')"></i>
 			{{ i18n.ts.save }}</MkButton
 		>
 	</div>
@@ -29,12 +29,13 @@ import * as os from "@/os";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const instanceMutes = ref($i!.mutedInstances.join("\n"));
 const changed = ref(false);
 
 async function save() {
-	let mutes = instanceMutes.value
+	const mutes = instanceMutes.value
 		.trim()
 		.split("\n")
 		.map((el) => el.trim())
@@ -54,12 +55,8 @@ watch(instanceMutes, () => {
 	changed.value = true;
 });
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.instanceMute,
-	icon: "ph-speaker-none ph-bold ph-lg",
+	icon: `${icon("ph-speaker-none")}`,
 });
 </script>

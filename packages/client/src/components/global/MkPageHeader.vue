@@ -12,14 +12,16 @@
 				<button
 					v-if="displayBackButton"
 					v-tooltip.noDelay="i18n.ts.goBack"
+					v-vibrate="5"
 					class="_buttonIcon button icon backButton"
 					@click.stop="goBack()"
 					@touchstart="preventDrag"
 				>
-					<i class="ph-caret-left ph-bold ph-lg"></i>
+					<i :class="icon('ph-caret-left')"></i>
 				</button>
 				<MkAvatar
 					v-if="narrow && props.displayMyAvatar && $i"
+					v-vibrate="5"
 					class="avatar button"
 					:user="$i"
 					:disable-preview="true"
@@ -77,6 +79,7 @@
 					v-for="tab in tabs"
 					:ref="(el) => (tabRefs[tab.key] = el)"
 					v-tooltip.noDelay="tab.title"
+					v-vibrate="5"
 					class="tab _button"
 					:class="{
 						active: tab.key != null && tab.key === props.tab,
@@ -108,6 +111,7 @@
 			<template v-for="action in actions">
 				<button
 					v-tooltip.noDelay="action.text"
+					v-vibrate="5"
 					class="_buttonIcon button"
 					:class="{ highlighted: action.highlighted }"
 					@click.stop="action.handler"
@@ -127,18 +131,16 @@ import {
 	nextTick,
 	onMounted,
 	onUnmounted,
-	reactive,
 	ref,
-	shallowReactive,
 	watch,
 } from "vue";
 import MkFollowButton from "@/components/MkFollowButton.vue";
 import { popupMenu } from "@/os";
 import { scrollToTop } from "@/scripts/scroll";
-import { globalEvents } from "@/events";
 import { injectPageMetadata } from "@/scripts/page-metadata";
 import { $i, openAccountMenu as openAccountMenu_ } from "@/account";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 interface Tab {
 	key?: string | null;
@@ -176,17 +178,16 @@ const metadata = injectPageMetadata();
 const hideTitle = inject("shouldOmitHeaderTitle", false);
 const thin_ = props.thin || inject("shouldHeaderThin", false);
 
-const el = $ref<HTMLElement | null>(null);
+const el = ref<HTMLElement | null>(null);
 const tabRefs = {};
-const tabHighlightEl = $ref<HTMLElement | null>(null);
-const tabsEl = $ref<HTMLElement | null>(null);
+const tabHighlightEl = ref<HTMLElement | null>(null);
+const tabsEl = ref<HTMLElement | null>(null);
 const bg = ref(null);
-let narrow = $ref(false);
-const height = ref(0);
-const hasTabs = $computed(() => props.tabs && props.tabs.length > 0);
-const hasActions = $computed(() => props.actions && props.actions.length > 0);
-const show = $computed(() => {
-	return !hideTitle || hasTabs || hasActions;
+const narrow = ref(false);
+const hasTabs = computed(() => props.tabs && props.tabs.length > 0);
+const hasActions = computed(() => props.actions && props.actions.length > 0);
+const show = computed(() => {
+	return !hideTitle || hasTabs.value || hasActions.value;
 });
 
 const openAccountMenu = (ev: MouseEvent) => {
@@ -199,8 +200,8 @@ const openAccountMenu = (ev: MouseEvent) => {
 };
 
 const showTabsPopup = (ev: MouseEvent) => {
-	if (!hasTabs) return;
-	if (!narrow) return;
+	if (!hasTabs.value) return;
+	if (!narrow.value) return;
 	ev.preventDefault();
 	ev.stopPropagation();
 	const menu = props.tabs.map((tab) => ({
@@ -222,7 +223,7 @@ const onClick = () => {
 	if (props.to) {
 		location.href = props.to;
 	} else {
-		scrollToTop(el, { behavior: "smooth" });
+		scrollToTop(el.value, { behavior: "smooth" });
 	}
 };
 
@@ -256,7 +257,7 @@ onMounted(() => {
 		() => {
 			nextTick(() => {
 				const tabEl = tabRefs[props.tab];
-				if (tabEl && tabHighlightEl) {
+				if (tabEl && tabHighlightEl.value) {
 					// offsetWidth や offsetLeft は少数を丸めてしまうため getBoundingClientRect を使う必要がある
 					// https://developer.mozilla.org/ja/docs/Web/API/HTMLElement/offsetWidth#%E5%80%A4
 					const tabSizeX = tabEl.scrollWidth + 20; // + the tab's padding
@@ -264,10 +265,10 @@ onMounted(() => {
 						tabEl.style = `--width: ${tabSizeX}px`;
 					}
 					setTimeout(() => {
-						tabHighlightEl.style.width = tabSizeX + "px";
-						tabHighlightEl.style.transform = `translateX(${tabEl.offsetLeft}px)`;
+						tabHighlightEl.value.style.width = tabSizeX + "px";
+						tabHighlightEl.value.style.transform = `translateX(${tabEl.offsetLeft}px)`;
 						window.requestAnimationFrame(() => {
-							tabsEl?.scrollTo({
+							tabsEl.value?.scrollTo({
 								left: tabEl.offsetLeft - 60,
 								behavior: "smooth",
 							});
@@ -281,14 +282,14 @@ onMounted(() => {
 		},
 	);
 
-	if (el && el.parentElement) {
-		narrow = el.parentElement.offsetWidth < 500;
+	if (el.value && el.value.parentElement) {
+		narrow.value = el.value.parentElement.offsetWidth < 500;
 		ro = new ResizeObserver((entries, observer) => {
-			if (el.parentElement && document.body.contains(el)) {
-				narrow = el.parentElement.offsetWidth < 500;
+			if (el.value.parentElement && document.body.contains(el.value)) {
+				narrow.value = el.value.parentElement.offsetWidth < 500;
 			}
 		});
-		ro.observe(el.parentElement);
+		ro.observe(el.value.parentElement);
 	}
 });
 

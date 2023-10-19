@@ -5,24 +5,30 @@
 		/></template>
 		<MkSpacer :content-max="800">
 			<MkPagination
+				ref="paginationEl"
 				v-slot="{ items }"
 				:pagination="pagination"
-				class="ruryvtyk _content"
+				class="ruryvtyk _gaps_m"
 			>
 				<section
-					v-for="(announcement, i) in items"
+					v-for="announcement in items"
 					:key="announcement.id"
-					class="_card announcement"
+					class="announcement _panel"
 				>
 					<div class="_title">
-						<span v-if="$i && !announcement.isRead">🆕 </span>
-						<h3>{{ announcement.title }}</h3>
+						<h3>
+							<span v-if="$i && !announcement.isRead">
+								🆕&nbsp;
+							</span>
+							{{ announcement.title }}
+						</h3>
 						<MkTime :time="announcement.createdAt" />
 						<div v-if="announcement.updatedAt">
 							{{ i18n.ts.updatedAt }}:
 							<MkTime :time="announcement.createdAt" />
 						</div>
 					</div>
+					<hr class="_seperator" />
 					<div class="_content">
 						<Mfm :text="announcement.text" />
 						<img
@@ -31,8 +37,8 @@
 						/>
 					</div>
 					<div v-if="$i && !announcement.isRead" class="_footer">
-						<MkButton primary @click="read(items, announcement, i)"
-							><i class="ph-check ph-bold ph-lg"></i>
+						<MkButton primary @click="read(announcement.id)"
+							><i :class="icon('ph-check')"></i>
 							{{ i18n.ts.gotIt }}</MkButton
 						>
 					</div>
@@ -43,34 +49,36 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
 import MkPagination from "@/components/MkPagination.vue";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const pagination = {
 	endpoint: "announcements" as const,
 	limit: 10,
 };
 
-// TODO: これは実質的に親コンポーネントから子コンポーネントのプロパティを変更してるのでなんとかしたい
-function read(items, announcement, i) {
-	items[i] = {
-		...announcement,
-		isRead: true,
-	};
-	os.api("i/read-announcement", { announcementId: announcement.id });
+const paginationEl = ref<InstanceType<typeof MkPagination>>();
+function read(id: string) {
+	if (!paginationEl.value) return;
+	paginationEl.value.updateItem(id, (announcement) => {
+		announcement.isRead = true;
+		return announcement;
+	});
+	os.api("i/read-announcement", { announcementId: id });
 }
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.announcements,
-	icon: "ph-megaphone-simple ph-bold ph-lg",
+	icon: `${icon("ph-megaphone-simple")}`,
 });
 </script>
 
@@ -82,10 +90,16 @@ definePageMetadata({
 		}
 
 		> ._title {
-			padding: 14px 32px !important;
+			padding: 0.5rem 2rem !important;
+		}
+
+		> ._seperator {
+			margin: 1rem;
 		}
 
 		> ._content {
+			padding: 0 2rem !important;
+
 			> img {
 				display: block;
 				max-height: 300px;

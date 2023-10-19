@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import type { ComputedRef } from "vue";
-import { provide } from "vue";
+import { provide, ref } from "vue";
 import XColumn from "./column.vue";
 import type { Column } from "@/ui/deck/deck-store";
 import { deckStore } from "@/ui/deck/deck-store";
@@ -29,10 +29,8 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { mainRouter } from "@/router";
 import type { PageMetadata } from "@/scripts/page-metadata";
-import {
-	provideMetadataReceiver,
-	setPageMetadata,
-} from "@/scripts/page-metadata";
+import { provideMetadataReceiver } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 defineProps<{
 	column: Column;
@@ -43,11 +41,11 @@ const emit = defineEmits<{
 	(ev: "parent-focus", direction: "up" | "down" | "left" | "right"): void;
 }>();
 
-let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
+const pageMetadata = ref<null | ComputedRef<PageMetadata>>();
 
 provide("router", mainRouter);
 provideMetadataReceiver((info) => {
-	pageMetadata = info;
+	pageMetadata.value = info;
 });
 
 /*
@@ -81,7 +79,7 @@ function onContextmenu(ev: MouseEvent) {
 				text: path,
 			},
 			{
-				icon: "ph-browser ph-bold ph-lg",
+				icon: `${icon("ph-browser")}`,
 				text: i18n.ts.openInWindow,
 				action: () => {
 					os.pageWindow(path);

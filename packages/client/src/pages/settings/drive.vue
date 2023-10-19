@@ -38,7 +38,7 @@
 					uploadFolder ? uploadFolder.name : "-"
 				}}</template>
 				<template #suffixIcon
-					><i class="ph-folder-notch-open ph-bold ph-lg"></i
+					><i :class="icon('ph-folder-notch-open')"></i
 				></template>
 			</FormButton>
 			<FormSwitch v-model="keepOriginalUploading" class="_formBlock">
@@ -74,7 +74,6 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import tinycolor from "tinycolor2";
-import FormLink from "@/components/form/link.vue";
 import FormButton from "@/components/MkButton.vue";
 import FormSwitch from "@/components/form/switch.vue";
 import FormSection from "@/components/form/section.vue";
@@ -87,13 +86,14 @@ import MkChart from "@/components/MkChart.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { $i } from "@/account";
+import icon from "@/scripts/icon";
 
 const fetching = ref(true);
 const usage = ref<any>(null);
 const capacity = ref<any>(null);
 const uploadFolder = ref<any>(null);
-let alwaysMarkNsfw = $ref($i.alwaysMarkNsfw);
-let autoSensitive = $ref($i.autoSensitive);
+const alwaysMarkNsfw = ref<boolean>($i.alwaysMarkNsfw);
+const autoSensitive = ref<boolean>($i.autoSensitive);
 
 const meterStyle = computed(() => {
 	return {
@@ -140,18 +140,14 @@ function chooseUploadFolder() {
 
 function saveProfile() {
 	os.api("i/update", {
-		alwaysMarkNsfw: !!alwaysMarkNsfw,
-		autoSensitive: !!autoSensitive,
+		alwaysMarkNsfw: !!alwaysMarkNsfw.value,
+		autoSensitive: !!autoSensitive.value,
 	});
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.drive,
-	icon: "ph-cloud ph-bold ph-lg",
+	icon: `${icon("ph-cloud")}`,
 });
 </script>
 

@@ -2,7 +2,7 @@
 	<div
 		v-if="
 			hasDisconnected &&
-			$store.state.serverDisconnectedBehavior === 'quiet'
+			defaultStore.state.serverDisconnectedBehavior === 'quiet'
 		"
 		class="nsbbhtug"
 		@click="resetDisconnected"
@@ -18,18 +18,19 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted } from "vue";
+import { onUnmounted, ref } from "vue";
 import { stream } from "@/stream";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
 
-let hasDisconnected = $ref(false);
+const hasDisconnected = ref(false);
 
 function onDisconnected() {
-	hasDisconnected = true;
+	hasDisconnected.value = true;
 }
 
 function resetDisconnected() {
-	hasDisconnected = false;
+	hasDisconnected.value = false;
 }
 
 function reload() {

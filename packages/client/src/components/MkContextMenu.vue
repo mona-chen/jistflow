@@ -1,5 +1,5 @@
 <template>
-	<transition :name="$store.state.animation ? 'fade' : ''" appear>
+	<transition :name="defaultStore.state.animation ? 'fade' : ''" appear>
 		<div
 			ref="rootEl"
 			class="nvlagfpb"
@@ -12,11 +12,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted } from "vue";
-import MkMenu from "./MkMenu.vue";
-import type { MenuItem } from "./types/menu.vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import MkMenu from "@/components/MkMenu.vue";
+import type { MenuItem } from "@/types/menu";
 import contains from "@/scripts/contains";
 import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 const props = defineProps<{
 	items: MenuItem[];
@@ -27,16 +28,16 @@ const emit = defineEmits<{
 	(ev: "closed"): void;
 }>();
 
-const rootEl = $ref<HTMLDivElement>();
+const rootEl = ref<HTMLDivElement>();
 
-const zIndex = $ref<number>(os.claimZIndex("high"));
+const zIndex = ref<number>(os.claimZIndex("high"));
 
 onMounted(() => {
 	let left = props.ev.pageX + 1, // 間違って右ダブルクリックした場合に意図せずアイテムがクリックされるのを防ぐため + 1
 		top = props.ev.pageY + 1; // 間違って右ダブルクリックした場合に意図せずアイテムがクリックされるのを防ぐため + 1
 
-	const width = rootEl.offsetWidth;
-	const height = rootEl.offsetHeight;
+	const width = rootEl.value.offsetWidth;
+	const height = rootEl.value.offsetHeight;
 
 	if (left + width - window.pageXOffset > window.innerWidth) {
 		left = window.innerWidth - width + window.pageXOffset;
@@ -54,8 +55,8 @@ onMounted(() => {
 		left = 0;
 	}
 
-	rootEl.style.top = `${top}px`;
-	rootEl.style.left = `${left}px`;
+	rootEl.value.style.top = `${top}px`;
+	rootEl.value.style.left = `${left}px`;
 
 	document.body.addEventListener("mousedown", onMousedown);
 });
@@ -65,7 +66,8 @@ onBeforeUnmount(() => {
 });
 
 function onMousedown(evt: Event) {
-	if (!contains(rootEl, evt.target) && rootEl !== evt.target) emit("closed");
+	if (!contains(rootEl.value, evt.target) && rootEl.value !== evt.target)
+		emit("closed");
 }
 </script>
 

@@ -2,19 +2,19 @@
  * Operations
  * 各種操作
  */
-import * as Misskey from "firefish-js";
+import * as firefish from "firefish-js";
 import type { SwMessage, SwMessageOrderType } from "@/types";
 import { getAccountFromId } from "@/scripts/get-account-from-id";
 import { getUrlWithLoginId } from "@/scripts/login-id";
 
-export const cli = new Misskey.api.APIClient({
+export const cli = new firefish.api.APIClient({
 	origin,
 	fetch: (...args): Promise<Response> => fetch(...args),
 });
 
 export async function api<
-	E extends keyof Misskey.Endpoints,
-	O extends Misskey.Endpoints[E]["req"],
+	E extends keyof firefish.Endpoints,
+	O extends firefish.Endpoints[E]["req"],
 >(
 	endpoint: E,
 	userId?: string,
@@ -75,8 +75,8 @@ export function openAntenna(
 export async function openPost(
 	options: {
 		initialText?: string;
-		reply?: Misskey.entities.Note;
-		renote?: Misskey.entities.Note;
+		reply?: firefish.entities.Note;
+		renote?: firefish.entities.Note;
 	},
 	loginId?: string,
 ): ReturnType<typeof openClient> {

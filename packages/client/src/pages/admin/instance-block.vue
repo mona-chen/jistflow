@@ -34,7 +34,7 @@
 				</FormTextarea>
 
 				<FormButton primary class="_formBlock" @click="save"
-					><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+					><i :class="icon('ph-floppy-disk-back')"></i>
 					{{ i18n.ts.save }}</FormButton
 				>
 			</FormSuspense>
@@ -43,7 +43,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
+
 import FormButton from "@/components/MkButton.vue";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormSuspense from "@/components/form/suspense.vue";
@@ -52,34 +53,36 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let blockedHosts: string = $ref("");
-let silencedHosts: string = $ref("");
-let tab = $ref("block");
+const blockedHosts = ref("");
+const silencedHosts = ref("");
+const tab = ref("block");
 
 async function init() {
 	const meta = await os.api("admin/meta");
 	if (meta) {
-		blockedHosts = meta.blockedHosts.join("\n");
-		silencedHosts = meta.silencedHosts.join("\n");
+		blockedHosts.value = meta.blockedHosts.join("\n");
+		silencedHosts.value = meta.silencedHosts.join("\n");
 	}
 }
 
 function save() {
 	os.apiWithDialog("admin/update-meta", {
-		blockedHosts: blockedHosts.split("\n").map((h) => h.trim()) || [],
-		silencedHosts: silencedHosts.split("\n").map((h) => h.trim()) || [],
+		blockedHosts: blockedHosts.value.split("\n").map((h) => h.trim()) || [],
+		silencedHosts:
+			silencedHosts.value.split("\n").map((h) => h.trim()) || [],
 	}).then(() => {
 		fetchInstance();
 	});
 }
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.instanceBlocking,
-	icon: "ph-prohibit ph-bold ph-lg",
+	icon: `${icon("ph-prohibit")}`,
 });
 </script>

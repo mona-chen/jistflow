@@ -1,6 +1,6 @@
 <template>
 	<transition
-		:name="$store.state.animation ? 'popup' : ''"
+		:name="defaultStore.state.animation ? 'popup' : ''"
 		appear
 		@after-leave="emit('closed')"
 	>
@@ -28,11 +28,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from "vue";
-import MkUserInfo from "@/components/MkUserInfo.vue";
+import { onMounted, ref } from "vue";
 import * as Acct from "firefish-js/built/acct";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
+import MkUserInfo from "@/components/MkUserInfo.vue";
 import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 const props = defineProps<{
 	showing: boolean;
@@ -47,13 +48,13 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex("middle");
-let user = $ref<misskey.entities.UserDetailed | null>(null);
-let top = $ref(0);
-let left = $ref(0);
+const user = ref<firefish.entities.UserDetailed | null>(null);
+const top = ref(0);
+const left = ref(0);
 
 onMounted(() => {
 	if (typeof props.q === "object") {
-		user = props.q;
+		user.value = props.q;
 	} else {
 		const query = props.q.startsWith("@")
 			? Acct.parse(props.q.slice(1))
@@ -61,7 +62,7 @@ onMounted(() => {
 
 		os.api("users/show", query).then((res) => {
 			if (!props.showing) return;
-			user = res;
+			user.value = res;
 		});
 	}
 
@@ -70,8 +71,8 @@ onMounted(() => {
 		rect.left + props.source.offsetWidth / 2 - 300 / 2 + window.pageXOffset;
 	const y = rect.top + props.source.offsetHeight + window.pageYOffset;
 
-	top = y;
-	left = x;
+	top.value = y;
+	left.value = x;
 });
 </script>
 

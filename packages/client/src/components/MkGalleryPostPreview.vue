@@ -19,8 +19,6 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
-import { userName } from "@/filters/user";
 import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
 
 const props = defineProps<{
@@ -53,8 +51,11 @@ const props = defineProps<{
 	}
 
 	> .thumbnail {
+		display: flex;
 		width: 100%;
 		height: 100%;
+		justify-content: center;
+		align-items: center;
 		position: absolute;
 		transition: all 0.5s ease;
 

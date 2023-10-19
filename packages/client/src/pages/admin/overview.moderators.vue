@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Transition
-			:name="$store.state.animation ? '_transition_zoom' : ''"
+			:name="defaultStore.state.animation ? '_transition_zoom' : ''"
 			mode="out-in"
 		>
 			<MkLoading v-if="fetching" />
@@ -16,7 +16,7 @@
 						:user="user"
 						class="avatar"
 						indicator
-						disableLink
+						disable-link
 					/>
 				</MkA>
 			</div>
@@ -25,22 +25,21 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import * as os from "@/os";
-import number from "@/filters/number";
-import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
 
-let moderators: any = $ref(null);
-let fetching = $ref(true);
+const moderators = ref<any>(null);
+const fetching = ref(true);
 
 onMounted(async () => {
-	moderators = await os.api("admin/show-users", {
+	moderators.value = await os.api("admin/show-users", {
 		sort: "+updatedAt",
 		state: "adminOrModerator",
 		limit: 30,
 	});
 
-	fetching = false;
+	fetching.value = false;
 });
 </script>
 

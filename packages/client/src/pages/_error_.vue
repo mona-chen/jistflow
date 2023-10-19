@@ -1,15 +1,15 @@
 <template>
 	<MkLoading v-if="!loaded" />
-	<transition :name="$store.state.animation ? 'zoom' : ''" appear>
+	<transition :name="defaultStore.state.animation ? 'zoom' : ''" appear>
 		<div v-show="loaded" class="mjndxjch">
 			<img
-				src="/static-assets/badges/error.png"
+				src="/static-assets/badges/error.webp"
 				class="_ghost"
 				alt="Error"
 			/>
 			<p>
 				<b
-					><i class="ph-warning ph-bold ph-lg"></i>
+					><i :class="icon('ph-warning')"></i>
 					{{ i18n.ts.pageLoadError }}</b
 				>
 			</p>
@@ -35,38 +35,41 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
-import * as misskey from "firefish-js";
+import { ref } from "vue";
+
+import type * as firefish from "firefish-js";
 import MkButton from "@/components/MkButton.vue";
 import { version } from "@/config";
 import * as os from "@/os";
 import { unisonReload } from "@/scripts/unison-reload";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
-const props = withDefaults(
+withDefaults(
 	defineProps<{
 		error?: Error;
 	}>(),
 	{},
 );
 
-let loaded = $ref(false);
-let serverIsDead = $ref(false);
-let meta = $ref<misskey.entities.LiteInstanceMetadata | null>(null);
+const loaded = ref(false);
+const serverIsDead = ref(false);
+const meta = ref<firefish.entities.LiteInstanceMetadata | null>(null);
 
 os.api("meta", {
 	detail: false,
 }).then(
 	(res) => {
-		loaded = true;
-		serverIsDead = false;
-		meta = res;
+		loaded.value = true;
+		serverIsDead.value = false;
+		meta.value = res;
 		localStorage.setItem("v", res.version);
 	},
 	() => {
-		loaded = true;
-		serverIsDead = true;
+		loaded.value = true;
+		serverIsDead.value = true;
 	},
 );
 
@@ -74,13 +77,9 @@ function reload() {
 	unisonReload();
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.error,
-	icon: "ph-warning ph-bold ph-lg",
+	icon: `${icon("ph-warning")}`,
 });
 </script>
 

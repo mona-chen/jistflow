@@ -1,5 +1,5 @@
 <template>
-	<div class="media" v-size="{ max: [350] }">
+	<div v-size="{ max: [350] }" class="media">
 		<button v-if="hide" class="hidden" @click="hide = false">
 			<ImgWithBlurhash
 				:hash="media.blurhash"
@@ -9,7 +9,7 @@
 			<div class="text">
 				<div class="wrapper">
 					<b style="display: block"
-						><i class="ph-warning ph-bold ph-lg"></i>
+						><i :class="icon('ph-warning')"></i>
 						{{ i18n.ts.sensitive }}</b
 					>
 					<span style="display: block">{{
@@ -26,6 +26,7 @@
 					:alt="media.comment"
 					:type="media.type"
 					:cover="false"
+					:largest-dimension="largestDimension"
 				/>
 				<div v-if="media.type === 'image/gif'" class="gif">GIF</div>
 			</a>
@@ -52,6 +53,7 @@
 					:aria-label="media.comment"
 					preload="none"
 					controls
+					playsinline
 					@contextmenu.stop
 				>
 					<source :src="media.url" :type="mediaType" />
@@ -72,7 +74,7 @@
 				class="_button"
 				@click.stop="captionPopup"
 			>
-				<i class="ph-subtitles ph-bold ph-lg"></i>
+				<i :class="icon('ph-subtitles')"></i>
 			</button>
 			<button
 				v-if="!hide"
@@ -80,29 +82,30 @@
 				class="_button"
 				@click.stop="hide = true"
 			>
-				<i class="ph-eye-slash ph-bold ph-lg"></i>
+				<i :class="icon('ph-eye-slash')"></i>
 			</button>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { watch, ref, computed } from "vue";
+import { computed, ref, watch } from "vue";
 import VuePlyr from "vue-plyr";
 import "vue-plyr/dist/vue-plyr.css";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	media: misskey.entities.DriveFile;
+	media: firefish.entities.DriveFile;
 	raw?: boolean;
 }>();
 
-let hide = $ref(true);
+const hide = ref(true);
 
 const plyr = ref();
 
@@ -120,10 +123,23 @@ const mediaType = computed(() => {
 		: props.media.type;
 });
 
+let largestDimension: "width" | "height";
+
+if (
+	props.media.type.startsWith("image") &&
+	props.media.properties?.width &&
+	props.media.properties?.height
+) {
+	largestDimension =
+		props.media.properties.width > props.media.properties.height
+			? "width"
+			: "height";
+}
 function captionPopup() {
 	os.alert({
 		type: "info",
 		text: props.media.comment,
+		isPlaintext: true,
 	});
 }
 
@@ -131,7 +147,7 @@ function captionPopup() {
 watch(
 	() => props.media,
 	() => {
-		hide =
+		hide.value =
 			defaultStore.state.nsfw === "force"
 				? true
 				: props.media.isSensitive &&
@@ -202,7 +218,7 @@ watch(
 	}
 
 	> a {
-		display: block;
+		display: flex;
 		cursor: zoom-in;
 		overflow: hidden;
 		width: 100%;
@@ -211,6 +227,9 @@ watch(
 		background-size: contain;
 		background-repeat: no-repeat;
 		box-sizing: border-box;
+		justify-content: center;
+		align-items: center;
+
 		&:focus-visible {
 			border: 2px solid var(--accent);
 		}

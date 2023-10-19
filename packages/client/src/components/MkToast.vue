@@ -1,7 +1,7 @@
 <template>
 	<div class="mk-toast">
 		<transition
-			:name="$store.state.animation ? 'toast' : ''"
+			:name="defaultStore.state.animation ? 'toast' : ''"
 			appear
 			@after-leave="emit('closed')"
 		>
@@ -20,6 +20,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 defineProps<{
 	message: string;
@@ -30,11 +31,11 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex("high");
-let showing = $ref(true);
+const showing = ref(true);
 
 onMounted(() => {
 	window.setTimeout(() => {
-		showing = false;
+		showing.value = false;
 	}, 4000);
 });
 </script>

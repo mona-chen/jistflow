@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { computed, ref } from "vue";
 import JSON5 from "json5";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
@@ -32,12 +32,13 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import FormLink from "@/components/form/link.vue";
 import FormSection from "@/components/form/section.vue";
 import MkButton from "@/components/MkButton.vue";
+import icon from "@/scripts/icon";
 
-let scopes = $ref(null);
+const scopes = ref(null);
 
 function fetchScopes() {
 	os.api("i/registry/scopes").then((res) => {
-		scopes = res
+		scopes.value = res
 			.slice()
 			.sort((a, b) => a.join("/").localeCompare(b.join("/")));
 	});
@@ -71,14 +72,12 @@ async function createKey() {
 
 fetchScopes();
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.registry,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 });
 </script>
-
-<style lang="scss" scoped></style>

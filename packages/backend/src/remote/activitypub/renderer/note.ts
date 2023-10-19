@@ -5,7 +5,8 @@ import type { DriveFile } from "@/models/entities/drive-file.js";
 import { DriveFiles, Notes, Users, Emojis, Polls } from "@/models/index.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import type { Poll } from "@/models/entities/poll.js";
-import toHtml from "../misc/get-note-html.js";
+import toHtml from "@/remote/activitypub/misc/get-note-html.js";
+import detectLanguage from "@/misc/detect-language.js";
 import renderEmoji from "./emoji.js";
 import renderMention from "./mention.js";
 import renderHashtag from "./hashtag.js";
@@ -114,6 +115,13 @@ export default async function renderNote(
 		}),
 	);
 
+	const lang = note.lang ?? detectLanguage(text);
+	const contentMap = lang
+		? {
+				[lang]: content,
+		  }
+		: null;
+
 	const emojis = await getEmojis(note.emojis);
 	const apemojis = emojis.map((emoji) => renderEmoji(emoji));
 
@@ -152,12 +160,11 @@ export default async function renderNote(
 		attributedTo,
 		summary,
 		content,
-		_misskey_content: text,
+		contentMap,
 		source: {
 			content: text,
 			mediaType: "text/x.misskeymarkdown",
 		},
-		_misskey_quote: quote,
 		quoteUri: quote,
 		quoteUrl: quote,
 		published: note.createdAt.toISOString(),

@@ -20,7 +20,7 @@
 			<div v-if="!fetching" class="items">
 				<div class="item _panel sub">
 					<div class="icon">
-						<i class="ph-download ph-bold ph-xl"></i>
+						<i :class="icon('ph-download ph-xl', false)"></i>
 					</div>
 					<div class="body">
 						<div class="value">
@@ -36,7 +36,7 @@
 				</div>
 				<div class="item _panel pub">
 					<div class="icon">
-						<i class="ph-upload ph-bold ph-xl"></i>
+						<i :class="icon('ph-upload ph-xl', false)"></i>
 					</div>
 					<div class="body">
 						<div class="value">
@@ -56,37 +56,37 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import XPie from "./overview.pie.vue";
-import MkMiniChart from "@/components/MkMiniChart.vue";
 import * as os from "@/os";
 import number from "@/filters/number";
 import MkNumberDiff from "@/components/MkNumberDiff.vue";
 import { i18n } from "@/i18n";
 import { useChartTooltip } from "@/scripts/use-chart-tooltip";
+import icon from "@/scripts/icon";
 
-let topSubInstancesForPie: any = $ref(null);
-let topPubInstancesForPie: any = $ref(null);
-let federationPubActive = $ref<number | null>(null);
-let federationPubActiveDiff = $ref<number | null>(null);
-let federationSubActive = $ref<number | null>(null);
-let federationSubActiveDiff = $ref<number | null>(null);
-let fetching = $ref(true);
+const topSubInstancesForPie = ref<any>(null);
+const topPubInstancesForPie = ref<any>(null);
+const federationPubActive = ref<number | null>(null);
+const federationPubActiveDiff = ref<number | null>(null);
+const federationSubActive = ref<number | null>(null);
+const federationSubActiveDiff = ref<number | null>(null);
+const fetching = ref(true);
 
-const { handler: externalTooltipHandler } = useChartTooltip();
+useChartTooltip();
 
 onMounted(async () => {
 	const chart = await os.apiGet("charts/federation", {
 		limit: 2,
 		span: "day",
 	});
-	federationPubActive = chart.pubActive[0];
-	federationPubActiveDiff = chart.pubActive[0] - chart.pubActive[1];
-	federationSubActive = chart.subActive[0];
-	federationSubActiveDiff = chart.subActive[0] - chart.subActive[1];
+	federationPubActive.value = chart.pubActive[0];
+	federationPubActiveDiff.value = chart.pubActive[0] - chart.pubActive[1];
+	federationSubActive.value = chart.subActive[0];
+	federationSubActiveDiff.value = chart.subActive[0] - chart.subActive[1];
 
 	os.apiGet("federation/stats", { limit: 10 }).then((res) => {
-		topSubInstancesForPie = res.topSubInstances
+		topSubInstancesForPie.value = res.topSubInstances
 			.map((x) => ({
 				name: x.host,
 				color: x.themeColor,
@@ -102,7 +102,7 @@ onMounted(async () => {
 					value: res.otherFollowersCount,
 				},
 			]);
-		topPubInstancesForPie = res.topPubInstances
+		topPubInstancesForPie.value = res.topPubInstances
 			.map((x) => ({
 				name: x.host,
 				color: x.themeColor,
@@ -120,7 +120,7 @@ onMounted(async () => {
 			]);
 	});
 
-	fetching = false;
+	fetching.value = false;
 });
 </script>
 

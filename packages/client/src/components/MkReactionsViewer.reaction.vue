@@ -3,6 +3,7 @@
 		v-if="count > 0"
 		ref="buttonRef"
 		v-ripple="canToggle"
+		v-vibrate="[10, 30, 40]"
 		class="hkzvhatu _button"
 		:class="{
 			reacted: note.myReaction == reaction,
@@ -22,7 +23,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XDetails from "@/components/MkReactionsViewer.details.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import * as os from "@/os";
@@ -33,7 +34,7 @@ const props = defineProps<{
 	reaction: string;
 	count: number;
 	isInitial: boolean;
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 }>();
 
 const emit = defineEmits<{

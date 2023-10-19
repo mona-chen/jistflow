@@ -119,10 +119,10 @@ port: 3000
 db:
   {{- if .Values.postgresql.enabled }}
   host: {{ template "firefish.postgresql.fullname" . }}
-  port: '5432'
+  port: 5432
   {{- else }}
   host: {{ .Values.postgresql.postgresqlHostname }}
-  port: {{ .Values.postgresql.postgresqlPort | default "5432" | quote }}
+  port: {{ .Values.postgresql.postgresqlPort | default 5432 }}
   {{- end }}
 
   # Database name
@@ -150,13 +150,13 @@ redis:
   {{- else }}
   host: {{ required "When the redis chart is disabled .Values.redis.hostname is required" .Values.redis.hostname }}
   {{- end }}
-  port: {{ .Values.redis.port | default "6379" | quote }}
+  port: {{ .Values.redis.port | default 6379 }}
   #family: 0  # 0=Both, 4=IPv4, 6=IPv6
   pass: {{ .Values.redis.auth.password | quote }}
   #prefix: example-prefix
   #db: 1
-	#user: default
-	#tls:
+  #user: default
+  #tls:
   #  host: localhost
   #  rejectUnauthorized: false
 
@@ -217,8 +217,7 @@ id: 'aid'
 #maxCaptionLength: 1500
 
 # Reserved usernames that only the administrator can register with
-reservedUsernames:
-{{ .Values.firefish.reservedUsernames | toYaml }}
+reservedUsernames: {{ .Values.firefish.reservedUsernames | toJson }}
 
 # Whether disable HSTS
 #disableHsts: true
@@ -265,8 +264,7 @@ reservedUsernames:
 # Proxy remote files (default: false)
 #proxyRemoteFiles: true
 
-allowedPrivateNetworks:
-{{ .Values.firefish.allowedPrivateNetworks | toYaml }}
+allowedPrivateNetworks: {{ .Values.firefish.allowedPrivateNetworks | toJson }}
 
 # TWA
 #twa:

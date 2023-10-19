@@ -2,7 +2,7 @@
 	<div class="_formRoot">
 		<FormSuspense :p="init">
 			<FormButton primary @click="addAccount"
-				><i class="ph-plus ph-bold ph-lg"></i>
+				><i :class="icon('ph-plus')"></i>
 				{{ i18n.ts.addAccount }}</FormButton
 			>
 
@@ -13,7 +13,7 @@
 				@click="menu(account, $event)"
 			>
 				<div class="avatar">
-					<MkAvatar :user="account" class="avatar" disableLink />
+					<MkAvatar :user="account" class="avatar" disable-link />
 				</div>
 				<div class="body">
 					<div class="name">
@@ -34,14 +34,15 @@ import FormSuspense from "@/components/form/suspense.vue";
 import FormButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import {
-	getAccounts,
-	addAccount as addAccounts,
-	removeAccount as _removeAccount,
-	login,
 	$i,
+	removeAccount as _removeAccount,
+	addAccount as addAccounts,
+	getAccounts,
+	login,
 } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const storedAccounts = ref<any>(null);
 const accounts = ref<any>(null);
@@ -68,12 +69,12 @@ function menu(account, ev) {
 		[
 			{
 				text: i18n.ts.switch,
-				icon: "ph-swap ph-bold ph-lg",
+				icon: `${icon("ph-swap")}`,
 				action: () => switchAccount(account),
 			},
 			{
 				text: i18n.ts.remove,
-				icon: "ph-trash ph-bold ph-lg",
+				icon: `${icon("ph-trash")}`,
 				danger: true,
 				action: () => removeAccount(account),
 			},
@@ -144,13 +145,9 @@ function switchAccountWithToken(token: string) {
 	login(token);
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.accounts,
-	icon: "ph-users ph-bold ph-lg",
+	icon: `${icon("ph-users")}`,
 });
 </script>
 

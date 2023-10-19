@@ -44,16 +44,14 @@
 								inline
 								primary
 								@click="save(announcement)"
-								><i
-									class="ph-floppy-disk-back ph-bold ph-lg"
-								></i>
+								><i :class="icon('ph-floppy-disk-back')"></i>
 								{{ i18n.ts.save }}</MkButton
 							>
 							<MkButton
 								class="button"
 								inline
 								@click="remove(announcement)"
-								><i class="ph-trash ph-bold ph-lg"></i>
+								><i :class="icon('ph-trash')"></i>
 								{{ i18n.ts.remove }}</MkButton
 							>
 						</div>
@@ -65,7 +63,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
+
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import MkSwitch from "@/components/form/switch.vue";
@@ -73,15 +72,16 @@ import MkTextarea from "@/components/form/textarea.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let announcements: any[] = $ref([]);
+const announcements = ref<any[]>([]);
 
 os.api("admin/announcements/list").then((announcementResponse) => {
-	announcements = announcementResponse;
+	announcements.value = announcementResponse;
 });
 
 function add() {
-	announcements.unshift({
+	announcements.value.unshift({
 		id: null,
 		title: "",
 		text: "",
@@ -97,7 +97,9 @@ function remove(announcement) {
 		text: i18n.t("removeAreYouSure", { x: announcement.title }),
 	}).then(({ canceled }) => {
 		if (canceled) return;
-		announcements = announcements.filter((x) => x !== announcement);
+		announcements.value = announcements.value.filter(
+			(x) => x !== announcement,
+		);
 		os.api("admin/announcements/delete", announcement);
 	});
 }
@@ -134,20 +136,20 @@ function save(announcement) {
 	}
 }
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.add,
 		handler: add,
 	},
 ]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.announcements,
-	icon: "ph-megaphone-simple ph-bold ph-lg",
+	icon: `${icon("ph-megaphone-simple")}`,
 });
 </script>
 

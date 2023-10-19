@@ -12,7 +12,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { ref } from "vue";
+
 import MkSignin from "@/components/MkSignin.vue";
 import XModalWindow from "@/components/MkModalWindow.vue";
 import { i18n } from "@/i18n";
@@ -34,15 +35,15 @@ const emit = defineEmits<{
 	(ev: "cancelled"): void;
 }>();
 
-const dialog = $ref<InstanceType<typeof XModalWindow>>();
+const dialog = ref<InstanceType<typeof XModalWindow>>();
 
 function onClose() {
 	emit("cancelled");
-	dialog.close();
+	dialog.value.close();
 }
 
 function onLogin(res) {
 	emit("done", res);
-	dialog.close();
+	dialog.value.close();
 }
 </script>

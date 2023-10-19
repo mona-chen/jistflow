@@ -17,16 +17,13 @@
 				<div class="status">
 					<i
 						v-if="relay.status === 'accepted'"
-						class="ph-check ph-bold ph-lg icon accepted"
+						:class="icon('ph-check icon accepted')"
 					></i>
 					<i
 						v-else-if="relay.status === 'rejected'"
-						class="ph-prohibit ph-bold ph-lg icon rejected"
+						:class="icon('ph-prohibit icon rejected')"
 					></i>
-					<i
-						v-else
-						class="ph-clock ph-bold ph-lg icon requesting"
-					></i>
+					<i v-else :class="icon('ph-clock icon requesting')"></i>
 					<span>{{ i18n.t(`_relayStatus.${relay.status}`) }}</span>
 				</div>
 				<MkButton
@@ -34,7 +31,7 @@
 					inline
 					danger
 					@click="remove(relay.inbox)"
-					><i class="ph-trash ph-bold ph-lg"></i>
+					><i :class="icon('ph-trash')"></i>
 					{{ i18n.ts.remove }}</MkButton
 				>
 			</div>
@@ -43,13 +40,15 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { computed, ref } from "vue";
+
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let relays: any[] = $ref([]);
+const relays = ref([]);
 
 async function addRelay() {
 	const { canceled, result: inbox } = await os.inputText({
@@ -89,26 +88,26 @@ function remove(inbox: string) {
 
 function refresh() {
 	os.api("admin/relays/list").then((relayList: any) => {
-		relays = relayList;
+		relays.value = relayList;
 	});
 }
 
 refresh();
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.addRelay,
 		handler: addRelay,
 	},
 ]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.relays,
-	icon: "ph-arrows-merge ph-bold ph-lg",
+	icon: `${icon("ph-arrows-merge")}`,
 });
 </script>
 

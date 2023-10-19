@@ -24,7 +24,7 @@ export const packedUserLiteSchema = {
 			type: "string",
 			nullable: true,
 			optional: false,
-			example: "misskey.example.com",
+			example: "firefish.example.com",
 			description: "The local host is represented with `null`.",
 		},
 		avatarUrl: {
@@ -62,6 +62,11 @@ export const packedUserLiteSchema = {
 			optional: true,
 		},
 		isCat: {
+			type: "boolean",
+			nullable: false,
+			optional: true,
+		},
+		isIndexable: {
 			type: "boolean",
 			nullable: false,
 			optional: true,
@@ -452,11 +457,6 @@ export const packedMeDetailedOnlySchema = {
 		hasPendingReceivedFollowRequest: {
 			type: "boolean",
 			nullable: false,
-			optional: false,
-		},
-		integrations: {
-			type: "object",
-			nullable: true,
 			optional: false,
 		},
 		mutedWords: {

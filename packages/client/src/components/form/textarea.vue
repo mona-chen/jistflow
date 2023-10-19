@@ -31,7 +31,8 @@
 			primary
 			class="save"
 			@click="updated"
-			><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+		>
+			<i :class="icon('ph-floppy-disk-back')"></i>
 			{{ i18n.ts.save }}</MkButton
 		>
 	</div>
@@ -43,7 +44,6 @@ import {
 	defineComponent,
 	nextTick,
 	onMounted,
-	onUnmounted,
 	ref,
 	toRefs,
 	watch,
@@ -51,6 +51,7 @@ import {
 import { debounce } from "throttle-debounce";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 export default defineComponent({
 	components: {
@@ -157,7 +158,7 @@ export default defineComponent({
 			v.value = newValue;
 		});
 
-		watch($$(v), () => {
+		watch(v, () => {
 			if (!props.manualSave) {
 				if (props.debounce) {
 					debouncedUpdated();
@@ -189,6 +190,7 @@ export default defineComponent({
 			onKeydown,
 			updated,
 			i18n,
+			icon,
 		};
 	},
 });

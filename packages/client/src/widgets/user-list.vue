@@ -1,7 +1,7 @@
 <template>
 	<MkContainer :show-header="widgetProps.showHeader" class="mkw-userList">
 		<template #header
-			><i class="ph-user-list ph-bold ph-lg"></i>
+			><i :class="icon('ph-user-list')"></i>
 			{{ list ? list.name : i18n.ts._widgets.userList }}</template
 		>
 		<template #func="{ buttonStyleClass }"
@@ -10,7 +10,7 @@
 				:class="buttonStyleClass"
 				@click="configure()"
 			>
-				<i class="ph-gear-six ph-bold ph-lg"></i></button
+				<i :class="icon('ph-gear-six')"></i></button
 		></template>
 
 		<div class="wsdlkfj">
@@ -28,6 +28,8 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from "vue";
+
 import type { Widget, WidgetComponentExpose } from "./widget";
 import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
@@ -37,6 +39,7 @@ import * as os from "@/os";
 import { useInterval } from "@/scripts/use-interval";
 import { i18n } from "@/i18n";
 import MkButton from "@/components/MkButton.vue";
+import icon from "@/scripts/icon";
 
 const name = "userList";
 const widgetPropsDef = {
@@ -62,9 +65,9 @@ const { widgetProps, configure, save } = useWidgetPropsManager(
 	props,
 	emit,
 );
-let list = $ref(),
-	users = $ref([]),
-	fetching = $ref(true);
+const list = ref();
+const users = ref([]);
+const fetching = ref(true);
 async function chooseList() {
 	const lists = await os.api("users/lists/list");
 	const { canceled, result: list } = await os.select({
@@ -82,18 +85,18 @@ async function chooseList() {
 }
 const fetch = () => {
 	if (widgetProps.listId == null) {
-		fetching = false;
+		fetching.value = false;
 		return;
 	}
 	os.api("users/lists/show", {
 		listId: widgetProps.listId,
 	}).then((_list) => {
-		list = _list;
+		list.value = _list;
 		os.api("users/show", {
-			userIds: list.userIds,
+			userIds: list.value.userIds,
 		}).then((_users) => {
-			users = list.userIds;
-			fetching = false;
+			users.value = list.value.userIds;
+			fetching.value = false;
 		});
 	});
 };

@@ -13,7 +13,7 @@
 				:round-lengths="true"
 				:touch-angle="25"
 				:threshold="10"
-				:centeredSlides="true"
+				:centered-slides="true"
 				:modules="[Virtual]"
 				:space-between="20"
 				:virtual="true"
@@ -62,15 +62,15 @@ import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
 const tabs = ["all", "unread", "mentions", "directNotes"];
-let tab = $ref(tabs[0]);
-watch($$(tab), () => syncSlide(tabs.indexOf(tab)));
+const tab = ref(tabs[0]);
+watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
 
-let includeTypes = $ref<string[] | null>(null);
-let unreadOnly = $computed(() => tab === "unread");
+const includeTypes = ref<string[] | null>(null);
 os.api("notifications/mark-all-as-read");
 
 const MOBILE_THRESHOLD = 500;
@@ -98,19 +98,19 @@ const directNotesPagination = {
 function setFilter(ev) {
 	const typeItems = notificationTypes.map((t) => ({
 		text: i18n.t(`_notification._types.${t}`),
-		active: includeTypes && includeTypes.includes(t),
+		active: includeTypes.value && includeTypes.value.includes(t),
 		action: () => {
-			includeTypes = [t];
+			includeTypes.value = [t];
 		},
 	}));
 	const items =
-		includeTypes != null
+		includeTypes.value != null
 			? [
 					{
-						icon: "ph-x ph-bold ph-lg",
+						icon: `${icon("ph-x")}`,
 						text: i18n.ts.clear,
 						action: () => {
-							includeTypes = null;
+							includeTypes.value = null;
 						},
 					},
 					null,
@@ -120,20 +120,20 @@ function setFilter(ev) {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-const headerActions = $computed(() =>
+const headerActions = computed(() =>
 	[
-		tab === "all"
+		tab.value === "all"
 			? {
 					text: i18n.ts.filter,
-					icon: "ph-funnel ph-bold ph-lg",
-					highlighted: includeTypes != null,
+					icon: `${icon("ph-funnel")}`,
+					highlighted: includeTypes.value != null,
 					handler: setFilter,
 			  }
 			: undefined,
-		tab === "all"
+		tab.value === "all"
 			? {
 					text: i18n.ts.markAllAsRead,
-					icon: "ph-check ph-bold ph-lg",
+					icon: `${icon("ph-check")}`,
 					handler: () => {
 						os.apiWithDialog("notifications/mark-all-as-read");
 					},
@@ -142,33 +142,33 @@ const headerActions = $computed(() =>
 	].filter((x) => x !== undefined),
 );
 
-const headerTabs = $computed(() => [
+const headerTabs = computed(() => [
 	{
 		key: "all",
 		title: i18n.ts.all,
-		icon: "ph-bell ph-bold ph-lg",
+		icon: `${icon("ph-bell")}`,
 	},
 	{
 		key: "unread",
 		title: i18n.ts.unread,
-		icon: "ph-circle-wavy-warning ph-bold ph-lg",
+		icon: `${icon("ph-circle-wavy-warning")}`,
 	},
 	{
 		key: "mentions",
 		title: i18n.ts.mentions,
-		icon: "ph-at ph-bold ph-lg",
+		icon: `${icon("ph-at")}`,
 	},
 	{
 		key: "directNotes",
 		title: i18n.ts.directNotes,
-		icon: "ph-envelope-simple-open ph-bold ph-lg",
+		icon: `${icon("ph-envelope-simple-open")}`,
 	},
 ]);
 
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.notifications,
-		icon: "ph-bell ph-bold ph-lg",
+		icon: `${icon("ph-bell")}`,
 	})),
 );
 
@@ -176,11 +176,11 @@ let swiperRef = null;
 
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
-	syncSlide(tabs.indexOf(tab));
+	syncSlide(tabs.indexOf(tab.value));
 }
 
 function onSlideChange() {
-	tab = tabs[swiperRef.activeIndex];
+	tab.value = tabs[swiperRef.activeIndex];
 }
 
 function syncSlide(index) {

@@ -13,7 +13,7 @@
 				<template v-if="provider === 'hcaptcha'">
 					<FormInput v-model="hcaptchaSiteKey" class="_formBlock">
 						<template #prefix
-							><i class="ph-key ph-bold ph-lg"></i
+							><i :class="icon('ph-key')"></i
 						></template>
 						<template #label>{{
 							i18n.ts.hcaptchaSiteKey
@@ -21,7 +21,7 @@
 					</FormInput>
 					<FormInput v-model="hcaptchaSecretKey" class="_formBlock">
 						<template #prefix
-							><i class="ph-key ph-bold ph-lg"></i
+							><i :class="icon('ph-key')"></i
 						></template>
 						<template #label>{{
 							i18n.ts.hcaptchaSecretKey
@@ -41,7 +41,7 @@
 				<template v-else-if="provider === 'recaptcha'">
 					<FormInput v-model="recaptchaSiteKey" class="_formBlock">
 						<template #prefix
-							><i class="ph-key ph-bold ph-lg"></i
+							><i :class="icon('ph-key')"></i
 						></template>
 						<template #label>{{
 							i18n.ts.recaptchaSiteKey
@@ -49,7 +49,7 @@
 					</FormInput>
 					<FormInput v-model="recaptchaSecretKey" class="_formBlock">
 						<template #prefix
-							><i class="ph-key ph-bold ph-lg"></i
+							><i :class="icon('ph-key')"></i
 						></template>
 						<template #label>{{
 							i18n.ts.recaptchaSecretKey
@@ -65,7 +65,7 @@
 				</template>
 
 				<FormButton primary @click="save"
-					><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+					><i :class="icon('ph-floppy-disk-back')"></i>
 					{{ i18n.ts.save }}</FormButton
 				>
 			</div>
@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 import FormRadios from "@/components/form/radios.vue";
 import FormInput from "@/components/form/input.vue";
 import FormButton from "@/components/MkButton.vue";
@@ -83,25 +83,26 @@ import FormSlot from "@/components/form/slot.vue";
 import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const MkCaptcha = defineAsyncComponent(
 	() => import("@/components/MkCaptcha.vue"),
 );
 
-let provider = $ref(null);
-let hcaptchaSiteKey: string | null = $ref(null);
-let hcaptchaSecretKey: string | null = $ref(null);
-let recaptchaSiteKey: string | null = $ref(null);
-let recaptchaSecretKey: string | null = $ref(null);
+const provider = ref<any>(null);
+const hcaptchaSiteKey = ref<string | null>(null);
+const hcaptchaSecretKey = ref<string | null>(null);
+const recaptchaSiteKey = ref<string | null>(null);
+const recaptchaSecretKey = ref<string | null>(null);
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	hcaptchaSiteKey = meta.hcaptchaSiteKey;
-	hcaptchaSecretKey = meta.hcaptchaSecretKey;
-	recaptchaSiteKey = meta.recaptchaSiteKey;
-	recaptchaSecretKey = meta.recaptchaSecretKey;
+	hcaptchaSiteKey.value = meta.hcaptchaSiteKey;
+	hcaptchaSecretKey.value = meta.hcaptchaSecretKey;
+	recaptchaSiteKey.value = meta.recaptchaSiteKey;
+	recaptchaSecretKey.value = meta.recaptchaSecretKey;
 
-	provider = meta.enableHcaptcha
+	provider.value = meta.enableHcaptcha
 		? "hcaptcha"
 		: meta.enableRecaptcha
 		? "recaptcha"
@@ -110,12 +111,12 @@ async function init() {
 
 function save() {
 	os.apiWithDialog("admin/update-meta", {
-		enableHcaptcha: provider === "hcaptcha",
-		hcaptchaSiteKey,
-		hcaptchaSecretKey,
-		enableRecaptcha: provider === "recaptcha",
-		recaptchaSiteKey,
-		recaptchaSecretKey,
+		enableHcaptcha: provider.value === "hcaptcha",
+		hcaptchaSiteKey: hcaptchaSiteKey.value,
+		hcaptchaSecretKey: hcaptchaSecretKey.value,
+		enableRecaptcha: provider.value === "recaptcha",
+		recaptchaSiteKey: recaptchaSiteKey.value,
+		recaptchaSecretKey: recaptchaSecretKey.value,
 	}).then(() => {
 		fetchInstance();
 	});

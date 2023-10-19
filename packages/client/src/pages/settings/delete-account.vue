@@ -26,6 +26,7 @@ import * as os from "@/os";
 import { signout } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 async function deleteAccount() {
 	{
@@ -43,7 +44,7 @@ async function deleteAccount() {
 	if (canceled) return;
 
 	await os.apiWithDialog("i/delete-account", {
-		password: password,
+		password,
 	});
 
 	await os.alert({
@@ -53,12 +54,8 @@ async function deleteAccount() {
 	await signout();
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts._accountDelete.accountDelete,
-	icon: "ph-warning ph-bold ph-lg",
+	icon: `${icon("ph-warning")}`,
 });
 </script>

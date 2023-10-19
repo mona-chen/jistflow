@@ -16,6 +16,7 @@
 							: reaction
 					"
 					:custom-emojis="note.emojis"
+					style="max-width: 100%"
 				/>
 				<span style="margin-left: 4px">{{
 					note.reactions[reaction]
@@ -35,39 +36,40 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, watch } from "vue";
-import * as misskey from "firefish-js";
+import { onMounted, ref, watch } from "vue";
+import type * as firefish from "firefish-js";
 import MkReactionIcon from "@/components/MkReactionIcon.vue";
 import MkUserCardMini from "@/components/MkUserCardMini.vue";
-import { i18n } from "@/i18n";
 import * as os from "@/os";
 
 const props = defineProps<{
-	noteId: misskey.entities.Note["id"];
+	noteId: firefish.entities.Note["id"];
 }>();
 
-let note = $ref<misskey.entities.Note>();
-let tab = $ref<string>();
-let reactions = $ref<string[]>();
-let users = $ref();
+const note = ref<firefish.entities.Note>();
+const tab = ref<string | null>(null);
+const reactions = ref<string[]>();
+const users = ref();
 
-watch($$(tab), async () => {
+async function updateUsers(): void {
 	const res = await os.api("notes/reactions", {
 		noteId: props.noteId,
-		type: tab,
+		type: tab.value,
 		limit: 30,
 	});
 
-	users = res.map((x) => x.user);
-});
+	users.value = res.map((x) => x.user);
+}
+
+watch(tab, updateUsers);
 
 onMounted(() => {
 	os.api("notes/show", {
 		noteId: props.noteId,
-	}).then((res) => {
-		reactions = Object.keys(res.reactions);
-		tab = reactions[0];
-		note = res;
+	}).then(async (res) => {
+		reactions.value = Object.keys(res.reactions);
+		note.value = res;
+		await updateUsers();
 	});
 });
 </script>
@@ -83,6 +85,7 @@ onMounted(() => {
 	padding: 4px 6px;
 	border: solid 1px var(--divider);
 	border-radius: 6px;
+	max-width: 50%;
 }
 
 .tabActive {

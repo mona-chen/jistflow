@@ -169,6 +169,12 @@ export class UserProfile {
 
 	@Column("boolean", {
 		default: true,
+		comment: "Whether User is indexable.",
+	})
+	public isIndexable: boolean;
+
+	@Column("boolean", {
+		default: true,
 	})
 	public preventAiLearning: boolean;
 
@@ -209,11 +215,6 @@ export class UserProfile {
 	@JoinColumn()
 	public pinnedPage: Page | null;
 
-	@Column("jsonb", {
-		default: {},
-	})
-	public integrations: Record<string, any>;
-
 	@Index()
 	@Column("boolean", {
 		default: false,
@@ -242,7 +243,7 @@ export class UserProfile {
 	//#region Denormalized fields
 	@Index()
 	@Column("varchar", {
-		length: 128,
+		length: 512,
 		nullable: true,
 		comment: "[Denormalized]",
 	})

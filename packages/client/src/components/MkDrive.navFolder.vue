@@ -8,31 +8,32 @@
 		@dragleave="onDragleave"
 		@drop.stop="onDrop"
 	>
-		<i v-if="folder == null" class="ph-cloud ph-bold ph-lg"></i>
+		<i v-if="folder == null" :class="icon('ph-cloud')"></i>
 		<span>{{ folder == null ? i18n.ts.drive : folder.name }}</span>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	folder?: Misskey.entities.DriveFolder;
-	parentFolder: Misskey.entities.DriveFolder | null;
+	folder?: firefish.entities.DriveFolder;
+	parentFolder: firefish.entities.DriveFolder | null;
 }>();
 
 const emit = defineEmits<{
-	(ev: "move", v?: Misskey.entities.DriveFolder): void;
+	(ev: "move", v?: firefish.entities.DriveFolder): void;
 	(
 		ev: "upload",
 		file: File,
-		folder?: Misskey.entities.DriveFolder | null,
+		folder?: firefish.entities.DriveFolder | null,
 	): void;
-	(ev: "removeFile", v: Misskey.entities.DriveFile["id"]): void;
-	(ev: "removeFolder", v: Misskey.entities.DriveFolder["id"]): void;
+	(ev: "removeFile", v: firefish.entities.DriveFile["id"]): void;
+	(ev: "removeFolder", v: firefish.entities.DriveFolder["id"]): void;
 }>();
 
 const hover = ref(false);
@@ -40,14 +41,6 @@ const draghover = ref(false);
 
 function onClick() {
 	emit("move", props.folder);
-}
-
-function onMouseover() {
-	hover.value = true;
-}
-
-function onMouseout() {
-	hover.value = false;
 }
 
 function onDragover(ev: DragEvent) {
@@ -94,7 +87,7 @@ function onDrop(ev: DragEvent) {
 		return;
 	}
 
-	//#region ドライブのファイル
+	// #region ドライブのファイル
 	const driveFile = ev.dataTransfer.getData(_DATA_TRANSFER_DRIVE_FILE_);
 	if (driveFile != null && driveFile !== "") {
 		const file = JSON.parse(driveFile);
@@ -104,9 +97,9 @@ function onDrop(ev: DragEvent) {
 			folderId: props.folder ? props.folder.id : null,
 		});
 	}
-	//#endregion
+	// #endregion
 
-	//#region ドライブのフォルダ
+	// #region ドライブのフォルダ
 	const driveFolder = ev.dataTransfer.getData(_DATA_TRANSFER_DRIVE_FOLDER_);
 	if (driveFolder != null && driveFolder !== "") {
 		const folder = JSON.parse(driveFolder);
@@ -118,7 +111,7 @@ function onDrop(ev: DragEvent) {
 			parentId: props.folder ? props.folder.id : null,
 		});
 	}
-	//#endregion
+	// #endregion
 }
 </script>
 

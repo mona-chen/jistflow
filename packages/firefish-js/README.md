@@ -1,6 +1,6 @@
 # Firefish.js
 
-Fork of Misskey.js for Firefish
+Fork of firefish.js for Firefish
 
 https://www.npmjs.com/package/firefish-js
 

@@ -5,7 +5,7 @@
 			class="sensitive"
 			@click="hide = false"
 		>
-			<span class="icon"><i class="ph-warning ph-bold ph-lg"></i></span>
+			<span class="icon"><i :class="icon('ph-warning')"></i></span>
 			<b>{{ i18n.ts.sensitive }}</b>
 			<span>{{ i18n.ts.clickToShow }}</span>
 		</div>
@@ -48,7 +48,7 @@
 			:download="media.name"
 		>
 			<span class="icon"
-				><i class="ph-download-simple ph-bold ph-lg"></i
+				><i :class="icon('ph-download-simple')"></i
 			></span>
 			<b>{{ media.name }}</b>
 		</a>
@@ -56,29 +56,32 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import VuePlyr from "vue-plyr";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { ColdDeviceStorage } from "@/store";
 import "vue-plyr/dist/vue-plyr.css";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
-		media: misskey.entities.DriveFile;
+		media: firefish.entities.DriveFile;
 	}>(),
 	{},
 );
 
-const audioEl = $ref<HTMLAudioElement | null>();
-let hide = $ref(true);
+const audioEl = ref<HTMLAudioElement | null>();
+const hide = ref(true);
 
 function volumechange() {
-	if (audioEl) ColdDeviceStorage.set("mediaVolume", audioEl.volume);
+	if (audioEl.value)
+		ColdDeviceStorage.set("mediaVolume", audioEl.value.volume);
 }
 
 onMounted(() => {
-	if (audioEl) audioEl.volume = ColdDeviceStorage.get("mediaVolume");
+	if (audioEl.value)
+		audioEl.value.volume = ColdDeviceStorage.get("mediaVolume");
 });
 </script>
 

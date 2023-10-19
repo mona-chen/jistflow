@@ -23,7 +23,6 @@
 
 - Firefish is based off of Misskey, a powerful microblogging server on ActivityPub with features such as emoji reactions, a customizable web UI, rich chatting, and much more!
 - Firefish adds many quality of life changes and bug fixes for users and server admins alike.
-- Read **[this document](./FIREFISH.md)** all for current and future differences.
 - Notable differences:
   - Improved UI/UX (especially on mobile)
   - Post editing
@@ -66,7 +65,7 @@
   - Donate publicly to get your name on the Patron list!
 - 🚢 Flagship server: <https://firefish.social>
 - 💁 Matrix support room: <https://matrix.to/#/#firefish:matrix.fedibird.com>
-- 📣 Official account: <https://i.firefish.cloud/@firefish>
+- 📣 Official account: <a href="https://fedi.software/@firefish" rel="me">@firefish</a>
 - 📜 Server list: <https://joinfirefish.org/join>
 - ✍️ Weblate: <https://hosted.weblate.org/engage/firefish/>
 - ️️📬 Contact: <https://joinfirefish.org/contact/>
@@ -87,9 +86,7 @@ This guide will work for both **starting from scratch** and **migrating from Mis
 
 If you have access to a server that supports one of the sources below, I recommend you use it! Note that these methods *won't* allow you to migrate from Misskey without manual intervention.
 
-<!-- [![Install on the Arch User Repository](https://pool.jortage.com/voringme/misskey/ba2a5c07-f078-43f1-8483-2e01acca9c40.png)](https://aur.archlinux.org/packages/firefish)　　 -->
-
-[![Install on Ubuntu](https://pool.jortage.com/voringme/misskey/3b62a443-1b44-45cf-8f9e-f1c588f803ed.png)](https://git.joinfirefish.org/firefish/ubuntu-bash-install)　　[![Install Firefish with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=firefish)
+[![Install on Ubuntu](https://pool.jortage.com/voringme/misskey/3b62a443-1b44-45cf-8f9e-f1c588f803ed.png)](https://git.joinfirefish.org/firefish/ubuntu-bash-install)　　[![Install on the Arch User Repository](https://pool.jortage.com/voringme/misskey/ba2a5c07-f078-43f1-8483-2e01acca9c40.png)](https://aur.archlinux.org/packages/firefish)　　[![Install Firefish with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=firefish)
 
 ## 🛳️ Containerization
 
@@ -100,7 +97,7 @@ If you have access to a server that supports one of the sources below, I recomme
 
 - 🐢 At least [NodeJS](https://nodejs.org/en/) v18.16.0 (v20 recommended)
 - 🐘 At least [PostgreSQL](https://www.postgresql.org/) v12 (v14 recommended)
-- 🍱 At least [Redis](https://redis.io/) v6 (v7 recommended)
+- 🍱 At least [Redis](https://redis.io/) v7
 - Web Proxy (one of the following)
   - 🍀 Nginx (recommended)
   - 🦦 Caddy
@@ -212,6 +209,7 @@ Please don't use ElasticSearch unless you already have an ElasticSearch setup an
 - To add custom error images, place them in the `./custom/assets/badges` directory, replacing the files already there.
 - To add custom sounds, place only mp3 files in the `./custom/assets/sounds` directory.
 - To update custom assets without rebuilding, just run `pnpm run gulp`.
+- To block ChatGPT, CommonCrawl, or other crawlers from indexing your instance, uncomment the respective rules in `./custom/robots.txt`.
 
 ## 🧑‍🔬 Configuring a new server
 
@@ -269,6 +267,7 @@ pm2 start "NODE_ENV=production pnpm run start" --name Firefish
 - When editing the config file, please don't fill out the settings at the bottom. They're designed *only* for managed hosting, not self hosting. Those settings are much better off being set in Firefish's control panel.
 - Port 3000 (used in the default config) might be already used on your server for something else. To find an open port for Firefish, run `for p in {3000..4000}; do ss -tlnH | tr -s ' ' | cut -d" " -sf4 | grep -q "${p}$" || echo "${p}"; done | head -n 1`. Replace 3000 with the minimum port and 4000 with the maximum port if you need it.
 - I'd recommend you use a S3 Bucket/CDN for Object Storage, especially if you use Docker.
+- When using object storage, setting a proper `Access-Control-Allow-Origin` response header is highly recommended.
 - I'd ***strongly*** recommend against using CloudFlare, but if you do, make sure to turn code minification off.
 - For push notifications, run `npx web-push generate-vapid-keys`, then put the public and private keys into Control Panel > General > ServiceWorker.
 - For translations, make a [DeepL](https://deepl.com) account and generate an API key, then put it into Control Panel > General > DeepL Translation.

@@ -123,7 +123,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import MkInput from "@/components/form/input.vue";
 import MkSelect from "@/components/form/select.vue";
 import MkPagination from "@/components/MkPagination.vue";
@@ -132,23 +132,24 @@ import { lookupUser } from "@/scripts/lookup-user";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import MkUserCardMini from "@/components/MkUserCardMini.vue";
+import icon from "@/scripts/icon";
 
-let paginationComponent = $ref<InstanceType<typeof MkPagination>>();
+const paginationComponent = ref<InstanceType<typeof MkPagination>>();
 
-let sort = $ref("+createdAt");
-let state = $ref("all");
-let origin = $ref("local");
-let searchUsername = $ref("");
-let searchHost = $ref("");
+const sort = ref("+createdAt");
+const state = ref("all");
+const origin = ref("local");
+const searchUsername = ref("");
+const searchHost = ref("");
 const pagination = {
 	endpoint: "admin/show-users" as const,
 	limit: 10,
 	params: computed(() => ({
-		sort: sort,
-		state: state,
-		origin: origin,
-		username: searchUsername,
-		hostname: searchHost,
+		sort: sort.value,
+		state: state.value,
+		origin: origin.value,
+		username: searchUsername.value,
+		hostname: searchHost.value,
 	})),
 	offsetMode: true,
 };
@@ -172,10 +173,10 @@ async function addUser() {
 	if (canceled2) return;
 
 	os.apiWithDialog("admin/accounts/create", {
-		username: username,
-		password: password,
+		username,
+		password,
 	}).then((res) => {
-		paginationComponent.reload();
+		paginationComponent.value.reload();
 	});
 }
 
@@ -183,32 +184,32 @@ function show(user) {
 	os.pageWindow(`/user-info/${user.id}`);
 }
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
-		icon: "ph-magnifying-glass ph-bold ph-lg",
+		icon: `${icon("ph-magnifying-glass")}`,
 		text: i18n.ts.search,
 		handler: searchUser,
 	},
 	{
 		asFullButton: true,
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.addUser,
 		handler: addUser,
 	},
 	{
 		asFullButton: true,
-		icon: "ph-magnifying-glass ph-bold ph-lg",
+		icon: `${icon("ph-magnifying-glass")}`,
 		text: i18n.ts.lookup,
 		handler: lookupUser,
 	},
 ]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.users,
-		icon: "ph-users ph-bold ph-lg",
+		icon: `${icon("ph-users")}`,
 	})),
 );
 </script>
@@ -218,6 +219,7 @@ definePageMetadata(
 	> .users {
 		> .inputs {
 			display: flex;
+			gap: 0.4rem;
 			margin-bottom: 16px;
 
 			> * {

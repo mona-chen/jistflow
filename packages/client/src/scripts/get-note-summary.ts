@@ -1,11 +1,11 @@
-import * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { i18n } from "@/i18n";
 
 /**
  * 投稿を表す文字列を取得します。
  * @param {*} note (packされた)投稿
  */
-export const getNoteSummary = (note: misskey.entities.Note): string => {
+export const getNoteSummary = (note: firefish.entities.Note): string => {
 	/*
 	if (note.deletedAt) {
 		return `(${i18n.ts.deletedNote})`;

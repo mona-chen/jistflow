@@ -7,20 +7,22 @@
 			:disabled="posting || posted"
 			@click="post()"
 		>
-			<i v-if="posted" class="ph-check ph-bold ph-lg"></i>
-			<i v-else class="ph-paper-plane-tilt ph-bold ph-lg"></i>
+			<i v-if="posted" :class="icon('ph-check')"></i>
+			<i v-else :class="icon('ph-paper-plane-tilt')"></i>
 		</MkButton>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import type { PropType } from "vue";
+import { defineComponent } from "vue";
 import MkTextarea from "../form/textarea.vue";
 import MkButton from "../MkButton.vue";
 import { apiUrl } from "@/config";
 import * as os from "@/os";
-import { PostBlock } from "@/scripts/hpml/block";
-import { Hpml } from "@/scripts/hpml/evaluator";
+import type { PostBlock } from "@/scripts/hpml/block";
+import type { Hpml } from "@/scripts/hpml/evaluator";
+import icon from "@/scripts/icon";
 
 export default defineComponent({
 	components: {
@@ -59,10 +61,10 @@ export default defineComponent({
 				canvas.toBlob((blob) => {
 					const formData = new FormData();
 					formData.append("file", blob);
-					if (this.$store.state.uploadFolder) {
+					if (this.defaultStore.state.uploadFolder) {
 						formData.append(
 							"folderId",
-							this.$store.state.uploadFolder,
+							this.defaultStore.state.uploadFolder,
 						);
 					}
 

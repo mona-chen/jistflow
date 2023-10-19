@@ -3,8 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent } from "vue";
-import * as os from "@/os";
+import { defineAsyncComponent, defineComponent } from "vue";
 
 export default defineComponent({
 	components: {

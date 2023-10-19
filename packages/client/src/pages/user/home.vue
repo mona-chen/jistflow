@@ -51,9 +51,7 @@
 												padding: 5px;
 											"
 										>
-											<i
-												class="ph-warning ph-bold ph-lg"
-											></i>
+											<i :class="icon('ph-warning')"></i>
 											{{ i18n.ts.silenced }}
 										</span>
 										<span
@@ -63,9 +61,7 @@
 												padding: 5px;
 											"
 										>
-											<i
-												class="ph-warning ph-bold ph-lg"
-											></i>
+											<i :class="icon('ph-warning')"></i>
 											{{ i18n.ts.suspended }}
 										</span>
 									</div>
@@ -87,27 +83,23 @@
 										v-if="user.isAdmin"
 										v-tooltip.noDelay="i18n.ts.isAdmin"
 										style="color: var(--badge)"
-										><i
-											class="ph-bookmark-simple ph-fill ph-lg"
-										></i
+										><i :class="icon('ph-crown')"></i
 									></span>
 									<span
 										v-if="!user.isAdmin && user.isModerator"
 										v-tooltip.noDelay="i18n.ts.isModerator"
 										style="color: var(--badge)"
-										><i
-											class="ph-bookmark-simple ph-bold ph-lg"
-										></i
+										><i :class="icon('ph-gavel')"></i
 									></span>
 									<span
 										v-if="user.isLocked"
 										v-tooltip.noDelay="i18n.ts.isLocked"
-										><i class="ph-lock ph-bold ph-lg"></i
+										><i :class="icon('ph-lock')"></i
 									></span>
 									<span
 										v-if="user.isBot"
 										v-tooltip.noDelay="i18n.ts.isBot"
-										><i class="ph-robot ph-bold ph-lg"></i
+										><i :class="icon('ph-robot')"></i
 									></span>
 									<span
 										v-if="
@@ -119,9 +111,7 @@
 										"
 										v-tooltip.noDelay="i18n.ts.isPatron"
 										style="color: var(--badge)"
-										><i
-											class="ph-hand-coins ph-bold ph-lg"
-										></i
+										><i :class="icon('ph-hand-coins')"></i
 									></span>
 								</div>
 							</div>
@@ -153,7 +143,7 @@
 										v-if="user.isSilenced"
 										style="color: var(--warn); padding: 5px"
 									>
-										<i class="ph-warning ph-bold ph-lg"></i>
+										<i :class="icon('ph-warning')"></i>
 										{{ i18n.ts.silenced }}
 									</span>
 									<span
@@ -163,7 +153,7 @@
 											padding: 5px;
 										"
 									>
-										<i class="ph-warning ph-bold ph-lg"></i>
+										<i :class="icon('ph-warning')"></i>
 										{{ i18n.ts.suspended }}
 									</span>
 								</div>
@@ -176,9 +166,7 @@
 									v-if="user.isAdmin"
 									v-tooltip.noDelay="i18n.ts.isAdmin"
 									style="color: var(--badge)"
-									><i
-										class="ph-bookmark-simple ph-fill ph-lg"
-									></i
+									><i :class="icon('ph-crown')"></i
 								></span>
 								<span
 									v-if="!user.isAdmin && user.isModerator"
@@ -187,19 +175,17 @@
 										color: var(--badge);
 										margin-left: 0.5rem;
 									"
-									><i
-										class="ph-bookmark-simple ph-bold ph-lg"
-									></i
+									><i :class="icon('ph-gavel')"></i
 								></span>
 								<span
 									v-if="user.isLocked"
 									v-tooltip.noDelay="i18n.ts.isLocked"
-									><i class="ph-lock ph-bold ph-lg"></i
+									><i :class="icon('ph-lock')"></i
 								></span>
 								<span
 									v-if="user.isBot"
 									v-tooltip.noDelay="i18n.ts.isBot"
-									><i class="ph-robot ph-bold ph-lg"></i
+									><i :class="icon('ph-robot')"></i
 								></span>
 								<span
 									v-if="
@@ -211,7 +197,7 @@
 									"
 									v-tooltip.noDelay="i18n.ts.isPatron"
 									style="color: var(--badge)"
-									><i class="ph-hand-coins ph-bold ph-lg"></i
+									><i :class="icon('ph-hand-coins')"></i
 								></span>
 							</div>
 						</div>
@@ -219,11 +205,11 @@
 							<div class="actions">
 								<MkFollowButton
 									:user="user"
-									@refresh="emit('refresh')"
 									:inline="true"
 									:transparent="false"
 									:full="true"
 									class="koudoku"
+									@refresh="emit('refresh')"
 								/>
 							</div>
 						</div>
@@ -243,9 +229,7 @@
 						<div class="fields system">
 							<dl v-if="user.location" class="field">
 								<dt class="name">
-									<i
-										class="ph-map-pin ph-bold ph-lg ph-fw ph-lg"
-									></i>
+									<i :class="icon('ph-map-pin ph-fw')"></i>
 									{{ i18n.ts.location }}
 								</dt>
 								<dd class="value">
@@ -254,9 +238,7 @@
 							</dl>
 							<dl v-if="user.birthday" class="field">
 								<dt class="name">
-									<i
-										class="ph-cake ph-bold ph-lg ph-fw ph-lg"
-									></i>
+									<i :class="icon('ph-cake ph-fw')"></i>
 									{{ i18n.ts.birthday }}
 								</dt>
 								<dd class="value">
@@ -271,7 +253,7 @@
 							<dl class="field">
 								<dt class="name">
 									<i
-										class="ph-calendar-blank ph-bold ph-lg ph-fw ph-lg"
+										:class="icon('ph-calendar-blank ph-fw')"
 									></i>
 									{{ i18n.ts.registeredDate }}
 								</dt>
@@ -288,16 +270,16 @@
 						<div v-if="user.fields.length > 0" class="fields">
 							<dl
 								v-for="(field, i) in user.fields"
-								:class="field.verified ? 'verified' : ''"
 								:key="i"
+								:class="field.verified ? 'verified' : ''"
 								class="field"
 							>
 								<dt class="name">
 									<i
 										v-if="field.verified"
-										class="ph-bold ph-seal-check ph-lg ph-fw"
-										style="padding: 5px"
 										v-tooltip="i18n.ts.verifiedLink"
+										:class="icon('ph-seal-check ph-fw')"
+										style="padding: 5px"
 									></i>
 									<Mfm
 										:text="field.name"
@@ -387,11 +369,17 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, onMounted, onUnmounted } from "vue";
+import {
+	computed,
+	defineAsyncComponent,
+	onMounted,
+	onUnmounted,
+	ref,
+} from "vue";
 import calcAge from "s-age";
 import cityTimezones from "city-timezones";
+import type * as firefish from "firefish-js";
 import XUserTimeline from "./index.timeline.vue";
-import type * as misskey from "firefish-js";
 import XNote from "@/components/MkNote.vue";
 import MkFollowButton from "@/components/MkFollowButton.vue";
 import MkRemoteCaution from "@/components/MkRemoteCaution.vue";
@@ -406,6 +394,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { $i } from "@/account";
 import { host } from "@/config";
+import icon from "@/scripts/icon";
 
 const XPhotos = defineAsyncComponent(() => import("./index.photos.vue"));
 const XActivity = defineAsyncComponent(() => import("./index.activity.vue"));
@@ -413,21 +402,22 @@ const XActivity = defineAsyncComponent(() => import("./index.activity.vue"));
 const emit = defineEmits(["refresh"]);
 const props = withDefaults(
 	defineProps<{
-		user: misskey.entities.UserDetailed;
+		user: firefish.entities.UserDetailed;
 	}>(),
 	{},
 );
 
-let parallaxAnimationId = $ref<null | number>(null);
-let narrow = $ref<null | boolean>(null);
-let rootEl = $ref<null | HTMLElement>(null);
-let bannerEl = $ref<null | HTMLElement>(null);
+const parallaxAnimationId = ref<null | number>(null);
+const narrow = ref<null | boolean>(null);
+const rootEl = ref<null | HTMLElement>(null);
+const bannerEl = ref<null | HTMLElement>(null);
+const patrons = ref([]);
 
-const age = $computed(() => {
+const age = computed(() => {
 	return calcAge(props.user.birthday);
 });
 
-const timeForThem = $computed(() => {
+const timeForThem = computed(() => {
 	const maybeCityNames = [
 		props.user.location!,
 		props.user
@@ -447,8 +437,8 @@ const timeForThem = $computed(() => {
 	];
 
 	for (const city of maybeCityNames) {
-		let tzInfo = cityTimezones.lookupViaCity(city);
-		if (tzInfo.length == 0) continue;
+		const tzInfo = cityTimezones.lookupViaCity(city);
+		if (tzInfo.length !== 1) continue;
 
 		const tz = tzInfo[0].timezone;
 		if (!tz) continue;
@@ -467,20 +457,19 @@ const timeForThem = $computed(() => {
 	return "";
 });
 
-let patrons = [];
 const patronsResp = await os.api("patrons");
-patrons = patronsResp.patrons;
+patrons.value = patronsResp.patrons;
 
 function parallaxLoop() {
-	parallaxAnimationId = window.requestAnimationFrame(parallaxLoop);
+	parallaxAnimationId.value = window.requestAnimationFrame(parallaxLoop);
 	parallax();
 }
 
 function parallax() {
-	const banner = bannerEl as any;
+	const banner = bannerEl.value as any;
 	if (banner == null) return;
 
-	const top = getScrollPosition(rootEl);
+	const top = getScrollPosition(rootEl.value);
 
 	if (top < 0) return;
 
@@ -491,12 +480,12 @@ function parallax() {
 
 onMounted(() => {
 	window.requestAnimationFrame(parallaxLoop);
-	narrow = rootEl!.clientWidth < 1000;
+	narrow.value = rootEl.value!.clientWidth < 1000;
 });
 
 onUnmounted(() => {
-	if (parallaxAnimationId) {
-		window.cancelAnimationFrame(parallaxAnimationId);
+	if (parallaxAnimationId.value) {
+		window.cancelAnimationFrame(parallaxAnimationId.value);
 	}
 });
 </script>
@@ -777,9 +766,6 @@ onUnmounted(() => {
 							text-overflow: ellipsis;
 							margin: 0;
 						}
-					}
-
-					&.system > .field > .name {
 					}
 				}
 

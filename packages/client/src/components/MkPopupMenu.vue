@@ -5,9 +5,9 @@
 		:z-priority="'high'"
 		:src="src"
 		:transparent-bg="true"
+		tabindex="-1"
 		@click="modal?.close()"
 		@closed="emit('closed')"
-		tabindex="-1"
 	>
 		<MkMenu
 			:items="items"
@@ -24,10 +24,11 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { ref } from "vue";
+
 import MkModal from "./MkModal.vue";
 import MkMenu from "./MkMenu.vue";
-import { MenuItem } from "@/types/menu";
+import type { MenuItem } from "@/types/menu";
 
 defineProps<{
 	items: MenuItem[];
@@ -42,7 +43,7 @@ const emit = defineEmits<{
 	(ev: "closed"): void;
 }>();
 
-let modal = $ref<InstanceType<typeof MkModal>>();
+const modal = ref<InstanceType<typeof MkModal>>();
 </script>
 
 <style lang="scss" scoped>

@@ -6,7 +6,7 @@ import * as childProcess from "child_process";
 import * as http from "node:http";
 import { SIGKILL } from "constants";
 import WebSocket from "ws";
-import * as misskey from "firefish-js";
+import * as firefish from "firefish-js";
 import fetch from "node-fetch";
 import FormData from "form-data";
 import { DataSource } from "typeorm";
@@ -113,8 +113,8 @@ export const signup = async (params?: any): Promise<any> => {
 
 export const post = async (
 	user: any,
-	params?: misskey.Endpoints["notes/create"]["req"],
-): Promise<misskey.entities.Note> => {
+	params?: firefish.Endpoints["notes/create"]["req"],
+): Promise<firefish.entities.Note> => {
 	const q = Object.assign(
 		{
 			text: "test",

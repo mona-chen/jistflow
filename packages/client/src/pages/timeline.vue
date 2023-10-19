@@ -11,7 +11,7 @@
 		<MkSpacer :content-max="800">
 			<div ref="rootEl" v-hotkey.global="keymap" class="cmuxhskf">
 				<XPostForm
-					v-if="$store.reactiveState.showFixedPostForm.value"
+					v-if="defaultStore.reactiveState.showFixedPostForm.value"
 					class="post-form _block"
 					fixed
 				/>
@@ -30,7 +30,7 @@
 						:round-lengths="true"
 						:touch-angle="25"
 						:threshold="10"
-						:centeredSlides="true"
+						:centered-slides="true"
 						:modules="[Virtual]"
 						:space-between="20"
 						:virtual="true"
@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import XTutorial from "@/components/MkTutorialDialog.vue";
@@ -77,6 +77,7 @@ import { instance } from "@/instance";
 import { $i } from "@/account";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
@@ -95,7 +96,7 @@ const keymap = {
 	t: focus,
 };
 
-let timelines = ["home"];
+const timelines = ["home"];
 
 if (isLocalTimelineAvailable) {
 	timelines.push("local");
@@ -121,10 +122,10 @@ window.addEventListener("resize", () => {
 		deviceKind === "smartphone" || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-const tlComponent = $ref<InstanceType<typeof XTimeline>>();
-const rootEl = $ref<HTMLElement>();
+const tlComponent = ref<InstanceType<typeof XTimeline>>();
+const rootEl = ref<HTMLElement>();
 
-const src = $computed({
+const src = computed({
 	get: () => defaultStore.reactiveState.tl.value.src,
 	set: (x) => {
 		saveSrc(x);
@@ -139,7 +140,7 @@ async function chooseList(ev: MouseEvent) {
 			{
 				type: "link" as const,
 				text: i18n.ts.manageLists,
-				icon: "ph-faders-horizontal ph-bold ph-lg",
+				icon: `${icon("ph-faders-horizontal")}`,
 				to: "/my/lists",
 			},
 		].concat(
@@ -162,7 +163,7 @@ async function chooseAntenna(ev: MouseEvent) {
 				type: "link" as const,
 				indicate: false,
 				text: i18n.ts.manageAntennas,
-				icon: "ph-faders-horizontal ph-bold ph-lg",
+				icon: `${icon("ph-faders-horizontal")}`,
 				to: "/my/antennas",
 			},
 		].concat(
@@ -187,46 +188,37 @@ function saveSrc(
 	});
 }
 
-async function timetravel(): Promise<void> {
-	const { canceled, result: date } = await os.inputDate({
-		title: i18n.ts.date,
-	});
-	if (canceled) return;
-
-	tlComponent.timetravel(date);
-}
-
 function focus(): void {
-	tlComponent.focus();
+	tlComponent.value.focus();
 }
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
-		icon: "ph-list-bullets ph-bold ph-lg",
+		icon: `${icon("ph-list-bullets")}`,
 		title: i18n.ts.lists,
 		text: i18n.ts.lists,
 		iconOnly: true,
 		handler: chooseList,
 	},
 	{
-		icon: "ph-flying-saucer ph-bold ph-lg",
+		icon: `${icon("ph-flying-saucer")}`,
 		title: i18n.ts.antennas,
 		text: i18n.ts.antennas,
 		iconOnly: true,
 		handler: chooseAntenna,
 	} /* **TODO: fix timetravel** {
-	icon: 'ph-calendar-blank ph-bold ph-lg',
+	icon: `${icon('ph-calendar-blank')}`,
 	title: i18n.ts.jumpToSpecifiedDate,
 	iconOnly: true,
 	handler: timetravel,
-}*/,
+} */,
 ]);
 
-const headerTabs = $computed(() => [
+const headerTabs = computed(() => [
 	{
 		key: "home",
 		title: i18n.ts._timelines.home,
-		icon: "ph-house ph-bold ph-lg",
+		icon: `${icon("ph-house")}`,
 		iconOnly: true,
 	},
 	...(isLocalTimelineAvailable
@@ -234,7 +226,7 @@ const headerTabs = $computed(() => [
 				{
 					key: "local",
 					title: i18n.ts._timelines.local,
-					icon: "ph-users ph-bold ph-lg",
+					icon: `${icon("ph-users")}`,
 					iconOnly: true,
 				},
 		  ]
@@ -244,7 +236,7 @@ const headerTabs = $computed(() => [
 				{
 					key: "social",
 					title: i18n.ts._timelines.social,
-					icon: "ph-handshake ph-bold ph-lg",
+					icon: `${icon("ph-handshake")}`,
 					iconOnly: true,
 				},
 		  ]
@@ -254,7 +246,7 @@ const headerTabs = $computed(() => [
 				{
 					key: "recommended",
 					title: i18n.ts._timelines.recommended,
-					icon: "ph-thumbs-up ph-bold ph-lg",
+					icon: `${icon("ph-thumbs-up")}`,
 					iconOnly: true,
 				},
 		  ]
@@ -264,7 +256,7 @@ const headerTabs = $computed(() => [
 				{
 					key: "global",
 					title: i18n.ts._timelines.global,
-					icon: "ph-planet ph-bold ph-lg",
+					icon: `${icon("ph-planet")}`,
 					iconOnly: true,
 				},
 		  ]
@@ -275,15 +267,15 @@ definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.timeline,
 		icon:
-			src === "local"
-				? "ph-users ph-bold ph-lg"
-				: src === "social"
-				? "ph-handshake ph-bold ph-lg"
-				: src === "recommended"
-				? "ph-thumbs-up ph-bold ph-lg"
-				: src === "global"
-				? "ph-planet ph-bold ph-lg"
-				: "ph-house ph-bold ph-lg",
+			src.value === "local"
+				? "ph-users ph-lg"
+				: src.value === "social"
+				? "ph-handshake ph-lg"
+				: src.value === "recommended"
+				? "ph-thumbs-up ph-lg"
+				: src.value === "global"
+				? "ph-planet ph-lg"
+				: "ph-house ph-lg",
 	})),
 );
 
@@ -291,7 +283,7 @@ let swiperRef: any = null;
 
 function setSwiperRef(swiper) {
 	swiperRef = swiper;
-	syncSlide(timelines.indexOf(src));
+	syncSlide(timelines.indexOf(src.value));
 }
 
 function onSlideChange() {

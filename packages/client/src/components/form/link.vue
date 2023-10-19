@@ -5,7 +5,7 @@
 			<span class="text"><slot></slot></span>
 			<span class="right">
 				<span class="text"><slot name="suffix"></slot></span>
-				<i class="ph-arrow-square-out ph-bold ph-lg icon"></i>
+				<i :class="icon('ph-arrow-square-out icon')"></i>
 			</span>
 		</a>
 		<MkA
@@ -19,16 +19,16 @@
 			<span class="text"><slot></slot></span>
 			<span class="right">
 				<span class="text"><slot name="suffix"></slot></span>
-				<i class="ph-caret-right ph-bold ph-lg icon"></i>
+				<i :class="icon('ph-caret-right icon')"></i>
 			</span>
 		</MkA>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import icon from "@/scripts/icon";
 
-const props = defineProps<{
+defineProps<{
 	to: string;
 	active?: boolean;
 	external?: boolean;

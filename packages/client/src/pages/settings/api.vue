@@ -22,6 +22,7 @@ import FormButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const isDesktop = ref(window.innerWidth >= 1100);
 
@@ -36,7 +37,7 @@ function generateToken() {
 				const { name, permissions } = result;
 				const { token } = await os.api("miauth/gen-token", {
 					session: null,
-					name: name,
+					name,
 					permission: permissions,
 				});
 
@@ -51,12 +52,8 @@ function generateToken() {
 	);
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: "API",
-	icon: "ph-key ph-bold ph-lg",
+	icon: `${icon("ph-key")}`,
 });
 </script>

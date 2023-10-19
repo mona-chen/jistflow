@@ -33,7 +33,7 @@
 				</FormTextarea>
 
 				<MkButton class="_formBlock" primary @click="save"
-					><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+					><i :class="icon('ph-floppy-disk-back')"></i>
 					{{ i18n.ts.save }}</MkButton
 				>
 
@@ -45,7 +45,7 @@
 				</MkKeyValue>
 
 				<MkButton danger @click="del"
-					><i class="ph-trash ph-bold ph-lg"></i>
+					><i :class="icon('ph-trash')"></i>
 					{{ i18n.ts.delete }}</MkButton
 				>
 			</template>
@@ -54,42 +54,41 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import JSON5 from "json5";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import FormLink from "@/components/form/link.vue";
-import FormSection from "@/components/form/section.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormSplit from "@/components/form/split.vue";
 import FormInfo from "@/components/MkInfo.vue";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	path: string;
 }>();
 
-const scope = $computed(() => props.path.split("/").slice(0, -1));
-const key = $computed(() => props.path.split("/").at(-1));
+const scope = computed(() => props.path.split("/").slice(0, -1));
+const key = computed(() => props.path.split("/").at(-1));
 
-let value = $ref(null);
-let valueForEditor = $ref(null);
+const value = ref(null);
+const valueForEditor = ref(null);
 
 function fetchValue() {
 	os.api("i/registry/get-detail", {
-		scope,
-		key,
+		scope: scope.value,
+		key: key.value,
 	}).then((res) => {
-		value = res;
-		valueForEditor = JSON5.stringify(res.value, null, "\t");
+		value.value = res;
+		valueForEditor.value = JSON5.stringify(res.value, null, "\t");
 	});
 }
 
 async function save() {
 	try {
-		JSON5.parse(valueForEditor);
+		JSON5.parse(valueForEditor.value);
 	} catch (err) {
 		os.alert({
 			type: "error",
@@ -103,9 +102,9 @@ async function save() {
 	}).then(({ canceled }) => {
 		if (canceled) return;
 		os.apiWithDialog("i/registry/set", {
-			scope,
-			key,
-			value: JSON5.parse(valueForEditor),
+			scope: scope.value,
+			key: key.value,
+			value: JSON5.parse(valueForEditor.value),
 		});
 	});
 }
@@ -117,22 +116,20 @@ function del() {
 	}).then(({ canceled }) => {
 		if (canceled) return;
 		os.apiWithDialog("i/registry/remove", {
-			scope,
-			key,
+			scope: scope.value,
+			key: key.value,
 		});
 	});
 }
 
 watch(() => props.path, fetchValue, { immediate: true });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.registry,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 });
 </script>
-
-<style lang="scss" scoped></style>

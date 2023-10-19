@@ -24,14 +24,14 @@
 						sounds[type].type || i18n.ts.none
 					}}</template>
 					<template #suffixIcon
-						><i class="ph-caret-down ph-bold ph-lg"></i
+						><i :class="icon('ph-caret-down')"></i
 					></template>
 				</FormButton>
 			</div>
 		</FormSection>
 
 		<FormButton danger class="_formBlock" @click="reset()"
-			><i class="ph-arrow-clockwise ph-bold ph-lg"></i>
+			><i :class="icon('ph-arrow-clockwise')"></i>
 			{{ i18n.ts.default }}</FormButton
 		>
 	</div>
@@ -47,6 +47,7 @@ import { ColdDeviceStorage } from "@/store";
 import { playFile } from "@/scripts/sound";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const masterVolume = computed({
 	get: () => {
@@ -56,12 +57,6 @@ const masterVolume = computed({
 		ColdDeviceStorage.set("sound_masterVolume", value);
 	},
 });
-
-const volumeIcon = computed(() =>
-	masterVolume.value === 0
-		? "ph-speaker-none ph-bold ph-lg"
-		: "ph-speaker-high ph-bold ph-lg",
-);
 
 const sounds = ref({
 	note: ColdDeviceStorage.get("sound_note"),
@@ -122,12 +117,8 @@ function reset() {
 	}
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.sounds,
-	icon: "ph-speaker-high ph-bold ph-lg",
+	icon: `${icon("ph-speaker-high")}`,
 });
 </script>

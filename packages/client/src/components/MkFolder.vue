@@ -4,6 +4,7 @@
 			<div class="title"><slot name="header"></slot></div>
 			<div class="divider"></div>
 			<button
+				v-vibrate="5"
 				class="_button"
 				:aria-expanded="showBody"
 				:aria-controls="bodyId"
@@ -17,7 +18,7 @@
 			</button>
 		</header>
 		<transition
-			:name="$store.state.animation ? 'folder-toggle' : ''"
+			:name="defaultStore.state.animation ? 'folder-toggle' : ''"
 			@enter="enter"
 			@after-enter="afterEnter"
 			@leave="leave"
@@ -33,6 +34,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { getUniqueId } from "@/os";
+import { defaultStore } from "@/store";
+// import icon from "@/scripts/icon";
 
 const localStoragePrefix = "ui:folder:";
 

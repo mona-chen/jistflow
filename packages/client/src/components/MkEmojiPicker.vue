@@ -1,5 +1,5 @@
 <template>
-	<FocusTrap v-bind:active="isActive">
+	<FocusTrap :active="isActive">
 		<div
 			class="omfetrab"
 			:class="['s' + size, 'w' + width, 'h' + height, { asDrawer }]"
@@ -23,6 +23,7 @@
 						<button
 							v-for="emoji in searchResultCustom"
 							:key="emoji.id"
+							v-vibrate="50"
 							class="_button item"
 							:title="emoji.name"
 							tabindex="0"
@@ -74,7 +75,7 @@
 
 					<section>
 						<header class="_acrylic">
-							<i class="ph-alarm ph-bold ph-fw ph-lg"></i>
+							<i :class="icon('ph-alarm ph-fw')"></i>
 							{{ i18n.ts.recentUsed }}
 						</header>
 						<div class="body">
@@ -134,28 +135,28 @@
 					:class="{ active: tab === 'index' }"
 					@click="tab = 'index'"
 				>
-					<i class="ph-asterisk ph-bold ph-lg ph-fw ph-lg"></i>
+					<i :class="icon('ph-asterisk ph-fw')"></i>
 				</button>
 				<button
 					class="_button tab"
 					:class="{ active: tab === 'custom' }"
 					@click="tab = 'custom'"
 				>
-					<i class="ph-smiley ph-bold ph-lg ph-fw ph-lg"></i>
+					<i :class="icon('ph-smiley ph-fw')"></i>
 				</button>
 				<button
 					class="_button tab"
 					:class="{ active: tab === 'unicode' }"
 					@click="tab = 'unicode'"
 				>
-					<i class="ph-leaf ph-bold ph-lg ph-fw ph-lg"></i>
+					<i :class="icon('ph-leaf ph-fw')"></i>
 				</button>
 				<button
 					class="_button tab"
 					:class="{ active: tab === 'tags' }"
 					@click="tab = 'tags'"
 				>
-					<i class="ph-hash ph-bold ph-lg ph-fw ph-lg"></i>
+					<i :class="icon('ph-hash ph-fw')"></i>
 				</button>
 			</div>
 		</div>
@@ -163,14 +164,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted } from "vue";
-import * as Misskey from "firefish-js";
+import { computed, onMounted, ref, watch } from "vue";
+import type * as firefish from "firefish-js";
+import { FocusTrap } from "focus-trap-vue";
 import XSection from "@/components/MkEmojiPicker.section.vue";
+import type { UnicodeEmojiDef } from "@/scripts/emojilist";
 import {
 	emojilist,
-	unicodeEmojiCategories,
-	UnicodeEmojiDef,
 	getNicelyLabeledCategory,
+	unicodeEmojiCategories,
 } from "@/scripts/emojilist";
 import { getStaticImageUrl } from "@/scripts/get-static-image-url";
 import Ripple from "@/components/MkRipple.vue";
@@ -180,7 +182,7 @@ import { deviceKind } from "@/scripts/device-kind";
 import { emojiCategories, instance } from "@/instance";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
-import { FocusTrap } from "focus-trap-vue";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
@@ -240,7 +242,7 @@ const height = computed(() =>
 const customEmojiCategories = emojiCategories;
 const customEmojis = instance.emojis;
 const q = ref<string | null>(null);
-const searchResultCustom = ref<Misskey.entities.CustomEmoji[]>([]);
+const searchResultCustom = ref<firefish.entities.CustomEmoji[]>([]);
 const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
 const tab = ref<"index" | "custom" | "unicode" | "tags">("index");
 
@@ -258,7 +260,7 @@ watch(q, () => {
 	const searchCustom = () => {
 		const max = 16;
 		const emojis = customEmojis;
-		const matches = new Set<Misskey.entities.CustomEmoji>();
+		const matches = new Set<firefish.entities.CustomEmoji>();
 
 		const exactMatch = emojis.find((emoji) => emoji.name === newQ);
 		if (exactMatch) matches.add(exactMatch);
@@ -419,7 +421,7 @@ function reset() {
 }
 
 function getKey(
-	emoji: string | Misskey.entities.CustomEmoji | UnicodeEmojiDef,
+	emoji: string | firefish.entities.CustomEmoji | UnicodeEmojiDef,
 ): string {
 	return typeof emoji === "string" ? emoji : emoji.emoji || `:${emoji.name}:`;
 }

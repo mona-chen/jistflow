@@ -149,8 +149,8 @@ cacheRemoteFilesDescription: "Khi tùy chọn này bị tắt, các tập tin t�
 flagAsBot: "Đánh dấu đây là tài khoản bot"
 flagAsBotDescription: "Bật tùy chọn này nếu tài khoản này được kiểm soát bởi một chương
   trình. Nếu được bật, nó sẽ được đánh dấu để các nhà phát triển khác ngăn chặn chuỗi
-  tương tác vô tận với các bot khác và điều chỉnh hệ thống nội bộ của Firefish để coi
-  tài khoản này như một bot."
+  tương tác vô tận với các bot khác và điều chỉnh hệ thống nội bộ của Firefish để
+  coi tài khoản này như một bot."
 flagAsCat: "Tài khoản này là mèo"
 flagAsCatDescription: "Bật tùy chọn này để đánh dấu tài khoản là một con mèo."
 flagShowTimelineReplies: "Hiện lượt trả lời trong bảng tin"
@@ -184,9 +184,9 @@ latestRequestSentAt: "Yêu cầu cuối gửi lúc"
 latestRequestReceivedAt: "Yêu cầu cuối nhận lúc"
 latestStatus: "Trạng thái cuối cùng"
 storageUsage: "Dung lượng lưu trữ"
-charts: "Đồ thị"
-perHour: "Mỗi Giờ"
-perDay: "Mỗi Ngày"
+charts: "Biểu đồ"
+perHour: "Mỗi giờ"
+perDay: "Mỗi ngày"
 stopActivityDelivery: "Ngưng gửi hoạt động"
 blockThisInstance: "Chặn máy chủ này"
 operations: "Vận hành"
@@ -338,9 +338,6 @@ dayX: "{day}"
 monthX: "{month}"
 yearX: "{year}"
 pages: "Trang"
-integration: "Tương tác"
-connectService: "Kết nối"
-disconnectService: "Ngắt kết nối"
 enableLocalTimeline: "Bật bảng tin máy chủ"
 enableGlobalTimeline: "Bật bảng tin liên hợp"
 disablingTimelinesInfo: "Quản trị viên và Kiểm duyệt viên luôn có quyền truy cập mọi
@@ -641,7 +638,7 @@ makeActive: "Kích hoạt"
 display: "Hiển thị"
 copy: "Sao chép"
 metrics: "Số liệu"
-overview: "Tường"
+overview: "Chung"
 logs: "Nhật ký"
 delayed: "Độ trễ"
 database: "Cơ sở dữ liệu"
@@ -694,8 +691,8 @@ unclip: "Bỏ ghim"
 confirmToUnclipAlreadyClippedNote: "Bài đăng này là một phần của \"{name}\" ghim.
   Bạn có muốn bỏ khỏi ghim?"
 public: "Công khai"
-i18nInfo: "Firefish đang được các tình nguyện viên dịch sang nhiều thứ tiếng khác nhau.
-  Bạn có thể hỗ trợ tại {link}."
+i18nInfo: "Firefish đang được các tình nguyện viên dịch sang nhiều thứ tiếng khác
+  nhau. Bạn có thể hỗ trợ tại {link}."
 manageAccessTokens: "Tạo mã truy cập"
 accountInfo: "Thông tin tài khoản"
 notesCount: "Số lượng tút"
@@ -843,7 +840,7 @@ global: "Toàn cầu"
 squareAvatars: "Ảnh đại diện vuông"
 sent: "Gửi"
 received: "Đã nhận"
-searchResult: "Kết quả tìm kiếm"
+searchResult: "Tìm thấy"
 hashtags: "Hashtag"
 troubleshooting: "Khắc phục sự cố"
 useBlurEffect: "Dùng hiệu ứng làm mờ trong giao diện"
@@ -1062,14 +1059,16 @@ _aboutFirefish:
   pleaseDonateToFirefish: Hãy cân nhắc ủng hộ Firefish phát triển.
   donateHost: Ủng hộ {host}
   pleaseDonateToHost: Cũng như ủng hộ chi phí vận hành máy chủ {host} của bạn.
+  sponsors: Nhà tài trợ Firefish
+  misskeyContributors: Người đóng góp Misskey
 _nsfw:
   respect: "Ẩn nội dung NSFW"
   ignore: "Hiện nội dung NSFW"
   force: "Ẩn mọi media"
 _mfm:
   cheatSheet: "MFM Cheatsheet"
-  intro: "MFM là ngôn ngữ phát triển độc quyền của Firefish có thể được sử dụng ở nhiều
-    nơi. Tại đây bạn có thể xem danh sách tất cả các cú pháp MFM có sẵn."
+  intro: "MFM là ngôn ngữ phát triển độc quyền của Firefish có thể được sử dụng ở
+    nhiều nơi. Tại đây bạn có thể xem danh sách tất cả các cú pháp MFM có sẵn."
   dummy: "Firefish mở rộng thế giới Fediverse"
   mention: "Nhắc đến"
   mentionDescription: "Bạn có thể nhắc đến ai đó bằng cách sử dụng @tên người dùng."
@@ -1138,6 +1137,22 @@ _mfm:
   stop: Dừng CĐN
   play: Phát CĐN
   warn: CĐN có thể gây đau mắt hoặc chóng mặt
+  alwaysPlay: Luôn tự phát các chuyển động nhanh
+  position: Vị trí
+  scaleDescription: Tỉ lệ nội dung theo số cụ thể.
+  advanced: Nâng cao MFM
+  positionDescription: Di chuyển nội dung theo một số cụ thể.
+  foregroundDescription: Đổi màu xung quanh văn bản.
+  background: Màu nền
+  advancedDescription: Nếu tắt, chỉ cho phép đánh dấu cơ bản trừ khi đang phát MFM
+    động
+  fade: Làm mờ
+  scale: Tỉ lệ
+  crop: Cắt
+  foreground: Màu nền xung quanh
+  fadeDescription: Làm mờ content vào và ra.
+  cropDescription: Cắt nội dung.
+  backgroundDescription: Đổi màu nền của văn bản.
 _instanceTicker:
   none: "Không hiển thị"
   remote: "Hiện cho người dùng từ máy chủ khác"
@@ -1146,6 +1161,7 @@ _serverDisconnectedBehavior:
   reload: "Tự động tải lại"
   dialog: "Hiện hộp thoại cảnh báo"
   quiet: "Hiển thị cảnh báo không phô trương"
+  nothing: không làm gì
 _channel:
   create: "Tạo kênh"
   edit: "Chỉnh sửa kênh"
@@ -1156,6 +1172,8 @@ _channel:
   following: "Đang theo dõi"
   usersCount: "{n} Thành viên"
   notesCount: "{n} Tút"
+  nameOnly: Chỉ tên
+  nameAndDescription: Tên và mô tả
 _menuDisplay:
   sideFull: "Thanh bên"
   sideIcon: "Thanh bên (Biểu tượng)"
@@ -1268,7 +1286,7 @@ _ago:
   justNow: "Vừa xong"
   secondsAgo: "{n}s trước"
   minutesAgo: "{n} phút trước"
-  hoursAgo: "{n} giờ trước"
+  hoursAgo: "{n} giờ"
   daysAgo: "{n} ngày trước"
   weeksAgo: "{n} tuần trước"
   monthsAgo: "{n} tháng trước"
@@ -1324,6 +1342,25 @@ _2fa:
   securityKeyInfo: "Bên cạnh xác minh bằng vân tay hoặc mã PIN, bạn cũng có thể thiết
     lập xác minh thông qua khóa bảo mật phần cứng hỗ trợ FIDO2 để bảo mật hơn nữa
     cho tài khoản của mình."
+  registerTOTPBeforeKey: Vui lòng thiết lập một ứng dụng xác thực để đăng ký khóa
+    bảo mật hoặc mật khẩu.
+  tapSecurityKey: Vui lòng theo dõi trình duyệt của bạn để đăng ký mã bảo mật hoặc
+    mã khóa
+  renewTOTPConfirm: Điều này sẽ khiến mã xác minh từ ứng dụng trước của bạn ngừng
+    hoạt động
+  securityKeyName: Nhập tên mã khóa
+  step3Title: Nhập mã xác thực
+  chromePasskeyNotSupported: Mật khẩu Chrome hiện không được hỗ trợ.
+  removeKeyConfirm: Thực sự xóa khóa {name}?
+  whyTOTPOnlyRenew: Không thể xóa ứng dụng xác thực miễn là đã đăng ký khóa bảo mật.
+  renewTOTPOk: Cấu hình lại
+  renewTOTPCancel: Hủy bỏ
+  removeKey: Xóa khóa bảo mật
+  step2Click: Nhấn vào mã QR này sẽ cho phép bạn đăng ký 2FA cho khóa bảo mật hoặc
+    ứng dụng xác thực điện thoại của bạn.
+  securityKeyNotSupported: Trình duyệt của bạn không hỗ trợ khóa bảo mật.
+  renewTOTP: Định cấu hình lại ứng dụng xác thực
+  token: 2FA Token
 _permissions:
   "read:account": "Xem thông tin tài khoản của bạn"
   "write:account": "Sửa thông tin tài khoản của bạn"
@@ -1365,12 +1402,15 @@ _auth:
   pleaseGoBack: "Vui lòng quay lại ứng dụng"
   callback: "Quay lại ứng dụng"
   denied: "Truy cập bị từ chối"
+  allPermissions: Truy cập đầy đủ vào tài khoản
+  copyAsk: 'Vui lòng dán mã ủy quyền sau vào ứng dụng:'
 _antennaSources:
   all: "Toàn bộ tút"
   homeTimeline: "Tút từ những người đã theo dõi"
   users: "Tút từ những người cụ thể"
   userList: "Tút từ danh sách người dùng cụ thể"
   userGroup: "Tút từ người dùng trong một nhóm cụ thể"
+  instances: Tút từ mọi người trên máy chủ
 _weekday:
   sunday: "Chủ Nhật"
   monday: "Thứ Hai"
@@ -1402,6 +1442,13 @@ _widgets:
   serverMetric: "Thống kê máy chủ"
   aiscript: "AiScript console"
   aichan: "Ai"
+  userList: Danh sách người dùng
+  _userList:
+    chooseList: Chọn một danh sách
+  meiliSize: Kích cỡ chỉ mục
+  meiliIndexCount: Tút đã lập chỉ mục
+  meiliStatus: Trạng thái máy chủ
+  serverInfo: Thông tin máy chủ
 _cw:
   hide: "Ẩn"
   show: "Tải thêm"
@@ -1465,6 +1512,8 @@ _profile:
   metadataContent: "Nội dung"
   changeAvatar: "Đổi ảnh đại diện"
   changeBanner: "Đổi ảnh bìa"
+  locationDescription: Nếu bạn nhập thành phố của mình trước, nó sẽ hiển thị giờ địa
+    phương của bạn cho những người dùng khác.
 _exportOrImport:
   allNotes: "Toàn bộ tút"
   followingList: "Đang theo dõi"
@@ -1504,6 +1553,7 @@ _timelines:
   local: "Máy chủ này"
   social: "Xã hội"
   global: "Liên hợp"
+  recommended: Đề xuất
 _pages:
   newPage: "Tạo Trang mới"
   editPage: "Sửa Trang này"
@@ -1832,6 +1882,9 @@ _notification:
     followBack: "đã theo dõi lại bạn"
     reply: "Trả lời"
     renote: "Đăng lại"
+  voted: đã bình chọn tút của bạn
+  reacted: đã biểu cảm tút của bạn
+  renoted: đã đăng lại tút của bạn
 _deck:
   alwaysShowMainColumn: "Luôn hiện cột chính"
   columnAlign: "Căn cột"
@@ -1859,6 +1912,9 @@ _deck:
     list: "Danh sách"
     mentions: "Lượt nhắc"
     direct: "Nhắn riêng"
+    channel: Kênh
+  renameProfile: Đổi tên workspace
+  nameAlreadyExists: Tên workspace này đã tồn tại.
 renoteMute: Ẩn lượt chia sẻ
 renoteUnmute: Bỏ ẩn lượt chia sẻ
 searchPlaceholder: Lướt Firefish
@@ -1867,3 +1923,210 @@ findOtherInstance: Tìm máy chủ khác
 noThankYou: Từ chối
 _filters:
   withFile: Có file
+  notesAfter: Đăng sau
+  followersOnly: Chỉ người theo dõi
+  fromUser: Từ người dùng
+  notesBefore: Đăng trước
+  followingOnly: Đang theo dõi
+  fromDomain: Từ máy chủ
+flagSpeakAsCatDescription: Tút của bạn sẽ biến hóa ngộ nghĩnh khi bật chế độ tôi là
+  mèo
+secureModeInfo: Khi truy vấn từ máy chủ khác, không nhận nếu không có bằng chứng.
+pushNotificationNotSupported: Trình duyệt hoặc máy chủ không hỗ trợ thông báo đẩy
+sendPushNotificationReadMessage: Xóa thông báo đẩy sau khi thông báo hoặc tin nhắn
+  liên quan đã được đọc
+adminCustomCssWarn: Cài đặt này chỉ nên được sử dụng nếu bạn biết rõ cách thức hoạt
+  động của nó. Việc nhập các giá trị không phù hợp có thể khiến app của MỌI NGƯỜI
+  ngừng hoạt động. Vui lòng đảm bảo rằng CSS của bạn hoạt động bình thường bằng cách
+  kiểm tra nó trong cài đặt người dùng của bạn.
+enableCustomKaTeXMacro: Bật tùy chỉnh macro KaTeX
+noGraze: Vui lòng tắt tiện ích mở rộng trình duyệt "Graze for Mastodon" vì tiện ích
+  này can thiệp vào Firefish.
+addRe: Thêm "re:" vào đầu bình luận để trả lời tút có cảnh báo nội dung
+_experiments:
+  postImportsCaption: Cho phép người dùng nhập các bài đăng của họ từ các tài khoản
+    Firefish, Misskey, Mastodon, Akkoma và Pleroma trước đây. Nó có thể gây chậm trong
+    quá trình tải nếu hàng đợi của bạn bị tắc nghẽn.
+  title: Thử nghiệm
+  enablePostImports: Bật nhập tút
+_skinTones:
+  medium: Vừa
+  light: Sáng
+  dark: Đen
+  yellow: Vàng
+  mediumLight: Sáng Vừa
+  mediumDark: Đen Vừa
+removeReaction: Xóa biểu cảm
+enableRecommendedTimeline: Bật bảng tin đề xuất
+antennasDesc: "Ăng-ten hiển thị tút mới phù hợp với tiêu chí bạn đặt!\n Chúng có thể
+  được truy cập từ trang bảng tin."
+userSaysSomethingReasonQuote: '{name} trích dẫn một tút chứa {reason}'
+allowedInstancesDescription: Host của máy chủ được đưa vào danh sách trắng để liên
+  hợp, mỗi máy chủ được phân tách bằng cách xuống dòng (chỉ áp dụng ở chế độ riêng
+  tư).
+sendPushNotificationReadMessageCaption: Sẽ hiện thông báo "{emptyPushNotificationMessage}"
+  trong một khoảng thời gian ngắn. Điều này có thể gây tốn pin của thiết bị.
+enterSendsMessage: Nhấn Trở lại trong Tin nhắn để gửi tin nhắn (tắt là Ctlr + Return)
+showAdminUpdates: Thông báo có phiên bản Firefish mới (chỉ dành cho quản trị viên)
+replayTutorial: Phát lại hướng dẫn
+moveFrom: Chuyển từ tài khoản cũ sang
+moveFromDescription: Thao tác này sẽ đặt bí danh cho tài khoản cũ của bạn để bạn có
+  thể chuyển từ tài khoản đó sang tài khoản hiện tại. Làm điều này TRƯỚC KHI di chuyển
+  từ tài khoản cũ của bạn. Vui lòng nhập định dạng @person@server.com
+signupsDisabled: Máy chủ này hiện đang bị tắt đăng ký, nhưng bạn luôn có thể đăng
+  ký tại một máy chủ khác! Nếu bạn có mã mời cho máy chủ này, vui lòng nhập mã đó
+  vào bên dưới.
+silencedWarning: Trang này đang hiển thị vì những người dùng này đến từ các máy chủ
+  mà quản trị viên của bạn đã ẩn, vì vậy họ có thể là spam.
+_dialog:
+  charactersExceeded: 'Vượt quá giới hạn ký tự! Hiện tại: {current}/Tối đa: {max}'
+  charactersBelow: 'Không đủ ký tự tối thiểu! Hiện tại: {current}/Tối thiểu: {min}'
+enableIdenticonGeneration: Bật tạo identicon
+enableServerMachineStats: Bật thống kê phần cứng máy chủ
+secureMode: Chế độ an toàn (Phê duyệt nạp)
+_messaging:
+  dms: Riêng tư
+  groups: Nhóm
+moveToLabel: 'Tài khoản bạn chuyển tới:'
+reactionPickerSkinTone: Chọn màu da emoji
+jumpToPrevious: Về trước
+listsDesc: Danh sách cho phép bạn tạo các bảng tin với những người dùng chọn trước.
+  Xem danh sách ở trang bảng tin.
+enableEmojiReactions: Bật biểu cảm bằng emoji
+showEmojisInReactionNotifications: Hiện emoji trong thông báo biểu cảm
+silencedInstancesDescription: Liệt kê địa chủ của các máy chủ mà bạn muốn ẩn. Tài
+  khoản trong các máy chủ được liệt kê được coi là "Ẩn", chỉ có thể thực hiện các
+  yêu cầu theo dõi và không thể nhắn riêng đến tài khoản máy chủ nếu không được theo
+  dõi. Điều này sẽ không ảnh hưởng đến các máy chủ bị chặn.
+silenced: Đã ẩn
+expandOnNoteClick: Mở tút khi nhấn vào
+expandOnNoteClickDesc: Nếu tắt, bạn vẫn có thể chọn mở tút trong menu chuột phải hoặc
+  nhấn vào thời gian đăng.
+userSaysSomethingReasonReply: '{name} trả lời một tút chứa {reason}'
+userSaysSomethingReasonRenote: '{name} đăng lại một tút chứa {reason}'
+channelFederationWarn: Kênh chưa thể liên hợp với máy chủ khác
+clipsDesc: Ghim là những tút bạn muốn luôn hiển thị đầu tiên. Bạn có thể tạo ghim
+  từ menu của mỗi tút.
+seperateRenoteQuote: Phân chia nút đăng lại và trích dẫn
+subscribePushNotification: Bật thông báo đẩy
+noteId: ID tút
+moveAccount: Đã chuyển tài khoản!
+sendModMail: Gửi lưu ý kiểm duyệt
+verifiedLink: Liên kết xác minh
+_feeds:
+  copyFeed: Sao chép feed
+  rss: RSS
+  atom: Atom
+  jsonFeed: JSON
+hiddenTags: Những hashtag đã ẩn
+cannotUploadBecauseExceedsFileSizeLimit: Không thể tải lên vì vượt quá dung lượng
+  cho phép.
+pushNotificationAlreadySubscribed: Đã bật thông báo đẩy
+splash: Splash Screen
+alt: ALT
+showAds: Hiện banner cộng đồng
+migration: Chuyển máy chủ
+swipeOnMobile: Cho phép vuốt giữa các trang
+logoImageUrl: Đường dẫn hình ảnh logo
+moveTo: Chuyển đến tài khoản mới
+moveAccountDescription: Quá trình này là không thể đảo ngược. Đảm bảo rằng bạn đã
+  thiết lập bí danh cho tài khoản này trên tài khoản mới của mình trước khi di chuyển.
+  Vui lòng nhập định dạng @person@server.com
+antennaInstancesDescription: Liệt kê mỗi máy chủ một dòng
+privateModeInfo: Khi bật, chỉ các máy chủ trong danh sách trắng mới có thể liên hợp
+  với máy chủ của bạn. Tất cả tút sẽ được ẩn khỏi công khai.
+unsubscribePushNotification: Tắt thông báo đẩy
+customMOTD: Tùy chỉnh MOTD (tin nhắn lướt qua trên màn hình)
+deleted: Đã xóa
+editNote: Sửa tút
+flagSpeakAsCat: Tôi là mèo
+silenceThisInstance: Ẩn máy chủ này
+silencedInstances: Những máy chủ đã ẩn
+instanceSecurity: An toàn máy chủ
+showUpdates: Hiện popup khi Firefish có cập nhật
+selectChannel: Chọn kênh
+isBot: Đây là tài khoản bot
+isLocked: Tài khoản này duyệt theo dõi thủ công
+origin: Gốc
+newer: mới hơn
+older: cũ hơn
+accountMoved: 'Người này đã chuyển sang:'
+hiddenTagsDescription: 'Liệt kê các hashtag (không có #) mà bạn muốn ẩn khỏi xu hướng
+  và khám phá. Các thẻ bắt đầu bằng # đã ẩn vẫn có thể được thấy ở các nơi khác.'
+noInstances: Không có máy chủ nào
+manageGroups: Quản lý nhóm
+accessibility: Khả năng tiếp cận
+indexNotice: Đang lập chỉ mục. Quá trình này có thể mất một lúc, vui lòng không khởi
+  động lại máy chủ của bạn sau ít nhất một giờ.
+breakFollowConfirm: Bạn có chắc muốn xóa người theo dõi?
+caption: Caption tự động
+objectStorageS3ForcePathStyle: Sử dụng URL điểm cuối dựa trên đường dẫn
+objectStorageS3ForcePathStyleDesc: Bật tính năng này để tạo URL điểm cuối ở định dạng
+  's3.amazonaws.com/<bucket>/' thay vì '<bucket>.s3.amazonaws.com'.
+privateMode: Chế độ riêng tư
+allowedInstances: Danh sách trắng
+customMOTDDescription: Tùy chỉnh tin nhắn MOTD (splash screen) được phân tách bằng
+  dấu ngắt dòng để được hiển thị ngẫu nhiên mỗi khi người dùng tải/tải lại trang.
+customSplashIcons: Tùy chỉnh biểu tượng splash screen (urls)
+customSplashIconsDescription: URL cho các biểu tượng splash screen tùy chỉnh được
+  phân tách bằng dấu ngắt dòng sẽ được hiển thị ngẫu nhiên mỗi khi người dùng tải/tải
+  lại trang. Vui lòng đảm bảo rằng các hình ảnh nằm trên một URL tĩnh, tốt nhất là
+  tất cả đã được thay đổi kích thước thành 192x192.
+recommendedInstances: Máy chủ đề xuất
+updateAvailable: Có bản cập nhật mới!
+swipeOnDesktop: Cho phép vuốt kiểu điện thoại trên máy tính
+moveFromLabel: 'Tài khoản cũ của bạn:'
+defaultReaction: Biểu cảm mặc định cho những tút đã đăng và sắp đăng
+indexFromDescription: Để trống để lập chỉ mục toàn bộ
+donationLink: Liên kết tới trang tài trợ
+deletePasskeys: Xóa passkey
+delete2faConfirm: Thao tác này sẽ xóa 2FA trên tài khoản này một cách không thể phục
+  hồi. Tiếp tục?
+deletePasskeysConfirm: Thao tác này sẽ xóa hoàn toàn tất cả mật khẩu và khóa bảo mật
+  trên tài khoản này. Tiếp tục?
+inputNotMatch: Không trùng khớp
+addInstance: Thêm một máy chủ
+delete2fa: Tắt 2FA
+apps: App
+image: Hình ảnh
+video: Video
+audio: Âm thanh
+selectInstance: Chọn máy chủ
+userSaysSomethingReason: '{name} cho biết {reason}'
+pushNotification: Thông báo đẩy
+indexPosts: Chỉ mục tút
+indexFrom: Chỉ mục từ Post ID
+customKaTeXMacro: Tùy chỉnh macro KaTeX
+license: Giấy phép
+cw: Nội dung ẩn
+showPopup: Thông báo người dùng bằng popup
+showWithSparkles: Hiện kèm hiệu ứng lấp lánh
+youHaveUnreadAnnouncements: Bạn có thông báo chưa đọc
+migrationConfirm: "Bạn có hoàn toàn chắc chắn muốn di chuyển tài khoản của mình sang
+  {account} không? Sau khi thực hiện việc này, bạn sẽ không thể đảo ngược nó và sẽ
+  không thể sử dụng lại tài khoản của mình một cách bình thường.\nNgoài ra, vui lòng
+  đảm bảo rằng bạn đã đặt tài khoản hiện tại này làm tài khoản mà bạn đang chuyển
+  từ đó."
+xl: XL
+neverShow: Không hiện lại nữa
+remindMeLater: Để sau
+removeQuote: Xóa trích dẫn
+removeRecipient: Xóa người nhận
+removeMember: Xóa thành viên
+customKaTeXMacroDescription: 'Thiết lập macro để viết các biểu thức toán học một cách
+  dễ dàng! Ký hiệu tuân theo định nghĩa lệnh của LaTeX và được viết là \newcommand{\
+  name}{content} hoặc \newcommand{\name}[số lượng đối số]{content}. Ví dụ: \newcommand{\add}[2]{#1
+  + #2} sẽ mở rộng \add{3}{foo} thành 3 + foo. Dấu ngoặc nhọn bao quanh tên macro
+  có thể được thay đổi thành dấu ngoặc tròn hoặc vuông. Điều này ảnh hưởng đến các
+  dấu ngoặc được sử dụng cho các đối số. Một (và chỉ một) macro có thể được xác định
+  trên mỗi dòng và bạn không thể ngắt dòng ở giữa định nghĩa. Các dòng không hợp lệ
+  chỉ đơn giản là bị bỏ qua. Chỉ hỗ trợ các hàm thay thế chuỗi đơn giản; cú pháp nâng
+  cao, chẳng hạn như phân nhánh có điều kiện, không thể được sử dụng ở đây.'
+preventAiLearning: Chặn AI bot càn quét
+preventAiLearningDescription: Yêu cầu các mô hình ngôn ngữ AI của bên thứ ba không
+  nghiên cứu nội dung bạn tải lên, chẳng hạn như tút và hình ảnh.
+isModerator: Kiểm duyệt viên
+isAdmin: Quản trị viên
+isPatron: Người bảo trợ Firefish
+recommendedInstancesDescription: Các máy chủ được đề xuất được phân tách bằng dấu
+  ngắt dòng để xuất hiện trong bảng tin đề xuất.

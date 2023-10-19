@@ -13,9 +13,7 @@
 					<div v-if="tab === 'local'" class="local">
 						<MkInput v-model="query" :debounce="true" type="search">
 							<template #prefix
-								><i
-									class="ph-magnifying-glass ph-bold ph-lg"
-								></i
+								><i :class="icon('ph-magnifying-glass')"></i
 							></template>
 							<template #label>{{ i18n.ts.search }}</template>
 						</MkInput>
@@ -105,9 +103,7 @@
 								type="search"
 							>
 								<template #prefix
-									><i
-										class="ph-magnifying-glass ph-bold ph-lg"
-									></i
+									><i :class="icon('ph-magnifying-glass')"></i
 								></template>
 								<template #label>{{ i18n.ts.search }}</template>
 							</MkInput>
@@ -154,23 +150,17 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	computed,
-	defineAsyncComponent,
-	defineComponent,
-	ref,
-	toRef,
-} from "vue";
+import { computed, defineAsyncComponent, ref } from "vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import MkPagination from "@/components/MkPagination.vue";
-import MkTab from "@/components/MkTab.vue";
 import MkSwitch from "@/components/form/switch.vue";
 import FormSplit from "@/components/form/split.vue";
 import { selectFile, selectFiles } from "@/scripts/select-file";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const emojisPaginationComponent = ref<InstanceType<typeof MkPagination>>();
 
@@ -241,7 +231,7 @@ const edit = (emoji) => {
 	os.popup(
 		defineAsyncComponent(() => import("./emoji-edit-dialog.vue")),
 		{
-			emoji: emoji,
+			emoji,
 		},
 		{
 			done: (result) => {
@@ -279,7 +269,7 @@ const remoteMenu = (emoji, ev: MouseEvent) => {
 			},
 			{
 				text: i18n.ts.import,
-				icon: "ph-plus ph-bold ph-lg",
+				icon: `${icon("ph-plus")}`,
 				action: () => {
 					im(emoji);
 				},
@@ -293,8 +283,8 @@ const menu = (ev: MouseEvent) => {
 	os.popupMenu(
 		[
 			{
-				icon: "ph-download-simple ph-bold ph-lg",
-				text: i18n.ts.export,
+				icon: `${icon("ph-download-simple")}`,
+				text: i18n.ts.exportZip,
 				action: async () => {
 					os.api("export-custom-emojis", {})
 						.then(() => {
@@ -312,8 +302,8 @@ const menu = (ev: MouseEvent) => {
 				},
 			},
 			{
-				icon: "ph-upload-simple ph-bold ph-lg",
-				text: i18n.ts.import,
+				icon: `${icon("ph-upload-simple")}`,
+				text: i18n.ts.importZip,
 				action: async () => {
 					const file = await selectFile(
 						ev.currentTarget ?? ev.target,
@@ -333,6 +323,16 @@ const menu = (ev: MouseEvent) => {
 								text: err.message,
 							});
 						});
+				},
+			},
+			{
+				icon: `${icon("ph-info")}`,
+				text: i18n.ts.emojiPackCreator,
+				action: () => {
+					window.open(
+						"https://git.joinfirefish.org/firefish/emoji-gen",
+						"_blank",
+					);
 				},
 			},
 		],
@@ -412,28 +412,28 @@ const delBulk = async () => {
 	emojisPaginationComponent.value.reload();
 };
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-plus ph-bold ph-lg",
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.addEmoji,
 		handler: add,
 	},
 	{
-		icon: "ph-dots-three-outline ph-bold ph-lg",
+		icon: `${icon("ph-file-zip")}`,
 		handler: menu,
 	},
 ]);
 
-const headerTabs = $computed(() => [
+const headerTabs = computed(() => [
 	{
 		key: "local",
-		icon: "ph-hand-fist ph-bold ph-lg",
+		icon: `${icon("ph-users")}`,
 		title: i18n.ts.local,
 	},
 	{
 		key: "remote",
-		icon: "ph-planet ph-bold ph-lg",
+		icon: `${icon("ph-planet")}`,
 		title: i18n.ts.remote,
 	},
 ]);
@@ -441,7 +441,7 @@ const headerTabs = $computed(() => [
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.customEmojis,
-		icon: "ph-smiley ph-bold ph-lg",
+		icon: `${icon("ph-smiley")}`,
 	})),
 );
 </script>

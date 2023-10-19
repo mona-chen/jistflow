@@ -14,6 +14,7 @@ export interface IObject {
 	inReplyTo?: any;
 	replies?: ICollection;
 	content?: string;
+	contentMap?: obj;
 	name?: string;
 	startTime?: Date;
 	endTime?: Date;
@@ -134,7 +135,6 @@ export interface IPost extends IObject {
 		content: string;
 		mediaType: string;
 	};
-	_misskey_quote?: string;
 	quoteUrl?: string;
 	quoteUri?: string;
 	_misskey_talk: boolean;
@@ -146,7 +146,6 @@ export interface IQuestion extends IObject {
 		content: string;
 		mediaType: string;
 	};
-	_misskey_quote?: string;
 	quoteUrl?: string;
 	oneOf?: IQuestionChoice[];
 	anyOf?: IQuestionChoice[];
@@ -190,8 +189,9 @@ export interface IActor extends IObject {
 	movedTo?: string;
 	alsoKnownAs?: string[];
 	discoverable?: boolean;
+	indexable?: boolean;
 	inbox: string;
-	sharedInbox?: string; // backward compatibility.. ig
+	sharedInbox?: string; // Backwards compatibility
 	publicKey?: {
 		id: string;
 		publicKeyPem: string;

@@ -25,6 +25,43 @@
 	//--ad: rgb(255 169 0 / 10%);
 }
 
+/* atkinson-hyperlegible-regular - latin_latin-ext */
+@font-face {
+	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+	font-family: "Atkinson Hyperlegible";
+	font-style: normal;
+	font-weight: 400;
+	src: url("/static-assets/fonts/atkinson-hyperlegible-v11-latin_latin-ext-regular.woff2")
+		format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* atkinson-hyperlegible-italic - latin_latin-ext */
+@font-face {
+	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+	font-family: "Atkinson Hyperlegible";
+	font-style: italic;
+	font-weight: 400;
+	src: url("/static-assets/fonts/atkinson-hyperlegible-v11-latin_latin-ext-italic.woff2")
+		format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* atkinson-hyperlegible-700 - latin_latin-ext */
+@font-face {
+	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+	font-family: "Atkinson Hyperlegible";
+	font-style: normal;
+	font-weight: 700;
+	src: url("/static-assets/fonts/atkinson-hyperlegible-v11-latin_latin-ext-700.woff2")
+		format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* atkinson-hyperlegible-700italic - latin_latin-ext */
+@font-face {
+	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+	font-family: "Atkinson Hyperlegible";
+	font-style: italic;
+	font-weight: 700;
+	src: url("/static-assets/fonts/atkinson-hyperlegible-v11-latin_latin-ext-700italic.woff2")
+		format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
 ::selection {
 	color: #fff;
 	background-color: var(--accent);
@@ -39,17 +76,20 @@ html {
 	accent-color: var(--accent);
 	overflow: auto;
 	overflow-wrap: break-word;
-	font-family: Roboto, HelveticaNeue, Arial, sans-serif;
+	font-family: "Atkinson Hyperlegible", Roboto, HelveticaNeue, Arial,
+		sans-serif;
 	font-size: 14px;
 	line-height: 1.6;
 	text-size-adjust: 100%;
 	tab-size: 2;
 	scroll-padding: 60px;
 	overflow-x: clip;
+	text-size-adjust: none;
+	-webkit-text-size-adjust: none;
 
 	&.useCJKFont {
-		font-family: "Hiragino Maru Gothic Pro", "BIZ UDGothic", Roboto,
-			HelveticaNeue, Arial, sans-serif;
+		font-family: "Hiragino Maru Gothic Pro", "BIZ UDGothic",
+			"Atkinson Hyperlegible", Roboto, HelveticaNeue, Arial, sans-serif;
 	}
 
 	&.useSystemFont {
@@ -743,7 +783,7 @@ hr {
 }
 
 @keyframes tada {
-	from {
+	0% {
 		transform: scale3d(1, 1, 1);
 	}
 
@@ -765,14 +805,14 @@ hr {
 		transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
 	}
 
-	to {
+	100% {
 		transform: scale3d(1, 1, 1);
 	}
 }
 
 @media (prefers-reduced-motion) {
 	@keyframes tada {
-		from {
+		0% {
 			transform: scale3d(1, 1, 1);
 		}
 
@@ -780,7 +820,7 @@ hr {
 			transform: scale3d(1.1, 1.1, 1.1);
 		}
 
-		to {
+		100% {
 			transform: scale3d(1, 1, 1);
 		}
 	}
@@ -935,7 +975,7 @@ hr {
 // }
 
 @keyframes reset {
-	to {
+	100% {
 		transform: none;
 		opacity: 1;
 	}
@@ -946,13 +986,13 @@ hr {
 
 @media (prefers-reduced-motion: no-preference) {
 	@keyframes scaleIn {
-		from {
+		0% {
 			transform: scale(0);
 			opacity: 0;
 		}
 	}
 	@keyframes scaleInSmall {
-		from {
+		0% {
 			transform: scale(0.8);
 			opacity: 0;
 		}

@@ -9,27 +9,27 @@
 			<button class="_button" @click="choose">
 				<i
 					v-if="widgetProps.src === 'home'"
-					class="ph-house ph-bold ph-lg"
+					:class="icon('ph-house')"
 				></i>
 				<i
 					v-else-if="widgetProps.src === 'local'"
-					class="ph-chats-circle ph-bold ph-lg"
+					:class="icon('ph-chats-circle')"
 				></i>
 				<i
 					v-else-if="widgetProps.src === 'social'"
-					class="ph-share-network ph-bold ph-lg"
+					:class="icon('ph-share-network')"
 				></i>
 				<i
 					v-else-if="widgetProps.src === 'global'"
-					class="ph-planet ph-bold ph-lg"
+					:class="icon('ph-planet')"
 				></i>
 				<i
 					v-else-if="widgetProps.src === 'list'"
-					class="ph-list-bullets ph-bold ph-lg"
+					:class="icon('ph-list-bullets')"
 				></i>
 				<i
 					v-else-if="widgetProps.src === 'antenna'"
-					class="ph-television ph-bold ph-lg"
+					:class="icon('ph-television')"
 				></i>
 				<span style="margin-left: 8px">{{
 					widgetProps.src === "list"
@@ -40,9 +40,11 @@
 				}}</span>
 				<i
 					:class="
-						menuOpened
-							? 'ph-caret-up ph-bold ph-lg'
-							: 'ph-caret-down ph-bold ph-lg'
+						icon(
+							menuOpened
+								? 'ph-caret-up ph-lg'
+								: 'ph-caret-down ph-lg',
+						)
 					"
 					style="margin-left: 8px"
 				></i>
@@ -67,19 +69,15 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import { ref } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
 import XTimeline from "@/components/MkTimeline.vue";
-import { $i } from "@/account";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const name = "timeline";
 
@@ -139,7 +137,7 @@ const choose = async (ev) => {
 	]);
 	const antennaItems = antennas.map((antenna) => ({
 		text: antenna.name,
-		icon: "ph-flying-saucer ph-bold ph-lg",
+		icon: `${icon("ph-flying-saucer")}`,
 		action: () => {
 			widgetProps.antenna = antenna;
 			setSrc("antenna");
@@ -147,7 +145,7 @@ const choose = async (ev) => {
 	}));
 	const listItems = lists.map((list) => ({
 		text: list.name,
-		icon: "ph-list-bullets ph-bold ph-lg",
+		icon: `${icon("ph-list-bullets")}`,
 		action: () => {
 			widgetProps.list = list;
 			setSrc("list");
@@ -157,28 +155,28 @@ const choose = async (ev) => {
 		[
 			{
 				text: i18n.ts._timelines.home,
-				icon: "ph-house ph-bold ph-lg",
+				icon: `${icon("ph-house")}`,
 				action: () => {
 					setSrc("home");
 				},
 			},
 			{
 				text: i18n.ts._timelines.local,
-				icon: "ph-chats-teardrop ph-bold ph-lg",
+				icon: `${icon("ph-chats-teardrop")}`,
 				action: () => {
 					setSrc("local");
 				},
 			},
 			{
 				text: i18n.ts._timelines.social,
-				icon: "ph-share-network ph-bold ph-lg",
+				icon: `${icon("ph-share-network")}`,
 				action: () => {
 					setSrc("social");
 				},
 			},
 			{
 				text: i18n.ts._timelines.global,
-				icon: "ph-planet ph-bold ph-lg",
+				icon: `${icon("ph-planet")}`,
 				action: () => {
 					setSrc("global");
 				},

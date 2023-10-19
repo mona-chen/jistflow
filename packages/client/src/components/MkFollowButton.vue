@@ -1,14 +1,15 @@
 <template>
 	<button
 		v-if="!hideMenu"
+		v-tooltip="i18n.ts.menu"
 		class="menu _button"
 		@click.stop="menu"
-		v-tooltip="i18n.ts.menu"
 	>
-		<i class="ph-dots-three-outline ph-bold ph-lg"></i>
+		<i :class="icon('ph-dots-three-outline')"></i>
 	</button>
 	<button
 		v-if="$i != null && $i.id != user.id"
+		v-tooltip="full ? null : `${state} ${user.name || user.username}`"
 		class="kpoogebi _button follow-button"
 		:class="{
 			wait,
@@ -18,64 +19,65 @@
 			blocking: isBlocking,
 		}"
 		:disabled="wait"
-		@click.stop="onClick"
 		:aria-label="`${state} ${user.name || user.username}`"
-		v-tooltip="full ? null : `${state} ${user.name || user.username}`"
+		@click.stop="onClick"
 	>
 		<template v-if="!wait">
 			<template v-if="isBlocking">
 				<span>{{ (state = i18n.ts.blocked) }}</span
-				><i class="ph-prohibit ph-bold ph-lg"></i>
+				><i :class="icon('ph-prohibit')"></i>
 			</template>
 			<template
 				v-else-if="hasPendingFollowRequestFromYou && user.isLocked"
 			>
 				<span>{{ (state = i18n.ts.followRequestPending) }}</span
-				><i class="ph-hourglass-medium ph-bold ph-lg"></i>
+				><i :class="icon('ph-hourglass-medium')"></i>
 			</template>
 			<template
 				v-else-if="hasPendingFollowRequestFromYou && !user.isLocked"
 			>
 				<!-- つまりリモートフォローの場合。 -->
 				<span>{{ (state = i18n.ts.processing) }}</span
-				><i class="ph-circle-notch ph-bold ph-lg fa-pulse"></i>
+				><i :class="icon('ph-circle-notch fa-pulse')"></i>
 			</template>
 			<template v-else-if="isFollowing">
 				<span>{{ (state = i18n.ts.unfollow) }}</span
-				><i class="ph-minus ph-bold ph-lg"></i>
+				><i :class="icon('ph-minus')"></i>
 			</template>
 			<template v-else-if="!isFollowing && user.isLocked">
 				<span>{{ (state = i18n.ts.followRequest) }}</span
-				><i class="ph-lock-open ph-bold ph-lg"></i>
+				><i :class="icon('ph-lock-open')"></i>
 			</template>
 			<template v-else-if="!isFollowing && !user.isLocked">
 				<span>{{ (state = i18n.ts.follow) }}</span
-				><i class="ph-plus ph-bold ph-lg"></i>
+				><i :class="icon('ph-plus')"></i>
 			</template>
 		</template>
 		<template v-else>
 			<span>{{ (state = i18n.ts.processing) }}</span
-			><i class="ph-circle-notch ph-bold ph-lg fa-pulse ph-fw ph-lg"></i>
+			><i :class="icon('ph-circle-notch fa-pulse ph-fw')"></i>
 		</template>
 	</button>
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeUnmount, onMounted } from "vue";
-import type * as Misskey from "firefish-js";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import { stream } from "@/stream";
 import { i18n } from "@/i18n";
 import { $i } from "@/account";
 import { getUserMenu } from "@/scripts/get-user-menu";
 import { useRouter } from "@/router";
+import { vibrate } from "@/scripts/vibrate";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
 const emit = defineEmits(["refresh"]);
 const props = withDefaults(
 	defineProps<{
-		user: Misskey.entities.UserDetailed;
+		user: firefish.entities.UserDetailed;
 		full?: boolean;
 		large?: boolean;
 		hideMenu?: boolean;
@@ -88,13 +90,13 @@ const props = withDefaults(
 
 const isBlocking = computed(() => props.user.isBlocking);
 
-let state = $ref(i18n.ts.processing);
+const state = ref(i18n.ts.processing);
 
-let isFollowing = $ref(props.user.isFollowing);
-let hasPendingFollowRequestFromYou = $ref(
+const isFollowing = ref(props.user.isFollowing);
+const hasPendingFollowRequestFromYou = ref(
 	props.user.hasPendingFollowRequestFromYou,
 );
-let wait = $ref(false);
+const wait = ref(false);
 const connection = stream.useChannel("main");
 
 if (props.user.isFollowing == null) {
@@ -103,15 +105,16 @@ if (props.user.isFollowing == null) {
 	}).then(onFollowChange);
 }
 
-function onFollowChange(user: Misskey.entities.UserDetailed) {
+function onFollowChange(user: firefish.entities.UserDetailed) {
 	if (user.id === props.user.id) {
-		isFollowing = user.isFollowing;
-		hasPendingFollowRequestFromYou = user.hasPendingFollowRequestFromYou;
+		isFollowing.value = user.isFollowing;
+		hasPendingFollowRequestFromYou.value =
+			user.hasPendingFollowRequestFromYou;
 	}
 }
 
 async function onClick() {
-	wait = true;
+	wait.value = true;
 
 	try {
 		if (isBlocking.value) {
@@ -130,7 +133,7 @@ async function onClick() {
 				});
 			}
 			emit("refresh");
-		} else if (isFollowing) {
+		} else if (isFollowing.value) {
 			const { canceled } = await os.confirm({
 				type: "warning",
 				text: i18n.t("unfollowConfirm", {
@@ -144,22 +147,23 @@ async function onClick() {
 				userId: props.user.id,
 			});
 		} else {
-			if (hasPendingFollowRequestFromYou) {
+			if (hasPendingFollowRequestFromYou.value) {
 				await os.api("following/requests/cancel", {
 					userId: props.user.id,
 				});
-				hasPendingFollowRequestFromYou = false;
+				hasPendingFollowRequestFromYou.value = false;
 			} else {
 				await os.api("following/create", {
 					userId: props.user.id,
 				});
-				hasPendingFollowRequestFromYou = true;
+				vibrate([30, 40, 100]);
+				hasPendingFollowRequestFromYou.value = true;
 			}
 		}
 	} catch (err) {
 		console.error(err);
 	} finally {
-		wait = false;
+		wait.value = false;
 	}
 }
 
@@ -235,13 +239,13 @@ onBeforeUnmount(() => {
 		}
 	}
 
-	&:hover {
-		//background: mix($primary, #fff, 20);
-	}
+	// &:hover {
+	// 	background: mix($primary, #fff, 20);
+	// }
 
-	&:active {
-		//background: mix($primary, #fff, 40);
-	}
+	// &:active {
+	// 	background: mix($primary, #fff, 40);
+	// }
 
 	&.active {
 		color: var(--fgOnAccent);

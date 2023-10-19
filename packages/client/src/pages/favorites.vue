@@ -6,7 +6,7 @@
 				<template #empty>
 					<div class="_fullinfo">
 						<img
-							src="/static-assets/badges/info.png"
+							src="/static-assets/badges/info.webp"
 							class="_ghost"
 							alt="Info"
 						/>
@@ -41,6 +41,7 @@ import XNote from "@/components/MkNote.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const pagination = {
 	endpoint: "i/favorites" as const,
@@ -51,7 +52,7 @@ const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
 definePageMetadata({
 	title: i18n.ts.favorites,
-	icon: "ph-bookmark-simple ph-bold ph-lg",
+	icon: `${icon("ph-bookmark-simple")}`,
 });
 </script>
 

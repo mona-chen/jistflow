@@ -33,7 +33,7 @@ export const meta = {
 			id: "4362f8dc-731f-4ad8-a694-be2a88922a24",
 		},
 		uriNull: {
-			message: "User ActivityPup URI is null.",
+			message: "User ActivityPub URI is null.",
 			code: "URI_NULL",
 			id: "bf326f31-d430-4f97-9933-5d61e4d48a23",
 		},

@@ -8,25 +8,25 @@
 		@parent-focus="($event) => emit('parent-focus', $event)"
 	>
 		<template #header>
-			<i v-if="column.tl === 'home'" class="ph-house ph-bold ph-lg"></i>
+			<i v-if="column.tl === 'home'" :class="icon('ph-house')"></i>
 			<i
 				v-else-if="column.tl === 'local'"
-				class="ph-chats-circle ph-bold ph-lg"
+				:class="icon('ph-chats-circle')"
 			></i>
 			<i
 				v-else-if="column.tl === 'social'"
-				class="ph-share-network ph-bold ph-lg"
+				:class="icon('ph-share-network')"
 			></i>
 			<i
 				v-else-if="column.tl === 'global'"
-				class="ph-planet ph-bold ph-lg"
+				:class="icon('ph-planet')"
 			></i>
 			<span style="margin-left: 8px">{{ column.name }}</span>
 		</template>
 
 		<div v-if="disabled" class="iwaalbte">
 			<p>
-				<i class="ph-minus-circle ph-bold ph-lg"></i>
+				<i :class="icon('ph-minus-circle')"></i>
 				{{ i18n.t("disabled-timeline.title") }}
 			</p>
 			<p class="desc">{{ i18n.t("disabled-timeline.description") }}</p>
@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import XColumn from "./column.vue";
 import type { Column } from "./deck-store";
 import { removeColumn, updateColumn } from "./deck-store";
@@ -53,6 +53,7 @@ import * as os from "@/os";
 import { $i } from "@/account";
 import { instance } from "@/instance";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	column: Column;
@@ -64,15 +65,15 @@ const emit = defineEmits<{
 	(ev: "parent-focus", direction: "up" | "down" | "left" | "right"): void;
 }>();
 
-let disabled = $ref(false),
-	indicated = $ref(false),
-	columnActive = $ref(true);
+const disabled = ref(false);
+const indicated = ref(false);
+const columnActive = ref(true);
 
 onMounted(() => {
 	if (props.column.tl == null) {
 		setType();
 	} else if ($i) {
-		disabled =
+		disabled.value =
 			!$i.isModerator &&
 			!$i.isAdmin &&
 			((instance.disableLocalTimeline &&
@@ -122,28 +123,28 @@ async function setType() {
 }
 
 function queueUpdated(q) {
-	if (columnActive) {
-		indicated = q !== 0;
+	if (columnActive.value) {
+		indicated.value = q !== 0;
 	}
 }
 
 function onNote() {
-	if (!columnActive) {
-		indicated = true;
+	if (!columnActive.value) {
+		indicated.value = true;
 	}
 }
 
 function onChangeActiveState(state) {
-	columnActive = state;
+	columnActive.value = state;
 
-	if (columnActive) {
-		indicated = false;
+	if (columnActive.value) {
+		indicated.value = false;
 	}
 }
 
 const menu = [
 	{
-		icon: "ph-pencil ph-bold ph-lg",
+		icon: `${icon("ph-pencil")}`,
 		text: i18n.ts.timeline,
 		action: setType,
 	},

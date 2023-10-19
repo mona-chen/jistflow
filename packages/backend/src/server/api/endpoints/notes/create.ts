@@ -52,7 +52,7 @@ export const meta = {
 		},
 
 		cannotReRenote: {
-			message: "You can not Renote a pure Renote.",
+			message: "You cannot Renote a pure Renote.",
 			code: "CANNOT_RENOTE_TO_A_PURE_RENOTE",
 			id: "fd4cc33e-2a37-48dd-99cc-9b806eb2031a",
 		},
@@ -64,7 +64,7 @@ export const meta = {
 		},
 
 		cannotReplyToPureRenote: {
-			message: "You can not reply to a pure Renote.",
+			message: "You cannot reply to a pure Renote.",
 			code: "CANNOT_REPLY_TO_A_PURE_RENOTE",
 			id: "3ac74a84-8fd5-4bb0-870f-01804f82ce15",
 		},
@@ -108,6 +108,7 @@ export const paramDef = {
 			},
 		},
 		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
+		lang: { type: "string", nullable: true, maxLength: 10 },
 		cw: { type: "string", nullable: true, maxLength: 100 },
 		localOnly: { type: "boolean", default: false },
 		noExtractMentions: { type: "boolean", default: false },
@@ -294,6 +295,7 @@ export default define(meta, paramDef, async (ps, user) => {
 			  }
 			: undefined,
 		text: ps.text || undefined,
+		lang: ps.lang,
 		reply,
 		renote,
 		cw: ps.cw,

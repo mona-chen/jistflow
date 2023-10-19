@@ -1,7 +1,7 @@
 <template>
 	<XContainer :draggable="true" @remove="() => $emit('remove')">
 		<template #header
-			><i class="ph-sticker ph-bold ph-lg"></i>
+			><i :class="icon('ph-sticker')"></i>
 			{{ i18n.ts._pages.blocks.note }}</template
 		>
 
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from "vue";
+import { ref, watch } from "vue";
 import XContainer from "../page-editor.container.vue";
 import MkInput from "@/components/form/input.vue";
 import MkSwitch from "@/components/form/switch.vue";
@@ -43,6 +43,7 @@ import XNote from "@/components/MkNote.vue";
 import XNoteDetailed from "@/components/MkNoteDetailed.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
@@ -56,21 +57,26 @@ const props = withDefaults(
 	},
 );
 
-let id: any = $ref(props.value.note);
-let note: any = $ref(null);
+const id = ref(props.value.note);
+const note = ref(null);
 
 watch(
-	id,
+	id.value,
 	async () => {
-		if (id && (id.startsWith("http://") || id.startsWith("https://"))) {
-			props.value.note = (id.endsWith("/") ? id.slice(0, -1) : id)
+		if (
+			id.value &&
+			(id.value.startsWith("http://") || id.value.startsWith("https://"))
+		) {
+			props.value.note = (
+				id.value.endsWith("/") ? id.value.slice(0, -1) : id.value
+			)
 				.split("/")
 				.pop();
 		} else {
-			props.value.note = id;
+			props.value.note = id.value;
 		}
 
-		note = await os.api("notes/show", { noteId: props.value.note });
+		note.value = await os.api("notes/show", { noteId: props.value.note });
 	},
 	{
 		immediate: true,

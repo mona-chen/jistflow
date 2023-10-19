@@ -20,7 +20,8 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
+import { ref, shallowRef } from "vue";
+
 import {
 	WidgetComponentEmits,
 	WidgetComponentProps,
@@ -58,8 +59,8 @@ const { widgetProps, configure } = useWidgetPropsManager(
 	emit,
 );
 
-const cloud = $ref<InstanceType<typeof MkTagCloud> | null>();
-let activeInstances = $shallowRef(null);
+const cloud = ref<InstanceType<typeof MkTagCloud> | null>();
+const activeInstances = shallowRef(null);
 
 function onInstanceClick(i) {
 	os.pageWindow(`/instance-info/${i.host}`);
@@ -71,8 +72,8 @@ useInterval(
 			sort: "+lastCommunicatedAt",
 			limit: 25,
 		}).then((res) => {
-			activeInstances = res;
-			if (cloud) cloud.update();
+			activeInstances.value = res;
+			if (cloud.value) cloud.value.update();
 		});
 	},
 	1000 * 60 * 3,

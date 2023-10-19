@@ -13,10 +13,10 @@
 					<VueDraggable
 						v-model="reactions"
 						class="zoaiodol"
-						animation="150"
-						delay="100"
+						:animation="150"
+						:delay="100"
+						:delay-on-touch-only="true"
 						@end="save"
-						delay-on-touch-only="true"
 					>
 						<div
 							v-for="item in reactions"
@@ -32,7 +32,7 @@
 						</div>
 					</VueDraggable>
 					<button class="_button add" @click="chooseEmoji">
-						<i class="ph-plus ph-bold ph-lg"></i>
+						<i :class="icon('ph-plus')"></i>
 					</button>
 				</div>
 				<template #caption
@@ -97,13 +97,11 @@
 			<FormSection>
 				<div style="display: flex; gap: var(--margin); flex-wrap: wrap">
 					<FormButton inline @click="preview"
-						><i class="ph-eye ph-bold ph-lg"></i>
+						><i :class="icon('ph-eye')"></i>
 						{{ i18n.ts.preview }}</FormButton
 					>
 					<FormButton inline danger @click="setDefault"
-						><i
-							class="ph-arrow-counter-clockwise ph-bold ph-lg"
-						></i>
+						><i :class="icon('ph-arrow-counter-clockwise')"></i>
 						{{ i18n.ts.default }}</FormButton
 					>
 				</div>
@@ -121,7 +119,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, watch } from "vue";
+import { computed, defineAsyncComponent, ref, watch } from "vue";
 import { VueDraggable } from "vue-draggable-plus";
 import FormRadios from "@/components/form/radios.vue";
 import FromSlot from "@/components/form/slot.vue";
@@ -135,6 +133,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { deepClone } from "@/scripts/clone";
 import { unisonReload } from "@/scripts/unison-reload";
 import { addSkinTone } from "@/scripts/emojilist";
+import icon from "@/scripts/icon";
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({
@@ -146,32 +145,32 @@ async function reloadAsk() {
 	unisonReload();
 }
 
-let reactions = $ref(deepClone(defaultStore.state.reactions));
+const reactions = ref(deepClone(defaultStore.state.reactions));
 
-const reactionPickerSkinTone = $computed(
+const reactionPickerSkinTone = computed(
 	defaultStore.makeGetterSetter("reactionPickerSkinTone"),
 );
-const reactionPickerSize = $computed(
+const reactionPickerSize = computed(
 	defaultStore.makeGetterSetter("reactionPickerSize"),
 );
-const reactionPickerWidth = $computed(
+const reactionPickerWidth = computed(
 	defaultStore.makeGetterSetter("reactionPickerWidth"),
 );
-const reactionPickerHeight = $computed(
+const reactionPickerHeight = computed(
 	defaultStore.makeGetterSetter("reactionPickerHeight"),
 );
-const reactionPickerUseDrawerForMobile = $computed(
+const reactionPickerUseDrawerForMobile = computed(
 	defaultStore.makeGetterSetter("reactionPickerUseDrawerForMobile"),
 );
-const enableEmojiReactions = $computed(
+const enableEmojiReactions = computed(
 	defaultStore.makeGetterSetter("enableEmojiReactions"),
 );
-const showEmojisInReactionNotifications = $computed(
+const showEmojisInReactionNotifications = computed(
 	defaultStore.makeGetterSetter("showEmojisInReactionNotifications"),
 );
 
 function save() {
-	defaultStore.set("reactions", reactions);
+	defaultStore.set("reactions", reactions.value);
 }
 
 function remove(reaction, ev: MouseEvent) {
@@ -180,7 +179,9 @@ function remove(reaction, ev: MouseEvent) {
 			{
 				text: i18n.ts.remove,
 				action: () => {
-					reactions = reactions.filter((x) => x !== reaction);
+					reactions.value = reactions.value.filter(
+						(x) => x !== reaction,
+					);
 					save();
 				},
 			},
@@ -210,38 +211,34 @@ async function setDefault() {
 	});
 	if (canceled) return;
 
-	reactions = deepClone(defaultStore.def.reactions.default);
+	reactions.value = deepClone(defaultStore.def.reactions.default);
 }
 
 function chooseEmoji(ev: MouseEvent) {
 	os.pickEmoji(ev.currentTarget ?? ev.target, {
 		showPinned: false,
 	}).then((emoji) => {
-		if (!reactions.includes(emoji)) {
-			reactions.push(emoji);
+		if (!reactions.value.includes(emoji)) {
+			reactions.value.push(emoji);
 			save();
 		}
 	});
 }
 
-watch(enableEmojiReactions, async () => {
+watch(enableEmojiReactions.value, async () => {
 	await reloadAsk();
 });
 
-watch(reactionPickerSkinTone, async () => {
-	reactions.forEach((emoji) => {
-		addSkinTone(emoji, reactionPickerSkinTone.value);
+watch(reactionPickerSkinTone.value, async () => {
+	reactions.value.forEach((emoji) => {
+		addSkinTone(emoji, reactionPickerSkinTone.value.value);
 	});
 	await reloadAsk();
 });
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.reaction,
-	icon: "ph-smiley ph-bold ph-lg",
+	icon: `${icon("ph-smiley")}`,
 });
 </script>
 

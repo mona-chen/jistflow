@@ -1,16 +1,11 @@
 import RE2 from "re2";
 import type { Note } from "@/models/entities/note.js";
-import type { User } from "@/models/entities/user.js";
 
 type NoteLike = {
 	userId: Note["userId"];
 	text: Note["text"];
 	files?: Note["files"];
 	cw?: Note["cw"];
-};
-
-type UserLike = {
-	id: User["id"];
 };
 
 function checkWordMute(
@@ -33,7 +28,9 @@ function checkWordMute(
 
 			if (
 				keywords.length > 0 &&
-				keywords.every((keyword) => text.includes(keyword))
+				keywords.every((keyword) =>
+					text.toLowerCase().includes(keyword.toLowerCase()),
+				)
 			)
 				return true;
 		} else {
@@ -59,13 +56,10 @@ function checkWordMute(
 
 export async function getWordHardMute(
 	note: NoteLike,
-	me: UserLike | null | undefined,
-	mutedWords: Array<string | string[]>,
+	meId: string | null | undefined,
+	mutedWords?: Array<string | string[]>,
 ): Promise<boolean> {
-	// 自分自身
-	if (me && note.userId === me.id) {
-		return false;
-	}
+	if (note.userId === meId || mutedWords == null) return false;
 
 	if (mutedWords.length > 0) {
 		return (

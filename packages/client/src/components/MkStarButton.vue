@@ -1,12 +1,13 @@
 <template>
 	<button
 		v-tooltip.noDelay.bottom="i18n.ts._gallery.like"
+		v-vibrate="[30, 50, 50]"
 		class="button _button"
 		@click.stop="star($event)"
 	>
 		<svg
 			v-if="defaultStore.state.woozyMode === true"
-			style="transform: translateY(2px);"
+			style="transform: translateY(2px)"
 			width="1.1em"
 			height="1.1em"
 			viewBox="0 0 36 36"
@@ -30,13 +31,13 @@
 		</svg>
 		<i
 			v-else-if="instance.defaultReaction === '👍'"
-			class="ph-thumbs-up ph-bold ph-lg"
+			:class="icon('ph-thumbs-up')"
 		></i>
 		<i
 			v-else-if="instance.defaultReaction === '❤️'"
-			class="ph-heart ph-bold ph-lg"
+			:class="icon('ph-heart')"
 		></i>
-		<i v-else class="ph-star ph-bold ph-lg"></i>
+		<i v-else :class="icon('ph-star')"></i>
 	</button>
 </template>
 
@@ -48,6 +49,7 @@ import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: Note;
