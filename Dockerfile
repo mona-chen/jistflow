@@ -14,6 +14,7 @@ COPY packages/sw/package.json packages/sw/package.json
 COPY packages/iceshrimp-js/package.json packages/iceshrimp-js/package.json
 
 # Prepare yarn cache
+COPY .yarn/plugins .yarn/plugins
 COPY .yarn/cache .yarn/cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache cp -Tr .yarncache .yarn
 
