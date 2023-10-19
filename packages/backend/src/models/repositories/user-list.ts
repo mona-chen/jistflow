@@ -16,6 +16,7 @@ export const UserListRepository = db.getRepository(UserList).extend({
 			id: userList.id,
 			createdAt: userList.createdAt.toISOString(),
 			name: userList.name,
+			hideFromHomeTl: userList.hideFromHomeTl,
 			userIds: users.map((x) => x.userId),
 		};
 	},

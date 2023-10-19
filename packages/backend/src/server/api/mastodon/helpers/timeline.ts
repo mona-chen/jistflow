@@ -20,6 +20,7 @@ import { unique } from "@/prelude/array.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
+import { generateListQuery } from "@/server/api/common/generate-list-query.js";
 
 export class TimelineHelpers {
     public static async getHomeTimeline(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<Note[]> {
@@ -43,6 +44,7 @@ export class TimelineHelpers {
             )
             .leftJoinAndSelect("note.renote", "renote");
 
+        generateListQuery(query, user);
         generateChannelQuery(query, user);
         generateRepliesQuery(query, true, user);
         generateVisibilityQuery(query, user);

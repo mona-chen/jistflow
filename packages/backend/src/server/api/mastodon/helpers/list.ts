@@ -4,9 +4,10 @@ import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { UserList } from "@/models/entities/user-list.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
 import { genId } from "@/misc/gen-id.js";
-import { publishUserListStream } from "@/services/stream.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
+import { pullUserFromUserList } from "@/services/user-list/pull.js";
+import { publishUserEvent } from "@/services/stream.js";
 
 export class ListHelpers {
     public static async getLists(ctx: MastoContext): Promise<MastodonEntity.List[]> {
@@ -15,7 +16,8 @@ export class ListHelpers {
         return UserLists.findBy({ userId: user.id }).then(p => p.map(list => {
             return {
                 id: list.id,
-                title: list.name
+                title: list.name,
+                exclusive: list.hideFromHomeTl
             }
         }));
     }
@@ -26,7 +28,8 @@ export class ListHelpers {
         return UserLists.findOneByOrFail({ userId: user.id, id: id }).then(list => {
             return {
                 id: list.id,
-                title: list.name
+                title: list.name,
+                exclusive: list.hideFromHomeTl
             }
         });
     }
@@ -110,8 +113,7 @@ export class ListHelpers {
             });
 
             if (!exist) continue;
-            await UserListJoinings.delete({ userListId: list.id, userId: user.id });
-            publishUserListStream(list.id, "userRemoved", await Users.pack(user));
+            await pullUserFromUserList(user, list);
         }
     }
 
@@ -128,23 +130,35 @@ export class ListHelpers {
 
         return {
             id: list.id,
-            title: list.name
+            title: list.name,
+            exclusive: list.hideFromHomeTl
         };
     }
 
-    public static async updateList(list: UserList, title: string, ctx: MastoContext) {
-        if (title.length < 1) throw new MastoApiError(400, "Title must not be empty");
+    public static async updateList(list: UserList, title: string, exclusive: boolean | undefined, ctx: MastoContext): Promise<MastodonEntity.List> {
+        if (title.length < 1 && exclusive === undefined) throw new MastoApiError(400, "Either title or exclusive must be set");
 
         const user = ctx.user as ILocalUser;
         if (user.id != list.userId) throw new Error("List is not owned by user");
 
-        const partial = { name: title };
+        const name = title.length > 0 ? title : undefined;
+        const partial = { name: name, hideFromHomeTl: exclusive };
         const result = await UserLists.update(list.id, partial)
             .then(async _ => await UserLists.findOneByOrFail({ id: list.id }));
 
+        if (exclusive !== undefined) {
+            UserListJoinings.findBy({ userListId: list.id })
+                .then(members => {
+                    for (const member of members) {
+                        publishUserEvent(list.userId, exclusive ? "userHidden" : "userUnhidden", member.userId);
+                    }
+                });
+        }
+
         return {
             id: result.id,
-            title: result.name
+            title: result.name,
+            exclusive: result.hideFromHomeTl
         };
     }
 
@@ -162,7 +176,8 @@ export class ListHelpers {
             .then(results => results.map(result => {
                 return {
                     id: result.id,
-                    title: result.name
+                    title: result.name,
+                    exclusive: result.hideFromHomeTl
                 }
             }));
     }

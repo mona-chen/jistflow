@@ -38,6 +38,10 @@ export default abstract class Channel {
 		return this.connection.blocking;
 	}
 
+	protected get hidden() {
+		return this.connection.hidden;
+	}
+
 	protected get followingChannels() {
 		return this.connection.followingChannels;
 	}

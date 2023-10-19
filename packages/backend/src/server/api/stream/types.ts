@@ -74,6 +74,8 @@ export interface UserStreamTypes {
 	follow: Packed<"UserDetailedNotMe">;
 	unfollow: Packed<"User">;
 	userAdded: Packed<"User">;
+	userHidden: User["id"];
+	userUnhidden: User["id"];
 }
 
 export interface MainStreamTypes {

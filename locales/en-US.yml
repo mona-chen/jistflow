@@ -2135,3 +2135,4 @@ _cwStyle:
   classic: "Classic (Misskey/Foundkey-like)"
   alternative: "Alternative (Firefish-like)"
 alwaysExpandCws: "Always expand posts with content warnings"
+hideFromHome: "Hide from home timeline"

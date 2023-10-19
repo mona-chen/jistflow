@@ -11,6 +11,7 @@ import { generateChannelQuery } from "../../common/generate-channel-query.js";
 import { generateBlockedUserQuery } from "../../common/generate-block-query.js";
 import { generateMutedUserRenotesQueryForNotes } from "../../common/generated-muted-renote-query.js";
 import { ApiError } from "../../error.js";
+import { generateListQuery } from "@/server/api/common/generate-list-query.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -104,6 +105,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner")
 		.setParameters(followingQuery.getParameters());
 
+	generateListQuery(query, user);
 	generateChannelQuery(query, user);
 	generateRepliesQuery(query, ps.withReplies, user);
 	generateVisibilityQuery(query, user);

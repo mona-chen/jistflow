@@ -1,10 +1,9 @@
-import { publishUserListStream } from "@/services/stream.js";
+import { publishUserEvent, publishUserListStream } from "@/services/stream.js";
 import type { User } from "@/models/entities/user.js";
 import type { UserList } from "@/models/entities/user-list.js";
-import { Followings, UserListJoinings, Users } from "@/models/index.js";
+import { UserListJoinings, Users } from "@/models/index.js";
 import type { UserListJoining } from "@/models/entities/user-list-joining.js";
 import { genId } from "@/misc/gen-id.js";
-import { ApiError } from "@/server/api/error.js";
 
 export async function pushUserToUserList(target: User, list: UserList) {
 	await UserListJoinings.insert({
@@ -14,5 +13,7 @@ export async function pushUserToUserList(target: User, list: UserList) {
 		userListId: list.id,
 	} as UserListJoining);
 
-	publishUserListStream(list.id, "userAdded", await Users.pack(target));
+	const packed = await Users.pack(target);
+	publishUserListStream(list.id, "userAdded", packed);
+	if (list.hideFromHomeTl) publishUserEvent(list.userId, "userHidden", target.id);
 }

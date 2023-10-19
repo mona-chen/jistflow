@@ -39,7 +39,8 @@ export function setupEndpointsList(router: Router): void {
 
             const body = ctx.request.body as any;
             const title = (body.title ?? '').trim();
-            ctx.body = await ListHelpers.updateList(list, title, ctx);
+            const exclusive = body.exclusive ?? undefined as boolean | undefined;
+            ctx.body = await ListHelpers.updateList(list, title, exclusive, ctx);
         },
     );
     router.delete<{ Params: { id: string } }>(

@@ -37,4 +37,10 @@ export class UserList {
 		comment: "The name of the UserList.",
 	})
 	public name: string;
+
+	@Column("boolean", {
+		default: false,
+		comment: "Whether posts from list members should be hidden from the home timeline."
+	})
+	public hideFromHomeTl: boolean;
 }

@@ -19,6 +19,11 @@ export const packedUserListSchema = {
 			optional: false,
 			nullable: false,
 		},
+		hideFromHomeTl: {
+			type: "boolean",
+			optional: false,
+			nullable: false,
+		},
 		userIds: {
 			type: "array",
 			nullable: false,

@@ -2,7 +2,7 @@ import type { EventEmitter } from "events";
 import type * as websocket from "websocket";
 import type { ILocalUser, User } from "@/models/entities/user.js";
 import type { MastodonStream } from "./channel.js";
-import { Blockings, Followings, Mutings, RenoteMutings, UserProfiles, } from "@/models/index.js";
+import { Blockings, Followings, Mutings, RenoteMutings, UserListJoinings, UserProfiles, } from "@/models/index.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
 import { StreamEventEmitter, StreamMessages } from "@/server/api/stream/types.js";
 import { apiLogger } from "@/server/api/logger.js";
@@ -40,6 +40,7 @@ export class MastodonStreamingConnection {
     public muting: Set<User["id"]> = new Set();
     public renoteMuting: Set<User["id"]> = new Set();
     public blocking: Set<User["id"]> = new Set();
+    public hidden: Set<User["id"]> = new Set();
     public token?: OAuthToken;
     private wsConnection: websocket.connection;
     private channels: MastodonStream[] = [];
@@ -69,6 +70,7 @@ export class MastodonStreamingConnection {
             this.updateMuting();
             this.updateRenoteMuting();
             this.updateBlocking();
+            this.updateHidden();
             this.updateUserProfile();
 
             this.subscriber.on(`user:${this.user.id}`, this.onUserEvent);
@@ -97,6 +99,12 @@ export class MastodonStreamingConnection {
                 break;
             case "unmute":
                 this.muting.delete(data.body.id);
+                break;
+            case "userHidden":
+                this.hidden.add(data.body);
+                break;
+            case "userUnhidden":
+                this.hidden.delete(data.body);
                 break;
 
             // TODO: renote mute events
@@ -245,6 +253,17 @@ export class MastodonStreamingConnection {
         });
 
         this.blocking = new Set<string>(blockings.map((x) => x.blockerId));
+    }
+
+    private async updateHidden() {
+        const hidden = await UserListJoinings.find({
+            where: {
+                userList: { userId: this.user!.id, hideFromHomeTl: true },
+            },
+            select: ["userId"],
+        });
+
+        this.hidden = new Set<string>(hidden.map((x) => x.userId));
     }
 
     private async updateUserProfile() {

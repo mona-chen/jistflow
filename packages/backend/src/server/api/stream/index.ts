@@ -10,7 +10,7 @@ import {
 	RenoteMutings,
 	UserProfiles,
 	ChannelFollowings,
-	Blockings,
+	Blockings, UserListJoinings,
 } from "@/models/index.js";
 import type { AccessToken } from "@/models/entities/access-token.js";
 import type { UserProfile } from "@/models/entities/user-profile.js";
@@ -35,7 +35,8 @@ export default class Connection {
 	public following: Set<User["id"]> = new Set();
 	public muting: Set<User["id"]> = new Set();
 	public renoteMuting: Set<User["id"]> = new Set();
-	public blocking: Set<User["id"]> = new Set(); // "被"blocking
+	public blocking: Set<User["id"]> = new Set();
+	public hidden: Set<User["id"]> = new Set();
 	public followingChannels: Set<ChannelModel["id"]> = new Set();
 	public token?: AccessToken;
 	private wsConnection: websocket.connection;
@@ -79,6 +80,7 @@ export default class Connection {
 			this.updateMuting();
 			this.updateRenoteMuting();
 			this.updateBlocking();
+			this.updateHidden();
 			this.updateFollowingChannels();
 			this.updateUserProfile();
 
@@ -120,6 +122,14 @@ export default class Connection {
 
 			case "unfollowChannel":
 				this.followingChannels.delete(data.body.id);
+				break;
+
+			case "userHidden":
+				this.hidden.add(data.body);
+				break;
+
+			case "userUnhidden":
+				this.hidden.delete(data.body);
 				break;
 
 			case "updateUserProfile":
@@ -430,6 +440,17 @@ export default class Connection {
 		});
 
 		this.blocking = new Set<string>(blockings.map((x) => x.blockerId));
+	}
+
+	private async updateHidden() {
+		const hidden = await UserListJoinings.find({
+			where: {
+				userList: { userId: this.user!.id, hideFromHomeTl: true },
+			},
+			select: ["userId"],
+		});
+
+		this.hidden = new Set<string>(hidden.map((x) => x.userId));
 	}
 
 	private async updateFollowingChannels() {

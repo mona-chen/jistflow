@@ -74,6 +74,8 @@ export default class extends Channel {
 		if (isUserRelated(note, this.muting)) return;
 		// 流れてきたNoteがブロックされているユーザーが関わるものだったら無視する
 		if (isUserRelated(note, this.blocking)) return;
+		// Members of lists with hideFromHome set
+		if (note.userId !== this.user!.id && isUserRelated(note, this.hidden)) return;
 
 		if (note.renote && !note.text && this.renoteMuting.has(note.userId)) return;
 

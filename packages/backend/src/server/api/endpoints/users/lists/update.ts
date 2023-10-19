@@ -1,6 +1,7 @@
-import { UserLists } from "@/models/index.js";
+import { UserListJoinings, UserLists, Users } from "@/models/index.js";
 import define from "../../../define.js";
 import { ApiError } from "../../../error.js";
+import { publishUserEvent } from "@/services/stream.js";
 
 export const meta = {
 	tags: ["lists"],
@@ -32,8 +33,9 @@ export const paramDef = {
 	properties: {
 		listId: { type: "string", format: "misskey:id" },
 		name: { type: "string", minLength: 1, maxLength: 100 },
+		hideFromHomeTl: { type: "boolean", nullable: true },
 	},
-	required: ["listId", "name"],
+	required: ["listId"],
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
@@ -47,9 +49,20 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.noSuchList);
 	}
 
-	await UserLists.update(userList.id, {
-		name: ps.name,
-	});
+	const partial = {
+		name: ps.name ?? undefined,
+		hideFromHomeTl: ps.hideFromHomeTl ?? undefined
+	};
+	if (Object.keys(partial).length > 0) await UserLists.update(userList.id, partial);
+
+	if (ps.hideFromHomeTl != null) {
+		UserListJoinings.findBy({ userListId: ps.listId })
+			.then(members => {
+				for (const member of members) {
+					publishUserEvent(userList.userId, ps.hideFromHomeTl ? "userHidden" : "userUnhidden", member.userId);
+				}
+			});
+	}
 
 	return await UserLists.pack(userList.id);
 });

@@ -20,6 +20,11 @@
 							<MkButton inline @click="deleteList()">{{
 								i18n.ts.delete
 							}}</MkButton>
+							<FormSection>
+								<FormSwitch v-model="hideFromHomeTl">{{
+									i18n.ts.hideFromHome
+								}}</FormSwitch>
+							</FormSection>
 						</div>
 					</div>
 				</transition>
@@ -72,12 +77,15 @@ import * as os from "@/os";
 import { mainRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import FormSwitch from "@/components/form/switch.vue";
+import FormSection from "@/components/form/section.vue";
 
 const props = defineProps<{
 	listId: string;
 }>();
 
 let list = $ref(null);
+let hideFromHomeTl = $ref(false);
 let users = $ref([]);
 
 function fetchList() {
@@ -85,6 +93,7 @@ function fetchList() {
 		listId: props.listId,
 	}).then((_list) => {
 		list = _list;
+		hideFromHomeTl = _list.hideFromHomeTl;
 		os.api("users/show", {
 			userIds: list.userIds,
 		}).then((_users) => {
@@ -142,7 +151,15 @@ async function deleteList() {
 	mainRouter.push("/my/lists");
 }
 
+async function hideFromHome() {
+	await os.api("users/lists/update", {
+		listId: list.id,
+		hideFromHomeTl: hideFromHomeTl,
+	});
+}
+
 watch(() => props.listId, fetchList, { immediate: true });
+watch(() => hideFromHomeTl, hideFromHome);
 
 const headerActions = $computed(() => []);
 

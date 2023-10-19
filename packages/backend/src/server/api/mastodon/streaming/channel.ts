@@ -31,6 +31,10 @@ export abstract class MastodonStream {
         return this.connection.blocking;
     }
 
+    protected get hidden() {
+        return this.connection.hidden;
+    }
+
     protected get subscriber() {
         return this.connection.subscriber;
     }
