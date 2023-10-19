@@ -43,7 +43,7 @@
 				<i
 					v-else-if="metadata.icon && !narrow"
 					class="icon"
-					:class="metadata.icon"
+					:class="icon(metadata.icon)"
 				></i>
 
 				<div class="title">
