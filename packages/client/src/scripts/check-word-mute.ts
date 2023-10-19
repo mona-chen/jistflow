@@ -79,7 +79,7 @@ export function getWordSoftMute(
 	mutedWords: Array<string | string[]>,
 	mutedLangs: Array<string | string[]>,
 ): Muted {
-	if (note.userId === meId) return NotMuted;
+	if (meId == null || note.userId === meId) return NotMuted;
 
 	if (mutedWords.length > 0) {
 		const noteMuted = checkWordMute(note, mutedWords);
