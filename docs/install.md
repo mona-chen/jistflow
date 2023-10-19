@@ -38,7 +38,7 @@ This document will guide you through manual installation of Iceshrimp on dev bra
 ### Download repository
 
 ```sh
-git clone https://iceshrimp.dev/iceshrimp/iceshrimp
+git clone https://iceshrimp.dev/iceshrimp/iceshrimp.git --depth=1
 ```
 
 ### Creating a new user
