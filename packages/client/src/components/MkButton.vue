@@ -1,34 +1,37 @@
 <template>
-<button
-	v-if="!link" class="bghgjjyj _button"
-	:class="{ inline, primary, gradate, danger, rounded, full }"
-	:type="type"
-	@click="emit('click', $event)"
-	@mousedown="onMousedown"
->
-	<div ref="ripples" class="ripples"></div>
-	<div class="content">
-		<slot></slot>
-	</div>
-</button>
-<MkA
-	v-else class="bghgjjyj _button"
-	:class="{ inline, primary, gradate, danger, rounded, full }"
-	:to="to"
-	@mousedown="onMousedown"
->
-	<div ref="ripples" class="ripples"></div>
-	<div class="content">
-		<slot></slot>
-	</div>
-</MkA>
+	<button
+		v-if="!link"
+		class="bghgjjyj _button"
+		:class="{ inline, primary, gradate, danger, rounded, full, mini, chip }"
+		:type="type"
+		@click="emit('click', $event)"
+		@mousedown="onMousedown"
+	>
+		<div ref="ripples" class="ripples"></div>
+		<div class="content">
+			<slot></slot>
+		</div>
+	</button>
+	<MkA
+		v-else
+		class="bghgjjyj _button"
+		:class="{ inline, primary, gradate, danger, rounded, full, mini }"
+		:to="to"
+		@mousedown="onMousedown"
+	>
+		<div ref="ripples" class="ripples"></div>
+		<div class="content">
+			<slot></slot>
+		</div>
+	</MkA>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted } from 'vue';
+import { nextTick, onMounted, ref } from "vue";
+import { vibrate } from "@/scripts/vibrate";
 
 const props = defineProps<{
-	type?: 'button' | 'submit' | 'reset';
+	type?: "button" | "submit" | "reset";
 	primary?: boolean;
 	gradate?: boolean;
 	rounded?: boolean;
@@ -39,19 +42,21 @@ const props = defineProps<{
 	wait?: boolean;
 	danger?: boolean;
 	full?: boolean;
+	mini?: boolean;
+	chip?: boolean;
 }>();
 
 const emit = defineEmits<{
-	(ev: 'click', payload: MouseEvent): void;
+	(ev: "click", payload: MouseEvent): void;
 }>();
 
-let el = $ref<HTMLElement | null>(null);
-let ripples = $ref<HTMLElement | null>(null);
+const el = ref<HTMLElement | null>(null);
+const ripples = ref<HTMLElement | null>(null);
 
 onMounted(() => {
 	if (props.autofocus) {
 		nextTick(() => {
-			el!.focus();
+			el.value!.focus();
 		});
 	}
 });
@@ -73,26 +78,33 @@ function onMousedown(evt: MouseEvent): void {
 	const target = evt.target! as HTMLElement;
 	const rect = target.getBoundingClientRect();
 
-	const ripple = document.createElement('div');
-	ripple.style.top = (evt.clientY - rect.top - 1).toString() + 'px';
-	ripple.style.left = (evt.clientX - rect.left - 1).toString() + 'px';
+	const ripple = document.createElement("div");
+	ripple.style.top = (evt.clientY - rect.top - 1).toString() + "px";
+	ripple.style.left = (evt.clientX - rect.left - 1).toString() + "px";
 
-	ripples!.appendChild(ripple);
+	ripples.value!.appendChild(ripple);
 
 	const circleCenterX = evt.clientX - rect.left;
 	const circleCenterY = evt.clientY - rect.top;
 
-	const scale = calcCircleScale(target.clientWidth, target.clientHeight, circleCenterX, circleCenterY);
+	const scale = calcCircleScale(
+		target.clientWidth,
+		target.clientHeight,
+		circleCenterX,
+		circleCenterY,
+	);
+
+	vibrate(10);
 
 	window.setTimeout(() => {
-		ripple.style.transform = 'scale(' + (scale / 2) + ')';
+		ripple.style.transform = "scale(" + scale / 2 + ")";
 	}, 1);
 	window.setTimeout(() => {
-		ripple.style.transition = 'all 1s ease';
-		ripple.style.opacity = '0';
+		ripple.style.transition = "all 1s ease";
+		ripple.style.opacity = "0";
 	}, 1000);
 	window.setTimeout(() => {
-		if (ripples) ripples.removeChild(ripple);
+		if (ripples.value) ripples.value.removeChild(ripple);
 	}, 2000);
 }
 </script>
@@ -103,11 +115,12 @@ function onMousedown(evt: MouseEvent): void {
 	z-index: 1; // 他コンポーネントのbox-shadowに隠されないようにするため
 	display: block;
 	min-width: 100px;
+	min-height: 35px;
 	width: max-content;
 	padding: 8px 16px;
 	text-align: center;
 	font-weight: normal;
-	font-size: 1em;
+	font-size: max(12px, 1em);
 	box-shadow: none;
 	text-decoration: none;
 	background: var(--buttonBg);
@@ -151,7 +164,11 @@ function onMousedown(evt: MouseEvent): void {
 	&.gradate {
 		font-weight: bold;
 		color: var(--fgOnAccent) !important;
-		background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
+		background: linear-gradient(
+			90deg,
+			var(--buttonGradateA),
+			var(--buttonGradateB)
+		);
 
 		&:not(:disabled):hover {
 			background: linear-gradient(90deg, var(--X8), var(--X8));
@@ -179,13 +196,25 @@ function onMousedown(evt: MouseEvent): void {
 		}
 	}
 
+	&.mini {
+		padding: 4px 8px;
+		font-size: max(12px, 0.9em);
+		border-radius: 100px;
+	}
+
+	&.chip {
+		padding: 4px 12px;
+		font-size: max(12px, 0.9em);
+		min-width: unset;
+		border-radius: 100px;
+	}
+
 	&:disabled {
 		opacity: 0.7;
 	}
 
 	&:focus-visible {
-		outline: solid 2px var(--focus);
-		outline-offset: 2px;
+		outline: auto;
 	}
 
 	&.inline {
@@ -212,7 +241,7 @@ function onMousedown(evt: MouseEvent): void {
 			background: rgba(0, 0, 0, 0.1);
 			opacity: 1;
 			transform: scale(1);
-			transition: all 0.5s cubic-bezier(0,.5,0,1);
+			transition: all 0.5s cubic-bezier(0, 0.5, 0, 1);
 		}
 	}
 

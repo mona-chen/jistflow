@@ -1,12 +1,36 @@
 import { markRaw, ref } from "vue";
 import { Storage } from "./pizzax";
-import { Theme } from "./scripts/theme";
 
 export const postFormActions = [];
 export const userActions = [];
 export const noteActions = [];
 export const noteViewInterruptors = [];
 export const notePostInterruptors = [];
+
+const menuOptions = [
+	"notifications",
+	"followRequests",
+	"messaging",
+	"explore",
+	"favorites",
+	"channels",
+	"search",
+];
+
+export const defaultReactions = [
+	"⭐",
+	"❤️",
+	"😆",
+	"🤔",
+	"😮",
+	"🎉",
+	"💢",
+	"😥",
+	"😇",
+	"🥴",
+	"🔥",
+	"🐟",
+];
 
 // TODO: それぞれいちいちwhereとかdefaultというキーを付けなきゃいけないの冗長なのでなんとかする(ただ型定義が面倒になりそう)
 //       あと、現行の定義の仕方なら「whereが何であるかに関わらずキー名の重複不可」という制約を付けられるメリットもあるからそのメリットを引き継ぐ方法も考えないといけない
@@ -15,6 +39,26 @@ export const defaultStore = markRaw(
 		tutorial: {
 			where: "account",
 			default: 0,
+		},
+		tlHomeHintClosed: {
+			where: "account",
+			default: false,
+		},
+		tlLocalHintClosed: {
+			where: "account",
+			default: false,
+		},
+		tlRecommendedHintClosed: {
+			where: "account",
+			default: false,
+		},
+		tlSocialHintClosed: {
+			where: "account",
+			default: false,
+		},
+		tlGlobalHintClosed: {
+			where: "account",
+			default: false,
 		},
 		keepCw: {
 			where: "account",
@@ -54,21 +98,13 @@ export const defaultStore = markRaw(
 		},
 		reactions: {
 			where: "account",
-			default: [
-				"⭐",
-				"❤️",
-				"😆",
-				"🤔",
-				"😮",
-				"🎉",
-				"💢",
-				"😥",
-				"😇",
-				"🥴",
-				"🍮",
-			],
+			default: defaultReactions,
 		},
 		mutedWords: {
+			where: "account",
+			default: [],
+		},
+		mutedLangs: {
 			where: "account",
 			default: [],
 		},
@@ -82,16 +118,7 @@ export const defaultStore = markRaw(
 		},
 		menu: {
 			where: "deviceAccount",
-			default: [
-				"notifications",
-				undefined,
-				"followRequests",
-				"messaging",
-				"explore",
-				"favorites",
-				"channels",
-				"search",
-			],
+			default: menuOptions,
 		},
 		visibility: {
 			where: "deviceAccount",
@@ -124,7 +151,7 @@ export const defaultStore = markRaw(
 		tl: {
 			where: "deviceAccount",
 			default: {
-				src: "home" as "home" | "local" | "social" | "global",
+				src: "home" as "home" | "local" | "social" | "global" | "recommended",
 				arg: null,
 			},
 		},
@@ -141,6 +168,10 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: true,
 		},
+		expandOnNoteClick: {
+			where: "device",
+			default: true,
+		},
 		nsfw: {
 			where: "device",
 			default: "respect" as "respect" | "force" | "ignore",
@@ -149,9 +180,17 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: true,
 		},
+		advancedMfm: {
+			where: "device",
+			default: true,
+		},
 		animatedMfm: {
 			where: "device",
 			default: true,
+		},
+		animatedMfmWarnShown: {
+			where: "device",
+			default: false,
 		},
 		loadRawImages: {
 			where: "device",
@@ -208,6 +247,10 @@ export const defaultStore = markRaw(
 		instanceTicker: {
 			where: "device",
 			default: "remote" as "none" | "remote" | "always",
+		},
+		reactionPickerSkinTone: {
+			where: "account",
+			default: 1,
 		},
 		reactionPickerSize: {
 			where: "device",
@@ -277,6 +320,10 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: false,
 		},
+		swipeOnMobile: {
+			where: "device",
+			default: true,
+		},
 		showAdminUpdates: {
 			where: "account",
 			default: true,
@@ -285,6 +332,43 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: false,
 		},
+		enableCustomKaTeXMacro: {
+			where: "device",
+			default: false,
+		},
+		enableEmojiReactions: {
+			where: "account",
+			default: true,
+		},
+		showEmojisInReactionNotifications: {
+			where: "account",
+			default: true,
+		},
+		showTimelineReplies: {
+			where: "deviceAccount",
+			default: false,
+		},
+		addRe: {
+			where: "account",
+			default: true,
+		},
+		detectPostLanguage: {
+			where: "deviceAccount",
+			default: true,
+		},
+		openServerInfo: {
+			where: "device",
+			default: true,
+		},
+		iconSet: {
+			where: "device",
+			default: "ph-bold" as
+				| "ph-bold"
+				| "ph-duotone"
+				| "ph-light"
+				| "ph" // this is ph-regular
+				| "ph-fill",
+		},
 	}),
 );
 
@@ -292,17 +376,17 @@ export const defaultStore = markRaw(
 
 const PREFIX = "miux:";
 
-type Plugin = {
+interface Plugin {
 	id: string;
 	name: string;
 	active: boolean;
 	configData: Record<string, any>;
 	token: string;
 	ast: any[];
-};
+}
 
 /**
- * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
+ * Storage for configuration information that does not need to be constantly loaded into memory (non-reactive)
  */
 import lightTheme from "@/themes/l-rosepinedawn.json5";
 import darkTheme from "@/themes/d-rosepine.json5";
@@ -314,8 +398,9 @@ export class ColdDeviceStorage {
 		syncDeviceDarkMode: true,
 		plugins: [] as Plugin[],
 		mediaVolume: 0.5,
+		vibrate: true,
 		sound_masterVolume: 0.3,
-		sound_note: { type: "None", volume: 0 },
+		sound_note: { type: "none", volume: 0 },
 		sound_noteMy: { type: "syuilo/up", volume: 1 },
 		sound_notification: { type: "syuilo/pope2", volume: 1 },
 		sound_chat: { type: "syuilo/pope1", volume: 1 },
@@ -391,12 +476,5 @@ export class ColdDeviceStorage {
 				ColdDeviceStorage.set(key, val);
 			},
 		};
-	}
-}
-
-// このファイルに書きたくないけどここに書かないと何故かVeturが認識しない
-declare module "@vue/runtime-core" {
-	interface ComponentCustomProperties {
-		$store: typeof defaultStore;
 	}
 }

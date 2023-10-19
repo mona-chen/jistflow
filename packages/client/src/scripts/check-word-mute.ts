@@ -1,41 +1,132 @@
-export function checkWordMute(
-	note: Record<string, any>,
-	me: Record<string, any> | null | undefined,
+import type * as firefish from "firefish-js";
+
+export interface Muted {
+	muted: boolean;
+	matched: string[];
+	what?: string; // "note" || "reply" || "renote" || "quote"
+}
+
+const NotMuted = { muted: false, matched: [] };
+
+function checkLangMute(
+	note: firefish.entities.Note,
+	mutedLangs: Array<string | string[]>,
+): Muted {
+	const mutedLangList = new Set(
+		mutedLangs.reduce((arr, x) => [...arr, ...(Array.isArray(x) ? x : [x])]),
+	);
+	if (mutedLangList.has((note.lang?.[0]?.lang || "").split("-")[0])) {
+		return { muted: true, matched: [note.lang?.[0]?.lang] };
+	}
+	return NotMuted;
+}
+
+function checkWordMute(
+	note: firefish.entities.Note,
 	mutedWords: Array<string | string[]>,
-): boolean {
-	// 自分自身
-	if (me && note.userId === me.id) return false;
+): Muted {
+	let text = `${note.cw ?? ""} ${note.text ?? ""}`;
+	if (note.files != null)
+		text += ` ${note.files.map((f) => f.comment ?? "").join(" ")}`;
+	text = text.trim();
 
-	if (mutedWords.length > 0) {
-		const text = ((note.cw ?? "") + "\n" + (note.text ?? "")).trim();
+	if (text === "") return NotMuted;
 
-		if (text === "") return false;
+	const result = { muted: false, matched: [] };
 
-		const matched = mutedWords.some((filter) => {
-			if (Array.isArray(filter)) {
-				// Clean up
-				const filteredFilter = filter.filter((keyword) => keyword !== "");
-				if (filteredFilter.length === 0) return false;
+	for (const mutePattern of mutedWords) {
+		if (Array.isArray(mutePattern)) {
+			// Clean up
+			const keywords = mutePattern.filter((keyword) => keyword !== "");
 
-				return filteredFilter.every((keyword) => text.includes(keyword));
-			} else {
-				// represents RegExp
-				const regexp = filter.match(/^\/(.+)\/(.*)$/);
-
-				// This should never happen due to input sanitisation.
-				if (!regexp) return false;
-
-				try {
-					return new RegExp(regexp[1], regexp[2]).test(text);
-				} catch (err) {
-					// This should never happen due to input sanitisation.
-					return false;
-				}
+			if (
+				keywords.length > 0 &&
+				keywords.every((keyword) =>
+					text.toLowerCase().includes(keyword.toLowerCase()),
+				)
+			) {
+				result.muted = true;
+				result.matched.push(...keywords);
 			}
-		});
+		} else {
+			// represents RegExp
+			const regexp = mutePattern.match(/^\/(.+)\/(.*)$/);
 
-		if (matched) return true;
+			// This should never happen due to input sanitisation.
+			if (!regexp) {
+				console.warn(`Found invalid regex in word mutes: ${mutePattern}`);
+				continue;
+			}
+
+			try {
+				if (new RegExp(regexp[1], regexp[2]).test(text)) {
+					result.muted = true;
+					result.matched.push(mutePattern);
+				}
+			} catch (err) {
+				// This should never happen due to input sanitisation.
+			}
+		}
 	}
 
-	return false;
+	result.matched = [...new Set(result.matched)];
+	return result;
+}
+
+export function getWordSoftMute(
+	note: firefish.entities.Note,
+	meId: string | null | undefined,
+	mutedWords: Array<string | string[]>,
+	mutedLangs: Array<string | string[]>,
+): Muted {
+	if (meId == null || note.userId === meId) return NotMuted;
+
+	if (mutedWords.length > 0) {
+		const noteMuted = checkWordMute(note, mutedWords);
+		if (noteMuted.muted) {
+			noteMuted.what = "note";
+			return noteMuted;
+		}
+
+		if (note.renote) {
+			const renoteMuted = checkWordMute(note.renote, mutedWords);
+			if (renoteMuted.muted) {
+				renoteMuted.what = note.text == null ? "renote" : "quote";
+				return renoteMuted;
+			}
+		}
+
+		if (note.reply) {
+			const replyMuted = checkWordMute(note.reply, mutedWords);
+			if (replyMuted.muted) {
+				replyMuted.what = "reply";
+				return replyMuted;
+			}
+		}
+	}
+	if (mutedLangs.length > 0) {
+		let noteLangMuted = checkLangMute(note, mutedLangs);
+		if (noteLangMuted.muted) {
+			noteLangMuted.what = "note";
+			return noteLangMuted;
+		}
+
+		if (note.renote) {
+			let renoteLangMuted = checkLangMute(note, mutedLangs);
+			if (renoteLangMuted.muted) {
+				renoteLangMuted.what = note.text == null ? "renote" : "quote";
+				return renoteLangMuted;
+			}
+		}
+
+		if (note.reply) {
+			let replyLangMuted = checkLangMute(note, mutedLangs);
+			if (replyLangMuted.muted) {
+				replyLangMuted.what = "reply";
+				return replyLangMuted;
+			}
+		}
+	}
+
+	return NotMuted;
 }

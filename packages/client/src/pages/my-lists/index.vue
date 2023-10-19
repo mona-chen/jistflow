@@ -1,37 +1,62 @@
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :content-max="700">
-		<div class="qkcjvfiv">
-			<div class="buttonWrapper">
-				<MkButton primary class="add" @click="create"><i class="ph-plus-bold ph-lg"></i> {{ i18n.ts.createList }}</MkButton>
-				<MkButton @click="deleteAll"><i class="ph-trash-bold ph-lg"></i> {{ i18n.ts.deleteAll }}</MkButton>
-			</div>
+	<MkStickyContainer>
+		<template #header
+			><MkPageHeader
+				:actions="headerActions"
+				:tabs="headerTabs"
+				:display-back-button="true"
+		/></template>
+		<MkSpacer :content-max="700">
+			<div class="qkcjvfiv">
+				<MkInfo class="_gap" :icon="'list-bullets'" :card="true">
+					<p>{{ i18n.ts.listsDesc }}</p>
+					<MkButton primary class="add" @click="create"
+						><i :class="icon('ph-plus')"></i>
+						{{ i18n.ts.createList }}</MkButton
+					>
+				</MkInfo>
 
-			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="pagination" class="lists _content">
-				<MkA v-for="list in items" :key="list.id" class="list _panel" :to="`/my/lists/${ list.id }`">
-					<div class="name">{{ list.name }}</div>
-					<MkAvatars :user-ids="list.userIds"/>
-				</MkA>
-			</MkPagination>
-		</div>
-	</MkSpacer>
-</MkStickyContainer>
+				<MkPagination
+					v-slot="{ items }"
+					ref="pagingComponent"
+					:pagination="pagination"
+					class="lists _content"
+				>
+					<MkA
+						v-for="list in items"
+						:key="list.id"
+						class="list _panel"
+						:to="`/my/lists/${list.id}`"
+					>
+						<div class="name">{{ list.name }}</div>
+						<MkAvatars :user-ids="list.userIds" />
+					</MkA>
+					<MkButton @click="deleteAll"
+						><i :class="icon('ph-trash')"></i>
+						{{ i18n.ts.deleteAll }}</MkButton
+					>
+				</MkPagination>
+			</div>
+		</MkSpacer>
+	</MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import MkPagination from '@/components/MkPagination.vue';
-import MkButton from '@/components/MkButton.vue';
-import MkAvatars from '@/components/MkAvatars.vue';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { computed, ref } from "vue";
 
-const pagingComponent = $ref<InstanceType<typeof MkPagination>>();
+import MkPagination from "@/components/MkPagination.vue";
+import MkButton from "@/components/MkButton.vue";
+import MkAvatars from "@/components/MkAvatars.vue";
+import MkInfo from "@/components/MkInfo.vue";
+import * as os from "@/os";
+import { i18n } from "@/i18n";
+import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
+
+const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
 const pagination = {
-	endpoint: 'users/lists/list' as const,
+	endpoint: "users/lists/list" as const,
 	limit: 10,
 };
 
@@ -40,30 +65,30 @@ async function create() {
 		title: i18n.ts.enterListName,
 	});
 	if (canceled) return;
-	await os.apiWithDialog('users/lists/create', { name: name });
-	pagingComponent.reload();
+	await os.apiWithDialog("users/lists/create", { name });
+	pagingComponent.value.reload();
 }
 
 async function deleteAll() {
 	const { canceled } = await os.confirm({
-		type: 'warning',
-		text: i18n.t('removeAreYouSure', { x: 'all lists' }),
+		type: "warning",
+		text: i18n.t("removeAreYouSure", { x: "all lists" }),
 	});
 	if (canceled) return;
 
-	await os.api('users/lists/delete-all');
+	await os.api("users/lists/delete-all");
 	os.success();
 }
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.manageLists,
-	icon: 'ph-list-bullets-bold ph-lg',
+	icon: `${icon("ph-list-bullets")}`,
 	action: {
-		icon: 'ph-plus-bold ph-lg',
+		icon: `${icon("ph-plus")}`,
 		handler: create,
 	},
 });
@@ -71,15 +96,6 @@ definePageMetadata({
 
 <style lang="scss" scoped>
 .qkcjvfiv {
-	> .buttonWrapper {
-		display: grid;
-		justify-content: center;
-
-		> .add {
-			margin: 0 auto var(--margin) auto;
-		}
-	}
-
 	> .lists {
 		> .list {
 			display: block;

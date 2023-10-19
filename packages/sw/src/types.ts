@@ -1,34 +1,51 @@
-import * as Misskey from "calckey-js";
+import * as firefish from "firefish-js";
 
-export type swMessageOrderType = "post" | "push";
+export type SwMessageOrderType = "post" | "push";
 
 export type SwMessage = {
 	type: "order";
-	order: swMessageOrderType;
-	loginId: string;
+	order: SwMessageOrderType;
+	loginId?: string;
 	url: string;
-	[x: string]: any;
+	[x: string]: unknown;
 };
 
 // Defined also @/services/push-notification.ts#L7-L14
-type pushNotificationDataSourceMap = {
-	notification: Misskey.entities.Notification;
-	unreadMessagingMessage: Misskey.entities.MessagingMessage;
-	readNotifications: { notificationIds: string[] };
+type PushNotificationDataSourceMap = {
+	notification: firefish.entities.Notification;
+	unreadAntennaNote: {
+		antenna: { id: string; name: string };
+		note: firefish.entities.Note;
+	};
 	readAllNotifications: undefined;
 	readAllMessagingMessages: undefined;
 	readAllMessagingMessagesOfARoom: { userId: string } | { groupId: string };
 };
 
-export type pushNotificationData<
-	K extends keyof pushNotificationDataSourceMap,
+export type PushNotificationData<
+	K extends keyof PushNotificationDataSourceMap,
 > = {
 	type: K;
-	body: pushNotificationDataSourceMap[K];
+	body: PushNotificationDataSourceMap[K];
 	userId: string;
 	dateTime: number;
 };
 
-export type pushNotificationDataMap = {
-	[K in keyof pushNotificationDataSourceMap]: pushNotificationData<K>;
+export type PushNotificationDataMap = {
+	[K in keyof PushNotificationDataSourceMap]: PushNotificationData<K>;
 };
+
+export type BadgeNames =
+	| "null"
+	| "antenna"
+	| "arrow-back-up"
+	| "at"
+	| "chart-arrows"
+	| "circle-check"
+	| "medal"
+	| "messages"
+	| "plus"
+	| "quote"
+	| "repeat"
+	| "user-plus"
+	| "users";

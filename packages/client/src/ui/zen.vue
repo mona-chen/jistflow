@@ -1,29 +1,34 @@
 <template>
-<div class="mk-app">
-	<RouterView/>
+	<div class="mk-app">
+		<RouterView />
 
-	<XCommon/>
-</div>
+		<XCommon />
+	</div>
 </template>
 
 <script lang="ts" setup>
-import { provide, ComputedRef } from 'vue';
-import XCommon from './_common_/common.vue';
-import { mainRouter } from '@/router';
-import { PageMetadata, provideMetadataReceiver, setPageMetadata } from '@/scripts/page-metadata';
-import { instanceName } from '@/config';
+import type { ComputedRef } from "vue";
+import { provide, ref } from "vue";
+import XCommon from "./_common_/common.vue";
+import { mainRouter } from "@/router";
+import type { PageMetadata } from "@/scripts/page-metadata";
+import {
+	provideMetadataReceiver,
+	setPageMetadata,
+} from "@/scripts/page-metadata";
+import { instanceName } from "@/config";
 
-let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
+const pageMetadata = ref<null | ComputedRef<PageMetadata>>();
 
-provide('router', mainRouter);
+provide("router", mainRouter);
 provideMetadataReceiver((info) => {
-	pageMetadata = info;
-	if (pageMetadata.value) {
-		document.title = `${pageMetadata.value.title} | ${instanceName}`;
+	pageMetadata.value = info;
+	if (pageMetadata.value.value) {
+		document.title = `${pageMetadata.value.value.title} | ${instanceName}`;
 	}
 });
 
-document.documentElement.style.overflowY = 'scroll';
+document.documentElement.style.overflowY = "scroll";
 </script>
 
 <style lang="scss" scoped>

@@ -3,13 +3,14 @@
  */
 
 import autobind from "autobind-decorator";
-import { Hpml } from "./evaluator";
+import type { Hpml } from "./evaluator";
 import { funcDefs } from "./lib";
+import icon from "@/scripts/icon";
 
-export type Fn = {
+export interface Fn {
 	slots: string[];
 	exec: (args: Record<string, any>) => ReturnType<Hpml["evaluate"]>;
-};
+}
 
 export type Type = "string" | "number" | "boolean" | "stringArray" | null;
 
@@ -17,29 +18,41 @@ export const literalDefs: Record<
 	string,
 	{ out: any; category: string; icon: any }
 > = {
-	text: { out: "string", category: "value", icon: "ph-quotes-bold ph-lg" },
+	text: {
+		out: "string",
+		category: "value",
+		icon: `${icon("ph-quotes")}`,
+	},
 	multiLineText: {
 		out: "string",
 		category: "value",
-		icon: "ph-align-left-bold ph-lg",
+		icon: `${icon("ph-align-left")}`,
 	},
 	textList: {
 		out: "stringArray",
 		category: "value",
-		icon: "ph-list-bold ph-lg",
+		icon: `${icon("ph-list")}`,
 	},
 	number: {
 		out: "number",
 		category: "value",
-		icon: "ph-sort-descending-up-bold ph-lg",
+		icon: `${icon("ph-sort-descending-up")}`,
 	},
-	ref: { out: null, category: "value", icon: "ph-magic-wand-bold ph-lg" },
+	ref: {
+		out: null,
+		category: "value",
+		icon: `${icon("ph-magic-wand")}`,
+	},
 	aiScriptVar: {
 		out: null,
 		category: "value",
-		icon: "ph-magic-wand-bold ph-lg",
+		icon: `${icon("ph-magic-wand")}`,
 	},
-	fn: { out: "function", category: "value", icon: "ph-radical-bold ph-lg" },
+	fn: {
+		out: "function",
+		category: "value",
+		icon: `${icon("ph-radical")}`,
+	},
 };
 
 export const blockDefs = [
@@ -57,7 +70,11 @@ export const blockDefs = [
 	})),
 ];
 
-export type PageVar = { name: string; value: any; type: Type };
+export interface PageVar {
+	name: string;
+	value: any;
+	type: Type;
+}
 
 export const envVarsDef: Record<string, Type> = {
 	AI: "string",

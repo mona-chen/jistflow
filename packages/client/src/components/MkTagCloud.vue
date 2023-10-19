@@ -1,39 +1,62 @@
 <template>
-<div ref="rootEl" class="meijqfqm">
-	<canvas :id="idForCanvas" ref="canvasEl" class="canvas" :width="width" height="300" @contextmenu.prevent="() => {}"></canvas>
-	<div :id="idForTags" ref="tagsEl" class="tags">
-		<ul>
-			<slot></slot>
-		</ul>
+	<div ref="rootEl" class="meijqfqm">
+		<canvas
+			:id="idForCanvas"
+			ref="canvasEl"
+			class="canvas"
+			:width="width"
+			height="300"
+			@contextmenu.prevent="() => {}"
+		></canvas>
+		<div :id="idForTags" ref="tagsEl" class="tags">
+			<ul>
+				<slot></slot>
+			</ul>
+		</div>
 	</div>
-</div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch, PropType, onBeforeUnmount } from 'vue';
-import tinycolor from 'tinycolor2';
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import tinycolor from "tinycolor2";
 
 const loaded = !!window.TagCanvas;
-const SAFE_FOR_HTML_ID = 'abcdefghijklmnopqrstuvwxyz';
+const SAFE_FOR_HTML_ID = "abcdefghijklmnopqrstuvwxyz";
 const computedStyle = getComputedStyle(document.documentElement);
-const idForCanvas = Array.from(Array(16)).map(() => SAFE_FOR_HTML_ID[Math.floor(Math.random() * SAFE_FOR_HTML_ID.length)]).join('');
-const idForTags = Array.from(Array(16)).map(() => SAFE_FOR_HTML_ID[Math.floor(Math.random() * SAFE_FOR_HTML_ID.length)]).join('');
-let available = $ref(false);
-let rootEl = $ref<HTMLElement | null>(null);
-let canvasEl = $ref<HTMLCanvasElement | null>(null);
-let tagsEl = $ref<HTMLElement | null>(null);
-let width = $ref(300);
+const idForCanvas = Array.from(Array(16))
+	.map(
+		() =>
+			SAFE_FOR_HTML_ID[
+				Math.floor(Math.random() * SAFE_FOR_HTML_ID.length)
+			],
+	)
+	.join("");
+const idForTags = Array.from(Array(16))
+	.map(
+		() =>
+			SAFE_FOR_HTML_ID[
+				Math.floor(Math.random() * SAFE_FOR_HTML_ID.length)
+			],
+	)
+	.join("");
+const available = ref(false);
+const rootEl = ref<HTMLElement | null>(null);
+const canvasEl = ref<HTMLCanvasElement | null>(null);
+const tagsEl = ref<HTMLElement | null>(null);
+const width = ref(300);
 
-watch($$(available), () => {
+watch(available, () => {
 	try {
 		window.TagCanvas.Start(idForCanvas, idForTags, {
-			textColour: '#ffffff',
-			outlineColour: tinycolor(computedStyle.getPropertyValue('--accent')).toHexString(),
+			textColour: "#ffffff",
+			outlineColour: tinycolor(
+				computedStyle.getPropertyValue("--accent"),
+			).toHexString(),
 			outlineRadius: 10,
-			initial: [-0.030, -0.010],
+			initial: [-0.03, -0.01],
 			frontSelect: true,
 			imageRadius: 8,
-			//dragControl: true,
+			// dragControl: true,
 			dragThreshold: 3,
 			wheelZoom: false,
 			reverse: true,
@@ -47,15 +70,19 @@ watch($$(available), () => {
 });
 
 onMounted(() => {
-	width = rootEl.offsetWidth;
+	width.value = rootEl.value.offsetWidth;
 
 	if (loaded) {
-		available = true;
+		available.value = true;
 	} else {
-		document.head.appendChild(Object.assign(document.createElement('script'), {
-			async: true,
-			src: '/client-assets/tagcanvas.min.js',
-		})).addEventListener('load', () => available = true);
+		document.head
+			.appendChild(
+				Object.assign(document.createElement("script"), {
+					async: true,
+					src: "/client-assets/tagcanvas.min.js",
+				}),
+			)
+			.addEventListener("load", () => (available.value = true));
 	}
 });
 

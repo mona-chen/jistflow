@@ -1,73 +1,106 @@
 <template>
-<div class="_formRoot">
-	<FormSuspense :p="init">
-		<FormButton primary @click="addAccount"><i class="ph-plus-bold ph-lg"></i> {{ i18n.ts.addAccount }}</FormButton>
+	<div class="_formRoot">
+		<FormSuspense :p="init">
+			<FormButton primary @click="addAccount"
+				><i :class="icon('ph-plus')"></i>
+				{{ i18n.ts.addAccount }}</FormButton
+			>
 
-		<div v-for="account in accounts" :key="account.id" class="_panel _button lcjjdxlm" @click="menu(account, $event)">
-			<div class="avatar">
-				<MkAvatar :user="account" class="avatar"/>
-			</div>
-			<div class="body">
-				<div class="name">
-					<MkUserName :user="account"/>
+			<button
+				v-for="account in accounts"
+				:key="account.id"
+				class="_panel _button lcjjdxlm"
+				@click="menu(account, $event)"
+			>
+				<div class="avatar">
+					<MkAvatar :user="account" class="avatar" disable-link />
 				</div>
-				<div class="acct">
-					<MkAcct :user="account"/>
+				<div class="body">
+					<div class="name">
+						<MkUserName :user="account" />
+					</div>
+					<div class="acct">
+						<MkAcct :user="account" />
+					</div>
 				</div>
-			</div>
-		</div>
-	</FormSuspense>
-</div>
+			</button>
+		</FormSuspense>
+	</div>
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, ref } from 'vue';
-import FormSuspense from '@/components/form/suspense.vue';
-import FormButton from '@/components/MkButton.vue';
-import * as os from '@/os';
-import { getAccounts, addAccount as addAccounts, removeAccount as _removeAccount, login, $i } from '@/account';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { defineAsyncComponent, ref } from "vue";
+import FormSuspense from "@/components/form/suspense.vue";
+import FormButton from "@/components/MkButton.vue";
+import * as os from "@/os";
+import {
+	$i,
+	removeAccount as _removeAccount,
+	addAccount as addAccounts,
+	getAccounts,
+	login,
+} from "@/account";
+import { i18n } from "@/i18n";
+import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const storedAccounts = ref<any>(null);
 const accounts = ref<any>(null);
 
 const init = async () => {
-	getAccounts().then(accounts => {
-		storedAccounts.value = accounts.filter(x => x.id !== $i!.id);
+	getAccounts()
+		.then((accounts) => {
+			storedAccounts.value = accounts.filter((x) => x.id !== $i!.id);
 
-		console.log(storedAccounts.value);
+			console.log(storedAccounts.value);
 
-		return os.api('users/show', {
-			userIds: storedAccounts.value.map(x => x.id),
+			return os.api("users/show", {
+				userIds: storedAccounts.value.map((x) => x.id),
+			});
+		})
+		.then((response) => {
+			accounts.value = response;
+			console.log(accounts.value);
 		});
-	}).then(response => {
-		accounts.value = response;
-		console.log(accounts.value);
-	});
 };
 
 function menu(account, ev) {
-	os.popupMenu([{
-		text: i18n.ts.switch,
-		icon: 'ph-swap-bold ph-lg',
-		action: () => switchAccount(account),
-	}, {
-		text: i18n.ts.remove,
-		icon: 'ph-trash-bold ph-lg',
-		danger: true,
-		action: () => removeAccount(account),
-	}], ev.currentTarget ?? ev.target);
+	os.popupMenu(
+		[
+			{
+				text: i18n.ts.switch,
+				icon: `${icon("ph-swap")}`,
+				action: () => switchAccount(account),
+			},
+			{
+				text: i18n.ts.remove,
+				icon: `${icon("ph-trash")}`,
+				danger: true,
+				action: () => removeAccount(account),
+			},
+		],
+		ev.currentTarget ?? ev.target,
+	);
 }
 
 function addAccount(ev) {
-	os.popupMenu([{
-		text: i18n.ts.existingAccount,
-		action: () => { addExistingAccount(); },
-	}, {
-		text: i18n.ts.createAccount,
-		action: () => { createAccount(); },
-	}], ev.currentTarget ?? ev.target);
+	os.popupMenu(
+		[
+			{
+				text: i18n.ts.existingAccount,
+				action: () => {
+					addExistingAccount();
+				},
+			},
+			{
+				text: i18n.ts.createAccount,
+				action: () => {
+					createAccount();
+				},
+			},
+		],
+		ev.currentTarget ?? ev.target,
+	);
 }
 
 function removeAccount(account) {
@@ -75,26 +108,36 @@ function removeAccount(account) {
 }
 
 function addExistingAccount() {
-	os.popup(defineAsyncComponent(() => import('@/components/MkSigninDialog.vue')), {}, {
-		done: res => {
-			addAccounts(res.id, res.i);
-			os.success();
+	os.popup(
+		defineAsyncComponent(() => import("@/components/MkSigninDialog.vue")),
+		{},
+		{
+			done: (res) => {
+				addAccounts(res.id, res.i);
+				os.success();
+			},
 		},
-	}, 'closed');
+		"closed",
+	);
 }
 
 function createAccount() {
-	os.popup(defineAsyncComponent(() => import('@/components/MkSignupDialog.vue')), {}, {
-		done: res => {
-			addAccounts(res.id, res.i);
-			switchAccountWithToken(res.i);
+	os.popup(
+		defineAsyncComponent(() => import("@/components/MkSignupDialog.vue")),
+		{},
+		{
+			done: (res) => {
+				addAccounts(res.id, res.i);
+				switchAccountWithToken(res.i);
+			},
 		},
-	}, 'closed');
+		"closed",
+	);
 }
 
 async function switchAccount(account: any) {
 	const fetchedAccounts: any[] = await getAccounts();
-	const token = fetchedAccounts.find(x => x.id === account.id).token;
+	const token = fetchedAccounts.find((x) => x.id === account.id).token;
 	switchAccountWithToken(token);
 }
 
@@ -102,13 +145,9 @@ function switchAccountWithToken(token: string) {
 	login(token);
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.accounts,
-	icon: 'ph-users-bold ph-lg',
+	icon: `${icon("ph-users")}`,
 });
 </script>
 
@@ -116,6 +155,8 @@ definePageMetadata({
 .lcjjdxlm {
 	display: flex;
 	padding: 16px;
+	width: 100%;
+	text-align: unset;
 
 	> .avatar {
 		display: block;

@@ -1,61 +1,75 @@
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :content-max="1000">
-		<transition name="fade" mode="out-in">
-			<div v-if="user">
-				<XFollowList :user="user" type="following"/>
-			</div>
-			<MkError v-else-if="error" @retry="fetchUser()"/>
-			<MkLoading v-else/>
-		</transition>
-	</MkSpacer>
-</MkStickyContainer>
+	<MkStickyContainer>
+		<template #header
+			><MkPageHeader :actions="headerActions" :tabs="headerTabs"
+		/></template>
+		<MkSpacer :content-max="1000">
+			<transition name="fade" mode="out-in">
+				<div v-if="user">
+					<XFollowList :user="user" type="following" />
+				</div>
+				<MkError v-else-if="error" @retry="fetchUser()" />
+				<MkLoading v-else />
+			</transition>
+		</MkSpacer>
+	</MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, inject, onMounted, onUnmounted, watch } from 'vue';
-import * as Acct from 'calckey-js/built/acct';
-import * as misskey from 'calckey-js';
-import XFollowList from './follow-list.vue';
-import * as os from '@/os';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { i18n } from '@/i18n';
+import { computed, ref, watch } from "vue";
+import * as Acct from "firefish-js/built/acct";
+import type * as firefish from "firefish-js";
+import XFollowList from "./follow-list.vue";
+import * as os from "@/os";
+import { definePageMetadata } from "@/scripts/page-metadata";
+import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
-const props = withDefaults(defineProps<{
-	acct: string;
-}>(), {
-});
+const props = withDefaults(
+	defineProps<{
+		acct: string;
+	}>(),
+	{},
+);
 
-let user = $ref<null | misskey.entities.UserDetailed>(null);
-let error = $ref(null);
+const user = ref<null | firefish.entities.UserDetailed>(null);
+const error = ref(null);
 
 function fetchUser(): void {
 	if (props.acct == null) return;
-	user = null;
-	os.api('users/show', Acct.parse(props.acct)).then(u => {
-		user = u;
-	}).catch(err => {
-		error = err;
-	});
+	user.value = null;
+	os.api("users/show", Acct.parse(props.acct))
+		.then((u) => {
+			user.value = u;
+		})
+		.catch((err) => {
+			error.value = err;
+		});
 }
 
 watch(() => props.acct, fetchUser, {
 	immediate: true,
 });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
-definePageMetadata(computed(() => user ? {
-	icon: 'ph-user-bold ph-lg',
-	title: user.name ? `${user.name} (@${user.username})` : `@${user.username}`,
-	subtitle: i18n.ts.following,
-	userName: user,
-	avatar: user,
-} : null));
+definePageMetadata(
+	computed(() =>
+		user.value
+			? {
+					icon: `${icon("ph-user")}`,
+					title: user.value.name
+						? `${user.value.name} (@${user.value.username})`
+						: `@${user.value.username}`,
+					subtitle: i18n.ts.following,
+					userName: user.value,
+					avatar: user.value,
+			  }
+			: null,
+	),
+);
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

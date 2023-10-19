@@ -1,45 +1,57 @@
 <template>
-<MkContainer id="photos-container" :max-height="300" :foldable="true">
-	<template #header><i class="ph-image-bold ph-lg" style="margin-right: 0.5em;"></i>{{ i18n.ts.images }}</template>
-	<div class="ujigsodd">
-		<MkLoading v-if="fetching"/>
-		<div v-if="!fetching && images.length > 0" class="stream">
-			<MkA
-				v-for="image in images"
-				:key="image.note.id + image.file.id"
-				class="img"
-				:to="notePage(image.note)"
-			>
-				<ImgWithBlurhash :hash="image.file.blurhash" :src="thumbnail(image.file)" :title="image.file.name"/>
-			</MkA>
+	<MkContainer id="photos-container" :max-height="300" :foldable="true">
+		<template #header
+			><i :class="icon('ph-image')" style="margin-right: 0.5em"></i
+			>{{ i18n.ts.images }}</template
+		>
+		<div class="ujigsodd">
+			<MkLoading v-if="fetching" />
+			<div v-if="!fetching && images.length > 0" class="stream">
+				<MkA
+					v-for="image in images"
+					:key="image.note.id + image.file.id"
+					class="img"
+					:to="notePage(image.note)"
+				>
+					<ImgWithBlurhash
+						:hash="image.file.blurhash"
+						:src="thumbnail(image.file)"
+						:title="image.file.name"
+					/>
+				</MkA>
+			</div>
+			<p v-if="!fetching && images.length == 0" class="empty">
+				{{ i18n.ts.nothing }}
+			</p>
 		</div>
-		<p v-if="!fetching && images.length == 0" class="empty">{{ i18n.ts.nothing }}</p>
-	</div>
-</MkContainer>
+	</MkContainer>
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
-import * as misskey from 'calckey-js';
-import { getStaticImageUrl } from '@/scripts/get-static-image-url';
-import { notePage } from '@/filters/note';
-import * as os from '@/os';
-import MkContainer from '@/components/MkContainer.vue';
-import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
+import { onMounted, ref } from "vue";
+import type * as firefish from "firefish-js";
+import { getStaticImageUrl } from "@/scripts/get-static-image-url";
+import { notePage } from "@/filters/note";
+import * as os from "@/os";
+import MkContainer from "@/components/MkContainer.vue";
+import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
+import { defaultStore } from "@/store";
+import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	user: misskey.entities.UserDetailed;
+	user: firefish.entities.UserDetailed;
 }>();
 
-let fetching = $ref(true);
-let images = $ref<{
-	note: misskey.entities.Note;
-	file: misskey.entities.DriveFile;
-}[]>([]);
+const fetching = ref(true);
+const images = ref<
+	{
+		note: firefish.entities.Note;
+		file: firefish.entities.DriveFile;
+	}[]
+>([]);
 
-function thumbnail(image: misskey.entities.DriveFile): string {
+function thumbnail(image: firefish.entities.DriveFile): string {
 	return defaultStore.state.disableShowingAnimatedImages
 		? getStaticImageUrl(image.thumbnailUrl)
 		: image.thumbnailUrl;
@@ -47,28 +59,28 @@ function thumbnail(image: misskey.entities.DriveFile): string {
 
 onMounted(() => {
 	const image = [
-		'image/jpeg',
-		'image/png',
-		'image/gif',
-		'image/apng',
-		'image/vnd.mozilla.apng',
-		'image/avif',
+		"image/jpeg",
+		"image/png",
+		"image/gif",
+		"image/apng",
+		"image/vnd.mozilla.apng",
+		"image/avif",
 	];
-	os.api('users/notes', {
+	os.api("users/notes", {
 		userId: props.user.id,
 		fileType: image,
-		excludeNsfw: defaultStore.state.nsfw !== 'ignore',
+		excludeNsfw: defaultStore.state.nsfw !== "ignore",
 		limit: 10,
-	}).then(notes => {
+	}).then((notes) => {
 		for (const note of notes) {
 			for (const file of note.files) {
-				images.push({
+				images.value.push({
 					note,
 					file,
 				});
 			}
 		}
-		fetching = false;
+		fetching.value = false;
 	});
 });
 </script>
@@ -87,6 +99,10 @@ onMounted(() => {
 		grid-gap: 6px;
 
 		> .img {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: relative;
 			height: 128px;
 			border-radius: 6px;
 			overflow: clip;

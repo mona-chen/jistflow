@@ -1,9 +1,9 @@
 import { URLSearchParams } from "node:url";
 import fetch from "node-fetch";
 import config from "@/config/index.js";
+import { Converter } from "opencc-js";
 import { getAgentByUrl } from "@/misc/fetch.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import { Notes } from "@/models/index.js";
 import { ApiError } from "../../error.js";
 import { getNote } from "../../common/getters.js";
 import define from "../../define.js";
@@ -11,7 +11,7 @@ import define from "../../define.js";
 export const meta = {
 	tags: ["notes"],
 
-	requireCredential: false,
+	requireCredential: true,
 	requireCredentialPrivateMode: true,
 
 	res: {
@@ -38,6 +38,13 @@ export const paramDef = {
 	required: ["noteId", "targetLang"],
 } as const;
 
+function convertChinese(convert: boolean, src: string) {
+	if (!convert) return src;
+
+	const converter = Converter({ from: "cn", to: "twp" });
+	return converter(src);
+}
+
 export default define(meta, paramDef, async (ps, user) => {
 	const note = await getNote(ps.noteId, user).catch((err) => {
 		if (err.id === "9725d0ce-ba28-4dde-95a7-2cbb2c15de24")
@@ -51,15 +58,54 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	const instance = await fetchMeta();
 
-	if (instance.deeplAuthKey == null) {
+	if (instance.deeplAuthKey == null && instance.libreTranslateApiUrl == null) {
 		return 204; // TODO: 良い感じのエラー返す
 	}
 
 	let targetLang = ps.targetLang;
 	if (targetLang.includes("-")) targetLang = targetLang.split("-")[0];
 
+	if (instance.libreTranslateApiUrl != null) {
+		const jsonBody = {
+			q: note.text,
+			source: "auto",
+			target: targetLang,
+			format: "text",
+			api_key: instance.libreTranslateApiKey ?? "",
+		};
+
+		const url = new URL(instance.libreTranslateApiUrl);
+		if (url.pathname.endsWith("/")) {
+			url.pathname = url.pathname.slice(0, -1);
+		}
+		if (!url.pathname.endsWith("/translate")) {
+			url.pathname += "/translate";
+		}
+		const res = await fetch(url.toString(), {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(jsonBody),
+			agent: getAgentByUrl,
+		});
+
+		const json = (await res.json()) as {
+			detectedLanguage?: {
+				confidence: number;
+				language: string;
+			};
+			translatedText: string;
+		};
+
+		return {
+			sourceLang: json.detectedLanguage?.language,
+			text: convertChinese(ps.targetLang === "zh-TW", json.translatedText),
+		};
+	}
+
 	const params = new URLSearchParams();
-	params.append("auth_key", instance.deeplAuthKey);
+	params.append("auth_key", instance.deeplAuthKey ?? "");
 	params.append("text", note.text);
 	params.append("target_lang", targetLang);
 
@@ -89,6 +135,6 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	return {
 		sourceLang: json.translations[0].detected_source_language,
-		text: json.translations[0].text,
+		text: convertChinese(ps.targetLang === "zh-TW", json.translations[0].text),
 	};
 });

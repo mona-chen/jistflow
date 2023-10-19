@@ -1,27 +1,39 @@
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions"/></template>
-	<div class="mk-group-page">
-		<div class="_section members _gap">
-			<div class="_content">
-				<div class="users">
-					<div v-for="user in users" :key="user.id" class="user _panel">
-						<MkAvatar :user="user" class="avatar" :show-indicator="true" />
-						<div class="body">
-							<MkUserName :user="user" class="name" />
-							<MkAcct :user="user" class="acct" />
-						</div>
-						<div class="action">
-							<button class="_button" @click="removeUser(user)">
-								<i class="ph-x-bold ph-lg"></i>
-							</button>
+	<MkStickyContainer>
+		<template #header><MkPageHeader :actions="headerActions" /></template>
+		<div class="mk-group-page">
+			<div class="_section members _gap">
+				<div class="_content">
+					<div class="users">
+						<div
+							v-for="user in users"
+							:key="user.id"
+							class="user _panel"
+						>
+							<MkAvatar
+								:user="user"
+								class="avatar"
+								:show-indicator="true"
+							/>
+							<div class="body">
+								<MkUserName :user="user" class="name" />
+								<MkAcct :user="user" class="acct" />
+							</div>
+							<div class="action">
+								<button
+									class="_button"
+									:aria-label="i18n.t('removeMember')"
+									@click="removeUser(user)"
+								>
+									<i :class="icon('ph-x')"></i>
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</MkStickyContainer>
+	</MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
@@ -30,6 +42,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
 import { useRouter } from "@/router";
 import * as os from "@/os";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	groupId: {
@@ -47,7 +60,7 @@ watch(
 	() => props.groupId,
 	() => {
 		fetch();
-	}
+	},
 );
 
 async function fetch() {
@@ -66,7 +79,7 @@ async function fetch() {
 fetch();
 
 function invite() {
-	os.selectUser().then((user) => {
+	os.selectLocalUser().then((user) => {
 		os.apiWithDialog("users/groups/invite", {
 			groupId: group.value.id,
 			userId: user.id,
@@ -92,14 +105,14 @@ async function renameGroup() {
 
 	await os.api("users/groups/update", {
 		groupId: group.value.id,
-		name: name,
+		name,
 	});
 
 	group.value.name = name;
 }
 
 function transfer() {
-	os.selectUser().then((user) => {
+	os.selectLocalUser().then((user) => {
 		os.apiWithDialog("users/groups/transfer", {
 			groupId: group.value.id,
 			userId: user.id,
@@ -123,30 +136,32 @@ async function deleteGroup() {
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.members,
-		icon: "ph-users-three-bold ph-lg",
+		icon: `${icon("ph-users-three")}`,
 	})),
 );
 
-const headerActions = $computed(() => [
+const headerActions = computed(() => [
 	{
-		icon: 'ph-plus-bold ph-lg',
+		icon: `${icon("ph-plus")}`,
 		text: i18n.ts.invite,
 		handler: invite,
-	}, {
-		icon: 'ph-cursor-text-bold ph-lg',
+	},
+	{
+		icon: `${icon("ph-cursor-text")}`,
 		text: i18n.ts.rename,
 		handler: renameGroup,
-	}, {
-		icon: 'ph-arrows-left-right-bold ph-lg',
+	},
+	{
+		icon: `${icon("ph-arrows-left-right")}`,
 		text: i18n.ts.transfer,
 		handler: transfer,
-	}, {
-		icon: 'ph-trash-bold ph-lg',
+	},
+	{
+		icon: `${icon("ph-trash")}`,
 		text: i18n.ts.delete,
 		handler: deleteGroup,
 	},
 ]);
-
 </script>
 
 <style lang="scss" scoped>

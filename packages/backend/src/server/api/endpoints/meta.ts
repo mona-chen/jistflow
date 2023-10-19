@@ -1,9 +1,9 @@
+import JSON5 from "json5";
 import { IsNull, MoreThan } from "typeorm";
 import config from "@/config/index.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { Ads, Emojis, Users } from "@/models/index.js";
-import { DB_MAX_NOTE_TEXT_LENGTH } from "@/misc/hard-limits.js";
-import { MAX_NOTE_TEXT_LENGTH } from "@/const.js";
+import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
 import define from "../define.js";
 
 export const meta = {
@@ -42,7 +42,7 @@ export const meta = {
 				optional: false,
 				nullable: false,
 				format: "url",
-				example: "https://calckey.example.com",
+				example: "https://firefish.example.com",
 			},
 			description: {
 				type: "string",
@@ -68,13 +68,13 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "https://codeberg.org/calckey/calckey",
+				default: "https://git.joinfirefish.org/firefish/firefish",
 			},
 			feedbackUrl: {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "https://codeberg.org/calckey/calckey/issues",
+				default: "https://git.joinfirefish.org/firefish/firefish/issues",
 			},
 			defaultDarkTheme: {
 				type: "string",
@@ -155,7 +155,7 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "/assets/ai.png",
+				default: "/static-assets/badges/info.webp",
 			},
 			bannerUrl: {
 				type: "string",
@@ -166,7 +166,7 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "https://xn--931a.moe/aiart/yubitun.png",
+				default: "/static-assets/badges/error.webp",
 			},
 			iconUrl: {
 				type: "string",
@@ -174,6 +174,11 @@ export const meta = {
 				nullable: true,
 			},
 			maxNoteTextLength: {
+				type: "number",
+				optional: false,
+				nullable: false,
+			},
+			maxCaptionTextLength: {
 				type: "number",
 				optional: false,
 				nullable: false,
@@ -263,21 +268,6 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
-			enableTwitterIntegration: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
-			enableGithubIntegration: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
-			enableDiscordIntegration: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
 			enableServiceWorker: {
 				type: "boolean",
 				optional: false,
@@ -318,7 +308,7 @@ export const meta = {
 						optional: false,
 						nullable: false,
 					},
-					elasticsearch: {
+					searchFilters: {
 						type: "boolean",
 						optional: false,
 						nullable: false,
@@ -334,21 +324,6 @@ export const meta = {
 						nullable: false,
 					},
 					objectStorage: {
-						type: "boolean",
-						optional: false,
-						nullable: false,
-					},
-					twitter: {
-						type: "boolean",
-						optional: false,
-						nullable: false,
-					},
-					github: {
-						type: "boolean",
-						optional: false,
-						nullable: false,
-					},
-					discord: {
 						type: "boolean",
 						optional: false,
 						nullable: false,
@@ -383,6 +358,17 @@ export const meta = {
 				optional: "false",
 				nullable: false,
 				default: "⭐",
+			},
+			donationLink: {
+				type: "string",
+				optional: "true",
+				nullable: true,
+			},
+			enableServerMachineStats: {
+				type: "boolean",
+				optional: "true",
+				nullable: false,
+				default: false,
 			},
 		},
 	},
@@ -456,9 +442,15 @@ export default define(meta, paramDef, async (ps, me) => {
 		backgroundImageUrl: instance.backgroundImageUrl,
 		logoImageUrl: instance.logoImageUrl,
 		maxNoteTextLength: MAX_NOTE_TEXT_LENGTH, // 後方互換性のため
+		maxCaptionTextLength: MAX_CAPTION_TEXT_LENGTH,
 		emojis: instance.privateMode && !me ? [] : await Emojis.packMany(emojis),
-		defaultLightTheme: instance.defaultLightTheme,
-		defaultDarkTheme: instance.defaultDarkTheme,
+		// クライアントの手間を減らすためあらかじめJSONに変換しておく
+		defaultLightTheme: instance.defaultLightTheme
+			? JSON.stringify(JSON5.parse(instance.defaultLightTheme))
+			: null,
+		defaultDarkTheme: instance.defaultDarkTheme
+			? JSON.stringify(JSON5.parse(instance.defaultDarkTheme))
+			: null,
 		ads:
 			instance.privateMode && !me
 				? []
@@ -471,14 +463,14 @@ export default define(meta, paramDef, async (ps, me) => {
 				  })),
 		enableEmail: instance.enableEmail,
 
-		enableTwitterIntegration: instance.enableTwitterIntegration,
-		enableGithubIntegration: instance.enableGithubIntegration,
-		enableDiscordIntegration: instance.enableDiscordIntegration,
-
 		enableServiceWorker: instance.enableServiceWorker,
 
-		translatorAvailable: instance.deeplAuthKey != null,
+		translatorAvailable:
+			instance.deeplAuthKey != null || instance.libreTranslateApiUrl != null,
 		defaultReaction: instance.defaultReaction,
+		donationLink: instance.donationLink,
+		enableServerMachineStats: instance.enableServerMachineStats,
+		enableIdenticonGeneration: instance.enableIdenticonGeneration,
 
 		...(ps.detail
 			? {
@@ -489,6 +481,7 @@ export default define(meta, paramDef, async (ps, me) => {
 					requireSetup:
 						(await Users.countBy({
 							host: IsNull(),
+							isAdmin: true,
 						})) === 0,
 			  }
 			: {}),
@@ -508,14 +501,13 @@ export default define(meta, paramDef, async (ps, me) => {
 			recommendedTimeline: !instance.disableRecommendedTimeline,
 			globalTimeLine: !instance.disableGlobalTimeline,
 			emailRequiredForSignup: instance.emailRequiredForSignup,
-			elasticsearch: config.elasticsearch ? true : false,
+			searchFilters: config.meilisearch ? true : false,
 			hcaptcha: instance.enableHcaptcha,
 			recaptcha: instance.enableRecaptcha,
 			objectStorage: instance.useObjectStorage,
-			twitter: instance.enableTwitterIntegration,
-			github: instance.enableGithubIntegration,
-			discord: instance.enableDiscordIntegration,
 			serviceWorker: instance.enableServiceWorker,
+			postEditing: true,
+			postImports: instance.experimentalFeatures?.postImports || false,
 			miauth: true,
 		};
 	}

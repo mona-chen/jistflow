@@ -1,6 +1,23 @@
+/* atkinson-hyperlegible-regular - latin_latin-ext */
+@font-face {
+	font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+	font-family: "Atkinson Hyperlegible";
+	font-style: normal;
+	font-weight: 400;
+	src: url("/static-assets/fonts/atkinson-hyperlegible-v11-latin_latin-ext-regular.woff2")
+		format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
 html {
 	background-color: var(--bg);
 	color: var(--fg);
+}
+
+@media (prefers-color-scheme: dark) {
+	html {
+		--bg: rgb(17, 17, 27);
+		--fg: rgb(224, 222, 244);
+	}
 }
 
 #splash {
@@ -26,9 +43,6 @@ html {
 	width: 64px;
 	height: 64px;
 	pointer-events: none;
-	animation-duration: 1s;
-	animation-iteration-count: infinite;
-	animation-name: tada;
 }
 
 #splashSpinner {
@@ -101,13 +115,9 @@ html {
 	}
 }
 
-@media(prefers-reduced-motion) {
+@media (prefers-reduced-motion) {
 	#splashSpinner {
 		display: block;
-	}
-
-	#splashIcon {
-		animation: none;
 	}
 }
 
@@ -123,5 +133,5 @@ html {
 	height: 0;
 	text-align: center;
 	padding-top: 100px;
-	font-family: sans-serif;
+	font-family: "Atkinson Hyperlegible", sans-serif;
 }

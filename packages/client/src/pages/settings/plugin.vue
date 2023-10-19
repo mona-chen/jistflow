@@ -1,53 +1,85 @@
 <template>
-<div class="_formRoot">
-	<FormLink to="/settings/plugin/install"><template #icon><i class="ph-download-simple-bold ph-lg"></i></template>{{ i18n.ts._plugin.install }}</FormLink>
+	<div class="_formRoot">
+		<FormLink to="/settings/plugin/install"
+			><template #icon
+				><i :class="icon('ph-download-simple')"></i></template
+			>{{ i18n.ts._plugin.install }}</FormLink
+		>
 
-	<FormSection>
-		<template #label>{{ i18n.ts.manage }}</template>
-		<div v-for="plugin in plugins" :key="plugin.id" class="_formBlock _panel" style="padding: 20px;">
-			<span style="display: flex;"><b>{{ plugin.name }}</b><span style="margin-left: auto;">v{{ plugin.version }}</span></span>
+		<FormSection>
+			<template #label>{{ i18n.ts.manage }}</template>
+			<div
+				v-for="plugin in plugins"
+				:key="plugin.id"
+				class="_formBlock _panel"
+				style="padding: 20px"
+			>
+				<span style="display: flex"
+					><b>{{ plugin.name }}</b
+					><span style="margin-left: auto"
+						>v{{ plugin.version }}</span
+					></span
+				>
 
-			<FormSwitch class="_formBlock" :model-value="plugin.active" @update:modelValue="changeActive(plugin, $event)">{{ i18n.ts.makeActive }}</FormSwitch>
+				<FormSwitch
+					class="_formBlock"
+					:model-value="plugin.active"
+					@update:modelValue="changeActive(plugin, $event)"
+					>{{ i18n.ts.makeActive }}</FormSwitch
+				>
 
-			<MkKeyValue class="_formBlock">
-				<template #key>{{ i18n.ts.author }}</template>
-				<template #value>{{ plugin.author }}</template>
-			</MkKeyValue>
-			<MkKeyValue class="_formBlock">
-				<template #key>{{ i18n.ts.description }}</template>
-				<template #value>{{ plugin.description }}</template>
-			</MkKeyValue>
-			<MkKeyValue class="_formBlock">
-				<template #key>{{ i18n.ts.permission }}</template>
-				<template #value>{{ plugin.permission }}</template>
-			</MkKeyValue>
+				<MkKeyValue class="_formBlock">
+					<template #key>{{ i18n.ts.author }}</template>
+					<template #value>{{ plugin.author }}</template>
+				</MkKeyValue>
+				<MkKeyValue class="_formBlock">
+					<template #key>{{ i18n.ts.description }}</template>
+					<template #value>{{ plugin.description }}</template>
+				</MkKeyValue>
+				<MkKeyValue class="_formBlock">
+					<template #key>{{ i18n.ts.permission }}</template>
+					<template #value>{{ plugin.permission }}</template>
+				</MkKeyValue>
 
-			<div style="display: flex; gap: var(--margin); flex-wrap: wrap;">
-				<MkButton v-if="plugin.config" inline @click="config(plugin)"><i class="ph-gear-six-bold ph-lg"></i> {{ i18n.ts.settings }}</MkButton>
-				<MkButton inline danger @click="uninstall(plugin)"><i class="ph-trash-bold ph-lg"></i> {{ i18n.ts.uninstall }}</MkButton>
+				<div style="display: flex; gap: var(--margin); flex-wrap: wrap">
+					<MkButton
+						v-if="plugin.config"
+						inline
+						@click="config(plugin)"
+						><i :class="icon('ph-gear-six')"></i>
+						{{ i18n.ts.settings }}</MkButton
+					>
+					<MkButton inline danger @click="uninstall(plugin)"
+						><i :class="icon('ph-trash')"></i>
+						{{ i18n.ts.uninstall }}</MkButton
+					>
+				</div>
 			</div>
-		</div>
-	</FormSection>
-</div>
+		</FormSection>
+	</div>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref } from 'vue';
-import FormLink from '@/components/form/link.vue';
-import FormSwitch from '@/components/form/switch.vue';
-import FormSection from '@/components/form/section.vue';
-import MkButton from '@/components/MkButton.vue';
-import MkKeyValue from '@/components/MkKeyValue.vue';
-import * as os from '@/os';
-import { ColdDeviceStorage } from '@/store';
-import { unisonReload } from '@/scripts/unison-reload';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { nextTick, ref } from "vue";
+import FormLink from "@/components/form/link.vue";
+import FormSwitch from "@/components/form/switch.vue";
+import FormSection from "@/components/form/section.vue";
+import MkButton from "@/components/MkButton.vue";
+import MkKeyValue from "@/components/MkKeyValue.vue";
+import * as os from "@/os";
+import { ColdDeviceStorage } from "@/store";
+import { unisonReload } from "@/scripts/unison-reload";
+import { i18n } from "@/i18n";
+import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-const plugins = ref(ColdDeviceStorage.get('plugins'));
+const plugins = ref(ColdDeviceStorage.get("plugins"));
 
 function uninstall(plugin) {
-	ColdDeviceStorage.set('plugins', plugins.value.filter(x => x.id !== plugin.id));
+	ColdDeviceStorage.set(
+		"plugins",
+		plugins.value.filter((x) => x.id !== plugin.id),
+	);
 	os.success();
 	nextTick(() => {
 		unisonReload();
@@ -64,9 +96,9 @@ async function config(plugin) {
 	const { canceled, result } = await os.form(plugin.name, config);
 	if (canceled) return;
 
-	const coldPlugins = ColdDeviceStorage.get('plugins');
-	coldPlugins.find(p => p.id === plugin.id)!.configData = result;
-	ColdDeviceStorage.set('plugins', coldPlugins);
+	const coldPlugins = ColdDeviceStorage.get("plugins");
+	coldPlugins.find((p) => p.id === plugin.id)!.configData = result;
+	ColdDeviceStorage.set("plugins", coldPlugins);
 
 	nextTick(() => {
 		location.reload();
@@ -74,25 +106,17 @@ async function config(plugin) {
 }
 
 function changeActive(plugin, active) {
-	const coldPlugins = ColdDeviceStorage.get('plugins');
-	coldPlugins.find(p => p.id === plugin.id)!.active = active;
-	ColdDeviceStorage.set('plugins', coldPlugins);
+	const coldPlugins = ColdDeviceStorage.get("plugins");
+	coldPlugins.find((p) => p.id === plugin.id)!.active = active;
+	ColdDeviceStorage.set("plugins", coldPlugins);
 
 	nextTick(() => {
 		location.reload();
 	});
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts.plugins,
-	icon: 'ph-plug-bold ph-lg',
+	icon: `${icon("ph-plug")}`,
 });
 </script>
-
-<style lang="scss" scoped>
-
-</style>

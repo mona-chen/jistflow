@@ -1,65 +1,98 @@
 <template>
-<div
-	class="pemppnzi _block"
-	@dragover.stop="onDragover"
-	@drop.stop="onDrop"
->
-	<textarea
-		ref="textEl"
-		v-model="text"
-		:placeholder="i18n.ts.inputMessageHere"
-		@keydown="onKeydown"
-		@compositionupdate="onCompositionUpdate"
-		@paste="onPaste"
-	></textarea>
-	<footer>
-		<div v-if="file" class="file" @click="file = null">{{ file.name }}</div>
-		<div class="buttons">
-			<button class="_button" @click="chooseFile"><i class="ph-upload-bold ph-lg"></i></button>
-			<button class="_button" @click="insertEmoji"><i class="ph-smiley-bold ph-lg"></i></button>
-			<button class="send _button" :disabled="!canSend || sending" :title="i18n.ts.send" @click="send">
-				<template v-if="!sending"><i class="ph-paper-plane-tilt-bold ph-lg"></i></template><template v-if="sending"><i class="ph-circle-notch-bold ph-lg fa-pulse ph-fw ph-lg"></i></template>
-			</button>
-		</div>
-	</footer>
-	<input ref="fileEl" type="file" @change="onChangeFile"/>
-</div>
+	<div
+		class="pemppnzi _block"
+		@dragover.stop="onDragover"
+		@drop.stop="onDrop"
+	>
+		<textarea
+			ref="textEl"
+			v-model="text"
+			:placeholder="i18n.ts.inputMessageHere"
+			@keydown="onKeydown"
+			@compositionupdate="onCompositionUpdate"
+			@paste="onPaste"
+		></textarea>
+		<footer>
+			<div v-if="file" class="file" @click="file = null">
+				{{ file.name }}
+			</div>
+			<div class="buttons">
+				<button
+					class="_button"
+					:aria-label="i18n.t('attachFile')"
+					@click="chooseFile"
+				>
+					<i :class="icon('ph-upload')"></i>
+				</button>
+				<button
+					class="_button"
+					:aria-label="i18n.t('chooseEmoji')"
+					@click="insertEmoji"
+				>
+					<i :class="icon('ph-smiley')"></i>
+				</button>
+				<button
+					class="send _button"
+					:disabled="!canSend || sending"
+					:title="i18n.ts.send"
+					:aria-label="i18n.ts.send"
+					@click="send"
+				>
+					<template v-if="!sending"
+						><i :class="icon('ph-paper-plane-tilt')"></i></template
+					><template v-if="sending"
+						><i :class="icon('ph-circle-notch fa-pulse ph-fw')"></i
+					></template>
+				</button>
+			</div>
+		</footer>
+		<input ref="fileEl" type="file" @change="onChangeFile" />
+	</div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, watch } from 'vue';
-import * as Misskey from 'calckey-js';
-import autosize from 'autosize';
-//import insertTextAtCursor from 'insert-text-at-cursor';
-import { throttle } from 'throttle-debounce';
-import { Autocomplete } from '@/scripts/autocomplete';
-import { formatTimeString } from '@/scripts/format-time-string';
-import { selectFile } from '@/scripts/select-file';
-import * as os from '@/os';
-import { stream } from '@/stream';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
-import { uploadFile } from '@/scripts/upload';
+import { computed, onMounted, ref, watch } from "vue";
+import type * as firefish from "firefish-js";
+import autosize from "autosize";
+// import insertTextAtCursor from 'insert-text-at-cursor';
+import { throttle } from "throttle-debounce";
+import { Autocomplete } from "@/scripts/autocomplete";
+import { formatTimeString } from "@/scripts/format-time-string";
+import { selectFile } from "@/scripts/select-file";
+import * as os from "@/os";
+import { stream } from "@/stream";
+import { defaultStore } from "@/store";
+import { i18n } from "@/i18n";
+import { uploadFile } from "@/scripts/upload";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	user?: Misskey.entities.UserDetailed | null;
-	group?: Misskey.entities.UserGroup | null;
+	user?: firefish.entities.UserDetailed | null;
+	group?: firefish.entities.UserGroup | null;
 }>();
 
-let textEl = $ref<HTMLTextAreaElement>();
-let fileEl = $ref<HTMLInputElement>();
+const textEl = ref<HTMLTextAreaElement>();
+const fileEl = ref<HTMLInputElement>();
 
-let text = $ref<string>('');
-let file = $ref<Misskey.entities.DriveFile | null>(null);
-let sending = $ref(false);
+const text = ref<string>("");
+const file = ref<firefish.entities.DriveFile | null>(null);
+const sending = ref(false);
 const typing = throttle(3000, () => {
-	stream.send('typingOnMessaging', props.user ? { partner: props.user.id } : { group: props.group?.id });
+	stream.send(
+		"typingOnMessaging",
+		props.user ? { partner: props.user.id } : { group: props.group?.id },
+	);
 });
 
-let draftKey = $computed(() => props.user ? 'user:' + props.user.id : 'group:' + props.group?.id);
-let canSend = $computed(() => (text != null && text !== '') || file != null);
+const draftKey = computed(() =>
+	props.user ? "user:" + props.user.id : "group:" + props.group?.id,
+);
+const canSend = computed(
+	() =>
+		(text.value != null && text.value.trim() !== "") || file.value != null,
+);
 
-watch([$$(text), $$(file)], saveDraft);
+watch([text, file], saveDraft);
 
 async function onPaste(ev: ClipboardEvent) {
 	if (!ev.clipboardData) return;
@@ -68,18 +101,22 @@ async function onPaste(ev: ClipboardEvent) {
 	const items = clipboardData.items;
 
 	if (items.length === 1) {
-		if (items[0].kind === 'file') {
+		if (items[0].kind === "file") {
 			const pastedFile = items[0].getAsFile();
 			if (!pastedFile) return;
-			const lio = pastedFile.name.lastIndexOf('.');
-			const ext = lio >= 0 ? pastedFile.name.slice(lio) : '';
-			const formatted = formatTimeString(new Date(pastedFile.lastModified), defaultStore.state.pastedFileName).replace(/{{number}}/g, '1') + ext;
+			const lio = pastedFile.name.lastIndexOf(".");
+			const ext = lio >= 0 ? pastedFile.name.slice(lio) : "";
+			const formatted =
+				formatTimeString(
+					new Date(pastedFile.lastModified),
+					defaultStore.state.pastedFileName,
+				).replace(/{{number}}/g, "1") + ext;
 			if (formatted) upload(pastedFile, formatted);
 		}
 	} else {
-		if (items[0].kind === 'file') {
+		if (items[0].kind === "file") {
 			os.alert({
-				type: 'error',
+				type: "error",
 				text: i18n.ts.onlyOneFileCanBeAttached,
 			});
 		}
@@ -89,11 +126,12 @@ async function onPaste(ev: ClipboardEvent) {
 function onDragover(ev: DragEvent) {
 	if (!ev.dataTransfer) return;
 
-	const isFile = ev.dataTransfer.items[0].kind === 'file';
+	const isFile = ev.dataTransfer.items[0].kind === "file";
 	const isDriveFile = ev.dataTransfer.types[0] === _DATA_TRANSFER_DRIVE_FILE_;
 	if (isFile || isDriveFile) {
 		ev.preventDefault();
-		ev.dataTransfer.dropEffect = ev.dataTransfer.effectAllowed === 'all' ? 'copy' : 'move';
+		ev.dataTransfer.dropEffect =
+			ev.dataTransfer.effectAllowed === "all" ? "copy" : "move";
 	}
 }
 
@@ -108,35 +146,40 @@ function onDrop(ev: DragEvent): void {
 	} else if (ev.dataTransfer.files.length > 1) {
 		ev.preventDefault();
 		os.alert({
-			type: 'error',
+			type: "error",
 			text: i18n.ts.onlyOneFileCanBeAttached,
 		});
 		return;
 	}
 
-	//#region ドライブのファイル
+	// #region ドライブのファイル
 	const driveFile = ev.dataTransfer.getData(_DATA_TRANSFER_DRIVE_FILE_);
-	if (driveFile != null && driveFile !== '') {
-		file = JSON.parse(driveFile);
+	if (driveFile != null && driveFile !== "") {
+		file.value = JSON.parse(driveFile);
 		ev.preventDefault();
 	}
-	//#endregion
+	// #endregion
 }
 
 function onKeydown(ev: KeyboardEvent) {
 	typing();
-	let sendOnEnter = localStorage.getItem('enterSendsMessage') === 'true' || defaultStore.state.enterSendsMessage;
+	const sendOnEnter =
+		localStorage.getItem("enterSendsMessage") === "true" ||
+		defaultStore.state.enterSendsMessage;
 	if (sendOnEnter) {
-		if ((ev.key === 'Enter') && (ev.ctrlKey || ev.metaKey)) {
-			textEl.value += '\n';
-		}
-		else if (ev.key === 'Enter' && !ev.shiftKey && !('ontouchstart' in document.documentElement) && canSend) {
+		if (ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)) {
+			textEl.value.value += "\n";
+		} else if (
+			ev.key === "Enter" &&
+			!ev.shiftKey &&
+			!("ontouchstart" in document.documentElement) &&
+			canSend.value
+		) {
 			ev.preventDefault();
 			send();
 		}
-	}
-	else {
-		if ((ev.key === 'Enter') && (ev.ctrlKey || ev.metaKey) && canSend) {
+	} else {
+		if (ev.key === "Enter" && (ev.ctrlKey || ev.metaKey) && canSend.value) {
 			ev.preventDefault();
 			send();
 		}
@@ -148,85 +191,94 @@ function onCompositionUpdate() {
 }
 
 function chooseFile(ev: MouseEvent) {
-	selectFile(ev.currentTarget ?? ev.target, i18n.ts.selectFile).then(selectedFile => {
-		file = selectedFile;
-	});
+	selectFile(ev.currentTarget ?? ev.target, i18n.ts.selectFile).then(
+		(selectedFile) => {
+			file.value = selectedFile;
+		},
+	);
 }
 
 function onChangeFile() {
-	if (fileEl.files![0]) upload(fileEl.files[0]);
+	if (fileEl.value.files![0]) upload(fileEl.value.files[0]);
 }
 
 function upload(fileToUpload: File, name?: string) {
-	uploadFile(fileToUpload, defaultStore.state.uploadFolder, name).then(res => {
-		file = res;
-	});
+	uploadFile(fileToUpload, defaultStore.state.uploadFolder, name).then(
+		(res) => {
+			file.value = res;
+		},
+	);
 }
 
 function send() {
-	sending = true;
-	os.api('messaging/messages/create', {
+	sending.value = true;
+	os.api("messaging/messages/create", {
 		userId: props.user ? props.user.id : undefined,
 		groupId: props.group ? props.group.id : undefined,
-		text: text ? text : undefined,
-		fileId: file ? file.id : undefined,
-	}).then(message => {
-		clear();
-	}).catch(err => {
-		console.error(err);
-	}).then(() => {
-		sending = false;
-	});
+		text: text.value ? text.value : undefined,
+		fileId: file.value ? file.value.id : undefined,
+	})
+		.then((message) => {
+			clear();
+		})
+		.catch((err) => {
+			console.error(err);
+		})
+		.then(() => {
+			sending.value = false;
+		});
 }
 
 function clear() {
-	text = '';
-	file = null;
+	text.value = "";
+	file.value = null;
 	deleteDraft();
 }
 
 function saveDraft() {
-	const drafts = JSON.parse(localStorage.getItem('message_drafts') || '{}');
+	const drafts = JSON.parse(localStorage.getItem("message_drafts") || "{}");
 
-	drafts[draftKey] = {
+	drafts[draftKey.value] = {
 		updatedAt: new Date(),
 		data: {
-			text: text,
-			file: file,
+			text: text.value,
+			file: file.value,
 		},
 	};
 
-	localStorage.setItem('message_drafts', JSON.stringify(drafts));
+	localStorage.setItem("message_drafts", JSON.stringify(drafts));
 }
 
 function deleteDraft() {
-	const drafts = JSON.parse(localStorage.getItem('message_drafts') || '{}');
+	const drafts = JSON.parse(localStorage.getItem("message_drafts") || "{}");
 
-	delete drafts[draftKey];
+	delete drafts[draftKey.value];
 
-	localStorage.setItem('message_drafts', JSON.stringify(drafts));
+	localStorage.setItem("message_drafts", JSON.stringify(drafts));
 }
 
 async function insertEmoji(ev: MouseEvent) {
-	os.openEmojiPicker(ev.currentTarget ?? ev.target, {}, textEl);
+	os.openEmojiPicker(ev.currentTarget ?? ev.target, {}, textEl.value);
 }
 
 onMounted(() => {
-	autosize(textEl);
+	autosize(textEl.value);
 
 	// TODO: detach when unmount
-	new Autocomplete(textEl, $$(text));
+	new Autocomplete(textEl.value, text);
 
 	// 書きかけの投稿を復元
-	const draft = JSON.parse(localStorage.getItem('message_drafts') || '{}')[draftKey];
+	const draft = JSON.parse(localStorage.getItem("message_drafts") || "{}")[
+		draftKey.value
+	];
 	if (draft) {
-		text = draft.data.text;
-		file = draft.data.file;
+		text.value = draft.data.text;
+		file.value = draft.data.file;
 	}
 });
 
 defineExpose({
-	file,
+	file: file.value,
 	upload,
 });
 </script>
@@ -277,7 +329,7 @@ defineExpose({
 		list-style: none;
 
 		&:after {
-			content: '';
+			content: "";
 			display: block;
 			clear: both;
 		}
@@ -354,7 +406,7 @@ defineExpose({
 		}
 	}
 
-	input[type=file] {
+	input[type="file"] {
 		display: none;
 	}
 }

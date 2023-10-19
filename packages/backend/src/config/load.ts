@@ -41,6 +41,7 @@ export default function load() {
 	config.url = url.origin;
 
 	config.port = config.port || parseInt(process.env.PORT || "", 10);
+	config.bind = config.bind || process.env.BIND;
 
 	mixin.version = meta.version;
 	mixin.host = url.host;
@@ -51,10 +52,29 @@ export default function load() {
 	mixin.apiUrl = `${mixin.scheme}://${mixin.host}/api`;
 	mixin.authUrl = `${mixin.scheme}://${mixin.host}/auth`;
 	mixin.driveUrl = `${mixin.scheme}://${mixin.host}/files`;
-	mixin.userAgent = `Calckey/${meta.version} (${config.url})`;
+	mixin.userAgent = `Firefish/${meta.version} (${config.url})`;
 	mixin.clientEntry = clientManifest["src/init.ts"];
 
-	if (!config.redis.prefix) config.redis.prefix = mixin.host;
+	if (!config.redis.prefix) config.redis.prefix = mixin.hostname;
+	if (config.cacheServer && !config.cacheServer.prefix)
+		config.cacheServer.prefix = mixin.hostname;
+
+	if (!config.clusterLimits) {
+		config.clusterLimits = {
+			web: 1,
+			queue: 1,
+		};
+	} else {
+		config.clusterLimits = {
+			web: 1,
+			queue: 1,
+			...config.clusterLimits,
+		};
+
+		if (config.clusterLimits.web! < 1 || config.clusterLimits.queue! < 1) {
+			throw new Error("Invalid cluster limits");
+		}
+	}
 
 	return Object.assign(config, mixin);
 }

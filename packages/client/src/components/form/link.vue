@@ -1,32 +1,38 @@
 <template>
-<div class="ffcbddfc" :class="{ inline }">
-	<a v-if="external" class="main _button" :href="to" target="_blank">
-		<span class="icon"><slot name="icon"></slot></span>
-		<span class="text"><slot></slot></span>
-		<span class="right">
-			<span class="text"><slot name="suffix"></slot></span>
-			<i class="ph-arrow-square-out-bold ph-lg icon"></i>
-		</span>
-	</a>
-	<MkA v-else class="main _button" :class="{ active }" :to="to" :behavior="behavior">
-		<span class="icon"><slot name="icon"></slot></span>
-		<span class="text"><slot></slot></span>
-		<span class="right">
-			<span class="text"><slot name="suffix"></slot></span>
-			<i class="ph-caret-right-bold ph-lg icon"></i>
-		</span>
-	</MkA>
-</div>
+	<div class="ffcbddfc" :class="{ inline }">
+		<a v-if="external" class="main _button" :href="to" target="_blank">
+			<span class="icon"><slot name="icon"></slot></span>
+			<span class="text"><slot></slot></span>
+			<span class="right">
+				<span class="text"><slot name="suffix"></slot></span>
+				<i :class="icon('ph-arrow-square-out icon')"></i>
+			</span>
+		</a>
+		<MkA
+			v-else
+			class="main _button"
+			:class="{ active }"
+			:to="to"
+			:behavior="behavior"
+		>
+			<span class="icon"><slot name="icon"></slot></span>
+			<span class="text"><slot></slot></span>
+			<span class="right">
+				<span class="text"><slot name="suffix"></slot></span>
+				<i :class="icon('ph-caret-right icon')"></i>
+			</span>
+		</MkA>
+	</div>
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import icon from "@/scripts/icon";
 
-const props = defineProps<{
+defineProps<{
 	to: string;
 	active?: boolean;
 	external?: boolean;
-	behavior?: null | 'window' | 'browser' | 'modalWindow';
+	behavior?: null | "window" | "browser" | "modalWindow";
 	inline?: boolean;
 }>();
 </script>

@@ -1,35 +1,28 @@
 <template>
-<XModalWindow
-	ref="dialog"
-	:width="600"
-	@close="dialog?.close()"
-	@closed="$emit('closed')"
->
-	<template #header>{{ i18n.ts._mfm.cheatSheet }}</template>
-
-	<div class="_monolithic_">
-		<div class="_section">
-			<XCheatSheet/>
-		</div>
-	</div>
-</XModalWindow>
+	<XModalWindow
+		ref="dialog"
+		:width="600"
+		@close="dialog?.close()"
+		@closed="$emit('closed')"
+	>
+		<template #header>{{ i18n.ts._mfm.cheatSheet }}</template>
+		<XCheatSheet :popup="true" style="background: var(--bg)" />
+	</XModalWindow>
 </template>
 
 <script lang="ts" setup>
-import XModalWindow from '@/components/MkModalWindow.vue';
-import XCheatSheet from '@/pages/mfm-cheat-sheet.vue';
-import { i18n } from '@/i18n';
+import { ref } from "vue";
+
+import XModalWindow from "@/components/MkModalWindow.vue";
+import XCheatSheet from "@/pages/mfm-cheat-sheet.vue";
+import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
-	(ev: 'done'): void;
-	(ev: 'closed'): void;
+	(ev: "done"): void;
+	(ev: "closed"): void;
 }>();
 
-const dialog = $ref<InstanceType<typeof XModalWindow>>();
-
-function close(res) {
-	dialog.close();
-}
+const dialog = ref<InstanceType<typeof XModalWindow>>();
 </script>
 
 <style lang="scss" scoped>
@@ -41,6 +34,4 @@ function close(res) {
 .fade-leave-to {
 	opacity: 0;
 }
-
 </style>
-

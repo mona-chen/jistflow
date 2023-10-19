@@ -1,20 +1,18 @@
-declare var self: ServiceWorkerGlobalScope;
-
+import { get } from "idb-keyval";
+import * as Acct from "firefish-js/built/acct";
+import type { PushNotificationDataMap } from "@/types";
 import {
 	createEmptyNotification,
 	createNotification,
 } from "@/scripts/create-notification";
 import { swLang } from "@/scripts/lang";
-import { swNotificationRead } from "@/scripts/notification-read";
-import { pushNotificationDataMap } from "@/types";
 import * as swos from "@/scripts/operations";
-import { acct as getAcct } from "@/filters/user";
 
-self.addEventListener("install", (ev) => {
-	ev.waitUntil(self.skipWaiting());
+globalThis.addEventListener("install", () => {
+	// ev.waitUntil(globalThis.skipWaiting());
 });
 
-self.addEventListener("activate", (ev) => {
+globalThis.addEventListener("activate", (ev) => {
 	ev.waitUntil(
 		caches
 			.keys()
@@ -25,11 +23,15 @@ self.addEventListener("activate", (ev) => {
 						.map((name) => caches.delete(name)),
 				),
 			)
-			.then(() => self.clients.claim()),
+			.then(() => globalThis.clients.claim()),
 	);
 });
 
-self.addEventListener("fetch", (ev) => {
+function offlineContentHTML(): string {
+	return `<!DOCTYPE html><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Offline</title><style>*{font-family:BIZ UDGothic,Roboto,HelveticaNeue,Arial,sans-serif}body,html{background-color:#191724;color:#e0def4;justify-content:center;margin:auto;padding:10px;text-align:center}button{border-radius:999px;padding:0 12px 0 12px;border:none;cursor:pointer;margin-bottom:12px}.button-big{background:linear-gradient(90deg,#c4a7e7,#ebbcba);line-height:50px}.button-big:hover{background:#31748f}.button-label-big{color:#191724;font-weight:700;font-size:20px;padding:12px}.button-label-small{color:#9ccfd8;font-size:16px;padding:12px}p{font-size:16px}#msg,.dont-worry{font-size:18px}.icon-warning{color:#f6c177;height:4rem;padding-top:2rem}h1{font-size:32px}code{font-family:Fira,FiraCode,monospace}@media screen and (max-width:500px){details{width:50%}}</style><body><svg class=icon-warning class="icon icon-tabler icon-tabler-alert-triangle"fill=none stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=2 viewBox="0 0 24 24"xmlns=http://www.w3.org/2000/svg><path d="M0 0h24v24H0z"fill=none stroke=none></path><path d="M12 9v2m0 4v.01"></path><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path></svg><h1>Looks like you're offline!</h1><button class=button-big onclick=location.reload(!0)><span class=button-label-big>Refresh</span></button><p class=dont-worry>Looks like Firefish couldn't connect to the server, probably because your device is offline.<p>The installed Service Worker is version <code>${_VERSION_}</code>`;
+}
+
+globalThis.addEventListener("fetch", (ev) => {
 	let isHTMLRequest = false;
 	if (ev.request.headers.get("sec-fetch-dest") === "document") {
 		isHTMLRequest = true;
@@ -41,90 +43,68 @@ self.addEventListener("fetch", (ev) => {
 
 	if (!isHTMLRequest) return;
 	ev.respondWith(
-		fetch(ev.request).catch(
-			() =>
-				new Response(`Offline. Service Worker @${_VERSION_}`, { status: 200 }),
-		),
+		fetch(ev.request).catch(() => {
+			return new Response(offlineContentHTML(), {
+				status: 200,
+				headers: {
+					"content-type": "text/html",
+				},
+			});
+		}),
 	);
 });
 
-self.addEventListener("push", (ev) => {
+globalThis.addEventListener("push", (ev) => {
 	// クライアント取得
 	ev.waitUntil(
-		self.clients
+		globalThis.clients
 			.matchAll({
 				includeUncontrolled: true,
 				type: "window",
 			})
-			.then(
-				async <K extends keyof pushNotificationDataMap>(
-					clients: readonly WindowClient[],
-				) => {
-					const data: pushNotificationDataMap[K] = ev.data?.json();
+			.then(async () => {
+				const data: PushNotificationDataMap[keyof PushNotificationDataMap] =
+					ev.data?.json();
 
-					switch (data.type) {
-						// case 'driveFileCreated':
-						case "notification":
-						case "unreadMessagingMessage":
-							// 1日以上経過している場合は無視
-							if (new Date().getTime() - data.dateTime > 1000 * 60 * 60 * 24)
-								break;
+				switch (data.type) {
+					// case 'driveFileCreated':
+					case "notification":
+					case "unreadAntennaNote":
+						// 1日以上経過している場合は無視
+						if (new Date().getTime() - data.dateTime > 1000 * 60 * 60 * 24)
+							break;
 
-							// クライアントがあったらストリームに接続しているということなので通知しない
-							if (clients.length !== 0) break;
+						return createNotification(data);
+					case "readAllNotifications":
+						await globalThis.registration
+							.getNotifications()
+							.then((notifications) =>
+								notifications.forEach(
+									(n) => n.tag !== "read_notification" && n.close(),
+								),
+							);
+						break;
+				}
 
-							return createNotification(data);
-						case "readAllNotifications":
-							for (const n of await self.registration.getNotifications()) {
-								if (n?.data?.type === "notification") n.close();
-							}
-							break;
-						case "readAllMessagingMessages":
-							for (const n of await self.registration.getNotifications()) {
-								if (n?.data?.type === "unreadMessagingMessage") n.close();
-							}
-							break;
-						case "readNotifications":
-							for (const n of await self.registration.getNotifications()) {
-								if (data.body?.notificationIds?.includes(n.data.body.id)) {
-									n.close();
-								}
-							}
-							break;
-						case "readAllMessagingMessagesOfARoom":
-							for (const n of await self.registration.getNotifications()) {
-								if (
-									n.data.type === "unreadMessagingMessage" &&
-									("userId" in data.body
-										? data.body.userId === n.data.body.userId
-										: data.body.groupId === n.data.body.groupId)
-								) {
-									n.close();
-								}
-							}
-							break;
-					}
-
-					return createEmptyNotification();
-				},
-			),
+				await createEmptyNotification();
+				return;
+			}),
 	);
 });
 
-self.addEventListener(
+(globalThis as unknown as ServiceWorkerGlobalScope).addEventListener(
 	"notificationclick",
-	<K extends keyof pushNotificationDataMap>(
-		ev: ServiceWorkerGlobalScopeEventMap["notificationclick"],
-	) => {
+	(ev: ServiceWorkerGlobalScopeEventMap["notificationclick"]) => {
 		ev.waitUntil(
-			(async () => {
+			(async (): Promise<void> => {
 				if (_DEV_) {
 					console.log("notificationclick", ev.action, ev.notification.data);
 				}
 
 				const { action, notification } = ev;
-				const data: pushNotificationDataMap[K] = notification.data;
-				const { userId: id } = data;
+				const data: PushNotificationDataMap[keyof PushNotificationDataMap] =
+					notification.data ?? {};
+				const { userId: loginId } = data;
 				let client: WindowClient | null = null;
 
 				switch (data.type) {
@@ -132,34 +112,35 @@ self.addEventListener(
 						switch (action) {
 							case "follow":
 								if ("userId" in data.body)
-									await swos.api("following/create", id, {
+									await swos.api("following/create", loginId, {
 										userId: data.body.userId,
 									});
 								break;
 							case "showUser":
 								if ("user" in data.body)
-									client = await swos.openUser(getAcct(data.body.user), id);
+									client = await swos.openUser(
+										Acct.toString(data.body.user),
+										loginId,
+									);
 								break;
 							case "reply":
 								if ("note" in data.body)
-									client = await swos.openPost({ reply: data.body.note }, id);
+									client = await swos.openPost(
+										{ reply: data.body.note },
+										loginId,
+									);
 								break;
 							case "renote":
 								if ("note" in data.body)
-									await swos.api("notes/create", id, {
+									await swos.api("notes/create", loginId, {
 										renoteId: data.body.note.id,
 									});
 								break;
 							case "accept":
 								switch (data.body.type) {
 									case "receiveFollowRequest":
-										await swos.api("following/requests/accept", id, {
+										await swos.api("following/requests/accept", loginId, {
 											userId: data.body.userId,
-										});
-										break;
-									case "groupInvited":
-										await swos.api("users/groups/invitations/accept", id, {
-											invitationId: data.body.invitation.id,
 										});
 										break;
 								}
@@ -167,13 +148,8 @@ self.addEventListener(
 							case "reject":
 								switch (data.body.type) {
 									case "receiveFollowRequest":
-										await swos.api("following/requests/reject", id, {
+										await swos.api("following/requests/reject", loginId, {
 											userId: data.body.userId,
-										});
-										break;
-									case "groupInvited":
-										await swos.api("users/groups/invitations/reject", id, {
-											invitationId: data.body.invitation.id,
 										});
 										break;
 								}
@@ -182,7 +158,7 @@ self.addEventListener(
 								client = await swos.openClient(
 									"push",
 									"/my/follow-requests",
-									id,
+									loginId,
 								);
 								break;
 							default:
@@ -191,35 +167,61 @@ self.addEventListener(
 										client = await swos.openClient(
 											"push",
 											"/my/follow-requests",
-											id,
+											loginId,
 										);
 										break;
-									case "groupInvited":
-										client = await swos.openClient("push", "/my/groups", id);
-										break;
 									case "reaction":
-										client = await swos.openNote(data.body.note.id, id);
+										client = await swos.openNote(data.body.note.id, loginId);
 										break;
 									default:
 										if ("note" in data.body) {
-											client = await swos.openNote(data.body.note.id, id);
+											client = await swos.openNote(data.body.note.id, loginId);
 										} else if ("user" in data.body) {
-											client = await swos.openUser(getAcct(data.body.user), id);
+											client = await swos.openUser(
+												Acct.toString(data.body.user),
+												loginId,
+											);
 										}
 										break;
 								}
 						}
 						break;
-					case "unreadMessagingMessage":
-						client = await swos.openChat(data.body, id);
+					case "unreadAntennaNote":
+						client = await swos.openAntenna(data.body.antenna.id, loginId);
 						break;
+					default:
+						switch (action) {
+							case "markAllAsRead":
+								await globalThis.registration
+									.getNotifications()
+									.then((notifications) =>
+										notifications.forEach(
+											(n) => n.tag !== "read_notification" && n.close(),
+										),
+									);
+								await get("accounts").then((accounts) => {
+									return Promise.all(
+										accounts.map(async (account) => {
+											await swos.sendMarkAllAsRead(account.id);
+										}),
+									);
+								});
+								break;
+							case "settings":
+								client = await swos.openClient(
+									"push",
+									"/settings/notifications",
+									loginId,
+								);
+								break;
+						}
 				}
 
 				if (client) {
 					client.focus();
 				}
 				if (data.type === "notification") {
-					swNotificationRead.then((that) => that.read(data));
+					await swos.sendMarkAllAsRead(loginId);
 				}
 
 				notification.close();
@@ -228,24 +230,28 @@ self.addEventListener(
 	},
 );
 
-self.addEventListener(
+(globalThis as unknown as ServiceWorkerGlobalScope).addEventListener(
 	"notificationclose",
-	<K extends keyof pushNotificationDataMap>(
-		ev: ServiceWorkerGlobalScopeEventMap["notificationclose"],
-	) => {
-		const data: pushNotificationDataMap[K] = ev.notification.data;
+	(ev: ServiceWorkerGlobalScopeEventMap["notificationclose"]) => {
+		const data: PushNotificationDataMap[keyof PushNotificationDataMap] =
+			ev.notification.data;
 
-		if (data.type === "notification") {
-			swNotificationRead.then((that) => that.read(data));
-		}
+		ev.waitUntil(
+			(async (): Promise<void> => {
+				if (data.type === "notification") {
+					await swos.sendMarkAllAsRead(data.userId);
+				}
+				return;
+			})(),
+		);
 	},
 );
 
-self.addEventListener(
+(globalThis as unknown as ServiceWorkerGlobalScope).addEventListener(
 	"message",
 	(ev: ServiceWorkerGlobalScopeEventMap["message"]) => {
 		ev.waitUntil(
-			(async () => {
+			(async (): Promise<void> => {
 				switch (ev.data) {
 					case "clear":
 						// Cache Storage全削除

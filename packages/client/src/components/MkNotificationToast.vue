@@ -1,39 +1,52 @@
 <template>
-<div class="mk-notification-toast" :style="{ zIndex }">
-	<transition :name="$store.state.animation ? 'notification-toast' : ''" appear @after-leave="$emit('closed')">
-		<XNotification v-if="showing" :notification="notification" class="notification _acrylic"/>
-	</transition>
-</div>
+	<div class="mk-notification-toast" :style="{ zIndex }">
+		<transition
+			:name="defaultStore.state.animation ? 'notification-toast' : ''"
+			appear
+			@after-leave="$emit('closed')"
+		>
+			<XNotification
+				v-if="showing"
+				:notification="notification"
+				class="notification _acrylic"
+			/>
+		</transition>
+	</div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
-import XNotification from '@/components/MkNotification.vue';
-import * as os from '@/os';
+import { onMounted, ref } from "vue";
+import XNotification from "@/components/MkNotification.vue";
+import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 defineProps<{
 	notification: any; // TODO
 }>();
 
 const emit = defineEmits<{
-	(ev: 'closed'): void;
+	(ev: "closed"): void;
 }>();
 
-const zIndex = os.claimZIndex('high');
-let showing = $ref(true);
+const zIndex = os.claimZIndex("high");
+const showing = ref(true);
 
 onMounted(() => {
 	window.setTimeout(() => {
-		showing = false;
+		showing.value = false;
 	}, 6000);
 });
 </script>
 
 <style lang="scss" scoped>
-.notification-toast-enter-active, .notification-toast-leave-active {
-	transition: opacity 0.3s, transform 0.3s !important;
+.notification-toast-enter-active,
+.notification-toast-leave-active {
+	transition:
+		opacity 0.3s,
+		transform 0.3s !important;
 }
-.notification-toast-enter-from, .notification-toast-leave-to {
+.notification-toast-enter-from,
+.notification-toast-leave-to {
 	opacity: 0;
 	transform: translateX(-250px);
 }

@@ -1,30 +1,43 @@
 <template>
-<MkSpacer :content-max="800">
-	<MkTab v-model="tab" style="margin-bottom: var(--margin);">
-		<option value="notes">{{ i18n.ts.notes }}</option>
-		<option value="polls">{{ i18n.ts.poll }}</option>
-	</MkTab>
-	<XNotes v-if="tab === 'notes'" :pagination="paginationForNotes"/>
-	<XNotes v-else-if="tab === 'polls'" :pagination="paginationForPolls"/>
-</MkSpacer>
+	<MkSpacer :content-max="800">
+		<MkTab v-model="tab" style="margin-bottom: var(--margin)">
+			<option value="local">{{ i18n.ts.local }}</option>
+			<option value="remote">{{ i18n.ts.remote }}</option>
+		</MkTab>
+		<XNotes v-if="tab === 'local'" :pagination="paginationForLocal" />
+		<XNotes
+			v-else-if="tab === 'remote'"
+			:pagination="paginationForRemote"
+		/>
+	</MkSpacer>
 </template>
 
 <script lang="ts" setup>
-import XNotes from '@/components/MkNotes.vue';
-import MkTab from '@/components/MkTab.vue';
-import { i18n } from '@/i18n';
+import { ref } from "vue";
 
-const paginationForNotes = {
-	endpoint: 'notes/featured' as const,
-	limit: 10,
+import XNotes from "@/components/MkNotes.vue";
+import MkTab from "@/components/MkTab.vue";
+import { i18n } from "@/i18n";
+
+const paginationForLocal = {
+	endpoint: "notes/featured" as const,
+	limit: 15,
+	origin: "local",
 	offsetMode: true,
+	params: {
+		days: 5,
+	},
 };
 
-const paginationForPolls = {
-	endpoint: 'notes/polls/recommendation' as const,
-	limit: 10,
+const paginationForRemote = {
+	endpoint: "notes/featured" as const,
+	limit: 15,
 	offsetMode: true,
+	params: {
+		origin: "remote",
+		days: 5,
+	},
 };
 
-let tab = $ref('notes');
+const tab = ref("local");
 </script>

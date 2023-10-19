@@ -1,35 +1,35 @@
 <template>
-<div ref="rootEl">
-	<div ref="headerEl">
-		<slot name="header"></slot>
+	<div class="sticky-container">
+		<div ref="headerEl">
+			<slot name="header"></slot>
+		</div>
+		<div ref="bodyEl" :data-sticky-container-header-height="headerHeight">
+			<slot></slot>
+		</div>
 	</div>
-	<div ref="bodyEl" :data-sticky-container-header-height="headerHeight">
-		<slot></slot>
-	</div>
-</div>
 </template>
 
 <script lang="ts">
 // なんか動かない
-//const CURRENT_STICKY_TOP = Symbol('CURRENT_STICKY_TOP');
-const CURRENT_STICKY_TOP = 'CURRENT_STICKY_TOP';
+// const CURRENT_STICKY_TOP = Symbol('CURRENT_STICKY_TOP');
+const CURRENT_STICKY_TOP = "CURRENT_STICKY_TOP";
 </script>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, provide, inject, Ref, ref, watch } from 'vue';
+import type { Ref } from "vue";
+import { inject, onMounted, onUnmounted, provide, ref, watch } from "vue";
 
-const rootEl = $ref<HTMLElement>();
-const headerEl = $ref<HTMLElement>();
-const bodyEl = $ref<HTMLElement>();
+const headerEl = ref<HTMLElement>();
+const bodyEl = ref<HTMLElement>();
 
-let headerHeight = $ref<string | undefined>();
-let childStickyTop = $ref(0);
+const headerHeight = ref<string | undefined>();
+const childStickyTop = ref(0);
 const parentStickyTop = inject<Ref<number>>(CURRENT_STICKY_TOP, ref(0));
-provide(CURRENT_STICKY_TOP, $$(childStickyTop));
+provide(CURRENT_STICKY_TOP, childStickyTop);
 
 const calc = () => {
-	childStickyTop = parentStickyTop.value + headerEl.offsetHeight;
-	headerHeight = headerEl.offsetHeight.toString();
+	childStickyTop.value = parentStickyTop.value + headerEl.value.offsetHeight;
+	headerHeight.value = headerEl.value.offsetHeight.toString();
 };
 
 const observer = new ResizeObserver(() => {
@@ -43,17 +43,20 @@ onMounted(() => {
 
 	watch(parentStickyTop, calc);
 
-	watch($$(childStickyTop), () => {
-		bodyEl.style.setProperty('--stickyTop', `${childStickyTop}px`);
-	}, {
-		immediate: true,
-	});
+	watch(
+		childStickyTop,
+		() => {
+			bodyEl.value.style.setProperty(
+				"--stickyTop",
+				`${childStickyTop.value}px`,
+			);
+		},
+		{
+			immediate: true,
+		},
+	);
 
-	headerEl.style.position = 'sticky';
-	headerEl.style.top = 'var(--stickyTop, 0)';
-	headerEl.style.zIndex = '1000';
-
-	observer.observe(headerEl);
+	observer.observe(headerEl.value);
 });
 
 onUnmounted(() => {
@@ -61,6 +64,19 @@ onUnmounted(() => {
 });
 </script>
 
-<style lang="scss" module>
-
+<style lang="scss">
+.sticky-container {
+	display: flex;
+	flex-direction: column;
+	> div:first-child {
+		position: sticky;
+		top: var(--stickyTop, 0);
+		z-index: 1000;
+	}
+	> div:last-child {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+	}
+}
 </style>

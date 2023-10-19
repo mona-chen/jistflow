@@ -1,12 +1,16 @@
-import { In } from "typeorm";
+import { FindManyOptions, In } from "typeorm";
 import { Notes } from "@/models/index.js";
+import { Note } from "@/models/entities/note.js";
 import config from "@/config/index.js";
-import es from "../../../../db/elasticsearch.js";
+import es from "@/db/elasticsearch.js";
+import sonic from "@/db/sonic.js";
+import meilisearch, { MeilisearchNote } from "@/db/meilisearch.js";
 import define from "../../define.js";
 import { makePaginationQuery } from "../../common/make-pagination-query.js";
 import { generateVisibilityQuery } from "../../common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "../../common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "../../common/generate-block-query.js";
+import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -54,28 +58,37 @@ export const paramDef = {
 			nullable: true,
 			default: null,
 		},
+		order: {
+			type: "string",
+			default: "chronological",
+			nullable: true,
+			description: "Either 'chronological' or 'relevancy'",
+		},
 	},
 	required: ["query"],
 } as const;
 
 export default define(meta, paramDef, async (ps, me) => {
-	if (es == null) {
+	if (es == null && sonic == null && meilisearch == null) {
 		const query = makePaginationQuery(
 			Notes.createQueryBuilder("note"),
 			ps.sinceId,
 			ps.untilId,
 		);
 
-		if (ps.userId) {
+		if (ps.userId != null) {
 			query.andWhere("note.userId = :userId", { userId: ps.userId });
-		} else if (ps.channelId) {
+		}
+
+		if (ps.channelId != null) {
 			query.andWhere("note.channelId = :channelId", {
 				channelId: ps.channelId,
 			});
 		}
 
 		query
-			.andWhere("note.text ILIKE :q", { q: `%${ps.query}%` })
+			.andWhere("note.text ILIKE :q", { q: `%${sqlLikeEscape(ps.query)}%` })
+			.andWhere("note.visibility = 'public'")
 			.innerJoinAndSelect("note.user", "user")
 			.leftJoinAndSelect("user.avatar", "avatar")
 			.leftJoinAndSelect("user.banner", "banner")
@@ -92,9 +105,166 @@ export default define(meta, paramDef, async (ps, me) => {
 		if (me) generateMutedUserQuery(query, me);
 		if (me) generateBlockedUserQuery(query, me);
 
-		const notes = await query.take(ps.limit).getMany();
+		const notes: Note[] = await query.take(ps.limit).getMany();
 
 		return await Notes.packMany(notes, me);
+	} else if (sonic) {
+		let start = 0;
+		const chunkSize = 100;
+
+		// Use sonic to fetch and step through all search results that could match the requirements
+		const ids = [];
+		while (true) {
+			const results = await sonic.search.query(
+				sonic.collection,
+				sonic.bucket,
+				ps.query,
+				{
+					limit: chunkSize,
+					offset: start,
+				},
+			);
+
+			start += chunkSize;
+
+			if (results.length === 0) {
+				break;
+			}
+
+			const res = results
+				.map((k) => JSON.parse(k))
+				.filter((key) => {
+					if (ps.userId && key.userId !== ps.userId) {
+						return false;
+					}
+					if (ps.channelId && key.channelId !== ps.channelId) {
+						return false;
+					}
+					if (ps.sinceId && key.id <= ps.sinceId) {
+						return false;
+					}
+					if (ps.untilId && key.id >= ps.untilId) {
+						return false;
+					}
+					return true;
+				})
+				.map((key) => key.id);
+
+			ids.push(...res);
+		}
+
+		// Sort all the results by note id DESC (newest first)
+		ids.sort((a, b) => b - a);
+
+		// Fetch the notes from the database until we have enough to satisfy the limit
+		start = 0;
+		const found = [];
+		while (found.length < ps.limit && start < ids.length) {
+			const chunk = ids.slice(start, start + chunkSize);
+			const notes: Note[] = await Notes.find({
+				where: {
+					id: In(chunk),
+				},
+			});
+
+			// The notes are checked for visibility and muted/blocked users when packed
+			found.push(...(await Notes.packMany(notes, me)));
+			start += chunkSize;
+		}
+
+		// If we have more results than the limit, trim them
+		if (found.length > ps.limit) {
+			found.length = ps.limit;
+		}
+
+		return found;
+	} else if (meilisearch) {
+		let start = 0;
+		const chunkSize = 100;
+		const sortByDate = ps.order !== "relevancy";
+
+		type NoteResult = {
+			id: string;
+			createdAt: number;
+		};
+		const extractedNotes: NoteResult[] = [];
+
+		while (true) {
+			const searchRes = await meilisearch.search(
+				ps.query,
+				chunkSize,
+				start,
+				me,
+				sortByDate ? "createdAt:desc" : null,
+			);
+			const results: MeilisearchNote[] = searchRes.hits as MeilisearchNote[];
+
+			start += chunkSize;
+
+			if (results.length === 0) {
+				break;
+			}
+
+			const res = results
+				.filter((key: MeilisearchNote) => {
+					if (ps.userId && key.userId !== ps.userId) {
+						return false;
+					}
+					if (ps.channelId && key.channelId !== ps.channelId) {
+						return false;
+					}
+					if (ps.sinceId && key.id <= ps.sinceId) {
+						return false;
+					}
+					if (ps.untilId && key.id >= ps.untilId) {
+						return false;
+					}
+					return true;
+				})
+				.map((key) => {
+					return {
+						id: key.id,
+						createdAt: key.createdAt,
+					};
+				});
+
+			extractedNotes.push(...res);
+		}
+
+		// Fetch the notes from the database until we have enough to satisfy the limit
+		start = 0;
+		const found = [];
+		const noteIDs = extractedNotes.map((note) => note.id);
+
+		// Index the ID => index number into a map, so we can restore the array ordering efficiently later
+		const idIndexMap = new Map(noteIDs.map((id, index) => [id, index]));
+
+		while (found.length < ps.limit && start < noteIDs.length) {
+			const chunk = noteIDs.slice(start, start + chunkSize);
+
+			let query: FindManyOptions = {
+				where: {
+					id: In(chunk),
+				},
+			};
+
+			const notes: Note[] = await Notes.find(query);
+
+			// Re-order the note result according to the noteIDs array (cannot be undefined, we map this earlier)
+			// @ts-ignore
+			notes.sort((a, b) => idIndexMap.get(a.id) - idIndexMap.get(b.id));
+
+			// The notes are checked for visibility and muted/blocked users when packed
+			found.push(...(await Notes.packMany(notes, me)));
+			start += chunkSize;
+		}
+
+		// If we have more results than the limit, trim the results down
+		if (found.length > ps.limit) {
+			found.length = ps.limit;
+		}
+
+		return found;
 	} else {
 		const userQuery =
 			ps.userId != null

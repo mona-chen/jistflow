@@ -1,4 +1,4 @@
-import * as Acct from "calckey-js/built/acct";
+import * as Acct from "firefish-js/built/acct";
 import { defineAsyncComponent } from "vue";
 import { i18n } from "@/i18n";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
@@ -7,7 +7,8 @@ import * as os from "@/os";
 import { userActions } from "@/store";
 import { $i, iAmModerator } from "@/account";
 import { mainRouter } from "@/router";
-import { Router } from "@/nirax";
+import type { Router } from "@/nirax";
+import icon from "@/scripts/icon";
 
 export function getUserMenu(user, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -31,7 +32,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		});
 		if (canceled) return;
 		os.apiWithDialog("users/lists/push", {
-			listId: listId,
+			listId,
 			userId: user.id,
 		});
 	}
@@ -54,7 +55,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		});
 		if (canceled) return;
 		os.apiWithDialog("users/groups/invite", {
-			groupId: groupId,
+			groupId,
 			userId: user.id,
 		});
 	}
@@ -117,7 +118,18 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		}
 	}
 
-	async function toggleBlock() {
+	async function toggleRenoteMute(): Promise<void> {
+		os.apiWithDialog(
+			user.isRenoteMuted ? "renote-mute/delete" : "renote-mute/create",
+			{
+				userId: user.id,
+			},
+		).then(() => {
+			user.isRenoteMuted = !user.isRenoteMuted;
+		});
+	}
+
+	async function toggleBlock(): Promise<void> {
 		if (
 			!(await getConfirmed(
 				user.isBlocking ? i18n.ts.unblockConfirm : i18n.ts.blockConfirm,
@@ -125,19 +137,22 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		)
 			return;
 
-		await os.apiWithDialog(user.isBlocking ? "blocking/delete" : "blocking/create", {
-			userId: user.id,
-		})
+		await os.apiWithDialog(
+			user.isBlocking ? "blocking/delete" : "blocking/create",
+			{
+				userId: user.id,
+			},
+		);
 		user.isBlocking = !user.isBlocking;
 		await os.api(user.isBlocking ? "mute/create" : "mute/delete", {
 			userId: user.id,
-		})
+		});
 		user.isMuted = user.isBlocking;
 		if (user.isBlocking) {
-			await os.api('following/delete', {
+			await os.api("following/delete", {
 				userId: user.id,
 			});
-			user.isFollowing = false
+			user.isFollowing = false;
 		}
 	}
 
@@ -183,7 +198,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 				() => import("@/components/MkAbuseReportWindow.vue"),
 			),
 			{
-				user: user,
+				user,
 			},
 			{},
 			"closed",
@@ -193,7 +208,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 	async function getConfirmed(text: string): Promise<boolean> {
 		const confirm = await os.confirm({
 			type: "warning",
-			title: "confirm",
+			title: i18n.ts.confirm,
 			text,
 		});
 
@@ -212,21 +227,55 @@ export function getUserMenu(user, router: Router = mainRouter) {
 
 	let menu = [
 		{
-			icon: "ph-at-bold ph-lg",
+			type: "label",
+			text: user.host
+				? `@${user.username}@${user.host || host}`
+				: `@${user.username}`,
+		},
+		{
+			icon: `${icon("ph-at")}`,
 			text: i18n.ts.copyUsername,
 			action: () => {
 				copyToClipboard(`@${user.username}@${user.host || host}`);
 			},
 		},
 		{
-			icon: "ph-info-bold ph-lg",
+			icon: `${icon("ph-info")}`,
 			text: i18n.ts.info,
 			action: () => {
 				router.push(`/user-info/${user.id}`);
 			},
 		},
 		{
-			icon: "ph-envelope-simple-open-bold ph-lg",
+			icon: `${icon("ph-newspaper")}`,
+			text: i18n.ts._feeds.copyFeed,
+			type: "parent",
+			children: [
+				{
+					icon: `${icon("ph-rss")}`,
+					text: i18n.ts._feeds.rss,
+					action: () => {
+						copyToClipboard(`https://${host}/@${user.username}.rss`);
+					},
+				},
+				{
+					icon: `${icon("ph-atom")}`,
+					text: i18n.ts._feeds.atom,
+					action: () => {
+						copyToClipboard(`https://${host}/@${user.username}.atom`);
+					},
+				},
+				{
+					icon: `${icon("ph-brackets-curly")}`,
+					text: i18n.ts._feeds.jsonFeed,
+					action: () => {
+						copyToClipboard(`https://${host}/@${user.username}.json`);
+					},
+				},
+			],
+		},
+		{
+			icon: `${icon("ph-envelope-simple-open")}`,
 			text: i18n.ts.sendMessage,
 			action: () => {
 				os.post({ specified: user });
@@ -235,37 +284,51 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		meId !== user.id
 			? {
 					type: "link",
-					icon: "ph-chats-teardrop-bold ph-lg",
+					icon: `${icon("ph-chats-teardrop")}`,
 					text: i18n.ts.startMessaging,
 					to: `/my/messaging/${Acct.toString(user)}`,
 			  }
 			: undefined,
+		user.host != null && user.url
+			? {
+					type: "a",
+					icon: `${icon("ph-arrow-square-out")}`,
+					text: i18n.ts.showOnRemote,
+					href: user.url,
+					target: "_blank",
+			  }
+			: undefined,
 		null,
 		{
-			icon: "ph-list-bullets-bold ph-lg",
+			icon: `${icon("ph-list-bullets")}`,
 			text: i18n.ts.addToList,
 			action: pushList,
 		},
 		meId !== user.id
 			? {
-					icon: "ph-users-three-bold ph-lg",
+					icon: `${icon("ph-users-three")}`,
 					text: i18n.ts.inviteToGroup,
 					action: inviteGroup,
 			  }
 			: undefined,
+		null,
+		{
+			icon: user.isRenoteMuted ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
+			text: user.isRenoteMuted ? i18n.ts.renoteUnmute : i18n.ts.renoteMute,
+			action: toggleRenoteMute,
+		},
 	] as any;
 
 	if ($i && meId !== user.id) {
 		menu = menu.concat([
-			null,
 			{
-				icon: user.isMuted ? "ph-eye-bold ph-lg" : "ph-eye-slash-bold ph-lg",
+				icon: user.isMuted ? "ph-eye ph-lg" : "ph-eye-slash ph-lg",
 				text: user.isMuted ? i18n.ts.unmute : i18n.ts.mute,
 				hidden: user.isBlocking === true,
 				action: toggleMute,
 			},
 			{
-				icon: "ph-prohibit-bold ph-lg",
+				icon: `${icon("ph-prohibit")}`,
 				text: user.isBlocking ? i18n.ts.unblock : i18n.ts.block,
 				action: toggleBlock,
 			},
@@ -274,7 +337,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		if (user.isFollowed) {
 			menu = menu.concat([
 				{
-					icon: "ph-link-break-bold ph-lg",
+					icon: `${icon("ph-link-break")}`,
 					text: i18n.ts.breakFollow,
 					action: invalidateFollow,
 				},
@@ -284,7 +347,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		menu = menu.concat([
 			null,
 			{
-				icon: "ph-warning-circle-bold ph-lg",
+				icon: `${icon("ph-warning-circle")}`,
 				text: i18n.ts.reportAbuse,
 				action: reportAbuse,
 			},
@@ -294,12 +357,12 @@ export function getUserMenu(user, router: Router = mainRouter) {
 			menu = menu.concat([
 				null,
 				{
-					icon: "ph-microphone-slash-bold ph-lg",
+					icon: `${icon("ph-microphone-slash")}`,
 					text: user.isSilenced ? i18n.ts.unsilence : i18n.ts.silence,
 					action: toggleSilence,
 				},
 				{
-					icon: "ph-snowflake-bold ph-lg",
+					icon: `${icon("ph-snowflake")}`,
 					text: user.isSuspended ? i18n.ts.unsuspend : i18n.ts.suspend,
 					action: toggleSuspend,
 				},
@@ -311,7 +374,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		menu = menu.concat([
 			null,
 			{
-				icon: "ph-pencil-bold ph-lg",
+				icon: `${icon("ph-pencil")}`,
 				text: i18n.ts.editProfile,
 				action: () => {
 					router.push("/settings/profile");
@@ -324,7 +387,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		menu = menu.concat([
 			null,
 			...userActions.map((action) => ({
-				icon: "ph-plug-bold ph-lg",
+				icon: `${icon("ph-plug")}`,
 				text: action.title,
 				action: () => {
 					action.handler(user);

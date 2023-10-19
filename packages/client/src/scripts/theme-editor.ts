@@ -1,14 +1,29 @@
 import { v4 as uuid } from "uuid";
 
-import { themeProps, Theme } from "./theme";
+import type { Theme } from "./theme";
+import { themeProps } from "./theme";
 
 export type Default = null;
 export type Color = string;
 export type FuncName = "alpha" | "darken" | "lighten";
-export type Func = { type: "func"; name: FuncName; arg: number; value: string };
-export type RefProp = { type: "refProp"; key: string };
-export type RefConst = { type: "refConst"; key: string };
-export type Css = { type: "css"; value: string };
+export interface Func {
+	type: "func";
+	name: FuncName;
+	arg: number;
+	value: string;
+}
+export interface RefProp {
+	type: "refProp";
+	key: string;
+}
+export interface RefConst {
+	type: "refConst";
+	key: string;
+}
+export interface Css {
+	type: "css";
+	value: string;
+}
 
 export type ThemeValue = Color | Func | RefProp | RefConst | Css | Default;
 
@@ -35,7 +50,7 @@ export const fromThemeString = (str?: string): ThemeValue => {
 	} else if (str.startsWith('"')) {
 		return {
 			type: "css",
-			value: str.substr(1).trim(),
+			value: str.slice(1).trim(),
 		};
 	} else {
 		return str;
@@ -65,7 +80,7 @@ export const convertToMisskeyTheme = (
 	author: string,
 	base: "dark" | "light",
 ): Theme => {
-	const props = {} as { [key: string]: string };
+	const props = {} as Record<string, string>;
 	for (const [key, value] of vm) {
 		if (value === null) continue;
 		props[key] = toThemeString(value);

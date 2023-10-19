@@ -1,5 +1,5 @@
 import { reactive, ref } from "vue";
-import * as Misskey from "calckey-js";
+import type * as firefish from "firefish-js";
 import { readAndCompressImage } from "browser-image-resizer";
 import { defaultStore } from "@/store";
 import { apiUrl } from "@/config";
@@ -7,13 +7,13 @@ import { $i } from "@/account";
 import { alert } from "@/os";
 import { i18n } from "@/i18n";
 
-type Uploading = {
+interface Uploading {
 	id: string;
 	name: string;
 	progressMax: number | undefined;
 	progressValue: number | undefined;
 	img: string;
-};
+}
 export const uploads = ref<Uploading[]>([]);
 
 const compressTypeMap = {
@@ -34,7 +34,7 @@ export function uploadFile(
 	folder?: any,
 	name?: string,
 	keepOriginal: boolean = defaultStore.state.keepOriginalUploading,
-): Promise<Misskey.entities.DriveFile> {
+): Promise<firefish.entities.DriveFile> {
 	if (folder && typeof folder === "object") folder = folder.id;
 
 	return new Promise((resolve, reject) => {
@@ -43,7 +43,7 @@ export function uploadFile(
 		const reader = new FileReader();
 		reader.onload = async (ev) => {
 			const ctx = reactive<Uploading>({
-				id: id,
+				id,
 				name: name || file.name || "untitled",
 				progressMax: undefined,
 				progressValue: undefined,
@@ -94,7 +94,13 @@ export function uploadFile(
 					// TODO: 消すのではなくて(ネットワーク的なエラーなら)再送できるようにしたい
 					uploads.value = uploads.value.filter((x) => x.id !== id);
 
-					if (ev.target?.response) {
+					if (xhr.status === 413) {
+						alert({
+							type: "error",
+							title: i18n.ts.failedToUpload,
+							text: i18n.ts.cannotUploadBecauseExceedsFileSizeLimit,
+						});
+					} else if (ev.target?.response) {
 						const res = JSON.parse(ev.target.response);
 						if (res.error?.id === "bec5bd69-fba3-43c9-b4fb-2894b66ad5d2") {
 							alert({

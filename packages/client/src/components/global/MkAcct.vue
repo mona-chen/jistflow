@@ -1,17 +1,22 @@
 <template>
-<span class="mk-acct">
-	<span class="name">@{{ user.username }}</span>
-	<span v-if="user.host || detail || $store.state.showFullAcct" class="host">@{{ user.host || host }}</span>
-</span>
+	<span class="mk-acct">
+		<span class="name">@{{ user.username }}</span>
+		<span
+			v-if="user.host || detail || defaultStore.state.showFullAcct"
+			class="host"
+			>@{{ user.host || host }}</span
+		>
+	</span>
 </template>
 
 <script lang="ts" setup>
-import * as misskey from 'calckey-js';
-import { toUnicode } from 'punycode/';
-import { host as hostRaw } from '@/config';
+import type * as firefish from "firefish-js";
+import { toUnicode } from "punycode/";
+import { host as hostRaw } from "@/config";
+import { defaultStore } from "@/store";
 
 defineProps<{
-	user: misskey.entities.UserDetailed;
+	user: firefish.entities.UserDetailed;
 	detail?: boolean;
 }>();
 

@@ -1,28 +1,41 @@
 <template>
-<MkA :class="[$style.root]" :to="`/user-info/${user.id}`">
-	<MkAvatar class="avatar" :user="user" :disable-link="true" :show-indicator="true"/>
-	<div class="body">
-		<span class="name"><MkUserName class="name" :user="user"/></span>
-		<span class="sub"><span class="acct _monospace">@{{ acct(user) }}</span></span>
-	</div>
-	<MkMiniChart v-if="chart" class="chart" :src="chart.inc"/>
-</MkA>
+	<MkA :class="[$style.root]" :to="`/user-info/${user.id}`">
+		<MkAvatar
+			class="avatar"
+			:user="user"
+			:disable-link="true"
+			:show-indicator="true"
+		/>
+		<div class="body">
+			<span class="name"><MkUserName class="name" :user="user" /></span>
+			<span class="sub"
+				><span class="acct _monospace">@{{ acct(user) }}</span></span
+			>
+		</div>
+		<MkMiniChart v-if="chart" class="chart" :src="chart.inc" />
+	</MkA>
 </template>
 
 <script lang="ts" setup>
-import * as misskey from 'calckey-js';
-import MkMiniChart from '@/components/MkMiniChart.vue';
-import * as os from '@/os';
-import { acct } from '@/filters/user';
+import { ref } from "vue";
+
+import type * as firefish from "firefish-js";
+import MkMiniChart from "@/components/MkMiniChart.vue";
+import * as os from "@/os";
+import { acct } from "@/filters/user";
 
 const props = defineProps<{
-	user: misskey.entities.User;
+	user: firefish.entities.User;
 }>();
 
-let chart = $ref(null);
+const chart = ref(null);
 
-os.apiGet('charts/user/notes', { userId: props.user.id, limit: 16, span: 'day' }).then(res => {
-	chart = res;
+os.apiGet("charts/user/notes", {
+	userId: props.user.id,
+	limit: 16,
+	span: "day",
+}).then((res) => {
+	chart.value = res;
 });
 </script>
 

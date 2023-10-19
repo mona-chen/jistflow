@@ -1,35 +1,69 @@
 <template>
-<div v-size="{ max: [380] }" class="ukygtjoj _panel" :class="{ naked, thin, hideHeader: !showHeader, scrollable, closed: !showBody }">
-	<header v-if="showHeader" ref="header">
-		<div class="title"><slot name="header"></slot></div>
-		<div class="sub">
-			<slot name="func"></slot>
-			<button v-if="foldable" class="_button" @click="() => showBody = !showBody">
-				<template v-if="showBody"><i class="ph-caret-up-bold ph-lg"></i></template>
-				<template v-else><i class="ph-caret-down-bold ph-lg"></i></template>
-			</button>
-		</div>
-	</header>
-	<transition
-		:name="$store.state.animation ? 'container-toggle' : ''"
-		@enter="enter"
-		@after-enter="afterEnter"
-		@leave="leave"
-		@after-leave="afterLeave"
+	<div
+		v-size="{ max: [380] }"
+		class="ukygtjoj _panel"
+		:class="{
+			naked,
+			thin,
+			hideHeader: !showHeader,
+			scrollable,
+			closed: !showBody,
+		}"
 	>
-		<div v-show="showBody" ref="content" class="content" :class="{ omitted }">
-			<slot></slot>
-			<button v-if="omitted" class="fade _button" @click="() => { ignoreOmit = true; omitted = false; }">
-				<span>{{ i18n.ts.showMore }}</span>
-			</button>
-		</div>
-	</transition>
-</div>
+		<header v-if="showHeader" ref="header">
+			<div class="title"><slot name="header"></slot></div>
+			<div class="sub">
+				<slot name="func"></slot>
+				<button
+					v-if="foldable"
+					class="_button"
+					@click="() => (showBody = !showBody)"
+				>
+					<template v-if="showBody"
+						><i :class="icon('ph-caret-up')"></i
+					></template>
+					<template v-else
+						><i :class="icon('ph-caret-down')"></i
+					></template>
+				</button>
+			</div>
+		</header>
+		<transition
+			:name="defaultStore.state.animation ? 'container-toggle' : ''"
+			@enter="enter"
+			@after-enter="afterEnter"
+			@leave="leave"
+			@after-leave="afterLeave"
+		>
+			<div
+				v-show="showBody"
+				ref="content"
+				class="content"
+				:class="{ omitted }"
+			>
+				<slot></slot>
+				<button
+					v-if="omitted"
+					class="fade _button"
+					@click="
+						() => {
+							ignoreOmit = true;
+							omitted = false;
+						}
+					"
+				>
+					<span>{{ i18n.ts.showMore }}</span>
+				</button>
+			</div>
+		</transition>
+	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { i18n } from '@/i18n';
+import { defineComponent } from "vue";
+import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 export default defineComponent({
 	props: {
@@ -75,25 +109,39 @@ export default defineComponent({
 			omitted: null,
 			ignoreOmit: false,
 			i18n,
+			icon,
+			defaultStore,
 		};
 	},
 	mounted() {
-		this.$watch('showBody', showBody => {
-			const headerHeight = this.showHeader ? this.$refs.header.offsetHeight : 0;
-			this.$el.style.minHeight = `${headerHeight}px`;
-			if (showBody) {
-				this.$el.style.flexBasis = 'auto';
-			} else {
-				this.$el.style.flexBasis = `${headerHeight}px`;
-			}
-		}, {
-			immediate: true,
-		});
+		this.$watch(
+			"showBody",
+			(showBody) => {
+				const headerHeight = this.showHeader
+					? this.$refs.header.offsetHeight
+					: 0;
+				this.$el.style.minHeight = `${headerHeight}px`;
+				if (showBody) {
+					this.$el.style.flexBasis = "auto";
+				} else {
+					this.$el.style.flexBasis = `${headerHeight}px`;
+				}
+			},
+			{
+				immediate: true,
+			},
+		);
 
-		this.$el.style.setProperty('--maxHeight', this.maxHeight + 'px');
+		this.$el.style.setProperty("--maxHeight", this.maxHeight + "px");
 
 		const calcOmit = () => {
-			if (this.omitted || this.ignoreOmit || this.maxHeight == null) return;
+			if (
+				this.omitted ||
+				this.ignoreOmit ||
+				this.maxHeight == null ||
+				this.$refs.content == null
+			)
+				return;
 			const height = this.$refs.content.offsetHeight;
 			this.omitted = height > this.maxHeight;
 		};
@@ -113,14 +161,14 @@ export default defineComponent({
 			const elementHeight = el.getBoundingClientRect().height;
 			el.style.height = 0;
 			el.offsetHeight; // reflow
-			el.style.height = elementHeight + 'px';
+			el.style.height = elementHeight + "px";
 		},
 		afterEnter(el) {
 			el.style.height = null;
 		},
 		leave(el) {
 			const elementHeight = el.getBoundingClientRect().height;
-			el.style.height = elementHeight + 'px';
+			el.style.height = elementHeight + "px";
 			el.offsetHeight; // reflow
 			el.style.height = 0;
 		},
@@ -132,9 +180,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.container-toggle-enter-active, .container-toggle-leave-active {
+.container-toggle-enter-active,
+.container-toggle-leave-active {
 	overflow-y: hidden;
-	transition: opacity 0.5s, height 0.5s !important;
+	transition:
+		opacity 0.5s,
+		height 0.5s !important;
 }
 .container-toggle-enter-from {
 	opacity: 0;
@@ -156,6 +207,7 @@ export default defineComponent({
 	&.scrollable {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 
 		> .content {
 			overflow: auto;
@@ -236,7 +288,8 @@ export default defineComponent({
 		}
 	}
 
-	&.max-width_380px, &.thin {
+	&.max-width_380px,
+	&.thin {
 		> header {
 			> .title {
 				padding: 8px 10px;

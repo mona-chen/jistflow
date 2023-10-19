@@ -1,74 +1,48 @@
 <template>
-<canvas ref="chartEl"></canvas>
+	<canvas ref="chartEl"></canvas>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue';
-import {
-	Chart,
-	ArcElement,
-	LineElement,
-	BarElement,
-	PointElement,
-	BarController,
-	LineController,
-	CategoryScale,
-	LinearScale,
-	TimeScale,
-	Legend,
-	Title,
-	Tooltip,
-	SubTitle,
-	Filler,
-	DoughnutController,
-} from 'chart.js';
-import number from '@/filters/number';
-import { defaultStore } from '@/store';
-import { useChartTooltip } from '@/scripts/use-chart-tooltip';
+import { onMounted, shallowRef } from "vue";
+import { Chart } from "chart.js";
+import { useChartTooltip } from "@/scripts/use-chart-tooltip";
+import { initChart } from "@/scripts/init-chart";
 
-Chart.register(
-	ArcElement,
-	LineElement,
-	BarElement,
-	PointElement,
-	BarController,
-	LineController,
-	DoughnutController,
-	CategoryScale,
-	LinearScale,
-	TimeScale,
-	Legend,
-	Title,
-	Tooltip,
-	SubTitle,
-	Filler,
-);
+initChart();
 
 const props = defineProps<{
-	data: { name: string; value: number; color: string; onClick?: () => void }[];
+	data: {
+		name: string;
+		value: number;
+		color: string;
+		onClick?: () => void;
+	}[];
 }>();
 
-const chartEl = ref<HTMLCanvasElement>(null);
+const chartEl = shallowRef<HTMLCanvasElement>();
 
-// フォントカラー
-Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue('--fg');
-
-const { handler: externalTooltipHandler } = useChartTooltip();
+const { handler: externalTooltipHandler } = useChartTooltip({
+	position: "middle",
+});
 
 let chartInstance: Chart;
 
 onMounted(() => {
 	chartInstance = new Chart(chartEl.value, {
-		type: 'doughnut',
+		type: "doughnut",
 		data: {
-			labels: props.data.map(x => x.name),
-			datasets: [{
-				backgroundColor: props.data.map(x => x.color),
-				borderColor: getComputedStyle(document.documentElement).getPropertyValue('--panel'),
-				borderWidth: 2,
-				hoverOffset: 0,
-				data: props.data.map(x => x.value),
-			}],
+			labels: props.data.map((x) => x.name),
+			datasets: [
+				{
+					backgroundColor: props.data.map((x) => x.color),
+					borderColor: getComputedStyle(
+						document.documentElement,
+					).getPropertyValue("--panel"),
+					borderWidth: 2,
+					hoverOffset: 0,
+					data: props.data.map((x) => x.value),
+				},
+			],
 		},
 		options: {
 			layout: {
@@ -80,7 +54,12 @@ onMounted(() => {
 				},
 			},
 			onClick: (ev) => {
-				const hit = chartInstance.getElementsAtEventForMode(ev, 'nearest', { intersect: true }, false)[0];
+				const hit = chartInstance.getElementsAtEventForMode(
+					ev,
+					"nearest",
+					{ intersect: true },
+					false,
+				)[0];
 				if (hit && props.data[hit.index].onClick) {
 					props.data[hit.index].onClick();
 				}
@@ -91,7 +70,7 @@ onMounted(() => {
 				},
 				tooltip: {
 					enabled: false,
-					mode: 'index',
+					mode: "index",
 					animation: {
 						duration: 0,
 					},
@@ -102,7 +81,3 @@ onMounted(() => {
 	});
 });
 </script>
-
-<style lang="scss" scoped>
-
-</style>

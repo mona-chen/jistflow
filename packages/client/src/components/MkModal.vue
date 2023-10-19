@@ -1,184 +1,314 @@
 <template>
-<transition :name="$store.state.animation ? (type === 'drawer') ? 'modal-drawer' : (type === 'popup') ? 'modal-popup' : 'modal' : ''" :duration="$store.state.animation ? 200 : 0" appear @after-leave="emit('closed')" @enter="emit('opening')" @after-enter="onOpened">
-	<div v-show="manualShowing != null ? manualShowing : showing" v-hotkey.global="keymap" class="qzhlnise" :class="{ drawer: type === 'drawer', dialog: type === 'dialog' || type === 'dialog:top', popup: type === 'popup' }" :style="{ zIndex, pointerEvents: (manualShowing != null ? manualShowing : showing) ? 'auto' : 'none', '--transformOrigin': transformOrigin }">
-		<div class="bg _modalBg" :class="{ transparent: transparentBg && (type === 'popup') }" :style="{ zIndex }" @click="onBgClick" @contextmenu.prevent.stop="() => {}"></div>
-		<div ref="content" class="content" :class="{ fixed, top: type === 'dialog:top' }" :style="{ zIndex }" @click.self="onBgClick">
-			<slot :max-height="maxHeight" :type="type"></slot>
-		</div>
-	</div>
-</transition>
+	<Transition
+		:name="transitionName"
+		:enter-active-class="
+			$style['transition_' + transitionName + '_enterActive']
+		"
+		:leave-active-class="
+			$style['transition_' + transitionName + '_leaveActive']
+		"
+		:enter-from-class="
+			$style['transition_' + transitionName + '_enterFrom']
+		"
+		:leave-to-class="$style['transition_' + transitionName + '_leaveTo']"
+		:duration="transitionDuration"
+		appear
+		@after-leave="emit('closed')"
+		@keyup.esc="emit('click')"
+		@enter="emit('opening')"
+		@after-enter="onOpened"
+	>
+		<FocusTrap
+			v-model:active="isActive"
+			:return-focus-on-deactivate="!noReturnFocus"
+		>
+			<div
+				v-show="manualShowing != null ? manualShowing : showing"
+				v-hotkey.global="keymap"
+				v-focus
+				:class="[
+					$style.root,
+					{
+						[$style.drawer]: type === 'drawer',
+						[$style.dialog]:
+							type === 'dialog' || type === 'dialog:top',
+						[$style.popup]: type === 'popup',
+					},
+				]"
+				:style="{
+					zIndex,
+					pointerEvents: (
+						manualShowing != null ? manualShowing : showing
+					)
+						? 'auto'
+						: 'none',
+					'--transformOrigin': transformOrigin,
+				}"
+				tabindex="-1"
+			>
+				<div
+					class="_modalBg data-cy-bg"
+					:class="[
+						$style.bg,
+						{
+							[$style.bgTransparent]: isEnableBgTransparent,
+							'data-cy-transparent': isEnableBgTransparent,
+						},
+					]"
+					:style="{ zIndex }"
+					@click="onBgClick"
+					@mousedown="onBgClick"
+					@contextmenu.prevent.stop="() => {}"
+				></div>
+				<div
+					ref="content"
+					:class="[
+						$style.content,
+						{ [$style.fixed]: fixed, top: type === 'dialog:top' },
+					]"
+					:style="{ zIndex }"
+					@click.self="onBgClick"
+				>
+					<slot :max-height="maxHeight" :type="type"></slot>
+				</div>
+			</div>
+		</FocusTrap>
+	</Transition>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, watch, provide } from 'vue';
-import * as os from '@/os';
-import { isTouchUsing } from '@/scripts/touch';
-import { defaultStore } from '@/store';
-import { deviceKind } from '@/scripts/device-kind';
+import {
+	computed,
+	nextTick,
+	onMounted,
+	onUnmounted,
+	provide,
+	ref,
+	shallowRef,
+	watch,
+} from "vue";
+import { FocusTrap } from "focus-trap-vue";
+import * as os from "@/os";
+import { isTouchUsing } from "@/scripts/touch";
+import { defaultStore } from "@/store";
+import { deviceKind } from "@/scripts/device-kind";
 
 function getFixedContainer(el: Element | null): Element | null {
-	if (el == null || el.tagName === 'BODY') return null;
-	const position = window.getComputedStyle(el).getPropertyValue('position');
-	if (position === 'fixed') {
+	if (el == null || el.tagName === "BODY") return null;
+	const position = window.getComputedStyle(el).getPropertyValue("position");
+	if (position === "fixed") {
 		return el;
 	} else {
 		return getFixedContainer(el.parentElement);
 	}
 }
 
-type ModalTypes = 'popup' | 'dialog' | 'dialog:top' | 'drawer';
+type ModalTypes = "popup" | "dialog" | "dialog:top" | "drawer";
 
-const props = withDefaults(defineProps<{
-	manualShowing?: boolean | null;
-	anchor?: { x: string; y: string; };
-	src?: HTMLElement;
-	preferType?: ModalTypes | 'auto';
-	zPriority?: 'low' | 'middle' | 'high';
-	noOverlap?: boolean;
-	transparentBg?: boolean;
-}>(), {
-	manualShowing: null,
-	src: null,
-	anchor: () => ({ x: 'center', y: 'bottom' }),
-	preferType: 'auto',
-	zPriority: 'low',
-	noOverlap: true,
-	transparentBg: false,
-});
+const props = withDefaults(
+	defineProps<{
+		manualShowing?: boolean | null;
+		anchor?: { x: string; y: string };
+		src?: HTMLElement;
+		preferType?: ModalTypes | "auto";
+		zPriority?: "low" | "middle" | "high";
+		noOverlap?: boolean;
+		transparentBg?: boolean;
+		noReturnFocus?: boolean;
+	}>(),
+	{
+		manualShowing: null,
+		src: null,
+		anchor: () => ({ x: "center", y: "bottom" }),
+		preferType: "auto",
+		zPriority: "low",
+		noOverlap: true,
+		transparentBg: false,
+		noReturnFocus: false,
+	},
+);
 
 const emit = defineEmits<{
-	(ev: 'opening'): void;
-	(ev: 'opened'): void;
-	(ev: 'click'): void;
-	(ev: 'esc'): void;
-	(ev: 'close'): void;
-	(ev: 'closed'): void;
+	(ev: "opening"): void;
+	(ev: "opened"): void;
+	(ev: "click"): void;
+	(ev: "esc"): void;
+	(ev: "close"): void;
+	(ev: "closed"): void;
 }>();
 
-provide('modal', true);
+provide("modal", true);
 
-let maxHeight = $ref<number>();
-let fixed = $ref(false);
-let transformOrigin = $ref('center');
-let showing = $ref(true);
-let content = $ref<HTMLElement>();
+const maxHeight = ref<number>();
+const fixed = ref(false);
+const transformOrigin = ref("center");
+const showing = ref(true);
+const content = shallowRef<HTMLElement>();
 const zIndex = os.claimZIndex(props.zPriority);
-const type = $computed(() => {
-	if (props.preferType === 'auto') {
-		if (!defaultStore.state.disableDrawer && isTouchUsing && deviceKind === 'smartphone') {
-			return 'drawer';
+const useSendAnime = ref(false);
+const type = computed<ModalTypes>(() => {
+	if (props.preferType === "auto") {
+		if (
+			!defaultStore.state.disableDrawer &&
+			isTouchUsing &&
+			deviceKind === "smartphone"
+		) {
+			return "drawer";
 		} else {
-			return props.src != null ? 'popup' : 'dialog';
+			return props.src != null ? "popup" : "dialog";
 		}
 	} else {
 		return props.preferType!;
 	}
 });
+const isEnableBgTransparent = computed(
+	() => props.transparentBg && type.value === "popup",
+);
+const transitionName = computed(() =>
+	defaultStore.state.animation
+		? useSendAnime.value
+			? "send"
+			: type.value === "drawer"
+			? "modal-drawer"
+			: type.value === "popup"
+			? "modal-popup"
+			: "modal"
+		: "",
+);
+const transitionDuration = computed(() =>
+	transitionName.value === "send"
+		? 400
+		: transitionName.value === "modal-popup"
+		? 100
+		: transitionName.value === "modal"
+		? 200
+		: transitionName.value === "modal-drawer"
+		? 200
+		: 0,
+);
 
 let contentClicking = false;
 
-const close = () => {
-	if (props.src) props.src.style.pointerEvents = 'auto';
-	showing = false;
-	emit('close');
-};
+const focusedElement = document.activeElement;
+function close(ev, opts: { useSendAnimation?: boolean } = {}) {
+	// removeEventListener("popstate", close);
+	// if (props.preferType == "dialog") {
+	// 	history.forward();
+	// }
+	if (opts.useSendAnimation) {
+		useSendAnime.value = true;
+	}
 
-const onBgClick = () => {
+	// eslint-disable-next-line vue/no-mutating-props
+	if (props.src) props.src.style.pointerEvents = "auto";
+	showing.value = false;
+	emit("close");
+	if (!props.noReturnFocus) {
+		focusedElement.focus();
+	}
+}
+
+function onBgClick() {
 	if (contentClicking) return;
-	emit('click');
-};
+	emit("click");
+}
 
-if (type === 'drawer') {
-	maxHeight = window.innerHeight / 1.5;
+if (type.value === "drawer") {
+	maxHeight.value = window.innerHeight / 1.5;
 }
 
 const keymap = {
-	'esc': () => emit('esc'),
+	esc: () => emit("esc"),
 };
 
 const MARGIN = 16;
 
 const align = () => {
 	if (props.src == null) return;
-	if (type === 'drawer') return;
-	if (type === 'dialog') return;
+	if (type.value === "drawer") return;
+	if (type.value === "dialog") return;
 
-	if (content == null) return;
+	if (content.value == null) return;
 
 	const srcRect = props.src.getBoundingClientRect();
 
-	const width = content!.offsetWidth;
-	const height = content!.offsetHeight;
+	const width = content.value!.offsetWidth;
+	const height = content.value!.offsetHeight;
 
-	let left;
-	let top;
+	let left, top;
 
-	const x = srcRect.left + (fixed ? 0 : window.pageXOffset);
-	const y = srcRect.top + (fixed ? 0 : window.pageYOffset);
+	const x = srcRect.left + (fixed.value ? 0 : window.pageXOffset);
+	const y = srcRect.top + (fixed.value ? 0 : window.pageYOffset);
 
-	if (props.anchor.x === 'center') {
-		left = x + (props.src.offsetWidth / 2) - (width / 2);
-	} else if (props.anchor.x === 'left') {
+	if (props.anchor.x === "center") {
+		left = x + props.src.offsetWidth / 2 - width / 2;
+	} else if (props.anchor.x === "left") {
 		// TODO
-	} else if (props.anchor.x === 'right') {
+	} else if (props.anchor.x === "right") {
 		left = x + props.src.offsetWidth;
 	}
 
-	if (props.anchor.y === 'center') {
-		top = (y - (height / 2));
-	} else if (props.anchor.y === 'top') {
+	if (props.anchor.y === "center") {
+		top = y - height / 2;
+	} else if (props.anchor.y === "top") {
 		// TODO
-	} else if (props.anchor.y === 'bottom') {
+	} else if (props.anchor.y === "bottom") {
 		top = y + props.src.offsetHeight;
 	}
 
-	if (fixed) {
+	if (fixed.value) {
 		// 画面から横にはみ出る場合
 		if (left + width > window.innerWidth) {
 			left = window.innerWidth - width;
 		}
 
-		const underSpace = (window.innerHeight - MARGIN) - top;
-		const upperSpace = (srcRect.top - MARGIN);
+		const underSpace = window.innerHeight - MARGIN - top;
+		const upperSpace = srcRect.top - MARGIN;
 
 		// 画面から縦にはみ出る場合
-		if (top + height > (window.innerHeight - MARGIN)) {
-			if (props.noOverlap && props.anchor.x === 'center') {
-				if (underSpace >= (upperSpace / 3)) {
-					maxHeight = underSpace;
+		if (top + height > window.innerHeight - MARGIN) {
+			if (props.noOverlap && props.anchor.x === "center") {
+				if (underSpace >= upperSpace / 3) {
+					maxHeight.value = underSpace;
 				} else {
-					maxHeight = upperSpace;
-					top = (upperSpace + MARGIN) - height;
+					maxHeight.value = upperSpace;
+					top = upperSpace + MARGIN - height;
 				}
 			} else {
-				top = (window.innerHeight - MARGIN) - height;
+				top = window.innerHeight - MARGIN - height;
 			}
 		} else {
-			maxHeight = underSpace;
+			maxHeight.value = underSpace;
 		}
 	} else {
 		// 画面から横にはみ出る場合
-		if (left + width - window.pageXOffset > window.innerWidth) {
-			left = window.innerWidth - width + window.pageXOffset - 1;
+		if (left + width - window.scrollX > window.innerWidth) {
+			left = window.innerWidth - width + window.scrollX - 1;
 		}
 
-		const underSpace = (window.innerHeight - MARGIN) - (top - window.pageYOffset);
-		const upperSpace = (srcRect.top - MARGIN);
+		const underSpace =
+			window.innerHeight - MARGIN - (top - window.pageYOffset);
+		const upperSpace = srcRect.top - MARGIN;
 
 		// 画面から縦にはみ出る場合
-		if (top + height - window.pageYOffset > (window.innerHeight - MARGIN)) {
-			if (props.noOverlap && props.anchor.x === 'center') {
-				if (underSpace >= (upperSpace / 3)) {
-					maxHeight = underSpace;
+		if (top + height - window.scrollY > window.innerHeight - MARGIN) {
+			if (props.noOverlap && props.anchor.x === "center") {
+				if (underSpace >= upperSpace / 3) {
+					maxHeight.value = underSpace;
 				} else {
-					maxHeight = upperSpace;
-					top = window.pageYOffset + ((upperSpace + MARGIN) - height);
+					maxHeight.value = upperSpace;
+					top = window.scrollY + (upperSpace + MARGIN - height);
 				}
 			} else {
-				top = (window.innerHeight - MARGIN) - height + window.pageYOffset - 1;
+				top =
+					window.innerHeight -
+					MARGIN -
+					height +
+					window.pageYOffset -
+					1;
 			}
 		} else {
-			maxHeight = underSpace;
+			maxHeight.value = underSpace;
 		}
 	}
 
@@ -190,60 +320,100 @@ const align = () => {
 		left = 0;
 	}
 
-	let transformOriginX = 'center';
-	let transformOriginY = 'center';
+	let transformOriginX = "center",
+		transformOriginY = "center";
 
-	if (top >= srcRect.top + props.src.offsetHeight + (fixed ? 0 : window.pageYOffset)) {
-		transformOriginY = 'top';
-	} else if ((top + height) <= srcRect.top + (fixed ? 0 : window.pageYOffset)) {
-		transformOriginY = 'bottom';
+	if (
+		top >=
+		srcRect.top +
+			props.src.offsetHeight +
+			(fixed.value ? 0 : window.pageYOffset)
+	) {
+		transformOriginY = "top";
+	} else if (
+		top + height <=
+		srcRect.top + (fixed.value ? 0 : window.pageYOffset)
+	) {
+		transformOriginY = "bottom";
 	}
 
-	if (left >= srcRect.left + props.src.offsetWidth + (fixed ? 0 : window.pageXOffset)) {
-		transformOriginX = 'left';
-	} else if ((left + width) <= srcRect.left + (fixed ? 0 : window.pageXOffset)) {
-		transformOriginX = 'right';
+	if (
+		left >=
+		srcRect.left +
+			props.src.offsetWidth +
+			(fixed.value ? 0 : window.pageXOffset)
+	) {
+		transformOriginX = "left";
+	} else if (
+		left + width <=
+		srcRect.left + (fixed.value ? 0 : window.pageXOffset)
+	) {
+		transformOriginX = "right";
 	}
 
-	transformOrigin = `${transformOriginX} ${transformOriginY}`;
+	transformOrigin.value = `${transformOriginX} ${transformOriginY}`;
 
-	content.style.left = left + 'px';
-	content.style.top = top + 'px';
+	content.value.style.left = left + "px";
+	content.value.style.top = top + "px";
 };
 
 const onOpened = () => {
-	emit('opened');
+	emit("opened");
 
 	// モーダルコンテンツにマウスボタンが押され、コンテンツ外でマウスボタンが離されたときにモーダルバックグラウンドクリックと判定させないためにマウスイベントを監視しフラグ管理する
-	const el = content!.children[0];
-	el.addEventListener('mousedown', ev => {
-		contentClicking = true;
-		window.addEventListener('mouseup', ev => {
-			// click イベントより先に mouseup イベントが発生するかもしれないのでちょっと待つ
-			window.setTimeout(() => {
-				contentClicking = false;
-			}, 100);
-		}, { passive: true, once: true });
-	}, { passive: true });
+	const el = content.value!.children[0];
+	el.addEventListener(
+		"mousedown",
+		(ev) => {
+			contentClicking = true;
+			window.addEventListener(
+				"mouseup",
+				(ev) => {
+					// click イベントより先に mouseup イベントが発生するかもしれないのでちょっと待つ
+					window.setTimeout(() => {
+						contentClicking = false;
+					}, 100);
+				},
+				{ passive: true, once: true },
+			);
+		},
+		{ passive: true },
+	);
+	// if (props.preferType == "dialog") {
+	// 	history.pushState(null, "", location.href);
+	// }
+	// addEventListener("popstate", close);
 };
 
 onMounted(() => {
-	watch(() => props.src, async () => {
-		if (props.src) {
-			props.src.style.pointerEvents = 'none';
-		}
-		fixed = (type === 'drawer') || (getFixedContainer(props.src) != null);
+	watch(
+		() => props.src,
+		async () => {
+			if (props.src) {
+				// eslint-disable-next-line vue/no-mutating-props
+				props.src.style.pointerEvents = "none";
+			}
+			fixed.value =
+				type.value === "drawer" || getFixedContainer(props.src) != null;
 
-		await nextTick();
-		
-		align();
-	}, { immediate: true });
+			await nextTick();
+
+			align();
+		},
+		{ immediate: true },
+	);
 
 	nextTick(() => {
 		new ResizeObserver((entries, observer) => {
 			align();
-		}).observe(content!);
+		}).observe(content.value!);
 	});
+});
+onUnmounted(() => {
+	// removeEventListener("popstate", close);
+	// if (props.preferType == "dialog") {
+	// 	history.back();
+	// }
 });
 
 defineExpose({
@@ -251,18 +421,48 @@ defineExpose({
 });
 </script>
 
-<style lang="scss" scoped>
-.modal-enter-active, .modal-leave-active {
+<style lang="scss" module>
+.transition_send_enterActive,
+.transition_send_leaveActive {
+	> .bg {
+		transition: opacity 0.3s !important;
+	}
+
+	> .content {
+		transform: translateY(0px);
+		transition:
+			opacity 0.3s ease-in,
+			transform 0.3s cubic-bezier(0.5, -0.5, 1, 0.5) !important;
+	}
+}
+.transition_send_enterFrom,
+.transition_send_leaveTo {
+	> .bg {
+		opacity: 0;
+	}
+
+	> .content {
+		pointer-events: none;
+		opacity: 0;
+		transform: translateY(-300px);
+	}
+}
+
+.transition_modal_enterActive,
+.transition_modal_leaveActive {
 	> .bg {
 		transition: opacity 0.2s !important;
 	}
 
 	> .content {
 		transform-origin: var(--transformOrigin);
-		transition: opacity 0.2s, transform 0.2s !important;
+		transition:
+			opacity 0.2s,
+			transform 0.2s !important;
 	}
 }
-.modal-enter-from, .modal-leave-to {
+.transition_modal_enterFrom,
+.transition_modal_leaveTo {
 	> .bg {
 		opacity: 0;
 	}
@@ -275,17 +475,21 @@ defineExpose({
 	}
 }
 
-.modal-popup-enter-active, .modal-popup-leave-active {
+.transition_modal-popup_enterActive,
+.transition_modal-popup_leaveActive {
 	> .bg {
 		transition: opacity 0.2s !important;
 	}
 
 	> .content {
 		transform-origin: var(--transformOrigin);
-		transition: opacity 0.2s cubic-bezier(0, 0, 0.2, 1), transform 0.2s cubic-bezier(0, 0, 0.2, 1) !important;
+		transition:
+			opacity 0.2s cubic-bezier(0, 0, 0.2, 1),
+			transform 0.2s cubic-bezier(0, 0, 0.2, 1) !important;
 	}
 }
-.modal-popup-enter-from, .modal-popup-leave-to {
+.transition_modal-popup_enterFrom,
+.transition_modal-popup_leaveTo {
 	> .bg {
 		opacity: 0;
 	}
@@ -298,25 +502,26 @@ defineExpose({
 	}
 }
 
-.modal-drawer-enter-active {
+.transition_modal-drawer_enterActive {
 	> .bg {
 		transition: opacity 0.2s !important;
 	}
 
 	> .content {
-		transition: transform 0.2s cubic-bezier(0,.5,0,1) !important;
+		transition: transform 0.2s cubic-bezier(0, 0.5, 0, 1) !important;
 	}
 }
-.modal-drawer-leave-active {
+.transition_modal-drawer_leaveActive {
 	> .bg {
 		transition: opacity 0.2s !important;
 	}
 
 	> .content {
-		transition: transform 0.2s cubic-bezier(0,.5,0,1) !important;
+		transition: transform 0.2s cubic-bezier(0, 0.5, 0, 1) !important;
 	}
 }
-.modal-drawer-enter-from, .modal-drawer-leave-to {
+.transition_modal-drawer_enterFrom,
+.transition_modal-drawer_leaveTo {
 	> .bg {
 		opacity: 0;
 	}
@@ -327,15 +532,8 @@ defineExpose({
 	}
 }
 
-.qzhlnise {
-	> .bg {
-		&.transparent {
-			background: transparent;
-			-webkit-backdrop-filter: none;
-			backdrop-filter: none;
-		}
-	}
-
+.root {
+	outline: none;
 	&.dialog {
 		> .content {
 			position: fixed;
@@ -346,15 +544,39 @@ defineExpose({
 			margin: auto;
 			padding: 32px;
 			// TODO: mask-imageはiOSだとやたら重い。なんとかしたい
-			-webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 32px, rgba(0,0,0,1) calc(100% - 32px), rgba(0,0,0,0) 100%);
-			mask-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 32px, rgba(0,0,0,1) calc(100% - 32px), rgba(0,0,0,0) 100%);
+			-webkit-mask-image: linear-gradient(
+				0deg,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(0, 0, 0, 1) 32px,
+				rgba(0, 0, 0, 1) calc(100% - 32px),
+				rgba(0, 0, 0, 0) 100%
+			);
+			mask-image: linear-gradient(
+				0deg,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(0, 0, 0, 1) 32px,
+				rgba(0, 0, 0, 1) calc(100% - 32px),
+				rgba(0, 0, 0, 0) 100%
+			);
 			overflow: auto;
 			display: flex;
 
 			@media (max-width: 500px) {
 				padding: 16px;
-				-webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 16px, rgba(0,0,0,1) calc(100% - 16px), rgba(0,0,0,0) 100%);
-				mask-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 16px, rgba(0,0,0,1) calc(100% - 16px), rgba(0,0,0,0) 100%);
+				-webkit-mask-image: linear-gradient(
+					0deg,
+					rgba(0, 0, 0, 0) 0%,
+					rgba(0, 0, 0, 1) 16px,
+					rgba(0, 0, 0, 1) calc(100% - 16px),
+					rgba(0, 0, 0, 0) 100%
+				);
+				mask-image: linear-gradient(
+					0deg,
+					rgba(0, 0, 0, 0) 0%,
+					rgba(0, 0, 0, 1) 16px,
+					rgba(0, 0, 0, 1) calc(100% - 16px),
+					rgba(0, 0, 0, 0) 100%
+				);
 			}
 
 			> ::v-deep(*) {
@@ -399,6 +621,13 @@ defineExpose({
 			}
 		}
 	}
+}
 
+.bg {
+	&.bgTransparent {
+		background: transparent;
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
 }
 </style>

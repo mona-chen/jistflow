@@ -1,10 +1,10 @@
-import * as Misskey from "calckey-js";
+import * as firefish from "firefish-js";
 import { markRaw } from "vue";
 import { $i } from "@/account";
 import { url } from "@/config";
 
 export const stream = markRaw(
-	new Misskey.Stream(
+	new firefish.Stream(
 		url,
 		$i
 			? {
@@ -13,3 +13,12 @@ export const stream = markRaw(
 			: null,
 	),
 );
+
+window.setTimeout(heartbeat, 1000 * 60);
+
+function heartbeat(): void {
+	if (stream != null && document.visibilityState === "visible") {
+		stream.send("ping");
+	}
+	window.setTimeout(heartbeat, 1000 * 60);
+}

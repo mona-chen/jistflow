@@ -1,116 +1,152 @@
 <template>
-<XModalWindow
-	ref="dialogEl"
-	:with-ok-button="true"
-	:ok-button-disabled="selected == null"
-	@click="cancel()"
-	@close="cancel()"
-	@ok="ok()"
-	@closed="$emit('closed')"
->
-	<template #header>{{ i18n.ts.selectUser }}</template>
-	<div class="tbhwbxda">
-		<div class="form">
-			<FormSplit :min-width="170">
-				<MkInput v-model="username" :autofocus="true" @update:modelValue="search">
-					<template #label>{{ i18n.ts.username }}</template>
-					<template #prefix>@</template>
-				</MkInput>
-				<MkInput v-model="host" @update:modelValue="search">
-					<template #label>{{ i18n.ts.host }}</template>
-					<template #prefix>@</template>
-				</MkInput>
-			</FormSplit>
-		</div>
-		<div v-if="username != '' || host != ''" class="result" :class="{ hit: users.length > 0 }">
-			<div v-if="users.length > 0" class="users">
-				<div v-for="user in users" :key="user.id" class="user" :class="{ selected: selected && selected.id === user.id }" @click="selected = user" @dblclick="ok()">
-					<MkAvatar :user="user" class="avatar" :show-indicator="true"/>
-					<div class="body">
-						<MkUserName :user="user" class="name"/>
-						<MkAcct :user="user" class="acct"/>
+	<XModalWindow
+		ref="dialogEl"
+		:with-ok-button="true"
+		:ok-button-disabled="selected == null"
+		@click="cancel()"
+		@close="cancel()"
+		@ok="ok()"
+		@closed="$emit('closed')"
+	>
+		<template #header>{{ i18n.ts.selectUser }}</template>
+		<div class="tbhwbxda">
+			<div class="form">
+				<FormSplit :min-width="170">
+					<MkInput
+						v-model="username"
+						:autofocus="true"
+						@update:modelValue="search"
+					>
+						<template #label>{{ i18n.ts.username }}</template>
+						<template #prefix>@</template>
+					</MkInput>
+					<MkInput v-model="host" @update:modelValue="search">
+						<template #label>{{ i18n.ts.host }}</template>
+						<template #prefix>@</template>
+					</MkInput>
+				</FormSplit>
+			</div>
+			<div
+				v-if="username != '' || host != ''"
+				class="result"
+				:class="{ hit: users.length > 0 }"
+			>
+				<div v-if="users.length > 0" class="users">
+					<div
+						v-for="user in users"
+						:key="user.id"
+						class="user"
+						:class="{
+							selected: selected && selected.id === user.id,
+						}"
+						@click="selected = user"
+						@dblclick="ok()"
+					>
+						<MkAvatar
+							:user="user"
+							class="avatar"
+							:show-indicator="true"
+							disable-link
+						/>
+						<div class="body">
+							<MkUserName :user="user" class="name" />
+							<MkAcct :user="user" class="acct" />
+						</div>
+					</div>
+				</div>
+				<div v-else class="empty">
+					<span>{{ i18n.ts.noUsers }}</span>
+				</div>
+			</div>
+			<div v-if="username == '' && host == ''" class="recent">
+				<div class="users">
+					<div
+						v-for="user in recentUsers"
+						:key="user.id"
+						class="user"
+						:class="{
+							selected: selected && selected.id === user.id,
+						}"
+						@click="selected = user"
+						@dblclick="ok()"
+					>
+						<MkAvatar
+							:user="user"
+							class="avatar"
+							:show-indicator="true"
+							disable-link
+						/>
+						<div class="body">
+							<MkUserName :user="user" class="name" />
+							<MkAcct :user="user" class="acct" />
+						</div>
 					</div>
 				</div>
 			</div>
-			<div v-else class="empty">
-				<span>{{ i18n.ts.noUsers }}</span>
-			</div>
 		</div>
-		<div v-if="username == '' && host == ''" class="recent">
-			<div class="users">
-				<div v-for="user in recentUsers" :key="user.id" class="user" :class="{ selected: selected && selected.id === user.id }" @click="selected = user" @dblclick="ok()">
-					<MkAvatar :user="user" class="avatar" :show-indicator="true"/>
-					<div class="body">
-						<MkUserName :user="user" class="name"/>
-						<MkAcct :user="user" class="acct"/>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</XModalWindow>
+	</XModalWindow>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted } from 'vue';
-import * as misskey from 'calckey-js';
-import MkInput from '@/components/form/input.vue';
-import FormSplit from '@/components/form/split.vue';
-import XModalWindow from '@/components/MkModalWindow.vue';
-import * as os from '@/os';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
+import { onMounted, ref } from "vue";
+import type * as firefish from "firefish-js";
+import MkInput from "@/components/form/input.vue";
+import FormSplit from "@/components/form/split.vue";
+import XModalWindow from "@/components/MkModalWindow.vue";
+import * as os from "@/os";
+import { defaultStore } from "@/store";
+import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
-	(ev: 'ok', selected: misskey.entities.UserDetailed): void;
-	(ev: 'cancel'): void;
-	(ev: 'closed'): void;
+	(ev: "ok", selected: firefish.entities.UserDetailed): void;
+	(ev: "cancel"): void;
+	(ev: "closed"): void;
 }>();
 
-let username = $ref('');
-let host = $ref('');
-let users: misskey.entities.UserDetailed[] = $ref([]);
-let recentUsers: misskey.entities.UserDetailed[] = $ref([]);
-let selected: misskey.entities.UserDetailed | null = $ref(null);
-let dialogEl = $ref();
+const username = ref("");
+const host = ref("");
+const users: firefish.entities.UserDetailed[] = ref([]);
+const recentUsers: firefish.entities.UserDetailed[] = ref([]);
+const selected: firefish.entities.UserDetailed | null = ref(null);
+const dialogEl = ref();
 
 const search = () => {
-	if (username === '' && host === '') {
-		users = [];
+	if (username.value === "" && host.value === "") {
+		users.value = [];
 		return;
 	}
-	os.api('users/search-by-username-and-host', {
-		username: username,
-		host: host,
+	os.api("users/search-by-username-and-host", {
+		username: username.value,
+		host: host.value,
 		limit: 10,
 		detail: false,
-	}).then(_users => {
-		users = _users;
+	}).then((_users) => {
+		users.value = _users;
 	});
 };
 
 const ok = () => {
-	if (selected == null) return;
-	emit('ok', selected);
-	dialogEl.close();
+	if (selected.value == null) return;
+	emit("ok", selected.value);
+	dialogEl.value.close();
 
 	// 最近使ったユーザー更新
 	let recents = defaultStore.state.recentlyUsedUsers;
-	recents = recents.filter(x => x !== selected.id);
-	recents.unshift(selected.id);
-	defaultStore.set('recentlyUsedUsers', recents.splice(0, 16));
+	recents = recents.filter((x) => x !== selected.value.id);
+	recents.unshift(selected.value.id);
+	defaultStore.set("recentlyUsedUsers", recents.splice(0, 16));
 };
 
 const cancel = () => {
-	emit('cancel');
-	dialogEl.close();
+	emit("cancel");
+	dialogEl.value.close();
 };
 
 onMounted(() => {
-	os.api('users/show', {
+	os.api("users/show", {
 		userIds: defaultStore.state.recentlyUsedUsers,
-	}).then(users => {
-		recentUsers = users;
+	}).then((users) => {
+		recentUsers.value = users;
 	});
 });
 </script>
@@ -121,7 +157,8 @@ onMounted(() => {
 		padding: 0 var(--root-margin);
 	}
 
-	> .result, > .recent {
+	> .result,
+	> .recent {
 		display: flex;
 		flex-direction: column;
 		overflow: auto;

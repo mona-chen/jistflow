@@ -1,28 +1,46 @@
 <template>
-<div class="_formRoot">
-	<FormTextarea v-model="installThemeCode" class="_formBlock">
-		<template #label>{{ i18n.ts._theme.code }}</template>
-	</FormTextarea>
+	<div class="_formRoot">
+		<FormTextarea v-model="installThemeCode" class="_formBlock">
+			<template #label>{{ i18n.ts._theme.code }}</template>
+		</FormTextarea>
 
-	<div class="_formBlock" style="display: flex; gap: var(--margin); flex-wrap: wrap;">
-		<FormButton :disabled="installThemeCode == null" inline @click="() => preview(installThemeCode)"><i class="ph-eye-bold ph-lg"></i> {{ i18n.ts.preview }}</FormButton>
-		<FormButton :disabled="installThemeCode == null" primary inline @click="() => install(installThemeCode)"><i class="ph-check-bold ph-lg"></i> {{ i18n.ts.install }}</FormButton>
+		<div
+			class="_formBlock"
+			style="display: flex; gap: var(--margin); flex-wrap: wrap"
+		>
+			<FormButton
+				:disabled="installThemeCode == null"
+				inline
+				@click="() => preview(installThemeCode)"
+				><i :class="icon('ph-eye')"></i>
+				{{ i18n.ts.preview }}</FormButton
+			>
+			<FormButton
+				:disabled="installThemeCode == null"
+				primary
+				inline
+				@click="() => install(installThemeCode)"
+				><i :class="icon('ph-check')"></i>
+				{{ i18n.ts.install }}</FormButton
+			>
+		</div>
 	</div>
-</div>
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import JSON5 from 'json5';
-import FormTextarea from '@/components/form/textarea.vue';
-import FormButton from '@/components/MkButton.vue';
-import { applyTheme, validateTheme } from '@/scripts/theme';
-import * as os from '@/os';
-import { addTheme, getThemes } from '@/theme-store';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { ref } from "vue";
 
-let installThemeCode = $ref(null);
+import JSON5 from "json5";
+import FormTextarea from "@/components/form/textarea.vue";
+import FormButton from "@/components/MkButton.vue";
+import { applyTheme, validateTheme } from "@/scripts/theme";
+import * as os from "@/os";
+import { addTheme, getThemes } from "@/theme-store";
+import { i18n } from "@/i18n";
+import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
+
+const installThemeCode = ref(null);
 
 function parseThemeCode(code: string) {
 	let theme;
@@ -31,21 +49,21 @@ function parseThemeCode(code: string) {
 		theme = JSON5.parse(code);
 	} catch (err) {
 		os.alert({
-			type: 'error',
+			type: "error",
 			text: i18n.ts._theme.invalid,
 		});
 		return false;
 	}
 	if (!validateTheme(theme)) {
 		os.alert({
-			type: 'error',
+			type: "error",
 			text: i18n.ts._theme.invalid,
 		});
 		return false;
 	}
-	if (getThemes().some(t => t.id === theme.id)) {
+	if (getThemes().some((t) => t.id === theme.id)) {
 		os.alert({
-			type: 'info',
+			type: "info",
 			text: i18n.ts._theme.alreadyInstalled,
 		});
 		return false;
@@ -64,17 +82,13 @@ async function install(code: string): Promise<void> {
 	if (!theme) return;
 	await addTheme(theme);
 	os.alert({
-		type: 'success',
-		text: i18n.t('_theme.installed', { name: theme.name }),
+		type: "success",
+		text: i18n.t("_theme.installed", { name: theme.name }),
 	});
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
 definePageMetadata({
 	title: i18n.ts._theme.install,
-	icon: 'ph-download-simple-bold ph-lg',
+	icon: `${icon("ph-download-simple")}`,
 });
 </script>

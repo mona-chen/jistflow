@@ -1,13 +1,20 @@
 <template>
-<div class="mk-google">
-	<input v-model="query" type="search" :placeholder="q">
-	<button @click="search"><i class="ph-magnifying-glass-bold ph-lg"></i> {{ i18n.ts.searchByGoogle }}</button>
-</div>
+	<div class="mk-google" @click.stop>
+		<input v-model="query" type="search" :placeholder="q" />
+		<button @click="search">
+			<i :class="icon('ph-magnifying-glass')"></i>
+			{{ i18n.ts.searchByGoogle }}
+		</button>
+	</div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { i18n } from '@/i18n';
+import { ref } from "vue";
+import { i18n } from "@/i18n";
+import { useRouter } from "@/router";
+import icon from "@/scripts/icon";
+
+const router = useRouter();
 
 const props = defineProps<{
 	q: string;
@@ -16,7 +23,7 @@ const props = defineProps<{
 const query = ref(props.q);
 
 const search = () => {
-	window.open(`https://search.annoyingorange.xyz/search?q=${query.value}`, '_blank');
+	router.push(`/search?q=${query.value}`);
 };
 </script>
 
@@ -33,7 +40,8 @@ const search = () => {
 		font-size: 16px;
 		border: solid 1px var(--divider);
 		border-radius: 4px 0 0 4px;
-		-webkit-appearance: textfield;
+		-webkit-appearance: none;
+		-webkit-border-radius: 4px 0 0 4px;
 	}
 
 	> button {

@@ -1,140 +1,201 @@
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :content-max="800">
-		<div class="fcuexfpr">
-			<transition :name="$store.state.animation ? 'fade' : ''" mode="out-in">
-				<div v-if="note" class="note">
-					<div v-if="showNext" class="_gap">
-						<XNotes class="_content" :pagination="nextPagination" :no-gap="true"/>
-					</div>
-
-					<div class="main _gap">
-						<MkButton v-if="!showNext && hasNext" class="load next" @click="showNext = true"><i class="ph-caret-up-bold ph-lg"></i></MkButton>
-						<div class="note _gap">
-							<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri"/>
-							<XNoteDetailed :key="note.id" v-model:note="note" class="note"/>
+	<MkStickyContainer>
+		<template #header
+			><MkPageHeader
+				:actions="headerActions"
+				:tabs="headerTabs"
+				:display-back-button="true"
+				:to="`#${noteId}`"
+		/></template>
+		<MkSpacer :content-max="800" :margin-min="6">
+			<div class="fcuexfpr">
+				<transition
+					:name="defaultStore.state.animation ? 'fade' : ''"
+					mode="out-in"
+				>
+					<div v-if="appearNote" class="note">
+						<div v-if="showNext" class="_gap">
+							<XNotes
+								class="_content"
+								:pagination="nextPagination"
+								:no-gap="true"
+							/>
 						</div>
-						<div v-if="clips && clips.length > 0" class="_content clips _gap">
-							<div class="title">{{ i18n.ts.clip }}</div>
-							<MkA v-for="item in clips" :key="item.id" :to="`/clips/${item.id}`" class="item _panel _gap">
-								<b>{{ item.name }}</b>
-								<div v-if="item.description" class="description">{{ item.description }}</div>
-								<div class="user">
-									<MkAvatar :user="item.user" class="avatar" :show-indicator="true"/> <MkUserName :user="item.user" :nowrap="false"/>
-								</div>
-							</MkA>
-						</div>
-						<MkButton v-if="!showPrev && hasPrev" class="load prev" @click="showPrev = true"><i class="ph-caret-down-bold ph-lg"></i></MkButton>
-					</div>
 
-					<div v-if="showPrev" class="_gap">
-						<XNotes class="_content" :pagination="prevPagination" :no-gap="true"/>
+						<div class="main _gap">
+							<MkButton
+								v-if="!showNext && hasNext"
+								class="load next"
+								@click="showNext = true"
+							>
+								<i :class="icon('ph-caret-up')"></i>
+								{{ `${i18n.ts.loadMore} (${i18n.ts.newer})` }}
+							</MkButton>
+							<div class="note _gap">
+								<MkRemoteCaution
+									v-if="appearNote.user.host != null"
+									:href="appearNote.url ?? appearNote.uri"
+								/>
+								<XNoteDetailed
+									:key="appearNote.id"
+									v-model:note="appearNote"
+									class="note"
+								/>
+							</div>
+							<MkButton
+								v-if="!showPrev && hasPrev"
+								class="load prev"
+								@click="showPrev = true"
+							>
+								<i :class="icon('ph-caret-down')"></i>
+								{{ `${i18n.ts.loadMore} (${i18n.ts.older})` }}
+							</MkButton>
+						</div>
+
+						<div v-if="showPrev" class="_gap">
+							<XNotes
+								class="_content"
+								:pagination="prevPagination"
+								:no-gap="true"
+							/>
+						</div>
 					</div>
-				</div>
-				<MkError v-else-if="error" @retry="fetch()"/>
-				<MkLoading v-else/>
-			</transition>
-		</div>
-	</MkSpacer>
-</MkStickyContainer>
+					<MkError v-else-if="error" @retry="fetch()" />
+					<MkLoading v-else />
+				</transition>
+			</div>
+		</MkSpacer>
+	</MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineComponent, watch } from 'vue';
-import * as misskey from 'calckey-js';
-import XNote from '@/components/MkNote.vue';
-import XNoteDetailed from '@/components/MkNoteDetailed.vue';
-import XNotes from '@/components/MkNotes.vue';
-import MkRemoteCaution from '@/components/MkRemoteCaution.vue';
-import MkButton from '@/components/MkButton.vue';
-import * as os from '@/os';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { i18n } from '@/i18n';
+import { computed, ref, watch } from "vue";
+import type * as firefish from "firefish-js";
+import XNoteDetailed from "@/components/MkNoteDetailed.vue";
+import XNotes from "@/components/MkNotes.vue";
+import MkRemoteCaution from "@/components/MkRemoteCaution.vue";
+import MkButton from "@/components/MkButton.vue";
+import * as os from "@/os";
+import { definePageMetadata } from "@/scripts/page-metadata";
+import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	noteId: string;
 }>();
 
-let note = $ref<null | misskey.entities.Note>();
-let clips = $ref();
-let hasPrev = $ref(false);
-let hasNext = $ref(false);
-let showPrev = $ref(false);
-let showNext = $ref(false);
-let error = $ref();
+const note = ref<null | firefish.entities.Note>();
+const hasPrev = ref(false);
+const hasNext = ref(false);
+const showPrev = ref(false);
+const showNext = ref(false);
+const error = ref();
+const isRenote = ref(false);
+const appearNote = ref<null | firefish.entities.Note>();
 
 const prevPagination = {
-	endpoint: 'users/notes' as const,
+	endpoint: "users/notes" as const,
 	limit: 10,
-	params: computed(() => note ? ({
-		userId: note.userId,
-		untilId: note.id,
-	}) : null),
+	params: computed(() =>
+		appearNote.value
+			? {
+					userId: appearNote.value.userId,
+					untilId: appearNote.value.id,
+			  }
+			: null,
+	),
 };
 
 const nextPagination = {
 	reversed: true,
-	endpoint: 'users/notes' as const,
+	endpoint: "users/notes" as const,
 	limit: 10,
-	params: computed(() => note ? ({
-		userId: note.userId,
-		sinceId: note.id,
-	}) : null),
+	params: computed(() =>
+		appearNote.value
+			? {
+					userId: appearNote.value.userId,
+					sinceId: appearNote.value.id,
+			  }
+			: null,
+	),
 };
 
 function fetchNote() {
-	hasPrev = false;
-	hasNext = false;
-	showPrev = false;
-	showNext = false;
-	note = null;
-	os.api('notes/show', {
+	hasPrev.value = false;
+	hasNext.value = false;
+	showPrev.value = false;
+	showNext.value = false;
+	note.value = null;
+	os.api("notes/show", {
 		noteId: props.noteId,
-	}).then(res => {
-		note = res;
-		Promise.all([
-			os.api('notes/clips', {
-				noteId: note.id,
-			}),
-			os.api('users/notes', {
-				userId: note.userId,
-				untilId: note.id,
-				limit: 1,
-			}),
-			os.api('users/notes', {
-				userId: note.userId,
-				sinceId: note.id,
-				limit: 1,
-			}),
-		]).then(([_clips, prev, next]) => {
-			clips = _clips;
-			hasPrev = prev.length !== 0;
-			hasNext = next.length !== 0;
+	})
+		.then((res) => {
+			note.value = res;
+			isRenote.value =
+				note.value.renote != null &&
+				note.value.text == null &&
+				note.value.fileIds.length === 0 &&
+				note.value.poll == null;
+			appearNote.value = isRenote.value
+				? (note.value.renote as firefish.entities.Note)
+				: note.value;
+
+			Promise.all([
+				os.api("users/notes", {
+					userId: note.value.userId,
+					untilId: note.value.id,
+					limit: 1,
+				}),
+				os.api("users/notes", {
+					userId: note.value.userId,
+					sinceId: note.value.id,
+					limit: 1,
+				}),
+			]).then(([prev, next]) => {
+				hasPrev.value = prev.length !== 0;
+				hasNext.value = next.length !== 0;
+			});
+		})
+		.catch((err) => {
+			error.value = err;
 		});
-	}).catch(err => {
-		error = err;
-	});
 }
 
 watch(() => props.noteId, fetchNote, {
 	immediate: true,
 });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
-definePageMetadata(computed(() => note ? {
-	title: i18n.ts.note,
-	subtitle: new Date(note.createdAt).toLocaleString(),
-	avatar: note.user,
-	path: `/notes/${note.id}`,
-	share: {
-		title: i18n.t('noteOf', { user: note.user.name }),
-		text: note.text,
-	},
-} : null));
+definePageMetadata(
+	computed(() =>
+		appearNote.value
+			? {
+					title: i18n.t("noteOf", {
+						user:
+							appearNote.value.user.name ||
+							appearNote.value.user.username,
+					}),
+					subtitle: new Date(
+						appearNote.value.createdAt,
+					).toLocaleString(),
+					avatar: appearNote.value.user,
+					path: `/notes/${appearNote.value.id}`,
+					share: {
+						title: i18n.t("noteOf", {
+							user:
+								appearNote.value.user.name ||
+								appearNote.value.user.username,
+						}),
+						text: appearNote.value.text,
+					},
+			  }
+			: null,
+	),
+);
 </script>
 
 <style lang="scss" scoped>
@@ -148,7 +209,9 @@ definePageMetadata(computed(() => note ? {
 }
 
 .fcuexfpr {
-	background: var(--bg);
+	#firefish_app > :not(.wallpaper) & {
+		background: var(--bg);
+	}
 
 	> .note {
 		> .main {
@@ -170,34 +233,6 @@ definePageMetadata(computed(() => note ? {
 				> .note {
 					border-radius: var(--radius);
 					background: var(--panel);
-				}
-			}
-
-			> .clips {
-				> .title {
-					font-weight: bold;
-					padding: 12px;
-				}
-
-				> .item {
-					display: block;
-					padding: 16px;
-
-					> .description {
-						padding: 8px 0;
-					}
-
-					> .user {
-						$height: 32px;
-						padding-top: 16px;
-						border-top: solid 0.5px var(--divider);
-						line-height: $height;
-
-						> .avatar {
-							width: $height;
-							height: $height;
-						}
-					}
 				}
 			}
 		}

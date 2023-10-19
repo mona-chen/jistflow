@@ -34,6 +34,12 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 	const info = Object.assign({}, activity) as any;
 	info["@context"] = undefined;
 	logger.debug(JSON.stringify(info, null, 2));
+
+	if (!signature?.keyId) {
+		const err = `Invalid signature: ${signature}`;
+		job.moveToFailed({ message: err });
+		return err;
+	}
 	//#endregion
 	const host = toPuny(new URL(signature.keyId).hostname);
 
@@ -89,10 +95,24 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 	}
 
 	// HTTP-Signatureの検証
-	const httpSignatureValidated = httpSignature.verifySignature(
+	let httpSignatureValidated = httpSignature.verifySignature(
 		signature,
 		authUser.key.keyPem,
 	);
+
+	// If signature validation failed, try refetching the actor
+	if (!httpSignatureValidated) {
+		authUser.key = await dbResolver.refetchPublicKeyForApId(authUser.user);
+
+		if (authUser.key == null) {
+			return "skip: failed to re-resolve user publicKey";
+		}
+
+		httpSignatureValidated = httpSignature.verifySignature(
+			signature,
+			authUser.key.keyPem,
+		);
+	}
 
 	// また、signatureのsignerは、activity.actorと一致する必要がある
 	if (!httpSignatureValidated || authUser.user.uri !== activity.actor) {

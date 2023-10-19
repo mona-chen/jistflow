@@ -1,34 +1,42 @@
 <template>
-<button class="hdcaacmi _button"
-	:class="{ wait, active: isFollowing, full }"
-	:disabled="wait"
-	@click="onClick"
->
-	<template v-if="!wait">
-		<template v-if="isFollowing">
-			<span v-if="full">{{ i18n.ts.unfollow }}</span><i class="ph-minus-bold ph-lg"></i>
+	<button
+		class="hdcaacmi _button"
+		:class="{ wait, active: isFollowing, full }"
+		:disabled="wait"
+		@click="onClick"
+	>
+		<template v-if="!wait">
+			<template v-if="isFollowing">
+				<span v-if="full">{{ i18n.ts.unfollow }}</span
+				><i :class="icon('ph-minus')"></i>
+			</template>
+			<template v-else>
+				<span v-if="full">{{ i18n.ts.follow }}</span
+				><i :class="icon('ph-plus')"></i>
+			</template>
 		</template>
 		<template v-else>
-			<span v-if="full">{{ i18n.ts.follow }}</span><i class="ph-plus-bold ph-lg"></i>
+			<span v-if="full">{{ i18n.ts.processing }}</span
+			><i :class="icon('ph-circle-notch fa-pulse ph-fw')"></i>
 		</template>
-	</template>
-	<template v-else>
-		<span v-if="full">{{ i18n.ts.processing }}</span><i class="ph-circle-notch-bold ph-lg fa-pulse ph-fw ph-lg"></i>
-	</template>
-</button>
+	</button>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
+import { ref } from "vue";
+import * as os from "@/os";
+import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
-const props = withDefaults(defineProps<{
-	channel: Record<string, any>;
-	full?: boolean;
-}>(), {
-	full: false,
-});
+const props = withDefaults(
+	defineProps<{
+		channel: Record<string, any>;
+		full?: boolean;
+	}>(),
+	{
+		full: false,
+	},
+);
 
 const isFollowing = ref<boolean>(props.channel.isFollowing);
 const wait = ref(false);
@@ -38,13 +46,13 @@ async function onClick() {
 
 	try {
 		if (isFollowing.value) {
-			await os.api('channels/unfollow', {
-				channelId: props.channel.id
+			await os.api("channels/unfollow", {
+				channelId: props.channel.id,
 			});
 			isFollowing.value = false;
 		} else {
-			await os.api('channels/follow', {
-				channelId: props.channel.id
+			await os.api("channels/follow", {
+				channelId: props.channel.id,
 			});
 			isFollowing.value = true;
 		}

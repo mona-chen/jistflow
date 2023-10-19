@@ -1,43 +1,44 @@
 <template>
-<div class="zlxnikvl">
-	<XPie class="pie" :value="usage"/>
-	<div>
-		<p><i class="ph-cpu-bold ph-lg"></i>RAM</p>
-		<p>Total: {{ bytes(total, 1) }}</p>
-		<p>Used: {{ bytes(used, 1) }}</p>
-		<p>Free: {{ bytes(free, 1) }}</p>
+	<div class="zlxnikvl">
+		<XPie class="pie" :value="usage" />
+		<div>
+			<p><i :class="icon('ph-microchip')"></i>RAM</p>
+			<p>Total: {{ bytes(total, 1) }}</p>
+			<p>Used: {{ bytes(used, 1) }}</p>
+			<p>Free: {{ bytes(free, 1) }}</p>
+		</div>
 	</div>
-</div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onBeforeUnmount } from 'vue';
-import XPie from './pie.vue';
-import bytes from '@/filters/bytes';
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import XPie from "./pie.vue";
+import bytes from "@/filters/bytes";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	connection: any,
-	meta: any
+	connection: any;
+	meta: any;
 }>();
 
-let usage: number = $ref(0);
-let total: number = $ref(0);
-let used: number = $ref(0);
-let free: number = $ref(0);
+const usage = ref<number>(0);
+const total = ref<number>(0);
+const used = ref<number>(0);
+const free = ref<number>(0);
 
 function onStats(stats) {
-	usage = stats.mem.active / props.meta.mem.total;
-	total = props.meta.mem.total;
-	used = stats.mem.active;
-	free = total - used;
+	usage.value = stats.mem.active / stats.mem.total;
+	total.value = stats.mem.total;
+	used.value = stats.mem.active;
+	free.value = total.value - used.value;
 }
 
 onMounted(() => {
-	props.connection.on('stats', onStats);
+	props.connection.on("stats", onStats);
 });
 
 onBeforeUnmount(() => {
-	props.connection.off('stats', onStats);
+	props.connection.off("stats", onStats);
 });
 </script>
 

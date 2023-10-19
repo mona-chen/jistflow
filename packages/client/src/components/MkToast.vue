@@ -1,40 +1,54 @@
 <template>
-<div class="mk-toast">
-	<transition :name="$store.state.animation ? 'toast' : ''" appear @after-leave="emit('closed')">
-		<div v-if="showing" class="body _acrylic" :style="{ zIndex }">
-			<Mfm class="message" :text="message" :plain="true" :nowrap="nowrap"/>
-		</div>
-	</transition>
-</div>
+	<div class="mk-toast">
+		<transition
+			:name="defaultStore.state.animation ? 'toast' : ''"
+			appear
+			@after-leave="emit('closed')"
+		>
+			<div v-if="showing" class="body _acrylic" :style="{ zIndex }">
+				<Mfm
+					class="message"
+					:text="message"
+					:plain="true"
+					:nowrap="nowrap"
+				/>
+			</div>
+		</transition>
+	</div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-import * as os from '@/os';
+import { onMounted, ref } from "vue";
+import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 defineProps<{
 	message: string;
 }>();
 
 const emit = defineEmits<{
-	(ev: 'closed'): void;
+	(ev: "closed"): void;
 }>();
 
-const zIndex = os.claimZIndex('high');
-let showing = $ref(true);
+const zIndex = os.claimZIndex("high");
+const showing = ref(true);
 
 onMounted(() => {
 	window.setTimeout(() => {
-		showing = false;
+		showing.value = false;
 	}, 4000);
 });
 </script>
 
 <style lang="scss" scoped>
-.toast-enter-active, .toast-leave-active {
-	transition: opacity 0.3s, transform 0.3s !important;
+.toast-enter-active,
+.toast-leave-active {
+	transition:
+		opacity 0.3s,
+		transform 0.3s !important;
 }
-.toast-enter-from, .toast-leave-to {
+.toast-enter-from,
+.toast-leave-to {
 	opacity: 0;
 	transform: translateY(-100%);
 }

@@ -1,25 +1,23 @@
 <template>
-<div>
-	<XDrive ref="drive" @cd="x => folder = x"/>
-</div>
+	<div>
+		<XDrive ref="drive" @cd="(x) => (folder = x)" />
+	</div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import XDrive from '@/components/MkDrive.vue';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { computed, ref } from "vue";
+import XDrive from "@/components/MkDrive.vue";
+import { i18n } from "@/i18n";
+import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-let folder = $ref(null);
+const folder = ref(null);
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
-
-definePageMetadata(computed(() => ({
-	title: folder ? folder.name : i18n.ts.drive,
-	icon: 'ph-cloud-bold ph-lg',
-	hideHeader: true,
-})));
+definePageMetadata(
+	computed(() => ({
+		title: folder.value ? folder.value.name : i18n.ts.drive,
+		icon: `${icon("ph-cloud")}`,
+		hideHeader: true,
+	})),
+);
 </script>

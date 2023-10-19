@@ -1,122 +1,282 @@
 <template>
-<div>
-	<div
-		ref="itemsEl" v-hotkey="keymap"
-		class="rrevdjwt _popup _shadow"
-		:class="{ center: align === 'center', asDrawer }"
-		:style="{ width: (width && !asDrawer) ? width + 'px' : '', maxHeight: maxHeight ? maxHeight + 'px' : '' }"
-		@contextmenu.self="e => e.preventDefault()"
+	<FocusTrap
+		ref="focusTrap"
+		v-model:active="isActive"
+		:return-focus-on-deactivate="!noReturnFocus"
+		@deactivate="emit('close')"
 	>
-		<template v-for="(item, i) in items2">
-			<div v-if="item === null" class="divider"></div>
-			<span v-else-if="item.type === 'label'" class="label item">
-				<span>{{ item.text }}</span>
-			</span>
-			<span v-else-if="item.type === 'pending'" :tabindex="i" class="pending item">
-				<span><MkEllipsis/></span>
-			</span>
-			<MkA v-else-if="item.type === 'link'" :to="item.to" :tabindex="i" class="_button item" @click.passive="close(true)" @mouseenter.passive="onItemMouseEnter(item)" @mouseleave.passive="onItemMouseLeave(item)">
-				<i v-if="item.icon" class="ph-fw ph-lg" :class="item.icon"></i>
-				<MkAvatar v-if="item.avatar" :user="item.avatar" class="avatar"/>
-				<span>{{ item.text }}</span>
-				<span v-if="item.indicate" class="indicator"><i class="ph-circle-fill"></i></span>
-			</MkA>
-			<a v-else-if="item.type === 'a'" :href="item.href" :target="item.target" :download="item.download" :tabindex="i" class="_button item" @click="close(true)" @mouseenter.passive="onItemMouseEnter(item)" @mouseleave.passive="onItemMouseLeave(item)">
-				<i v-if="item.icon" class="ph-fw ph-lg" :class="item.icon"></i>
-				<span>{{ item.text }}</span>
-				<span v-if="item.indicate" class="indicator"><i class="ph-circle-fill"></i></span>
-			</a>
-			<button v-else-if="item.type === 'user' && !items.hidden" :tabindex="i" class="_button item" :class="{ active: item.active }" :disabled="item.active" @click="clicked(item.action, $event)" @mouseenter.passive="onItemMouseEnter(item)" @mouseleave.passive="onItemMouseLeave(item)">
-				<MkAvatar :user="item.user" class="avatar"/><MkUserName :user="item.user"/>
-				<span v-if="item.indicate" class="indicator"><i class="ph-circle-fill"></i></span>
-			</button>
-			<span v-else-if="item.type === 'switch'" :tabindex="i" class="item" @mouseenter.passive="onItemMouseEnter(item)" @mouseleave.passive="onItemMouseLeave(item)">
-				<FormSwitch v-model="item.ref" :disabled="item.disabled" class="form-switch">{{ item.text }}</FormSwitch>
-			</span>
-			<button v-else-if="item.type === 'parent'" :tabindex="i" class="_button item parent" :class="{ childShowing: childShowingItem === item }" @mouseenter="showChildren(item, $event)">
-				<i v-if="item.icon" class="ph-fw ph-lg" :class="item.icon"></i>
-				<span>{{ item.text }}</span>
-				<span class="caret"><i class="ph-caret-right-bold ph-lg ph-fw ph-lg"></i></span>
-			</button>
-			<button v-else-if="!item.hidden" :tabindex="i" class="_button item" :class="{ danger: item.danger, active: item.active }" :disabled="item.active" @click="clicked(item.action, $event)" @mouseenter.passive="onItemMouseEnter(item)" @mouseleave.passive="onItemMouseLeave(item)">
-				<i v-if="item.icon" class="ph-fw ph-lg" :class="item.icon"></i>
-				<MkAvatar v-if="item.avatar" :user="item.avatar" class="avatar"/>
-				<span>{{ item.text }}</span>
-				<span v-if="item.indicate" class="indicator"><i class="ph-circle-fill"></i></span>
-			</button>
-		</template>
-		<span v-if="items2.length === 0" class="none item">
-			<span>{{ i18n.ts.none }}</span>
-		</span>
-	</div>
-	<div v-if="childMenu" class="child">
-		<XChild ref="child" :items="childMenu" :target-element="childTarget" :root-element="itemsEl" showing @actioned="childActioned"/>
-	</div>
-</div>
+		<div>
+			<div
+				ref="itemsEl"
+				v-vibrate="5"
+				class="rrevdjwt _popup _shadow"
+				:class="{ center: align === 'center', asDrawer }"
+				:style="{
+					width: width && !asDrawer ? width + 'px' : '',
+					maxHeight: maxHeight ? maxHeight + 'px' : '',
+				}"
+				tabindex="-1"
+				@contextmenu.self="(e) => e.preventDefault()"
+			>
+				<template v-for="item in items2">
+					<div v-if="item === null" class="divider"></div>
+					<span v-else-if="item.type === 'label'" class="label item">
+						<span :style="item.textStyle || ''">{{
+							item.text
+						}}</span>
+					</span>
+					<span
+						v-else-if="item.type === 'pending'"
+						class="pending item"
+					>
+						<span><MkEllipsis /></span>
+					</span>
+					<MkA
+						v-else-if="item.type === 'link'"
+						:to="item.to"
+						class="_button item"
+						@click.passive="close(true)"
+						@mouseenter.passive="onItemMouseEnter(item)"
+						@mouseleave.passive="onItemMouseLeave(item)"
+					>
+						<i
+							v-if="item.icon"
+							class="ph-fw ph-lg"
+							:class="item.icon"
+						></i>
+						<MkAvatar
+							v-if="item.avatar"
+							:user="item.avatar"
+							class="avatar"
+							disable-link
+						/>
+						<span :style="item.textStyle || ''">{{
+							item.text
+						}}</span>
+						<span
+							v-if="item.indicate"
+							class="indicator"
+							:class="{
+								animateIndicator: defaultStore.state.animation,
+							}"
+							><i class="ph-circle ph-fill"></i
+						></span>
+					</MkA>
+					<a
+						v-else-if="item.type === 'a'"
+						:href="item.href"
+						:target="item.target"
+						:download="item.download"
+						class="_button item"
+						@click="close(true)"
+						@mouseenter.passive="onItemMouseEnter(item)"
+						@mouseleave.passive="onItemMouseLeave(item)"
+					>
+						<i
+							v-if="item.icon"
+							:class="icon(`${item.icon} ph-fw`)"
+						></i>
+						<span :style="item.textStyle || ''">{{
+							item.text
+						}}</span>
+						<span
+							v-if="item.indicate"
+							class="indicator"
+							:class="{
+								animateIndicator: defaultStore.state.animation,
+							}"
+							><i class="ph-circle ph-fill"></i
+						></span>
+					</a>
+					<button
+						v-else-if="item.type === 'user' && !items.hidden"
+						class="_button item"
+						:class="{ active: item.active }"
+						:disabled="item.active"
+						@click="clicked(item.action, $event)"
+						@mouseenter.passive="onItemMouseEnter(item)"
+						@mouseleave.passive="onItemMouseLeave(item)"
+					>
+						<MkAvatar
+							:user="item.user"
+							class="avatar"
+							disable-link
+						/><MkUserName :user="item.user" />
+						<span
+							v-if="item.indicate"
+							class="indicator"
+							:class="{
+								animateIndicator: defaultStore.state.animation,
+							}"
+							><i class="ph-circle ph-fill"></i
+						></span>
+					</button>
+					<span
+						v-else-if="item.type === 'switch'"
+						class="item"
+						@mouseenter.passive="onItemMouseEnter(item)"
+						@mouseleave.passive="onItemMouseLeave(item)"
+					>
+						<FormSwitch
+							v-model="item.ref"
+							:disabled="item.disabled"
+							class="form-switch"
+							:style="item.textStyle || ''"
+							>{{ item.text }}</FormSwitch
+						>
+					</span>
+					<button
+						v-else-if="item.type === 'parent'"
+						class="_button item parent"
+						:class="{ childShowing: childShowingItem === item }"
+						@mouseenter="showChildren(item, $event)"
+						@click.stop="showChildren(item, $event)"
+					>
+						<i
+							v-if="item.icon"
+							:class="icon(`${item.icon} ph-fw`)"
+						></i>
+						<span :style="item.textStyle || ''">{{
+							item.text
+						}}</span>
+						<span class="caret"
+							><i :class="icon('ph-caret-right ph-fw')"></i
+						></span>
+					</button>
+					<button
+						v-else-if="!item.hidden"
+						class="_button item"
+						:class="{
+							danger: item.danger,
+							accent: item.accent,
+							active: item.active,
+						}"
+						:disabled="item.active"
+						@click="clicked(item.action, $event)"
+						@mouseenter.passive="onItemMouseEnter(item)"
+						@mouseleave.passive="onItemMouseLeave(item)"
+					>
+						<i
+							v-if="item.icon"
+							:class="icon(`${item.icon} ph-fw`)"
+						></i>
+						<MkAvatar
+							v-if="item.avatar"
+							:user="item.avatar"
+							class="avatar"
+							disable-link
+						/>
+						<span :style="item.textStyle || ''">{{
+							item.text
+						}}</span>
+						<span
+							v-if="item.indicate"
+							class="indicator"
+							:class="{
+								animateIndicator: defaultStore.state.animation,
+							}"
+							><i class="ph-circle ph-fill"></i
+						></span>
+					</button>
+				</template>
+				<span v-if="items2.length === 0" class="none item">
+					<span>{{ i18n.ts.none }}</span>
+				</span>
+			</div>
+			<div v-if="childMenu" class="child">
+				<XChild
+					v-if="childTarget && itemsEl"
+					ref="child"
+					:items="childMenu"
+					:target-element="childTarget"
+					:root-element="itemsEl"
+					showing
+					@actioned="childActioned"
+					@closed="closeChild"
+				/>
+			</div>
+		</div>
+	</FocusTrap>
 </template>
 
 <script lang="ts" setup>
-import { computed, menu, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, onUnmounted, Ref, ref, watch } from 'vue';
-import { focusPrev, focusNext } from '@/scripts/focus';
-import FormSwitch from '@/components/form/switch.vue';
-import { MenuItem, InnerMenuItem, MenuPending, MenuAction } from '@/types/menu';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
+import {
+	defineAsyncComponent,
+	onBeforeUnmount,
+	onMounted,
+	ref,
+	watch,
+} from "vue";
+import { FocusTrap } from "focus-trap-vue";
+import FormSwitch from "@/components/form/switch.vue";
+import type {
+	InnerMenuItem,
+	MenuAction,
+	MenuItem,
+	MenuPending,
+} from "@/types/menu";
+import * as os from "@/os";
+import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
-const XChild = defineAsyncComponent(() => import('./MkMenu.child.vue'));
+const XChild = defineAsyncComponent(() => import("./MkMenu.child.vue"));
+const focusTrap = ref();
 
 const props = defineProps<{
 	items: MenuItem[];
 	viaKeyboard?: boolean;
 	asDrawer?: boolean;
-	align?: 'center' | string;
+	align?: "center" | string;
 	width?: number;
 	maxHeight?: number;
+	noReturnFocus?: boolean;
 }>();
 
 const emit = defineEmits<{
-	(ev: 'close', actioned?: boolean): void;
+	(ev: "close", actioned?: boolean): void;
 }>();
 
-let itemsEl = $ref<HTMLDivElement>();
+const itemsEl = ref<HTMLDivElement>();
 
-let items2: InnerMenuItem[] = $ref([]);
+const items2: InnerMenuItem[] = ref([]);
 
-let child = $ref<InstanceType<typeof XChild>>();
+const child = ref<InstanceType<typeof XChild>>();
 
-let keymap = computed(() => ({
-	'up|k|shift+tab': focusUp,
-	'down|j|tab': focusDown,
-	'esc': close,
-}));
+const childShowingItem = ref<MenuItem | null>();
 
-let childShowingItem = $ref<MenuItem | null>();
+watch(
+	() => props.items,
+	() => {
+		const items: (MenuItem | MenuPending)[] = [...props.items].filter(
+			(item) => item !== undefined,
+		);
 
-watch(() => props.items, () => {
-	const items: (MenuItem | MenuPending)[] = [...props.items].filter(item => item !== undefined);
+		for (let i = 0; i < items.length; i++) {
+			const item = items[i];
 
-	for (let i = 0; i < items.length; i++) {
-		const item = items[i];
-
-		if (item && 'then' in item) { // if item is Promise
-			items[i] = { type: 'pending' };
-			item.then(actualItem => {
-				items2[i] = actualItem;
-			});
+			if (item && "then" in item) {
+				// if item is Promise
+				items[i] = { type: "pending" };
+				item.then((actualItem) => {
+					items2.value[i] = actualItem;
+				});
+			}
 		}
-	}
 
-	items2 = items as InnerMenuItem[];
-}, {
-	immediate: true,
-});
+		items2.value = items as InnerMenuItem[];
+	},
+	{
+		immediate: true,
+	},
+);
 
-let childMenu = $ref<MenuItem[] | null>();
-let childTarget = $ref<HTMLElement | null>();
+const childMenu = ref<MenuItem[] | null>();
+const childTarget = ref<HTMLElement | null>();
 
 function closeChild() {
-	childMenu = null;
-	childShowingItem = null;
+	childMenu.value = null;
+	childShowingItem.value = null;
 }
 
 function childActioned() {
@@ -125,8 +285,13 @@ function childActioned() {
 }
 
 function onGlobalMousedown(event: MouseEvent) {
-	if (childTarget && (event.target === childTarget || childTarget.contains(event.target))) return;
-	if (child && child.checkHit(event)) return;
+	if (
+		childTarget.value &&
+		(event.target === childTarget.value ||
+			childTarget.value.contains(event.target))
+	)
+		return;
+	if (child.value && child.value.checkHit(event)) return;
 	closeChild();
 }
 
@@ -145,9 +310,9 @@ async function showChildren(item: MenuItem, ev: MouseEvent) {
 		os.popupMenu(item.children, ev.currentTarget ?? ev.target);
 		close();
 	} else {
-		childTarget = ev.currentTarget ?? ev.target;
-		childMenu = item.children;
-		childShowingItem = item;
+		childTarget.value = ev.currentTarget ?? ev.target;
+		childMenu.value = item.children;
+		childShowingItem.value = item;
 	}
 }
 
@@ -157,29 +322,17 @@ function clicked(fn: MenuAction, ev: MouseEvent) {
 }
 
 function close(actioned = false) {
-	emit('close', actioned);
-}
-
-function focusUp() {
-	focusPrev(document.activeElement);
-}
-
-function focusDown() {
-	focusNext(document.activeElement);
+	emit("close", actioned);
 }
 
 onMounted(() => {
-	if (props.viaKeyboard) {
-		nextTick(() => {
-			focusNext(itemsEl.children[0], true, false);
-		});
-	}
-
-	document.addEventListener('mousedown', onGlobalMousedown, { passive: true });
+	document.addEventListener("mousedown", onGlobalMousedown, {
+		passive: true,
+	});
 });
 
 onBeforeUnmount(() => {
-	document.removeEventListener('mousedown', onGlobalMousedown);
+	document.removeEventListener("mousedown", onGlobalMousedown);
 });
 </script>
 
@@ -207,8 +360,7 @@ onBeforeUnmount(() => {
 		font-size: 0.9em;
 		line-height: 20px;
 		text-align: left;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		outline: none;
 
 		&:before {
 			content: "";
@@ -228,17 +380,17 @@ onBeforeUnmount(() => {
 			position: relative;
 		}
 
-		> &.icon {
-			transform: translateY(0em);
-		}
-
-		&:not(:disabled):hover {
+		&:not(:disabled):hover,
+		&:focus-visible {
 			color: var(--accent);
 			text-decoration: none;
 
 			&:before {
 				background: var(--accentedBg);
 			}
+		}
+		&:focus-visible:before {
+			outline: auto;
 		}
 
 		&.danger {
@@ -257,6 +409,26 @@ onBeforeUnmount(() => {
 
 				&:before {
 					background: #b4637a;
+				}
+			}
+		}
+
+		&.accent {
+			color: var(--accent);
+
+			&:hover {
+				color: var(--accent);
+
+				&:before {
+					background: var(--accentedBg);
+				}
+			}
+
+			&:active {
+				color: var(--fgOnAccent);
+
+				&:before {
+					background: var(--accent);
 				}
 			}
 		}
@@ -330,6 +502,9 @@ onBeforeUnmount(() => {
 			left: 13px;
 			color: var(--indicator);
 			font-size: 12px;
+		}
+
+		> .animateIndicator {
 			animation: blink 1s infinite;
 		}
 	}

@@ -1,18 +1,18 @@
 import { throttle } from "throttle-debounce";
 import { markRaw } from "vue";
-import { notificationTypes } from "calckey-js";
+import type { notificationTypes } from "firefish-js";
 import { Storage } from "../../pizzax";
 import { i18n } from "@/i18n";
 import { api } from "@/os";
 import { deepClone } from "@/scripts/clone";
 
-type ColumnWidget = {
+interface ColumnWidget {
 	name: string;
 	id: string;
 	data: Record<string, any>;
-};
+}
 
-export type Column = {
+export interface Column {
 	id: string;
 	type:
 		| "main"
@@ -20,6 +20,7 @@ export type Column = {
 		| "notifications"
 		| "tl"
 		| "antenna"
+		| "channel"
 		| "list"
 		| "mentions"
 		| "direct";
@@ -29,10 +30,11 @@ export type Column = {
 	active?: boolean;
 	flexible?: boolean;
 	antennaId?: string;
+	channelId?: string;
 	listId?: string;
 	includingTypes?: typeof notificationTypes[number][];
-	tl?: "home" | "local" | "social" | "global";
-};
+	tl?: "home" | "local" | "social" | "recommended" | "global";
+}
 
 export const deckStore = markRaw(
 	new Storage("deck", {
@@ -108,11 +110,28 @@ export async function getProfiles(): Promise<string[]> {
 	});
 }
 
-export async function deleteProfile(key: string): Promise<void> {
+export async function deleteProfile(key: string): Promise<any> {
 	return await api("i/registry/remove", {
 		scope: ["client", "deck", "profiles"],
-		key: key,
+		key,
 	});
+}
+
+export async function renameProfile(oldKey: string, newKey: string) {
+	if (oldKey === newKey) return;
+
+	await api("i/registry/set", {
+		scope: ["client", "deck", "profiles"],
+		key: newKey,
+		value: {
+			columns: deckStore.state.columns,
+			layout: deckStore.state.layout,
+		},
+	});
+	deckStore.set("profile", newKey);
+	saveDeck();
+
+	deleteProfile(oldKey);
 }
 
 export function addColumn(column: Column) {
@@ -137,9 +156,9 @@ export function removeColumn(id: Column["id"]) {
 }
 
 export function swapColumn(a: Column["id"], b: Column["id"]) {
-	const aX = deckStore.state.layout.findIndex((ids) => ids.indexOf(a) !== -1);
+	const aX = deckStore.state.layout.findIndex((ids) => ids.includes(a));
 	const aY = deckStore.state.layout[aX].findIndex((id) => id === a);
-	const bX = deckStore.state.layout.findIndex((ids) => ids.indexOf(b) !== -1);
+	const bX = deckStore.state.layout.findIndex((ids) => ids.includes(b));
 	const bY = deckStore.state.layout[bX].findIndex((id) => id === b);
 	const layout = deepClone(deckStore.state.layout);
 	layout[aX][aY] = b;

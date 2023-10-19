@@ -1,5 +1,5 @@
-import { Directive } from "vue";
-import { defaultStore } from "@/store";
+import type { Directive } from "vue";
+// import { defaultStore } from "@/store";
 
 export default {
 	mounted(el, binding, vn) {

@@ -1,54 +1,71 @@
 <template>
-<div ref="thumbnail" class="zdjebgpv">
-	<ImgWithBlurhash v-if="isThumbnailAvailable" :hash="file.blurhash" :src="file.thumbnailUrl" :alt="file.name" :title="file.name" :cover="fit !== 'contain'"/>
-	<i v-else-if="is === 'image'" class="ph-file-image-bold ph-lg icon"></i>
-	<i v-else-if="is === 'video'" class="ph-file-video-bold ph-lg icon"></i>
-	<i v-else-if="is === 'audio' || is === 'midi'" class="ph-file-audio-bold ph-lg icon"></i>
-	<i v-else-if="is === 'csv'" class="ph-file-csv-bold ph-lg icon"></i>
-	<i v-else-if="is === 'pdf'" class="ph-file-pdf-bold ph-lg icon"></i>
-	<i v-else-if="is === 'textfile'" class="ph-file-text-bold ph-lg icon"></i>
-	<i v-else-if="is === 'archive'" class="ph-file-zip-bold ph-lg icon"></i>
-	<i v-else class="ph-file-bold ph-lg icon"></i>
+	<button ref="thumbnail" class="zdjebgpv">
+		<ImgWithBlurhash
+			v-if="isThumbnailAvailable"
+			:hash="file.blurhash"
+			:src="file.thumbnailUrl"
+			:alt="file.name"
+			:title="file.name"
+			:cover="fit !== 'contain'"
+		/>
+		<i v-else-if="is === 'image'" :class="icon('ph-file-image icon')"></i>
+		<i v-else-if="is === 'video'" :class="icon('ph-file-video icon')"></i>
+		<i
+			v-else-if="is === 'audio' || is === 'midi'"
+			:class="icon('ph-file-audio icon')"
+		></i>
+		<i v-else-if="is === 'csv'" :class="icon('ph-file-csv icon')"></i>
+		<i v-else-if="is === 'pdf'" :class="icon('ph-file-pdf icon')"></i>
+		<i v-else-if="is === 'textfile'" :class="icon('ph-file-text icon')"></i>
+		<i v-else-if="is === 'archive'" :class="icon('ph-file-zip icon')"></i>
+		<i v-else :class="icon('ph-file icon')"></i>
 
-	<i v-if="isThumbnailAvailable && is === 'video'" class="ph-file-video-bold ph-lg icon-sub"></i>
-</div>
+		<i
+			v-if="isThumbnailAvailable && is === 'video'"
+			:class="icon('ph-file-video icon-sub')"
+		></i>
+	</button>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import type * as Misskey from 'calckey-js';
-import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
+import { computed } from "vue";
+import type * as firefish from "firefish-js";
+import ImgWithBlurhash from "@/components/MkImgWithBlurhash.vue";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	file: Misskey.entities.DriveFile;
+	file: firefish.entities.DriveFile;
 	fit: string;
 }>();
 
 const is = computed(() => {
-	if (props.file.type.startsWith('image/')) return 'image';
-	if (props.file.type.startsWith('video/')) return 'video';
-	if (props.file.type === 'audio/midi') return 'midi';
-	if (props.file.type.startsWith('audio/')) return 'audio';
-	if (props.file.type.endsWith('/csv')) return 'csv';
-	if (props.file.type.endsWith('/pdf')) return 'pdf';
-	if (props.file.type.startsWith('text/')) return 'textfile';
-	if ([
-		'application/zip',
-		'application/x-cpio',
-		'application/x-bzip',
-		'application/x-bzip2',
-		'application/java-archive',
-		'application/x-rar-compressed',
-		'application/x-tar',
-		'application/gzip',
-		'application/x-7z-compressed',
-	].some(archiveType => archiveType === props.file.type)) return 'archive';
-	return 'unknown';
+	if (props.file.type.startsWith("image/")) return "image";
+	if (props.file.type.startsWith("video/")) return "video";
+	if (props.file.type === "audio/midi") return "midi";
+	if (props.file.type.startsWith("audio/")) return "audio";
+	if (props.file.type.endsWith("/csv")) return "csv";
+	if (props.file.type.endsWith("/pdf")) return "pdf";
+	if (props.file.type.startsWith("text/")) return "textfile";
+	if (
+		[
+			"application/zip",
+			"application/x-cpio",
+			"application/x-bzip",
+			"application/x-bzip2",
+			"application/java-archive",
+			"application/x-rar-compressed",
+			"application/x-tar",
+			"application/gzip",
+			"application/x-7z-compressed",
+		].includes(props.file.type)
+	)
+		return "archive";
+	return "unknown";
 });
 
 const isThumbnailAvailable = computed(() => {
 	return props.file.thumbnailUrl
-		? (is.value === 'image' as const || is.value === 'video')
+		? is.value === ("image" as const) || is.value === "video"
 		: false;
 });
 </script>
@@ -60,6 +77,11 @@ const isThumbnailAvailable = computed(() => {
 	background: var(--panel);
 	border-radius: 8px;
 	overflow: clip;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
 
 	> .icon-sub {
 		position: absolute;

@@ -1,35 +1,36 @@
 <template>
-<div class="vrvdvrys">
-	<XPie class="pie" :value="usage"/>
-	<div>
-		<p><i class="ph-microchip-bold ph-lg"></i>CPU</p>
-		<p>{{ meta.cpu.cores }} Logical cores</p>
-		<p>{{ meta.cpu.model }}</p>
+	<div class="vrvdvrys">
+		<XPie class="pie" :value="usage" />
+		<div>
+			<p><i :class="icon('ph-cpu')"></i>CPU</p>
+			<p>{{ meta.cpu.cores }} Logical cores</p>
+			<p>{{ meta.cpu.model }}</p>
+		</div>
 	</div>
-</div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onBeforeUnmount } from 'vue';
-import XPie from './pie.vue';
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import XPie from "./pie.vue";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	connection: any,
-	meta: any
+	connection: any;
+	meta: any;
 }>();
 
-let usage: number = $ref(0);
+const usage: number = ref(0);
 
 function onStats(stats) {
-	usage = stats.cpu;
+	usage.value = stats.cpu;
 }
 
 onMounted(() => {
-	props.connection.on('stats', onStats);
+	props.connection.on("stats", onStats);
 });
 
 onBeforeUnmount(() => {
-	props.connection.off('stats', onStats);
+	props.connection.off("stats", onStats);
 });
 </script>
 

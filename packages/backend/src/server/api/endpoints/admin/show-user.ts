@@ -42,15 +42,9 @@ export default define(meta, paramDef, async (ps, me) => {
 			isModerator: user.isModerator,
 			isSilenced: user.isSilenced,
 			isSuspended: user.isSuspended,
+			moderationNote: profile.moderationNote,
 		};
 	}
-
-	const maskedKeys = ["accessToken", "accessTokenSecret", "refreshToken"];
-	Object.keys(profile.integrations).forEach((integration) => {
-		maskedKeys.forEach(
-			(key) => (profile.integrations[integration][key] = "<MASKED>"),
-		);
-	});
 
 	const signins = await Signins.findBy({ userId: user.id });
 
@@ -59,12 +53,13 @@ export default define(meta, paramDef, async (ps, me) => {
 		emailVerified: profile.emailVerified,
 		autoAcceptFollowed: profile.autoAcceptFollowed,
 		noCrawle: profile.noCrawle,
+		isIndexable: profile.isIndexable,
+		preventAiLearning: profile.preventAiLearning,
 		alwaysMarkNsfw: profile.alwaysMarkNsfw,
 		autoSensitive: profile.autoSensitive,
 		carefulBot: profile.carefulBot,
 		injectFeaturedNote: profile.injectFeaturedNote,
 		receiveAnnouncementEmail: profile.receiveAnnouncementEmail,
-		integrations: profile.integrations,
 		mutedWords: profile.mutedWords,
 		mutedInstances: profile.mutedInstances,
 		mutingNotificationTypes: profile.mutingNotificationTypes,

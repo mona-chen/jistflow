@@ -1,4 +1,5 @@
-import { AsyncComponentLoader, defineAsyncComponent, inject } from "vue";
+import type { AsyncComponentLoader } from "vue";
+import { defineAsyncComponent, inject } from "vue";
 import { Router } from "@/nirax";
 import { $i, iAmModerator } from "@/account";
 import MkLoading from "@/pages/_loading_.vue";
@@ -18,7 +19,7 @@ const guestTimeline = getGuestTimelineStatus();
 
 const page = (loader: AsyncComponentLoader<any>) =>
 	defineAsyncComponent({
-		loader: loader,
+		loader,
 		loadingComponent: MkLoading,
 		errorComponent: MkError,
 	});
@@ -63,6 +64,10 @@ export const routes = [
 		component: page(() => import("./pages/instance-info.vue")),
 	},
 	{
+		path: "/public/local",
+		component: page(() => import("./pages/no-graze.vue")),
+	},
+	{
 		name: "settings",
 		path: "/settings",
 		component: page(() => import("./pages/settings/index.vue")),
@@ -99,11 +104,6 @@ export const routes = [
 				component: page(() => import("./pages/settings/email.vue")),
 			},
 			{
-				path: "/integration",
-				name: "integration",
-				component: page(() => import("./pages/settings/integration.vue")),
-			},
-			{
 				path: "/security",
 				name: "security",
 				component: page(() => import("./pages/settings/security.vue")),
@@ -132,6 +132,13 @@ export const routes = [
 				path: "/custom-css",
 				name: "custom-css",
 				component: page(() => import("./pages/settings/custom-css.vue")),
+			},
+			{
+				path: "/custom-katex-macro",
+				name: "custom-katex-macro",
+				component: page(
+					() => import("./pages/settings/custom-katex-macro.vue"),
+				),
 			},
 			{
 				path: "/account-info",
@@ -190,7 +197,7 @@ export const routes = [
 			},
 			{
 				path: "/apps",
-				name: "api",
+				name: "apps",
 				component: page(() => import("./pages/settings/apps.vue")),
 			},
 			{
@@ -236,6 +243,13 @@ export const routes = [
 				component: page(() => import("./pages/settings/custom-css.vue")),
 			},
 			{
+				path: "/custom-katex-macro",
+				name: "general",
+				component: page(
+					() => import("./pages/settings/custom-katex-macro.vue"),
+				),
+			},
+			{
 				path: "/accounts",
 				name: "profile",
 				component: page(() => import("./pages/settings/accounts.vue")),
@@ -270,6 +284,10 @@ export const routes = [
 		component: page(() => import("./pages/signup-complete.vue")),
 	},
 	{
+		path: "/verify-email/:code",
+		component: page(() => import("./pages/verify-email.vue")),
+	},
+	{
 		path: "/announcements",
 		component: page(() => import("./pages/announcements.vue")),
 	},
@@ -279,12 +297,8 @@ export const routes = [
 		hash: "initialTab",
 	},
 	{
-		path: "/about-calckey",
-		component: page(() => import("./pages/about-calckey.vue")),
-	},
-	{
-		path: "/apps",
-		component: page(() => import("./pages/apps.vue")),
+		path: "/about-firefish",
+		component: page(() => import("./pages/about-firefish.vue")),
 	},
 	{
 		path: "/theme-editor",
@@ -437,6 +451,11 @@ export const routes = [
 				component: page(() => import("./pages/admin/users.vue")),
 			},
 			{
+				path: "/hashtags",
+				name: "hashtags",
+				component: page(() => import("./pages/admin/hashtags.vue")),
+			},
+			{
 				path: "/emojis",
 				name: "emojis",
 				component: page(() => import("./pages/admin/emojis.vue")),
@@ -502,11 +521,6 @@ export const routes = [
 				component: page(() => import("./pages/admin/relays.vue")),
 			},
 			{
-				path: "/integrations",
-				name: "integrations",
-				component: page(() => import("./pages/admin/integrations.vue")),
-			},
-			{
 				path: "/instance-block",
 				name: "instance-block",
 				component: page(() => import("./pages/admin/instance-block.vue")),
@@ -525,6 +539,11 @@ export const routes = [
 				path: "/other-settings",
 				name: "other-settings",
 				component: page(() => import("./pages/admin/custom-css.vue")),
+			},
+			{
+				path: "/experiments",
+				name: "experiments",
+				component: page(() => import("./pages/admin/experiments.vue")),
 			},
 			{
 				path: "/",

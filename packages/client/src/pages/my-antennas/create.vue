@@ -1,24 +1,29 @@
 <template>
-<div class="geegznzt">
-	<XAntenna :antenna="draft" @created="onAntennaCreated"/>
-</div>
+	<MkSpacer :content-max="700">
+		<div class="geegznzt">
+			<XAntenna :antenna="draft" @created="onAntennaCreated" />
+		</div>
+	</MkSpacer>
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue';
-import XAntenna from './editor.vue';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { useRouter } from '@/router';
+import { ref } from "vue";
+
+import XAntenna from "./editor.vue";
+import { i18n } from "@/i18n";
+import { definePageMetadata } from "@/scripts/page-metadata";
+import { useRouter } from "@/router";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
-let draft = $ref({
-	name: '',
-	src: 'all',
+const draft = ref({
+	name: "",
+	src: "all",
 	userListId: null,
 	userGroupId: null,
 	users: [],
+	instances: [],
 	keywords: [],
 	excludeKeywords: [],
 	withReplies: false,
@@ -28,19 +33,11 @@ let draft = $ref({
 });
 
 function onAntennaCreated() {
-	router.push('/my/antennas');
+	router.push("/my/antennas");
 }
-
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.manageAntennas,
-	icon: 'ph-flying-saucer-bold ph-lg',
+	icon: `${icon("ph-flying-saucer")}`,
 });
 </script>
-
-<style lang="scss" scoped>
-
-</style>

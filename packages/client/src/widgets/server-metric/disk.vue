@@ -1,28 +1,30 @@
 <template>
-<div class="zbwaqsat">
-	<XPie class="pie" :value="usage"/>
-	<div>
-		<p><i class="ph-hard-drives-bold ph-lg"></i>Disk</p>
-		<p>Total: {{ bytes(total, 1) }}</p>
-		<p>Free: {{ bytes(available, 1) }}</p>
-		<p>Used: {{ bytes(used, 1) }}</p>
+	<div class="zbwaqsat">
+		<XPie class="pie" :value="usage" />
+		<div>
+			<p><i :class="icon('ph-hard-drives')"></i>Disk</p>
+			<p>Total: {{ bytes(total, 1) }}</p>
+			<p>Free: {{ bytes(available, 1) }}</p>
+			<p>Used: {{ bytes(used, 1) }}</p>
+		</div>
 	</div>
-</div>
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import XPie from './pie.vue';
-import bytes from '@/filters/bytes';
+import { computed } from "vue";
+
+import XPie from "./pie.vue";
+import bytes from "@/filters/bytes";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	meta: any; // TODO
 }>();
 
-const usage = $computed(() => props.meta.fs.used / props.meta.fs.total);
-const total = $computed(() => props.meta.fs.total);
-const used = $computed(() => props.meta.fs.used);
-const available = $computed(() => props.meta.fs.total - props.meta.fs.used);
+const usage = computed(() => props.meta.fs.used / props.meta.fs.total);
+const total = computed(() => props.meta.fs.total);
+const used = computed(() => props.meta.fs.used);
+const available = computed(() => props.meta.fs.total - props.meta.fs.used);
 </script>
 
 <style lang="scss" scoped>
