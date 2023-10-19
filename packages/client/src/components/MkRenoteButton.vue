@@ -73,13 +73,16 @@ useTooltip(buttonRef, async (showing) => {
 });
 
 const hasRenotedBefore = ref(false);
-os.api("notes/renotes", {
-	noteId: props.note.id,
-	userId: $i.id,
-	limit: 1,
-}).then((res) => {
-	hasRenotedBefore.value = res.length > 0;
-});
+
+if ($i != null) {
+	os.api("notes/renotes", {
+		noteId: props.note.id,
+		userId: $i.id,
+		limit: 1,
+	}).then((res) => {
+		hasRenotedBefore.value = res.length > 0;
+	});
+}
 
 const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	pleaseLogin();
