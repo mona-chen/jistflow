@@ -17,8 +17,13 @@ COPY packages/iceshrimp-js/package.json packages/iceshrimp-js/package.json
 COPY .yarn/cache .yarn/cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache cp -Tr .yarncache .yarn
 
-# Configure corepack and yarn, and install dev mode dependencies for compilation
+# Configure corepack and yarn, then install dependencies for compilation
 RUN corepack enable && corepack prepare yarn@stable --activate && yarn
+
+# For releases please uncomment the commands below
+# Save space by removing unneeded dependencies from cache
+#RUN sed -i -E 's/(os|cpu|libc): \[.*\]/\1: \["current"\]/' .yarnrc.yml
+#RUN yarn cache clean && yarn
 
 # Save yarn cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache rm -rf .yarncache/* && cp -Tr .yarn .yarncache
