@@ -26,8 +26,10 @@ export function urlQuery(
 ): string {
 	const params = Object.entries(obj)
 		.filter(([, v]) => (Array.isArray(v) ? v.length : v !== undefined))
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		.reduce(
+			// rome-ignore lint/suspicious/noAssignInExpressions: <Used for key assigning>
+			// rome-ignore lint/style/noNonNullAssertion: <>
+			// rome-ignore lint/style/noCommaOperator: <>
 			(a, [k, v]) => ((a[k] = v!), a),
 			{} as Record<string, string | number | boolean>,
 		);

@@ -1,8 +1,7 @@
-# Firefish.js
+# Firefish-js
 
-Fork of firefish.js for Firefish
+## Firefish SDK for Node.js, Bun, and browsers
 
-https://www.npmjs.com/package/firefish-js
+Fork of [misskey-js](https://www.npmjs.com/package/misskey-js)
 
-To fully build, run `pnpm i && pnpm run render`.
-
+<https://www.npmjs.com/package/firefish-js>
