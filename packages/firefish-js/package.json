@@ -1,19 +1,14 @@
 {
 	"name": "firefish-js",
-	"version": "0.0.24",
+	"version": "0.0.25",
 	"description": "Firefish SDK for JavaScript",
 	"main": "./built/index.js",
 	"types": "./built/index.d.ts",
 	"scripts": {
 		"build": "pnpm swc src -d built -D",
 		"build:debug": "pnpm swc src -d built -s -D",
-		"render": "pnpm run build && pnpm run api && pnpm run api-prod && cp temp/firefish-js.api.json etc/ && pnpm run api-doc",
-		"tsd": "tsc && tsd",
-		"api": "pnpm api-extractor run --local --verbose",
-		"api-prod": "pnpm api-extractor run --verbose",
-		"api-doc": "pnpm api-documenter markdown -i ./etc/",
-		"lint": "pnpm biome check --apply *.ts",
-		"format": "pnpm biome format --write **/*.ts",
+		"lint": "pnpm biome check --apply src",
+		"format": "pnpm biome format --write src",
 		"jest": "jest --coverage --detectOpenHandles",
 		"test": "pnpm jest && pnpm tsd"
 	},
@@ -22,8 +17,6 @@
 		"url": "https://git.joinfirefish.org/firefish/firefish.git"
 	},
 	"devDependencies": {
-		"@microsoft/api-extractor": "^7.36.0",
-		"@microsoft/api-documenter": "^7.22.21",
 		"@swc/cli": "^0.1.62",
 		"@swc/core": "1.3.78",
 		"@types/jest": "^27.4.0",
@@ -37,12 +30,10 @@
 		"tsd": "^0.28.1",
 		"typescript": "5.1.3"
 	},
-	"files": [
-		"built"
-	],
+	"files": ["built"],
 	"dependencies": {
 		"eventemitter3": "^4.0.7",
-		"reconnecting-websocket": "^4.4.0",
+		"reconnecting": "^4.4.1",
 		"semver": "^7.3.8"
 	},
 	"optionalDependencies": {

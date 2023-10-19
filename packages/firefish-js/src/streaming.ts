@@ -1,5 +1,5 @@
 import { EventEmitter } from "eventemitter3";
-import ReconnectingWebsocket from "reconnecting-websocket";
+import ReconnectingWebsocket from "reconnecting";
 import { BroadcastEvents, Channels } from "./streaming.types";
 
 function autobind(instance: any): void {
@@ -81,7 +81,6 @@ export default class Stream extends EventEmitter<StreamEvents> {
 			`${wsOrigin}/streaming?${query}`,
 			"",
 			{
-				minReconnectionDelay: 1, // https://github.com/pladaria/reconnecting-websocket/issues/91
 				WebSocket: options.WebSocket,
 			},
 		);

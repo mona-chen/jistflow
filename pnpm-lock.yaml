@@ -85,8 +85,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4
       pnpm:
-        specifier: 8.8.0
-        version: 8.8.0
+        specifier: 8.9.2
+        version: 8.9.2
       start-server-and-test:
         specifier: 1.15.2
         version: 1.15.2
@@ -896,9 +896,9 @@ importers:
       eventemitter3:
         specifier: ^4.0.7
         version: 4.0.7
-      reconnecting-websocket:
-        specifier: ^4.4.0
-        version: 4.4.0
+      reconnecting:
+        specifier: ^4.4.1
+        version: 4.4.1
       semver:
         specifier: ^7.3.8
         version: 7.5.4
@@ -6982,6 +6982,7 @@ packages:
   /commander@9.5.0:
     resolution: {integrity: sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==}
     engines: {node: ^12.20.0 || >=14}
+    requiresBuild: true
     dev: true
 
   /comment-parser@1.4.0:
@@ -15009,8 +15010,8 @@ packages:
     engines: {node: '>=14.19.0'}
     dev: false
 
-  /pnpm@8.8.0:
-    resolution: {integrity: sha512-eY5rMiZpzmPI2oVr1irR97bzb036oKwCWvK91wDQndXcqUPlytPtrF0bO668Syw/uA+7hTf5NnM8Mr4ux4BRRA==}
+  /pnpm@8.9.2:
+    resolution: {integrity: sha512-udNf6RsqWFTa3EMDSj57LmdfpLVuIOjgnvB4+lU8GPiu1EBR57Nui43UNfl+sMRMT/O0T8fG+n0h4frBe75mHg==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
@@ -15869,8 +15870,8 @@ packages:
       resolve: 1.22.4
     dev: true
 
-  /reconnecting-websocket@4.4.0:
-    resolution: {integrity: sha512-D2E33ceRPga0NvTDhJmphEgJ7FUYF0v4lr1ki0csq06OdlxKfugGzN0dSkxM/NfqCxYELK4KcaTOUOjTV6Dcng==}
+  /reconnecting@4.4.1:
+    resolution: {integrity: sha512-2GU8WqGpWVB0FcqJNbTDdRVSTw8W2205r+tWx8EVkFa8Oi5N2pbJeNPm9jHQNjDeQcqVILRNZfUX2RRHu6Zdog==}
     dev: false
 
   /redent@3.0.0:
