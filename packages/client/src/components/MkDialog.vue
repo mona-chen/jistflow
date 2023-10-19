@@ -11,32 +11,27 @@
 			</div>
 			<div
 				v-else-if="!input && !select"
-				:class="[$style.icon, $style['type_' + type]]"
+				:class="[$style.icon, $style[`type_${type}`]]"
 			>
 				<i
 					v-if="type === 'success'"
-					:class="$style.iconInner"
-					class="ph-check ph-lg"
+					:class="[$style.iconInner, iconClass('ph-check')]"
 				></i>
 				<i
 					v-else-if="type === 'error'"
-					:class="$style.iconInner"
-					class="ph-circle-wavy-warning ph-lg"
+					:class="[$style.iconInner, iconClass('ph-circle-wavy-warning')]"
 				></i>
 				<i
 					v-else-if="type === 'warning'"
-					:class="$style.iconInner"
-					class="ph-warning ph-lg"
+					:class="[$style.iconInner, iconClass('ph-warning')]"
 				></i>
 				<i
 					v-else-if="type === 'info'"
-					:class="$style.iconInner"
-					class="ph-info ph-lg"
+					:class="[$style.iconInner, iconClass('ph-info')]"
 				></i>
 				<i
 					v-else-if="type === 'question'"
-					:class="$style.iconInner"
-					class="ph-circle-question ph-lg"
+					:class="[$style.iconInner, iconClass('ph-question')]"
 				></i>
 				<MkLoading
 					v-else-if="type === 'waiting'"
