@@ -7,24 +7,18 @@ WORKDIR /iceshrimp
 RUN apk add --no-cache --no-progress git alpine-sdk vips-dev python3 nodejs-current npm vips
 
 # Copy only the dependency-related files first, to cache efficiently
-COPY package.json yarn.lock .pnp.cjs .pnp.loader.mjs .yarnrc.yml ./
+COPY package.json yarn.lock .pnp.cjs .pnp.loader.mjs ./
 COPY packages/backend/package.json packages/backend/package.json
 COPY packages/client/package.json packages/client/package.json
 COPY packages/sw/package.json packages/sw/package.json
 COPY packages/iceshrimp-js/package.json packages/iceshrimp-js/package.json
 
 # Prepare yarn cache
-COPY .yarn/plugins .yarn/plugins
 COPY .yarn/cache .yarn/cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache cp -Tr .yarncache .yarn
 
-# Configure corepack and yarn, then install dependencies for compilation
+# Configure corepack and yarn, and install dev mode dependencies for compilation
 RUN corepack enable && corepack prepare yarn@stable --activate && yarn
-
-# For releases please uncomment the commands below
-# Save space by removing unneeded dependencies from cache
-#RUN sed -i -E 's/(os|cpu|libc): \[.*\]/\1: \["current"\]/' .yarnrc.yml
-#RUN yarn cache clean && yarn
 
 # Save yarn cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache rm -rf .yarncache/* && cp -Tr .yarn .yarncache
