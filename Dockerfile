@@ -7,7 +7,7 @@ WORKDIR /iceshrimp
 RUN apk add --no-cache --no-progress git alpine-sdk vips-dev python3 nodejs-current npm vips
 
 # Copy only the dependency-related files first, to cache efficiently
-COPY package.json yarn.lock .pnp.cjs .pnp.loader.mjs ./
+COPY package.json yarn.lock .pnp.cjs .pnp.loader.mjs .yarnrc.yml ./
 COPY packages/backend/package.json packages/backend/package.json
 COPY packages/client/package.json packages/client/package.json
 COPY packages/sw/package.json packages/sw/package.json
