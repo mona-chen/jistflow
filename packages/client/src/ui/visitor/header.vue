@@ -130,6 +130,7 @@ export default defineComponent({
 				!instance.disableLocalTimeline ||
 				!instance.disableRecommendedTimeline ||
 				!instance.disableGlobalTimeline,
+			icon,
 		};
 	},
 
