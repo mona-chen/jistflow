@@ -6,8 +6,12 @@ import { resolveMentionToUserAndProfile } from "@/remote/resolve-user.js";
 import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { unique } from "@/prelude/array.js";
 import config from "@/config/index.js";
+import { Semaphore } from "async-mutex";
+
+const queue = new Semaphore(10);
 
 export const UserProfileRepository = db.getRepository(UserProfile).extend({
+    // We must never await this without promiseEarlyReturn, otherwise giant webring-style profile mention trees will cause the queue to stop working
     async updateMentions(id: UserProfile["userId"]){
         const profile = await this.findOneBy({ userId: id });
         if (!profile) return;
@@ -18,11 +22,12 @@ export const UserProfileRepository = db.getRepository(UserProfile).extend({
         if (profile.fields.length > 0)
             tokens.push(...profile.fields.map(p => mfm.parse(p.value).concat(mfm.parse(p.name))).flat());
 
-        const partial = {
-            mentions: await populateMentions(tokens, profile.userHost)
-        };
-
-        return UserProfileRepository.update(profile.userId, partial)
+        return queue.runExclusive(async () => {
+            const partial = {
+                mentions: await populateMentions(tokens, profile.userHost)
+            };
+            return UserProfileRepository.update(profile.userId, partial);
+        });
     },
 });
 
