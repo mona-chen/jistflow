@@ -64,9 +64,6 @@
 									><i class="ph-code ph-bold ph-lg"></i
 								></template>
 								{{ i18n.ts._aboutIceshrimp.source }}
-								<template #suffix
-									>{{ i18n.ts._aboutIceshrimp.sourceName }}</template
-								>
 							</FormLink>
 							<FormLink
 								to="https://translate.iceshrimp.dev/"
@@ -76,9 +73,6 @@
 									><i class="ph-translate ph-bold ph-lg"></i
 								></template>
 								{{ i18n.ts._aboutIceshrimp.translation }}
-								<template #suffix
-									>Weblate</template
-								>
 							</FormLink>
 							<FormLink
 								to="https://matrix.to/#/%23iceshrimp-dev:161.rocks"
@@ -88,9 +82,6 @@
 									><i class="ph-chats-circle ph-bold ph-lg"></i
 								></template>
 								{{ i18n.ts._aboutIceshrimp.chatroom }}
-								<template #suffix
-									>Matrix</template
-								>
 							</FormLink>
 							<!-- <FormLink
 								to="#"
@@ -100,9 +91,6 @@
 									><i class="ph-book-bookmark ph-bold ph-lg"></i
 								></template>
 								{{ i18n.ts._aboutIceshrimp.documentation }}
-								<template #suffix
-									>MkDocs</template
-								>
 							</FormLink> -->
 							<!-- <FormLink
 								to="#"
@@ -112,9 +100,6 @@
 									><i class="ph-road-horizon ph-bold ph-lg"></i
 								></template>
 								{{ i18n.ts._aboutIceshrimp.roadmap }}
-								<template #suffix
-									>Markdown</template
-								>
 							</FormLink> -->
 							<FormLink
 								to="https://iceshrimp.dev/iceshrimp/iceshrimp/src/branch/dev/CHANGELOG.md"
@@ -124,9 +109,6 @@
 									><i class="ph-newspaper ph-bold ph-lg"></i
 								></template>
 								{{ i18n.ts._aboutIceshrimp.changelog }}
-								<template #suffix
-									>Markdown</template
-								>
 							</FormLink>
 						</div>
 					</FormSection>
