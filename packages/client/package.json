@@ -101,7 +101,7 @@
 		"vuedraggable": "next"
 	},
 	"dependencies": {
-		"@babel/core": "^7.22.9",
+		"@babel/core": "^7.23.2",
 		"eslint": "^8.45.0"
 	}
 }
