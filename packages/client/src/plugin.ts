@@ -1,8 +1,5 @@
-import { AiScript, utils, values } from "@syuilo/aiscript";
-import { deserialize } from "@syuilo/aiscript/built/serializer";
-import { jsToVal } from "@syuilo/aiscript/built/interpreter/util";
-import { createAiScriptEnv } from "@/scripts/aiscript/api";
 import { inputText } from "@/os";
+import { createAiScriptEnv } from "@/scripts/aiscript/api";
 import {
 	noteActions,
 	notePostInterruptors,
@@ -10,6 +7,9 @@ import {
 	postFormActions,
 	userActions,
 } from "@/store";
+import { AiScript, utils, values } from "@syuilo/aiscript";
+import { jsToVal } from "@syuilo/aiscript/built/interpreter/util";
+import { deserialize } from "@syuilo/aiscript/built/serializer";
 
 const pluginContexts = new Map<string, AiScript>();
 

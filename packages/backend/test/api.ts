@@ -4,13 +4,13 @@ import * as assert from "assert";
 import * as childProcess from "child_process";
 import {
 	async,
-	signup,
-	request,
 	post,
 	react,
-	uploadFile,
-	startServer,
+	request,
 	shutdownServer,
+	signup,
+	startServer,
+	uploadFile,
 } from "./utils.js";
 
 describe("API", () => {

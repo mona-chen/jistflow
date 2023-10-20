@@ -19,7 +19,10 @@
 				></i>
 				<i
 					v-else-if="type === 'error'"
-					:class="[$style.iconInner, iconClass('ph-circle-wavy-warning')]"
+					:class="[
+						$style.iconInner,
+						iconClass('ph-circle-wavy-warning'),
+					]"
 				></i>
 				<i
 					v-else-if="type === 'warning'"

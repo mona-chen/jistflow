@@ -4,13 +4,13 @@ import * as assert from "assert";
 import * as childProcess from "child_process";
 import { Following } from "../src/models/entities/following.js";
 import {
-	connectStream,
-	signup,
 	api,
-	post,
-	startServer,
-	shutdownServer,
+	connectStream,
 	initTestDb,
+	post,
+	shutdownServer,
+	signup,
+	startServer,
 	waitFire,
 } from "./utils.js";
 
