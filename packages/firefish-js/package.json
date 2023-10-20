@@ -2,6 +2,7 @@
 	"name": "firefish-js",
 	"version": "0.0.27",
 	"description": "Firefish SDK for JavaScript",
+	"homepage": "https://git.joinfirefish.org/firefish/firefish/-/tree/develop/packages/firefish-js",
 	"main": "./built/index.js",
 	"types": "./built/index.d.ts",
 	"license": "MIT",
