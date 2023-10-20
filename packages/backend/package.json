@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"start": "node ./built/index.js",
+		"start:debug": "node --heapsnapshot-signal=SIGUSR2 --inspect ./built/index.js",
 		"start:test": "NODE_ENV=test node ./built/index.js",
 		"migrate": "typeorm migration:run -d built/ormconfig.js",
 		"revertmigration": "typeorm migration:revert -d built/ormconfig.js",
