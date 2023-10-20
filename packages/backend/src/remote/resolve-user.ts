@@ -10,10 +10,21 @@ import { createPerson, updatePerson } from "./activitypub/models/person.js";
 import { remoteLogger } from "./logger.js";
 import { Cache } from "@/misc/cache.js";
 import { IMentionedRemoteUsers } from "@/models/entities/note.js";
+import { UserProfile } from "@/models/entities/user-profile.js";
 
 const logger = remoteLogger.createSubLogger("resolve-user");
 const uriHostCache = new Cache<string>("resolveUserUriHost", 60 * 60 * 24);
 const localUsernameCache = new Cache<string | null>("localUserNameCapitalization", 60 * 60 * 24);
+const profileMentionCache = new Cache<ProfileMention | null>("resolveProfileMentions", 60 * 60);
+
+type ProfileMention = {
+	user: User;
+	profile: UserProfile | null;
+	data: {
+		username: string;
+		host: string | null;
+	};
+};
 
 export async function resolveUser(
 	username: string,
@@ -184,16 +195,18 @@ export async function resolveUser(
 }
 
 export async function resolveMentionToUserAndProfile(username: string, host: string | null, objectHost: string | null) {
-	try {
-		const user = await resolveUser(username, host ?? objectHost, false);
-		const profile = await UserProfiles.findOneBy({ userId: user.id });
-		const data = { username, host: host ?? objectHost };
+	return profileMentionCache.fetch(`${username}@${host ?? objectHost}`, async () => {
+		try {
+			const user = await resolveUser(username, host ?? objectHost, false);
+			const profile = await UserProfiles.findOneBy({ userId: user.id });
+			const data = { username, host: host ?? objectHost };
 
-		return { user, profile, data };
-	}
-	catch {
-		return null;
-	}
+			return { user, profile, data };
+		}
+		catch {
+			return null;
+		}
+	});
 }
 
 export function getMentionFallbackUri(username: string, host: string | null, objectHost: string | null): string {
