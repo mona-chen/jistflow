@@ -65,7 +65,7 @@
 								></template>
 								{{ i18n.ts._aboutIceshrimp.source }}
 								<template #suffix
-									>Git Forgejo</template
+									>{{ i18n.ts._aboutIceshrimp.sourceName }}</template
 								>
 							</FormLink>
 							<FormLink
