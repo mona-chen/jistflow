@@ -18,7 +18,7 @@
 			</button>
 		</header>
 		<transition
-			:name="defaultStore.state.animation ? 'folder-toggle' : ''"
+			:name="animation ? 'folder-toggle' : ''"
 			@enter="enter"
 			@after-enter="afterEnter"
 			@leave="leave"
@@ -62,6 +62,7 @@ export default defineComponent({
 							localStoragePrefix + this.persistKey,
 					  ) === "t"
 					: this.expanded,
+			animation: defaultStore.state.animation,
 		};
 	},
 	watch: {
