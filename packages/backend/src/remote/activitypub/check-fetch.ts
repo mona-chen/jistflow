@@ -81,8 +81,13 @@ export async function checkFetch(req: IncomingMessage): Promise<number> {
 			return 403;
 		}
 
-		// もう一回チェック
-		if (authUser.user.host !== host) {
+		// Cannot authenticate against local user
+		if (authUser.user.uri === null || authUser.user.host === null) {
+			return 400;
+		}
+
+		// Check if keyId hostname matches actor hostname
+		if (toPuny(new URL(authUser.user.uri).hostname) !== host) {
 			return 403;
 		}
 
