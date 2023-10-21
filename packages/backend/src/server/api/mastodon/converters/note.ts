@@ -90,7 +90,7 @@ export class NoteConverter {
 
         const quoteUri = Promise.resolve(renote).then(renote => {
             if (!renote || !isQuote(note)) return null;
-            return renote.uri ? renote.uri : `${config.url}/notes/${renote.id}`;
+            return renote.url ?? renote.uri ?? `${config.url}/notes/${renote.id}`;
         });
 
         const content = note.text !== null
@@ -114,8 +114,8 @@ export class NoteConverter {
         // noinspection ES6MissingAwait
         return await awaitAll({
             id: note.id,
-            uri: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
-            url: note.uri ? note.uri : `https://${config.host}/notes/${note.id}`,
+            uri: note.uri ?? `https://${config.host}/notes/${note.id}`,
+            url: note.url ?? `https://${config.host}/notes/${note.id}`,
             account: Promise.resolve(noteUser).then(p => UserConverter.encode(p, ctx)),
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: note.replyUserId,
