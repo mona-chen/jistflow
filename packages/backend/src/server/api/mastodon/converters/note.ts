@@ -115,7 +115,7 @@ export class NoteConverter {
         return await awaitAll({
             id: note.id,
             uri: note.uri ?? `https://${config.host}/notes/${note.id}`,
-            url: note.url ?? `https://${config.host}/notes/${note.id}`,
+            url: note.url ?? note.uri ?? `https://${config.host}/notes/${note.id}`,
             account: Promise.resolve(noteUser).then(p => UserConverter.encode(p, ctx)),
             in_reply_to_id: note.replyId,
             in_reply_to_account_id: note.replyUserId,
