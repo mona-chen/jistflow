@@ -1550,7 +1550,7 @@ troubleshooting: Resolució de problemes
 learnMore: Més informació
 misskeyUpdated: Firefish s'ha actualitzat!
 translate: Tradueix
-translatedFrom: Traduït desde {x}
+translatedFrom: Traduït del {x}
 aiChanMode: Ai-chan a la interfície d'usuari clàssica
 keepCw: Mantenir els avisos de contingut
 pubSub: Comptes Pub/Sub
