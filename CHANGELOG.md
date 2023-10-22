@@ -1,3 +1,64 @@
+## v2023.11-pre3
+### Breaking changes
+- Lists have been reworked, now only allowing followed users to be added, and support for proxy accounts has been removed. To allow users to follow any users they want to keep on their lists, the migration that removes all list members users are not following will only be activated in the release **after** the next stable release. It is therefore highly recommended to add an instance announcement informing your users of this change and advising them to follow any affected accounts and to use the new "hide from home timeline" list option if desired.
+
+### Highlights
+- Significantly improved handling of mentions, both in outgoing AP messages and in the Mastodon client API
+- Various Mastodon client API regressions are now fixed, improving client compatibility
+- HTTP Signature validation error handling has been improved
+- The project is now compatible with NodeJS >= 18.6 (tested against v20.8.1 at time of writing)
+
+### Mastodon client API
+- Long redirect URIs are now handled correctly
+- The `/v1/instance` endpoint now returns the correct streaming URL
+- The `/v1/apps` response now returns all fields, including `vapid_key`, allowing for implementation of push notifications in the future
+- Redirect URLs that contain double-urlencoded parts are now handled correctly
+- The OAuth process now displays errors properly
+- The hashtag timeline query is now case insensitive
+- Statuses returned by all endpoints now have the `content_type` field populated
+- The `/v1/instance` endpoint now correctly lists the supported mime types for statuses
+- Hashtags now have the `class=hashtag` attribute set correctly
+- Accounts returned by all endpoints now have the `fqn` field populated
+- Inline quote URLs are now rendered properly by supported clients (e.g. Enafore)
+- Mentions to accounts the instance was unable to resolve are now rendered as plain text
+- Profile edits made using `/v1/update_credentials` are now federated properly
+- An edge case where quotes were incorrectly detected as boosts was resolved
+- Boosted quotes are now handled properly
+- User profile data is now updated in the background when calling `/v1/accounts/:id`
+- The `url` field in status objects now contains the url instead of the uri, whenever available
+- Boosts by boost-muted users are now skipped in the Mastodon streaming API
+
+### Backend
+- Migrations are finally in sync with the ORM, allowing for proper migrations handling in the future
+- Mentions in user profiles are now resolved and stored in the database
+- Invalid mentions in outgoing AP messages are now sent as plain text instead of an unreachable link pointing back at the origin instance
+- When HTTP signature validation fails, an attempt to refresh the user's public key is now made, fixing federation with Mastodon instances who ran `tootctl accounts rotate`
+- The error image override config is now loaded properly
+- VAPID keys for WebPush are now properly generated when bootstrapping a new instance
+- Capitalization of mentions is now corrected automatically, preventing federation issues where remote instances fail to render them
+- Authorized fetch is now enabled by default for new instances
+- NSFW detection & tensorflow have been removed
+- HTTP signature validation now correctly verifies the hostname of the keyId against the hostname of the actor uri instead of the user's account domain, fixing an edge case where federation with split domain instances could fail
+- Federation handshakes initiated by GoToSocial when the local instance has authorized fetch enabled are now handled correctly
+- The `search-by-username-and-host` endpoint now doesn't filter out inactive users by default
+
+### UI/UX
+- The default themes were tweaked
+- The 'Explore' tab header now uses the correct icon
+
+### Miscellaneous
+- Some unused files have been removed from the repository
+- The code formatter now works properly for .vue files
+- The discrepancy of different formatters using different tab widths was resolved
+- The documentation now recommends using `git clone --depth=1` when cloning the repository to speed up the process
+- The Dockerfile now doesn't run `yarn workspaces focus --production` because it doesn't actually save any space in the final image due to yarn zero installs
+- A new yarn script, `start:debug`, was added to make attaching a debugger to the application easier
+- Dependencies with critical vulnerabilities have been updated
+- Various translation updates
+
+### Attribution
+This release was made possible by project contributors: AntoineÐ, Aylam, Erin Shepherd, Laura Hausmann
+
 ## v2023.11-pre2
 ### Highlights
 - An oversight in the OAuth helper that was preventing login to work in some Mastodon clients was fixed.
