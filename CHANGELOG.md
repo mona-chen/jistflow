@@ -57,7 +57,7 @@
 - Various translation updates
 
 ### Attribution
-This release was made possible by project contributors: AntoineÐ, Aylam, Erin Shepherd, Laura Hausmann
+This release was made possible by project contributors: AntoineÐ, Aylam, Erin Shepherd & Laura Hausmann
 
 ## v2023.11-pre2
 ### Highlights
@@ -107,7 +107,7 @@ From now on we will use a JetBrains-like versioning scheme. Since our release ca
 - The unused check:connect script was removed
 
 ### Attribution
-This release was made possible by project contributors: aylamz, Laura Hausmann
+This release was made possible by project contributors: aylamz & Laura Hausmann
 
 It also includes cherry-picked contributions from external contributors: Johann150
 
