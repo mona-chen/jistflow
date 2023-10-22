@@ -71,7 +71,7 @@ export class MastodonStreamPublic extends MastodonStream {
         if (isInstanceMuted(note, new Set<string>(this.userProfile?.mutedInstances ?? []))) return false;
         if (isUserRelated(note, this.muting)) return false;
         if (isUserRelated(note, this.blocking)) return false;
-        if (note.renote && !isQuote(note) && this.renoteMuting.has(note.userId)) return false;
+        if (note.renoteId !== null && !isQuote(note) && this.renoteMuting.has(note.userId)) return false;
         if (this.userProfile && (await getWordHardMute(note, this.user, this.userProfile.mutedWords))) return false;
 
         return true;

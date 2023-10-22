@@ -74,7 +74,7 @@ export class MastodonStreamList extends MastodonStream {
     private async shouldProcessNote(note: Note | Packed<"Note">): Promise<boolean> {
         if (!this.listUsers.includes(note.userId)) return false;
         if (note.channelId) return false;
-        if (note.renote && !note.text && this.renoteMuting.has(note.userId)) return false;
+        if (note.renoteId !== null && !note.text && this.renoteMuting.has(note.userId)) return false;
         if (this.userProfile && (await getWordHardMute(note, this.user, this.userProfile.mutedWords))) return false;
         if (note.visibility === "specified") return !!note.visibleUserIds?.includes(this.user.id);
         if (note.visibility === "followers") return this.following.has(note.userId);
