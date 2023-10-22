@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import { shallowRef, watch } from "vue";
 import MkModal from "@/components/MkModal.vue";
-import iconClass from "@/scripts/icon"
+import iconClass from "@/scripts/icon";
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 

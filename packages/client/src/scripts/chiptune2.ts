@@ -309,9 +309,9 @@ ChiptuneJsPlayer.prototype.createLibopenmptNode = async function (
 			}
 			return;
 		}
-		let framesRendered = 0;
-		let ended = false;
-		let error = false;
+		let framesRendered = 0,
+			ended = false,
+			error = false;
 
 		const currentPattern =
 			processNode.player.libopenmpt._openmpt_module_get_current_pattern(

@@ -24,7 +24,7 @@ export const api = ((
 	endpoint: string,
 	data: Record<string, any> = {},
 	token?: string | null | undefined,
-	useToken: boolean = true,
+	useToken = true,
 ) => {
 	pendingApiRequestsCount.value++;
 

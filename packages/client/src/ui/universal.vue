@@ -132,8 +132,8 @@
 
 		<button
 			v-if="isMobile && mainRouter.currentRoute.value.name === 'index'"
-			v-vibrate="5"
 			ref="postButton"
+			v-vibrate="5"
 			:aria-label="i18n.t('note')"
 			class="postButton button post _button"
 			@click="os.post()"

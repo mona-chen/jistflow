@@ -14,7 +14,6 @@ import "@phosphor-icons/web/light";
 import "@phosphor-icons/web/duotone";
 
 // #region account indexedDB migration
-import { set } from "@/scripts/idb-proxy";
 
 const accounts = localStorage.getItem("accounts");
 if (accounts) {
@@ -32,6 +31,7 @@ import {
 	watch,
 } from "vue";
 import { compareVersions } from "compare-versions";
+import { set } from "@/scripts/idb-proxy";
 
 import widgets from "@/widgets";
 import directives from "@/directives";

@@ -105,14 +105,14 @@ export function getWordSoftMute(
 		}
 	}
 	if (mutedLangs.length > 0) {
-		let noteLangMuted = checkLangMute(note, mutedLangs);
+		const noteLangMuted = checkLangMute(note, mutedLangs);
 		if (noteLangMuted.muted) {
 			noteLangMuted.what = "note";
 			return noteLangMuted;
 		}
 
 		if (note.renote) {
-			let renoteLangMuted = checkLangMute(note, mutedLangs);
+			const renoteLangMuted = checkLangMute(note, mutedLangs);
 			if (renoteLangMuted.muted) {
 				renoteLangMuted.what = note.text == null ? "renote" : "quote";
 				return renoteLangMuted;
@@ -120,7 +120,7 @@ export function getWordSoftMute(
 		}
 
 		if (note.reply) {
-			let replyLangMuted = checkLangMute(note, mutedLangs);
+			const replyLangMuted = checkLangMute(note, mutedLangs);
 			if (replyLangMuted.muted) {
 				replyLangMuted.what = "reply";
 				return replyLangMuted;
