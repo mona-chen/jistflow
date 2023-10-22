@@ -55,7 +55,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import { $i, getAccounts } from "@/account";
+import { getAccounts } from "@/account";
+import { $i } from "@/reactiveAccount";
 import MkButton from "@/components/MkButton.vue";
 import { instance } from "@/instance";
 import { api, apiWithDialog, promiseDialog } from "@/os";

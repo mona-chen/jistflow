@@ -100,7 +100,7 @@ import { stream } from "@/stream";
 import { useRouter } from "@/router";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { deviceKind } from "@/scripts/device-kind";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";

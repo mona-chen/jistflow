@@ -34,12 +34,12 @@ import FormSuspense from "@/components/form/suspense.vue";
 import FormButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import {
-	$i,
 	removeAccount as _removeAccount,
 	addAccount as addAccounts,
 	getAccounts,
 	login,
 } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";

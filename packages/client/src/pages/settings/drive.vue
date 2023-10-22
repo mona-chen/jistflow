@@ -85,7 +85,7 @@ import { defaultStore } from "@/store";
 import MkChart from "@/components/MkChart.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import icon from "@/scripts/icon";
 
 const fetching = ref(true);

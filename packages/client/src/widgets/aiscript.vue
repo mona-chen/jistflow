@@ -34,7 +34,7 @@ import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
 import { createAiScriptEnv } from "@/scripts/aiscript/api";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 

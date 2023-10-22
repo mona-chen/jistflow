@@ -211,7 +211,7 @@ import MkPushNotificationAllowButton from "@/components/MkPushNotificationAllowB
 import FormSwitch from "@/components/form/switch.vue";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { instance } from "@/instance";
 import icon from "@/scripts/icon";
 

@@ -42,7 +42,7 @@ import Cropper from "cropperjs";
 import tinycolor from "tinycolor2";
 import XModalWindow from "@/components/MkModalWindow.vue";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { defaultStore } from "@/store";
 import { apiUrl, url } from "@/config";
 import { query } from "@/scripts/url";

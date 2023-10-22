@@ -103,7 +103,7 @@ import XTimeline from "@/components/MkTimeline.vue";
 import XChannelFollowButton from "@/components/MkChannelFollowButton.vue";
 import * as os from "@/os";
 import { useRouter } from "@/router";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";

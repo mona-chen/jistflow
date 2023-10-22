@@ -122,7 +122,7 @@ import { stream } from "@/stream";
 import * as sound from "@/scripts/sound";
 import { vibrate } from "@/scripts/vibrate";
 import { i18n } from "@/i18n";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { defaultStore } from "@/store";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";

@@ -70,7 +70,7 @@ import MkTab from "@/components/MkTab.vue";
 import * as os from "@/os";
 import number from "@/filters/number";
 import { defaultStore } from "@/store";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";

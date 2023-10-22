@@ -14,7 +14,7 @@ import { computed } from "vue";
 import type { Note } from "firefish-js/built/entities";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";

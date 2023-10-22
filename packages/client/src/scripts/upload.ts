@@ -3,7 +3,7 @@ import type * as firefish from "firefish-js";
 import { readAndCompressImage } from "browser-image-resizer";
 import { defaultStore } from "@/store";
 import { apiUrl } from "@/config";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { alert } from "@/os";
 import { i18n } from "@/i18n";
 

@@ -1,7 +1,8 @@
 import type { AsyncComponentLoader } from "vue";
 import { defineAsyncComponent, inject } from "vue";
 import { Router } from "@/nirax";
-import { $i, iAmModerator } from "@/account";
+import { iAmModerator } from "@/account";
+import { $i } from "@/reactiveAccount";
 import MkLoading from "@/pages/_loading_.vue";
 import MkError from "@/pages/_error_.vue";
 import { api } from "@/os";

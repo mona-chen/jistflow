@@ -37,7 +37,7 @@
 import { toUnicode } from "punycode";
 import {} from "vue";
 import { host as localHost } from "@/config";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { defaultStore } from "@/store";
 
 const props = defineProps<{

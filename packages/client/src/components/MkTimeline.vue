@@ -33,7 +33,7 @@ import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import { stream } from "@/stream";
 import * as sound from "@/scripts/sound";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";

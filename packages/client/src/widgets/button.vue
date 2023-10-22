@@ -18,7 +18,7 @@ import {
 import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
 import { createAiScriptEnv } from "@/scripts/aiscript/api";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import MkButton from "@/components/MkButton.vue";
 
 const name = "button";
