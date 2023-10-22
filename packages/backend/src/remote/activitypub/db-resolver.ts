@@ -19,9 +19,6 @@ import type { IObject } from "./type.js";
 import { getApId } from "./type.js";
 import { resolvePerson, updatePerson } from "./models/person.js";
 import {redisClient, subscriber} from "@/db/redis.js";
-import { remoteLogger } from "@/remote/logger.js";
-
-const logger = remoteLogger.createSubLogger("db-resolver");
 
 const publicKeyCache = new Cache<UserPublickey | null>("publicKey", 60 * 30);
 const publicKeyByUserIdCache = new Cache<UserPublickey | null>(
@@ -191,21 +188,7 @@ export default class DbResolver {
 		user: CacheableRemoteUser;
 		key: UserPublickey | null;
 	} | null> {
-		let user: CacheableRemoteUser;
-
-		try {
-			user = (await resolvePerson(uri)) as CacheableRemoteUser;
-		}
-		catch (e: any) {
-			// Bypass GoToSocial issue #1186 (ref: https://github.com/superseriousbusiness/gotosocial/issues/1186)
-			if (e.message === 'invalid Actor: wrong inbox' && uri.match(/https?:\/\/[a-zA-Z0-9-.]+\/users\/[a-zA-Z0-9_]+\/main-key$/)) {
-				logger.warn(`Failed to resolve ${uri}, re-attempting without trailing /main-key`);
-				user = (await resolvePerson(uri.substring(0, uri.length - 9))) as CacheableRemoteUser;
-			}
-			else {
-				throw e;
-			}
-		}
+		const user = (await resolvePerson(uri)) as CacheableRemoteUser;
 
 		if (user == null) return null;
 

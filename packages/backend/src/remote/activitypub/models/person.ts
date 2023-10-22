@@ -183,9 +183,21 @@ export async function createPerson(
 
 	if (resolver == null) resolver = new Resolver();
 
-	const object = (await resolver.resolve(uri)) as any;
+	let object = (await resolver.resolve(uri)) as any;
 
-	const person = validateActor(object, uri);
+	let person: IActor;
+	try {
+		person = validateActor(object, uri);
+	}
+	catch (e: any) {
+		if (typeof object.publicKey?.owner !== 'string')
+			throw e;
+
+		// Work around GoToSocial issue #1186 (ref: https://github.com/superseriousbusiness/gotosocial/issues/1186)
+		logger.info(`Received stub actor, re-resolving with key owner uri: ${object.publicKey.owner}`);
+		object = (await resolver.resolve(object.publicKey.owner)) as any;
+		person = validateActor(object, uri);
+	}
 
 	logger.info(`Creating the Person: ${person.id}`);
 
