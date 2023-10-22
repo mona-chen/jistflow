@@ -45,7 +45,10 @@ export default async function (
 		return;
 	}
 
-	await UserListJoinings.delete({ userId: followee.id, userList: { userId: follower.id } });
+	const ids = await UserListJoinings.find({ where: { userId: followee.id, userList: { userId: follower.id } }, select: ["id"] })
+		.then(p => p.map(x => x.id));
+
+	if (ids.length > 0) await UserListJoinings.delete(ids);
 	await Followings.delete(following.id);
 
 	decrementFollowing(follower, followee);
