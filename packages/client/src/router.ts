@@ -1,11 +1,11 @@
-import { $i, iAmModerator } from "@/account";
-import { ui } from "@/config";
-import { Router } from "@/nirax";
-import { api } from "@/os";
-import MkError from "@/pages/_error_.vue";
-import MkLoading from "@/pages/_loading_.vue";
 import type { AsyncComponentLoader } from "vue";
 import { defineAsyncComponent, inject } from "vue";
+import { Router } from "@/nirax";
+import { $i, iAmModerator } from "@/account";
+import MkLoading from "@/pages/_loading_.vue";
+import MkError from "@/pages/_error_.vue";
+import { api } from "@/os";
+import { ui } from "@/config";
 
 function getGuestTimelineStatus() {
 	api("meta", {

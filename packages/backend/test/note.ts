@@ -4,15 +4,15 @@ import * as assert from "assert";
 import * as childProcess from "child_process";
 import { Note } from "../src/models/entities/note.js";
 import {
-	api,
 	async,
-	initTestDb,
-	post,
-	request,
-	shutdownServer,
 	signup,
-	startServer,
+	request,
+	post,
 	uploadUrl,
+	startServer,
+	shutdownServer,
+	initTestDb,
+	api,
 } from "./utils.js";
 
 describe("Note", () => {

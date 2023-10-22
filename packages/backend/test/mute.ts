@@ -4,12 +4,12 @@ import * as assert from "assert";
 import * as childProcess from "child_process";
 import {
 	async,
+	signup,
+	request,
 	post,
 	react,
-	request,
-	shutdownServer,
-	signup,
 	startServer,
+	shutdownServer,
 	waitFire,
 } from "./utils.js";
 

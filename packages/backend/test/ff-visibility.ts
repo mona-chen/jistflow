@@ -4,14 +4,14 @@ import * as assert from "assert";
 import * as childProcess from "child_process";
 import {
 	async,
-	connectStream,
+	signup,
+	request,
 	post,
 	react,
-	request,
-	shutdownServer,
-	signup,
-	simpleGet,
+	connectStream,
 	startServer,
+	shutdownServer,
+	simpleGet,
 } from "./utils.js";
 
 describe("FF visibility", () => {

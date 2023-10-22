@@ -4,11 +4,11 @@ import * as assert from "assert";
 import * as childProcess from "child_process";
 import {
 	async,
-	post,
-	request,
-	shutdownServer,
 	signup,
+	request,
+	post,
 	startServer,
+	shutdownServer,
 } from "./utils.js";
 
 describe("Block", () => {

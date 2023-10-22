@@ -1,10 +1,10 @@
 // NIRAX --- A lightweight router
 
-import { pleaseLogin } from "@/scripts/please-login";
-import { safeURIDecode } from "@/scripts/safe-uri-decode";
 import { EventEmitter } from "eventemitter3";
 import type { Component, ShallowRef } from "vue";
 import { Ref, ref, shallowRef } from "vue";
+import { pleaseLogin } from "@/scripts/please-login";
+import { safeURIDecode } from "@/scripts/safe-uri-decode";
 
 interface RouteDef {
 	path: string;
@@ -112,7 +112,7 @@ export class Router extends EventEmitter<{
 				let parts = [..._parts];
 				const props = new Map<string, string>();
 
-				for (const p of parsePath(route.path)) {
+				pathMatchLoop: for (const p of parsePath(route.path)) {
 					if (typeof p === "string") {
 						if (p === parts[0]) {
 							parts.shift();
@@ -128,7 +128,7 @@ export class Router extends EventEmitter<{
 								props.set(p.name, safeURIDecode(parts.join("/")));
 								parts = [];
 							}
-							break;
+							break pathMatchLoop;
 						} else {
 							if (p.startsWith) {
 								if (parts[0] == null || !parts[0].startsWith(p.startsWith))
@@ -159,7 +159,7 @@ export class Router extends EventEmitter<{
 								child,
 							};
 						} else {
-							continue;
+							continue forEachRouteLoop;
 						}
 					}
 

@@ -4,13 +4,13 @@ import * as assert from "assert";
 import * as childProcess from "child_process";
 import {
 	async,
-	connectStream,
+	signup,
+	request,
 	post,
 	react,
-	request,
-	shutdownServer,
-	signup,
+	connectStream,
 	startServer,
+	shutdownServer,
 } from "./utils.js";
 
 describe("Note thread mute", () => {
