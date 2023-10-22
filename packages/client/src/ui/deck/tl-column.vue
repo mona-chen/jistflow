@@ -50,7 +50,7 @@ import type { Column } from "./deck-store";
 import { removeColumn, updateColumn } from "./deck-store";
 import XTimeline from "@/components/MkTimeline.vue";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { instance } from "@/instance";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";

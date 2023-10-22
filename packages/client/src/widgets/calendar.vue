@@ -54,7 +54,7 @@ import {
 import type { GetFormResultType } from "@/scripts/form";
 import { i18n } from "@/i18n";
 import { useInterval } from "@/scripts/use-interval";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 
 const name = "calendar";
 

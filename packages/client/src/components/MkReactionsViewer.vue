@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import type * as firefish from "firefish-js";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import XReaction from "@/components/MkReactionsViewer.reaction.vue";
 
 const props = defineProps<{

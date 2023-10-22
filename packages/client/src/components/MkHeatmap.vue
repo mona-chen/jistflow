@@ -15,7 +15,7 @@ import { defaultStore } from "@/store";
 import { useChartTooltip } from "@/scripts/use-chart-tooltip";
 import { alpha } from "@/scripts/color";
 import { initChart } from "@/scripts/init-chart";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 
 initChart();
 

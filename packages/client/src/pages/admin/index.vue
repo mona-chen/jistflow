@@ -73,7 +73,7 @@ import MkSuperMenu from "@/components/MkSuperMenu.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import { instance } from "@/instance";
 import { version } from "@/config";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import * as os from "@/os";
 import { lookupUser } from "@/scripts/lookup-user";
 import { lookupFile } from "@/scripts/lookup-file";

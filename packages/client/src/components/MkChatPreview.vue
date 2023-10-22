@@ -66,7 +66,7 @@
 import * as Acct from "firefish-js/built/acct";
 import { i18n } from "@/i18n";
 import { acct } from "@/filters/user";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 
 const getAcct = Acct.toString;
 

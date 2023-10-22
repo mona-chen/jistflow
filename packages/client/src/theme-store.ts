@@ -1,6 +1,6 @@
 import type { Theme } from "./scripts/theme";
 import { api } from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 
 const lsCacheKey = $i ? `themes:${$i.id}` : "";
 

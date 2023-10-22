@@ -2,7 +2,7 @@
 
 import type { Ref } from "vue";
 import { onUnmounted, ref, watch } from "vue";
-import { $i } from "./account";
+import { $i } from "@/reactiveAccount";
 import { api } from "./os";
 import { stream } from "./stream";
 

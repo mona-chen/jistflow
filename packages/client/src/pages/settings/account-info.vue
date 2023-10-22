@@ -179,7 +179,7 @@ import MkKeyValue from "@/components/MkKeyValue.vue";
 import * as os from "@/os";
 import number from "@/filters/number";
 import bytes from "@/filters/bytes";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";

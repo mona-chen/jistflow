@@ -149,7 +149,8 @@
 import { computed, defineAsyncComponent, ref, watch } from "vue";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
-import { $i, openAccountMenu as openAccountMenu_ } from "@/account";
+import { openAccountMenu as openAccountMenu_ } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { openHelpMenu_ } from "@/scripts/helpMenu";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";

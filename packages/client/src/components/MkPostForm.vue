@@ -268,11 +268,8 @@ import { defaultStore, notePostInterruptors, postFormActions } from "@/store";
 import MkInfo from "@/components/MkInfo.vue";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
-import {
-	$i,
-	getAccounts,
-	openAccountMenu as openAccountMenu_,
-} from "@/account";
+import { getAccounts, openAccountMenu as openAccountMenu_ } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { uploadFile } from "@/scripts/upload";
 import { deepClone } from "@/scripts/clone";
 import XCheatSheet from "@/components/MkCheatSheetDialog.vue";

@@ -21,7 +21,7 @@ import { parse } from "@syuilo/aiscript";
 import XBlock from "./page.block.vue";
 import { Hpml } from "@/scripts/hpml/evaluator";
 import { url } from "@/config";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { defaultStore } from "@/store";
 
 export default defineComponent({
