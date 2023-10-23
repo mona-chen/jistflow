@@ -456,7 +456,7 @@ export async function updatePerson(
 
 	const emojiNames = emojis.map((emoji) => emoji.name);
 
-	const { fields } = analyzeAttachments(person.attachment || []);
+	const fields = analyzeAttachments(person.attachment || []);
 
 	const tags = extractApHashtags(person.tag)
 		.map((tag) => normalizeForSearch(tag))
