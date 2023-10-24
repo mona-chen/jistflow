@@ -2169,3 +2169,14 @@ openServerInfo: Mostra informazioni sul server cliccando sul riquadro del server
   un post
 vibrate: Abilita la vibrazione
 clickToShowPatterns: Clicca per vedere i pattern del modulo
+iconSet: Set di icone
+_iconSets:
+  fill: Con riempimento
+  regular: Regolare
+  bold: Grassetto
+  duotone: Con due toni
+  light: Sottile
+reactions: Reazioni
+replies: Risposte
+quotes: Citazioni
+renotes: Boost
