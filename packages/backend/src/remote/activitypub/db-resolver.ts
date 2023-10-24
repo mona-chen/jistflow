@@ -206,12 +206,17 @@ export default class DbResolver {
 	}
 
 	public async refetchPublicKeyForApId(user: CacheableRemoteUser): Promise<UserPublickey | null> {
-		await updatePerson(user.uri!, undefined, undefined, user);
-		let key = await UserPublickeys.findOneBy({ userId: user.id });
-		if (key != null) {
-			await publicKeyByUserIdCache.set(user.id, key);
+		try {
+			await updatePerson(user.uri!, undefined, undefined, user);
+			let key = await UserPublickeys.findOneBy({ userId: user.id });
+			if (key != null) {
+				await publicKeyByUserIdCache.set(user.id, key);
+			}
+			return key;
 		}
-		return key;
+		catch {
+			return null;
+		}
 	}
 }
 
