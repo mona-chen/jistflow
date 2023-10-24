@@ -8,7 +8,7 @@ import { unique } from "@/prelude/array.js";
 import config from "@/config/index.js";
 import { Semaphore } from "async-mutex";
 
-const queue = new Semaphore(10);
+const queue = new Semaphore(5);
 
 export const UserProfileRepository = db.getRepository(UserProfile).extend({
     // We must never await this without promiseEarlyReturn, otherwise giant webring-style profile mention trees will cause the queue to stop working
