@@ -6,6 +6,6 @@
     "Vue.volar",
     "Vue.vscode-typescript-vue-plugin",
     "arcanis.vscode-zipfs",
-		"Orta.vscode-twoslash-queries"
+    "Orta.vscode-twoslash-queries"
   ]
 }
