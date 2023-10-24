@@ -46,7 +46,7 @@ export class MiscHelpers {
                 meta.description ||
                 "This is an Iceshrimp instance. It doesn't seem to have a description.",
             email: meta.maintainerEmail || "",
-            version: `4.1.0 (compatible; Iceshrimp ${config.version})`,
+            version: `4.2.1 (compatible; Iceshrimp ${config.version})`,
             urls: {
                 streaming_api: `${config.url.replace(/^http(?=s?:\/\/)/, "ws")}`,
             },
