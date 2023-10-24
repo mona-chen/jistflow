@@ -1,6 +1,6 @@
 _lang_: "Polski"
-headlineIceshrimp: "Otwartoźródłowa, zdecentralizowana sieć społecznościowa, która zawsze
-  będzie darmowa! 🚀"
+headlineIceshrimp: "Otwartoźródłowa, zdecentralizowana sieć społecznościowa, która
+  zawsze będzie darmowa! 🚀"
 introIceshrimp: "Hej! Iceshrimp to otwartoźródłowa oraz zdecentralizowana sieć społecznościowa,
   która zawsze będzie darmowa! 🚀"
 monthAndDay: "{month}-{day}"
@@ -86,7 +86,7 @@ somethingHappened: "Coś poszło nie tak"
 retry: "Spróbuj ponownie"
 pageLoadError: "Nie udało się załadować strony."
 pageLoadErrorDescription: "Zwykle jest to spowodowane problemem z siecią lub cache
-  przeglądarki. Spróbuj wyczyścić cache i sprawdź jeszcze raz za chwilę."
+  przeglądarki. Spróbuj wyczyścić cache, albo zaczekaj chwilę i odśwież."
 serverIsDead: "Serwer nie odpowiada. Zaczekaj chwilę i spróbuj ponownie."
 youShouldUpgradeClient: "Aby zobaczyć tą stronę, odśwież ją, by zaaktualizować klienta."
 enterListName: "Wpisz nazwę listy"
@@ -109,7 +109,7 @@ pinnedNote: "Przypięty wpis"
 pinned: "Przypnij do profilu"
 you: "Ty"
 clickToShow: "Kliknij, aby wyświetlić"
-sensitive: "NSFW"
+sensitive: "Potencjalnie nieodpowiednie"
 add: "Dodaj"
 reaction: "Reakcja"
 reactionSetting: "Reakcje do pokazania w wyborniku reakcji"
@@ -117,8 +117,8 @@ reactionSettingDescription2: "Przeciągnij aby zmienić kolejność, naciśnij a
   naciśnij „+” aby dodać."
 rememberNoteVisibility: "Zapamiętuj ustawienia widoczności wpisu"
 attachCancel: "Usuń załącznik"
-markAsSensitive: "Oznacz jako NSFW"
-unmarkAsSensitive: "Cofnij NSFW"
+markAsSensitive: "Oznacz jako nieodpowiednie"
+unmarkAsSensitive: "Cofnij oznaczenie jako nieodpowiednie"
 enterFileName: "Wprowadź nazwę pliku"
 mute: "Wycisz"
 unmute: "Cofnij wyciszenie"
@@ -146,7 +146,7 @@ cacheRemoteFiles: "Przechowuj zdalne pliki w pamięci podręcznej"
 cacheRemoteFilesDescription: "Gdy ta opcja jest wyłączona, zdalne pliki są ładowane
   bezpośrednio ze zdalnego serwera. Wyłączenie tej opcji zmniejszy użycie powierzchni
   dyskowej, ale zwiększy transfer, ponieważ miniaturki nie będą generowane."
-flagAsBot: "To konto jest botem"
+flagAsBot: "Oznacz to konto jako bota 🤖"
 flagAsBotDescription: "Jeżeli ten kanał jest kontrolowany przez jakiś program, ustaw
   tę opcję. Jeżeli włączona, będzie działać jako flaga informująca innych programistów,
   aby zapobiegać nieskończonej interakcji z różnymi botami i dostosowywać wewnętrzne
@@ -213,7 +213,7 @@ noteDeleteConfirm: "Czy na pewno chcesz usunąć ten wpis?"
 pinLimitExceeded: "Nie możesz przypiąć więcej wpisów"
 intro: "Zakończono instalację Iceshrimp! Utwórz konto administratora."
 done: "Gotowe"
-processing: "Przetwarzanie"
+processing: "Przetwarzanie..."
 preview: "Podgląd"
 default: "Domyślne"
 defaultValueIs: "Domyślne: {value}"
@@ -236,7 +236,7 @@ currentPassword: "Obecne hasło"
 newPassword: "Nowe hasło"
 newPasswordRetype: "Powtórz nowe hasło"
 attachFile: "Załącz pliki"
-more: "Więcej!"
+more: "Więcej"
 featured: "Wyróżnione"
 usernameOrUserId: "Nazwa lub id użytkownika"
 noSuchUser: "Nie znaleziono użytkownika"
@@ -308,7 +308,7 @@ copyUrl: "Skopiuj adres URL"
 rename: "Zmień nazwę"
 avatar: "Awatar"
 banner: "Baner"
-nsfw: "NSFW"
+nsfw: "Potencjalnie nieodpowiednie"
 whenServerDisconnected: "Po utracie połączenia z serwerem"
 disconnectedFromServer: "Utracono połączenie z serwerem"
 reload: "Odśwież"
@@ -382,7 +382,7 @@ caseSensitive: "Wielkość liter ma znaczenie"
 withReplies: "Uwzględnij odpowiedzi"
 connectedTo: "Następujące konta są połączone"
 notesAndReplies: "Wpisy i odpowiedzi"
-withFiles: "Media"
+withFiles: "Z załącznikami"
 silence: "Wycisz"
 silenceConfirm: "Czy na pewno chcesz wyciszyć tego użytkownika?"
 unsilence: "Cofnij wyciszenie"
@@ -674,8 +674,8 @@ unclip: "Odczep"
 confirmToUnclipAlreadyClippedNote: "Ten wpis jest już częścią klipu \"{name}\". Czy
   chcesz ją usunąć z tego klipu?"
 public: "Publiczny"
-i18nInfo: "Iceshrimp jest tłumaczone na wiele języków przez wolontariuszy. Możesz pomóc
-  na {link}."
+i18nInfo: "Iceshrimp jest tłumaczone na wiele języków przez wolontariuszy. Możesz
+  pomóc na {link}."
 manageAccessTokens: "Zarządzaj tokenami dostępu"
 accountInfo: "Informacje o koncie"
 notesCount: "Liczba wpisów"
@@ -698,7 +698,7 @@ noCrawleDescription: "Proś wyszukiwarki internetowe, aby nie indeksowały Twoje
   wpisów, stron itd."
 lockedAccountInfo: "Dopóki nie ustawisz widoczności wpisu na \"Obserwujący\", twoje
   wpisy będą mogli widzieć wszyscy, nawet jeśli ustawisz manualne zatwierdzanie obserwujących."
-alwaysMarkSensitive: "Oznacz domyślnie jako NSFW"
+alwaysMarkSensitive: "Oznacz domyślnie jako nieodpowiednie"
 loadRawImages: "Wyświetlaj zdjęcia w załącznikach w całości zamiast miniatur"
 disableShowingAnimatedImages: "Nie odtwarzaj animowanych obrazów"
 verificationEmailSent: "Wiadomość weryfikacyjna została wysłana. Odwiedź uwzględniony
@@ -889,17 +889,17 @@ cannotUploadBecauseInappropriate: "Nie można przesłać tego pliku, ponieważ j
 cannotUploadBecauseNoFreeSpace: "Przesyłanie nie powiodło się z powodu braku miejsca
   na dysku."
 beta: "Beta"
-enableAutoSensitive: "Automatyczne oznaczanie NSFW"
-enableAutoSensitiveDescription: "Umożliwia automatyczne wykrywanie i oznaczanie zawartości
-  NSFW za pomocą uczenia maszynowego tam, gdzie to możliwe. Nawet jeśli ta opcja jest
-  wyłączona, może być włączona na całym serwerze."
+enableAutoSensitive: "Automatyczne oznaczanie plików jako nieodpowiednie"
+enableAutoSensitiveDescription: "Umożliwia automatyczne wykrywanie i oznaczanie nieodpowiednich
+  treści za pomocą uczenia maszynowego tam, gdzie to możliwe. Nawet jeśli ta opcja
+  jest wyłączona, może być włączona na całym serwerze."
 navbar: "Pasek nawigacyjny"
 account: "Konta"
 move: "Przenieś"
 _sensitiveMediaDetection:
   description: "Zmniejsza wysiłek związany z moderacją serwera dzięki automatycznemu
-    rozpoznawaniu zawartości NSFW za pomocą uczenia maszynowego. To nieznacznie zwiększy
-    obciążenie serwera."
+    rozpoznawaniu nieodpowiedniej zawartości za pomocą uczenia maszynowego. To nieznacznie
+    zwiększy obciążenie serwera."
   setSensitiveFlagAutomatically: "Oznacz jako NSFW"
   sensitivity: Czułość wykrywania
   analyzeVideosDescription: Analizuje filmy, w dodatku do zdjęć. Zwiększy to nieznacznie
@@ -980,6 +980,7 @@ _preferencesBackups:
   invalidFile: "Nieprawidłowy format pliku"
   noBackups: Nie znaleziono kopii zapasowych. Możesz utworzyć kopię zapasową twoich
     ustawień klienta na tym serwerze poprzez użycie “Utwórz nową kopię zapasową”.
+  delete: Usuń kopię zapasową
 _registry:
   scope: "Zakres"
   key: "Klucz"
@@ -997,14 +998,23 @@ _aboutIceshrimp:
   morePatrons: "Naprawdę doceniam wsparcie ze strony wielu niewymienionych tu osób.
     Dziękuję! 🥰"
   patrons: "Wspierający"
+  donateHost: Wesprzyj {host}
+  pleaseDonateToIceshrimp: Proszę zastanów się nad dotacją dla Iceshrimp, w celu wsparcia
+    rozwoju oprogramowania.
+  donateTitle: Czy podoba ci się Iceshrimp?
+  pleaseDonateToHost: Zastanów się również nad darowizną dla twojego serwera domowego,
+    {host}, w celu wsparcia finansowego obsługi serwera.
+  sponsors: Sponsorzy Iceshrimp
+  patronsList: Wymienieni chronologicznie, a nie według rozmiaru wsparcia. Wesprzyj
+    używając powyższego linku, by się tutaj znaleźć!
 _nsfw:
-  respect: "Ukrywaj media NSFW"
-  ignore: "Nie ukrywaj mediów NSFW"
+  respect: "Ukrywaj potencjalnie nieodpowiednie media"
+  ignore: "Nie ukrywaj nieodpowiednich mediów"
   force: "Ukrywaj wszystkie media"
 _mfm:
   cheatSheet: "Ściąga MFM"
-  intro: "MFM jest językiem składniowym używanym przez m.in. Iceshrimp, forki *key (w
-    tym Iceshrimp), oraz Akkomę, który może być użyty w wielu miejscach. Tu znajdziesz
+  intro: "MFM jest językiem składniowym używanym przez m.in. Iceshrimp, forki *key
+    (w tym Iceshrimp), oraz Akkomę, który może być użyty w wielu miejscach. Tu znajdziesz
     listę wszystkich możliwych elementów składni MFM."
   dummy: "Iceshrimp rozszerza świat Fediwersum"
   mention: "Wspomnij"
@@ -1080,6 +1090,17 @@ _mfm:
   foreground: Kolor pierwszoplanowy
   scaleDescription: Skaluj treść o określoną wielkość.
   scale: Skaluj
+  warn: MFM może zawierać szybko poruszające się albo migające animacje
+  advancedDescription: Jeśli wyłączone, pozwala tylko na podstawowe znaczniki, chyba,
+    że animowane MFM jest odtwarzane
+  advanced: Zaawansowane MFM
+  stop: Zatrzymaj MFM
+  alwaysPlay: Autoodtwarzaj wszystkie animowane MFM
+  fade: Zanik
+  fadeDescription: Pozwala na zanikanie i ponowne pojawianie się zawartości.
+  crop: Kadrowanie
+  cropDescription: Kadruj zawartość.
+  play: Odtwórz MFM
 _instanceTicker:
   none: "Nigdy nie pokazuj"
   remote: "Pokaż dla zdalnych użytkowników"
@@ -1270,6 +1291,25 @@ _2fa:
   securityKeyInfo: Oprócz uwierzytelnienia odciskiem palców lub PIN, możesz również
     skonfigurować uwierzytelnienie za pomocą kluczy sprzętowych obsługujących FIDO2,
     w celu dalszego zabezpieczenia Twojego konta.
+  step2Click: Kliknięcie tego kodu QR pozwoli ci na zarejestrowanie 2FA na twoim kluczu
+    bezpieczeństwa, albo aplikacji uwierzytelniającej na telefonie.
+  registerTOTPBeforeKey: Proszę zarejestruj aplikację uwierzytelniającą w celu zarejestrowania
+    klucza bezpieczeństwa, albo passkey.
+  whyTOTPOnlyRenew: Aplikacja uwierzytelniająca nie może być usunięta tak długo, jak
+    do konta jest przypisany klucz bezpieczeństwa.
+  step3Title: Wprowadź kod uwierzytelniający
+  securityKeyNotSupported: Twoja przeglądarka nie obsługuje kluczy bezpieczeństwa
+  chromePasskeyNotSupported: Passkey Chrome nie są obecnie wspierane.
+  securityKeyName: Wprowadź nazwę klucza
+  tapSecurityKey: Postępuj zgodnie z instrukcjami przeglądarki w celu zarejestrowania
+    klucza
+  removeKey: Usuń klucz bezpieczeństwa
+  removeKeyConfirm: Czy na pewno chcesz usunąć klucz {name}?
+  renewTOTP: Przekonfiguruj aplikację uwierzytelniającą
+  renewTOTPConfirm: To sprawi, że kody z poprzedniej aplikacji przestaną działać
+  renewTOTPCancel: Anuluj
+  token: Token 2FA
+  renewTOTPOk: Przekonfiguruj
 _permissions:
   "read:account": "Wyświetlanie informacji o twoim koncie"
   "write:account": "Edycja informacji o twoim koncie"
@@ -1307,11 +1347,12 @@ _auth:
   shareAccess: "Czy chcesz autoryzować „{name}” do dostępu do tego konta?"
   permissionAsk: "Ta aplikacja wymaga następujących uprawnień:"
   denied: Odmowa dostępu
-  copyAsk: Proszę wpisz następujący kod autoryzacyjny w aplikacji
+  copyAsk: 'Proszę wpisz następujący kod autoryzacyjny w aplikacji:'
   shareAccessAsk: Czy na pewno chcesz upoważnić tą aplikację do dostępu do Twojego
     konta?
   pleaseGoBack: Wróć do aplikacji
   callback: Wracam do aplikacji
+  allPermissions: Pełny dostęp do konta
 _weekday:
   sunday: "Niedziela"
   monday: "Poniedziałek"
@@ -1346,6 +1387,10 @@ _widgets:
   userList: Lista użytkowników
   _userList:
     chooseList: Wybierz listę
+  serverInfo: Informacje o serwerze
+  meiliIndexCount: Zindeksowane posty
+  meiliStatus: Status serwera
+  meiliSize: Rozmiar indeksu
 _cw:
   hide: "Ukryj"
   show: "Załaduj więcej"
@@ -1403,7 +1448,8 @@ _profile:
   metadata: "Dodatkowe informacje"
   metadataEdit: "Edytuj dodatkowe informacje"
   metadataDescription: "Możesz wyświetlać do czterech sekcji dodatkowych informacji
-    na swoim profilu. Możesz dodać tag {a} lub tag {l} z {rel}, aby zweryfikować link w swoim profilu!"
+    na swoim profilu. Możesz dodać tag {a} lub tag {l} z {rel}, aby zweryfikować link
+    w swoim profilu!"
   metadataLabel: "Etykieta"
   metadataContent: "Treść"
   changeAvatar: "Zmień awatar"
@@ -1777,6 +1823,9 @@ _notification:
     followBack: "zaobserwował* cię z powrotem"
     reply: "Odpowiedz"
     renote: "Podbicia"
+  reacted: zareagował* na Twój post
+  voted: zagłosował* na Twoją ankietę
+  renoted: podbił* Twój post
 _deck:
   alwaysShowMainColumn: "Zawsze pokazuj główną kolumnę"
   columnAlign: "Wyrównaj kolumny"
@@ -1801,6 +1850,7 @@ _deck:
     list: "Listy"
     mentions: "Wspomnienia"
     direct: "Bezpośrednie wiadomości"
+    channel: Kanał
   introduction2: Kliknij + z prawej strony ekranu, by dodać nowe kolumny kiedy chcesz.
   introduction: Utwórz idealny dla siebie interfejs, poprzez dowolne ustawianie kolumn!
   renameProfile: Zmień nazwę przestrzeni
@@ -1915,10 +1965,10 @@ objectStorageBaseUrlDesc: "URL stosowany jako odniesienie. Podaj URL twojego CDN
   a dla GCS i jego odpowiedników użyj 'https://storage.googleapis.com/<bucket>', itd."
 sendErrorReportsDescription: "Gdy ta opcja jest włączona, szczegółowe informacje o
   błędach będą udostępnianie z Iceshrimp gdy wystąpi problem, pomagając w ulepszaniu
-  Iceshrimp.\nZawrze to informacje takie jak wersja twojego systemu operacyjnego, przeglądarki,
-  Twoja aktywność na Iceshrimp itd."
-privateModeInfo: Gdy ta opcja jest włączona, tylko serwery z białej listy mogą federować
-  się z twoim serwerem. Wszystkie posty będą ukryte publicznie.
+  Iceshrimp.\nZawrze to informacje takie jak wersja twojego systemu operacyjnego,
+  przeglądarki, Twoja aktywność na Iceshrimp itd."
+privateModeInfo: Gdy ta opcja jest włączona, tylko serwery z tej listy mogą federować
+  się z twoim serwerem. Wszystkie posty będą niewidoczne dla publiki.
 oneHour: Godzina
 oneDay: Dzień
 oneWeek: Tydzień
@@ -2029,3 +2079,73 @@ newer: nowsze
 older: starsze
 cw: Ostrzeżenie zawartości
 removeReaction: Usuń reakcję
+audio: Audio
+cwStyle: Wygląd CW
+_cwStyle:
+  classic: Klasyczny (taki jak w Misskey/Foundkey)
+  alternative: Alternatywny (Taki jak w Firefish)
+  modern: Nowoczesny
+hideFromHome: Ukryj z głównej osi czasu
+expandAllCws: Pokaż zawartość wszystkich odpowiedzi
+collapseAllCws: Ukryj zawartość wszystkich odpowiedzi
+cannotChangeScopeWhenEditing: Nie możesz zmienić widoczności posta podczas jego edycji
+xl: XL
+clipsDesc: Klipy to udostępnialne, kategoryzowalne zakładki. Możesz stworzyć klipy
+  poprzez menu pojedyńczych postów.
+image: Zdjęcie
+preventAiLearningDescription: Zażądaj, by modele językowe AI osób trzecich nie uczyły
+  się na treściach które wysyłasz, takich jak posty czy zdjęcia.
+silencedWarning: Ta strona się pokazuje, ponieważ wymienieni użytkownicy są z serwerów
+  które Twój admin wyciszył, więc mogą być oni potencjalnymi spamerami.
+verifiedLink: Zweryfikowany link
+_experiments:
+  enablePostImports: Włącz import postów
+  postImportsCaption: Pozwala użytkownikom na zaimportowanie ich postów z poprzednich
+    kont Iceshrimp, Misskey, Mastodon, Akkomy czy Pleromy. Może to spowodować spowolnienia
+    podczas ładowania, jeśli twoja kolejka ma wąskie gardło.
+  title: Eksperymenty
+alwaysExpandCws: Zawsze rozwijaj posty z CW
+video: Film
+swipeOnMobile: Zezwól na przesuwanie palcem między stronami
+preventAiLearning: Nie zezwalaj na zbieranie danych przez boty AI
+noGraze: Wyłącz rozszerzenie "Graze for Mastodon", ponieważ zakłóca ono pracę z Iceshrimp.
+isBot: To konto jest botem
+isLocked: To konto zatwierdza obserwujących manualnie
+isModerator: Moderator
+isAdmin: Administrator
+isPatron: Patron Iceshrimp
+reactionPickerSkinTone: Preferowany ton skóry emoji
+enableServerMachineStats: Włącz statystyki sprzętowe serwera
+enableIdenticonGeneration: Włącz generację identikonów
+showPopup: Powiadom użytkowników popupem
+showWithSparkles: Pokaż z błyskotkami
+youHaveUnreadAnnouncements: Masz nieprzeczytanie ogłoszenia
+donationLink: Link do strony wspierania
+neverShow: Nie pokazuj ponownie
+remindMeLater: Może później
+removeQuote: Usuń cytat
+removeRecipient: Usuń odbiorcę
+removeMember: Usuń członka
+openInMainColumn: Otwórz w głównej kolumnie
+searchNotLoggedIn_1: Musisz być zalogowany, by móc używać wyszukiwarki postów.
+searchNotLoggedIn_2: Natomiast, dalej możesz szukać użytkowników, oraz postów przy
+  użyciu hashtagów.
+_filters:
+  fromUser: Od użytkownika
+  withFile: Z plikiem
+  fromDomain: Od domeny
+  notesBefore: Posty przed
+  notesAfter: Posty po
+  followingOnly: Tylko od obserwowanych
+  followersOnly: Tylko od obserwujących
+_dialog:
+  charactersExceeded: 'Limit znaków przekroczony! Obecnie: {current}/Limit: {max}'
+  charactersBelow: 'Za mało znaków! Obecnie: {current}/Limit: {max}'
+_feeds:
+  rss: RSS
+  atom: Atom
+  copyFeed: Kopiuj kanał
+  jsonFeed: Kanał JSON
+antennaTimelineHint: Anteny wyświetlają pasujące posty w kolejności w której zostały
+  one odebrane, która nie jest koniecznie chronologiczna.
+alt: ALT
