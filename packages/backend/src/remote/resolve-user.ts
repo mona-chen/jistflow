@@ -30,7 +30,8 @@ export async function resolveUser(
 	username: string,
 	host: string | null,
 	refresh: boolean = true,
-	awaitRefresh: boolean = true
+	awaitRefresh: boolean = true,
+	skipMentionsOnCreate: boolean = false
 ): Promise<User> {
 	const usernameLower = username.toLowerCase();
 
@@ -104,14 +105,14 @@ export async function resolveUser(
 				// Otherwise create and return new user
 				else {
 					logger.succ(`return new remote user: ${chalk.magenta(finalAcctLower)}`);
-					return await createPerson(fingerRes.self.href, undefined, subjectHost);
+					return await createPerson(fingerRes.self.href, undefined, subjectHost, skipMentionsOnCreate);
 				}
 			}
 		}
 
 		// Not a split domain setup, so we can simply create and return the new user
 		logger.succ(`return new remote user: ${chalk.magenta(finalAcctLower)}`);
-		return await createPerson(fingerRes.self.href, undefined, subjectHost);
+		return await createPerson(fingerRes.self.href, undefined, subjectHost, skipMentionsOnCreate);
 	}
 
 	// If user information is out of date, return it by starting over from WebFinger
@@ -187,7 +188,7 @@ export async function resolveUser(
 	} else if (refresh && !awaitRefresh && (user.lastFetchedAt == null || Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24)) {
 		// Run the refresh in the background
 		// noinspection ES6MissingAwait
-		resolveUser(username, host, true, true);
+		resolveUser(username, host, true, true, skipMentionsOnCreate);
 	}
 
 	logger.info(`return existing remote user: ${acctLower}`);
@@ -197,7 +198,7 @@ export async function resolveUser(
 export async function resolveMentionToUserAndProfile(username: string, host: string | null, objectHost: string | null) {
 	return profileMentionCache.fetch(`${username}@${host ?? objectHost}`, async () => {
 		try {
-			const user = await resolveUser(username, host ?? objectHost, false);
+			const user = await resolveUser(username, host ?? objectHost, false, false, true);
 			const profile = await UserProfiles.findOneBy({ userId: user.id });
 			const data = { username, host: host ?? objectHost };
 

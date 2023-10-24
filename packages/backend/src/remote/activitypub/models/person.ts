@@ -170,6 +170,7 @@ export async function createPerson(
 	uri: string,
 	resolver?: Resolver,
 	subjectHost?: string,
+	skipMentions: boolean = false
 ): Promise<User> {
 	if (typeof uri !== "string") throw new Error("uri is not string");
 
@@ -399,7 +400,7 @@ export async function createPerson(
 	updateUsertags(user!, tags);
 
 	// Mentions update
-	UserProfiles.updateMentions(user!.id);
+	if (!skipMentions) UserProfiles.updateMentions(user!.id);
 
 	//#region Fetch avatar and header image
 	const [avatar, banner] = await Promise.all(
