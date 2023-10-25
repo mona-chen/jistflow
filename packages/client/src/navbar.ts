@@ -8,7 +8,7 @@ import { unisonReload } from "@/scripts/unison-reload";
 import { defaultStore } from "@/store";
 import { instance } from "@/instance";
 import { host } from "@/config";
-import XTutorial from "@/components/TutorialDialog.vue";
+import XTutorial from "@/components/MkTutorialDialog.vue";
 import { openHelpMenu_ } from "@/scripts/helpMenu";
 
 export const navbarItemDef = reactive({
@@ -154,8 +154,8 @@ export const navbarItemDef = reactive({
 		icon: "ph-arrows-clockwise ph-bold ph-lg",
 		action: () => {
 			location.reload();
-		},
-	},
+		}
+	}
 });
 
 function openHelpMenu(ev: MouseEvent) {

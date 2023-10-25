@@ -54,7 +54,7 @@ export default {
 
 			const showing = ref(true);
 			popup(
-				defineAsyncComponent(() => import("@/components/Tooltip.vue")),
+				defineAsyncComponent(() => import("@/components/MkTooltip.vue")),
 				{
 					showing,
 					text: self.text,

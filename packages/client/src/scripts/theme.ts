@@ -52,7 +52,7 @@ export const getBuiltinThemes = () =>
 			"d-green-orange",
 			"d-cherry",
 			"d-ice",
-			"d-u0",
+			"d-u0"
 		].map((name) =>
 			import(`../themes/${name}.json5`).then(
 				({ default: _default }): Theme => _default,
@@ -138,13 +138,10 @@ function compile(theme: Theme): Record<string, string> {
 				case "lighten":
 					return color.lighten(arg);
 				case "alpha":
-					if (
-						!defaultStore.state.useBlurEffect &&
-						key &&
-						ignoreAlphaForKeys.includes(key)
-					) {
+					if (!defaultStore.state.useBlurEffect && key && ignoreAlphaForKeys.includes(key)) {
 						return color.setAlpha(1.0);
-					} else {
+					}
+					else {
 						return color.setAlpha(arg);
 					}
 				case "hue":

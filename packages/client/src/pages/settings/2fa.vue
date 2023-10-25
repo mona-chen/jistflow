@@ -3,7 +3,7 @@
 		<template #label>{{ i18n.ts["2fa"] }}</template>
 
 		<div v-if="$i" class="_gaps_s">
-			<Folder>
+			<MkFolder>
 				<template #icon
 					><i
 						class="ph-shield-check ph-bold ph-lg"
@@ -15,32 +15,32 @@
 				<div v-if="$i.twoFactorEnabled" class="_gaps_s">
 					<div v-text="i18n.ts._2fa.alreadyRegistered" />
 					<template v-if="$i.securityKeysList.length > 0">
-						<Button @click="renewTOTP"
+						<MkButton @click="renewTOTP"
 							><i
 								class="ph-shield-check ph-bold ph-lg"
 								style="margin-right: 0.5rem"
 							></i
-							>{{ i18n.ts._2fa.renewTOTP }}</Button
+							>{{ i18n.ts._2fa.renewTOTP }}</MkButton
 						>
-						<Info>{{ i18n.ts._2fa.whyTOTPOnlyRenew }}</Info>
+						<MkInfo>{{ i18n.ts._2fa.whyTOTPOnlyRenew }}</MkInfo>
 					</template>
-					<Button v-else @click="unregisterTOTP"
+					<MkButton v-else @click="unregisterTOTP"
 						><i
 							class="ph-shield-slash ph-bold ph-lg"
 							style="margin-right: 0.5rem"
 						></i
-						>{{ i18n.ts.unregister }}</Button
+						>{{ i18n.ts.unregister }}</MkButton
 					>
 				</div>
 
-				<Button
+				<MkButton
 					v-else-if="!twoFactorData && !$i.twoFactorEnabled"
 					@click="registerTOTP"
-					>{{ i18n.ts._2fa.registerTOTP }}</Button
+					>{{ i18n.ts._2fa.registerTOTP }}</MkButton
 				>
-			</Folder>
+			</MkFolder>
 
-			<Folder>
+			<MkFolder>
 				<template #icon
 					><i
 						class="ph-key ph-bold ph-lg"
@@ -49,32 +49,32 @@
 				></template>
 				<template #label>{{ i18n.ts.securityKeyAndPasskey }}</template>
 				<div class="_gaps_s">
-					<Info>
+					<MkInfo>
 						{{ i18n.ts._2fa.securityKeyInfo }}<br />
 						<br />
 						{{ i18n.ts._2fa.chromePasskeyNotSupported }}
-					</Info>
+					</MkInfo>
 
-					<Info v-if="!supportsCredentials" warn>
+					<MkInfo v-if="!supportsCredentials" warn>
 						{{ i18n.ts._2fa.securityKeyNotSupported }}
-					</Info>
+					</MkInfo>
 
-					<Info
+					<MkInfo
 						v-else-if="supportsCredentials && !$i.twoFactorEnabled"
 						warn
 					>
 						{{ i18n.ts._2fa.registerTOTPBeforeKey }}
-					</Info>
+					</MkInfo>
 
 					<template v-else>
-						<Button primary @click="addSecurityKey"
+						<MkButton primary @click="addSecurityKey"
 							><i
 								class="ph-key ph-bold ph-lg"
 								style="margin-right: 0.5rem"
 							></i
-							>{{ i18n.ts._2fa.registerSecurityKey }}</Button
+							>{{ i18n.ts._2fa.registerSecurityKey }}</MkButton
 						>
-						<Folder
+						<MkFolder
 							v-for="key in $i.securityKeysList"
 							:key="key.id"
 						>
@@ -83,23 +83,23 @@
 								{{ `${i18n.ts.lastUsedDate}: ${key.lastUsed}` }}
 							</p>
 							<div class="_flexList">
-								<Button @click="renameKey(key)"
+								<MkButton @click="renameKey(key)"
 									><i
 										class="ph-pencil-line ph-bold ph-lg"
 									></i>
-									{{ i18n.ts.rename }}</Button
+									{{ i18n.ts.rename }}</MkButton
 								>
-								<Button danger @click="unregisterKey(key)"
+								<MkButton danger @click="unregisterKey(key)"
 									><i class="ph-trash ph-bold ph-lg"></i>
-									{{ i18n.ts.unregister }}</Button
+									{{ i18n.ts.unregister }}</MkButton
 								>
 							</div>
-						</Folder>
+						</MkFolder>
 					</template>
 				</div>
-			</Folder>
+			</MkFolder>
 
-			<Switch
+			<MkSwitch
 				:disabled="
 					!$i.twoFactorEnabled || $i.securityKeysList.length === 0
 				"
@@ -110,7 +110,7 @@
 				<template #caption>{{
 					i18n.ts.passwordLessLoginDescription
 				}}</template>
-			</Switch>
+			</MkSwitch>
 		</div>
 	</FormSection>
 </template>
@@ -119,11 +119,11 @@
 import { ref, defineAsyncComponent } from "vue";
 import { hostname } from "@/config";
 import { byteify, hexify, stringify } from "@/scripts/2fa";
-import Button from "@/components/Button.vue";
-import Info from "@/components/Info.vue";
-import Switch from "@/components/form/Switch.vue";
-import FormSection from "@/components/form/Section.vue";
-import Folder from "@/components/Folder.vue";
+import MkButton from "@/components/MkButton.vue";
+import MkInfo from "@/components/MkInfo.vue";
+import MkSwitch from "@/components/form/switch.vue";
+import FormSection from "@/components/form/section.vue";
+import MkFolder from "@/components/MkFolder.vue";
 import * as os from "@/os";
 import { $i } from "@/account";
 import { i18n } from "@/i18n";
@@ -158,7 +158,7 @@ async function registerTOTP() {
 
 	const qrdialog = await new Promise<boolean>((res) => {
 		os.popup(
-			defineAsyncComponent(() => import("./2faQrDialog.vue")),
+			defineAsyncComponent(() => import("./2fa.qrdialog.vue")),
 			{
 				twoFactorData,
 			},

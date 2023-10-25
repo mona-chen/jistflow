@@ -1,6 +1,6 @@
 import { onUnmounted, onDeactivated, ref } from "vue";
 import * as os from "@/os";
-import ChartTooltip from "@/components/ChartTooltip.vue";
+import MkChartTooltip from "@/components/MkChartTooltip.vue";
 
 export function useChartTooltip(
 	opts: { position: "top" | "middle" } = { position: "top" },
@@ -13,7 +13,7 @@ export function useChartTooltip(
 	let disposeTooltipComponent;
 
 	os.popup(
-		ChartTooltip,
+		MkChartTooltip,
 		{
 			showing: tooltipShowing,
 			x: tooltipX,

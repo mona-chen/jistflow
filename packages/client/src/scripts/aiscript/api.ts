@@ -8,14 +8,14 @@ export function createAiScriptEnv(opts) {
 		USER_ID: $i ? values.STR($i.id) : values.NULL,
 		USER_NAME: $i ? values.STR($i.name) : values.NULL,
 		USER_USERNAME: $i ? values.STR($i.username) : values.NULL,
-		":dialog": values.FN_NATIVE(async ([title, text, type]) => {
+		"Mk:dialog": values.FN_NATIVE(async ([title, text, type]) => {
 			await os.alert({
 				type: type ? type.value : "info",
 				title: title.value,
 				text: text.value,
 			});
 		}),
-		":confirm": values.FN_NATIVE(async ([title, text, type]) => {
+		"Mk:confirm": values.FN_NATIVE(async ([title, text, type]) => {
 			const confirm = await os.confirm({
 				type: type ? type.value : "question",
 				title: title.value,
@@ -23,7 +23,7 @@ export function createAiScriptEnv(opts) {
 			});
 			return confirm.canceled ? values.FALSE : values.TRUE;
 		}),
-		":api": values.FN_NATIVE(async ([ep, param, token]) => {
+		"Mk:api": values.FN_NATIVE(async ([ep, param, token]) => {
 			if (token) {
 				utils.assertString(token);
 				// バグがあればundefinedもあり得るため念のため
@@ -38,7 +38,7 @@ export function createAiScriptEnv(opts) {
 			);
 			return utils.jsToVal(res);
 		}),
-		":save": values.FN_NATIVE(([key, value]) => {
+		"Mk:save": values.FN_NATIVE(([key, value]) => {
 			utils.assertString(key);
 			localStorage.setItem(
 				`aiscript:${opts.storageKey}:${key.value}`,
@@ -46,7 +46,7 @@ export function createAiScriptEnv(opts) {
 			);
 			return values.NULL;
 		}),
-		":load": values.FN_NATIVE(([key]) => {
+		"Mk:load": values.FN_NATIVE(([key]) => {
 			utils.assertString(key);
 			return utils.jsToVal(
 				JSON.parse(

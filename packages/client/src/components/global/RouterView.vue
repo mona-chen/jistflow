@@ -11,7 +11,7 @@
 			/>
 
 			<template #fallback>
-				<Loading />
+				<MkLoading />
 			</template>
 		</Suspense>
 	</KeepAlive>

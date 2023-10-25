@@ -5,10 +5,10 @@ import { EventEmitter } from "eventemitter3";
 import insertTextAtCursor from "insert-text-at-cursor";
 import * as Misskey from "iceshrimp-js";
 import { apiUrl, url } from "@/config";
-import PostFormDialog from "@/components/PostFormDialog.vue";
-import WaitingDialog from "@/components/WaitingDialog.vue";
-import Toast from "@/components/Toast.vue";
-import Dialog from "@/components/Dialog.vue";
+import MkPostFormDialog from "@/components/MkPostFormDialog.vue";
+import MkWaitingDialog from "@/components/MkWaitingDialog.vue";
+import MkToast from "@/components/MkToast.vue";
+import MkDialog from "@/components/MkDialog.vue";
 import { MenuItem } from "@/types/menu";
 import { $i } from "@/account";
 import { i18n } from "./i18n";
@@ -77,9 +77,7 @@ export const apiJson = ((
 	const authorization = authorizationToken
 		? `Bearer ${authorizationToken}`
 		: undefined;
-	const authHeaders: {} | { authorization: string } = authorization
-		? { authorization }
-		: {};
+	const authHeaders: {} | {authorization: string} = authorization ? { authorization } : {};
 
 	const promise = new Promise((resolve, reject) => {
 		fetch(endpoint.indexOf("://") > -1 ? endpoint : `${apiUrl}/${endpoint}`, {
@@ -87,7 +85,7 @@ export const apiJson = ((
 			body: JSON.stringify(data),
 			credentials: "omit",
 			cache: "no-cache",
-			headers: { ...authHeaders, "content-type": "application/json" },
+			headers: {...authHeaders, "content-type": "application/json" },
 		})
 			.then(async (res) => {
 				const body = res.status === 204 ? null : await res.json();
@@ -204,7 +202,7 @@ export function promiseDialog<T extends Promise<any>>(
 
 	// NOTE: dynamic importすると挙動がおかしくなる(showingの変更が伝播しない)
 	popup(
-		WaitingDialog,
+		MkWaitingDialog,
 		{
 			success: success,
 			showing: showing,
@@ -280,8 +278,8 @@ export async function popup(
 export function pageWindow(path: string) {
 	popup(
 		defineAsyncComponent({
-			loader: () => import("@/components/PageWindow.vue"),
-			loadingComponent: WaitingDialog,
+			loader: () => import("@/components/MkPageWindow.vue"),
+			loadingComponent: MkWaitingDialog,
 			delay: 1000,
 		}),
 		{
@@ -295,8 +293,8 @@ export function pageWindow(path: string) {
 export function modalPageWindow(path: string) {
 	popup(
 		defineAsyncComponent({
-			loader: () => import("@/components/ModalPageWindow.vue"),
-			loadingComponent: WaitingDialog,
+			loader: () => import("@/components/MkModalPageWindow.vue"),
+			loadingComponent: MkWaitingDialog,
 			delay: 1000,
 		}),
 		{
@@ -309,7 +307,7 @@ export function modalPageWindow(path: string) {
 
 export function toast(message: string) {
 	popup(
-		Toast,
+		MkToast,
 		{
 			message,
 		},
@@ -328,7 +326,7 @@ export function alert(props: {
 			props.text = i18n.ts.somethingHappened;
 		}
 		popup(
-			Dialog,
+			MkDialog,
 			props,
 			{
 				done: (result) => {
@@ -349,7 +347,7 @@ export function confirm(props: {
 }): Promise<{ canceled: boolean }> {
 	return new Promise((resolve, reject) => {
 		popup(
-			Dialog,
+			MkDialog,
 			{
 				...props,
 				showCancelButton: true,
@@ -372,8 +370,8 @@ export function yesno(props: {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/Dialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{
@@ -409,7 +407,7 @@ export function inputText(props: {
 > {
 	return new Promise((resolve, reject) => {
 		popup(
-			Dialog,
+			MkDialog,
 			{
 				title: props.title,
 				text: props.text,
@@ -447,8 +445,8 @@ export function inputParagraph(props: {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/Dialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{
@@ -486,8 +484,8 @@ export function inputNumber(props: {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/Dialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{
@@ -524,7 +522,7 @@ export function inputDate(props: {
 > {
 	return new Promise((resolve, reject) => {
 		popup(
-			Dialog,
+			MkDialog,
 			{
 				title: props.title,
 				text: props.text,
@@ -582,7 +580,7 @@ export function select<C = any>(
 > {
 	return new Promise((resolve, reject) => {
 		popup(
-			Dialog,
+			MkDialog,
 			{
 				title: props.title,
 				text: props.text,
@@ -609,7 +607,7 @@ export function success(): Promise<void> {
 			showing.value = false;
 		}, 1000);
 		popup(
-			WaitingDialog,
+			MkWaitingDialog,
 			{
 				success: true,
 				showing: showing,
@@ -626,7 +624,7 @@ export function waiting(): Promise<void> {
 	return new Promise((resolve, reject) => {
 		const showing = ref(true);
 		popup(
-			WaitingDialog,
+			MkWaitingDialog,
 			{
 				success: false,
 				showing: showing,
@@ -643,8 +641,8 @@ export function form(title, form) {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/FormDialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkFormDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{ title, form },
@@ -662,8 +660,8 @@ export async function selectUser() {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/UserSelectDialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkUserSelectDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{},
@@ -681,8 +679,8 @@ export async function selectLocalUser() {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/UserSelectLocalDialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkUserSelectLocalDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{},
@@ -700,8 +698,8 @@ export async function selectInstance(): Promise<Misskey.entities.Instance> {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/InstanceSelectDialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkInstanceSelectDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{},
@@ -719,8 +717,8 @@ export async function selectDriveFile(multiple: boolean) {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/DriveSelectDialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkDriveSelectDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{
@@ -743,8 +741,8 @@ export async function selectDriveFolder(multiple: boolean) {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/DriveSelectDialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkDriveSelectDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{
@@ -767,8 +765,8 @@ export async function pickEmoji(src: HTMLElement | null, opts) {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/EmojiPickerDialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkEmojiPickerDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{
@@ -794,8 +792,8 @@ export async function cropImage(
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/CropperDialog.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkCropperDialog.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{
@@ -862,8 +860,8 @@ export async function openEmojiPicker(
 
 	openingEmojiPicker = await popup(
 		defineAsyncComponent({
-			loader: () => import("@/components/EmojiPickerDialog.vue"),
-			loadingComponent: WaitingDialog,
+			loader: () => import("@/components/MkEmojiPickerDialog.vue"),
+			loadingComponent: MkWaitingDialog,
 			delay: 1000,
 		}),
 		{
@@ -900,8 +898,8 @@ export function popupMenu(
 		let dispose;
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/PopupMenu.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkPopupMenu.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{
@@ -933,8 +931,8 @@ export function contextMenu(
 		let dispose;
 		popup(
 			defineAsyncComponent({
-				loader: () => import("@/components/ContextMenu.vue"),
-				loadingComponent: WaitingDialog,
+				loader: () => import("@/components/MkContextMenu.vue"),
+				loadingComponent: MkWaitingDialog,
 				delay: 1000,
 			}),
 			{
@@ -955,13 +953,13 @@ export function contextMenu(
 
 export function post(props: Record<string, any> = {}) {
 	return new Promise((resolve, reject) => {
-		// NOTE: PostFormDialogをdynamic importするとiOSでテキストエリアに自動フォーカスできない
-		// NOTE: ただ、dynamic importしない場合、PostFormDialogインスタンスが使いまわされ、
+		// NOTE: MkPostFormDialogをdynamic importするとiOSでテキストエリアに自動フォーカスできない
+		// NOTE: ただ、dynamic importしない場合、MkPostFormDialogインスタンスが使いまわされ、
 		//       Vueが渡されたコンポーネントに内部的に__propsというプロパティを生やす影響で、
 		//       複数のpost formを開いたときに場合によってはエラーになる
 		//       もちろん複数のpost formを開けること自体Misskeyサイドのバグなのだが
 		let dispose;
-		popup(PostFormDialog, props, {
+		popup(MkPostFormDialog, props, {
 			closed: () => {
 				resolve();
 				dispose();

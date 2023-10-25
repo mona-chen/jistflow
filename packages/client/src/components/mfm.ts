@@ -1,16 +1,16 @@
 import { defineComponent, h } from "vue";
 import * as mfm from "mfm-js";
 import type { VNode } from "vue";
-import Url from "@/components/global/Url.vue";
-import Link from "@/components/Link.vue";
-import Mention from "@/components/Mention.vue";
-import Emoji from "@/components/global/Emoji.vue";
+import MkUrl from "@/components/global/MkUrl.vue";
+import MkLink from "@/components/MkLink.vue";
+import MkMention from "@/components/MkMention.vue";
+import MkEmoji from "@/components/global/MkEmoji.vue";
 import { concat } from "@/scripts/array";
-import Formula from "@/components/Formula.vue";
-import Code from "@/components/Code.vue";
-import WebSearch from "@/components/WebSearch.vue";
-import Sparkle from "@/components/Sparkle.vue";
-import A from "@/components/global/Anchor.vue";
+import MkFormula from "@/components/MkFormula.vue";
+import MkCode from "@/components/MkCode.vue";
+import MkGoogle from "@/components/MkGoogle.vue";
+import MkSparkle from "@/components/MkSparkle.vue";
+import MkA from "@/components/global/MkA.vue";
 import { host } from "@/config";
 import { reducedMotion } from "@/scripts/reduced-motion";
 import { defaultStore } from "@/store";
@@ -183,7 +183,7 @@ export default defineComponent({
 									if (reducedMotion()) {
 										return genEl(token.children);
 									}
-									return h(Sparkle, {}, genEl(token.children));
+									return h(MkSparkle, {}, genEl(token.children));
 								}
 								case "fade": {
 									const direction = token.props.args.out
@@ -364,7 +364,7 @@ export default defineComponent({
 
 						case "url": {
 							return [
-								h(Url, {
+								h(MkUrl, {
 									key: Math.random(),
 									url: token.props.url,
 									rel: "nofollow noopener",
@@ -375,7 +375,7 @@ export default defineComponent({
 						case "link": {
 							return [
 								h(
-									Link,
+									MkLink,
 									{
 										key: Math.random(),
 										url: token.props.url,
@@ -388,7 +388,7 @@ export default defineComponent({
 
 						case "mention": {
 							return [
-								h(Mention, {
+								h(MkMention, {
 									key: Math.random(),
 									host:
 										(token.props.host == null &&
@@ -404,7 +404,7 @@ export default defineComponent({
 						case "hashtag": {
 							return [
 								h(
-									A,
+									MkA,
 									{
 										key: Math.random(),
 										to: `/tags/${encodeURIComponent(token.props.hashtag)}`,
@@ -417,7 +417,7 @@ export default defineComponent({
 
 						case "blockCode": {
 							return [
-								h(Code, {
+								h(MkCode, {
 									key: Math.random(),
 									code: token.props.code,
 									lang: token.props.lang,
@@ -427,7 +427,7 @@ export default defineComponent({
 
 						case "inlineCode": {
 							return [
-								h(Code, {
+								h(MkCode, {
 									key: Math.random(),
 									code: token.props.code,
 									inline: true,
@@ -453,7 +453,7 @@ export default defineComponent({
 
 						case "emojiCode": {
 							return [
-								h(Emoji, {
+								h(MkEmoji, {
 									key: Math.random(),
 									emoji: `:${token.props.name}:`,
 									customEmojis: this.customEmojis,
@@ -464,7 +464,7 @@ export default defineComponent({
 
 						case "unicodeEmoji": {
 							return [
-								h(Emoji, {
+								h(MkEmoji, {
 									key: Math.random(),
 									emoji: token.props.emoji,
 									customEmojis: this.customEmojis,
@@ -475,7 +475,7 @@ export default defineComponent({
 
 						case "mathInline": {
 							return [
-								h(Formula, {
+								h(MkFormula, {
 									key: Math.random(),
 									formula: token.props.formula,
 									block: false,
@@ -485,7 +485,7 @@ export default defineComponent({
 
 						case "mathBlock": {
 							return [
-								h(Formula, {
+								h(MkFormula, {
 									key: Math.random(),
 									formula: token.props.formula,
 									block: true,
@@ -537,7 +537,7 @@ export default defineComponent({
 							}
 
 							return [
-								h(WebSearch, {
+								h(MkGoogle, {
 									key: Math.random(),
 									q: token.props.query,
 								}),

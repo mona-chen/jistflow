@@ -1,309 +1,313 @@
 import { AsyncComponentLoader, defineAsyncComponent, inject } from "vue";
 import { Router } from "@/nirax";
 import { $i, iAmModerator } from "@/account";
-import Loading from "@/pages/Loading.vue";
-import Error from "@/pages/Error.vue";
+import MkLoading from "@/pages/_loading_.vue";
+import MkError from "@/pages/_error_.vue";
 
 const page = (loader: AsyncComponentLoader<any>) =>
 	defineAsyncComponent({
 		loader: loader,
-		loadingComponent: Loading,
-		errorComponent: Error,
+		loadingComponent: MkLoading,
+		errorComponent: MkError,
 	});
 
 export const routes = [
 	{
 		path: "/@:initUser/pages/:initPageName/view-source",
-		component: page(() => import("./pages/page-editor/PageEditor.vue")),
+		component: page(() => import("./pages/page-editor/page-editor.vue")),
 	},
 	{
 		path: "/@:username/pages/:pageName",
-		component: page(() => import("./pages/Page.vue")),
+		component: page(() => import("./pages/page.vue")),
 	},
 	{
 		path: "/@:acct/following",
-		component: page(() => import("./pages/user/Following.vue")),
+		component: page(() => import("./pages/user/following.vue")),
 	},
 	{
 		path: "/@:acct/followers",
-		component: page(() => import("./pages/user/Followers.vue")),
+		component: page(() => import("./pages/user/followers.vue")),
 	},
 	{
 		name: "user",
 		path: "/@:acct/:page?",
-		component: page(() => import("./pages/user/Index.vue")),
+		component: page(() => import("./pages/user/index.vue")),
 	},
 	{
 		name: "note",
 		path: "/notes/:noteId",
-		component: page(() => import("./pages/Note.vue")),
+		component: page(() => import("./pages/note.vue")),
 	},
 	{
 		path: "/clips/:clipId",
-		component: page(() => import("./pages/Clip.vue")),
+		component: page(() => import("./pages/clip.vue")),
 	},
 	{
 		path: "/user-info/:userId",
-		component: page(() => import("./pages/UserInfo.vue")),
+		component: page(() => import("./pages/user-info.vue")),
 	},
 	{
 		path: "/instance-info/:host",
-		component: page(() => import("./pages/InstanceInfo.vue")),
+		component: page(() => import("./pages/instance-info.vue")),
 	},
 	{
 		path: "/public/local",
-		component: page(() => import("./pages/NoGraze.vue")),
+		component: page(() => import("./pages/no-graze.vue")),
 	},
 	{
 		name: "settings",
 		path: "/settings",
-		component: page(() => import("./pages/settings/Index.vue")),
+		component: page(() => import("./pages/settings/index.vue")),
 		loginRequired: true,
 		children: [
 			{
 				path: "/profile",
 				name: "profile",
-				component: page(() => import("./pages/settings/Profile.vue")),
+				component: page(() => import("./pages/settings/profile.vue")),
 			},
 			{
 				path: "/privacy",
 				name: "privacy",
-				component: page(() => import("./pages/settings/Privacy.vue")),
+				component: page(() => import("./pages/settings/privacy.vue")),
 			},
 			{
 				path: "/reaction",
 				name: "reaction",
-				component: page(() => import("./pages/settings/Reaction.vue")),
+				component: page(() => import("./pages/settings/reaction.vue")),
 			},
 			{
 				path: "/drive",
 				name: "drive",
-				component: page(() => import("./pages/settings/Drive.vue")),
+				component: page(() => import("./pages/settings/drive.vue")),
 			},
 			{
 				path: "/notifications",
 				name: "notifications",
-				component: page(() => import("./pages/settings/Notifications.vue")),
+				component: page(() => import("./pages/settings/notifications.vue")),
 			},
 			{
 				path: "/email",
 				name: "email",
-				component: page(() => import("./pages/settings/Email.vue")),
+				component: page(() => import("./pages/settings/email.vue")),
 			},
 			{
 				path: "/integration",
 				name: "integration",
-				component: page(() => import("./pages/settings/Integration.vue")),
+				component: page(() => import("./pages/settings/integration.vue")),
 			},
 			{
 				path: "/security",
 				name: "security",
-				component: page(() => import("./pages/settings/Security.vue")),
+				component: page(() => import("./pages/settings/security.vue")),
 			},
 			{
 				path: "/general",
 				name: "general",
-				component: page(() => import("./pages/settings/General.vue")),
+				component: page(() => import("./pages/settings/general.vue")),
 			},
 			{
 				path: "/theme/install",
 				name: "theme",
-				component: page(() => import("./pages/settings/ThemeInstall.vue")),
+				component: page(() => import("./pages/settings/theme.install.vue")),
 			},
 			{
 				path: "/theme/manage",
 				name: "theme",
-				component: page(() => import("./pages/settings/ThemeManage.vue")),
+				component: page(() => import("./pages/settings/theme.manage.vue")),
 			},
 			{
 				path: "/theme",
 				name: "theme",
-				component: page(() => import("./pages/settings/Theme.vue")),
+				component: page(() => import("./pages/settings/theme.vue")),
 			},
 			{
 				path: "/custom-css",
 				name: "custom-css",
-				component: page(() => import("./pages/settings/CustomCss.vue")),
+				component: page(() => import("./pages/settings/custom-css.vue")),
 			},
 			{
 				path: "/custom-katex-macro",
 				name: "custom-katex-macro",
-				component: page(() => import("./pages/settings/CustomKatexMacro.vue")),
+				component: page(
+					() => import("./pages/settings/custom-katex-macro.vue"),
+				),
 			},
 			{
 				path: "/account-info",
 				name: "account-info",
-				component: page(() => import("./pages/settings/AccountInfo.vue")),
+				component: page(() => import("./pages/settings/account-info.vue")),
 			},
 			{
 				path: "/navbar",
 				name: "navbar",
-				component: page(() => import("./pages/settings/Navbar.vue")),
+				component: page(() => import("./pages/settings/navbar.vue")),
 			},
 			{
 				path: "/statusbar",
 				name: "statusbar",
-				component: page(() => import("./pages/settings/StatusbarPage.vue")),
+				component: page(() => import("./pages/settings/statusbar.vue")),
 			},
 			{
 				path: "/sounds",
 				name: "sounds",
-				component: page(() => import("./pages/settings/Sounds.vue")),
+				component: page(() => import("./pages/settings/sounds.vue")),
 			},
 			{
 				path: "/plugin/install",
 				name: "plugin",
-				component: page(() => import("./pages/settings/PluginInstall.vue")),
+				component: page(() => import("./pages/settings/plugin.install.vue")),
 			},
 			{
 				path: "/plugin",
 				name: "plugin",
-				component: page(() => import("./pages/settings/Plugin.vue")),
+				component: page(() => import("./pages/settings/plugin.vue")),
 			},
 			{
 				path: "/import-export",
 				name: "import-export",
-				component: page(() => import("./pages/settings/ImportExport.vue")),
+				component: page(() => import("./pages/settings/import-export.vue")),
 			},
 			{
 				path: "/instance-mute",
 				name: "instance-mute",
-				component: page(() => import("./pages/settings/InstanceMute.vue")),
+				component: page(() => import("./pages/settings/instance-mute.vue")),
 			},
 			{
 				path: "/mute-block",
 				name: "mute-block",
-				component: page(() => import("./pages/settings/MuteBlock.vue")),
+				component: page(() => import("./pages/settings/mute-block.vue")),
 			},
 			{
 				path: "/word-mute",
 				name: "word-mute",
-				component: page(() => import("./pages/settings/WordMute.vue")),
+				component: page(() => import("./pages/settings/word-mute.vue")),
 			},
 			{
 				path: "/api",
 				name: "api",
-				component: page(() => import("./pages/settings/Api.vue")),
+				component: page(() => import("./pages/settings/api.vue")),
 			},
 			{
 				path: "/apps",
 				name: "apps",
-				component: page(() => import("./pages/settings/Apps.vue")),
+				component: page(() => import("./pages/settings/apps.vue")),
 			},
 			{
 				path: "/webhook/edit/:webhookId",
 				name: "webhook",
-				component: page(() => import("./pages/settings/WebhookEdit.vue")),
+				component: page(() => import("./pages/settings/webhook.edit.vue")),
 			},
 			{
 				path: "/webhook/new",
 				name: "webhook",
-				component: page(() => import("./pages/settings/WebhookNew.vue")),
+				component: page(() => import("./pages/settings/webhook.new.vue")),
 			},
 			{
 				path: "/webhook",
 				name: "webhook",
-				component: page(() => import("./pages/settings/Webhook.vue")),
+				component: page(() => import("./pages/settings/webhook.vue")),
 			},
 			{
 				path: "/deck",
 				name: "deck",
-				component: page(() => import("./pages/settings/Deck.vue")),
+				component: page(() => import("./pages/settings/deck.vue")),
 			},
 			{
 				path: "/delete-account",
 				name: "delete-account",
-				component: page(() => import("./pages/settings/DeleteAccount.vue")),
+				component: page(() => import("./pages/settings/delete-account.vue")),
 			},
 			{
 				path: "/preferences-backups",
 				name: "preferences-backups",
 				component: page(
-					() => import("./pages/settings/PreferencesBackups.vue"),
+					() => import("./pages/settings/preferences-backups.vue"),
 				),
 			},
 			{
 				path: "/migration",
 				name: "migration",
-				component: page(() => import("./pages/settings/Migration.vue")),
+				component: page(() => import("./pages/settings/migration.vue")),
 			},
 			{
 				path: "/custom-css",
 				name: "general",
-				component: page(() => import("./pages/settings/CustomCss.vue")),
+				component: page(() => import("./pages/settings/custom-css.vue")),
 			},
 			{
 				path: "/custom-katex-macro",
 				name: "general",
-				component: page(() => import("./pages/settings/CustomKatexMacro.vue")),
+				component: page(
+					() => import("./pages/settings/custom-katex-macro.vue"),
+				),
 			},
 			{
 				path: "/accounts",
 				name: "profile",
-				component: page(() => import("./pages/settings/Accounts.vue")),
+				component: page(() => import("./pages/settings/accounts.vue")),
 			},
 			{
 				path: "/account-info",
 				name: "other",
-				component: page(() => import("./pages/settings/AccountInfo.vue")),
+				component: page(() => import("./pages/settings/account-info.vue")),
 			},
 			{
 				path: "/delete-account",
 				name: "other",
-				component: page(() => import("./pages/settings/DeleteAccount.vue")),
+				component: page(() => import("./pages/settings/delete-account.vue")),
 			},
 			{
 				path: "/other",
 				name: "other",
-				component: page(() => import("./pages/settings/Other.vue")),
+				component: page(() => import("./pages/settings/other.vue")),
 			},
 			{
 				path: "/",
-				component: page(() => import("./pages/Empty.vue")),
+				component: page(() => import("./pages/_empty_.vue")),
 			},
 		],
 	},
 	{
 		path: "/reset-password/:token?",
-		component: page(() => import("./pages/ResetPassword.vue")),
+		component: page(() => import("./pages/reset-password.vue")),
 	},
 	{
 		path: "/signup-complete/:code",
-		component: page(() => import("./pages/SignupComplete.vue")),
+		component: page(() => import("./pages/signup-complete.vue")),
 	},
 	{
 		path: "/verify-email/:code",
-		component: page(() => import("./pages/VerifyEmail.vue")),
+		component: page(() => import("./pages/verify-email.vue")),
 	},
 	{
 		path: "/announcements",
-		component: page(() => import("./pages/Announcements.vue")),
+		component: page(() => import("./pages/announcements.vue")),
 	},
 	{
 		path: "/about",
-		component: page(() => import("./pages/About.vue")),
+		component: page(() => import("./pages/about.vue")),
 		hash: "initialTab",
 	},
 	{
 		path: "/about-iceshrimp",
-		component: page(() => import("./pages/AboutIceshrimp.vue")),
+		component: page(() => import("./pages/about-iceshrimp.vue")),
 	},
 	{
 		path: "/theme-editor",
-		component: page(() => import("./pages/ThemeEditor.vue")),
+		component: page(() => import("./pages/theme-editor.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/explore/tags/:tag",
-		component: page(() => import("./pages/Explore.vue")),
+		component: page(() => import("./pages/explore.vue")),
 	},
 	{
 		path: "/explore",
-		component: page(() => import("./pages/Explore.vue")),
+		component: page(() => import("./pages/explore.vue")),
 	},
 	{
 		path: "/search",
-		component: page(() => import("./pages/Search.vue")),
+		component: page(() => import("./pages/search.vue")),
 		query: {
 			q: "query",
 			channel: "channel",
@@ -311,50 +315,50 @@ export const routes = [
 	},
 	{
 		path: "/authorize-follow",
-		component: page(() => import("./pages/Follow.vue")),
+		component: page(() => import("./pages/follow.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/share",
-		component: page(() => import("./pages/Share.vue")),
+		component: page(() => import("./pages/share.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/api-console",
-		component: page(() => import("./pages/ApiConsole.vue")),
+		component: page(() => import("./pages/api-console.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/mfm-cheat-sheet",
-		component: page(() => import("./pages/MfmCheatsheet.vue")),
+		component: page(() => import("./pages/mfm-cheat-sheet.vue")),
 	},
 	{
 		path: "/scratchpad",
-		component: page(() => import("./pages/Scratchpad.vue")),
+		component: page(() => import("./pages/scratchpad.vue")),
 	},
 	{
 		path: "/preview",
-		component: page(() => import("./pages/Preview.vue")),
+		component: page(() => import("./pages/preview.vue")),
 	},
 	{
 		path: "/auth/:token",
-		component: page(() => import("./pages/Auth.vue")),
+		component: page(() => import("./pages/auth.vue")),
 	},
 	{
 		path: "/oauth/authorize",
-		component: page(() => import("./pages/OAuth.vue")),
+		component: page(() => import("./pages/oauth.vue")),
 		query: {
 			response_type: "response_type",
 			client_id: "client_id",
 			redirect_uri: "redirect_uri",
 			scope: "scope",
 			force_login: "force_login",
-			lang: "lang",
-		},
+			lang: "lang"
+		}
 	},
 	{
 		path: "/miauth/:session",
-		component: page(() => import("./pages/MiAuth.vue")),
+		component: page(() => import("./pages/miauth.vue")),
 		query: {
 			callback: "callback",
 			name: "name",
@@ -364,290 +368,290 @@ export const routes = [
 	},
 	{
 		path: "/tags/:tag",
-		component: page(() => import("./pages/Tag.vue")),
+		component: page(() => import("./pages/tag.vue")),
 	},
 	{
 		path: "/pages/new",
-		component: page(() => import("./pages/page-editor/PageEditor.vue")),
+		component: page(() => import("./pages/page-editor/page-editor.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/pages/edit/:initPageId",
-		component: page(() => import("./pages/page-editor/PageEditor.vue")),
+		component: page(() => import("./pages/page-editor/page-editor.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/pages",
-		component: page(() => import("./pages/Pages.vue")),
+		component: page(() => import("./pages/pages.vue")),
 	},
 	{
 		path: "/gallery/:postId/edit",
-		component: page(() => import("./pages/gallery/Edit.vue")),
+		component: page(() => import("./pages/gallery/edit.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/gallery/new",
-		component: page(() => import("./pages/gallery/Edit.vue")),
+		component: page(() => import("./pages/gallery/edit.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/gallery/:postId",
-		component: page(() => import("./pages/gallery/Post.vue")),
+		component: page(() => import("./pages/gallery/post.vue")),
 	},
 	{
 		path: "/gallery",
-		component: page(() => import("./pages/gallery/Index.vue")),
+		component: page(() => import("./pages/gallery/index.vue")),
 	},
 	{
 		path: "/channels/:channelId/edit",
-		component: page(() => import("./pages/ChannelEditor.vue")),
+		component: page(() => import("./pages/channel-editor.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/channels/new",
-		component: page(() => import("./pages/ChannelEditor.vue")),
+		component: page(() => import("./pages/channel-editor.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/channels/:channelId",
-		component: page(() => import("./pages/Channel.vue")),
+		component: page(() => import("./pages/channel.vue")),
 	},
 	{
 		path: "/channels",
-		component: page(() => import("./pages/Channels.vue")),
+		component: page(() => import("./pages/channels.vue")),
 	},
 	{
 		path: "/registry/keys/system/:path(*)?",
-		component: page(() => import("./pages/RegistryKeys.vue")),
+		component: page(() => import("./pages/registry.keys.vue")),
 	},
 	{
 		path: "/registry/value/system/:path(*)?",
-		component: page(() => import("./pages/RegistryValue.vue")),
+		component: page(() => import("./pages/registry.value.vue")),
 	},
 	{
 		path: "/registry",
-		component: page(() => import("./pages/Registry.vue")),
+		component: page(() => import("./pages/registry.vue")),
 	},
 	{
 		path: "/admin/file/:fileId",
 		component: iAmModerator
-			? page(() => import("./pages/AdminFile.vue"))
-			: page(() => import("./pages/NotFound.vue")),
+			? page(() => import("./pages/admin-file.vue"))
+			: page(() => import("./pages/not-found.vue")),
 	},
 	{
 		path: "/admin",
 		component: iAmModerator
-			? page(() => import("./pages/admin/Index.vue"))
-			: page(() => import("./pages/NotFound.vue")),
+			? page(() => import("./pages/admin/index.vue"))
+			: page(() => import("./pages/not-found.vue")),
 		children: [
 			{
 				path: "/overview",
 				name: "overview",
-				component: page(() => import("./pages/admin/Overview.vue")),
+				component: page(() => import("./pages/admin/overview.vue")),
 			},
 			{
 				path: "/users",
 				name: "users",
-				component: page(() => import("./pages/admin/Users.vue")),
+				component: page(() => import("./pages/admin/users.vue")),
 			},
 			{
 				path: "/hashtags",
 				name: "hashtags",
-				component: page(() => import("./pages/admin/Hashtags.vue")),
+				component: page(() => import("./pages/admin/hashtags.vue")),
 			},
 			{
 				path: "/emojis",
 				name: "emojis",
-				component: page(() => import("./pages/admin/Emojis.vue")),
+				component: page(() => import("./pages/admin/emojis.vue")),
 			},
 			{
 				path: "/federation",
 				name: "federation",
-				component: page(() => import("./pages/admin/Federation.vue")),
+				component: page(() => import("./pages/admin/federation.vue")),
 			},
 			{
 				path: "/queue",
 				name: "queue",
-				component: page(() => import("./pages/admin/Queue.vue")),
+				component: page(() => import("./pages/admin/queue.vue")),
 			},
 			{
 				path: "/files",
 				name: "files",
-				component: page(() => import("./pages/admin/Files.vue")),
+				component: page(() => import("./pages/admin/files.vue")),
 			},
 			{
 				path: "/announcements",
 				name: "announcements",
-				component: page(() => import("./pages/admin/Announcements.vue")),
+				component: page(() => import("./pages/admin/announcements.vue")),
 			},
 			{
 				path: "/database",
 				name: "database",
-				component: page(() => import("./pages/admin/Database.vue")),
+				component: page(() => import("./pages/admin/database.vue")),
 			},
 			{
 				path: "/abuses",
 				name: "abuses",
-				component: page(() => import("./pages/admin/Abuses.vue")),
+				component: page(() => import("./pages/admin/abuses.vue")),
 			},
 			{
 				path: "/settings",
 				name: "settings",
-				component: page(() => import("./pages/admin/Settings.vue")),
+				component: page(() => import("./pages/admin/settings.vue")),
 			},
 			{
 				path: "/email-settings",
 				name: "email-settings",
-				component: page(() => import("./pages/admin/EmailSettings.vue")),
+				component: page(() => import("./pages/admin/email-settings.vue")),
 			},
 			{
 				path: "/object-storage",
 				name: "object-storage",
-				component: page(() => import("./pages/admin/ObjectStorage.vue")),
+				component: page(() => import("./pages/admin/object-storage.vue")),
 			},
 			{
 				path: "/security",
 				name: "security",
-				component: page(() => import("./pages/admin/Security.vue")),
+				component: page(() => import("./pages/admin/security.vue")),
 			},
 			{
 				path: "/relays",
 				name: "relays",
-				component: page(() => import("./pages/admin/Relays.vue")),
+				component: page(() => import("./pages/admin/relays.vue")),
 			},
 			{
 				path: "/integrations",
 				name: "integrations",
-				component: page(() => import("./pages/admin/Integrations.vue")),
+				component: page(() => import("./pages/admin/integrations.vue")),
 			},
 			{
 				path: "/instance-block",
 				name: "instance-block",
-				component: page(() => import("./pages/admin/InstanceBlock.vue")),
+				component: page(() => import("./pages/admin/instance-block.vue")),
 			},
 			{
 				path: "/other-settings",
 				name: "other-settings",
-				component: page(() => import("./pages/admin/OtherSettings.vue")),
+				component: page(() => import("./pages/admin/other-settings.vue")),
 			},
 			{
 				path: "/other-settings",
 				name: "other-settings",
-				component: page(() => import("./pages/admin/CustomCss.vue")),
+				component: page(() => import("./pages/admin/custom-css.vue")),
 			},
 			{
 				path: "/experiments",
 				name: "experiments",
-				component: page(() => import("./pages/admin/Experiments.vue")),
+				component: page(() => import("./pages/admin/experiments.vue")),
 			},
 			{
 				path: "/",
-				component: page(() => import("./pages/Empty.vue")),
+				component: page(() => import("./pages/_empty_.vue")),
 			},
 		],
 	},
 	{
 		path: "/my/notifications",
-		component: page(() => import("./pages/Notifications.vue")),
+		component: page(() => import("./pages/notifications.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/favorites",
-		component: page(() => import("./pages/Favorites.vue")),
+		component: page(() => import("./pages/favorites.vue")),
 		loginRequired: true,
 	},
 	{
 		name: "messaging",
 		path: "/my/messaging",
-		component: page(() => import("./pages/messaging/Index.vue")),
+		component: page(() => import("./pages/messaging/index.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/messaging/:userAcct",
-		component: page(() => import("./pages/messaging/MessagingRoom.vue")),
+		component: page(() => import("./pages/messaging/messaging-room.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/messaging/group/:groupId",
-		component: page(() => import("./pages/messaging/MessagingRoom.vue")),
+		component: page(() => import("./pages/messaging/messaging-room.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/drive/folder/:folder",
-		component: page(() => import("./pages/Drive.vue")),
+		component: page(() => import("./pages/drive.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/drive",
-		component: page(() => import("./pages/Drive.vue")),
+		component: page(() => import("./pages/drive.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/follow-requests",
-		component: page(() => import("./pages/FollowRequests.vue")),
+		component: page(() => import("./pages/follow-requests.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/lists/:listId",
-		component: page(() => import("./pages/my-lists/List.vue")),
+		component: page(() => import("./pages/my-lists/list.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/lists",
-		component: page(() => import("./pages/my-lists/Index.vue")),
+		component: page(() => import("./pages/my-lists/index.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/clips",
-		component: page(() => import("./pages/my-clips/Index.vue")),
+		component: page(() => import("./pages/my-clips/index.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/groups",
-		component: page(() => import("./pages/my-groups/Index.vue")),
+		component: page(() => import("./pages/my-groups/index.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/groups/:groupId",
-		component: page(() => import("./pages/my-groups/Group.vue")),
+		component: page(() => import("./pages/my-groups/group.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/antennas/create",
-		component: page(() => import("./pages/my-antennas/Create.vue")),
+		component: page(() => import("./pages/my-antennas/create.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/antennas/:antennaId",
-		component: page(() => import("./pages/my-antennas/Edit.vue")),
+		component: page(() => import("./pages/my-antennas/edit.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/my/antennas",
-		component: page(() => import("./pages/my-antennas/Index.vue")),
+		component: page(() => import("./pages/my-antennas/index.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/timeline/list/:listId",
-		component: page(() => import("./pages/UserListTimeline.vue")),
+		component: page(() => import("./pages/user-list-timeline.vue")),
 		loginRequired: true,
 	},
 	{
 		path: "/timeline/antenna/:antennaId",
-		component: page(() => import("./pages/AntennaTimeline.vue")),
+		component: page(() => import("./pages/antenna-timeline.vue")),
 		loginRequired: true,
 	},
 	{
 		name: "index",
 		path: "/",
 		component: $i
-			? page(() => import("./pages/Timeline.vue"))
-			: page(() => import("./pages/Welcome.vue")),
+			? page(() => import("./pages/timeline.vue"))
+			: page(() => import("./pages/welcome.vue")),
 		globalCacheKey: "index",
 	},
 	{
 		path: "/:(*)",
-		component: page(() => import("./pages/NotFound.vue")),
+		component: page(() => import("./pages/not-found.vue")),
 	},
 ];
 
