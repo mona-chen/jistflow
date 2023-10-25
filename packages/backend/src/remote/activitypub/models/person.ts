@@ -294,80 +294,77 @@ export async function createPerson(
 		}
 	}
 
-	// Create user
-	let user: IRemoteUser;
+	// Prepare objects
+	let user = new User({
+		id: genId(),
+		avatarId: null,
+		bannerId: null,
+		createdAt: new Date(),
+		lastFetchedAt: new Date(),
+		name: truncate(person.name, nameLength),
+		isLocked: !!person.manuallyApprovesFollowers,
+		movedToUri: person.movedTo,
+		alsoKnownAs: person.alsoKnownAs,
+		isExplorable: !!person.discoverable,
+		username: person.preferredUsername,
+		usernameLower: person.preferredUsername!.toLowerCase(),
+		host,
+		inbox: person.inbox,
+		sharedInbox:
+			person.sharedInbox ||
+			(person.endpoints ? person.endpoints.sharedInbox : undefined),
+		followersUri: person.followers
+			? getApId(person.followers)
+			: undefined,
+		followersCount:
+			followersCount !== undefined
+				? followersCount
+				: person.followers &&
+				typeof person.followers !== "string" &&
+				isCollectionOrOrderedCollection(person.followers)
+					? person.followers.totalItems
+					: undefined,
+		followingCount:
+			followingCount !== undefined
+				? followingCount
+				: person.following &&
+				typeof person.following !== "string" &&
+				isCollectionOrOrderedCollection(person.following)
+					? person.following.totalItems
+					: undefined,
+		featured: person.featured ? getApId(person.featured) : undefined,
+		uri: person.id,
+		tags,
+		isBot,
+		isCat: (person as any).isCat === true,
+	}) as IRemoteUser;
+
+	const profile = new UserProfile({
+		userId: user.id,
+		description: person.summary
+			? await htmlToMfm(truncate(person.summary, summaryLength), person.tag)
+			: null,
+		url: url,
+		fields,
+		birthday: bday ? bday[0] : null,
+		location: person["vcard:Address"] || null,
+		userHost: host,
+	});
+
+	const publicKey = person.publicKey
+		? new UserPublickey({
+			userId: user.id,
+			keyId: person.publicKey.id,
+			keyPem: person.publicKey.publicKeyPem,
+		})
+		: null;
+
 	try {
-		// Start transaction
+		// Save the objects atomically using a db transaction, note that we should never run any code in a transaction block directly
 		await db.transaction(async (transactionalEntityManager) => {
-			user = (await transactionalEntityManager.save(
-				new User({
-					id: genId(),
-					avatarId: null,
-					bannerId: null,
-					createdAt: new Date(),
-					lastFetchedAt: new Date(),
-					name: truncate(person.name, nameLength),
-					isLocked: !!person.manuallyApprovesFollowers,
-					movedToUri: person.movedTo,
-					alsoKnownAs: person.alsoKnownAs,
-					isExplorable: !!person.discoverable,
-					username: person.preferredUsername,
-					usernameLower: person.preferredUsername!.toLowerCase(),
-					host,
-					inbox: person.inbox,
-					sharedInbox:
-						person.sharedInbox ||
-						(person.endpoints ? person.endpoints.sharedInbox : undefined),
-					followersUri: person.followers
-						? getApId(person.followers)
-						: undefined,
-					followersCount:
-						followersCount !== undefined
-							? followersCount
-							: person.followers &&
-							  typeof person.followers !== "string" &&
-							  isCollectionOrOrderedCollection(person.followers)
-							? person.followers.totalItems
-							: undefined,
-					followingCount:
-						followingCount !== undefined
-							? followingCount
-							: person.following &&
-							  typeof person.following !== "string" &&
-							  isCollectionOrOrderedCollection(person.following)
-							? person.following.totalItems
-							: undefined,
-					featured: person.featured ? getApId(person.featured) : undefined,
-					uri: person.id,
-					tags,
-					isBot,
-					isCat: (person as any).isCat === true,
-				}),
-			)) as IRemoteUser;
-
-			await transactionalEntityManager.save(
-				new UserProfile({
-					userId: user.id,
-					description: person.summary
-						? await htmlToMfm(truncate(person.summary, summaryLength), person.tag)
-						: null,
-					url: url,
-					fields,
-					birthday: bday ? bday[0] : null,
-					location: person["vcard:Address"] || null,
-					userHost: host,
-				}),
-			);
-
-			if (person.publicKey) {
-				await transactionalEntityManager.save(
-					new UserPublickey({
-						userId: user.id,
-						keyId: person.publicKey.id,
-						keyPem: person.publicKey.publicKeyPem,
-					}),
-				);
-			}
+			await transactionalEntityManager.save(user);
+			await transactionalEntityManager.save(profile);
+			if (publicKey) await transactionalEntityManager.save(publicKey);
 		});
 	} catch (e) {
 		// duplicate key error
@@ -754,21 +751,23 @@ export async function updateFeatured(userId: User["id"], resolver?: Resolver, li
 			.map((item) => limit(() => resolveNote(item, resolver, limiter))),
 	);
 
-	await db.transaction(async (transactionalEntityManager) => {
-		await transactionalEntityManager.delete(UserNotePining, {
+	// Prepare the objects
+	// For now, generate the id at a different time and maintain the order.
+	const data: Partial<UserNotePining>[] = [];
+	let td = 0;
+	for (const note of featuredNotes.filter((note) => note != null)) {
+		td -= 1000;
+		data.push({
+			id: genId(new Date(Date.now() + td)),
+			createdAt: new Date(),
 			userId: user.id,
+			noteId: note!.id,
 		});
+	}
 
-		// For now, generate the id at a different time and maintain the order.
-		let td = 0;
-		for (const note of featuredNotes.filter((note) => note != null)) {
-			td -= 1000;
-			transactionalEntityManager.insert(UserNotePining, {
-				id: genId(new Date(Date.now() + td)),
-				createdAt: new Date(),
-				userId: user.id,
-				noteId: note!.id,
-			});
-		}
+	// Save the objects atomically using a db transaction, note that we should never run any code in a transaction block directly
+	await db.transaction(async (transactionalEntityManager) => {
+		await transactionalEntityManager.delete(UserNotePining, { userId: user.id });
+		await transactionalEntityManager.insert(UserNotePining, data);
 	});
 }

@@ -3,6 +3,7 @@ import { Meta } from "@/models/entities/meta.js";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
 import { db } from "@/db/postgre.js";
 import define from "../../../define.js";
+import { Metas } from "@/models/index.js";
 
 export const meta = {
 	tags: ["admin"],
@@ -106,21 +107,19 @@ export default define(meta, paramDef, async (ps, me) => {
 		if (config.summalyProxyUrl !== undefined) {
 			set.summalyProxy = config.summalyProxyUrl;
 		}
-		await db.transaction(async (transactionalEntityManager) => {
-			const metas = await transactionalEntityManager.find(Meta, {
-				order: {
-					id: "DESC",
-				},
-			});
 
-			const meta = metas[0];
-
-			if (meta) {
-				await transactionalEntityManager.update(Meta, meta.id, set);
-			} else {
-				await transactionalEntityManager.save(Meta, set);
-			}
+		const meta = await Metas.findOne({
+			where: {},
+			order: {
+				id: "DESC",
+			},
 		});
+
+		if (meta)
+			await Metas.update(meta.id, set);
+		else
+			await Metas.save(set);
+
 		insertModerationLog(me, "updateMeta");
 	}
 	return hosted;

@@ -84,58 +84,55 @@ export async function signup(opts: {
 		),
 	);
 
-	let account!: User;
-
-	// Start transaction
-	await db.transaction(async (transactionalEntityManager) => {
-		const exist = await transactionalEntityManager.findOneBy(User, {
-			usernameLower: username.toLowerCase(),
-			host: IsNull(),
-		});
-
-		if (exist) throw new Error(" the username is already used");
-
-		account = await transactionalEntityManager.save(
-			new User({
-				id: genId(),
-				createdAt: new Date(),
-				username: username,
-				usernameLower: username.toLowerCase(),
-				host: toPunyNullable(host),
-				token: secret,
-				isAdmin:
-					(await Users.countBy({
-						host: IsNull(),
-						isAdmin: true,
-					})) === 0,
-			}),
-		);
-
-		await transactionalEntityManager.save(
-			new UserKeypair({
-				publicKey: keyPair[0],
-				privateKey: keyPair[1],
-				userId: account.id,
-			}),
-		);
-
-		await transactionalEntityManager.save(
-			new UserProfile({
-				userId: account.id,
-				autoAcceptFollowed: true,
-				password: hash,
-			}),
-		);
-
-		await transactionalEntityManager.save(
-			new UsedUsername({
-				createdAt: new Date(),
-				username: username.toLowerCase(),
-			}),
-		);
+	const exist = await Users.findOneBy({
+		usernameLower: username.toLowerCase(),
+		host: IsNull(),
 	});
 
-	usersChart.update(account, true);
+	if (exist) throw new Error("The username is already in use");
 
+	// Prepare objects
+	const user = new User({
+		id: genId(),
+		createdAt: new Date(),
+		username: username,
+		usernameLower: username.toLowerCase(),
+		host: toPunyNullable(host),
+		token: secret,
+		isAdmin:
+			(await Users.countBy({
+				host: IsNull(),
+				isAdmin: true,
+			})) === 0,
+	});
+
+	const userKeypair = new UserKeypair({
+		publicKey: keyPair[0],
+		privateKey: keyPair[1],
+		userId: user.id,
+	});
+
+	const userProfile = new UserProfile({
+		userId: user.id,
+		autoAcceptFollowed: true,
+		password: hash,
+	});
+
+	const usedUsername = new UsedUsername({
+		createdAt: new Date(),
+		username: username.toLowerCase(),
+	});
+
+	// Save the objects atomically using a db transaction, note that we should never run any code in a transaction block directly
+	await db.transaction(async (transactionalEntityManager) => {
+		await transactionalEntityManager.save(user);
+		await transactionalEntityManager.save(userKeypair);
+		await transactionalEntityManager.save(userProfile);
+		await transactionalEntityManager.save(usedUsername);
+	});
+
+	const account = await Users.findOneByOrFail({ id: user.id });
+
+	usersChart.update(account, true);
 	return { account, secret };
 }

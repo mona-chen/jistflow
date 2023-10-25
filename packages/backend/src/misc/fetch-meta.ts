@@ -1,6 +1,7 @@
 import { db } from "@/db/postgre.js";
 import { Meta } from "@/models/entities/meta.js";
 import push from 'web-push';
+import { Metas } from "@/models/index.js";
 
 let cache: Meta;
 
@@ -33,41 +34,31 @@ export function metaToPugArgs(meta: Meta): object {
 export async function fetchMeta(noCache = false): Promise<Meta> {
 	if (!noCache && cache) return cache;
 
-	return await db.transaction(async (transactionalEntityManager) => {
-		// New IDs are prioritized because multiple records may have been created due to past bugs.
-		const metas = await transactionalEntityManager.find(Meta, {
-			order: {
-				id: "DESC",
-			},
-		});
-
-		const meta = metas[0];
-
-		if (meta) {
-			cache = meta;
-			return meta;
-		} else {
-			const { publicKey, privateKey } = push.generateVAPIDKeys();
-
-			// If fetchMeta is called at the same time when meta is empty, this part may be called at the same time, so use fail-safe upsert.
-			const saved = await transactionalEntityManager
-				.upsert(
-					Meta,
-					{
-						id: "x",
-						swPublicKey: publicKey,
-						swPrivateKey: privateKey,
-					},
-					["id"],
-				)
-				.then((x) =>
-					transactionalEntityManager.findOneByOrFail(Meta, x.identifiers[0]),
-				);
-
-			cache = saved;
-			return saved;
-		}
+	// New IDs are prioritized because multiple records may have been created due to past bugs.
+	const meta = await Metas.findOne({
+		where: {},
+		order: {
+			id: "DESC",
+		},
 	});
+
+	if (meta) {
+		cache = meta;
+		return meta;
+	}
+
+	const { publicKey, privateKey } = push.generateVAPIDKeys();
+	const data = {
+		id: "x",
+		swPublicKey: publicKey,
+		swPrivateKey: privateKey,
+	};
+
+	// If fetchMeta is called at the same time when meta is empty, this part may be called at the same time, so use fail-safe upsert.
+	await Metas.upsert(data, ["id"]);
+
+	cache = await Metas.findOneByOrFail({ id: data.id });
+	return cache;
 }
 
 setInterval(() => {

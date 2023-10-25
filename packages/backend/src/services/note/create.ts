@@ -756,30 +756,30 @@ async function insertNote(
 	// 投稿を作成
 	try {
 		if (insert.hasPoll) {
-			// Start transaction
+			// Prepare objects
+			if (!data.poll) throw new Error("Empty poll data");
+
+			let expiresAt: Date | null;
+			if (!data.poll.expiresAt || isNaN(data.poll.expiresAt.getTime())) {
+				expiresAt = null;
+			} else {
+				expiresAt = data.poll.expiresAt;
+			}
+
+			const poll = new Poll({
+				noteId: insert.id,
+				choices: data.poll.choices,
+				expiresAt,
+				multiple: data.poll.multiple,
+				votes: new Array(data.poll.choices.length).fill(0),
+				noteVisibility: insert.visibility,
+				userId: user.id,
+				userHost: user.host,
+			});
+
+			// Save the objects atomically using a db transaction, note that we should never run any code in a transaction block directly
 			await db.transaction(async (transactionalEntityManager) => {
-				if (!data.poll) throw new Error("Empty poll data");
-
 				await transactionalEntityManager.insert(Note, insert);
-
-				let expiresAt: Date | null;
-				if (!data.poll.expiresAt || isNaN(data.poll.expiresAt.getTime())) {
-					expiresAt = null;
-				} else {
-					expiresAt = data.poll.expiresAt;
-				}
-
-				const poll = new Poll({
-					noteId: insert.id,
-					choices: data.poll.choices,
-					expiresAt,
-					multiple: data.poll.multiple,
-					votes: new Array(data.poll.choices.length).fill(0),
-					noteVisibility: insert.visibility,
-					userId: user.id,
-					userHost: user.host,
-				});
-
 				await transactionalEntityManager.insert(Poll, poll);
 			});
 		} else {

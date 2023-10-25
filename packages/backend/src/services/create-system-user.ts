@@ -9,8 +9,9 @@ import { UserKeypair } from "@/models/entities/user-keypair.js";
 import { UsedUsername } from "@/models/entities/used-username.js";
 import { db } from "@/db/postgre.js";
 import { hashPassword } from "@/misc/password.js";
+import { Users } from "@/models/index.js";
 
-export async function createSystemUser(username: string) {
+export async function createSystemUser(username: string): Promise<User> {
 	const password = uuid();
 
 	// Generate hash of password
@@ -23,49 +24,51 @@ export async function createSystemUser(username: string) {
 
 	let account!: User;
 
-	// Start transaction
-	await db.transaction(async (transactionalEntityManager) => {
-		const exist = await transactionalEntityManager.findOneBy(User, {
-			usernameLower: username.toLowerCase(),
-			host: IsNull(),
-		});
-
-		if (exist) throw new Error("the user is already exists");
-
-		account = await transactionalEntityManager
-			.insert(User, {
-				id: genId(),
-				createdAt: new Date(),
-				username: username,
-				usernameLower: username.toLowerCase(),
-				host: null,
-				token: secret,
-				isAdmin: false,
-				isLocked: true,
-				isExplorable: false,
-				isBot: true,
-			})
-			.then((x) =>
-				transactionalEntityManager.findOneByOrFail(User, x.identifiers[0]),
-			);
-
-		await transactionalEntityManager.insert(UserKeypair, {
-			publicKey: keyPair.publicKey,
-			privateKey: keyPair.privateKey,
-			userId: account.id,
-		});
-
-		await transactionalEntityManager.insert(UserProfile, {
-			userId: account.id,
-			autoAcceptFollowed: false,
-			password: hash,
-		});
-
-		await transactionalEntityManager.insert(UsedUsername, {
-			createdAt: new Date(),
-			username: username.toLowerCase(),
-		});
+	const exist = await Users.findOneBy({
+		usernameLower: username.toLowerCase(),
+		host: IsNull(),
 	});
 
-	return account;
+	if (exist) throw new Error("the user is already exists");
+
+	// Prepare objects
+	const user = {
+		id: genId(),
+		createdAt: new Date(),
+		username: username,
+		usernameLower: username.toLowerCase(),
+		host: null,
+		token: secret,
+		isAdmin: false,
+		isLocked: true,
+		isExplorable: false,
+		isBot: true,
+	};
+
+	const userKeypair = {
+		publicKey: keyPair.publicKey,
+		privateKey: keyPair.privateKey,
+		userId: user.id,
+	};
+
+	const userProfile = {
+		userId: user.id,
+		autoAcceptFollowed: false,
+		password: hash,
+	};
+
+	const usedUsername = {
+		createdAt: new Date(),
+		username: username.toLowerCase(),
+	}
+
+	// Save the objects atomically using a db transaction, note that we should never run any code in a transaction block directly
+	await db.transaction(async (transactionalEntityManager) => {
+		await transactionalEntityManager.insert(User, user);
+		await transactionalEntityManager.insert(UserKeypair, userKeypair);
+		await transactionalEntityManager.insert(UserProfile, userProfile);
+		await transactionalEntityManager.insert(UsedUsername, usedUsername);
+	});
+
+	return Users.findOneByOrFail({ id: user.id });
 }
