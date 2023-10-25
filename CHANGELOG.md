@@ -1,3 +1,24 @@
+## v2023.11-pre4
+### Highlights
+This release mostly fixes regressions introduced in the last release preview. If you are running `v2023.11-pre3`, upgrading is strongly recommended.
+
+### Mastodon client API
+- The compatible version was bumped to 4.2.1, to indicate support for the "hide list members from home timeline" feature
+- Remote users are now automatically refreshed in background
+
+### Backend
+- Errors in refetchPublicKeyForApId can no longer cause strange inbox queue behavior
+- Database transactions were refactored so no non-database code is run in transaction blocks, fixing a possible backend stall condition in which all database connections are blocked by transactions
+- User profile mentions resolution no longer recurses infinitely, fixing a possible DoS attack vector
+
+### Miscellaneous
+- The `Mk` prefix was removed from all custom VueJS components
+- `.yarn/sdks` was updated to fix language server problems in VSCode
+- Various translation updates
+
+### Attribution
+This release was made possible by project contributors: AntoineÐ, Aylam, jeder & Laura Hausmann
+
 ## v2023.11-pre3
 ### Breaking changes
 - Lists have been reworked, now only allowing followed users to be added, and support for proxy accounts has been removed. To allow users to follow any users they want to keep on their lists, the migration that removes all list members users are not following will only be activated in the release **after** the next stable release. It is therefore highly recommended to add an instance announcement informing your users of this change and advising them to follow any affected accounts and to use the new "hide from home timeline" list option if desired.
