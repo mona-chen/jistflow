@@ -6,7 +6,7 @@ import { populateEmojis } from "@/misc/populate-emojis.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import mfm from "mfm-js";
 import { awaitAll } from "@/prelude/await-all.js";
-import { AccountCache } from "@/server/api/mastodon/helpers/user.js";
+import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import { IMentionedRemoteUsers } from "@/models/entities/note.js";
@@ -99,6 +99,8 @@ export class UserConverter {
                 bot: u.isBot,
                 discoverable: u.isExplorable
             }).then(p => {
+                // noinspection ES6MissingAwait
+                UserHelpers.updateUserInBackground(u);
                 cache.accounts.push(p);
                 return p;
             });

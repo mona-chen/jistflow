@@ -245,7 +245,7 @@ export class UserHelpers {
                     if (p) return p;
                     throw new MastoApiError(404);
                 })
-            : resolveUser(split[0], split[1], true, false).catch(() => {
+            : resolveUser(split[0], split[1], 'no-refresh').catch(() => {
                 throw new MastoApiError(404);
             });
     }
@@ -522,9 +522,6 @@ export class UserHelpers {
     public static async getUserOr404(id: string): Promise<User> {
         return getUser(id).catch(_ => {
             throw new MastoApiError(404);
-        }).then(u => {
-            this.updateUserInBackground(u);
-            return u;
         });
     }
 

@@ -12,6 +12,7 @@ import { Cache } from "@/misc/cache.js";
 import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { RecursionLimiter } from "@/models/repositories/user-profile.js";
+import { promiseEarlyReturn } from "@/prelude/promise.js";
 
 const logger = remoteLogger.createSubLogger("resolve-user");
 const uriHostCache = new Cache<string>("resolveUserUriHost", 60 * 60 * 24);
@@ -27,11 +28,12 @@ type ProfileMention = {
 	};
 };
 
+type refreshType = 'refresh' | 'refresh-in-background' | 'refresh-timeout-1500ms' | 'no-refresh';
+
 export async function resolveUser(
 	username: string,
 	host: string | null,
-	refresh: boolean = true,
-	awaitRefresh: boolean = true,
+	refresh: refreshType = 'refresh',
 	limiter: RecursionLimiter = new RecursionLimiter(20)
 ): Promise<User> {
 	const usernameLower = username.toLowerCase();
@@ -118,7 +120,7 @@ export async function resolveUser(
 
 	// If user information is out of date, return it by starting over from WebFinger
 	if (
-		refresh && awaitRefresh && (
+		(refresh === 'refresh' || refresh === 'refresh-timeout-1500ms') && (
 			user.lastFetchedAt == null ||
 			Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24
 		)
@@ -176,9 +178,15 @@ export async function resolveUser(
 			);
 		}
 
-		await updatePerson(fingerRes.self.href);
+		if (refresh === 'refresh') {
+			await updatePerson(fingerRes.self.href);
+			logger.info(`return resynced remote user: ${finalAcctLower}`);
+		}
+		else if (refresh === 'refresh-timeout-1500ms') {
+			const res = await promiseEarlyReturn(updatePerson(fingerRes.self.href), 1500);
+			logger.info(`return possibly resynced remote user: ${finalAcctLower}`);
+		}
 
-		logger.info(`return resynced remote user: ${finalAcctLower}`);
 		return await Users.findOneBy({ uri: fingerRes.self.href }).then((u) => {
 			if (u == null) {
 				throw new Error("user not found");
@@ -186,10 +194,10 @@ export async function resolveUser(
 				return u;
 			}
 		});
-	} else if (refresh && !awaitRefresh && (user.lastFetchedAt == null || Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24)) {
+	} else if (refresh === 'refresh-in-background' && (user.lastFetchedAt == null || Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24)) {
 		// Run the refresh in the background
 		// noinspection ES6MissingAwait
-		resolveUser(username, host, true, true, limiter);
+		resolveUser(username, host, 'refresh', limiter);
 	}
 
 	logger.info(`return existing remote user: ${acctLower}`);
@@ -199,7 +207,7 @@ export async function resolveUser(
 export async function resolveMentionToUserAndProfile(username: string, host: string | null, objectHost: string | null, limiter: RecursionLimiter) {
 	return profileMentionCache.fetch(`${username}@${host ?? objectHost}`, async () => {
 		try {
-			const user = await resolveUser(username, host ?? objectHost, false, false, limiter);
+			const user = await resolveUser(username, host ?? objectHost, 'no-refresh', limiter);
 			const profile = await UserProfiles.findOneBy({ userId: user.id });
 			const data = { username, host: host ?? objectHost };
 
