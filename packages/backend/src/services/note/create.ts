@@ -168,7 +168,7 @@ export default async (
 	},
 	data: Option,
 	silent = false,
-	limiter: RecursionLimiter = new RecursionLimiter(20)
+	limiter: RecursionLimiter = new RecursionLimiter()
 ) =>
 	// rome-ignore lint/suspicious/noAsyncPromiseExecutor: FIXME
 	new Promise<Note>(async (res, rej) => {
@@ -927,7 +927,7 @@ function incNotesCountOfUser(user: { id: User["id"] }) {
 export async function extractMentionedUsers(
 	user: { host: User["host"] },
 	tokens: mfm.MfmNode[],
-	limiter: RecursionLimiter = new RecursionLimiter(20)
+	limiter: RecursionLimiter = new RecursionLimiter()
 ): Promise<User[]> {
 	if (tokens == null) return [];
 

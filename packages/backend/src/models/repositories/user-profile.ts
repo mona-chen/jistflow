@@ -12,7 +12,7 @@ const queue = new Semaphore(5);
 
 export const UserProfileRepository = db.getRepository(UserProfile).extend({
     // We must never await this without promiseEarlyReturn, otherwise giant webring-style profile mention trees will cause the queue to stop working
-    async updateMentions(id: UserProfile["userId"], limiter: RecursionLimiter = new RecursionLimiter(20)){
+    async updateMentions(id: UserProfile["userId"], limiter: RecursionLimiter = new RecursionLimiter()){
         const profile = await this.findOneBy({ userId: id });
         if (!profile) return;
         const tokens: mfm.MfmNode[] = [];
@@ -51,7 +51,7 @@ async function populateMentions(tokens: mfm.MfmNode[], objectHost: string | null
 export class RecursionLimiter {
     private counter;
     private mutex = new Mutex();
-    constructor(count: number = 20) {
+    constructor(count: number = 10) {
         this.counter = count;
     }
 

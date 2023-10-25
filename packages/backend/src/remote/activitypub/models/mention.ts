@@ -10,7 +10,7 @@ import { RecursionLimiter } from "@/models/repositories/user-profile.js";
 
 export async function extractApMentions(
 	tags: IObject | IObject[] | null | undefined,
-	limiter: RecursionLimiter = new RecursionLimiter(20)
+	limiter: RecursionLimiter = new RecursionLimiter()
 ) {
 	const hrefs = unique(
 		extractApMentionObjects(tags).map((x) => x.href as string),

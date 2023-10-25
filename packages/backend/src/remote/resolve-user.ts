@@ -34,7 +34,7 @@ export async function resolveUser(
 	username: string,
 	host: string | null,
 	refresh: refreshType = 'refresh',
-	limiter: RecursionLimiter = new RecursionLimiter(20)
+	limiter: RecursionLimiter = new RecursionLimiter()
 ): Promise<User> {
 	const usernameLower = username.toLowerCase();
 

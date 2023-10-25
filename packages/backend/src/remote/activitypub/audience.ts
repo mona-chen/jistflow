@@ -24,7 +24,7 @@ export async function parseAudience(
 	to?: ApObject,
 	cc?: ApObject,
 	resolver?: Resolver,
-	limiter: RecursionLimiter = new RecursionLimiter(20)
+	limiter: RecursionLimiter = new RecursionLimiter()
 ): Promise<AudienceInfo> {
 	const toGroups = groupingAudience(getApIds(to), actor);
 	const ccGroups = groupingAudience(getApIds(cc), actor);

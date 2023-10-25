@@ -171,7 +171,7 @@ export async function createPerson(
 	uri: string,
 	resolver?: Resolver,
 	subjectHost?: string,
-	limiter: RecursionLimiter = new RecursionLimiter(20)
+	limiter: RecursionLimiter = new RecursionLimiter()
 ): Promise<User> {
 	if (typeof uri !== "string") throw new Error("uri is not string");
 
@@ -644,7 +644,7 @@ export async function updatePerson(
 export async function resolvePerson(
 	uri: string,
 	resolver?: Resolver,
-	limiter: RecursionLimiter = new RecursionLimiter(20)
+	limiter: RecursionLimiter = new RecursionLimiter()
 ): Promise<CacheableUser> {
 	if (typeof uri !== "string") throw new Error("uri is not string");
 
@@ -719,7 +719,7 @@ export async function analyzeAttachments(
 	return { fields, services };
 }
 
-export async function updateFeatured(userId: User["id"], resolver?: Resolver, limiter: RecursionLimiter = new RecursionLimiter(20)) {
+export async function updateFeatured(userId: User["id"], resolver?: Resolver, limiter: RecursionLimiter = new RecursionLimiter()) {
 	const user = await Users.findOneByOrFail({ id: userId });
 	if (!Users.isRemoteUser(user)) return;
 	if (!user.featured) return;

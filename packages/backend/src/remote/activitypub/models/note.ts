@@ -109,7 +109,7 @@ export async function createNote(
 	value: string | IObject,
 	resolver?: Resolver,
 	silent = false,
-	limiter: RecursionLimiter = new RecursionLimiter(20)
+	limiter: RecursionLimiter = new RecursionLimiter()
 ): Promise<Note | null> {
 	if (resolver == null) resolver = new Resolver();
 
@@ -407,7 +407,7 @@ export async function createNote(
 export async function resolveNote(
 	value: string | IObject,
 	resolver?: Resolver,
-	limiter: RecursionLimiter = new RecursionLimiter(20)
+	limiter: RecursionLimiter = new RecursionLimiter()
 ): Promise<Note | null> {
 	const uri = typeof value === "string" ? value : value.id;
 	if (uri == null) throw new Error("missing uri");
