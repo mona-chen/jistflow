@@ -11,6 +11,7 @@ import { remoteLogger } from "./logger.js";
 import { Cache } from "@/misc/cache.js";
 import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
+import { RecursionLimiter } from "@/models/repositories/user-profile.js";
 
 const logger = remoteLogger.createSubLogger("resolve-user");
 const uriHostCache = new Cache<string>("resolveUserUriHost", 60 * 60 * 24);
@@ -31,7 +32,7 @@ export async function resolveUser(
 	host: string | null,
 	refresh: boolean = true,
 	awaitRefresh: boolean = true,
-	skipMentionsOnCreate: boolean = false
+	limiter: RecursionLimiter = new RecursionLimiter(20)
 ): Promise<User> {
 	const usernameLower = username.toLowerCase();
 
@@ -105,14 +106,14 @@ export async function resolveUser(
 				// Otherwise create and return new user
 				else {
 					logger.succ(`return new remote user: ${chalk.magenta(finalAcctLower)}`);
-					return await createPerson(fingerRes.self.href, undefined, subjectHost, skipMentionsOnCreate);
+					return await createPerson(fingerRes.self.href, undefined, subjectHost, limiter);
 				}
 			}
 		}
 
 		// Not a split domain setup, so we can simply create and return the new user
 		logger.succ(`return new remote user: ${chalk.magenta(finalAcctLower)}`);
-		return await createPerson(fingerRes.self.href, undefined, subjectHost, skipMentionsOnCreate);
+		return await createPerson(fingerRes.self.href, undefined, subjectHost, limiter);
 	}
 
 	// If user information is out of date, return it by starting over from WebFinger
@@ -188,17 +189,17 @@ export async function resolveUser(
 	} else if (refresh && !awaitRefresh && (user.lastFetchedAt == null || Date.now() - user.lastFetchedAt.getTime() > 1000 * 60 * 60 * 24)) {
 		// Run the refresh in the background
 		// noinspection ES6MissingAwait
-		resolveUser(username, host, true, true, skipMentionsOnCreate);
+		resolveUser(username, host, true, true, limiter);
 	}
 
 	logger.info(`return existing remote user: ${acctLower}`);
 	return user;
 }
 
-export async function resolveMentionToUserAndProfile(username: string, host: string | null, objectHost: string | null) {
+export async function resolveMentionToUserAndProfile(username: string, host: string | null, objectHost: string | null, limiter: RecursionLimiter) {
 	return profileMentionCache.fetch(`${username}@${host ?? objectHost}`, async () => {
 		try {
-			const user = await resolveUser(username, host ?? objectHost, false, false, true);
+			const user = await resolveUser(username, host ?? objectHost, false, false, limiter);
 			const profile = await UserProfiles.findOneBy({ userId: user.id });
 			const data = { username, host: host ?? objectHost };
 

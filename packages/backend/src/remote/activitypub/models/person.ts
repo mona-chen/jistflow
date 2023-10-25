@@ -53,6 +53,7 @@ import {
 	getSubjectHostFromRemoteUser,
 	getSubjectHostFromAcctParts
 } from "@/remote/resolve-user.js"
+import { RecursionLimiter } from "@/models/repositories/user-profile.js";
 
 const logger = apLogger;
 
@@ -170,7 +171,7 @@ export async function createPerson(
 	uri: string,
 	resolver?: Resolver,
 	subjectHost?: string,
-	skipMentions: boolean = false
+	limiter: RecursionLimiter = new RecursionLimiter(20)
 ): Promise<User> {
 	if (typeof uri !== "string") throw new Error("uri is not string");
 
@@ -400,7 +401,7 @@ export async function createPerson(
 	updateUsertags(user!, tags);
 
 	// Mentions update
-	if (!skipMentions) UserProfiles.updateMentions(user!.id);
+	if (await limiter.shouldContinue()) UserProfiles.updateMentions(user!.id, limiter);
 
 	//#region Fetch avatar and header image
 	const [avatar, banner] = await Promise.all(
@@ -436,7 +437,7 @@ export async function createPerson(
 	});
 	//#endregion
 
-	await updateFeatured(user!.id, resolver).catch((err) => logger.error(err));
+	await updateFeatured(user!.id, resolver, limiter).catch((err) => logger.error(err));
 
 	return user!;
 }
@@ -646,6 +647,7 @@ export async function updatePerson(
 export async function resolvePerson(
 	uri: string,
 	resolver?: Resolver,
+	limiter: RecursionLimiter = new RecursionLimiter(20)
 ): Promise<CacheableUser> {
 	if (typeof uri !== "string") throw new Error("uri is not string");
 
@@ -659,7 +661,7 @@ export async function resolvePerson(
 
 	// Fetched from remote server and registered
 	if (resolver == null) resolver = new Resolver();
-	return await createPerson(uri, resolver);
+	return await createPerson(uri, resolver, undefined, limiter);
 }
 
 const services: {
@@ -720,7 +722,7 @@ export async function analyzeAttachments(
 	return { fields, services };
 }
 
-export async function updateFeatured(userId: User["id"], resolver?: Resolver) {
+export async function updateFeatured(userId: User["id"], resolver?: Resolver, limiter: RecursionLimiter = new RecursionLimiter(20)) {
 	const user = await Users.findOneByOrFail({ id: userId });
 	if (!Users.isRemoteUser(user)) return;
 	if (!user.featured) return;
@@ -742,14 +744,14 @@ export async function updateFeatured(userId: User["id"], resolver?: Resolver) {
 		toArray(unresolvedItems).map((x) => resolver.resolve(x)),
 	);
 
-	// Resolve and regist Notes
+	// Resolve and register Notes
 	resolver.reset();
 	const limit = promiseLimit<Note | null>(2);
 	const featuredNotes = await Promise.all(
 		items
 			.filter((item) => getApType(item) === "Note") // TODO: Maybe it doesn't have to be a Note.
 			.slice(0, 5)
-			.map((item) => limit(() => resolveNote(item, resolver))),
+			.map((item) => limit(() => resolveNote(item, resolver, limiter))),
 	);
 
 	await db.transaction(async (transactionalEntityManager) => {

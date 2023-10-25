@@ -53,6 +53,7 @@ import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import { truncate } from "@/misc/truncate.js";
 import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
+import { RecursionLimiter } from "@/models/repositories/user-profile.js";
 
 const logger = apLogger;
 
@@ -108,6 +109,7 @@ export async function createNote(
 	value: string | IObject,
 	resolver?: Resolver,
 	silent = false,
+	limiter: RecursionLimiter = new RecursionLimiter(20)
 ): Promise<Note | null> {
 	if (resolver == null) resolver = new Resolver();
 
@@ -163,6 +165,7 @@ export async function createNote(
 	const actor = (await resolvePerson(
 		getOneApId(note.attributedTo),
 		resolver,
+		limiter
 	)) as CacheableRemoteUser;
 
 	// Skip if author is suspended.
@@ -188,8 +191,8 @@ export async function createNote(
 
 	let isTalk = note._misskey_talk && visibility === "specified";
 
-	const apMentions = await extractApMentions(note.tag);
-	const apHashtags = await extractApHashtags(note.tag);
+	const apMentions = await extractApMentions(note.tag, limiter);
+	const apHashtags = extractApHashtags(note.tag);
 
 	// Attachments
 	// TODO: attachmentは必ずしもImageではない
@@ -216,7 +219,7 @@ export async function createNote(
 
 	// Reply
 	const reply: Note | null = note.inReplyTo
-		? await resolveNote(note.inReplyTo, resolver)
+		? await resolveNote(note.inReplyTo, resolver, limiter)
 				.then((x) => {
 					if (x == null) {
 						logger.warn("Specified inReplyTo, but nout found");
@@ -262,7 +265,7 @@ export async function createNote(
 			if (typeof uri !== "string" || !uri.match(/^https?:/))
 				return { status: "permerror" };
 			try {
-				const res = await resolveNote(uri);
+				const res = await resolveNote(uri, undefined, limiter);
 				if (res) {
 					return {
 						status: "ok",
@@ -403,6 +406,7 @@ export async function createNote(
 export async function resolveNote(
 	value: string | IObject,
 	resolver?: Resolver,
+	limiter: RecursionLimiter = new RecursionLimiter(20)
 ): Promise<Note | null> {
 	const uri = typeof value === "string" ? value : value.id;
 	if (uri == null) throw new Error("missing uri");
@@ -437,7 +441,7 @@ export async function resolveNote(
 		// Fetch from remote server and register
 		// If the attached `Note` Object is specified here instead of the uri, the note will be generated without going through the server fetch.
 		// Since the attached Note Object may be disguised, always specify the uri and fetch it from the server.
-		return await createNote(uri, resolver, true);
+		return await createNote(uri, resolver, true, limiter);
 	} finally {
 		unlock();
 	}

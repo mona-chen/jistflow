@@ -6,9 +6,11 @@ import type { IObject, IApMention } from "../type.js";
 import { isMention } from "../type.js";
 import Resolver from "../resolver.js";
 import { resolvePerson } from "./person.js";
+import { RecursionLimiter } from "@/models/repositories/user-profile.js";
 
 export async function extractApMentions(
 	tags: IObject | IObject[] | null | undefined,
+	limiter: RecursionLimiter = new RecursionLimiter(20)
 ) {
 	const hrefs = unique(
 		extractApMentionObjects(tags).map((x) => x.href as string),
@@ -20,7 +22,7 @@ export async function extractApMentions(
 	const mentionedUsers = (
 		await Promise.all(
 			hrefs.map((x) =>
-				limit(() => resolvePerson(x, resolver).catch(() => null)),
+				limit(() => resolvePerson(x, resolver, limiter).catch(() => null)),
 			),
 		)
 	).filter((x): x is CacheableUser => x != null);

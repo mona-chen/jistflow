@@ -6,13 +6,13 @@ import { resolveMentionToUserAndProfile } from "@/remote/resolve-user.js";
 import { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { unique } from "@/prelude/array.js";
 import config from "@/config/index.js";
-import { Semaphore } from "async-mutex";
+import { Mutex, Semaphore } from "async-mutex";
 
 const queue = new Semaphore(5);
 
 export const UserProfileRepository = db.getRepository(UserProfile).extend({
     // We must never await this without promiseEarlyReturn, otherwise giant webring-style profile mention trees will cause the queue to stop working
-    async updateMentions(id: UserProfile["userId"]){
+    async updateMentions(id: UserProfile["userId"], limiter: RecursionLimiter = new RecursionLimiter(20)){
         const profile = await this.findOneBy({ userId: id });
         if (!profile) return;
         const tokens: mfm.MfmNode[] = [];
@@ -24,16 +24,16 @@ export const UserProfileRepository = db.getRepository(UserProfile).extend({
 
         return queue.runExclusive(async () => {
             const partial = {
-                mentions: await populateMentions(tokens, profile.userHost)
+                mentions: await populateMentions(tokens, profile.userHost, limiter)
             };
             return UserProfileRepository.update(profile.userId, partial);
         });
     },
 });
 
-async function populateMentions(tokens: mfm.MfmNode[], objectHost: string | null): Promise<IMentionedRemoteUsers> {
+async function populateMentions(tokens: mfm.MfmNode[], objectHost: string | null, limiter: RecursionLimiter): Promise<IMentionedRemoteUsers> {
     const mentions = extractMentions(tokens);
-    const resolved = await Promise.all(mentions.map(m => resolveMentionToUserAndProfile(m.username, m.host, objectHost)));
+    const resolved = await Promise.all(mentions.map(m => resolveMentionToUserAndProfile(m.username, m.host, objectHost, limiter)));
     const remote = resolved.filter(p => p && p.data.host !== config.domain && (p.data.host !== null || objectHost !== null))
         .map(p => p!);
     const res = remote.map(m => {
@@ -46,4 +46,18 @@ async function populateMentions(tokens: mfm.MfmNode[], objectHost: string | null
     });
 
     return unique(res);
+}
+
+export class RecursionLimiter {
+    private counter;
+    private mutex = new Mutex();
+    constructor(count: number = 20) {
+        this.counter = count;
+    }
+
+    public shouldContinue(): Promise<boolean> {
+        return this.mutex.runExclusive(() => {
+            return this.counter-- > 0;
+        });
+    }
 }
