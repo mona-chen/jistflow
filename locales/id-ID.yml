@@ -2181,3 +2181,14 @@ openServerInfo: Tampilkan informasi server dengan mengeklik ticker server di seb
   kiriman
 vibrate: Putar getaran
 clickToShowPatterns: Klik untuk menampilkan pola modul
+iconSet: Set ikon
+_iconSets:
+  fill: Penuh
+  regular: Reguler
+  bold: Tebal
+  duotone: Duotone
+  light: Tipis
+reactions: Reaksi
+replies: Balasan
+quotes: Kutipan
+renotes: Postingan ulang

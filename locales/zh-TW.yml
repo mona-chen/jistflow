@@ -1994,3 +1994,10 @@ indexable: 登錄至貼文搜尋引擎
 origin: 來源
 objectStorageS3ForcePathStyle: 使用基於路徑的端點（Endpoint）URL
 clickToShowPatterns: 點擊顯示模組模式（Module Pattern）
+iconSet: 圖示的樣式
+_iconSets:
+  fill: 填滿
+  regular: 標準
+  bold: 粗線
+  duotone: 雙色
+  light: 細線
