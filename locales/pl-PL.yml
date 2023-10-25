@@ -1,6 +1,6 @@
 _lang_: "Polski"
-headlineFirefish: "Otwartoźródłowa, zdecentralizowana sieć społecznościowa, która zawsze
-  będzie darmowa! 🚀"
+headlineFirefish: "Otwartoźródłowa, zdecentralizowana sieć społecznościowa, która
+  zawsze będzie darmowa! 🚀"
 introFirefish: "Hej! Firefish to otwartoźródłowa oraz zdecentralizowana sieć społecznościowa,
   która zawsze będzie darmowa! 🚀"
 monthAndDay: "{month}-{day}"
@@ -94,7 +94,7 @@ privacy: "Prywatność"
 makeFollowManuallyApprove: "Prośby o możliwość obserwacji wymagają zatwierdzenia"
 defaultNoteVisibility: "Domyślna widoczność"
 follow: "Obserwuj"
-followRequest: "Poproś o możliwość obserwacji"
+followRequest: "Poproś o możliwość obserwowania"
 followRequests: "Prośby o możliwość obserwacji"
 unfollow: "Przestań obserwować"
 followRequestPending: "Oczekująca prośba o możliwość obserwacji"
@@ -147,9 +147,9 @@ cacheRemoteFilesDescription: "Gdy ta opcja jest wyłączona, zdalne pliki są ł
   bezpośrednio ze zdalnego serwera. Wyłączenie tej opcji zmniejszy użycie powierzchni
   dyskowej, ale zwiększy transfer, ponieważ miniaturki nie będą generowane."
 flagAsBot: "To konto jest botem"
-flagAsBotDescription: "Jeżeli ten kanał jest kontrolowany przez jakiś program, ustaw
-  tę opcję. Jeżeli włączona, będzie działać jako flaga informująca innych programistów,
-  aby zapobiegać nieskończonej interakcji z różnymi botami i dostosowywać wewnętrzne
+flagAsBotDescription: "Ustaw tę opcję ten jeśli kanał kontrolowany jest przez jakiś
+  program. Po włączeniu, będzie działać jako flaga informująca innych programistów,
+  aby zapobiegać nieskończonej interakcji pomiędzy innymi botami i dostosowywać wewnętrzne
   systemy Firefish, traktując konto jako bota."
 flagAsCat: "Czy jesteś kotem? 😺"
 flagAsCatDescription: "Dostaniesz kocie uszka, oraz będziesz mówić jak kot!"
@@ -158,7 +158,7 @@ autoAcceptFollowed: "Automatycznie przyjmuj prośby o możliwość obserwacji od
   których obserwujesz"
 addAccount: "Dodaj konto"
 loginFailed: "Nie udało się zalogować"
-showOnRemote: "Zobacz na zdalnym serwerze"
+showOnRemote: "Zobacz oryginalną treść"
 general: "Ogólne"
 wallpaper: "Tapeta"
 setWallpaper: "Ustaw tapetę"
@@ -211,7 +211,7 @@ noUsers: "Brak użytkowników"
 editProfile: "Edytuj profil"
 noteDeleteConfirm: "Czy na pewno chcesz usunąć ten wpis?"
 pinLimitExceeded: "Nie możesz przypiąć więcej wpisów"
-intro: "Zakończono instalację Firefish! Utwórz konto administratora."
+intro: "Zakończono instalację Firefish! Utwórz teraz konto administratora."
 done: "Gotowe"
 processing: "Przetwarzanie"
 preview: "Podgląd"
@@ -299,11 +299,11 @@ emptyDrive: "Dysk jest pusty"
 emptyFolder: "Ten katalog jest pusty"
 unableToDelete: "Nie można usunąć"
 inputNewFileName: "Wprowadź nową nazwę pliku"
-inputNewDescription: "Proszę wpisać nowy napis"
+inputNewDescription: "Podaj nowy napis"
 inputNewFolderName: "Wprowadź nową nazwę katalogu"
 circularReferenceFolder: "Katalog docelowy jest podkatalogiem katalogu, który chcesz
   przenieść."
-hasChildFilesOrFolders: "Ponieważ ten katalog nie jest pusty, nie może być usunięty."
+hasChildFilesOrFolders: "Katalog nie może być usunięty ponieważ nie jest pusty."
 copyUrl: "Skopiuj adres URL"
 rename: "Zmień nazwę"
 avatar: "Awatar"
@@ -578,8 +578,8 @@ disablePlayer: "Zamknij odtwarzacz wideo"
 expandTweet: "Rozwiń tweet"
 themeEditor: "Edytor motywu"
 description: "Opis"
-describeFile: "Dodaj podpis"
-enterFileDescription: "Wprowadź napis"
+describeFile: "Dodaj opis"
+enterFileDescription: "Wprowadź opis"
 author: "Autor"
 leaveConfirm: "Są niezapisane zmiany. Czy chcesz je odrzucić?"
 manage: "Zarządzanie"
@@ -616,7 +616,7 @@ emptyToDisableSmtpAuth: "Pozostaw adres e-mail i hasło puste, aby wyłączyć w
   SMTP"
 smtpSecureInfo: "Wyłącz, jeżeli używasz STARTTLS"
 testEmail: "Przetestuj dostarczanie wiadomości e-mail"
-wordMute: "Wyciszenie słowa"
+wordMute: "Wyciszenie słów i języków"
 instanceMute: "Wyciszenie serwera"
 userSaysSomething: "{name} powiedział* coś"
 makeActive: "Aktywuj"
@@ -691,8 +691,7 @@ no: "Nie"
 driveFilesCount: "Liczba plików na dysku"
 driveUsage: "Użycie przestrzeni dyskowej"
 noCrawle: "Odrzuć indeksowanie przez crawlery"
-noCrawleDescription: "Proś wyszukiwarki internetowe, aby nie indeksowały Twojego profilu,
-  wpisów, stron itd."
+noCrawleDescription: "Proś wyszukiwarki internetowe, aby nie indeksowały Twoich treści."
 lockedAccountInfo: "Dopóki nie ustawisz widoczności wpisu na \"Obserwujący\", twoje
   wpisy będą mogli widzieć wszyscy, nawet jeśli ustawisz manualne zatwierdzanie obserwujących."
 alwaysMarkSensitive: "Oznacz domyślnie jako NSFW"
@@ -759,7 +758,7 @@ useReactionPickerForContextMenu: "Otwórz wybornik reakcji prawym kliknięciem"
 typingUsers: "{users} pisze/ą"
 jumpToSpecifiedDate: "Przejdź do określonej daty"
 showingPastTimeline: "Obecnie wyświetla starą oś czasu"
-clear: "Wróć"
+clear: "Wyczyść"
 markAllAsRead: "Oznacz wszystkie jako przeczytane"
 goBack: "Wróć"
 unlikeConfirm: "Na pewno chcesz usunąć polubienie?"
@@ -800,7 +799,7 @@ gallery: "Galeria"
 recentPosts: "Ostatnie wpisy"
 popularPosts: "Popularne wpisy"
 shareWithNote: "Udostępnij z wpisem"
-ads: "Reklamy"
+ads: "Banery"
 expiration: "Ankieta kończy się"
 memo: "Notatki"
 priority: "Priorytet"
@@ -852,7 +851,7 @@ ffVisibility: "Widoczność obserwowanych/obserwujących"
 ffVisibilityDescription: "Pozwala skonfigurować, kto może zobaczyć, kogo obserwujesz
   i kto Cię obserwuje."
 continueThread: "Kontynuuj wątek"
-deleteAccountConfirm: "Spowoduje to nieodwracalne usunięcie Twojego konta. Kontynuować?"
+deleteAccountConfirm: "Spowoduje to nieodwracalne usunięcie tego konta. Kontynuować?"
 incorrectPassword: "Nieprawidłowe hasło."
 voteConfirm: "Potwierdzić swój głos na \"{choice}\"?"
 hide: "Ukryj"
@@ -1001,8 +1000,8 @@ _nsfw:
   force: "Ukrywaj wszystkie media"
 _mfm:
   cheatSheet: "Ściąga MFM"
-  intro: "MFM jest językiem składniowym używanym przez m.in. Firefish, forki *key (w
-    tym Firefish), oraz Akkomę, który może być użyty w wielu miejscach. Tu znajdziesz
+  intro: "MFM jest językiem składniowym używanym przez m.in. Firefish, forki *key
+    (w tym Firefish), oraz Akkomę, który może być użyty w wielu miejscach. Tu znajdziesz
     listę wszystkich możliwych elementów składni MFM."
   dummy: "Firefish rozszerza świat Fediwersum"
   mention: "Wspomnij"
@@ -1250,7 +1249,7 @@ _tutorial:
     innej połączonej instancji."
   step6_1: "Więc, czym to jest to miejsce?"
   step6_2: "Cóż, nie dołączył*ś po prostu do Firefish. Dołączył*ś do portalu do Fediverse,
-    połączonej sieci tysięcy serwerów, zwanych instancjami."
+    sieci tysięcy połączonych ze sobą serwerów, zwanych instancjami."
   step6_3: "Każdy serwer działa w inny sposób, i nie wszystkie serwery używają Firefish.
     Ten jednak używa! Jest to trochę skomplikowane, ale w krótkim czasie załapiesz
     o co chodzi."
@@ -1816,8 +1815,8 @@ instanceSecurity: Bezpieczeństwo serwera
 privateMode: Tryb prywatny
 allowedInstances: Dopuszczone serwery
 recommended: Polecane
-allowedInstancesDescription: Hosty serwerów, które mają być dopuszczone do federacji,
-  każdy oddzielony nowym wierszem (dotyczy tylko trybu prywatnego).
+allowedInstancesDescription: Hosty serwerów, które mają być dopuszczone do federacji.
+  Każdy oddzielony nowym wierszem (dotyczy tylko trybu prywatnego).
 seperateRenoteQuote: Oddziel przyciski podbicia i cytowania
 refreshInterval: 'Częstotliwość aktualizacji '
 slow: Wolna
@@ -1916,14 +1915,14 @@ sendErrorReportsDescription: "Gdy ta opcja jest włączona, szczegółowe inform
   błędach będą udostępnianie z Firefish gdy wystąpi problem, pomagając w ulepszaniu
   Firefish.\nZawrze to informacje takie jak wersja twojego systemu operacyjnego, przeglądarki,
   Twoja aktywność na Firefish itd."
-privateModeInfo: Gdy ta opcja jest włączona, tylko serwery z białej listy mogą federować
-  się z twoim serwerem. Wszystkie posty będą ukryte publicznie.
+privateModeInfo: Gdy ta opcja jest włączona, tylko serwery z listy serwerów dozwolonych
+  mogą federować się z twoim serwerem. Żadne posty nie będą publicznie dostępne.
 oneHour: Godzina
 oneDay: Dzień
 oneWeek: Tydzień
 recommendedInstances: Polecane serwery
 recommendedInstancesDescription: Polecane serwery, mające pojawić się w odpowiedniej
-  osi czasu, oddzielane nowymi liniami. NIE dodawaj “https://”, TYLKO samą domenę.
+  osi czasu, oddzielane nowymi liniami.
 rateLimitExceeded: Przekroczono ratelimit
 cropImage: Kadruj zdjęcie
 cropImageAsk: Czy chcesz skadrować to zdjęcie?
@@ -1948,7 +1947,7 @@ activeEmailValidationDescription: Włącza ściślejszą walidację adresów e-m
   obejmuje sprawdzanie adresów jednorazowych oraz tego, czy rzeczywiście można się
   z nim komunikować. Jeśli wyłączone, walidowany jest tylko format wiadomości e-mail.
 shuffle: Losuj
-showAds: Pokazuj reklamy
+showAds: Pokazuj banery
 enterSendsMessage: Wciśnij Enter w komunikatorze, by wysłać wiadomość (domyślnie –
   Ctrl + Enter)
 adminCustomCssWarn: To ustawienie powinno być używane tylko pod warunkiem, że wiesz
@@ -2012,7 +2011,7 @@ silencedInstancesDescription: Wypisz nazwy hostów serwerów, które chcesz wyci
 cannotUploadBecauseExceedsFileSizeLimit: Ten plik nie mógł być przesłany, ponieważ
   jego wielkość przekracza dozwolony limit.
 sendModMail: Wyślij Powiadomienie Moderacyjne
-searchPlaceholder: Szukaj Firefish
+searchPlaceholder: Szukaj w Firefish
 jumpToPrevious: Przejdź do poprzedniej sekcji
 listsDesc: Listy umożliwiają tworzenie osi czasu z określonymi użytkownikami. Dostęp
   do nich można uzyskać na stronie osi czasu.
@@ -2028,3 +2027,15 @@ newer: nowsze
 older: starsze
 cw: Ostrzeżenie zawartości
 removeReaction: Usuń reakcję
+reactions: Reakcje
+clipsDesc: Spinki to skategoryzowane zakładki, które można udostępniać. Możesz utworzyć
+  spinkę dla każdego wpisu w menu wpisu.
+swipeOnMobile: Pozwalaj na przeciąganie pomiędzy stronami
+image: Obrazek
+xl: XL
+replies: Odpowiedzi
+video: Film
+quotes: Cytaty
+clickToShowPatterns: Kliknij aby pokazać wzory modułów
+renotes: Boosty
+audio: Dźwięk
