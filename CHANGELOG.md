@@ -1,3 +1,13 @@
+## v2023.11-pre5
+### Highlights
+This release fixes a regression introduced in the last release preview. If you are running `v2023.11-pre3` or `v2023.11-pre4`, upgrading is strongly recommended.
+
+### Miscellaneous
+- The commit that removed the `Mk` prefix from VueJS components has been reverted, as it caused various UI issues
+
+### Attribution
+This release was made possible by project contributors: Laura Hausmann
+
 ## v2023.11-pre4
 ### Highlights
 This release mostly fixes regressions introduced in the last release preview. If you are running `v2023.11-pre3`, upgrading is strongly recommended.
