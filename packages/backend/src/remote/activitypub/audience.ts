@@ -9,6 +9,7 @@ import type {
 	CacheableUser,
 } from "@/models/entities/user.js";
 import { User } from "@/models/entities/user.js";
+import { RecursionLimiter } from "@/models/repositories/user-profile.js";
 
 type Visibility = "public" | "home" | "followers" | "specified";
 
@@ -23,6 +24,7 @@ export async function parseAudience(
 	to?: ApObject,
 	cc?: ApObject,
 	resolver?: Resolver,
+	limiter: RecursionLimiter = new RecursionLimiter(20)
 ): Promise<AudienceInfo> {
 	const toGroups = groupingAudience(getApIds(to), actor);
 	const ccGroups = groupingAudience(getApIds(cc), actor);
@@ -33,7 +35,7 @@ export async function parseAudience(
 	const mentionedUsers = (
 		await Promise.all(
 			others.map((id) =>
-				limit(() => resolvePerson(id, resolver).catch(() => null)),
+				limit(() => resolvePerson(id, resolver, limiter).catch(() => null)),
 			),
 		)
 	).filter((x): x is CacheableUser => x != null);

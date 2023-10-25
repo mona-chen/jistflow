@@ -176,7 +176,7 @@ export async function createNote(
 		return null;
 	}
 
-	const noteAudience = await parseAudience(actor, note.to, note.cc);
+	const noteAudience = await parseAudience(actor, note.to, note.cc, undefined, limiter);
 	let visibility = noteAudience.visibility;
 	const visibleUsers = noteAudience.visibleUsers;
 
@@ -394,6 +394,7 @@ export async function createNote(
 			url: url,
 		},
 		silent,
+		limiter
 	);
 }
 

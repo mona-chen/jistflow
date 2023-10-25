@@ -67,6 +67,7 @@ import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
 import meilisearch from "../../db/meilisearch.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
+import { RecursionLimiter } from "@/models/repositories/user-profile.js";
 
 const mutedWordsCache = new Cache<
 	{ userId: UserProfile["userId"]; mutedWords: UserProfile["mutedWords"] }[]
@@ -167,6 +168,7 @@ export default async (
 	},
 	data: Option,
 	silent = false,
+	limiter: RecursionLimiter = new RecursionLimiter(20)
 ) =>
 	// rome-ignore lint/suspicious/noAsyncPromiseExecutor: FIXME
 	new Promise<Note>(async (res, rej) => {
@@ -292,7 +294,7 @@ export default async (
 			emojis = data.apEmojis || extractCustomEmojisFromMfm(combinedTokens);
 
 			mentionedUsers =
-				data.apMentions || (await extractMentionedUsers(user, combinedTokens));
+				data.apMentions || (await extractMentionedUsers(user, combinedTokens, limiter));
 		}
 
 		tags = tags
@@ -925,6 +927,7 @@ function incNotesCountOfUser(user: { id: User["id"] }) {
 export async function extractMentionedUsers(
 	user: { host: User["host"] },
 	tokens: mfm.MfmNode[],
+	limiter: RecursionLimiter = new RecursionLimiter(20)
 ): Promise<User[]> {
 	if (tokens == null) return [];
 
@@ -933,7 +936,7 @@ export async function extractMentionedUsers(
 	let mentionedUsers = (
 		await Promise.all(
 			mentions.map((m) =>
-				resolveUser(m.username, m.host || user.host).catch(() => null),
+				resolveUser(m.username, m.host || user.host, undefined, limiter).catch(() => null),
 			),
 		)
 	).filter((x) => x != null) as User[];
