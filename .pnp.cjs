@@ -4700,7 +4700,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "nan",\
-        "npm:2.17.0"\
+        "npm:2.18.0"\
       ],\
       [\
         "nanoid",\
@@ -5584,7 +5584,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "re2",\
-        "npm:1.19.1"\
+        "npm:1.20.5"\
       ],\
       [\
         "react-is",\
@@ -14057,7 +14057,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["qs", "npm:6.11.2"],\
             ["random-seed", "npm:0.3.0"],\
             ["ratelimiter", "npm:3.4.1"],\
-            ["re2", "npm:1.19.1"],\
+            ["re2", "npm:1.20.5"],\
             ["redis-lock", "npm:0.1.4"],\
             ["redis-semaphore", "virtual:aa59773ac87791c4813d53447077fcf8a847d6de5a301d34dc31286584b1dbb26d30d3adb5b4c41c1e8aea04371e926fda05c09c6253647c432e11d872a304ba#npm:5.3.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -24909,10 +24909,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["nan", [\
-        ["npm:2.17.0", {\
-          "packageLocation": "./.yarn/unplugged/nan-npm-2.17.0-bf36a21d6f/node_modules/nan/",\
+        ["npm:2.18.0", {\
+          "packageLocation": "./.yarn/unplugged/nan-npm-2.18.0-a51ed5bed5/node_modules/nan/",\
           "packageDependencies": [\
-            ["nan", "npm:2.17.0"],\
+            ["nan", "npm:2.18.0"],\
             ["node-gyp", "npm:9.4.0"]\
           ],\
           "linkType": "HARD"\
@@ -27658,12 +27658,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["re2", [\
-        ["npm:1.19.1", {\
-          "packageLocation": "./.yarn/unplugged/re2-npm-1.19.1-8c50c5469a/node_modules/re2/",\
+        ["npm:1.20.5", {\
+          "packageLocation": "./.yarn/unplugged/re2-npm-1.20.5-851f906517/node_modules/re2/",\
           "packageDependencies": [\
-            ["re2", "npm:1.19.1"],\
+            ["re2", "npm:1.20.5"],\
             ["install-artifact-from-github", "npm:1.3.3"],\
-            ["nan", "npm:2.17.0"],\
+            ["nan", "npm:2.18.0"],\
             ["node-gyp", "npm:9.4.0"]\
           ],\
           "linkType": "HARD"\
