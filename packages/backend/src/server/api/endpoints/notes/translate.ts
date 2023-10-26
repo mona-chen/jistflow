@@ -64,6 +64,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	let targetLang = ps.targetLang;
 	if (targetLang.includes("-")) targetLang = targetLang.split("-")[0];
+	if (targetLang.includes("_")) targetLang = targetLang.split("_")[0];
 
 	if (instance.libreTranslateApiUrl != null) {
 		const jsonBody = {
