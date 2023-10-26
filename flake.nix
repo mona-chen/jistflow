@@ -7,9 +7,6 @@
 		flake-parts.url = "github:hercules-ci/flake-parts";
 		# Devenv for better devShells(https://devenv.sh)
 		devenv.url = "github:cachix/devenv";
-		# Fenix for rust development
-		fenix.url = "github:nix-community/fenix";
-		fenix.inputs.nixpkgs.follows = "nixpkgs";
 	};
 	outputs = inputs@{ flake-parts, ... }:
 		flake-parts.lib.mkFlake { inherit inputs; } {
@@ -32,7 +29,6 @@
 							# Add additional packages to our environment
 							packages = [
 								pkgs.yarn-berry
-
 								pkgs.python3
 							];
 							# No need to warn on a new version, we'll update as needed.
@@ -42,9 +38,6 @@
 							# Enable javascript for NPM and Yarn
 							languages.javascript.enable = true;
 							languages.javascript.package = pkgs.nodejs_18;
-							# Enable stable Rust for the backend
-							languages.rust.enable = true;
-							languages.rust.channel = "stable";
 							processes = {
 								dev-server.exec = "yarn run dev";
 							};
