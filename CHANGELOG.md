@@ -1,5 +1,38 @@
-## v2023.11-pre5
+## v2023.11
+### Release notes
+This release contains only very minor changes if you're upgrading from `v2023.11-pre5`, but for users who skipped the prereleases, lots has changed. Be sure to read the changelogs of all releases between the one you're upgrading from and this one, especially the sections on breaking changes.
+
+The information below is an *aggregate* of all breaking changes and release highlights since the last stable release.
+
+### Breaking changes
+- Lists have been reworked, now only allowing followed users to be added, and support for proxy accounts has been removed. To allow users to follow any users they want to keep on their lists, the migration that removes all list members users are not following will only be activated in the release **after** the next stable release. It is therefore highly recommended to add an instance announcement informing your users of this change and advising them to follow any affected accounts and to use the new "hide from home timeline" list option if desired.
+- The Mastodon client API now uses the same object identifiers as the Misskey API, as well as its own, separate OAuth backend. This means all existing sessions are now invalid. Please log out and back in again in your clients.
+
 ### Highlights
+- The Mastodon client API backend underwent a full rewrite, dropping megalodon as a dependency. Expect:
+    + Rich text formatting (mentions, links, hashtags, etc. are now properly formatted)
+    + Significantly improved API responsiveness - performance was improved by a factor of 2-5x (or more!) depending on the endpoint
+    + Better spec compliance & improved compatibility (we test against: Mona, toot!, Ice Cubes, Tusker, Feditext, Mastodon for iOS, Mastodon for Android/Megalodon/Moshidon, Tusky, Elk, Phanpy, Pinafore/Semaphore/Enafore and more)
+- The Mastodon client API now supports the websocket streaming API
+- Various bugs in the HTTP Link header pagination implementation were fixed
+- The Mastodon client API now uses OAuth instead of MiAuth
+- ActivityPub object lookups now respect redirects
+- Significantly improved handling of mentions, both in outgoing AP messages and in the Mastodon client API
+- Various Mastodon client API regressions are now fixed, improving client compatibility
+- HTTP Signature validation error handling has been improved
+- The project is now compatible with NodeJS >= 18.6 (tested against v21.1.0 at time of writing)
+
+### Miscellaneous
+- The project is now compatible with NodeJS v21, tested against v21.1.0 at time of writing
+- The nix dev environment was updated
+
+### Attribution
+This release was made possible by project contributors: AntoineÐ, Aylam, Erin Shepherd, jeder, Laura Hausmann & Pyrox
+
+It also includes cherry-picked contributions from external contributors: Johann150
+
+## v2023.11-pre5
+### Release notes
 This release fixes a regression introduced in the last release preview. If you are running `v2023.11-pre3` or `v2023.11-pre4`, upgrading is strongly recommended.
 
 ### Miscellaneous
@@ -9,7 +42,7 @@ This release fixes a regression introduced in the last release preview. If you a
 This release was made possible by project contributors: Laura Hausmann
 
 ## v2023.11-pre4
-### Highlights
+### Release notes
 This release mostly fixes regressions introduced in the last release preview. If you are running `v2023.11-pre3`, upgrading is strongly recommended.
 
 ### Mastodon client API
