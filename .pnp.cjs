@@ -151,6 +151,34 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:0.2.3"\
       ],\
       [\
+        "@biomejs/biome",\
+        "npm:1.3.1"\
+      ],\
+      [\
+        "@biomejs/cli-darwin-arm64",\
+        "npm:1.3.1"\
+      ],\
+      [\
+        "@biomejs/cli-darwin-x64",\
+        "npm:1.3.1"\
+      ],\
+      [\
+        "@biomejs/cli-linux-arm64",\
+        "npm:1.3.1"\
+      ],\
+      [\
+        "@biomejs/cli-linux-x64",\
+        "npm:1.3.1"\
+      ],\
+      [\
+        "@biomejs/cli-win32-arm64",\
+        "npm:1.3.1"\
+      ],\
+      [\
+        "@biomejs/cli-win32-x64",\
+        "npm:1.3.1"\
+      ],\
+      [\
         "@bull-board/api",\
         "virtual:6d3c013820dba430e71ebb352cb5205445a13ea3c7a848f57a7ff58fb0d6469fe4d374280277dac42cb77a6dbf8e924e64f2f0b3413c28a02da9d890c199e6d7#npm:5.6.0"\
       ],\
@@ -645,30 +673,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       [\
         "@rollup/pluginutils",\
         "npm:4.2.1"\
-      ],\
-      [\
-        "@rometools/cli-darwin-arm64",\
-        "npm:12.1.3"\
-      ],\
-      [\
-        "@rometools/cli-darwin-x64",\
-        "npm:12.1.3"\
-      ],\
-      [\
-        "@rometools/cli-linux-arm64",\
-        "npm:12.1.3"\
-      ],\
-      [\
-        "@rometools/cli-linux-x64",\
-        "npm:12.1.3"\
-      ],\
-      [\
-        "@rometools/cli-win32-arm64",\
-        "npm:12.1.3"\
-      ],\
-      [\
-        "@rometools/cli-win32-x64",\
-        "npm:12.1.3"\
       ],\
       [\
         "@rushstack/node-core-library",\
@@ -5819,10 +5823,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:3.26.2"\
       ],\
       [\
-        "rome",\
-        "npm:12.1.3"\
-      ],\
-      [\
         "rss-parser",\
         "npm:3.13.0"\
       ],\
@@ -7013,6 +7013,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@biomejs/biome", "npm:1.3.1"],\
             ["@bull-board/api", "virtual:6d3c013820dba430e71ebb352cb5205445a13ea3c7a848f57a7ff58fb0d6469fe4d374280277dac42cb77a6dbf8e924e64f2f0b3413c28a02da9d890c199e6d7#npm:5.6.0"],\
             ["@bull-board/ui", "npm:5.6.0"],\
             ["@types/gulp", "npm:4.0.13"],\
@@ -7030,7 +7031,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["gulp-terser", "npm:2.1.0"],\
             ["install-peers", "npm:1.0.4"],\
             ["js-yaml", "npm:4.1.0"],\
-            ["rome", "npm:12.1.3"],\
             ["seedrandom", "npm:3.0.5"],\
             ["start-server-and-test", "npm:1.15.2"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"]\
@@ -8114,6 +8114,75 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@bcoe-v8-coverage-npm-0.2.3-9e27b3c57e-850f930553.zip/node_modules/@bcoe/v8-coverage/",\
           "packageDependencies": [\
             ["@bcoe/v8-coverage", "npm:0.2.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@biomejs/biome", [\
+        ["npm:1.3.1", {\
+          "packageLocation": "./.yarn/unplugged/@biomejs-biome-npm-1.3.1-6f9e52cf26/node_modules/@biomejs/biome/",\
+          "packageDependencies": [\
+            ["@biomejs/biome", "npm:1.3.1"],\
+            ["@biomejs/cli-darwin-arm64", "npm:1.3.1"],\
+            ["@biomejs/cli-darwin-x64", "npm:1.3.1"],\
+            ["@biomejs/cli-linux-arm64", "npm:1.3.1"],\
+            ["@biomejs/cli-linux-x64", "npm:1.3.1"],\
+            ["@biomejs/cli-win32-arm64", "npm:1.3.1"],\
+            ["@biomejs/cli-win32-x64", "npm:1.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@biomejs/cli-darwin-arm64", [\
+        ["npm:1.3.1", {\
+          "packageLocation": "./.yarn/unplugged/@biomejs-cli-darwin-arm64-npm-1.3.1-2e03173d1f/node_modules/@biomejs/cli-darwin-arm64/",\
+          "packageDependencies": [\
+            ["@biomejs/cli-darwin-arm64", "npm:1.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@biomejs/cli-darwin-x64", [\
+        ["npm:1.3.1", {\
+          "packageLocation": "./.yarn/unplugged/@biomejs-cli-darwin-x64-npm-1.3.1-d5708b1108/node_modules/@biomejs/cli-darwin-x64/",\
+          "packageDependencies": [\
+            ["@biomejs/cli-darwin-x64", "npm:1.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@biomejs/cli-linux-arm64", [\
+        ["npm:1.3.1", {\
+          "packageLocation": "./.yarn/unplugged/@biomejs-cli-linux-arm64-npm-1.3.1-1267480ce0/node_modules/@biomejs/cli-linux-arm64/",\
+          "packageDependencies": [\
+            ["@biomejs/cli-linux-arm64", "npm:1.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@biomejs/cli-linux-x64", [\
+        ["npm:1.3.1", {\
+          "packageLocation": "./.yarn/unplugged/@biomejs-cli-linux-x64-npm-1.3.1-d0d2c0ccd7/node_modules/@biomejs/cli-linux-x64/",\
+          "packageDependencies": [\
+            ["@biomejs/cli-linux-x64", "npm:1.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@biomejs/cli-win32-arm64", [\
+        ["npm:1.3.1", {\
+          "packageLocation": "./.yarn/unplugged/@biomejs-cli-win32-arm64-npm-1.3.1-74426d6d7d/node_modules/@biomejs/cli-win32-arm64/",\
+          "packageDependencies": [\
+            ["@biomejs/cli-win32-arm64", "npm:1.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@biomejs/cli-win32-x64", [\
+        ["npm:1.3.1", {\
+          "packageLocation": "./.yarn/unplugged/@biomejs-cli-win32-x64-npm-1.3.1-678d08024e/node_modules/@biomejs/cli-win32-x64/",\
+          "packageDependencies": [\
+            ["@biomejs/cli-win32-x64", "npm:1.3.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10164,60 +10233,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [\
             "@types/rollup",\
             "rollup"\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@rometools/cli-darwin-arm64", [\
-        ["npm:12.1.3", {\
-          "packageLocation": "./.yarn/unplugged/@rometools-cli-darwin-arm64-npm-12.1.3-e1f412f8be/node_modules/@rometools/cli-darwin-arm64/",\
-          "packageDependencies": [\
-            ["@rometools/cli-darwin-arm64", "npm:12.1.3"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@rometools/cli-darwin-x64", [\
-        ["npm:12.1.3", {\
-          "packageLocation": "./.yarn/unplugged/@rometools-cli-darwin-x64-npm-12.1.3-213b94ec09/node_modules/@rometools/cli-darwin-x64/",\
-          "packageDependencies": [\
-            ["@rometools/cli-darwin-x64", "npm:12.1.3"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@rometools/cli-linux-arm64", [\
-        ["npm:12.1.3", {\
-          "packageLocation": "./.yarn/unplugged/@rometools-cli-linux-arm64-npm-12.1.3-1a684f2047/node_modules/@rometools/cli-linux-arm64/",\
-          "packageDependencies": [\
-            ["@rometools/cli-linux-arm64", "npm:12.1.3"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@rometools/cli-linux-x64", [\
-        ["npm:12.1.3", {\
-          "packageLocation": "./.yarn/unplugged/@rometools-cli-linux-x64-npm-12.1.3-a343b37dfc/node_modules/@rometools/cli-linux-x64/",\
-          "packageDependencies": [\
-            ["@rometools/cli-linux-x64", "npm:12.1.3"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@rometools/cli-win32-arm64", [\
-        ["npm:12.1.3", {\
-          "packageLocation": "./.yarn/unplugged/@rometools-cli-win32-arm64-npm-12.1.3-82e0519b43/node_modules/@rometools/cli-win32-arm64/",\
-          "packageDependencies": [\
-            ["@rometools/cli-win32-arm64", "npm:12.1.3"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@rometools/cli-win32-x64", [\
-        ["npm:12.1.3", {\
-          "packageLocation": "./.yarn/unplugged/@rometools-cli-win32-x64-npm-12.1.3-553c0b4b40/node_modules/@rometools/cli-win32-x64/",\
-          "packageDependencies": [\
-            ["@rometools/cli-win32-x64", "npm:12.1.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -20894,6 +20909,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["iceshrimp", "workspace:."],\
+            ["@biomejs/biome", "npm:1.3.1"],\
             ["@bull-board/api", "virtual:6d3c013820dba430e71ebb352cb5205445a13ea3c7a848f57a7ff58fb0d6469fe4d374280277dac42cb77a6dbf8e924e64f2f0b3413c28a02da9d890c199e6d7#npm:5.6.0"],\
             ["@bull-board/ui", "npm:5.6.0"],\
             ["@types/gulp", "npm:4.0.13"],\
@@ -20911,7 +20927,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["gulp-terser", "npm:2.1.0"],\
             ["install-peers", "npm:1.0.4"],\
             ["js-yaml", "npm:4.1.0"],\
-            ["rome", "npm:12.1.3"],\
             ["seedrandom", "npm:3.0.5"],\
             ["start-server-and-test", "npm:1.15.2"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"]\
@@ -28361,21 +28376,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["rollup", "npm:3.26.3"],\
             ["fsevents", "patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["rome", [\
-        ["npm:12.1.3", {\
-          "packageLocation": "./.yarn/unplugged/rome-npm-12.1.3-5eebcc998d/node_modules/rome/",\
-          "packageDependencies": [\
-            ["rome", "npm:12.1.3"],\
-            ["@rometools/cli-darwin-arm64", "npm:12.1.3"],\
-            ["@rometools/cli-darwin-x64", "npm:12.1.3"],\
-            ["@rometools/cli-linux-arm64", "npm:12.1.3"],\
-            ["@rometools/cli-linux-x64", "npm:12.1.3"],\
-            ["@rometools/cli-win32-arm64", "npm:12.1.3"],\
-            ["@rometools/cli-win32-x64", "npm:12.1.3"]\
           ],\
           "linkType": "HARD"\
         }]\

@@ -12,8 +12,8 @@
 		"api": "api-extractor run --local --verbose",
 		"api-prod": "api-extractor run --verbose",
 		"api-doc": "api-documenter markdown -i ./etc/",
-		"lint": "rome check --apply *.ts",
-		"format": "rome format --write *.ts",
+		"lint": "biome check --apply *.ts",
+		"format": "biome format --write *.ts",
 		"jest": "jest --coverage --detectOpenHandles",
 		"test": "jest && tsd"
 	},
