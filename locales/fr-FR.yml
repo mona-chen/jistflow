@@ -114,7 +114,7 @@ you: "Vous"
 clickToShow: "Cliquer pour afficher"
 sensitive: "Contenu sensible"
 add: "Ajouter"
-reaction: "Réactions"
+reaction: "Réaction"
 reactionSetting: "Réactions à afficher dans le sélecteur de réactions"
 reactionSettingDescription2: "Déplacer pour réorganiser, cliquer pour effacer, utiliser
   « + » pour ajouter."
@@ -1148,7 +1148,7 @@ _wordMute:
   langDescription: Cacher du fil de publication les publications qui correspondent
     à ces langues.
   muteLangs: Langages filtrés
-  muteLangsDescription: Séparer avec des espaces or des retours à la ligne pour une
+  muteLangsDescription: Séparer avec des espaces ou des retours à la ligne pour une
     condition OU (OR).
 _instanceMute:
   instanceMuteDescription2: "Séparer avec des sauts de lignes"
@@ -2225,3 +2225,14 @@ indexable: Indexable
 languageForTranslation: Langage post-traduction
 vibrate: Jouer les vibrations
 clickToShowPatterns: Cliquer pour montrer les patrons de modules
+iconSet: Jeu d'icônes
+_iconSets:
+  fill: Rempli
+  regular: Normal
+  bold: Gras
+  duotone: Deux tons
+  light: Fin
+reactions: Réactions
+replies: Réponses
+quotes: Citations
+renotes: Boosts
