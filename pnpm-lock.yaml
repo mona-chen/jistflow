@@ -85,8 +85,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4
       pnpm:
-        specifier: 8.9.2
-        version: 8.9.2
+        specifier: 8.10.0
+        version: 8.10.0
       start-server-and-test:
         specifier: 1.15.2
         version: 1.15.2
@@ -3296,7 +3296,7 @@ packages:
     hasBin: true
     peerDependencies:
       '@swc/core': ^1.2.66
-      chokidar: ^3.5.1
+      chokidar: ^3.3.1
     peerDependenciesMeta:
       chokidar:
         optional: true
@@ -13674,6 +13674,7 @@ packages:
   /node-gyp-build-optional-packages@5.0.3:
     resolution: {integrity: sha512-k75jcVzk5wnnc/FMxsf4udAoTEUv2jY3ycfdSd3yWu6Cnd1oee6/CfZJApyscA4FJOmdoixWwiwOyf16RzD5JA==}
     hasBin: true
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -14606,8 +14607,8 @@ packages:
     engines: {node: '>=14.19.0'}
     dev: false
 
-  /pnpm@8.9.2:
-    resolution: {integrity: sha512-udNf6RsqWFTa3EMDSj57LmdfpLVuIOjgnvB4+lU8GPiu1EBR57Nui43UNfl+sMRMT/O0T8fG+n0h4frBe75mHg==}
+  /pnpm@8.10.0:
+    resolution: {integrity: sha512-nCy4Pyts9qJdjFgwC/mRl8fvO+hM8+dm8pBUtAuDtC+Kq6b8wxSp7PJ8APfOgKdXu0xgiADnrb4tKdxccFb1vg==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
