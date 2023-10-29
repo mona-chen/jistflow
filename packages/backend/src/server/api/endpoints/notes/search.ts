@@ -90,6 +90,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			.andWhere("note.text ILIKE :q", { q: `%${sqlLikeEscape(ps.query)}%` })
 			.andWhere("note.visibility = 'public'")
 			.innerJoinAndSelect("note.user", "user")
+			.andWhere("user.isIndexable = TRUE")
 			.leftJoinAndSelect("user.avatar", "avatar")
 			.leftJoinAndSelect("user.banner", "banner")
 			.leftJoinAndSelect("note.reply", "reply")
