@@ -313,7 +313,9 @@ export async function createPerson(
 			await transactionalEntityManager.save(
 				new UserProfile({
 					userId: user.id,
-					description: person.summary
+					description: person._misskey_summary
+						? truncate(person._misskey_summary, summaryLength)
+						: person.summary
 						? htmlToMfm(truncate(person.summary, summaryLength), person.tag)
 						: null,
 					url: url,

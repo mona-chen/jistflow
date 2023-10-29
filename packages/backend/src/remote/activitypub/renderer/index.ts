@@ -43,6 +43,7 @@ export const renderActivity = (x: any): IActivity | null => {
 					_misskey_talk: "misskey:_misskey_talk",
 					_misskey_reaction: "misskey:_misskey_reaction",
 					_misskey_votes: "misskey:_misskey_votes",
+					_misskey_summary: "misskey:_misskey_summary",
 					isCat: "misskey:isCat",
 					// Fedibird
 					fedibird: "http://fedibird.com/ns#",
