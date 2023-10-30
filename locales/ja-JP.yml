@@ -150,7 +150,7 @@ settingGuide: "おすすめ設定"
 cacheRemoteFiles: "リモートのファイルをキャッシュする"
 cacheRemoteFilesDescription: "この設定を無効にすると、リモートファイルをキャッシュせず直リンクします。サーバーのストレージを節約できますが、サムネイルが生成されないので通信量が増加します。"
 flagAsBot: "自動化されたアカウントとして設定"
-flagAsBotDescription: "このアカウントが自動化された場合は、この設定をオンにします。オンにすると、反応の連鎖を防ぐためのフラグとして他の開発者に役立ったり、Firefishのシステム上での扱いが自動化されたアカウントに合ったものになります。"
+flagAsBotDescription: "このアカウントが自動で投稿する場合は、この設定をオンにします。オンにすると、反応の連鎖を防ぐためのフラグとして他の開発者に役立ったり、Firefishのシステム上での扱いが自動で投稿するアカウントに合ったものになります。"
 flagAsCat: "あなたは…猫？😺"
 flagAsCatDescription: "このアカウントが猫であることを示す猫モードを有効にするには、このフラグをオンにします。"
 flagSpeakAsCat: "猫語で話す"
@@ -1954,7 +1954,7 @@ isModerator: モデレーター
 audio: 音声
 image: 画像
 video: 動画
-isBot: このアカウントは自動化されたです
+isBot: このアカウントは自動で投稿します
 isLocked: このアカウントのフォローは承認制です
 isAdmin: 管理者
 isPatron: Firefish 後援者
