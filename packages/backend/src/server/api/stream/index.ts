@@ -21,12 +21,12 @@ import {
 } from "@/services/stream.js";
 import type { UserGroup } from "@/models/entities/user-group.js";
 import type { Packed } from "@/misc/schema.js";
-import { readNotification } from "../common/read-notification.js";
+import { readNotification } from "@/server/api/common/read-notification.js";
 import channels from "./channels/index.js";
 import type Channel from "./channel.js";
 import type { StreamEventEmitter, StreamMessages } from "./types.js";
 import { Converter } from "megalodon";
-import { getClient } from "../mastodon/ApiMastodonCompatibleService.js";
+import { getClient } from "@/server/api/mastodon/ApiMastodonCompatibleService.js";
 
 /**
  * Main stream connection

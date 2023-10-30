@@ -1,7 +1,7 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { genId } from "@/misc/gen-id.js";
 import { Antennas, UserLists, UserGroupJoinings } from "@/models/index.js";
-import { ApiError } from "../../error.js";
+import { ApiError } from "@/server/api/error.js";
 import { publishInternalEvent } from "@/services/stream.js";
 
 export const meta = {

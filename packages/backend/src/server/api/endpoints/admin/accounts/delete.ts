@@ -1,4 +1,4 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { Users } from "@/models/index.js";
 import { doPostSuspend } from "@/services/suspend-user.js";
 import { publishUserEvent } from "@/services/stream.js";

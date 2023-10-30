@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { createExportUserListsJob } from "@/queue/index.js";
 import { MINUTE } from "@/const.js";
 

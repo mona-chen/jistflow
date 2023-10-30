@@ -9,7 +9,7 @@ import renderKey from "@/remote/activitypub/renderer/key.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import renderEmoji from "@/remote/activitypub/renderer/emoji.js";
 import { inbox as processInbox } from "@/queue/index.js";
-import { isSelfHost, toPuny } from "@/misc/convert-host.js";
+import { isSelfHost } from "@/misc/convert-host.js";
 import {
 	Notes,
 	Users,
@@ -22,7 +22,6 @@ import { renderLike } from "@/remote/activitypub/renderer/like.js";
 import { getUserKeypair } from "@/misc/keypair-store.js";
 import {
 	checkFetch,
-	hasSignature,
 	getSignatureUser,
 } from "@/remote/activitypub/check-fetch.js";
 import { getInstanceActor } from "@/services/instance-actor.js";

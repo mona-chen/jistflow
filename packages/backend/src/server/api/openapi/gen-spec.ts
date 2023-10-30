@@ -1,4 +1,4 @@
-import endpoints from "../endpoints.js";
+import endpoints from "@/server/api/endpoints.js";
 import config from "@/config/index.js";
 import { errors as basicErrors } from "./errors.js";
 import { schemas, convertSchemaToOpenApiSchema } from "./schemas.js";

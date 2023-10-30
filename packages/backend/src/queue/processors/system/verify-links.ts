@@ -4,7 +4,6 @@ import { UserProfiles } from "@/models/index.js";
 import { Not } from "typeorm";
 import { queueLogger } from "../../logger.js";
 import { verifyLink } from "@/services/fetch-rel-me.js";
-import config from "@/config/index.js";
 
 const logger = queueLogger.createSubLogger("verify-links");
 

@@ -12,11 +12,11 @@ import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { Note } from "@/models/entities/note.js";
 import type { Channel } from "@/models/entities/channel.js";
 import { MAX_NOTE_TEXT_LENGTH } from "@/const.js";
-import { noteVisibilities } from "../../../../types.js";
-import { ApiError } from "../../error.js";
-import define from "../../define.js";
+import { noteVisibilities } from "@/types.js";
+import { ApiError } from "@/server/api/error.js";
+import define from "@/server/api/define.js";
 import { HOUR } from "@/const.js";
-import { getNote } from "../../common/getters.js";
+import { getNote } from "@/server/api/common/getters.js";
 
 export const meta = {
 	tags: ["notes"],

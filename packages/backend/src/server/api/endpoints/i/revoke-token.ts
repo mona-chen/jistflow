@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { AccessTokens } from "@/models/index.js";
 import { publishUserEvent } from "@/services/stream.js";
 

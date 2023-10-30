@@ -1,6 +1,6 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { AbuseUserReports } from "@/models/index.js";
-import { makePaginationQuery } from "../../common/make-pagination-query.js";
+import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 
 export const meta = {
 	tags: ["admin"],

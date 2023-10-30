@@ -3,7 +3,7 @@ import type { IRead } from "../type.js";
 import { getApId } from "../type.js";
 import { isSelfHost, extractDbHost } from "@/misc/convert-host.js";
 import { MessagingMessages } from "@/models/index.js";
-import { readUserMessagingMessage } from "../../../server/api/common/read-messaging-message.js";
+import { readUserMessagingMessage } from "@/server/api/common/read-messaging-message.js";
 
 export const performReadActivity = async (
 	actor: CacheableRemoteUser,

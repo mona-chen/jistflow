@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import deleteFollowing from "@/services/following/delete.js";
 import { Users, Followings, Notifications } from "@/models/index.js";
 import type { User } from "@/models/entities/user.js";

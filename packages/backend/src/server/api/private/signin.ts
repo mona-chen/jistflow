@@ -1,6 +1,6 @@
 import type Koa from "koa";
 import * as OTPAuth from "otpauth";
-import signin from "../common/signin.js";
+import signin from "@/server/api/common/signin.js";
 import config from "@/config/index.js";
 import {
 	Users,
@@ -16,10 +16,10 @@ import {
 	hashPassword,
 	isOldAlgorithm,
 } from "@/misc/password.js";
-import { verifyLogin, hash } from "../2fa.js";
+import { verifyLogin, hash } from "@/server/api/2fa.js";
 import { randomBytes } from "node:crypto";
 import { IsNull } from "typeorm";
-import { limiter } from "../limiter.js";
+import { limiter } from "@/server/api/limiter.js";
 import { getIpHash } from "@/misc/get-ip-hash.js";
 
 export default async (ctx: Koa.Context) => {

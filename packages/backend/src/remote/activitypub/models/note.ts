@@ -6,10 +6,7 @@ import post from "@/services/note/create.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
 import { resolvePerson } from "./person.js";
 import { resolveImage } from "./image.js";
-import type {
-	ILocalUser,
-	CacheableRemoteUser,
-} from "@/models/entities/user.js";
+import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import { htmlToMfm } from "../misc/html-to-mfm.js";
 import { extractApHashtags } from "./tag.js";
 import { unique, toArray, toSingle } from "@/prelude/array.js";
@@ -52,7 +49,6 @@ import { In } from "typeorm";
 import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import { truncate } from "@/misc/truncate.js";
 import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
 import { langmap } from "@/misc/langmap.js";
 
 const logger = apLogger;

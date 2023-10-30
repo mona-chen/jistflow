@@ -1,11 +1,10 @@
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
 import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
-import axios from "axios";
 import querystring from "node:querystring";
 import qs from "qs";
 import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
-import { convertId, IdType } from "../../index.js";
+import { convertId, IdType } from "@/server/api/index.js";
 import {
 	convertAccount,
 	convertAttachment,

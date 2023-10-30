@@ -1,8 +1,8 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { Emojis, DriveFiles } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
-import { ApiError } from "../../../error.js";
+import { ApiError } from "@/server/api/error.js";
 import rndstr from "rndstr";
 import { publishBroadcastStream } from "@/services/stream.js";
 import { db } from "@/db/postgre.js";

@@ -1,4 +1,4 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { createIndexAllNotesJob } from "@/queue/index.js";
 
 export const meta = {

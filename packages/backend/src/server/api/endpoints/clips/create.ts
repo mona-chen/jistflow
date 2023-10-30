@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { genId } from "@/misc/gen-id.js";
 import { Clips } from "@/models/index.js";
 

@@ -5,7 +5,6 @@ import { queueLogger } from "../../logger.js";
 import type Bull from "bull";
 import { htmlToMfm } from "@/remote/activitypub/misc/html-to-mfm.js";
 import { resolveNote } from "@/remote/activitypub/models/note.js";
-import { Note } from "@/models/entities/note.js";
 import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { Notes, NoteEdits } from "@/models/index.js";

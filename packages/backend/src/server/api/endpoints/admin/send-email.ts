@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { sendEmail } from "@/services/send-email.js";
 
 export const meta = {

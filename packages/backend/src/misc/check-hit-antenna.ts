@@ -2,11 +2,11 @@ import type { Antenna } from "@/models/entities/antenna.js";
 import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
 import { Blockings, UserProfiles } from "@/models/index.js";
-import { getFullApAccount } from "./convert-host.js";
+import { getFullApAccount } from "@/misc/convert-host.js";
 import * as Acct from "@/misc/acct.js";
-import type { Packed } from "./schema.js";
-import { Cache } from "./cache.js";
-import { getWordHardMute } from "./check-word-mute.js";
+import type { Packed } from "@/misc/schema.js";
+import { Cache } from "@/misc/cache.js";
+import { getWordHardMute } from "@/misc/check-word-mute.js";
 
 const blockingCache = new Cache<User["id"][]>("blocking", 60 * 5);
 const mutedWordsCache = new Cache<string[][] | undefined>("mutedWords", 60 * 5);

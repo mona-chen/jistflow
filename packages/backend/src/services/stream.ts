@@ -1,4 +1,4 @@
-import { redisClient } from "../db/redis.js";
+import { redisClient } from "@/db/redis.js";
 import type { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import type { UserList } from "@/models/entities/user-list.js";

@@ -1,5 +1,5 @@
-import define from "../../define.js";
-import { ApiError } from "../../error.js";
+import define from "@/server/api/define.js";
+import { ApiError } from "@/server/api/error.js";
 import { genId } from "@/misc/gen-id.js";
 import { AnnouncementReads, Announcements, Users } from "@/models/index.js";
 import { publishMainStream } from "@/services/stream.js";

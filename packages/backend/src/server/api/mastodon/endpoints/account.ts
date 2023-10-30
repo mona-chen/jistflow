@@ -1,10 +1,7 @@
-import { Users } from "@/models/index.js";
-import { resolveUser } from "@/remote/resolve-user.js";
 import Router from "@koa/router";
-import { FindOptionsWhere, IsNull } from "typeorm";
 import { getClient } from "../ApiMastodonCompatibleService.js";
 import { argsToBools, convertTimelinesArgsId, limitToInt } from "./timeline.js";
-import { convertId, IdType } from "../../index.js";
+import { convertId, IdType } from "@/server/api/index.js";
 import {
 	convertAccount,
 	convertFeaturedTag,

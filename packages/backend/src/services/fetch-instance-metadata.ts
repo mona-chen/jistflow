@@ -6,7 +6,7 @@ import { getJson, getAgentByUrl } from "@/misc/fetch.js";
 import type { Instance } from "@/models/entities/instance.js";
 import { Instances } from "@/models/index.js";
 import { getFetchInstanceMetadataLock } from "@/misc/app-lock.js";
-import Logger from "./logger.js";
+import Logger from "@/services/logger.js";
 
 const logger = new Logger("metadata", "cyan");
 

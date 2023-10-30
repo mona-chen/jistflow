@@ -1,5 +1,5 @@
 import { decode } from "cbor-x";
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import {
 	UserProfiles,
 	UserSecurityKeys,
@@ -7,7 +7,7 @@ import {
 	Users,
 } from "@/models/index.js";
 import config from "@/config/index.js";
-import { procedures, hash } from "../../../2fa.js";
+import { procedures, hash } from "@/server/api/2fa.js";
 import { publishMainStream } from "@/services/stream.js";
 import { comparePassword } from "@/misc/password.js";
 

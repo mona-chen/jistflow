@@ -9,7 +9,7 @@ import { Notes, UserNotePinings, Users } from "@/models/index.js";
 import type { UserNotePining } from "@/models/entities/user-note-pining.js";
 import { genId } from "@/misc/gen-id.js";
 import { deliverToFollowers } from "@/remote/activitypub/deliver-manager.js";
-import { deliverToRelays } from "../relay.js";
+import { deliverToRelays } from "@/services/relay.js";
 
 /**
  * 指定した投稿をピン留めします

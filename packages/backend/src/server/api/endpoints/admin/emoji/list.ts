@@ -1,4 +1,4 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { Emojis } from "@/models/index.js";
 import { makePaginationQuery } from "../../../common/make-pagination-query.js";
 import type { Emoji } from "@/models/entities/emoji.js";

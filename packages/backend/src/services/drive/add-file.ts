@@ -2,7 +2,7 @@ import * as fs from "node:fs";
 
 import { v4 as uuid } from "uuid";
 
-import type S3 from "aws-sdk/clients/s3.js";
+import type S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
 import sharp from "sharp";
 import { IsNull } from "typeorm";
 import { publishMainStream, publishDriveStream } from "@/services/stream.js";
@@ -13,7 +13,6 @@ import {
 	DriveFiles,
 	DriveFolders,
 	Users,
-	Instances,
 	UserProfiles,
 } from "@/models/index.js";
 import { DriveFile } from "@/models/entities/drive-file.js";

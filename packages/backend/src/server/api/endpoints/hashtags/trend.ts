@@ -1,5 +1,5 @@
 import { Brackets } from "typeorm";
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { Notes } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";

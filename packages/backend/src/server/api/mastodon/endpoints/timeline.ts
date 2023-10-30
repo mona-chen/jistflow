@@ -7,7 +7,7 @@ import {
 	convertList,
 	convertStatus,
 } from "../converters.js";
-import { convertId, IdType } from "../../index.js";
+import { convertId, IdType } from "@/server/api/index.js";
 
 export function limitToInt(q: ParsedUrlQuery) {
 	let object: any = q;

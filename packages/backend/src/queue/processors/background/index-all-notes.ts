@@ -6,7 +6,7 @@ import { Notes } from "@/models/index.js";
 import { MoreThan } from "typeorm";
 import { index } from "@/services/note/create.js";
 import { Note } from "@/models/entities/note.js";
-import meilisearch from "../../../db/meilisearch.js";
+import meilisearch from "@/db/meilisearch.js";
 
 const logger = queueLogger.createSubLogger("index-all-notes");
 

@@ -1,10 +1,10 @@
 import { Users, Followings } from "@/models/index.js";
-import define from "../../define.js";
-import { generateMutedUserQueryForUsers } from "../../common/generate-muted-user-query.js";
+import define from "@/server/api/define.js";
+import { generateMutedUserQueryForUsers } from "@/server/api/common/generate-muted-user-query.js";
 import {
 	generateBlockedUserQuery,
 	generateBlockQueryForUsers,
-} from "../../common/generate-block-query.js";
+} from "@/server/api/common/generate-block-query.js";
 import { DAY } from "@/const.js";
 
 export const meta = {

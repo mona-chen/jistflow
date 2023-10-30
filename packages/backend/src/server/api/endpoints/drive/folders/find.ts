@@ -1,4 +1,4 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { DriveFolders } from "@/models/index.js";
 import { IsNull } from "typeorm";
 

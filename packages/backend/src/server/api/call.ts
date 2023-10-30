@@ -1,7 +1,6 @@
 import { performance } from "perf_hooks";
 import type Koa from "koa";
 import type { CacheableLocalUser } from "@/models/entities/user.js";
-import { User } from "@/models/entities/user.js";
 import type { AccessToken } from "@/models/entities/access-token.js";
 import { getIpHash } from "@/misc/get-ip-hash.js";
 import { limiter } from "./limiter.js";
@@ -10,7 +9,6 @@ import endpoints from "./endpoints.js";
 import compatibility from "./compatibility.js";
 import { ApiError } from "./error.js";
 import { apiLogger } from "./logger.js";
-import type { AccessToken } from "@/models/entities/access-token.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 
 const accessDenied = {

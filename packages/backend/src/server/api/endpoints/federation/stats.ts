@@ -1,7 +1,7 @@
 import { IsNull, MoreThan, Not } from "typeorm";
 import { Followings, Instances } from "@/models/index.js";
 import { awaitAll } from "@/prelude/await-all.js";
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["federation"],

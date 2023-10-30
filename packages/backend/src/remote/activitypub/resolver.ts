@@ -7,13 +7,7 @@ import { extractDbHost, isSelfHost } from "@/misc/convert-host.js";
 import { signedGet } from "./request.js";
 import type { IObject, ICollection, IOrderedCollection } from "./type.js";
 import { isCollectionOrOrderedCollection, getApId } from "./type.js";
-import {
-	FollowRequests,
-	Notes,
-	NoteReactions,
-	Polls,
-	Users,
-} from "@/models/index.js";
+import { Notes, NoteReactions, Polls, Users } from "@/models/index.js";
 import { parseUri } from "./db-resolver.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import { renderLike } from "@/remote/activitypub/renderer/like.js";

@@ -1,4 +1,4 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { destroy } from "@/queue/index.js";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
 

@@ -1,6 +1,6 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { Users } from "@/models/index.js";
-import { signup } from "../../../common/signup.js";
+import { signup } from "@/server/api/common/signup.js";
 import { IsNull } from "typeorm";
 
 export const meta = {

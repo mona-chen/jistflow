@@ -1,5 +1,4 @@
 import unfollow from "@/services/following/delete.js";
-import cancelRequest from "@/services/following/requests/cancel.js";
 import type { IAccept } from "../../type.js";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import { Followings } from "@/models/index.js";

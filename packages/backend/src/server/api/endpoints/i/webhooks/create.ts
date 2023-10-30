@@ -1,4 +1,4 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { genId } from "@/misc/gen-id.js";
 import { Webhooks } from "@/models/index.js";
 import { publishInternalEvent } from "@/services/stream.js";

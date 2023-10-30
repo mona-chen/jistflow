@@ -5,7 +5,6 @@ import { deliver } from "@/queue/index.js";
 import { publishMainStream } from "@/services/stream.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import type { User } from "@/models/entities/user.js";
-import { ILocalUser } from "@/models/entities/user.js";
 import { Users, FollowRequests } from "@/models/index.js";
 
 export default async function (

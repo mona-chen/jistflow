@@ -4,7 +4,7 @@ import { Users } from "@/models/index.js";
 import type { User } from "@/models/entities/user.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import { deliverToFollowers } from "@/remote/activitypub/deliver-manager.js";
-import { deliverToRelays } from "../relay.js";
+import { deliverToRelays } from "@/services/relay.js";
 
 export async function publishToFollowers(userId: User["id"]) {
 	const user = await Users.findOneBy({ id: userId });

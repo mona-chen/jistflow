@@ -11,7 +11,7 @@ import { Users, Relays } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import { Cache } from "@/misc/cache.js";
 import type { Relay } from "@/models/entities/relay.js";
-import { createSystemUser } from "./create-system-user.js";
+import { createSystemUser } from "@/services/create-system-user.js";
 
 const ACTOR_USERNAME = "relay.actor" as const;
 

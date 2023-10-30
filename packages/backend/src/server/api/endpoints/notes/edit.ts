@@ -1,5 +1,5 @@
 import { In } from "typeorm";
-import create, { index } from "@/services/note/create.js";
+import { index } from "@/services/note/create.js";
 import type { IRemoteUser, User } from "@/models/entities/user.js";
 import {
 	Users,
@@ -15,11 +15,11 @@ import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
 import type { Channel } from "@/models/entities/channel.js";
 import { MAX_NOTE_TEXT_LENGTH } from "@/const.js";
-import { noteVisibilities } from "../../../../types.js";
-import { ApiError } from "../../error.js";
-import define from "../../define.js";
+import { noteVisibilities } from "@/types.js";
+import { ApiError } from "@/server/api/error.js";
+import define from "@/server/api/define.js";
 import { HOUR } from "@/const.js";
-import { getNote } from "../../common/getters.js";
+import { getNote } from "@/server/api/common/getters.js";
 import { Poll } from "@/models/entities/poll.js";
 import * as mfm from "mfm-js";
 import { concat } from "@/prelude/array.js";
@@ -34,7 +34,6 @@ import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { deliverToRelays } from "@/services/relay.js";
 // import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
 import { langmap } from "@/misc/langmap.js";
 import detectLanguage from "@/misc/detect-language.js";
 

@@ -4,7 +4,6 @@ import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver, webhookDeliver } from "@/queue/index.js";
 import { publishMainStream, publishUserEvent } from "@/services/stream.js";
 import type { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import { User } from "@/models/entities/user.js";
 import { Users, FollowRequests, Followings } from "@/models/index.js";
 import { decrementFollowing } from "./delete.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";

@@ -1,9 +1,9 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { createPerson } from "@/remote/activitypub/models/person.js";
 import { createNote } from "@/remote/activitypub/models/note.js";
 import DbResolver from "@/remote/activitypub/db-resolver.js";
 import Resolver from "@/remote/activitypub/resolver.js";
-import { ApiError } from "../../error.js";
+import { ApiError } from "@/server/api/error.js";
 import { extractDbHost } from "@/misc/convert-host.js";
 import { Users, Notes } from "@/models/index.js";
 import type { Note } from "@/models/entities/note.js";

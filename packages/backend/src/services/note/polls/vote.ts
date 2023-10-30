@@ -1,11 +1,10 @@
 import { publishNoteStream } from "@/services/stream.js";
 import type { CacheableUser } from "@/models/entities/user.js";
-import { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import { PollVotes, NoteWatchings, Polls, Blockings } from "@/models/index.js";
 import { Not } from "typeorm";
 import { genId } from "@/misc/gen-id.js";
-import { createNotification } from "../../create-notification.js";
+import { createNotification } from "@/services/create-notification.js";
 
 export default async function (
 	user: CacheableUser,

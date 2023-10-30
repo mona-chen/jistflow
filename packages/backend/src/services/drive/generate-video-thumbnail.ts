@@ -1,4 +1,3 @@
-import * as fs from "node:fs";
 import { createTempDir } from "@/misc/create-temp.js";
 import type { IImage } from "./image-processor.js";
 import { convertToWebp } from "./image-processor.js";

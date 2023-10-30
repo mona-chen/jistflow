@@ -1,8 +1,8 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { ClipNotes, Clips } from "@/models/index.js";
-import { ApiError } from "../../error.js";
+import { ApiError } from "@/server/api/error.js";
 import { genId } from "@/misc/gen-id.js";
-import { getNote } from "../../common/getters.js";
+import { getNote } from "@/server/api/common/getters.js";
 
 export const meta = {
 	tags: ["account", "notes", "clips"],

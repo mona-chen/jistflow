@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 // import bcrypt from "bcryptjs";
 import rndstr from "rndstr";
 import { Users, UserProfiles } from "@/models/index.js";

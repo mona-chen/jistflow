@@ -1,7 +1,5 @@
-import megalodon, { MegalodonInterface } from "megalodon";
 import Router from "@koa/router";
-import { koaBody } from "koa-body";
-import { convertId, IdType } from "../../index.js";
+import { convertId, IdType } from "@/server/api/index.js";
 import { getClient } from "../ApiMastodonCompatibleService.js";
 import { convertTimelinesArgsId } from "./timeline.js";
 import { convertNotification } from "../converters.js";

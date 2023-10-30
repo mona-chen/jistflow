@@ -1,8 +1,8 @@
 import { publishDriveStream } from "@/services/stream.js";
 import { DriveFiles, DriveFolders, Users } from "@/models/index.js";
 import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
-import define from "../../../define.js";
-import { ApiError } from "../../../error.js";
+import define from "@/server/api/define.js";
+import { ApiError } from "@/server/api/error.js";
 
 export const meta = {
 	tags: ["drive"],

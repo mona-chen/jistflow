@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { createExportNotesJob } from "@/queue/index.js";
 import { DAY } from "@/const.js";
 

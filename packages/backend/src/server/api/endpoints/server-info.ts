@@ -1,6 +1,6 @@
 import * as os from "node:os";
 import si from "systeminformation";
-import define from "../define.js";
+import define from "@/server/api/define.js";
 import meilisearch from "@/db/meilisearch.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 

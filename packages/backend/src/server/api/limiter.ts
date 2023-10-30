@@ -1,7 +1,6 @@
 import Limiter from "ratelimiter";
-import { CacheableLocalUser, User } from "@/models/entities/user.js";
 import Logger from "@/services/logger.js";
-import { redisClient } from "../../db/redis.js";
+import { redisClient } from "@/db/redis.js";
 import type { IEndpointMeta } from "./endpoints.js";
 import { convertMilliseconds } from "@/misc/convert-milliseconds.js";
 

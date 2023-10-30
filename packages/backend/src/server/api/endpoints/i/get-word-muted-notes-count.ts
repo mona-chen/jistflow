@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { MutedNotes } from "@/models/index.js";
 
 export const meta = {

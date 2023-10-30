@@ -3,7 +3,7 @@ import rndstr from "rndstr";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { verifyHcaptcha, verifyRecaptcha } from "@/misc/captcha.js";
 import { Users, RegistrationTickets, UserPendings } from "@/models/index.js";
-import { signup } from "../common/signup.js";
+import { signup } from "@/server/api/common/signup.js";
 import config from "@/config/index.js";
 import { sendEmail } from "@/services/send-email.js";
 import { genId } from "@/misc/gen-id.js";

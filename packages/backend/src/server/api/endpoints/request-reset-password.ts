@@ -1,12 +1,10 @@
 import rndstr from "rndstr";
 import { IsNull } from "typeorm";
-import { publishMainStream } from "@/services/stream.js";
 import config from "@/config/index.js";
 import { Users, UserProfiles, PasswordResetRequests } from "@/models/index.js";
 import { sendEmail } from "@/services/send-email.js";
 import { genId } from "@/misc/gen-id.js";
-import { ApiError } from "../error.js";
-import define from "../define.js";
+import define from "@/server/api/define.js";
 import { HOUR } from "@/const.js";
 
 export const meta = {

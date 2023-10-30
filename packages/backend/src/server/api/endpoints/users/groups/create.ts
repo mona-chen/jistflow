@@ -2,7 +2,7 @@ import { UserGroups, UserGroupJoinings } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import type { UserGroup } from "@/models/entities/user-group.js";
 import type { UserGroupJoining } from "@/models/entities/user-group-joining.js";
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["groups"],

@@ -1,11 +1,12 @@
 import type Bull from "bull";
 import { Notes, PollVotes } from "@/models/index.js";
-import { queueLogger } from "../logger.js";
+// import { queueLogger } from "../logger.js";
 import type { EndedPollNotificationJobData } from "@/queue/types.js";
 import { createNotification } from "@/services/create-notification.js";
 import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
 
-const logger = queueLogger.createSubLogger("ended-poll-notification");
+// unused
+// const logger = queueLogger.createSubLogger("ended-poll-notification");
 
 export async function endedPollNotification(
 	job: Bull.Job<EndedPollNotificationJobData>,

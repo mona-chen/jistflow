@@ -1,5 +1,5 @@
 import { URL } from "node:url";
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { inboxQueue } from "@/queue/queues.js";
 
 export const meta = {

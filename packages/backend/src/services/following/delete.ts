@@ -5,7 +5,7 @@ import renderUndo from "@/remote/activitypub/renderer/undo.js";
 import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver, webhookDeliver } from "@/queue/index.js";
 import Logger from "../logger.js";
-import { registerOrFetchInstanceDoc } from "../register-or-fetch-instance-doc.js";
+import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import type { User } from "@/models/entities/user.js";
 import { Followings, Users, Instances } from "@/models/index.js";
 import {

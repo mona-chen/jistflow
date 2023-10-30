@@ -1,14 +1,5 @@
-import {
-	PrimaryColumn,
-	Entity,
-	Index,
-	JoinColumn,
-	Column,
-	ManyToOne,
-	PrimaryGeneratedColumn,
-} from "typeorm";
+import { Entity, Index, Column, PrimaryGeneratedColumn } from "typeorm";
 import { id } from "../id.js";
-import { Note } from "./note.js";
 import type { User } from "./user.js";
 
 @Entity()

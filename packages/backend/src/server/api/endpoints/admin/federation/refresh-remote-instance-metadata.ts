@@ -1,4 +1,4 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { Instances } from "@/models/index.js";
 import { toPuny } from "@/misc/convert-host.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";

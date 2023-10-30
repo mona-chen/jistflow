@@ -1,6 +1,6 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { createImportFollowingJob } from "@/queue/index.js";
-import { ApiError } from "../../error.js";
+import { ApiError } from "@/server/api/error.js";
 import { DriveFiles } from "@/models/index.js";
 import { HOUR } from "@/const.js";
 

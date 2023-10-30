@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import generateNativeUserToken from "../server/api/common/generate-native-user-token.js";
+import generateNativeUserToken from "@/server/api/common/generate-native-user-token.js";
 import { genRsaKeyPair } from "@/misc/gen-key-pair.js";
 import { User } from "@/models/entities/user.js";
 import { UserProfile } from "@/models/entities/user-profile.js";

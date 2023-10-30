@@ -1,4 +1,3 @@
-import { getHtml } from "@/misc/fetch.js";
 import { Window } from "happy-dom";
 import config from "@/config/index.js";
 

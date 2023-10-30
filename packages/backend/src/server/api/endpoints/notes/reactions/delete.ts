@@ -1,7 +1,7 @@
 import deleteReaction from "@/services/note/reaction/delete.js";
-import define from "../../../define.js";
-import { getNote } from "../../../common/getters.js";
-import { ApiError } from "../../../error.js";
+import define from "@/server/api/define.js";
+import { getNote } from "@/server/api/common/getters.js";
+import { ApiError } from "@/server/api/error.js";
 import { SECOND, HOUR } from "@/const.js";
 
 export const meta = {

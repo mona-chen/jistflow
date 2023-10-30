@@ -1,6 +1,6 @@
 import { publishMainStream } from "@/services/stream.js";
 import * as OTPAuth from "otpauth";
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { Users, UserProfiles } from "@/models/index.js";
 
 export const meta = {

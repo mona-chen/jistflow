@@ -13,7 +13,7 @@ import {
 	convertAnnouncement,
 	convertFilter,
 } from "./converters.js";
-import { convertId, IdType } from "../index.js";
+import { convertId, IdType } from "@/server/api/index.js";
 import { Users } from "@/models/index.js";
 import { IsNull } from "typeorm";
 

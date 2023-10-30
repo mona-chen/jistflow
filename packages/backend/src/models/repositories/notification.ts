@@ -1,4 +1,4 @@
-import { In, Repository } from "typeorm";
+import { In } from "typeorm";
 import { Notification } from "@/models/entities/notification.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import type { Packed } from "@/misc/schema.js";
@@ -6,7 +6,6 @@ import type { Note } from "@/models/entities/note.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import type { User } from "@/models/entities/user.js";
 import { aggregateNoteEmojis, prefetchEmojis } from "@/misc/populate-emojis.js";
-import { notificationTypes } from "@/types.js";
 import { db } from "@/db/postgre.js";
 import {
 	Users,

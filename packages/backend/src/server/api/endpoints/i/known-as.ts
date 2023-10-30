@@ -5,9 +5,9 @@ import acceptAllFollowRequests from "@/services/following/requests/accept-all.js
 import { publishToFollowers } from "@/services/i/update.js";
 import { publishMainStream } from "@/services/stream.js";
 import { DAY } from "@/const.js";
-import { apiLogger } from "../../logger.js";
-import define from "../../define.js";
-import { ApiError } from "../../error.js";
+import { apiLogger } from "@/server/api/logger.js";
+import define from "@/server/api/define.js";
+import { ApiError } from "@/server/api/error.js";
 import { parse } from "@/misc/acct.js";
 
 export const meta = {

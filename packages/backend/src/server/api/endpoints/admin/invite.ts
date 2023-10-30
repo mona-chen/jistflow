@@ -1,5 +1,5 @@
 import rndstr from "rndstr";
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { RegistrationTickets } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 

@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { AbuseUserReports, Users } from "@/models/index.js";
 import { getInstanceActor } from "@/services/instance-actor.js";
 import { deliver } from "@/queue/index.js";

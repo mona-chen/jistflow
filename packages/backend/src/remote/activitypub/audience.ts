@@ -8,7 +8,6 @@ import type {
 	CacheableRemoteUser,
 	CacheableUser,
 } from "@/models/entities/user.js";
-import { User } from "@/models/entities/user.js";
 
 type Visibility = "public" | "home" | "followers" | "specified";
 

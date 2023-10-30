@@ -1,5 +1,5 @@
 import { Readable, ReadableOptions } from "node:stream";
-import { Buffer, constants as BufferConstants } from "node:buffer";
+import { Buffer } from "node:buffer";
 import * as fs from "node:fs";
 
 interface ByteRange {

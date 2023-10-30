@@ -1,6 +1,6 @@
-import define from "../../define.js";
-import { ApiError } from "../../error.js";
-import { getUser } from "../../common/getters.js";
+import define from "@/server/api/define.js";
+import { ApiError } from "@/server/api/error.js";
+import { getUser } from "@/server/api/common/getters.js";
 import { Mutings } from "@/models/index.js";
 import { publishUserEvent } from "@/services/stream.js";
 

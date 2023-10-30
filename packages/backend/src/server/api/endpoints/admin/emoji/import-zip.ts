@@ -1,4 +1,4 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { createImportCustomEmojisJob } from "@/queue/index.js";
 
 export const meta = {

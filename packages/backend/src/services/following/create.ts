@@ -5,7 +5,7 @@ import renderAccept from "@/remote/activitypub/renderer/accept.js";
 import renderReject from "@/remote/activitypub/renderer/reject.js";
 import { deliver } from "@/queue/index.js";
 import createFollowRequest from "./requests/create.js";
-import { registerOrFetchInstanceDoc } from "../register-or-fetch-instance-doc.js";
+import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import Logger from "../logger.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import type { User } from "@/models/entities/user.js";
@@ -22,7 +22,7 @@ import {
 	perUserFollowingChart,
 } from "@/services/chart/index.js";
 import { genId } from "@/misc/gen-id.js";
-import { createNotification } from "../create-notification.js";
+import { createNotification } from "@/services/create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import type { Packed } from "@/misc/schema.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";

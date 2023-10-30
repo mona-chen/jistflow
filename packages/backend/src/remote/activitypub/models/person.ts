@@ -8,7 +8,6 @@ import { updateUsertags } from "@/services/update-hashtag.js";
 import {
 	Users,
 	Instances,
-	DriveFiles,
 	Followings,
 	UserProfiles,
 	UserPublickeys,
@@ -33,8 +32,8 @@ import { publishInternalEvent } from "@/services/stream.js";
 import { db } from "@/db/postgre.js";
 import { apLogger } from "../logger.js";
 import { htmlToMfm } from "../misc/html-to-mfm.js";
-import { fromHtml } from "../../../mfm/from-html.js";
-import type { IActor, IObject, IApPropertyValue } from "../type.js";
+import { fromHtml } from "@/mfm/from-html.js";
+import type { IActor, IObject } from "../type.js";
 import {
 	isCollectionOrOrderedCollection,
 	isCollection,

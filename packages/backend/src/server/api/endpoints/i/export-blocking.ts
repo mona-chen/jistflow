@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { createExportBlockingJob } from "@/queue/index.js";
 import { HOUR } from "@/const.js";
 

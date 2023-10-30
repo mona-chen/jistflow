@@ -5,7 +5,6 @@ import { deliver } from "@/queue/index.js";
 import { publishMainStream } from "@/services/stream.js";
 import { insertFollowingDoc } from "../create.js";
 import type { User, CacheableUser } from "@/models/entities/user.js";
-import { ILocalUser } from "@/models/entities/user.js";
 import { FollowRequests, Users } from "@/models/index.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 

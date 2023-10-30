@@ -2,7 +2,7 @@ import {
 	readUserMessagingMessage,
 	readGroupMessagingMessage,
 	deliverReadActivity,
-} from "../../common/read-messaging-message.js";
+} from "@/server/api/common/read-messaging-message.js";
 import Channel from "../channel.js";
 import { UserGroupJoinings, Users, MessagingMessages } from "@/models/index.js";
 import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";

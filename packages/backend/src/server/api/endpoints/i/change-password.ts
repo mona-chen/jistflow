@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { UserProfiles } from "@/models/index.js";
 import { hashPassword, comparePassword } from "@/misc/password.js";
 

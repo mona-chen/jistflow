@@ -1,4 +1,4 @@
-import define from "../../define.js";
+import define from "@/server/api/define.js";
 import { Users } from "@/models/index.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 

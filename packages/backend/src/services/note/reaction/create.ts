@@ -16,7 +16,7 @@ import {
 import { IsNull, Not } from "typeorm";
 import { perUserReactionsChart } from "@/services/chart/index.js";
 import { genId } from "@/misc/gen-id.js";
-import { createNotification } from "../../create-notification.js";
+import { createNotification } from "@/services/create-notification.js";
 import deleteReaction from "./delete.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import type { NoteReaction } from "@/models/entities/note-reaction.js";

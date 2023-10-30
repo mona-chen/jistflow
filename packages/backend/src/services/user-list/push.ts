@@ -5,7 +5,7 @@ import { UserListJoinings, Users } from "@/models/index.js";
 import type { UserListJoining } from "@/models/entities/user-list-joining.js";
 import { genId } from "@/misc/gen-id.js";
 import { fetchProxyAccount } from "@/misc/fetch-proxy-account.js";
-import createFollowing from "../following/create.js";
+import createFollowing from "@/services/following/create.js";
 
 export async function pushUserToUserList(target: User, list: UserList) {
 	await UserListJoinings.insert({

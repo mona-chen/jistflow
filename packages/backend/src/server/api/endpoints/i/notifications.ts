@@ -8,9 +8,9 @@ import {
 } from "@/models/index.js";
 import { notificationTypes } from "@/types.js";
 import read from "@/services/note/read.js";
-import { readNotification } from "../../common/read-notification.js";
-import define from "../../define.js";
-import { makePaginationQuery } from "../../common/make-pagination-query.js";
+import { readNotification } from "@/server/api/common/read-notification.js";
+import define from "@/server/api/define.js";
+import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 
 export const meta = {
 	tags: ["account", "notifications"],

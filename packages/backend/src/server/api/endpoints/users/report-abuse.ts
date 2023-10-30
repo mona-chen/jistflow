@@ -5,9 +5,9 @@ import { AbuseUserReports, UserProfiles, Users } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import { sendEmail } from "@/services/send-email.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import { getUser } from "../../common/getters.js";
-import { ApiError } from "../../error.js";
-import define from "../../define.js";
+import { getUser } from "@/server/api/common/getters.js";
+import { ApiError } from "@/server/api/error.js";
+import define from "@/server/api/define.js";
 import { toHtml } from "@/mfm/to-html.js";
 
 export const meta = {

@@ -1,7 +1,7 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { Emojis } from "@/models/index.js";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
-import { ApiError } from "../../../error.js";
+import { ApiError } from "@/server/api/error.js";
 import { db } from "@/db/postgre.js";
 
 export const meta = {
