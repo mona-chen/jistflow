@@ -91,7 +91,7 @@
 				class="_button"
 				@click.stop="captionPopup"
 			>
-				<i class="ph-subtitles"></i>
+				<i :class="icon('ph-subtitles')"></i>
 			</button>
 			<button
 				v-if="!hide"
@@ -99,7 +99,7 @@
 				class="_button"
 				@click.stop="toggleVisible()"
 			>
-				<i class="ph-eye-slash"></i>
+				<i :class="icon('ph-eye-slash')"></i>
 			</button>
 		</div>
 	</div>
