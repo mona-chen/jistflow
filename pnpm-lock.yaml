@@ -668,6 +668,9 @@ importers:
       '@syuilo/aiscript':
         specifier: 0.11.1
         version: 0.11.1
+      '@types/autosize':
+        specifier: ^4.0.2
+        version: 4.0.2
       '@types/escape-regexp':
         specifier: 0.0.1
         version: 0.0.1
@@ -680,18 +683,27 @@ importers:
       '@types/gulp-rename':
         specifier: 2.0.2
         version: 2.0.2
+      '@types/insert-text-at-cursor':
+        specifier: ^0.3.1
+        version: 0.3.1
       '@types/katex':
         specifier: 0.16.2
         version: 0.16.2
       '@types/matter-js':
         specifier: 0.19.0
         version: 0.19.0
+      '@types/prismjs':
+        specifier: ^1.26.2
+        version: 1.26.2
       '@types/punycode':
         specifier: 2.1.0
         version: 2.1.0
       '@types/seedrandom':
         specifier: 3.0.5
         version: 3.0.5
+      '@types/textarea-caret':
+        specifier: ^3.0.2
+        version: 3.0.2
       '@types/throttle-debounce':
         specifier: 5.0.0
         version: 5.0.0
@@ -3819,6 +3831,10 @@ packages:
     resolution: {integrity: sha512-2+rYSaWrpdbQG3SA0LmMT6YxWLrI81AqpMlSkw3QtFc2HGDufkweQSn30Eiev7x9LL0oyFrBqk1PXOnB9IEgKg==}
     dev: true
 
+  /@types/autosize@4.0.2:
+    resolution: {integrity: sha512-wm2fxJhRH3yOJ2GsqWG2q27HcqhWXjeWPLO6o1RiNCITOASyyK0s8xtrW7xsKFCyXF5L1AI2LbElax/HlCk92w==}
+    dev: true
+
   /@types/babel__core@7.20.1:
     resolution: {integrity: sha512-aACu/U/omhdk15O4Nfb+fHgH/z3QsfQzpnvRZhYhThms83ZnAOZz7zZAWO7mn2yyNQaA4xTO8GLK3uqFU4bYYw==}
     dependencies:
@@ -4052,6 +4068,10 @@ packages:
 
   /@types/http-errors@2.0.1:
     resolution: {integrity: sha512-/K3ds8TRAfBvi5vfjuz8y6+GiAYBZ0x4tXv1Av6CWBWn0IlADc+ZX9pMq7oU0fNQPnBwIZl3rmeLp6SBApbxSQ==}
+
+  /@types/insert-text-at-cursor@0.3.1:
+    resolution: {integrity: sha512-HgUgM4B0pJ68yV3xBEvfzR8Jd+Fhk3Cr4MSU6MJf3vUDEr1O073vPNdMGKJCOWaU8b9oRBgKPF0CHBu0kCre3A==}
+    dev: true
 
   /@types/istanbul-lib-coverage@2.0.5:
     resolution: {integrity: sha512-zONci81DZYCZjiLe0r6equvZut0b+dBRPBN5kBDjsONnutYNtJMoWQ9uR2RkL1gLG9NMTzvf+29e5RFfPbeKhQ==}
@@ -4360,6 +4380,10 @@ packages:
     resolution: {integrity: sha512-O397rnSS9iQI4OirieAtsDqvCj4+3eY1J+EPdNTKuHuRWIfUoGyzX294o8C4KJYaLqgSrd2o60c5EqCU8Zv02g==}
     dev: true
 
+  /@types/prismjs@1.26.2:
+    resolution: {integrity: sha512-/r7Cp7iUIk7gts26mHXD66geUC+2Fo26TZYjQK6Nr4LDfi6lmdRmMqM0oPwfiMhUwoBAOFe8GstKi2pf6hZvwA==}
+    dev: true
+
   /@types/probe-image-size@7.2.0:
     resolution: {integrity: sha512-R5H3vw62gHNHrn+JGZbKejb+Z2D/6E5UNVlhCzIaBBLroMQMOFqy5Pap2gM+ZZHdqBtVU0/cx/M6to+mOJcoew==}
     dependencies:
@@ -4470,6 +4494,10 @@ packages:
 
   /@types/syslog-pro@1.0.2:
     resolution: {integrity: sha512-wFRRgINEkchvvMi3zouVNulFsnghytbWesO79ktfs75SAMPJUDoxx0AjPWpauEGR12u1g0ky7bPzZmuWbMdYZw==}
+    dev: true
+
+  /@types/textarea-caret@3.0.2:
+    resolution: {integrity: sha512-Bda0K7o7QLHp5KEqLYxZJaCDQZ5okxo3iGVCTOfOxHQQxo7ayYUXv1UyGhzmMPucT0UbeMeCW+DCGiAdyf8cTQ==}
     dev: true
 
   /@types/throttle-debounce@5.0.0:
