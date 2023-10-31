@@ -1,5 +1,5 @@
 import type { Directive } from "vue";
-import { makeHotkey } from "../scripts/hotkey";
+import { makeHotkey } from "@/scripts/hotkey";
 
 export default {
 	mounted(el, binding) {

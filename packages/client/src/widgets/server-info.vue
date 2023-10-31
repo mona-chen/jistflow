@@ -31,11 +31,7 @@
 
 <script lang="ts" setup>
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import { host } from "@/config";
 
@@ -48,12 +44,7 @@ type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 const props = defineProps<{ widget?: Widget<WidgetProps> }>();
 const emit = defineEmits<{ (ev: "updateProps", props: WidgetProps) }>();
 
-const { widgetProps, configure } = useWidgetPropsManager(
-	name,
-	widgetPropsDef,
-	props,
-	emit,
-);
+const { configure } = useWidgetPropsManager(name, widgetPropsDef, props, emit);
 
 defineExpose<WidgetComponentExpose>({
 	name,

@@ -1,8 +1,6 @@
-import { inject } from "vue";
 import { post } from "@/os";
 import { login } from "@/account";
 import { $i } from "@/reactiveAccount";
-import { defaultStore } from "@/store";
 import { getAccountFromId } from "@/scripts/get-account-from-id";
 import { mainRouter } from "@/router";
 

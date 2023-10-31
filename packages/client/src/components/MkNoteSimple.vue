@@ -15,7 +15,7 @@ import type * as firefish from "firefish-js";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
 import MkSubNoteContent from "@/components/MkSubNoteContent.vue";
 
-const props = defineProps<{
+defineProps<{
 	note: firefish.entities.Note;
 	pinned?: boolean;
 }>();

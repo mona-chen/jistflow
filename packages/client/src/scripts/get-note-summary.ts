@@ -1,5 +1,4 @@
 import type * as firefish from "firefish-js";
-import { i18n } from "@/i18n";
 
 /**
  * 投稿を表す文字列を取得します。

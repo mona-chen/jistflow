@@ -1,7 +1,7 @@
 import type { Ref } from "vue";
-import { inject, onUnmounted } from "vue";
-import { i18n } from "@/i18n";
-import * as os from "@/os";
+// import { inject, onUnmounted } from "vue";
+// import { i18n } from "@/i18n";
+// import * as os from "@/os";
 
 export function useLeaveGuard(enabled: Ref<boolean>) {
 	/* TODO

@@ -19,11 +19,7 @@
 <script lang="ts" setup>
 import { onUnmounted, ref, watch } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 
 const name = "unixClock";

@@ -5,18 +5,17 @@ import { iAmModerator } from "@/account";
 import { $i } from "@/reactiveAccount";
 import MkLoading from "@/pages/_loading_.vue";
 import MkError from "@/pages/_error_.vue";
-import { api } from "@/os";
-import { ui } from "@/config";
+// import { api } from "@/os";
 
-function getGuestTimelineStatus() {
-	api("meta", {
-		detail: false,
-	}).then((meta) => {
-		return meta.enableGuestTimeline;
-	});
-}
+// function getGuestTimelineStatus() {
+// 	api("meta", {
+// 		detail: false,
+// 	}).then((meta) => {
+// 		return meta.enableGuestTimeline;
+// 	});
+// }
 
-const guestTimeline = getGuestTimelineStatus();
+// const guestTimeline = getGuestTimelineStatus();
 
 const page = (loader: AsyncComponentLoader<any>) =>
 	defineAsyncComponent({

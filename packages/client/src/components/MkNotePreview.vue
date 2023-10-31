@@ -22,7 +22,7 @@
 <script lang="ts" setup>
 import preprocess from "@/scripts/preprocess";
 
-const props = defineProps<{
+defineProps<{
 	text: string;
 }>();
 </script>

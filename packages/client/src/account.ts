@@ -1,4 +1,4 @@
-import { defineAsyncComponent, reactive } from "vue";
+import { defineAsyncComponent } from "vue";
 import type * as firefish from "firefish-js";
 import { i18n } from "./i18n";
 import { del, get, set } from "@/scripts/idb-proxy";

@@ -2,7 +2,7 @@
 
 import { EventEmitter } from "eventemitter3";
 import type { Component, ShallowRef } from "vue";
-import { Ref, ref, shallowRef } from "vue";
+import { shallowRef } from "vue";
 import { pleaseLogin } from "@/scripts/please-login";
 import { safeURIDecode } from "@/scripts/safe-uri-decode";
 

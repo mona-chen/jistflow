@@ -128,7 +128,6 @@ import { nextTick, ref, shallowRef, watch } from "vue";
 import type * as firefish from "firefish-js";
 import MkModal from "@/components/MkModal.vue";
 import { i18n } from "@/i18n";
-import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();

@@ -126,14 +126,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	computed,
-	defineAsyncComponent,
-	defineComponent,
-	ref,
-	toRef,
-	watch,
-} from "vue";
+import { computed, defineAsyncComponent, toRef } from "vue";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
 import { openAccountMenu as openAccountMenu_ } from "@/account";

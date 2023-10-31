@@ -32,7 +32,7 @@
 import MkTooltip from "./MkTooltip.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 
-const props = defineProps<{
+defineProps<{
 	reaction: string;
 	users: any[]; // TODO
 	count: number;
