@@ -15,7 +15,8 @@ export function generateVisibilityQuery(
 					`note.visibility = 'home'`,
 				);
 			}),
-		);
+		)
+			.andWhere('note.localOnly = FALSE');
 	} else {
 		const followingQuery = Followings.createQueryBuilder("following")
 			.select("following.followeeId")
