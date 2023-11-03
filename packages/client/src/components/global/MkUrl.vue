@@ -4,7 +4,6 @@
 		ref="el"
 		class="ieqqeuvs url _link"
 		:[attr]="self ? props.url.substring(local.length) : props.url"
-		:title="self ? props.url.substring(local.length) : props.url"
 		:rel="rel"
 		:target="target"
 		@contextmenu.stop="() => {}"
