@@ -23,6 +23,7 @@ import type { IPoll } from "@/models/entities/poll.js";
 import { deliverToRelays } from "../relay.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { extractMentionedUsers, index } from "@/services/note/create.js";
+import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 
 type Option = {
 	text?: string | null;
@@ -49,7 +50,11 @@ export default async function (
 		.parse(data.text || "")
 		.concat(mfm.parse(data.cw || ""));
 
-	const tags: string[] = extractHashtags(tokens);
+	const tags: string[] = extractHashtags(tokens)
+		.filter((tag) => Array.from(tag || "").length <= 128)
+		.splice(0, 32)
+		.map(normalizeForSearch);
+
 	const emojis = extractCustomEmojisFromMfm(tokens);
 
 	const mentionUsers = (await extractMentionedUsers(user, tokens));
