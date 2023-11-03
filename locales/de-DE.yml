@@ -1446,12 +1446,14 @@ _auth:
     zu können?"
   shareAccessAsk: "Bist du dir sicher, dass du diese Anwendung authorisieren möchtest,
     auf dein Nutzerkonto zugreifen zu können?"
-  permissionAsk: "Diese Anwendung fordert folgende Berechtigungen"
+  permissionAsk: "Diese Anwendung fordert folgende Berechtigungen:"
   pleaseGoBack: "Bitte kehre zur Anwendung zurück"
   callback: "Es wird zur Anwendung zurückgekehrt"
   denied: "Zugriff verweigert"
-  copyAsk: Bitte fügen Sie den folgenden Autorisierungscode in die Anwendung ein
+  copyAsk: 'Bitte fügen Sie den folgenden Autorisierungscode in die Anwendung ein:'
   allPermissions: Voller Kontozugriff
+  authRequired: Autorisierung erforderlich
+  signedInAs: Angemeldet als
 _antennaSources:
   all: "Alle Beiträge"
   homeTimeline: "Beiträge von Nutzern, denen gefolgt wird"
