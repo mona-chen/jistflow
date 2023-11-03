@@ -148,11 +148,11 @@ cacheRemoteFiles: "Tembolokkan berkas remote"
 cacheRemoteFilesDescription: "Ketika pengaturan ini dinonaktifkan, berkas luar akan
   dimuat langsung dari server luar. Menonaktifkan ini akan mengurangi penggunaan penyimpanan,
   tapi dapat menyebabkan meningkatkan lalu lintas, mengingat keluku tidak akan dihasilkan."
-flagAsBot: "Atur akun ini sebagai Bot"
-flagAsBotDescription: "Jika akun ini dikendalikan oleh program, tetapkanlah opsi ini.
+flagAsBot: "Tandai akun ini sebagai akun otomatis"
+flagAsBotDescription: "Jika akun ini dikendalikan oleh program, aktifkan opsi ini.
   Jika diaktifkan, ini akan berfungsi sebagai tanda bagi pengembang lain untuk mencegah
-  interaksi berantai dengan bot lain dan menyesuaikan sistem internal Firefish untuk
-  memperlakukan akun ini sebagai bot."
+  interaksi berantai dengan akun otomatis lain dan menyesuaikan sistem internal Firefish
+  untuk memperlakukan akun ini sebagai akun otomatis."
 flagAsCat: "Atur akun ini sebagai kucing"
 flagAsCatDescription: "Kamu akan mendapatkan telinga kucing dan berbicara seperti
   seekor kucing!"
@@ -2005,7 +2005,7 @@ signupsDisabled: Pendaftaran ke server ini nonaktif, tapi kamu dapat selalu mend
   ke server lain! Jika kamu memiliki kode undangan server ini, harap masukkan di bawah
   ini.
 enableCustomKaTeXMacro: Aktifkan makro KaTeX khusus
-isBot: Akun ini bot
+isBot: Akun ini akun otomatis
 customMOTD: MOTD khusus (pesan layar percik)
 recommendedInstancesDescription: Server yang direkomendasikan dipisahkan dengan garis
   baru untuk tampil di linimasa rekomendasi.
