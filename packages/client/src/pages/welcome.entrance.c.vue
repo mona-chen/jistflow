@@ -85,7 +85,6 @@
 				<nav class="nav">
 					<MkA to="/announcements">{{ i18n.ts.announcements }}</MkA>
 					<MkA to="/explore">{{ i18n.ts.explore }}</MkA>
-					<MkA to="/channels">{{ i18n.ts.channel }}</MkA>
 					<MkA to="/featured">{{ i18n.ts.featured }}</MkA>
 				</nav>
 			</div>

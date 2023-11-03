@@ -415,10 +415,12 @@ export const routes = [
 	{
 		path: "/channels/:channelId",
 		component: page(() => import("./pages/channel.vue")),
+		loginRequired: true,
 	},
 	{
 		path: "/channels",
 		component: page(() => import("./pages/channels.vue")),
+		loginRequired: true,
 	},
 	{
 		path: "/registry/keys/system/:path(*)?",

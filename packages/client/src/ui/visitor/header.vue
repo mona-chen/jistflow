@@ -18,10 +18,6 @@
 					><i class="ph-compass ph-bold ph-lg icon"></i
 					>{{ i18n.ts.explore }}</MkA
 				>
-				<MkA to="/channels" class="link" active-class="active"
-					><i class="ph-television ph-bold ph-lg icon"></i
-					>{{ i18n.ts.channel }}</MkA
-				>
 				<MkA to="/pages" class="link" active-class="active"
 					><i class="ph-file-text ph-bold ph-lg icon"></i
 					>{{ i18n.ts.pages }}</MkA
@@ -198,7 +194,7 @@ export default defineComponent({
 				&.page {
 					border-bottom-color: var(--accent);
 				}
-				
+
 				&._button {
 					text-decoration: underline;
 					text-decoration-color: transparent;
