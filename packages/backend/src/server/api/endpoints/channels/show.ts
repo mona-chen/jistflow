@@ -5,8 +5,7 @@ import { Channels } from "@/models/index.js";
 export const meta = {
 	tags: ["channels"],
 
-	requireCredential: false,
-	requireCredentialPrivateMode: true,
+	requireCredential: true,
 
 	res: {
 		type: "object",

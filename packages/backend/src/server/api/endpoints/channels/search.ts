@@ -9,7 +9,7 @@ import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
 export const meta = {
 	tags: ["channels"],
 
-	requireCredential: false,
+	requireCredential: true,
 
 	res: {
 		type: "array",

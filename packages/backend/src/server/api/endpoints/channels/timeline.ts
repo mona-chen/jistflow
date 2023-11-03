@@ -7,8 +7,7 @@ import { activeUsersChart } from "@/services/chart/index.js";
 export const meta = {
 	tags: ["notes", "channels"],
 
-	requireCredential: false,
-	requireCredentialPrivateMode: true,
+	requireCredential: true,
 
 	res: {
 		type: "array",
