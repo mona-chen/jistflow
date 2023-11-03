@@ -111,27 +111,13 @@ export const navbarItemDef = reactive({
 		title: "switchUi",
 		icon: "ph-layout ph-bold ph-lg",
 		action: (ev) => {
-			os.popupMenu(
-				[
-					{
-						text: i18n.ts.default,
-						active: ui === "default" || ui === null,
-						action: () => {
-							localStorage.setItem("ui", "default");
-							unisonReload();
-						},
-					},
-					{
-						text: i18n.ts.deck,
-						active: ui === "deck",
-						action: () => {
-							localStorage.setItem("ui", "deck");
-							unisonReload();
-						},
-					},
-				],
-				ev.currentTarget ?? ev.target,
-			);
+			if (ui === "default") {
+				localStorage.setItem("ui", "deck");
+				unisonReload();
+			} else {
+				localStorage.setItem("ui", "default");
+				unisonReload();
+			}
 		},
 	},
 	help: {
