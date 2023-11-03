@@ -122,7 +122,7 @@ export default async function renderNote(
 	const asPoll = poll
 		? {
 				type: "Question",
-				content: toHtml(
+				content: await toHtml(
 					Object.assign({}, note, {
 						text: text,
 					}),
