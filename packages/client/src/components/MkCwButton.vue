@@ -61,14 +61,28 @@ defineExpose({
 
 <style lang="scss" scoped>
 ._button_modern {
+	width: 100%;
 	font-weight: 700;
 	z-index: 5;
+	&.showLess {
+		position: sticky;
+		bottom: calc(var(--stickyBottom) - 1em);
+		margin: 20px 0;
+
+	}
 	> span {
-		background: var(--cwBg) !important;
+		display: inline-block;
+		padding: 0.5em 0;
+		font-size: 0.8em;
+		border-radius: 999px;
+		box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
+		width: 100%;
+		background: var(--cwBg);
 		color: var(--cwFg);
 		transition:
 			background 0.2s,
 			color 0.2s;
+		
 		> span {
 			font-weight: 500;
 			&::before {
@@ -83,42 +97,6 @@ defineExpose({
 	&:focus > span {
 		background: var(--cwFg) !important;
 		color: var(--cwBg) !important;
-	}
-
-	&.fade {
-		display: block;
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		> span {
-			display: inline-block;
-			background: var(--panel);
-			padding: 0.4em 3em;
-			font-size: 0.8em;
-			border-radius: 999px;
-			box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
-		}
-		&:hover {
-			> span {
-				background: var(--panelHighlight);
-			}
-		}
-	}
-	&.showLess {
-		width: 100%;
-		position: sticky;
-		bottom: calc(var(--stickyBottom) - 1em);
-		padding: 20px;
-
-		> span {
-			display: inline-block;
-			background: var(--panel);
-			padding: 0.4em 3em;
-			font-size: 0.8em;
-			border-radius: 999px;
-			box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
-		}
 	}
 }
 
