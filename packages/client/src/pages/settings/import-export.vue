@@ -22,11 +22,8 @@
 					><i class="ph-upload-simple ph-bold ph-lg"></i
 				></template>
 				<FormRadios v-model="importType" class="_formBlock">
-					<option value="iceshrimp">iceshrimp/Misskey</option>
+					<option value="iceshrimp">Iceshrimp/Misskey</option>
 					<option value="mastodon">Mastodon/Akkoma/Pleroma</option>
-					<option :disabled="true" value="twitter">
-						Twitter (soon)
-					</option>
 				</FormRadios>
 				<MkButton
 					primary
