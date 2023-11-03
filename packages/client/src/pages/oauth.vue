@@ -1,35 +1,55 @@
 <template>
 	<MkSpacer :content-max="800">
 		<div v-if="$i">
-			<div v-if="state == 'waiting'" class="waiting _section">
+			<div v-if="state == 'waiting'" class="waiting _section" :class="[$style.section]">
 				<div class="_content">
 					<MkLoading />
 				</div>
 			</div>
-			<div v-if="state == 'denied'" class="denied _section">
+			<div v-if="state == 'denied'" class="denied _section" :class="[$style.section]">
 				<div class="_content">
 					<p>{{ i18n.ts._auth.denied }}</p>
 				</div>
 			</div>
-			<div v-else-if="state == 'error'" class="error _section">
+			<div v-else-if="state == 'error'" class="error _section" :class="[$style.section]">
 				<div class="_content">
 					<p>{{ message }}</p>
 				</div>
 			</div>
-			<div v-else-if="state == 'accepted-oob'" class="accepted-oob _section">
+			<div v-else-if="state == 'accepted-oob'" class="accepted-oob _section" :class="[$style.section]">
 				<div class="_content">
 					<p>{{ i18n.ts._auth.copyAsk }}</p>
 					<pre>{{ code }}</pre>
 				</div>
 			</div>
-			<div v-else-if="state == 'accepted'" class="accepted _section">
+			<div v-else-if="state == 'accepted'" class="accepted _section" :class="[$style.section]">
 				<div class="_content">
 					<p>
 						{{ i18n.ts._auth.callback }}<MkEllipsis />
 					</p>
 				</div>
 			</div>
-			<div v-else class="_section">
+			<div v-else class="_section" :class="[$style.section]">
+				<div :class="[$style.container]">
+					<button
+							v-click-anime
+							class="item _button"
+							:class="[$style.account]"
+							@click="openAccountMenu"
+					>
+						<MkAvatar
+								:user="$i"
+								:class="[$style.icon]"
+								disableLink
+						/><!-- <MkAcct class="text" :user="$i"/> -->
+					</button>
+					<div :class="[$style.left]">
+						<div>{{ i18n.ts.signedInAs }}:</div>
+						<div>@{{ $i.username }}<span :class="[$style.fade]">@{{ config.host }}</span></div>
+					</div>
+				</div>
+				<hr/>
+				<h2>Authorization required</h2>
 				<div v-if="name" class="_title">
 					{{ i18n.t("_auth.shareAccess", { name: name }) }}
 				</div>
@@ -70,13 +90,13 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
 import MkSignin from "@/components/MkSignin.vue";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
-import { $i, login } from "@/account";
+import { $i, login, openAccountMenu as openAccountMenu_ } from "@/account";
 import { appendQuery, query } from "@/scripts/url";
 import { i18n } from "@/i18n";
+import * as config from "@/config.js";
 
 const props = defineProps<{
 	response_type: string;
@@ -161,6 +181,17 @@ function deny(): void {
 async function onLogin(res): Promise<void> {
 	await login(res.i);
 }
+
+function openAccountMenu(ev: MouseEvent) {
+	openAccountMenu_(
+			{
+				includeCurrentAccount: true,
+				withExtraOperation: true,
+				withoutProfileLink: true
+			},
+			ev,
+	);
+}
 </script>
 
 <style lang="scss" module>
@@ -169,6 +200,8 @@ async function onLogin(res): Promise<void> {
 }
 
 .permissions {
+	justify-content: center;
+	padding-top: var(--margin);
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
@@ -181,5 +214,37 @@ async function onLogin(res): Promise<void> {
 	border-radius: var(--radius);
 	background-color: var(--buttonBg);
 	color: var(--fg);
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.account {
+	margin-right: 20px;
+}
+
+.icon {
+	display: inline-block;
+	width: 55px;
+	aspect-ratio: 1;
+}
+
+.section {
+	background: var(--panel);
+	padding: 20px 32px;
+	border-radius: var(--radius);
+	font-size: 1.05em;
+	text-align: center;
+}
+
+.fade {
+	opacity: .5;
+}
+
+.left {
+	text-align: left;
 }
 </style>

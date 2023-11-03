@@ -188,7 +188,9 @@ function checkForSplash() {
 	});
 
 	const app = createApp(
-		window.location.search === "?zen"
+		window.location.pathname === "/oauth/authorize"
+			? defineAsyncComponent(() => import("@/ui/oauth.vue"))
+			: window.location.search === "?zen"
 			? defineAsyncComponent(() => import("@/ui/zen.vue"))
 			: !$i
 			? defineAsyncComponent(() => import("@/ui/visitor.vue"))

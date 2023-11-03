@@ -1032,6 +1032,7 @@ activeEmailValidationDescription: "Enables stricter validation of email addresse
 navbar: "Navigation bar"
 shuffle: "Shuffle"
 account: "Account"
+signedInAs: "Signed in as"
 move: "Move"
 pushNotification: "Push notifications"
 subscribePushNotification: "Enable push notifications"

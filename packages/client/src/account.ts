@@ -150,6 +150,7 @@ export async function openAccountMenu(
 	opts: {
 		includeCurrentAccount?: boolean;
 		withExtraOperation: boolean;
+		withoutProfileLink?: boolean;
 		active?: misskey.entities.UserDetailed["id"];
 		onChoose?: (account: misskey.entities.UserDetailed) => void;
 	},
@@ -227,53 +228,56 @@ export async function openAccountMenu(
 	);
 
 	if (opts.withExtraOperation) {
-		popupMenu(
-			[
-				...[
+		const menu = [
+			...(!opts.withoutProfileLink ? [
+				{
+					type: "link",
+					text: i18n.ts.profile,
+					to: `/@${$i.username}`,
+					avatar: $i,
+				},
+				null,
+			] : []),
+			...(opts.includeCurrentAccount ? [createItem($i)] : []),
+			...accountItemPromises,
+			...(opts.withoutProfileLink ? [null] : []),
+			{
+				type: "parent",
+				icon: "ph-plus ph-bold ph-lg",
+				text: i18n.ts.addAccount,
+				children: [
 					{
-						type: "link",
-						text: i18n.ts.profile,
-						to: `/@${$i.username}`,
-						avatar: $i,
-					},
-					null,
-					...(opts.includeCurrentAccount ? [createItem($i)] : []),
-					...accountItemPromises,
-					{
-						type: "parent",
-						icon: "ph-plus ph-bold ph-lg",
-						text: i18n.ts.addAccount,
-						children: [
-							{
-								text: i18n.ts.existingAccount,
-								action: () => {
-									showSigninDialog();
-								},
-							},
-							{
-								text: i18n.ts.createAccount,
-								action: () => {
-									createAccount();
-								},
-							},
-						],
-					},
-					{
-						type: "link",
-						icon: "ph-users ph-bold ph-lg",
-						text: i18n.ts.manageAccounts,
-						to: "/settings/accounts",
-					},
-					{
-						type: "button",
-						icon: "ph-sign-out ph-bold ph-lg",
-						text: i18n.ts.logout,
+						text: i18n.ts.existingAccount,
 						action: () => {
-							signout();
+							showSigninDialog();
+						},
+					},
+					{
+						text: i18n.ts.createAccount,
+						action: () => {
+							createAccount();
 						},
 					},
 				],
-			],
+			},
+			{
+				type: "link",
+				icon: "ph-users ph-bold ph-lg",
+				text: i18n.ts.manageAccounts,
+				to: "/settings/accounts",
+			},
+			{
+				type: "button",
+				icon: "ph-sign-out ph-bold ph-lg",
+				text: i18n.ts.logout,
+				action: () => {
+					signout();
+				},
+			},
+		];
+
+		popupMenu(
+			menu,
 			ev.currentTarget ?? ev.target,
 			{
 				align: "left",
