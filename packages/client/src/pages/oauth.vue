@@ -44,12 +44,12 @@
 						/><!-- <MkAcct class="text" :user="$i"/> -->
 					</button>
 					<div :class="[$style.left]">
-						<div>{{ i18n.ts.signedInAs }}:</div>
+						<div>{{ i18n.ts._auth.signedInAs }}:</div>
 						<div>@{{ $i.username }}<span :class="[$style.fade]">@{{ config.host }}</span></div>
 					</div>
 				</div>
 				<hr/>
-				<h2>Authorization required</h2>
+				<h2>{{i18n.ts._auth.authRequired}}</h2>
 				<div v-if="name" class="_title">
 					{{ i18n.t("_auth.shareAccess", { name: name }) }}
 				</div>

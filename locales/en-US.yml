@@ -1032,7 +1032,6 @@ activeEmailValidationDescription: "Enables stricter validation of email addresse
 navbar: "Navigation bar"
 shuffle: "Shuffle"
 account: "Account"
-signedInAs: "Signed in as"
 move: "Move"
 pushNotification: "Push notifications"
 subscribePushNotification: "Enable push notifications"
@@ -1598,6 +1597,8 @@ _auth:
   denied: "Access denied"
   copyAsk: "Please paste the following authorization code in the application:"
   allPermissions: "Full account access"
+  signedInAs: "Signed in as"
+  authRequired: "Authorization required"
 _antennaSources:
   all: "All posts"
   homeTimeline: "Posts from followed users"
