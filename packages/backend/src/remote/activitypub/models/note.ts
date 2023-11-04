@@ -25,6 +25,7 @@ import {
 	Notes,
 	NoteEdits,
 	DriveFiles,
+	PollVotes,
 } from "@/models/index.js";
 import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
 import type { IObject, IPost } from "../type.js";
@@ -710,30 +711,40 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 				userHost: actor.host,
 			});
 			updating = true;
-		} else if (
-			dbPoll.multiple !== poll.multiple ||
-			dbPoll.expiresAt !== poll.expiresAt ||
-			dbPoll.noteVisibility !== note.visibility ||
-			JSON.stringify(dbPoll.choices) !== JSON.stringify(poll.choices)
-		) {
-			await Polls.update(
-				{ noteId: note.id },
-				{
-					choices: poll?.choices,
-					multiple: poll?.multiple,
-					votes: poll?.votes,
-					expiresAt: poll?.expiresAt,
-					noteVisibility:
-						note.visibility === "hidden" ? "home" : note.visibility,
-				},
-			);
-			updating = true;
 		} else {
-			for (let i = 0; i < poll.choices.length; i++) {
-				if (dbPoll.votes[i] !== poll.votes?.[i]) {
-					await Polls.update({ noteId: note.id }, { votes: poll?.votes });
-					updating = true;
-					break;
+			const choicesChanged = JSON.stringify(dbPoll.choices) !== JSON.stringify(poll.choices);
+
+			if (
+				dbPoll.multiple !== poll.multiple ||
+				dbPoll.expiresAt !== poll.expiresAt ||
+				dbPoll.noteVisibility !== note.visibility ||
+				choicesChanged
+			) {
+				await Polls.update(
+					{ noteId: note.id },
+					{
+						choices: poll?.choices,
+						multiple: poll?.multiple,
+						votes: poll?.votes,
+						expiresAt: poll?.expiresAt,
+						noteVisibility:
+							note.visibility === "hidden" ? "home" : note.visibility,
+					},
+				);
+
+				// Reset votes
+				if (choicesChanged) {
+					await PollVotes.delete({ noteId: dbPoll.noteId });
+				}
+
+				updating = true;
+			} else {
+				for (let i = 0; i < poll.choices.length; i++) {
+					if (dbPoll.votes[i] !== poll.votes?.[i]) {
+						await Polls.update({ noteId: note.id }, { votes: poll?.votes });
+						updating = true;
+						break;
+					}
 				}
 			}
 		}

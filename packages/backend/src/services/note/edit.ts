@@ -10,10 +10,12 @@ import { extractHashtags } from "@/misc/extract-hashtags.js";
 import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
 import { Note } from "@/models/entities/note.js";
 import {
-    Users,
-    Notes,
-    UserProfiles,
-    Polls, NoteEdits,
+	Users,
+	Notes,
+	UserProfiles,
+	Polls,
+	NoteEdits,
+	PollVotes,
 } from "@/models/index.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { In } from "typeorm";
@@ -121,30 +123,40 @@ export default async function (
 				userHost: user.host,
 			});
 			publishing = true;
-		} else if (
-			dbPoll.multiple !== data.poll.multiple ||
-			dbPoll.expiresAt !== data.poll.expiresAt ||
-			dbPoll.noteVisibility !== note.visibility ||
-			JSON.stringify(dbPoll.choices) !== JSON.stringify(data.poll.choices)
-		) {
-			await Polls.update(
-				{ noteId: note.id },
-				{
-					choices: data.poll?.choices,
-					multiple: data.poll?.multiple,
-					votes: data.poll?.votes,
-					expiresAt: data.poll?.expiresAt,
-					noteVisibility:
-						note.visibility === "hidden" ? "home" : note.visibility,
-				},
-			);
-			publishing = true;
 		} else {
-			for (let i = 0; i < data.poll.choices.length; i++) {
-				if (dbPoll.votes[i] !== data.poll.votes?.[i]) {
-					await Polls.update({ noteId: note.id }, { votes: data.poll?.votes });
-					publishing = true;
-					break;
+			const choicesChanged = JSON.stringify(dbPoll.choices) !== JSON.stringify(data.poll.choices);
+
+			if (
+				dbPoll.multiple !== data.poll.multiple ||
+				dbPoll.expiresAt !== data.poll.expiresAt ||
+				dbPoll.noteVisibility !== note.visibility ||
+				choicesChanged
+			) {
+				await Polls.update(
+					{ noteId: note.id },
+					{
+						choices: data.poll?.choices,
+						multiple: data.poll?.multiple,
+						votes: choicesChanged ? new Array(data.poll.choices.length).fill(0) : data.poll?.votes,
+						expiresAt: data.poll?.expiresAt,
+						noteVisibility:
+							note.visibility === "hidden" ? "home" : note.visibility,
+					},
+				);
+
+				// Reset votes
+				if (JSON.stringify(dbPoll.choices) !== JSON.stringify(data.poll.choices)) {
+					await PollVotes.delete({ noteId: dbPoll.noteId });
+				}
+
+				publishing = true;
+			} else {
+				for (let i = 0; i < data.poll.choices.length; i++) {
+					if (dbPoll.votes[i] !== data.poll.votes?.[i]) {
+						await Polls.update({ noteId: note.id }, { votes: data.poll?.votes });
+						publishing = true;
+						break;
+					}
 				}
 			}
 		}
