@@ -93,10 +93,12 @@ export class NoteConverter {
             return renote.url ?? renote.uri ?? `${config.url}/notes/${renote.id}`;
         });
 
-        const content = note.text !== null
-            ? quoteUri.then(quoteUri => MfmHelpers.toHtml(mfm.parse(note.text!), JSON.parse(note.mentionedRemoteUsers), note.userHost, false, quoteUri)
-                .then(p => p ?? escapeMFM(note.text!)))
-            : "";
+        const text = quoteUri.then(quoteUri => note.text !== null ? quoteUri !== null ? note.text.replaceAll(`RE: ${quoteUri}`, '').replaceAll(quoteUri, '').trimEnd() : note.text : null)
+
+        const content = text.then(text => text !== null
+            ? quoteUri.then(quoteUri => MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers), note.userHost, false, quoteUri))
+                .then(p => p ?? escapeMFM(text))
+            : "");
 
         const isPinned = user && note.userId === user.id
             ? UserNotePinings.exist({ where: { userId: user.id, noteId: note.id } })
@@ -122,7 +124,7 @@ export class NoteConverter {
             reblog: reblog.then(reblog => !isQuote(note) ? reblog : null),
             content: content,
             content_type: 'text/x.misskeymarkdown',
-            text: note.text,
+            text: text,
             created_at: note.createdAt.toISOString(),
             emojis: noteEmoji,
             replies_count: note.repliesCount,
