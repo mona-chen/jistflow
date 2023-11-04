@@ -101,7 +101,7 @@ const headerActions = $computed(() =>
 					handler: settings,
 				},
 				// {
-				// 	icon: "ph-check ph-bold ph-lg",
+				// 	icon: "ph-checks ph-bold ph-lg",
 				// 	text: i18n.ts.markAllAsRead,
 				// 	handler: markRead,
 				// },

@@ -15,7 +15,7 @@
 				:aria-label="i18n.ts.markAllAsRead"
 				@click="os.apiWithDialog('notifications/mark-all-as-read')"
 			>
-				<i class="ph-check ph-bold ph-lg"></i></button
+				<i class="ph-checks ph-bold ph-lg"></i></button
 			><button
 				class="_button"
 				:aria-label="i18n.ts.notificationSetting"

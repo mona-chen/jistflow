@@ -133,7 +133,7 @@ const headerActions = $computed(() =>
 		tab === "all"
 			? {
 					text: i18n.ts.markAllAsRead,
-					icon: "ph-check ph-bold ph-lg",
+					icon: "ph-checks ph-bold ph-lg",
 					handler: () => {
 						os.apiWithDialog("notifications/mark-all-as-read");
 					},

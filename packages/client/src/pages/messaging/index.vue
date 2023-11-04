@@ -130,7 +130,7 @@ async function readAllMessagingMessages() {
 
 const headerActions = $computed(() => [
 	{
-		icon: "ph-check ph-bold ph-lg",
+		icon: "ph-checks ph-bold ph-lg",
 		text: i18n.ts.markAllAsRead,
 		handler: readAllMessagingMessages,
 	},
