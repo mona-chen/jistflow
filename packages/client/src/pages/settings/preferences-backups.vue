@@ -115,6 +115,8 @@ const defaultStoreSaveKeys: (keyof (typeof defaultStore)["state"])[] = [
 	"enableEmojiReactions",
 	"showEmojisInReactionNotifications",
 	"showTimelineReplies",
+	"expandOnNoteClick",
+	"cwStyle",
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	"lightTheme",
