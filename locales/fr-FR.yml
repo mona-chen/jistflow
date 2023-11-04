@@ -1367,6 +1367,8 @@ _auth:
   denied: "Accès refusé"
   copyAsk: "Veuillez coller le code d’autorisation suivant dans l’application :"
   allPermissions: Accès complet au compte
+  signedInAs: Connecté·e en tant que
+  authRequired: Autorisation requise
 _antennaSources:
   all: "Toutes les publications"
   homeTimeline: "Publications provenant des utilisateur·rice·s auxquel·les je suis
