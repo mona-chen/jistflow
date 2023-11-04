@@ -7,11 +7,6 @@ export function useTooltip(
 ): void {
 	let isHovering = false;
 
-	// iOS(Androidも？)では、要素をタップした直後に(おせっかいで)mouseoverイベントを発火させたりするため、それを無視するためのフラグ
-	// 無視しないと、画面に触れてないのにツールチップが出たりし、ユーザビリティが損なわれる
-	// TODO: 一度でもタップすると二度とマウスでツールチップ出せなくなるのをどうにかする 定期的にfalseに戻すとか...？
-	let shouldIgnoreMouseover = false;
-
 	let timeoutId: number;
 
 	let changeShowingState: (() => void) | null;
@@ -39,26 +34,11 @@ export function useTooltip(
 
 	const onMouseover = () => {
 		if (isHovering) return;
-		if (shouldIgnoreMouseover) return;
 		isHovering = true;
 		timeoutId = window.setTimeout(open, delay);
 	};
 
 	const onMouseleave = () => {
-		if (!isHovering) return;
-		isHovering = false;
-		window.clearTimeout(timeoutId);
-		close();
-	};
-
-	const onTouchstart = () => {
-		shouldIgnoreMouseover = true;
-		if (isHovering) return;
-		isHovering = true;
-		timeoutId = window.setTimeout(open, delay);
-	};
-
-	const onTouchend = () => {
 		if (!isHovering) return;
 		isHovering = false;
 		window.clearTimeout(timeoutId);
@@ -74,8 +54,6 @@ export function useTooltip(
 					elRef.value instanceof Element ? elRef.value : elRef.value.$el;
 				el.addEventListener("mouseover", onMouseover, { passive: true });
 				el.addEventListener("mouseleave", onMouseleave, { passive: true });
-				el.addEventListener("touchstart", onTouchstart, { passive: true });
-				el.addEventListener("touchend", onTouchend, { passive: true });
 				el.addEventListener("click", close, { passive: true });
 			}
 		},
