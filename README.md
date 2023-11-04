@@ -14,6 +14,7 @@
   - QoL improvements
   - Better performance
   - Change of focus to actual community needs
+  - Prioritization of user choice and configurability
 - Project anti-goals:
   - Flashy marketing
   - Commercialization of any kind
