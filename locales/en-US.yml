@@ -2138,3 +2138,9 @@ _cwStyle:
   alternative: "Alternative (Firefish-like)"
 alwaysExpandCws: "Always expand posts with content warnings"
 hideFromHome: "Hide from home timeline"
+_wellness:
+  name: "Wellness"
+  description: "These settings allow you to adjust possibly addictive or anxiety-inducing aspects of social media. Choose the settings that are ideal for you."
+  newPostsButton: "Enable new posts alert button"
+  newPostsGlowOpacity: "New posts glow opacity"
+  immediacy: "Immediacy"

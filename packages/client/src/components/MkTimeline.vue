@@ -9,11 +9,16 @@
 			<template #icon></template>
 		</I18n>
 	</MkInfo>
-	<div v-if="queue > 0" class="new">
+	<div
+		v-if="queue > 0"
+		class="new"
+		:class="{ noShadow: newPostsGlowOpacity < 0.05 }"
+		:style="{ '--opacity': newPostsGlowOpacity }"
+	>
 		<button
 			class="_buttonPrimary _shadow"
 			@click="tlComponent.scrollTop()"
-			:class="{ instant: !$store.state.animation }"
+			:class="{ instant: !$store.state.animation, isHidden: !newPostsButton }"
 		>
 			{{ i18n.ts.newNoteRecived }}
 			<i class="ph-arrow-up ph-bold"></i>
@@ -246,6 +251,15 @@ const timetravel = (date?: Date) => {
 	this.$refs.tl.reload();
 };
 */
+
+const newPostsButton = computed(
+		defaultStore.makeGetterSetter("newPostsButton"),
+);
+
+const newPostsGlowOpacity = computed(
+		defaultStore.makeGetterSetter("newPostsGlowOpacity"),
+);
+
 </script>
 <style lang="scss" scoped>
 @keyframes slideUp {
@@ -267,11 +281,21 @@ const timetravel = (date?: Date) => {
 	margin-top: -60px;
 	z-index: 1001;
 	box-shadow: 0 24px 24px -20px var(--accentedBg);
+
+	> .isHidden {
+		display: none;
+	}
+
+	&.noShadow {
+		box-shadow: 0 0;
+	}
+
 	&::after {
 		content: "";
 		position: absolute;
 		inset: -2px 0;
 		border: 2px solid var(--accentDarken);
+		opacity: var(--opacity);
 		mask: linear-gradient(
 			to right,
 			transparent,

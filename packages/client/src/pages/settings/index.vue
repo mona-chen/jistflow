@@ -177,6 +177,12 @@ const menuDef = computed(() => [
 				active: currentPage?.route.name === "sounds",
 			},
 			{
+				icon: "ph-heart ph-bold ph-lg",
+				text: i18n.ts._wellness.name,
+				to: "/settings/wellness",
+				active: currentPage?.route.name === "wellness",
+			},
+			{
 				icon: "ph-plug ph-bold ph-lg",
 				text: i18n.ts.plugins,
 				to: "/settings/plugin",

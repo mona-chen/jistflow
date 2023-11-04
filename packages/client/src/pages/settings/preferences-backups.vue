@@ -118,6 +118,8 @@ const defaultStoreSaveKeys: (keyof (typeof defaultStore)["state"])[] = [
 	"expandOnNoteClick",
 	"alwaysExpandCws",
 	"cwStyle",
+	"newPostsButton",
+	"newPostsGlowOpacity",
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	"lightTheme",

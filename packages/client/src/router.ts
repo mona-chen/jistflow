@@ -262,6 +262,11 @@ export const routes = [
 				component: page(() => import("./pages/settings/other.vue")),
 			},
 			{
+				path: "/wellness",
+				name: "wellness",
+				component: page(() => import("./pages/settings/wellness.vue")),
+			},
+			{
 				path: "/",
 				component: page(() => import("./pages/_empty_.vue")),
 			},

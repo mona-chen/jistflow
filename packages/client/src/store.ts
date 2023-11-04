@@ -343,6 +343,14 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: false,
 		},
+		newPostsButton: {
+			where: "device",
+			default: true,
+		},
+		newPostsGlowOpacity: {
+			where: "device",
+			default: 1.0,
+		},
 	}),
 );
 
