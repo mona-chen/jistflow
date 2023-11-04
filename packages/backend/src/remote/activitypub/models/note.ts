@@ -568,7 +568,7 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 	}
 
 	// Whether to tell clients the note has been updated and requires refresh.
-	let publishing = false;
+	let updating = false;
 
 	// Text parsing
 	let text: string | null = null;
@@ -591,7 +591,6 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 			? post.attachment
 			: [post.attachment]
 		: [];
-	const files = fileList.map((f) => (f.sensitive = post.sensitive));
 
 	// Fetch files
 	const limit = promiseLimit(2);
@@ -617,7 +616,7 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 
 						if (notEmpty(update)) {
 							await DriveFiles.update(file.id, update);
-							publishing = true;
+							updating = true;
 						}
 
 						return file;
@@ -733,7 +732,7 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 			for (let i = 0; i < poll.choices.length; i++) {
 				if (dbPoll.votes[i] !== poll.votes?.[i]) {
 					await Polls.update({ noteId: note.id }, { votes: poll?.votes });
-					publishing = true;
+					updating = true;
 					break;
 				}
 			}
@@ -757,10 +756,10 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 			updatedAt: update.updatedAt,
 		});
 
-		publishing = true;
+		updating = true;
 	}
 
-	if (publishing) {
+	if (updating) {
 		// Publish update event for the updated note details
 		publishNoteStream(note.id, "updated", {
 			updatedAt: update.updatedAt,
@@ -773,4 +772,6 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 
 		publishNoteUpdatesStream("updated", updatedNote);
 	}
+
+	return null;
 }
