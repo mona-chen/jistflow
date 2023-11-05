@@ -27,11 +27,6 @@ This document will guide you through manual installation of Iceshrimp on dev bra
   Iceshrimp has full text search powered by Postgres by default, however it's very slow, and these are alternatives for that
   - [**Meilisearch**](https://www.meilisearch.com/) | [Installation guide](https://www.meilisearch.com/docs/learn/getting_started/quick_start) 
   - [**Sonic**](https://crates.io/crates/sonic-server) (More lightweight, but less features) | [Installation guide](https://github.com/valeriansaliou/sonic#installation)
-- Caching server (Choose one)   
-	This will be used for storing stuff like antennas. If you won't install any, mandatory Redis instance will be used instead
-  - [**DragonflyDB**](https://www.dragonflydb.io/) | [Installation guide](https://www.dragonflydb.io/docs/getting-started)
-  - [**KeyDB**](https://docs.keydb.dev/) | [Installation guide](https://docs.keydb.dev/docs/open-source-getting-started)
-  - Another **Redis** server
 
 ## Preparations
 
@@ -51,7 +46,7 @@ Following steps will require you to run them as the user you have made, so use `
 - Copy `.config/example.yml` to `.config/default.yml`
 - Edit `.config/default.yml` with text editor
 	- Make sure to set PostgreSQL and Redis section correctly
-	- Make sure to set/uncomment caching server and/or text search sections if you have chosen to set up these
+	- Make sure to set/uncomment text search sections if you have chosen to set up a search backend
 
 ## Installing project dependencies
 

@@ -38,7 +38,7 @@ export class Cache<T> {
 	}
 
 	public async getAll(renew = false): Promise<Map<string, T>> {
-		const finalPrefix = `${config.cacheServer?.prefix ?? config.redis.prefix}:${this.prefix}:`;
+		const finalPrefix = `${config.redis.prefix}:${this.prefix}:`;
 		const keys = (await redisClient.keys(`${finalPrefix}*`)).map(p => p.substring(finalPrefix.length));
 		const prefixedKeys = keys.map(p => this.prefixedKey(p));
 		const map = new Map<string, T>();
