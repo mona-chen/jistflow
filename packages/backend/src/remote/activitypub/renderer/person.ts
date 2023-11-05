@@ -75,6 +75,7 @@ export async function renderPerson(user: ILocalUser) {
 		summary: profile.description
 			? await toHtml(mfm.parse(profile.description), profile.mentions, profile.userHost)
 			: null,
+		_misskey_summary: profile.description,
 		icon: avatar ? renderImage(avatar) : null,
 		image: banner ? renderImage(banner) : null,
 		tag,

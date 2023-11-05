@@ -604,9 +604,11 @@ export async function updatePerson(
 		{
 			url: url,
 			fields,
-			description: person.summary
-				? await htmlToMfm(truncate(person.summary, summaryLength), person.tag)
-				: null,
+			description: person._misskey_summary
+				? truncate(person._misskey_summary, summaryLength)
+				: person.summary
+					? await htmlToMfm(truncate(person.summary, summaryLength), person.tag)
+					: null,
 			birthday: bday ? bday[0] : null,
 			location: person["vcard:Address"] || null,
 		},

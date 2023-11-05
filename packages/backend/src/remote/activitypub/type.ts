@@ -206,6 +206,7 @@ export interface IActor extends IObject {
 	};
 	"vcard:bday"?: string;
 	"vcard:Address"?: string;
+	_misskey_summary?: string;
 }
 
 export const isCollection = (object: IObject): object is ICollection =>
