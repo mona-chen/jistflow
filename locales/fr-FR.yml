@@ -2230,3 +2230,11 @@ antennaTimelineHint: Les antennes affichent les messages correspondants dans l'o
   dans lequel ils ont été reçus, ce qui n'est pas nécessairement chronologique.
 alwaysExpandCws: Toujours afficher les messages avec des avertissements sur le contenu
 hideFromHome: Cacher de la timeline «Principal»
+_wellness:
+  newPostsButton: Activer le bouton d’alerte «Voir les nouvelles publications»
+  newPostsGlowOpacity: Opacité de la lueur qui indique la présence de nouveaux messages
+  immediacy: Immédiateté
+  name: Bien-être
+  description: Ces paramètres vous permettent d’ajuster les options susceptibles de
+    créer une dépendance ou d’induire de l’anxiété, trop souvent présentes sur les
+    réseaux sociaux. Choisissez les paramètres qui vous conviennent le mieux.
