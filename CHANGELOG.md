@@ -1,3 +1,53 @@
+## v2023.11.1
+### Release notes
+This release primarily adds polish and fixes bugs and regressions introduced in the previous release cycle. If you are running `v2023.11` or earlier, upgrading is strongly recommended.
+
+### Highlights
+- Builds on docker-arm64 (and on bare metal musl-arm64 distros) work as expected again
+- Improved OAuth login page
+
+### Bug fixes
+- The `node-re2` dependency was migrated to an in-house fork, fixing builds on musl-arm64
+- Tags in edited posts are now handled correctly
+- Poll are now federating properly to non-\*key instances again
+- Hovering over a link no longer renders a duplicate popover
+- Various client settings that were previously missing from preference backups are now included
+- Incoming poll edits are now processed correctly
+
+### UI/UX
+- The "Centered" layout was removed
+- The layout dropdown was replaced with a "toggle layout" button
+- The "Modern" CW style now has the visual buttons match the clickable area
+- The OAuth login page has been fully reworked to only show essential information
+- Tooltips are no longer shown on touchscreen input
+- The icon for "mark all notifications as read" was changed to `ph-checks` to better reflect the action
+- A new client preferences category, "Wellness", was added, currently containing the option to hide certain UI elements like the new posts indicator, with more to come
+
+### Mastodon client API
+- A regression in which remote posts with quotes attached had the quoteUri duplicated was fixed
+
+### Backend
+- Local only notes are now not shown to guest users in timeline/non-detail views either
+- Channels are no longer visible to guests
+- User bios with MFM now federate properly with other \*key instances implementing the  \_misskey_summary field
+- The separate cache server was merged back into a unified (cache + queue processor) redis architecture, the respective config fields have been removed
+
+### Infrastructure and governance
+- The CI workflows no longer reference cargo/rust
+- Docker builds now use the yarn version specified in `package.json` instead of `yarn@stable`
+- The README was updated to better reflect the project values
+
+### Miscellaneous
+- The code formatter was changed from `rome` to `biome`
+- The "Twitter (soon)" option for post imports has been removed
+- The documentation now contains information on possible conflicts between the corepack and system yarn installations
+- Various translation updates
+
+### Attribution
+This release was made possible by project contributors: AntoineÐ, Aylam & Laura Hausmann
+
+It also includes cherry-picked contributions from external contributors: kakkokari-gtyih
+
 ## v2023.11
 ### Release notes
 This release contains only very minor changes if you're upgrading from `v2023.11-pre5`, but for users who skipped the prereleases, lots has changed. Be sure to read the changelogs of all releases between the one you're upgrading from and this one, especially the sections on breaking changes.
