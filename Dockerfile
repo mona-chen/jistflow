@@ -18,7 +18,7 @@ COPY .yarn/cache .yarn/cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache cp -Tr .yarncache .yarn
 
 # Configure corepack and yarn, and install dev mode dependencies for compilation
-RUN corepack enable && corepack prepare yarn@stable --activate && yarn
+RUN corepack enable && corepack prepare --activate && yarn
 
 # Save yarn cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache rm -rf .yarncache/* && cp -Tr .yarn .yarncache
@@ -46,7 +46,7 @@ COPY --from=build /iceshrimp/built /iceshrimp/built
 COPY --from=build /iceshrimp/packages/backend/built /iceshrimp/packages/backend/built
 COPY --from=build /iceshrimp/packages/backend/assets/instance.css /iceshrimp/packages/backend/assets/instance.css
 
-RUN corepack enable && corepack prepare yarn@stable --activate
+RUN corepack enable && corepack prepare --activate
 ENV NODE_ENV=production
 VOLUME "/iceshrimp/files"
 ENTRYPOINT [ "/sbin/tini", "--" ]
