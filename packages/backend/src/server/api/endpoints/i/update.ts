@@ -1,4 +1,4 @@
-import RE2 from "re2";
+import RE2 from "@iceshrimp/re2";
 import * as mfm from "mfm-js";
 import { publishMainStream, publishUserEvent } from "@/services/stream.js";
 import acceptAllFollowRequests from "@/services/following/requests/accept-all.js";

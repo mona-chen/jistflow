@@ -415,6 +415,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:1.2.1"\
       ],\
       [\
+        "@iceshrimp/re2",\
+        "npm:1.20.6::__archiveUrl=https%3A%2F%2Ficeshrimp.dev%2Fapi%2Fpackages%2Ficeshrimp%2Fnpm%2F%2540iceshrimp%252Fre2%2F-%2F1.20.6%2Fre2-1.20.6.tgz"\
+      ],\
+      [\
         "@ioredis/commands",\
         "npm:1.2.0"\
       ],\
@@ -5587,10 +5591,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:3.4.0"\
       ],\
       [\
-        "re2",\
-        "npm:1.20.5"\
-      ],\
-      [\
         "react-is",\
         "npm:18.2.0"\
       ],\
@@ -9044,6 +9044,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@humanwhocodes-object-schema-npm-1.2.1-eb622b5d0e-a824a1ec31.zip/node_modules/@humanwhocodes/object-schema/",\
           "packageDependencies": [\
             ["@humanwhocodes/object-schema", "npm:1.2.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@iceshrimp/re2", [\
+        ["npm:1.20.6::__archiveUrl=https%3A%2F%2Ficeshrimp.dev%2Fapi%2Fpackages%2Ficeshrimp%2Fnpm%2F%2540iceshrimp%252Fre2%2F-%2F1.20.6%2Fre2-1.20.6.tgz", {\
+          "packageLocation": "./.yarn/unplugged/@iceshrimp-re2-npm-1.20.6-2ee015ddd5/node_modules/@iceshrimp/re2/",\
+          "packageDependencies": [\
+            ["@iceshrimp/re2", "npm:1.20.6::__archiveUrl=https%3A%2F%2Ficeshrimp.dev%2Fapi%2Fpackages%2Ficeshrimp%2Fnpm%2F%2540iceshrimp%252Fre2%2F-%2F1.20.6%2Fre2-1.20.6.tgz"],\
+            ["install-artifact-from-github", "npm:1.3.3"],\
+            ["nan", "npm:2.18.0"],\
+            ["node-gyp", "npm:9.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13935,6 +13947,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bull-board/ui", "npm:5.6.0"],\
             ["@discordapp/twemoji", "npm:14.1.2"],\
             ["@elastic/elasticsearch", "npm:7.17.0"],\
+            ["@iceshrimp/re2", "npm:1.20.6::__archiveUrl=https%3A%2F%2Ficeshrimp.dev%2Fapi%2Fpackages%2Ficeshrimp%2Fnpm%2F%2540iceshrimp%252Fre2%2F-%2F1.20.6%2Fre2-1.20.6.tgz"],\
             ["@koa/cors", "npm:3.4.3"],\
             ["@koa/multer", "virtual:aa59773ac87791c4813d53447077fcf8a847d6de5a301d34dc31286584b1dbb26d30d3adb5b4c41c1e8aea04371e926fda05c09c6253647c432e11d872a304ba#npm:3.0.2"],\
             ["@koa/router", "npm:9.0.1"],\
@@ -14072,7 +14085,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["qs", "npm:6.11.2"],\
             ["random-seed", "npm:0.3.0"],\
             ["ratelimiter", "npm:3.4.1"],\
-            ["re2", "npm:1.20.5"],\
             ["redis-lock", "npm:0.1.4"],\
             ["redis-semaphore", "virtual:aa59773ac87791c4813d53447077fcf8a847d6de5a301d34dc31286584b1dbb26d30d3adb5b4c41c1e8aea04371e926fda05c09c6253647c432e11d872a304ba#npm:5.3.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -27668,18 +27680,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["rdf-canonize", "npm:3.4.0"],\
             ["setimmediate", "npm:1.0.5"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["re2", [\
-        ["npm:1.20.5", {\
-          "packageLocation": "./.yarn/unplugged/re2-npm-1.20.5-851f906517/node_modules/re2/",\
-          "packageDependencies": [\
-            ["re2", "npm:1.20.5"],\
-            ["install-artifact-from-github", "npm:1.3.3"],\
-            ["nan", "npm:2.18.0"],\
-            ["node-gyp", "npm:9.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
