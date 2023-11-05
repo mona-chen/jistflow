@@ -50,12 +50,13 @@ Following steps will require you to run them as the user you have made, so use `
 
 ## Installing project dependencies
 
+This project uses corepack to manage yarn versions, please make sure you don't have a globally installed non-corepack yarn binary (e.g. by having run `npm install -g yarn` in the past, or via your operating system's package manager)
+
 ```sh
 corepack enable
-corepack prepare yarn@stable --activate
+corepack prepare --activate
 yarn
 ```
-<!--TODO: Find out a way to do no-optional (no tensorflow) install on yarn berry, so far I have found none-->
 
 ## Building Iceshrimp
 
