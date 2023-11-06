@@ -194,7 +194,7 @@ const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	if (canRenote) {
 		buttonActions.push({
 			text: `${i18n.ts.renote} (${i18n.ts.local})`,
-			icon: "ph-hand-fist ph-bold ph-lg",
+			icon: "ph-users ph-bold ph-lg",
 			danger: false,
 			action: () => {
 				os.api(
