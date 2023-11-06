@@ -32,7 +32,8 @@
 		"clean": "node ./scripts/clean.js",
 		"clean-all": "node ./scripts/clean-all.js",
 		"cleanall": "yarn clean-all",
-		"focus-production": "node ./scripts/focus-production.js"
+		"focus-production": "node ./scripts/focus-production.js",
+		"regen-version": "node ./scripts/regen-version.js"
 	},
 	"workspaces": [
 		"packages/backend",
