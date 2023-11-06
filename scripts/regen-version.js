@@ -13,6 +13,6 @@ const exec = require("execa");
 		: (await exec("git", ["rev-parse", "--short", "HEAD"])).stdout;
 
 	json['version'] = `${version}-${revision}`;
-	console.log(json['version']);
+	console.log(`Package version was updated to ${json['version']}`);
 	fs.writeFileSync(file, JSON.stringify(json, null, '\t'));
 })();
