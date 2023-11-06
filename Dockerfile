@@ -4,7 +4,7 @@ FROM alpine:3.18 as build
 WORKDIR /iceshrimp
 
 # Install compilation dependencies
-RUN apk add --no-cache --no-progress git alpine-sdk vips-dev python3 nodejs-current npm vips moreutils jq
+RUN apk add --no-cache --no-progress git alpine-sdk vips-dev python3 nodejs-current npm vips
 
 # Copy only the dependency-related files first, to cache efficiently
 COPY package.json yarn.lock .pnp.cjs .pnp.loader.mjs ./
@@ -33,8 +33,7 @@ RUN env NODE_ENV=production yarn build
 RUN --mount=type=cache,target=/iceshrimp/.yarncache_focused cp -Tr .yarncache_focused .yarn
 
 # Remove dev deps
-RUN find packages package.json -name package.json | xargs -i sh -c "jq 'del(.devDependencies)' {} | sponge {}"
-RUN yarn
+RUN yarn focus-production
 
 # Save focused yarn cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache_focused rm -rf .yarncache/* && cp -Tr .yarn .yarncache_focused
