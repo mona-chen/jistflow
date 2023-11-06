@@ -3300,7 +3300,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "glob",\
-        "npm:7.2.3"\
+        "npm:10.3.10"\
       ],\
       [\
         "glob-parent",\
@@ -7024,6 +7024,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["cross-env", "npm:7.0.3"],\
             ["cypress", "npm:10.11.0"],\
             ["execa", "npm:5.1.1"],\
+            ["glob", "npm:10.3.10"],\
             ["gulp", "npm:4.0.2"],\
             ["gulp-cssnano", "npm:2.1.3"],\
             ["gulp-rename", "npm:2.0.0"],\
@@ -19999,6 +20000,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["glob", [\
+        ["npm:10.3.10", {\
+          "packageLocation": "./.yarn/cache/glob-npm-10.3.10-da1ef8b112-4f2fe2511e.zip/node_modules/glob/",\
+          "packageDependencies": [\
+            ["glob", "npm:10.3.10"],\
+            ["foreground-child", "npm:3.1.1"],\
+            ["jackspeak", "npm:2.3.6"],\
+            ["minimatch", "npm:9.0.3"],\
+            ["minipass", "npm:7.0.2"],\
+            ["path-scurry", "npm:1.10.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:10.3.3", {\
           "packageLocation": "./.yarn/cache/glob-npm-10.3.3-2d9abea8c7-29190d3291.zip/node_modules/glob/",\
           "packageDependencies": [\
@@ -20914,6 +20927,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["cross-env", "npm:7.0.3"],\
             ["cypress", "npm:10.11.0"],\
             ["execa", "npm:5.1.1"],\
+            ["glob", "npm:10.3.10"],\
             ["gulp", "npm:4.0.2"],\
             ["gulp-cssnano", "npm:2.1.3"],\
             ["gulp-rename", "npm:2.0.0"],\
@@ -22142,6 +22156,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/jackspeak-npm-2.2.2-374ca454fe-7b1468dd91.zip/node_modules/jackspeak/",\
           "packageDependencies": [\
             ["jackspeak", "npm:2.2.2"],\
+            ["@isaacs/cliui", "npm:8.0.2"],\
+            ["@pkgjs/parseargs", "npm:0.11.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:2.3.6", {\
+          "packageLocation": "./.yarn/cache/jackspeak-npm-2.3.6-42e1233172-57d43ad11e.zip/node_modules/jackspeak/",\
+          "packageDependencies": [\
+            ["jackspeak", "npm:2.3.6"],\
             ["@isaacs/cliui", "npm:8.0.2"],\
             ["@pkgjs/parseargs", "npm:0.11.0"]\
           ],\
