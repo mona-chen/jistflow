@@ -8,7 +8,9 @@ const exec = require("execa");
 
 	const match = json['version'].match(/^[\d.]*(?:-pre\d+|)?/);
 	const version = match ? `${match[0]}-dev` : "dev";
-	const { stdout: revision } = await exec("git", ["rev-parse", "--short", "HEAD"]);;
+	const revision = process.argv.length > 2
+		? process.argv[2]
+		: (await exec("git", ["rev-parse", "--short", "HEAD"])).stdout;
 
 	json['version'] = `${version}-${revision}`;
 	console.log(json['version']);
