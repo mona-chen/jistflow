@@ -1,6 +1,6 @@
 # Installing Iceshrimp
 
-This document will guide you through manual installation of Iceshrimp on dev branch, for main branch, use Firefish's installation guide.
+This document will guide you through manual installation of Iceshrimp. We also provide prebuilt [packages](/iceshrimp/packaging) for various platforms, should you prefer those over a manual install.
 
 ## Dependencies
 
@@ -35,6 +35,8 @@ This document will guide you through manual installation of Iceshrimp on dev bra
 ```sh
 git clone https://iceshrimp.dev/iceshrimp/iceshrimp.git --depth=1
 ```
+
+If you don't want to run the latest development version, pick a version from [here](https://iceshrimp.dev/iceshrimp/iceshrimp/releases) and run `git checkout <version>` before continuing.
 
 ### Creating a new user
 
@@ -126,18 +128,33 @@ If this is your first run, after Iceshrimp has started successfully, you'll be a
 
 ### Updating Iceshrimp
 
-Shut down Iceshrimp and then run these commands
+First, stop the Iceshrimp service and then run the following commands:
 
 ```sh
 ## Run git stash commands only if you have uncommitted changes
 git stash
+```
+
+If you were previously running a tagged release and/or want to upgrade to one, run:
+```sh
+git fetch --tags
+git checkout <new-version>
+```
+
+If you were previously running a development version, and want to continue doing so or switch to the latest commit, run:
+```sh
+git switch dev
 git pull
+```
+
+Regardless of which of the above you picked, run:
+```sh
 git stash pop
 yarn
 yarn build && yarn migrate
 ```
 
-Start Iceshrimp back up
+Now restart the Iceshrimp service and everything should be up to date.
 
 ## Post-install
 
