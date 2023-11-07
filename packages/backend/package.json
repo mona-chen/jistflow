@@ -113,7 +113,7 @@
 		"qs": "6.11.2",
 		"random-seed": "0.3.0",
 		"ratelimiter": "3.4.1",
-		"re2": "1.20.3",
+		"re2": "1.20.5",
 		"redis-semaphore": "5.5.0",
 		"reflect-metadata": "0.1.13",
 		"rename": "1.0.4",
