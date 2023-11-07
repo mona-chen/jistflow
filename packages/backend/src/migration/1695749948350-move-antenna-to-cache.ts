@@ -1,5 +1,4 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
-import { redisClient } from "../db/redis.js";
 
 export class MoveAntennaToCache1695749948350 implements MigrationInterface {
 	name = "MoveAntennaToCache1695749948350";
@@ -19,6 +18,7 @@ export class MoveAntennaToCache1695749948350 implements MigrationInterface {
 			console.log('ANTENNA_MIGRATION_SKIP = true, skipping antenna note migration');
 		}
 		else {
+			const { redisClient } = await import("../db/redis.js");
 			const total = await queryRunner.query(`SELECT COUNT(1) FROM "antenna_note"`)
 				.then(p => p[0]['count']);
 
@@ -41,6 +41,8 @@ export class MoveAntennaToCache1695749948350 implements MigrationInterface {
 
 				query = `SELECT "id", "noteId", "antennaId" FROM "antenna_note" WHERE "id" > '${res.at(-1).id}' ORDER BY "id" ASC LIMIT ${Math.min(readLimit, remaining)}`;
 			}
+
+			redisClient.quit();
 		}
 
 		await queryRunner.query(`DROP TABLE IF EXISTS "antenna_note"`);

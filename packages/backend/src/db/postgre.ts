@@ -75,7 +75,6 @@ import { NoteEdit } from "@/models/entities/note-edit.js";
 import { entities as charts } from "@/services/chart/entities.js";
 import { envOption } from "../env.js";
 import { dbLogger } from "./logger.js";
-import { redisClient } from "./redis.js";
 import { OAuthApp } from "@/models/entities/oauth-app.js";
 import { OAuthToken } from "@/models/entities/oauth-token.js";
 
@@ -238,6 +237,7 @@ export async function initDb(force = false) {
 
 export async function resetDb() {
 	const reset = async () => {
+		const { redisClient } = await import("./redis.js");
 		await redisClient.flushdb();
 		const tables = await db.query(`SELECT relname AS "table"
 		FROM pg_class C LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)

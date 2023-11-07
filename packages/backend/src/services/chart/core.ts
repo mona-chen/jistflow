@@ -15,7 +15,6 @@ import {
 	subtractTime,
 	addTime,
 } from "@/prelude/time.js";
-import { getChartInsertLock } from "@/misc/app-lock.js";
 import { db } from "@/db/postgre.js";
 import promiseLimit from "promise-limit";
 
@@ -430,6 +429,7 @@ export default abstract class Chart<T extends Schema> {
 			? `${this.name}:${date}:${span}:${group}`
 			: `${this.name}:${date}:${span}`;
 
+		const { getChartInsertLock } = await import("@/misc/app-lock.js");
 		const unlock = await getChartInsertLock(lockKey);
 		try {
 			// ロック内でもう1回チェックする
