@@ -6,7 +6,15 @@ This guide is based on `docker compose`/Docker Compose v2, but `docker-compose`/
 
 ### Getting needed files
 
-Run `git clone https://iceshrimp.dev/iceshrimp/iceshrimp`, but if you are not planning on building your own image, just grabbing `.config` and `docs/examples/docker-compose.yml` from the repo will suffice.
+If you want to use the prebuilt images:
+```sh
+GIT_LFS_SKIP_SMUDGE=1 git clone https://iceshrimp.dev/iceshrimp/iceshrimp.git --depth=1
+```
+
+If you want to build your own images (make sure to install `git-lfs` before running the command):
+```sh
+git clone https://iceshrimp.dev/iceshrimp/iceshrimp.git --depth=1
+```
 
 ### docker-compose.yml
 

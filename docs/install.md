@@ -32,6 +32,8 @@ This document will guide you through manual installation of Iceshrimp. We also p
 
 ### Download repository
 
+Make sure you have `git-lfs` installed before cloning the repo, as we are using Git LFS for efficient storage of binary blobs.
+
 ```sh
 git clone https://iceshrimp.dev/iceshrimp/iceshrimp.git --depth=1
 ```
@@ -59,6 +61,8 @@ corepack enable
 corepack prepare --activate
 yarn
 ```
+
+Note: If you get a lot of `The remote archive doesn't match the expected checksum` errors, please make sure you installed `git-lfs` and ran `git lfs install && git lfs fetch`.
 
 ## Building Iceshrimp
 
@@ -128,6 +132,8 @@ If this is your first run, after Iceshrimp has started successfully, you'll be a
 
 ### Updating Iceshrimp
 
+Before you start, if you cloned the iceshrimp repository before the Git LFS migration, please follow [these instructions](https://iceshrimp.dev/iceshrimp/iceshrimp/wiki/Git-LFS#fixing-up-a-preexisting-cloned-repo) to get your repository back in sync.
+
 First, stop the Iceshrimp service and then run the following commands:
 
 ```sh
@@ -153,6 +159,8 @@ git stash pop
 yarn
 yarn build && yarn migrate
 ```
+
+Note: If you get a lot of `The remote archive doesn't match the expected checksum` errors, please make sure you installed `git-lfs` and ran `git lfs install && git lfs fetch`.
 
 Now restart the Iceshrimp service and everything should be up to date.
 
