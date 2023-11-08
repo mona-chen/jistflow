@@ -6,12 +6,14 @@ import type { User } from "@/models/entities/user.js";
 import define from "../../define.js";
 import { apiLogger } from "../../logger.js";
 import { ApiError } from "../../error.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
 
 export const meta = {
 	tags: ["users"],
 
+	// TODO: determine if should allow this in private mode or to create a new endpoint just for 2fa
 	requireCredential: false,
-	requireCredentialPrivateMode: true,
+	requireCredentialPrivateMode: false,  // set to false to allow FIDO2 and other 2fa auth
 
 	description: "Show the properties of a user.",
 
@@ -146,8 +148,13 @@ export default define(meta, paramDef, async (ps, me) => {
 			throw new ApiError(meta.errors.noSuchUser);
 		}
 
+		// apiLogger.debug(`packed (detailed): ${JSON.stringify(await Users.pack(user, me, {detail: true}))}`);
+		// apiLogger.debug(`packed (private): ${JSON.stringify(await Users.pack(user, me, {detail: true, isPrivateMode: true}))}`);
+
+		const serverMeta = await fetchMeta();
 		return await Users.pack(user, me, {
 			detail: true,
+			isPrivateMode: me !== null ? false : serverMeta.privateMode
 		});
 	}
 });

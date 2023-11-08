@@ -372,12 +372,14 @@ export const UserRepository = db.getRepository(User).extend({
 		options?: {
 			detail?: D;
 			includeSecrets?: boolean;
+			isPrivateMode?: boolean;
 		},
 	): Promise<IsMeAndIsUserDetailed<ExpectsMe, D>> {
 		const opts = Object.assign(
 			{
 				detail: false,
 				includeSecrets: false,
+				isPrivateMode: false
 			},
 			options,
 		);
@@ -442,6 +444,30 @@ export const UserRepository = db.getRepository(User).extend({
 
 		const falsy = opts.detail ? false : undefined;
 
+		if (opts.isPrivateMode) {
+			const packed = {
+				id: user.id,
+				username: user.username,
+				host: user.host,
+
+				...(opts.detail
+				? {
+						twoFactorEnabled: profile!.twoFactorEnabled,
+						usePasswordLessLogin: profile!.usePasswordLessLogin,
+						securityKeys: profile!.twoFactorEnabled
+							? UserSecurityKeys.countBy({
+									userId: user.id,
+								}).then((result) => result >= 1)
+							: false,
+					}
+				: {}),
+			} as Promiseable<Packed<"User">> as Promiseable<
+			IsMeAndIsUserDetailed<ExpectsMe, D>
+		>;
+
+			return await awaitAll(packed);
+		}
+
 		const packed = {
 			id: user.id,
 			name: user.name,
@@ -472,7 +498,7 @@ export const UserRepository = db.getRepository(User).extend({
 										iconUrl: instance.iconUrl,
 										faviconUrl: instance.faviconUrl,
 										themeColor: instance.themeColor,
-								  }
+									}
 								: undefined,
 						)
 				: undefined,
@@ -527,9 +553,9 @@ export const UserRepository = db.getRepository(User).extend({
 						securityKeys: profile!.twoFactorEnabled
 							? UserSecurityKeys.countBy({
 									userId: user.id,
-							  }).then((result) => result >= 1)
+								}).then((result) => result >= 1)
 							: false,
-				  }
+					}
 				: {}),
 
 			...(opts.detail && isMe
@@ -568,7 +594,7 @@ export const UserRepository = db.getRepository(User).extend({
 						mutedInstances: profile!.mutedInstances,
 						mutingNotificationTypes: profile!.mutingNotificationTypes,
 						emailNotificationTypes: profile!.emailNotificationTypes,
-				  }
+					}
 				: {}),
 
 			...(opts.includeSecrets
@@ -585,9 +611,9 @@ export const UserRepository = db.getRepository(User).extend({
 										name: true,
 										lastUsed: true,
 									},
-							  })
+								})
 							: [],
-				  }
+					}
 				: {}),
 
 			...(relation
@@ -601,7 +627,7 @@ export const UserRepository = db.getRepository(User).extend({
 						isBlocked: relation.isBlocked,
 						isMuted: relation.isMuted,
 						isRenoteMuted: relation.isRenoteMuted,
-				  }
+					}
 				: {}),
 		} as Promiseable<Packed<"User">> as Promiseable<
 			IsMeAndIsUserDetailed<ExpectsMe, D>
