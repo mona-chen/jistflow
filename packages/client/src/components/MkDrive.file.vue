@@ -107,6 +107,12 @@ function getMenu() {
 			icon: `${icon("ph-download-simple")}`,
 			download: props.file.name,
 		},
+		{
+			type: "a",
+			href: `/my/drive/file/${props.file.id}/attached`,
+			text: i18n.ts.showAttachedNotes,
+			icon: `${icon("ph-paperclip")}`,
+		},
 		null,
 		{
 			text: i18n.ts.delete,

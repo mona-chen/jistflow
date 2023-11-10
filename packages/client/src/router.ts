@@ -583,6 +583,11 @@ export const routes = [
 		loginRequired: true,
 	},
 	{
+		path: "/my/drive/file/:fileId/attached",
+		component: page(() => import("./pages/attached-files.vue")),
+		loginRequired: true,
+	},
+	{
 		path: "/my/drive",
 		component: page(() => import("./pages/drive.vue")),
 		loginRequired: true,
