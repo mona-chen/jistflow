@@ -8,9 +8,9 @@
 	},
 	"private": true,
 	"scripts": {
-		"rebuild": "clean && node ./scripts/build-greet.js && yarn workspace iceshrimp-js build &&  yarn workspaces foreach -pitv run build && gulp",
-		"build": "node ./scripts/build-greet.js && yarn workspace iceshrimp-js run build && yarn workspaces foreach -pitv run build && gulp",
-		"build:debug": "node ./scripts/build-greet.js && yarn workspace iceshrimp-js run build:debug && yarn workspaces foreach -pitv run build:debug && gulp",
+		"rebuild": "clean && node ./scripts/build-greet.js && yarn workspace iceshrimp-js build &&  yarn workspaces foreach -Apitv run build && gulp",
+		"build": "node ./scripts/build-greet.js && yarn workspace iceshrimp-js run build && yarn workspaces foreach -Apitv run build && gulp",
+		"build:debug": "node ./scripts/build-greet.js && yarn workspace iceshrimp-js run build:debug && yarn workspaces foreach -Apitv run build:debug && gulp",
 		"start": "yarn workspace backend run start",
 		"start:debug": "yarn workspace backend run start:debug",
 		"start:test": "yarn workspace backend run start:test",
@@ -22,13 +22,13 @@
 		"watch": "yarn dev",
 		"dev": "node ./scripts/dev.js",
 		"dev:staging": "NODE_OPTIONS=--max_old_space_size=3072 NODE_ENV=development yarn build && yarn start",
-		"lint": "yarn workspaces foreach -p run lint",
+		"lint": "yarn workspaces foreach -Ap run lint",
 		"cy:open": "cypress open --browser --e2e --config-file=cypress.config.ts",
 		"cy:run": "cypress run",
 		"e2e": "start-server-and-test start:test http://localhost:61812 cy:run",
 		"mocha": "yarn workspace backend run mocha",
 		"test": "yarn mocha",
-		"format": "yarn workspaces foreach -p run format",
+		"format": "yarn workspaces foreach -Ap run format",
 		"clean": "node ./scripts/clean.js",
 		"clean-all": "node ./scripts/clean-all.js",
 		"cleanall": "yarn clean-all",
@@ -70,7 +70,7 @@
 		"start-server-and-test": "1.15.2",
 		"typescript": "5.1.6"
 	},
-	"packageManager": "yarn@3.6.4",
+	"packageManager": "yarn@4.0.1+sha256.5a9d054e67fbbae8774cd3667736fd74407ffbbb336898523ca1fe87b3fc4ee3",
 	"dependenciesMeta": {
 		"@discordapp/twemoji@14.1.2": {
 			"unplugged": true
