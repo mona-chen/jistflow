@@ -175,7 +175,7 @@ export default async (
 ) =>
 	// rome-ignore lint/suspicious/noAsyncPromiseExecutor: FIXME
 	new Promise<Note>(async (res, rej) => {
-		const dontFederateInitially = data.visibility === "hidden";
+		const dontFederateInitially = data.visibility?.startsWith("hidden") === true;
 
 		// If you reply outside the channel, match the scope of the target.
 		// TODO (I think it's a process that could be done on the client side, but it's server side for now.)
@@ -209,7 +209,7 @@ export default async (
 		if (data.channel != null) data.visibility = "public";
 		if (data.channel != null) data.visibleUsers = [];
 		if (data.channel != null) data.localOnly = true;
-		if (data.visibility.startsWith("hidden"))
+		if (data.visibility.startsWith("hidden") && data.visibility !== "hidden")
 			data.visibility = data.visibility.slice(6);
 
 		// enforce silent clients on server
