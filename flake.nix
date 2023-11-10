@@ -17,6 +17,7 @@
 			# Define the systems that this works on. Only tested with x86_64-linux, add more if you test and it works.
 			systems = [
 				"x86_64-linux"
+				"aarch64-linux"
 			];
 			# Expose these attributes for every system defined above.
 			perSystem = { config, pkgs, ... }: {
@@ -28,8 +29,8 @@
 							name = "iceshrimp-dev-shell";
 							# Add additional packages to our environment
 							packages = [
-								pkgs.yarn-berry
 								pkgs.python3
+								pkgs.corepack_20
 							];
 							# No need to warn on a new version, we'll update as needed.
 							devenv.warnOnNewVersion = false;
@@ -37,7 +38,7 @@
 							languages.typescript.enable = true;
 							# Enable javascript for NPM and Yarn
 							languages.javascript.enable = true;
-							languages.javascript.package = pkgs.nodejs_18;
+							languages.javascript.package = pkgs.nodejs_20;
 							processes = {
 								dev-server.exec = "yarn run dev";
 							};
