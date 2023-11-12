@@ -62,7 +62,7 @@ corepack prepare --activate
 yarn
 ```
 
-Note: If you get a lot of `The remote archive doesn't match the expected checksum` errors, please make sure you installed `git-lfs` and ran `git lfs install && git lfs fetch`.
+Note: If you get a lot of `The remote archive doesn't match the expected checksum` errors, please make sure you installed `git-lfs` and ran `git lfs install && git lfs pull`.
 
 ## Building Iceshrimp
 
@@ -160,7 +160,7 @@ yarn
 yarn build && yarn migrate
 ```
 
-Note: If you get a lot of `The remote archive doesn't match the expected checksum` errors, please make sure you installed `git-lfs` and ran `git lfs install && git lfs fetch`.
+Note: If you get a lot of `The remote archive doesn't match the expected checksum` errors, please make sure you installed `git-lfs` and ran `git lfs install && git lfs pull`.
 
 Now restart the Iceshrimp service and everything should be up to date.
 
