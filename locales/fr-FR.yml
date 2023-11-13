@@ -993,10 +993,11 @@ _registry:
   domain: "Domaine"
   createKey: "Créer une clé"
 _aboutIceshrimp:
-  about: "Iceshrimp est un fork de Misskey."
+  about: "Iceshrimp est un média social décentralisé et fédéré utilisant ActivityPub\n\
+    C'est un fork de Calckey/Firefish (qui est un fork de Misskey¹²)"
   contributors: "Principaux contributeurs"
   allContributors: "Tous les contributeurs"
-  source: "Développement d’Iceshrimp"
+  source: "Développement"
   translation: "Traductions"
   chatroom: "Salon de discussion"
   documentation: "Documentation"
