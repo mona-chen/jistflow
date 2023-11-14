@@ -94,7 +94,7 @@ export class AuthHelpers {
 
     public static async getAuthToken(ctx: MastoContext) {
         const body: any = ctx.request.body || ctx.request.query;
-        const scopes: string[] = (typeof body.scopes === "string" ? body.scopes.split(' ') : body.scopes) ?? ['read'];
+        const scopes: string[] = (typeof body.scope === "string" ? body.scope.split(' ') : body.scope) ?? ['read'];
         const clientId = toSingleLast(body.client_id);
         const code = toSingleLast(body.code);
 
