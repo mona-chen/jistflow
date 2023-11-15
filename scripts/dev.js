@@ -7,15 +7,10 @@ const execa = require("execa");
 		stderr: process.stderr,
 	});
 
-	await execa("yarn", ["workspace", "iceshrimp-js", "build"], {
+	await execa("yarn", ["build"], {
 		stdout: process.stdout,
 		stderr: process.stderr,
 	})
-
-	await execa("yarn", ["workspaces", "foreach", "-Apitv", "run", "build"], {
-		stdout: process.stdout,
-		stderr: process.stderr,
-	});
 
 	execa("yarn", ["gulp", "watch"], {
 		cwd: __dirname + "/../",
