@@ -12304,6 +12304,7 @@ const RAW_RUNTIME_STATE =
           ["@vitejs/plugin-vue", "virtual:658502eb4296e93abedc18b6aa9b26978f434f08d98e21ebb0e725354b8bb54b62db9c4a1893e460c694ff7500ff5cbafa4457b0dfd26b5838868666c861e990#npm:4.2.3"],\
           ["@types/vite", null],\
           ["@types/vue", null],\
+          ["supports-color", "npm:8.1.1"],\
           ["vite", "virtual:658502eb4296e93abedc18b6aa9b26978f434f08d98e21ebb0e725354b8bb54b62db9c4a1893e460c694ff7500ff5cbafa4457b0dfd26b5838868666c861e990#npm:4.4.2"],\
           ["vue", "npm:3.3.4"]\
         ],\
@@ -31778,6 +31779,7 @@ const RAW_RUNTIME_STATE =
           ["@types/stylus", null],\
           ["@types/sugarss", null],\
           ["@types/terser", null],\
+          ["bufferutil", "npm:4.0.7"],\
           ["esbuild", "npm:0.18.20"],\
           ["fsevents", "patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"],\
           ["less", null],\
@@ -31787,6 +31789,7 @@ const RAW_RUNTIME_STATE =
           ["sass", "npm:1.63.6"],\
           ["stylus", null],\
           ["sugarss", null],\
+          ["supports-color", "npm:8.1.1"],\
           ["terser", null]\
         ],\
         "packagePeers": [\
