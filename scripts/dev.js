@@ -12,7 +12,7 @@ const execa = require("execa");
 		stderr: process.stderr,
 	})
 
-	await execa("yarn", ["workspaces", "foreach", "run", "build"], {
+	await execa("yarn", ["workspaces", "foreach", "-Apitv", "run", "build"], {
 		stdout: process.stdout,
 		stderr: process.stderr,
 	});
