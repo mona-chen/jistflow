@@ -9030,7 +9030,7 @@ const RAW_RUNTIME_STATE =
           ["dustjs-linkedin", null],\
           ["eco", null],\
           ["ect", null],\
-          ["ejs", null],\
+          ["ejs", "npm:3.1.9"],\
           ["haml-coffee", null],\
           ["hamlet", null],\
           ["hamljs", null],\
@@ -9049,7 +9049,7 @@ const RAW_RUNTIME_STATE =
           ["mustache", null],\
           ["nunjucks", null],\
           ["plates", null],\
-          ["pug", "npm:3.0.2"],\
+          ["pug", null],\
           ["qejs", null],\
           ["ractive", null],\
           ["razor-tmpl", null],\
@@ -9138,7 +9138,6 @@ const RAW_RUNTIME_STATE =
           "dustjs-linkedin",\
           "eco",\
           "ect",\
-          "ejs",\
           "haml-coffee",\
           "hamlet",\
           "hamljs",\
@@ -9157,6 +9156,7 @@ const RAW_RUNTIME_STATE =
           "mustache",\
           "nunjucks",\
           "plates",\
+          "pug",\
           "qejs",\
           "ractive",\
           "razor-tmpl",\
