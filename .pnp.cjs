@@ -413,10 +413,6 @@ const RAW_RUNTIME_STATE =
       "npm:1.2.1"\
     ],\
     [\
-      "@iceshrimp/re2",\
-      "npm:1.20.6::__archiveUrl=https%3A%2F%2Ficeshrimp.dev%2Fapi%2Fpackages%2Ficeshrimp%2Fnpm%2F%2540iceshrimp%252Fre2%2F-%2F1.20.6%2Fre2-1.20.6.tgz"\
-    ],\
-    [\
       "@ioredis/commands",\
       "npm:1.2.0"\
     ],\
@@ -595,6 +591,10 @@ const RAW_RUNTIME_STATE =
     [\
       "@nodelib/fs.walk",\
       "npm:1.2.8"\
+    ],\
+    [\
+      "@npmcli/agent",\
+      "npm:2.2.0"\
     ],\
     [\
       "@npmcli/fs",\
@@ -1450,7 +1450,7 @@ const RAW_RUNTIME_STATE =
     ],\
     [\
       "agent-base",\
-      "npm:6.0.2"\
+      "npm:7.1.0"\
     ],\
     [\
       "agentkeepalive",\
@@ -3606,7 +3606,7 @@ const RAW_RUNTIME_STATE =
     ],\
     [\
       "install-artifact-from-github",\
-      "npm:1.3.3"\
+      "npm:1.3.5"\
     ],\
     [\
       "install-peers",\
@@ -5409,6 +5409,10 @@ const RAW_RUNTIME_STATE =
       "npm:7.2.3"\
     ],\
     [\
+      "proc-log",\
+      "npm:3.0.0"\
+    ],\
+    [\
       "process-nextick-args",\
       "npm:2.0.1"\
     ],\
@@ -5587,6 +5591,10 @@ const RAW_RUNTIME_STATE =
     [\
       "rdf-canonize",\
       "npm:3.4.0"\
+    ],\
+    [\
+      "re2",\
+      "npm:1.20.8"\
     ],\
     [\
       "react-is",\
@@ -9047,18 +9055,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@iceshrimp/re2", [\
-      ["npm:1.20.6::__archiveUrl=https%3A%2F%2Ficeshrimp.dev%2Fapi%2Fpackages%2Ficeshrimp%2Fnpm%2F%2540iceshrimp%252Fre2%2F-%2F1.20.6%2Fre2-1.20.6.tgz", {\
-        "packageLocation": "./.yarn/unplugged/@iceshrimp-re2-npm-1.20.6-2ee015ddd5/node_modules/@iceshrimp/re2/",\
-        "packageDependencies": [\
-          ["@iceshrimp/re2", "npm:1.20.6::__archiveUrl=https%3A%2F%2Ficeshrimp.dev%2Fapi%2Fpackages%2Ficeshrimp%2Fnpm%2F%2540iceshrimp%252Fre2%2F-%2F1.20.6%2Fre2-1.20.6.tgz"],\
-          ["install-artifact-from-github", "npm:1.3.3"],\
-          ["nan", "npm:2.18.0"],\
-          ["node-gyp", "npm:9.4.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@ioredis/commands", [\
       ["npm:1.2.0", {\
         "packageLocation": "./.yarn/cache/@ioredis-commands-npm-1.2.0-47541de88b-a8253c9539.zip/node_modules/@ioredis/commands/",\
@@ -9917,6 +9913,20 @@ const RAW_RUNTIME_STATE =
           ["@nodelib/fs.walk", "npm:1.2.8"],\
           ["@nodelib/fs.scandir", "npm:2.1.5"],\
           ["fastq", "npm:1.15.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@npmcli/agent", [\
+      ["npm:2.2.0", {\
+        "packageLocation": "./.yarn/cache/@npmcli-agent-npm-2.2.0-cf04e8a830-822ea07755.zip/node_modules/@npmcli/agent/",\
+        "packageDependencies": [\
+          ["@npmcli/agent", "npm:2.2.0"],\
+          ["agent-base", "npm:7.1.0"],\
+          ["http-proxy-agent", "npm:7.0.0"],\
+          ["https-proxy-agent", "npm:7.0.2"],\
+          ["lru-cache", "npm:10.0.2"],\
+          ["socks-proxy-agent", "npm:8.0.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -12737,6 +12747,13 @@ const RAW_RUNTIME_STATE =
           ["abbrev", "npm:1.1.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:2.0.0", {\
+        "packageLocation": "./.yarn/cache/abbrev-npm-2.0.0-0eb38a17e5-ca0a54e35b.zip/node_modules/abbrev/",\
+        "packageDependencies": [\
+          ["abbrev", "npm:2.0.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["abort-controller", [\
@@ -13946,7 +13963,6 @@ const RAW_RUNTIME_STATE =
           ["@bull-board/ui", "npm:5.6.0"],\
           ["@discordapp/twemoji", "npm:14.1.2"],\
           ["@elastic/elasticsearch", "npm:7.17.0"],\
-          ["@iceshrimp/re2", "npm:1.20.6::__archiveUrl=https%3A%2F%2Ficeshrimp.dev%2Fapi%2Fpackages%2Ficeshrimp%2Fnpm%2F%2540iceshrimp%252Fre2%2F-%2F1.20.6%2Fre2-1.20.6.tgz"],\
           ["@koa/cors", "npm:3.4.3"],\
           ["@koa/multer", "virtual:aa59773ac87791c4813d53447077fcf8a847d6de5a301d34dc31286584b1dbb26d30d3adb5b4c41c1e8aea04371e926fda05c09c6253647c432e11d872a304ba#npm:3.0.2"],\
           ["@koa/router", "npm:9.0.1"],\
@@ -14084,6 +14100,7 @@ const RAW_RUNTIME_STATE =
           ["qs", "npm:6.11.2"],\
           ["random-seed", "npm:0.3.0"],\
           ["ratelimiter", "npm:3.4.1"],\
+          ["re2", "npm:1.20.8"],\
           ["redis-lock", "npm:0.1.4"],\
           ["redis-semaphore", "virtual:aa59773ac87791c4813d53447077fcf8a847d6de5a301d34dc31286584b1dbb26d30d3adb5b4c41c1e8aea04371e926fda05c09c6253647c432e11d872a304ba#npm:5.3.1"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -14666,6 +14683,25 @@ const RAW_RUNTIME_STATE =
           ["glob", "npm:10.3.3"],\
           ["lru-cache", "npm:7.18.3"],\
           ["minipass", "npm:5.0.0"],\
+          ["minipass-collect", "npm:1.0.2"],\
+          ["minipass-flush", "npm:1.0.5"],\
+          ["minipass-pipeline", "npm:1.2.4"],\
+          ["p-map", "npm:4.0.0"],\
+          ["ssri", "npm:10.0.4"],\
+          ["tar", "npm:6.1.15"],\
+          ["unique-filename", "npm:3.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:18.0.0", {\
+        "packageLocation": "./.yarn/cache/cacache-npm-18.0.0-32582cfebc-b71fefe97b.zip/node_modules/cacache/",\
+        "packageDependencies": [\
+          ["cacache", "npm:18.0.0"],\
+          ["@npmcli/fs", "npm:3.1.0"],\
+          ["fs-minipass", "npm:3.0.2"],\
+          ["glob", "npm:10.3.3"],\
+          ["lru-cache", "npm:10.0.2"],\
+          ["minipass", "npm:7.0.4"],\
           ["minipass-collect", "npm:1.0.2"],\
           ["minipass-flush", "npm:1.0.5"],\
           ["minipass-pipeline", "npm:1.2.4"],\
@@ -20796,6 +20832,15 @@ const RAW_RUNTIME_STATE =
           ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:7.0.0", {\
+        "packageLocation": "./.yarn/cache/http-proxy-agent-npm-7.0.0-106a57cc8c-dbaaf3d9f3.zip/node_modules/http-proxy-agent/",\
+        "packageDependencies": [\
+          ["http-proxy-agent", "npm:7.0.0"],\
+          ["agent-base", "npm:7.1.0"],\
+          ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["http-signature", [\
@@ -20854,6 +20899,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/https-proxy-agent-npm-7.0.1-a2d5d93ee0-68e5a570fd.zip/node_modules/https-proxy-agent/",\
         "packageDependencies": [\
           ["https-proxy-agent", "npm:7.0.1"],\
+          ["agent-base", "npm:7.1.0"],\
+          ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.0.2", {\
+        "packageLocation": "./.yarn/cache/https-proxy-agent-npm-7.0.2-83ea6a5d42-9ec844f78f.zip/node_modules/https-proxy-agent/",\
+        "packageDependencies": [\
+          ["https-proxy-agent", "npm:7.0.2"],\
           ["agent-base", "npm:7.1.0"],\
           ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"]\
         ],\
@@ -21155,10 +21209,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["install-artifact-from-github", [\
-      ["npm:1.3.3", {\
-        "packageLocation": "./.yarn/cache/install-artifact-from-github-npm-1.3.3-909f6f3e67-c66997cdc1.zip/node_modules/install-artifact-from-github/",\
+      ["npm:1.3.5", {\
+        "packageLocation": "./.yarn/cache/install-artifact-from-github-npm-1.3.5-07f075ffb7-b746e79ae3.zip/node_modules/install-artifact-from-github/",\
         "packageDependencies": [\
-          ["install-artifact-from-github", "npm:1.3.3"]\
+          ["install-artifact-from-github", "npm:1.3.5"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -22050,6 +22104,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/isexe-npm-2.0.0-b58870bd2e-7c9f715c03.zip/node_modules/isexe/",\
         "packageDependencies": [\
           ["isexe", "npm:2.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:3.1.1", {\
+        "packageLocation": "./.yarn/cache/isexe-npm-3.1.1-9c0061eead-7fe1931ee4.zip/node_modules/isexe/",\
+        "packageDependencies": [\
+          ["isexe", "npm:3.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -24156,6 +24217,14 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
+      ["npm:10.0.2", {\
+        "packageLocation": "./.yarn/cache/lru-cache-npm-10.0.2-fcff47e16f-a675b71a19.zip/node_modules/lru-cache/",\
+        "packageDependencies": [\
+          ["lru-cache", "npm:10.0.2"],\
+          ["semver", "npm:7.5.4"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:4.1.5", {\
         "packageLocation": "./.yarn/cache/lru-cache-npm-4.1.5-ede304cc43-9ec7d73f11.zip/node_modules/lru-cache/",\
         "packageDependencies": [\
@@ -24271,6 +24340,24 @@ const RAW_RUNTIME_STATE =
           ["negotiator", "npm:0.6.3"],\
           ["promise-retry", "npm:2.0.1"],\
           ["socks-proxy-agent", "npm:7.0.0"],\
+          ["ssri", "npm:10.0.4"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:13.0.0", {\
+        "packageLocation": "./.yarn/cache/make-fetch-happen-npm-13.0.0-f87a92bb87-ded5a91a02.zip/node_modules/make-fetch-happen/",\
+        "packageDependencies": [\
+          ["make-fetch-happen", "npm:13.0.0"],\
+          ["@npmcli/agent", "npm:2.2.0"],\
+          ["cacache", "npm:18.0.0"],\
+          ["http-cache-semantics", "npm:4.1.1"],\
+          ["is-lambda", "npm:1.0.1"],\
+          ["minipass", "npm:7.0.4"],\
+          ["minipass-fetch", "npm:3.0.3"],\
+          ["minipass-flush", "npm:1.0.5"],\
+          ["minipass-pipeline", "npm:1.2.4"],\
+          ["negotiator", "npm:0.6.3"],\
+          ["promise-retry", "npm:2.0.1"],\
           ["ssri", "npm:10.0.4"]\
         ],\
         "linkType": "HARD"\
@@ -24672,6 +24759,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/minipass-npm-7.0.2-baa42a5a34-25d3afc74e.zip/node_modules/minipass/",\
         "packageDependencies": [\
           ["minipass", "npm:7.0.2"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.0.4", {\
+        "packageLocation": "./.yarn/cache/minipass-npm-7.0.4-eacb4e042e-e864bd02ce.zip/node_modules/minipass/",\
+        "packageDependencies": [\
+          ["minipass", "npm:7.0.4"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -25148,6 +25242,23 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["node-gyp", [\
+      ["npm:10.0.1", {\
+        "packageLocation": "./.yarn/unplugged/node-gyp-npm-10.0.1-48708ce70b/node_modules/node-gyp/",\
+        "packageDependencies": [\
+          ["node-gyp", "npm:10.0.1"],\
+          ["env-paths", "npm:2.2.1"],\
+          ["exponential-backoff", "npm:3.1.1"],\
+          ["glob", "npm:10.3.10"],\
+          ["graceful-fs", "npm:4.2.11"],\
+          ["make-fetch-happen", "npm:13.0.0"],\
+          ["nopt", "npm:7.2.0"],\
+          ["proc-log", "npm:3.0.0"],\
+          ["semver", "npm:7.5.4"],\
+          ["tar", "npm:6.1.15"],\
+          ["which", "npm:4.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:9.4.0", {\
         "packageLocation": "./.yarn/unplugged/node-gyp-npm-9.4.0-ebf5f5573e/node_modules/node-gyp/",\
         "packageDependencies": [\
@@ -25235,6 +25346,14 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["nopt", "npm:6.0.0"],\
           ["abbrev", "npm:1.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.2.0", {\
+        "packageLocation": "./.yarn/cache/nopt-npm-7.2.0-dd734b678d-1e7489f17c.zip/node_modules/nopt/",\
+        "packageDependencies": [\
+          ["nopt", "npm:7.2.0"],\
+          ["abbrev", "npm:2.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -27163,6 +27282,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["proc-log", [\
+      ["npm:3.0.0", {\
+        "packageLocation": "./.yarn/cache/proc-log-npm-3.0.0-a8c21c2f0f-02b64e1b39.zip/node_modules/proc-log/",\
+        "packageDependencies": [\
+          ["proc-log", "npm:3.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["process-nextick-args", [\
       ["npm:2.0.1", {\
         "packageLocation": "./.yarn/cache/process-nextick-args-npm-2.0.1-b8d7971609-1d38588e52.zip/node_modules/process-nextick-args/",\
@@ -27682,6 +27810,18 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["rdf-canonize", "npm:3.4.0"],\
           ["setimmediate", "npm:1.0.5"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["re2", [\
+      ["npm:1.20.8", {\
+        "packageLocation": "./.yarn/unplugged/re2-npm-1.20.8-777a96c6f5/node_modules/re2/",\
+        "packageDependencies": [\
+          ["re2", "npm:1.20.8"],\
+          ["install-artifact-from-github", "npm:1.3.5"],\
+          ["nan", "npm:2.18.0"],\
+          ["node-gyp", "npm:10.0.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -28974,6 +29114,16 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["socks-proxy-agent", "npm:7.0.0"],\
           ["agent-base", "npm:6.0.2"],\
+          ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"],\
+          ["socks", "npm:2.7.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:8.0.2", {\
+        "packageLocation": "./.yarn/cache/socks-proxy-agent-npm-8.0.2-df165543cf-ea727734bd.zip/node_modules/socks-proxy-agent/",\
+        "packageDependencies": [\
+          ["socks-proxy-agent", "npm:8.0.2"],\
+          ["agent-base", "npm:7.1.0"],\
           ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"],\
           ["socks", "npm:2.7.1"]\
         ],\
@@ -32226,6 +32376,14 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["which", "npm:3.0.1"],\
           ["isexe", "npm:2.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:4.0.0", {\
+        "packageLocation": "./.yarn/cache/which-npm-4.0.0-dd31cd4928-f17e84c042.zip/node_modules/which/",\
+        "packageDependencies": [\
+          ["which", "npm:4.0.0"],\
+          ["isexe", "npm:3.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\
