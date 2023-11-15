@@ -32,7 +32,7 @@ This document will guide you through manual installation of Iceshrimp. We also p
 
 ### Download repository
 
-Make sure you have `git-lfs` installed before cloning the repo, as we are using Git LFS for efficient storage of binary blobs.
+Make sure you have `git-lfs` installed and have run `git lfs install` before cloning the repo, as we are using Git LFS for efficient storage of binary blobs.
 
 ```sh
 git clone https://iceshrimp.dev/iceshrimp/iceshrimp.git

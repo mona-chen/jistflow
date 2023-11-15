@@ -11,7 +11,7 @@ If you want to use the prebuilt images:
 GIT_LFS_SKIP_SMUDGE=1 git clone https://iceshrimp.dev/iceshrimp/iceshrimp.git --depth=1
 ```
 
-If you want to build your own images (make sure to install `git-lfs` before running the command):
+If you want to build your own images (make sure to install `git-lfs` and to run `git lfs install` before running the command):
 ```sh
 git clone https://iceshrimp.dev/iceshrimp/iceshrimp.git
 ```
