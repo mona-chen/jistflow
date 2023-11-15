@@ -9049,7 +9049,7 @@ const RAW_RUNTIME_STATE =
           ["mustache", null],\
           ["nunjucks", null],\
           ["plates", null],\
-          ["pug", null],\
+          ["pug", "npm:3.0.2"],\
           ["qejs", null],\
           ["ractive", null],\
           ["razor-tmpl", null],\
@@ -9156,7 +9156,6 @@ const RAW_RUNTIME_STATE =
           "mustache",\
           "nunjucks",\
           "plates",\
-          "pug",\
           "qejs",\
           "ractive",\
           "razor-tmpl",\
