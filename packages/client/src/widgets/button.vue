@@ -7,12 +7,17 @@
 </template>
 
 <script lang="ts" setup>
-import { AiScript, parse } from "@syuilo/aiscript";
-import type { Widget, WidgetComponentExpose } from "./widget";
-import { useWidgetPropsManager } from "./widget";
+import { onMounted, onUnmounted, ref, watch } from "vue";
+import { Interpreter, Parser } from "@syuilo/aiscript";
+import { createAiScriptEnv } from "@/scripts/aiscript/api";
+import {
+	useWidgetPropsManager,
+	WidgetComponentEmits,
+	WidgetComponentProps,
+} from "./widget";
+import type { WidgetComponentExpose } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
-import { createAiScriptEnv } from "@/scripts/aiscript/api";
 import { $i } from "@/reactiveAccount";
 import MkButton from "@/components/MkButton.vue";
 
@@ -36,11 +41,8 @@ const widgetPropsDef = {
 
 type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 
-// 現時点ではvueの制限によりimportしたtypeをジェネリックに渡せない
-// const props = defineProps<WidgetComponentProps<WidgetProps>>();
-// const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
-const props = defineProps<{ widget?: Widget<WidgetProps> }>();
-const emit = defineEmits<{ (ev: "updateProps", props: WidgetProps) }>();
+const props = defineProps<WidgetComponentProps<WidgetProps>>();
+const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
 
 const { widgetProps, configure } = useWidgetPropsManager(
 	name,
@@ -49,8 +51,10 @@ const { widgetProps, configure } = useWidgetPropsManager(
 	emit,
 );
 
+const parser = new Parser();
+
 const run = async () => {
-	const aiscript = new AiScript(
+	const aiscript = new Interpreter(
 		createAiScriptEnv({
 			storageKey: "widget",
 			token: $i?.token,
@@ -76,11 +80,11 @@ const run = async () => {
 
 	let ast;
 	try {
-		ast = parse(widgetProps.script);
+		ast = parser.parse(widgetProps.script);
 	} catch (err) {
 		os.alert({
 			type: "error",
-			text: "Syntax error :(",
+			text: `Syntax error: ${err}`,
 		});
 		return;
 	}
@@ -89,7 +93,7 @@ const run = async () => {
 	} catch (err) {
 		os.alert({
 			type: "error",
-			text: err,
+			text: String(err),
 		});
 	}
 };
@@ -100,8 +104,3 @@ defineExpose<WidgetComponentExpose>({
 	id: props.widget ? props.widget.id : null,
 });
 </script>
-
-<style lang="scss" scoped>
-.mkw-button {
-}
-</style>
