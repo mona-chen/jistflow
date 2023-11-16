@@ -9,7 +9,7 @@ import Koa from "koa";
 import Router from "@koa/router";
 import send from "koa-send";
 import favicon from "koa-favicon";
-import views from "koa-views";
+import views from "@ladjs/koa-views";
 import sharp from "sharp";
 import { createBullBoard } from "@bull-board/api";
 import { BullAdapter } from "@bull-board/api/bullAdapter.js";

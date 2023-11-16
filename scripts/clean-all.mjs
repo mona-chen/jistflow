@@ -1,8 +1,11 @@
-const fs = require("node:fs");
-const execa = require("execa");
-const { join } = require("node:path");
+import fs from "node:fs";
+import path, { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { execa } from "execa";
 
 (async () => {
+	const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 	fs.rmSync(join(__dirname, "/../packages/backend/built"), {
 		recursive: true,
 		force: true,
