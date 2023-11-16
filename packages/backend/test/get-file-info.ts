@@ -1,6 +1,6 @@
 import * as assert from "assert";
-import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { getFileInfo } from "../src/misc/get-file-info.js";
 import { async } from "./utils.js";
 

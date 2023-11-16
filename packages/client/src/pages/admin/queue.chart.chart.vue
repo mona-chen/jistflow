@@ -96,23 +96,23 @@ const label =
 	props.type === "process"
 		? "Process"
 		: props.type === "active"
-		? "Active"
-		: props.type === "delayed"
-		? "Delayed"
-		: props.type === "waiting"
-		? "Waiting"
-		: ("?" as never);
+		  ? "Active"
+		  : props.type === "delayed"
+		    ? "Delayed"
+		    : props.type === "waiting"
+		      ? "Waiting"
+		      : ("?" as never);
 
 const color =
 	props.type === "process"
 		? "#9ccfd8"
 		: props.type === "active"
-		? "#31748f"
-		: props.type === "delayed"
-		? "#eb6f92"
-		: props.type === "waiting"
-		? "#f6c177"
-		: ("?" as never);
+		  ? "#31748f"
+		  : props.type === "delayed"
+		    ? "#eb6f92"
+		    : props.type === "waiting"
+		      ? "#f6c177"
+		      : ("?" as never);
 
 onMounted(() => {
 	chartInstance = new Chart(chartEl.value, {

@@ -17,8 +17,8 @@
 							? `${props.height}px`
 							: null
 						: height
-						? `min(${props.height}px, 100%)`
-						: '100%',
+						  ? `min(${props.height}px, 100%)`
+						  : '100%',
 				}"
 				tabindex="-1"
 			>

@@ -270,12 +270,12 @@ definePageMetadata(
 			src.value === "local"
 				? "ph-users ph-lg"
 				: src.value === "social"
-				? "ph-handshake ph-lg"
-				: src.value === "recommended"
-				? "ph-thumbs-up ph-lg"
-				: src.value === "global"
-				? "ph-planet ph-lg"
-				: "ph-house ph-lg",
+				  ? "ph-handshake ph-lg"
+				  : src.value === "recommended"
+				    ? "ph-thumbs-up ph-lg"
+				    : src.value === "global"
+				      ? "ph-planet ph-lg"
+				      : "ph-house ph-lg",
 	})),
 );
 

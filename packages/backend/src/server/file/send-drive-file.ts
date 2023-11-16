@@ -25,7 +25,8 @@ const assets = `${_dirname}/../../server/file/assets/`;
 const MAX_BYTE_RANGES = 10;
 
 const commonReadableHandlerGenerator =
-	(ctx: Koa.Context) => (e: Error): void => {
+	(ctx: Koa.Context) =>
+	(e: Error): void => {
 		serverLogger.error(e);
 		ctx.status = 500;
 		ctx.set("Cache-Control", "max-age=300");

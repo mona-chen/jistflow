@@ -21,6 +21,7 @@
 import { defineAsyncComponent, nextTick, ref } from "vue";
 import { Interpreter, Parser, utils } from "@syuilo/aiscript";
 import { v4 as uuid } from "uuid";
+import { compareVersions } from "compare-versions";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormButton from "@/components/MkButton.vue";
 import FormInfo from "@/components/MkInfo.vue";
@@ -29,7 +30,6 @@ import { ColdDeviceStorage } from "@/store";
 import { unisonReload } from "@/scripts/unison-reload";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { compareVersions } from "compare-versions";
 import icon from "@/scripts/icon";
 
 const code = ref<string>();

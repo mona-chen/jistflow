@@ -1,6 +1,6 @@
+import type { Ref } from "vue";
 import Ripple from "@/components/MkRipple.vue";
 import { popup } from "@/os";
-import type { Ref } from "vue";
 
 export default {
 	mounted(el: HTMLElement, binding: Ref<boolean>) {

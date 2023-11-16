@@ -105,8 +105,8 @@ async function init() {
 	provider.value = meta.enableHcaptcha
 		? "hcaptcha"
 		: meta.enableRecaptcha
-		? "recaptcha"
-		: null;
+		  ? "recaptcha"
+		  : null;
 }
 
 function save() {

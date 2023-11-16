@@ -290,14 +290,14 @@ async function init() {
 		meta.sensitiveMediaDetectionSensitivity === "veryLow"
 			? 0
 			: meta.sensitiveMediaDetectionSensitivity === "low"
-			? 1
-			: meta.sensitiveMediaDetectionSensitivity === "medium"
-			? 2
-			: meta.sensitiveMediaDetectionSensitivity === "high"
-			? 3
-			: meta.sensitiveMediaDetectionSensitivity === "veryHigh"
-			? 4
-			: 0;
+			  ? 1
+			  : meta.sensitiveMediaDetectionSensitivity === "medium"
+			    ? 2
+			    : meta.sensitiveMediaDetectionSensitivity === "high"
+			      ? 3
+			      : meta.sensitiveMediaDetectionSensitivity === "veryHigh"
+			        ? 4
+			        : 0;
 	setSensitiveFlagAutomatically.value = meta.setSensitiveFlagAutomatically;
 	enableSensitiveMediaDetectionForVideos.value =
 		meta.enableSensitiveMediaDetectionForVideos;
@@ -317,14 +317,14 @@ function save() {
 			sensitiveMediaDetectionSensitivity.value === 0
 				? "veryLow"
 				: sensitiveMediaDetectionSensitivity.value === 1
-				? "low"
-				: sensitiveMediaDetectionSensitivity.value === 2
-				? "medium"
-				: sensitiveMediaDetectionSensitivity.value === 3
-				? "high"
-				: sensitiveMediaDetectionSensitivity.value === 4
-				? "veryHigh"
-				: 0,
+				  ? "low"
+				  : sensitiveMediaDetectionSensitivity.value === 2
+				    ? "medium"
+				    : sensitiveMediaDetectionSensitivity.value === 3
+				      ? "high"
+				      : sensitiveMediaDetectionSensitivity.value === 4
+				        ? "veryHigh"
+				        : 0,
 		setSensitiveFlagAutomatically: setSensitiveFlagAutomatically.value,
 		enableSensitiveMediaDetectionForVideos:
 			enableSensitiveMediaDetectionForVideos.value,

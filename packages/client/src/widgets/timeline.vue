@@ -35,8 +35,8 @@
 					widgetProps.src === "list"
 						? widgetProps.list.name
 						: widgetProps.src === "antenna"
-						? widgetProps.antenna.name
-						: i18n.t("_timelines." + widgetProps.src)
+						  ? widgetProps.antenna.name
+						  : i18n.t("_timelines." + widgetProps.src)
 				}}</span>
 				<i
 					:class="
@@ -57,8 +57,8 @@
 					widgetProps.src === 'list'
 						? `list:${widgetProps.list.id}`
 						: widgetProps.src === 'antenna'
-						? `antenna:${widgetProps.antenna.id}`
-						: widgetProps.src
+						  ? `antenna:${widgetProps.antenna.id}`
+						  : widgetProps.src
 				"
 				:src="widgetProps.src"
 				:list="widgetProps.list ? widgetProps.list.id : null"

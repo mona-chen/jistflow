@@ -1,6 +1,6 @@
 import { Interpreter, Parser, utils, values } from "@syuilo/aiscript";
-import { createAiScriptEnv } from "@/scripts/aiscript/api";
 import { inputText } from "@/os";
+import { createAiScriptEnv } from "@/scripts/aiscript/api";
 import {
 	noteActions,
 	notePostInterruptors,
@@ -114,7 +114,10 @@ function createPluginEnv(opts) {
 			});
 		}),
 		"Plugin:register_page_view_interruptor": values.FN_NATIVE(([handler]) => {
-			registerPageViewInterruptor({ pluginId: opts.plugin.id, handler });
+			registerPageViewInterruptor({
+				pluginId: opts.plugin.id,
+				handler,
+			});
 		}),
 		"Plugin:open_url": values.FN_NATIVE(([url]) => {
 			window.open(url.value, "_blank");

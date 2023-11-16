@@ -5,7 +5,7 @@
 		/></template>
 		<MkSpacer :content-max="800">
 			<div class="attachments-timeline">
-				<XTimeline ref="tl" class="tl" src="file" :fileId="fileId" />
+				<XTimeline ref="tl" class="tl" src="file" :file-id="fileId" />
 			</div>
 		</MkSpacer>
 	</MkStickyContainer>
