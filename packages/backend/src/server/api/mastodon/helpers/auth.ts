@@ -5,7 +5,7 @@ import { genId } from "@/misc/gen-id.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
-import { toSingleLast, unique } from "@/prelude/array.js";
+import { difference, toSingleLast, unique } from "@/prelude/array.js";
 import { ILocalUser } from "@/models/entities/user.js";
 
 export class AuthHelpers {
@@ -111,7 +111,7 @@ export class AuthHelpers {
         if (body.grant_type !== 'authorization_code') throw new MastoApiError(400, "Invalid grant_type");
         if (!app || body.client_secret !== app.clientSecret) throw invalidClientError;
         if (!token || app.id !== token.appId) throw new MastoApiError(401, "Invalid code");
-        if (!scopes.every(p => app.scopes.includes(p))) throw invalidScopeError;
+        if (difference(scopes, app.scopes).length > 0) throw invalidScopeError;
         if (!app.redirectUris.includes(body.redirect_uri)) throw new MastoApiError(400, "Redirect URI not in list");
 
         await OAuthTokens.update(token.id, { active: true });
