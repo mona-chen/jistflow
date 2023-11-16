@@ -6,15 +6,10 @@ WORKDIR /iceshrimp
 # Install compilation dependencies
 RUN apk add --no-cache --no-progress git alpine-sdk vips-dev python3 nodejs-current npm vips
 
-# Copy only the dependency-related files first, to cache efficiently
-COPY package.json yarn.lock .pnp.cjs .pnp.loader.mjs .yarnrc.yml .env.yarn ./
-COPY packages/backend/package.json packages/backend/package.json
-COPY packages/client/package.json packages/client/package.json
-COPY packages/sw/package.json packages/sw/package.json
-COPY packages/iceshrimp-js/package.json packages/iceshrimp-js/package.json
+# Copy in all files for the build
+COPY . ./
 
 # Prepare yarn cache
-COPY .yarn/cache .yarn/cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache cp -Tr .yarncache .yarn
 
 # Configure corepack and install dev mode dependencies for compilation
@@ -22,9 +17,6 @@ RUN corepack enable && corepack prepare --activate && yarn
 
 # Save yarn cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache rm -rf .yarncache/* && cp -Tr .yarn .yarncache
-
-# Copy in the rest of the files to compile
-COPY . ./
 
 # Build the thing
 RUN env NODE_ENV=production yarn build
