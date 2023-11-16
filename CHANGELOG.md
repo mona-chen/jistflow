@@ -1,3 +1,42 @@
+## v2023.11.2
+This release primarily contains project maintenance changes. For the first time, we are also distributing binary packages! Currently we support Arch Linux, DEB & RPM based distributions will follow.
+
+### Highlights
+- Lots of yarn script tweaks and additions, allowing for easier packaging and distribution
+- Significantly reduced size of container images
+- Binary packages for Arch Linux (DEB/RPM support to follow)
+
+### UI/UX
+- The local-only icon is now consistent across different parts of the UI
+- The `/about-iceshrimp` page was tweaked
+
+### Backend
+- Running `yarn workspace backend run migration:revert` now exits properly instead of stalling
+- Enabling 2FA when the instance is in private mode no longer locks users out of their account
+- A typo in the name of the scope parameter for the `/oauth/token` endpoint was fixed
+- The `/oauth/token` endpoint is now strictly compliant with the Mastodon API specification (note: their documentation does not match their implementation)
+
+### Infrastructure and governance
+- Built Docker images now only contain runtime dependencies, decreasing image size significantly
+
+### Miscellaneous
+- Yarn is now using the strict PnP mode, all peer dependencies that are broken upstream were patched
+- A new yarn script, `focus-production`, was added. Running it will remove all dependencies that are not needed after building the project. Caution: only use for packaging, as this rewrites all `package.json` files in the project directory.
+- A new yarn script, `regen-version`, was added. Running it will set the `version` attribute of the main `package.json` to `${tag}-dev-${git_revision}`.
+- The installation documentation was updated
+- Git LFS disclaimers were added to the documentation
+- Yarn was updated to v4.0.2
+- Dependencies using `node-gyp` now build with all available threads
+- The nix flake was updated to work properly with all recent changes
+- The documentation no longer recommends git clones with `--depth=1` for most deployment types, as this is not really necessary anymore due to git-lfs
+- Patches were merged into upstream `re2` and their `install-artifact-from-github` dependency, both fixing build on arm64-musl, and allowing for much faster prebuilt artifact installs
+- The yarn script `dev` now only builds the project once
+- The nix development documentation was updated
+- The README badges were updated
+
+### Attribution
+This release was made possible by project contributors: Alexis, AntoineÐ, Laura Hausmann & Pyrox
+
 ## v2023.11.1
 ### Release notes
 This release primarily adds polish and fixes bugs and regressions introduced in the previous release cycle. If you are running `v2023.11` or earlier, upgrading is strongly recommended.
