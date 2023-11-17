@@ -27,27 +27,6 @@ export type Source = {
 		user?: string;
 		tls?: { [y: string]: string };
 	};
-	elasticsearch: {
-		host: string;
-		port: number;
-		ssl?: boolean;
-		user?: string;
-		pass?: string;
-		index?: string;
-	};
-	sonic: {
-		host: string;
-		port: number;
-		auth?: string;
-		collection?: string;
-		bucket?: string;
-	};
-	meilisearch: {
-		host: string;
-		port: number;
-		apiKey?: string;
-		ssl: boolean;
-	};
 
 	mediaCleanup?: {
 		cron?: boolean;

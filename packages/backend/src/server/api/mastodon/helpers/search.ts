@@ -1,6 +1,3 @@
-import es from "@/db/elasticsearch.js";
-import sonic from "@/db/sonic.js";
-import meilisearch, { MeilisearchNote } from "@/db/meilisearch.js";
 import { Followings, Hashtags, Notes, Users } from "@/models/index.js";
 import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
@@ -9,7 +6,7 @@ import { generateBlockedUserQuery } from "@/server/api/common/generate-block-que
 import { Note } from "@/models/entities/note.js";
 import { PaginationHelpers } from "@/server/api/mastodon/helpers/pagination.js";
 import { ILocalUser, User } from "@/models/entities/user.js";
-import { Brackets, In, IsNull } from "typeorm";
+import { Brackets, IsNull } from "typeorm";
 import { awaitAll } from "@/prelude/await-all.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import Resolver from "@/remote/activitypub/resolver.js";
@@ -19,7 +16,6 @@ import { createPerson } from "@/remote/activitypub/models/person.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { createNote } from "@/remote/activitypub/models/note.js";
-import { getUser } from "@/server/api/common/getters.js";
 import config from "@/config/index.js";
 import { logger, MastoContext } from "@/server/api/mastodon/index.js";
 
@@ -144,216 +140,6 @@ export class SearchHelpers {
             }
         }
 
-        // Try sonic search first, unless we have advanced filters
-        if (sonic && !accountId && !following) {
-            let start = offset ?? 0;
-            const chunkSize = 100;
-
-            // Use sonic to fetch and step through all search results that could match the requirements
-            const ids = [];
-            while (true) {
-                const results = await sonic.search.query(
-                    sonic.collection,
-                    sonic.bucket,
-                    q,
-                    {
-                        limit: chunkSize,
-                        offset: start,
-                    },
-                );
-
-                start += chunkSize;
-
-                if (results.length === 0) {
-                    break;
-                }
-
-                const res = results
-                    .map((k) => JSON.parse(k))
-                    .filter((key) => {
-                        if (minId && key.id < minId) return false;
-                        if (maxId && key.id > maxId) return false;
-                        return true;
-                    })
-                    .map((key) => key.id);
-
-                ids.push(...res);
-            }
-
-            // Sort all the results by note id DESC (newest first)
-            ids.sort((a, b) => b - a);
-
-            // Fetch the notes from the database until we have enough to satisfy the limit
-            start = 0;
-            const found = [];
-            while (found.length < limit && start < ids.length) {
-                const chunk = ids.slice(start, start + chunkSize);
-
-                const query = Notes.createQueryBuilder("note")
-                    .where({ id: In(chunk) })
-                    .orderBy({ id: "DESC" })
-
-                generateVisibilityQuery(query, user);
-
-                if (!accountId) {
-                    generateMutedUserQuery(query, user);
-                    generateBlockedUserQuery(query, user);
-                }
-
-                if (following) {
-                    const followingQuery = Followings.createQueryBuilder("following")
-                        .select("following.followeeId")
-                        .where("following.followerId = :followerId", { followerId: user.id });
-
-                    query.andWhere(
-                        new Brackets((qb) => {
-                            qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, { meId: user.id });
-                        }),
-                    )
-                }
-
-                const notes: Note[] = await query.getMany();
-
-                found.push(...notes);
-                start += chunkSize;
-            }
-
-            // If we have more results than the limit, trim them
-            if (found.length > limit) {
-                found.length = limit;
-            }
-
-            return found;
-        }
-        // Try meilisearch next
-        else if (meilisearch) {
-            let start = 0;
-            const chunkSize = 100;
-
-            // Use meilisearch to fetch and step through all search results that could match the requirements
-            const ids = [];
-            if (accountId) {
-                const acc = await getUser(accountId);
-                const append = acc.host !== null ? `from:${acc.usernameLower}@${acc.host} ` : `from:${acc.usernameLower}`;
-                q = append + q;
-            }
-            if (following) {
-                q = `filter:following ${q}`;
-            }
-            while (true) {
-                const results = await meilisearch.search(q, chunkSize, start, user);
-
-                start += chunkSize;
-
-                if (results.hits.length === 0) {
-                    break;
-                }
-
-                //TODO test this, it's the same logic the mk api uses but it seems, we need to make .hits already be a MeilisearchNote[] instead of forcing type checks to pass
-                const res = (results.hits as MeilisearchNote[])
-                    .filter((key: MeilisearchNote) => {
-                        if (accountId && key.userId !== accountId) return false;
-                        if (minId && key.id < minId) return false;
-                        if (maxId && key.id > maxId) return false;
-                        return true;
-                    })
-                    .map((key) => key.id);
-
-                ids.push(...res);
-            }
-
-            // Sort all the results by note id DESC (newest first)
-            //FIXME: fix this sort function (is it even necessary?)
-            //ids.sort((a, b) => b - a);
-
-            // Fetch the notes from the database until we have enough to satisfy the limit
-            start = 0;
-            const found = [];
-            while (found.length < limit && start < ids.length) {
-                const chunk = ids.slice(start, start + chunkSize);
-
-                const query = Notes.createQueryBuilder("note")
-                    .where({ id: In(chunk) })
-                    .orderBy({ id: "DESC" })
-
-                generateVisibilityQuery(query, user);
-
-                if (!accountId) {
-                    generateMutedUserQuery(query, user);
-                    generateBlockedUserQuery(query, user);
-                }
-
-                const notes: Note[] = await query.getMany();
-
-                found.push(...notes);
-                start += chunkSize;
-            }
-
-            // If we have more results than the limit, trim them
-            if (found.length > limit) {
-                found.length = limit;
-            }
-
-            return found;
-        } else if (es) {
-            const userQuery =
-                accountId != null
-                    ? [
-                        {
-                            term: {
-                                userId: accountId,
-                            },
-                        },
-                    ]
-                    : [];
-
-            const result = await es.search({
-                index: config.elasticsearch.index || "misskey_note",
-                body: {
-                    size: limit,
-                    from: offset,
-                    query: {
-                        bool: {
-                            must: [
-                                {
-                                    simple_query_string: {
-                                        fields: ["text"],
-                                        query: q.toLowerCase(),
-                                        default_operator: "and",
-                                    },
-                                },
-                                ...userQuery,
-                            ],
-                        },
-                    },
-                    sort: [
-                        {
-                            _doc: "desc",
-                        },
-                    ],
-                },
-            });
-
-            const hits = result.body.hits.hits.map((hit: any) => hit._id);
-
-            if (hits.length === 0) return [];
-
-            // Fetch found notes
-            const notes = await Notes.find({
-                where: {
-                    id: In(hits),
-                },
-                order: {
-                    id: -1,
-                },
-            });
-
-            //TODO: test this
-            //FIXME: implement pagination
-            return notes;
-        }
-
-        // Fallback to database query
         const query = PaginationHelpers.makePaginationQuery(
             Notes.createQueryBuilder("note"),
             undefined,

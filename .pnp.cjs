@@ -1513,19 +1513,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@elastic/elasticsearch", [\
-      ["npm:7.17.0", {\
-        "packageLocation": "./.yarn/cache/@elastic-elasticsearch-npm-7.17.0-f4178789c0-d54330ce50.zip/node_modules/@elastic/elasticsearch/",\
-        "packageDependencies": [\
-          ["@elastic/elasticsearch", "npm:7.17.0"],\
-          ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"],\
-          ["hpagent", "npm:0.1.2"],\
-          ["ms", "npm:2.1.3"],\
-          ["secure-json-parse", "npm:2.7.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@es-joy/jsdoccomment", [\
       ["npm:0.39.4", {\
         "packageLocation": "./.yarn/cache/@es-joy-jsdoccomment-npm-0.39.4-48cba32ec8-10d18c2de8.zip/node_modules/@es-joy/jsdoccomment/",\
@@ -6991,7 +6978,6 @@ const RAW_RUNTIME_STATE =
           ["@bull-board/koa", "npm:5.6.0"],\
           ["@bull-board/ui", "npm:5.6.0"],\
           ["@discordapp/twemoji", "npm:14.1.2"],\
-          ["@elastic/elasticsearch", "npm:7.17.0"],\
           ["@koa/cors", "npm:3.4.3"],\
           ["@koa/multer", "virtual:aa59773ac87791c4813d53447077fcf8a847d6de5a301d34dc31286584b1dbb26d30d3adb5b4c41c1e8aea04371e926fda05c09c6253647c432e11d872a304ba#npm:3.0.2"],\
           ["@koa/router", "npm:9.0.1"],\
@@ -7105,7 +7091,6 @@ const RAW_RUNTIME_STATE =
           ["koa-send", "npm:5.0.1"],\
           ["koa-slow", "npm:2.1.0"],\
           ["koa-views", "virtual:aa59773ac87791c4813d53447077fcf8a847d6de5a301d34dc31286584b1dbb26d30d3adb5b4c41c1e8aea04371e926fda05c09c6253647c432e11d872a304ba#npm:7.0.2"],\
-          ["meilisearch", "npm:0.33.0"],\
           ["mfm-js", "npm:0.23.3"],\
           ["mime-types", "npm:2.1.35"],\
           ["mocha", "npm:10.2.0"],\
@@ -7140,7 +7125,6 @@ const RAW_RUNTIME_STATE =
           ["seedrandom", "npm:3.0.5"],\
           ["semver", "npm:7.5.4"],\
           ["sharp", "npm:0.32.1"],\
-          ["sonic-channel", "npm:1.3.1"],\
           ["strict-event-emitter-types", "npm:2.0.0"],\
           ["stringz", "npm:2.1.0"],\
           ["summaly", "npm:2.7.0"],\
@@ -17519,16 +17503,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["meilisearch", [\
-      ["npm:0.33.0", {\
-        "packageLocation": "./.yarn/cache/meilisearch-npm-0.33.0-a8742f194e-d2aff57b3d.zip/node_modules/meilisearch/",\
-        "packageDependencies": [\
-          ["meilisearch", "npm:0.33.0"],\
-          ["cross-fetch", "npm:3.1.8"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["meow", [\
       ["npm:9.0.0", {\
         "packageLocation": "./.yarn/cache/meow-npm-9.0.0-8b2707248e-3d0f199b9c.zip/node_modules/meow/",\
@@ -21742,15 +21716,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["secure-json-parse", [\
-      ["npm:2.7.0", {\
-        "packageLocation": "./.yarn/cache/secure-json-parse-npm-2.7.0-d5b89b0a3e-9743865870.zip/node_modules/secure-json-parse/",\
-        "packageDependencies": [\
-          ["secure-json-parse", "npm:2.7.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["seedrandom", [\
       ["npm:2.4.2", {\
         "packageLocation": "./.yarn/cache/seedrandom-npm-2.4.2-b435b54ae9-a0b6707cb7.zip/node_modules/seedrandom/",\
@@ -22155,15 +22120,6 @@ const RAW_RUNTIME_STATE =
           ["agent-base", "npm:7.1.0"],\
           ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"],\
           ["socks", "npm:2.7.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["sonic-channel", [\
-      ["npm:1.3.1", {\
-        "packageLocation": "./.yarn/cache/sonic-channel-npm-1.3.1-8f21a07e24-ee849863a3.zip/node_modules/sonic-channel/",\
-        "packageDependencies": [\
-          ["sonic-channel", "npm:1.3.1"]\
         ],\
         "linkType": "HARD"\
       }]\

@@ -29,26 +29,6 @@
 					<p>Used: {{ bytes(diskUsed, 1) }}</p>
 				</div>
 			</div>
-
-			<div class="_panel">
-				<XPie class="pie" :value="meiliProgress" />
-				<div>
-					<p>
-						<i class="ph-file-search ph-bold ph-lg"></i>MeiliSearch
-					</p>
-					<p>
-						{{ i18n.ts._widgets.meiliStatus }}: {{ meiliAvailable }}
-					</p>
-					<p>
-						{{ i18n.ts._widgets.meiliSize }}:
-						{{ bytes(meiliTotalSize, 1) }}
-					</p>
-					<p>
-						{{ i18n.ts._widgets.meiliIndexCount }}:
-						{{ meiliIndexCount }}
-					</p>
-				</div>
-			</div>
 		</div>
 	</div>
 </template>
@@ -71,11 +51,6 @@ let memTotal: number = $ref(0);
 let memUsed: number = $ref(0);
 let memFree: number = $ref(0);
 
-let meiliProgress: number = $ref(0);
-let meiliTotalSize: number = $ref(0);
-let meiliIndexCount: number = $ref(0);
-let meiliAvailable: string = $ref("unavailable");
-
 const diskUsage = $computed(() => meta.fs.used / meta.fs.total);
 const diskTotal = $computed(() => meta.fs.total);
 const diskUsed = $computed(() => meta.fs.used);
@@ -88,11 +63,6 @@ function onStats(stats) {
 	memTotal = stats.mem.total;
 	memUsed = stats.mem.active;
 	memFree = memTotal - memUsed;
-
-	meiliTotalSize = stats.meilisearch.size;
-	meiliIndexCount = stats.meilisearch.indexed_count;
-	meiliAvailable = stats.meilisearch.health;
-	meiliProgress = meiliIndexCount / serverStats.notesCount;
 }
 
 const connection = stream.useChannel("serverStats");

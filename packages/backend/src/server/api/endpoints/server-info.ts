@@ -1,7 +1,6 @@
 import * as os from "node:os";
 import si from "systeminformation";
 import define from "../define.js";
-import meilisearch from "@/db/meilisearch.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 
 export const meta = {
@@ -63,15 +62,3 @@ export default define(meta, paramDef, async () => {
 		},
 	};
 });
-
-async function meilisearchStatus() {
-	if (meilisearch) {
-		return meilisearch.serverStats();
-	} else {
-		return {
-			health: "unconfigured",
-			size: 0,
-			indexed_count: 0,
-		};
-	}
-}

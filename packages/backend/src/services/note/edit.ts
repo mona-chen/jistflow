@@ -24,7 +24,7 @@ import { genId } from "@/misc/gen-id.js";
 import type { IPoll } from "@/models/entities/poll.js";
 import { deliverToRelays } from "../relay.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";
-import { extractMentionedUsers, index } from "@/services/note/create.js";
+import { extractMentionedUsers } from "@/services/note/create.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 
 type Option = {
@@ -182,8 +182,6 @@ export default async function (
 	note = await Notes.findOneByOrFail({ id: note.id });
 
 	if (publishing) {
-		index(note, true);
-
 		// Publish update event for the updated note details
 		publishNoteStream(note.id, "updated", {
 			updatedAt: update.updatedAt,
