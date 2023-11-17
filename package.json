@@ -68,7 +68,8 @@
 		"gulp-terser": "2.1.0",
 		"install-peers": "^1.0.4",
 		"start-server-and-test": "1.15.2",
-		"typescript": "5.1.6"
+		"typescript": "5.1.6",
+		"yaml": "^2.3.4"
 	},
 	"packageManager": "yarn@4.0.2",
 	"dependenciesMeta": {

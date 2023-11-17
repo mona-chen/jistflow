@@ -11316,6 +11316,7 @@ __metadata:
     seedrandom: "npm:^3.0.5"
     start-server-and-test: "npm:1.15.2"
     typescript: "npm:5.1.6"
+    yaml: "npm:^2.3.4"
   dependenciesMeta:
     "@discordapp/twemoji@14.1.2":
       unplugged: true
@@ -21687,6 +21688,13 @@ __metadata:
   version: 2.3.1
   resolution: "yaml@npm:2.3.1"
   checksum: 66501d597e43766eb94dc175d28ec8b2c63087d6a78783e59b4218eee32b9172740f9f27d54b7bc0ca8af61422f7134929f9974faeaac99d583787e793852fd2
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.3.4":
+  version: 2.3.4
+  resolution: "yaml@npm:2.3.4"
+  checksum: f8207ce43065a22268a2806ea6a0fa3974c6fde92b4b2fa0082357e487bc333e85dc518910007e7ac001b532c7c84bd3eccb6c7757e94182b564028b0008f44b
   languageName: node
   linkType: hard
 

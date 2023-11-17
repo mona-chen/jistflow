@@ -67,7 +67,8 @@ const RAW_RUNTIME_STATE =
           ["js-yaml", "npm:4.1.0"],\
           ["seedrandom", "npm:3.0.5"],\
           ["start-server-and-test", "npm:1.15.2"],\
-          ["typescript", "patch:typescript@npm%3A5.1.6#optional!builtin<compat/typescript>::version=5.1.6&hash=5da071"]\
+          ["typescript", "patch:typescript@npm%3A5.1.6#optional!builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
+          ["yaml", "npm:2.3.4"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -14016,7 +14017,8 @@ const RAW_RUNTIME_STATE =
           ["js-yaml", "npm:4.1.0"],\
           ["seedrandom", "npm:3.0.5"],\
           ["start-server-and-test", "npm:1.15.2"],\
-          ["typescript", "patch:typescript@npm%3A5.1.6#optional!builtin<compat/typescript>::version=5.1.6&hash=5da071"]\
+          ["typescript", "patch:typescript@npm%3A5.1.6#optional!builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
+          ["yaml", "npm:2.3.4"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -25747,6 +25749,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/yaml-npm-2.3.1-743f5688d1-66501d597e.zip/node_modules/yaml/",\
         "packageDependencies": [\
           ["yaml", "npm:2.3.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:2.3.4", {\
+        "packageLocation": "./.yarn/cache/yaml-npm-2.3.4-8bb6dc2c0d-f8207ce430.zip/node_modules/yaml/",\
+        "packageDependencies": [\
+          ["yaml", "npm:2.3.4"]\
         ],\
         "linkType": "HARD"\
       }]\
