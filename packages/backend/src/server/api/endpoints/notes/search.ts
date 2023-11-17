@@ -6,6 +6,7 @@ import { generateVisibilityQuery } from "../../common/generate-visibility-query.
 import { generateMutedUserQuery } from "../../common/generate-muted-user-query.js";
 import { generateBlockedUserQuery } from "../../common/generate-block-query.js";
 import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { generateFtsQuery } from "@/server/api/common/generate-fts-query.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -73,7 +74,6 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	query
-		.andWhere("note.text ILIKE :q", { q: `%${sqlLikeEscape(ps.query)}%` })
 		.innerJoinAndSelect("note.user", "user")
 		.leftJoinAndSelect("user.avatar", "avatar")
 		.leftJoinAndSelect("user.banner", "banner")
@@ -86,11 +86,11 @@ export default define(meta, paramDef, async (ps, me) => {
 		.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
 		.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner");
 
+	generateFtsQuery(query, ps.query);
 	generateVisibilityQuery(query, me);
-	if (me) generateMutedUserQuery(query, me);
-	if (me) generateBlockedUserQuery(query, me);
+	generateMutedUserQuery(query, me);
+	generateBlockedUserQuery(query, me);
+	query.setParameter("meId", me.id);
 
-	const notes: Note[] = await query.take(ps.limit).getMany();
-
-	return await Notes.packMany(notes, me);
+	return await query.take(ps.limit).getMany().then(notes => Notes.packMany(notes, me));
 });

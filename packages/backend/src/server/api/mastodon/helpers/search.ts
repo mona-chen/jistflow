@@ -18,6 +18,7 @@ import { resolveUser } from "@/remote/resolve-user.js";
 import { createNote } from "@/remote/activitypub/models/note.js";
 import config from "@/config/index.js";
 import { logger, MastoContext } from "@/server/api/mastodon/index.js";
+import { generateFtsQuery } from "@/server/api/common/generate-fts-query.js";
 
 export class SearchHelpers {
     public static async search(q: string | undefined, type: string | undefined, resolve: boolean = false, following: boolean = false, accountId: string | undefined, excludeUnreviewed: boolean = false, maxId: string | undefined, minId: string | undefined, limit: number = 20, offset: number | undefined, ctx: MastoContext): Promise<MastodonEntity.Search> {
@@ -163,17 +164,17 @@ export class SearchHelpers {
             )
         }
 
-        query
-            .andWhere("note.text ILIKE :q", { q: `%${sqlLikeEscape(q)}%` })
-            .leftJoinAndSelect("note.renote", "renote");
+        query.leftJoinAndSelect("note.renote", "renote");
 
-
+        generateFtsQuery(query, q);
         generateVisibilityQuery(query, user);
 
         if (!accountId) {
             generateMutedUserQuery(query, user);
             generateBlockedUserQuery(query, user);
         }
+
+        query.setParameter("meId", user);
 
         return query.skip(offset ?? 0).take(limit).getMany().then(p => minId ? p.reverse() : p);
     }
