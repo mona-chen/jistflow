@@ -62,6 +62,7 @@ export class Note {
 	})
 	public threadId: string | null;
 
+	@Index('note_text_fts_idx', { synchronize: false })
 	@Column("text", {
 		nullable: true,
 	})
