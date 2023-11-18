@@ -20,7 +20,7 @@ jobs:
         run: |
           cd /iceshrimp
           cp -Tr /iceshrimp-caches/yarn .yarn
-          yarn --immutable --immutable-cache
+          yarn --immutable
           rm -rf /iceshrimp-caches/yarn/* && cp -Tr .yarn /iceshrimp-caches/yarn
       - name: Build the shrimp
         run: |
