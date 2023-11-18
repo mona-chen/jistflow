@@ -7,9 +7,6 @@
 				:display-back-button="true"
 		/></template>
 		<MkSpacer :content-max="800" :margin-min="16" :margin-max="32">
-			<FormButton primary @click="indexPosts">{{
-				i18n.ts.indexPosts
-			}}</FormButton>
 			<FormSuspense
 				v-slot="{ result: database }"
 				:p="databasePromiseFactory"
@@ -43,7 +40,6 @@ import bytes from "@/filters/bytes";
 import number from "@/filters/number";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { indexPosts } from "@/scripts/index-posts";
 
 const databasePromiseFactory = () =>
 	os

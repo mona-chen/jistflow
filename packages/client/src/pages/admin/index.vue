@@ -81,7 +81,6 @@ import * as os from "@/os";
 import { lookupUser } from "@/scripts/lookup-user";
 import { lookupFile } from "@/scripts/lookup-file";
 import { lookupInstance } from "@/scripts/lookup-instance";
-import { indexPosts } from "@/scripts/index-posts";
 import { defaultStore } from "@/store";
 import { useRouter } from "@/router";
 import {
@@ -171,16 +170,6 @@ const menuDef = $computed(() => [
 							icon: "ph-user-plus ph-bold ph-lg",
 							text: i18n.ts.invite,
 							action: invite,
-						},
-				  ]
-				: []),
-			...($i.isAdmin
-				? [
-						{
-							type: "button",
-							icon: "ph-list-magnifying-glass ph-bold ph-lg",
-							text: i18n.ts.indexPosts,
-							action: indexPosts,
 						},
 				  ]
 				: []),
