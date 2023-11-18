@@ -19,18 +19,26 @@
 					</div>
 				</div>
 				<div class="section _block">
+					<div class="title">{{ i18n.ts._filters._dialog.matchOptions }}</div>
+					<div class="content">
+						<p><code>case:sensitive</code></p>
+						<p><code>match:word[s]</code></p>
+					</div>
+				</div>
+				<div class="section _block">
 					<div class="title">{{ i18n.ts._filters._dialog.userDomain }}</div>
 					<div class="content">
 						<p><code>[-]from:[@]user[@host.tld]</code></p>
 						<p><code>[-]mention:[@]user[@host.tld]</code></p>
-						<p><code>[-]reply|to:[@]user[@host.tld]</code></p>
-						<p><code>[-]domain|host:host.tld</code></p>
+						<p><code>[-]reply:[@]user[@host.tld]</code></p>
+						<p><code>[-]instance:domain.tld</code></p>
 					</div>
 				</div>
 				<div class="section _block">
 					<div class="title">{{ i18n.ts._filters._dialog.miscFilters }}</div>
 					<div class="content">
-						<p><code>[-]filter:followers|following|replies|reply|renote[s]|boost[s]</code></p>
+						<p><code>[-]filter:followers|following</code></p>
+						<p><code>[-]filter:replies|renote[s]|boost[s]</code></p>
 					</div>
 				</div>
 				<div class="section _block">
@@ -43,8 +51,21 @@
 					<div class="title">{{ i18n.ts._filters._dialog.postDate }}</div>
 					<div class="content">
 						<p>{{ i18n.ts._filters._dialog.exclusivity }}</p>
-						<p><code>before|until:yyyy-mm-dd</code></p>
-						<p><code>after|since:yyyy-mm-dd</code></p>
+						<p><code>before:yyyy-mm-dd</code></p>
+						<p><code>after:yyyy-mm-dd</code></p>
+					</div>
+				</div>
+				<div class="section _block">
+					<div class="title">{{ i18n.ts._filters._dialog.infoEnd }}</div>
+					<div class="content">
+						<p>{{ i18n.ts._filters._dialog.infoEnd1 }}</p>
+						<p><code>filter:reply = filter:replies</code></p>
+						<p><code>search:word[s] = match:word[s]</code></p>
+						<p><code>domain: = host: = instance:</code></p>
+						<p><code>until: = before:</code></p>
+						<p><code>since: = after:</code></p>
+						<p><code>host: = domain:</code></p>
+						<p><code>to: = reply:</code></p>
 					</div>
 				</div>
 			</div>

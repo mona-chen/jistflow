@@ -391,13 +391,29 @@ async function openSearchFilters(ev) {
 					});
 				},
 			},
+			null,
+			{
+				icon: "ph-eye ph-bold ph-lg",
+				text: i18n.ts._filters.followingOnly,
+				action: () => {
+					appendSearchFilter("filter:following");
+				},
+			},
+			{
+				icon: "ph-users-three ph-bold ph-lg",
+				text: i18n.ts._filters.followersOnly,
+				action: () => {
+					appendSearchFilter("filter:followers");
+				},
+			},
 			{
 				icon: "ph-link ph-bold ph-lg",
 				text: i18n.ts._filters.fromDomain,
 				action: () => {
-					appendSearchFilter("domain:", false);
+					appendSearchFilter("instance:", false);
 				},
 			},
+			null,
 			{
 				type: "parent",
 				text: i18n.ts._filters.withFile,
@@ -460,28 +476,6 @@ async function openSearchFilters(ev) {
 			},
 			null,
 			{
-				icon: "ph-eye ph-bold ph-lg",
-				text: i18n.ts._filters.followingOnly,
-				action: () => {
-					appendSearchFilter("filter:following");
-				},
-			},
-			{
-				icon: "ph-users-three ph-bold ph-lg",
-				text: i18n.ts._filters.followersOnly,
-				action: () => {
-					appendSearchFilter("filter:followers");
-				},
-			},
-			{
-				icon: "ph-arrow-u-up-left ph-bold ph-lg",
-				text: i18n.ts._filters.repliesOnly,
-				action: () => {
-					appendSearchFilter("filter:replies");
-				},
-			},
-			null,
-			{
 				icon: "ph-arrow-u-up-left ph-bold ph-lg",
 				text: i18n.ts._filters.excludeReplies,
 				action: () => {
@@ -493,6 +487,21 @@ async function openSearchFilters(ev) {
 				text: i18n.ts._filters.excludeRenotes,
 				action: () => {
 					appendSearchFilter("-filter:renotes");
+				},
+			},
+			null,
+			{
+				icon: "ph-text-aa ph-bold ph-lg",
+				text: i18n.ts._filters.caseSensitive,
+				action: () => {
+					appendSearchFilter("case:sensitive");
+				},
+			},
+			{
+				icon: "ph-brackets-angle ph-bold ph-lg",
+				text: i18n.ts._filters.matchWords,
+				action: () => {
+					appendSearchFilter("match:words");
 				},
 			},
 			null,

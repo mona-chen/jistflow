@@ -26,7 +26,6 @@ const filters = {
 } as Record<string, (query: SelectQueryBuilder<any>, search: string, id: number) => any>
 
 //TODO: editing the query should be possible, clicking search again resets it (it should be a twitter-like top of the page kind of deal)
-//TODO: UI and guide are missing for search|match: and case: filters
 
 export function generateFtsQuery(query: SelectQueryBuilder<any>, q: string): void {
     const components = q.trim().split(" ");
