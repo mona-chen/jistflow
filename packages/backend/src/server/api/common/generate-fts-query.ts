@@ -29,7 +29,7 @@ const filters = {
 //TODO: new filters are missing from the filter dropdown, and said dropdown should always show (remove the searchFilters meta prop), also we should fix the null bug
 
 export function generateFtsQuery(query: SelectQueryBuilder<any>, q: string): void {
-    const components = q.split(" ");
+    const components = q.trim().split(" ");
     const terms: string[] = [];
     let finalTerms: string[] = [];
     let counter = 0;
