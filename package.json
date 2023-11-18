@@ -33,7 +33,8 @@
 		"clean-all": "node ./scripts/clean-all.js",
 		"cleanall": "yarn clean-all",
 		"focus-production": "node ./scripts/focus-production.js",
-		"regen-version": "node ./scripts/regen-version.js"
+		"regen-version": "node ./scripts/regen-version.js",
+		"pack-yarn": "corepack pack -o .yarn/corepack.tgz"
 	},
 	"workspaces": [
 		"packages/backend",
