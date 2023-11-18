@@ -8,6 +8,7 @@
 				:display-back-button="true"
 		/></template>
 		<MkSpacer :content-max="800">
+			<MkSearch :query="query" @query="search"/>
 			<swiper
 				:round-lengths="true"
 				:touch-angle="25"
@@ -26,7 +27,23 @@
 			>
 				<swiper-slide>
 					<template v-if="$i">
-						<XNotes ref="notes" :pagination="notesPagination" />
+						<template v-if="query == null || query.trim().length < 1">
+							<transition :name="$store.state.animation ? 'zoom' : ''" appear>
+								<div class="_fullinfo" ref="notes">
+									<img
+											:src="instance.images.info"
+											class="_ghost"
+											alt="Info"
+									/>
+									<div>
+										{{ i18n.ts.searchEmptyQuery }}
+									</div>
+								</div>
+							</transition>
+						</template>
+						<template v-else>
+							<XNotes ref="notes" :pagination="notesPagination" />
+						</template>
 					</template>
 					<template v-else>
 						<transition :name="$store.state.animation ? 'zoom' : ''" appear>
@@ -45,11 +62,27 @@
 					</template>
 				</swiper-slide>
 				<swiper-slide>
-					<XUserList
-						ref="users"
-						class="_gap"
-						:pagination="usersPagination"
-					/>
+					<template v-if="query == null || query.trim().length < 1">
+						<transition :name="$store.state.animation ? 'zoom' : ''" appear>
+							<div class="_fullinfo" ref="notes">
+								<img
+										:src="instance.images.info"
+										class="_ghost"
+										alt="Info"
+								/>
+								<div>
+									{{ i18n.ts.searchEmptyQuery }}
+								</div>
+							</div>
+						</transition>
+					</template>
+					<template v-else>
+						<XUserList
+								ref="users"
+								class="_gap"
+								:pagination="usersPagination"
+						/>
+					</template>
 				</swiper-slide>
 			</swiper>
 		</MkSpacer>
@@ -70,11 +103,19 @@ import { $i } from "@/account";
 import "swiper/scss";
 import "swiper/scss/virtual";
 import {instance} from "@/instance";
+import MkSearch from "@/components/MkSearch.vue";
+import { mainRouter } from "@/router.js";
+import * as os from "@/os.js";
 
-const props = defineProps<{
-	query: string;
-	channel?: string;
-}>();
+const props = withDefaults(
+		defineProps<{
+			query: string;
+			channel?: string;
+		}>(),
+		{
+			query: ""
+		}
+);
 
 const notesPagination = {
 	endpoint: "notes/search" as const,
@@ -134,8 +175,42 @@ onMounted(() => {
 
 definePageMetadata(
 	computed(() => ({
-		title: i18n.t("searchWith", { q: props.query }),
+		title: i18n.ts.search,
 		icon: "ph-magnifying-glass ph-bold ph-lg",
 	})),
 );
+
+async function search(query: string) {
+	const q = query.trim();
+
+	if (q.startsWith("@") && !q.includes(" ")) {
+		mainRouter.push(`/${q}`);
+		return;
+	}
+
+	if (q.startsWith("#")) {
+		mainRouter.push(`/tags/${encodeURIComponent(q.slice(1))}`);
+		return;
+	}
+
+	if (q.startsWith("https://")) {
+		const promise = os.api("ap/show", {
+			uri: q,
+		});
+
+		os.promiseDialog(promise, null, null, i18n.ts.fetchingAsApObject);
+
+		const res = await promise;
+
+		if (res.type === "User") {
+			mainRouter.push(`/@${res.object.username}@${res.object.host}`);
+		} else if (res.type === "Note") {
+			mainRouter.push(`/notes/${res.object.id}`);
+		}
+
+		return;
+	}
+
+	mainRouter.push(`/search?q=${encodeURIComponent(q)}`);
+}
 </script>

@@ -53,10 +53,10 @@
 					><i class="ph-image-square ph-bold ph-lg icon"></i
 					>{{ i18n.ts.gallery }}</MkA
 				>
-				<button class="_button link" active-class="active" @click="search()">
+				<MkA to="/search" class="link" active-class="active">
 					<i class="ph-magnifying-glass ph-bold ph-lg icon"></i
 					><span>{{ i18n.ts.search }}</span>
-				</button>
+				</MkA>
 				<div class="action">
 					<button class="_buttonPrimary" @click="signup()">
 						{{ i18n.ts.signup }}
@@ -76,7 +76,6 @@ import { onMounted, provide } from "vue";
 import XHeader from "./header.vue";
 import XKanban from "./kanban.vue";
 import { host, instanceName } from "@/config";
-import { search } from "@/scripts/search";
 import * as os from "@/os";
 import { instance } from "@/instance";
 import MkPagination from "@/components/MkPagination.vue";
@@ -123,7 +122,6 @@ const keymap = $computed(() => {
 			if (ColdDeviceStorage.get("syncDeviceDarkMode")) return;
 			defaultStore.set("darkMode", !defaultStore.state.darkMode);
 		},
-		s: search,
 	};
 });
 

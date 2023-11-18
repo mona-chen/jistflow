@@ -98,15 +98,6 @@
 						"
 					/>
 				</template>
-				<template v-if="input.type === 'search'" #suffix>
-					<button
-						v-tooltip.noDelay="i18n.ts.filter"
-						class="_buttonIcon"
-						@click.stop="openSearchFilters"
-					>
-						<i class="ph-funnel ph-bold"></i>
-					</button>
-				</template>
 			</MkInput>
 			<MkTextarea
 				v-if="input && input.type === 'paragraph'"
@@ -200,15 +191,12 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref, shallowRef } from "vue";
-import * as Acct from "iceshrimp-js/built/acct";
 import MkModal from "@/components/MkModal.vue";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import MkTextarea from "@/components/form/textarea.vue";
 import MkSelect from "@/components/form/select.vue";
-import * as os from "@/os";
 import { i18n } from "@/i18n";
-import XSearchFilterDialog from "@/components/MkSearchFilterDialog.vue";
 
 interface Input {
 	type: HTMLInputElement["type"];
@@ -345,179 +333,6 @@ function onInputKeydown(evt: KeyboardEvent) {
 		evt.stopPropagation();
 		ok();
 	}
-}
-
-function formatDateToYYYYMMDD(date) {
-	const year = date.getFullYear();
-	const month = ("0" + (date.getMonth() + 1)).slice(-2);
-	const day = ("0" + (date.getDate() + 1)).slice(-2);
-	return `${year}-${month}-${day}`;
-}
-
-function appendSearchFilter(filter: string, trailingSpace: boolean = true) {
-	if (typeof inputValue.value !== "string") inputValue.value = "";
-	if (inputValue.value.length > 0 && inputValue.value.at(inputValue.value.length - 1) !== " ") inputValue.value += " ";
-	inputValue.value += filter;
-	if (trailingSpace) inputValue.value += " ";
-}
-
-async function openSearchFilters(ev) {
-	await os.popupMenu(
-		[
-			{
-				icon: "ph-user ph-bold ph-lg",
-				text: i18n.ts._filters.fromUser,
-				action: () => {
-					os.selectUser().then((user) => {
-						appendSearchFilter(`from:${Acct.toString(user)}`);
-					});
-				},
-			},
-			{
-				icon: "ph-at ph-bold ph-lg",
-				text: i18n.ts._filters.mentioning,
-				action: () => {
-					os.selectUser().then((user) => {
-						appendSearchFilter(`mention:${Acct.toString(user)}`);
-					});
-				},
-			},
-			{
-				icon: "ph-arrow-u-up-left ph-bold ph-lg",
-				text: i18n.ts._filters.replyTo,
-				action: () => {
-					os.selectUser().then((user) => {
-						appendSearchFilter(`reply:${Acct.toString(user)}`);
-					});
-				},
-			},
-			null,
-			{
-				icon: "ph-eye ph-bold ph-lg",
-				text: i18n.ts._filters.followingOnly,
-				action: () => {
-					appendSearchFilter("filter:following");
-				},
-			},
-			{
-				icon: "ph-users-three ph-bold ph-lg",
-				text: i18n.ts._filters.followersOnly,
-				action: () => {
-					appendSearchFilter("filter:followers");
-				},
-			},
-			{
-				icon: "ph-link ph-bold ph-lg",
-				text: i18n.ts._filters.fromDomain,
-				action: () => {
-					appendSearchFilter("instance:", false);
-				},
-			},
-			null,
-			{
-				type: "parent",
-				text: i18n.ts._filters.withFile,
-				icon: "ph-paperclip ph-bold ph-lg",
-				children: [
-					{
-						text: i18n.ts.image,
-						icon: "ph-image-square ph-bold ph-lg",
-						action: () => {
-							appendSearchFilter("has:image");
-						},
-					},
-					{
-						text: i18n.ts.video,
-						icon: "ph-video-camera ph-bold ph-lg",
-						action: () => {
-							appendSearchFilter("has:video");
-						},
-					},
-					{
-						text: i18n.ts.audio,
-						icon: "ph-music-note ph-bold ph-lg",
-						action: () => {
-							appendSearchFilter("has:audio");
-						},
-					},
-					{
-						text: i18n.ts.file,
-						icon: "ph-file ph-bold ph-lg",
-						action: () => {
-							appendSearchFilter("has:file");
-						},
-					},
-				],
-			},
-			null,
-			{
-				icon: "ph-calendar-blank ph-bold ph-lg",
-				text: i18n.ts._filters.notesBefore,
-				action: () => {
-					os.inputDate({
-						title: i18n.ts._filters.notesBefore,
-					}).then((res) => {
-						if (res.canceled) return;
-						appendSearchFilter("before:" + formatDateToYYYYMMDD(res.result));
-					});
-				},
-			},
-			{
-				icon: "ph-calendar-blank ph-bold ph-lg",
-				text: i18n.ts._filters.notesAfter,
-				action: () => {
-					os.inputDate({
-						title: i18n.ts._filters.notesAfter,
-					}).then((res) => {
-						if (res.canceled) return;
-						appendSearchFilter("after:" + formatDateToYYYYMMDD(res.result));
-					});
-				},
-			},
-			null,
-			{
-				icon: "ph-arrow-u-up-left ph-bold ph-lg",
-				text: i18n.ts._filters.excludeReplies,
-				action: () => {
-					appendSearchFilter("-filter:replies");
-				},
-			},
-			{
-				icon: "ph-repeat ph-bold ph-lg",
-				text: i18n.ts._filters.excludeRenotes,
-				action: () => {
-					appendSearchFilter("-filter:renotes");
-				},
-			},
-			null,
-			{
-				icon: "ph-text-aa ph-bold ph-lg",
-				text: i18n.ts._filters.caseSensitive,
-				action: () => {
-					appendSearchFilter("case:sensitive");
-				},
-			},
-			{
-				icon: "ph-brackets-angle ph-bold ph-lg",
-				text: i18n.ts._filters.matchWords,
-				action: () => {
-					appendSearchFilter("match:words");
-				},
-			},
-			null,
-			{
-				icon: "ph-question ph-bold ph-lg",
-				text: i18n.ts._filters._dialog.learnMore,
-				action: () => {
-					os.popup(XSearchFilterDialog, {}, {}, "closed");
-				},
-			},
-		],
-		ev.target,
-		{ noReturnFocus: true },
-	);
-	inputEl.value!.focus();
-	inputEl.value!.selectRange((inputValue.value as string).length, (inputValue.value as string).length); // cursor at end
 }
 
 onMounted(() => {

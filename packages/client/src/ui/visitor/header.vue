@@ -26,10 +26,10 @@
 					><i class="ph-image-square ph-bold ph-lg icon"></i
 					>{{ i18n.ts.gallery }}</MkA
 				>
-				<button class="_button link" active-class="active" @click="search()">
+				<MkA to="/search" class="link" active-class="active">
 					<i class="ph-magnifying-glass ph-bold ph-lg icon"></i
 					><span>{{ i18n.ts.search }}</span>
-				</button>
+				</MkA>
 				<div v-if="info" class="page active link">
 					<div class="title">
 						<i v-if="info.icon" class="icon" :class="info.icon"></i>
@@ -106,7 +106,6 @@ import XSigninDialog from "@/components/MkSigninDialog.vue";
 import XSignupDialog from "@/components/MkSignupDialog.vue";
 import * as os from "@/os";
 import { instance } from "@/instance";
-import { search } from "@/scripts/search";
 import { i18n } from "@/i18n";
 
 export default defineComponent({
@@ -154,8 +153,6 @@ export default defineComponent({
 				"closed",
 			);
 		},
-
-		search,
 	},
 });
 </script>

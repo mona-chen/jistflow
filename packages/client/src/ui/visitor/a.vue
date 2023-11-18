@@ -77,7 +77,6 @@
 import { defineAsyncComponent, defineComponent } from "vue";
 import XHeader from "./header.vue";
 import { host, instanceName } from "@/config";
-import { search } from "@/scripts/search";
 import * as os from "@/os";
 import MkPagination from "@/components/MkPagination.vue";
 import MkButton from "@/components/MkButton.vue";
@@ -118,7 +117,6 @@ export default defineComponent({
 					if (ColdDeviceStorage.get("syncDeviceDarkMode")) return;
 					this.$store.set("darkMode", !this.$store.state.darkMode);
 				},
-				s: search,
 				"h|/": this.help,
 			};
 		},
@@ -168,7 +166,7 @@ export default defineComponent({
 		help() {
 			// TODO(thatonecalculator): popup with keybinds
 			// window.open('https://misskey-hub.net/docs/keyboard-shortcut.md', '_blank');
-			console.log("d = dark/light mode, s = search, p = post :3");
+			console.log("d = dark/light mode, p = post :3");
 		},
 	},
 });
