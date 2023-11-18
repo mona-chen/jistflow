@@ -1505,6 +1505,8 @@ _filters:
   fromUser: "From user"
   replyTo: "Replying to"
   mentioning: "Mentioning"
+  inFavorites: "Favorited"
+  inBookmarks: "Bookmarked"
   withFile: "Has attachment"
   fromDomain: "Specific instance only"
   notesBefore: "Posts before"

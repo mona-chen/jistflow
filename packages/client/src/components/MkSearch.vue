@@ -89,6 +89,21 @@ async function openSearchFilters(ev) {
 				},
 				null,
 				{
+					icon: "ph-star ph-bold ph-lg",
+					text: i18n.ts._filters.inFavorites,
+					action: () => {
+						appendSearchFilter("in:favorites");
+					},
+				},
+				{
+					icon: "ph-bookmark-simple ph-bold ph-lg",
+					text: i18n.ts._filters.inBookmarks,
+					action: () => {
+						appendSearchFilter("in:bookmarks");
+					},
+				},
+				null,
+				{
 					type: "parent",
 					text: i18n.ts._filters.withFile,
 					icon: "ph-paperclip ph-bold ph-lg",
