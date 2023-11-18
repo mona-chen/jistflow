@@ -305,11 +305,6 @@ export const meta = {
 						optional: false,
 						nullable: false,
 					},
-					searchFilters: {
-						type: "boolean",
-						optional: false,
-						nullable: false,
-					},
 					hcaptcha: {
 						type: "boolean",
 						optional: false,
@@ -489,7 +484,6 @@ export default define(meta, paramDef, async (ps, me) => {
 			recommendedTimeline: !instance.disableRecommendedTimeline,
 			globalTimeLine: !instance.disableGlobalTimeline,
 			emailRequiredForSignup: instance.emailRequiredForSignup,
-			searchFilters: true,
 			hcaptcha: instance.enableHcaptcha,
 			recaptcha: instance.enableRecaptcha,
 			objectStorage: instance.useObjectStorage,

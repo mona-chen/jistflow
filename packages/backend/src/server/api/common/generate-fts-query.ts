@@ -10,8 +10,6 @@ const filters = {
     "-mention": mentionFilterInverse,
     "reply": replyFilter,
     "-reply": replyFilterInverse,
-    "replyto": replyFilter,
-    "-replyto": replyFilterInverse,
     "to": replyFilter,
     "-to": replyFilterInverse,
     "before": beforeFilter,
@@ -19,14 +17,15 @@ const filters = {
     "after": afterFilter,
     "since": afterFilter,
     "domain": domainFilter,
+    "-domain": domainFilterInverse,
     "host": domainFilter,
+    "-host": domainFilterInverse,
     "filter": miscFilter,
     "-filter": miscFilterInverse,
     "has": attachmentFilter,
 } as Record<string, (query: SelectQueryBuilder<any>, search: string, id: number) => any>
 
 //TODO: editing the query should be possible, clicking search again resets it (it should be a twitter-like top of the page kind of deal)
-//TODO: new filters are missing from the filter dropdown, and said dropdown should always show (remove the searchFilters meta prop), also we should fix the null bug
 
 export function generateFtsQuery(query: SelectQueryBuilder<any>, q: string): void {
     const components = q.trim().split(" ");
@@ -132,6 +131,10 @@ function domainFilter(query: SelectQueryBuilder<any>, filter: string) {
     query.andWhere('note.userHost = :domain', { domain: filter });
 }
 
+function domainFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
+    query.andWhere('note.userHost <> :domain', { domain: filter });
+}
+
 function miscFilter(query: SelectQueryBuilder<any>, filter: string) {
     let subQuery: SelectQueryBuilder<any> | null = null;
     if (filter === 'followers') {
@@ -144,7 +147,7 @@ function miscFilter(query: SelectQueryBuilder<any>, filter: string) {
             .where('following.followerId = :meId')
     } else if (filter === 'replies') {
         query.andWhere('note.replyId IS NOT NULL');
-    } else if (filter === 'boosts') {
+    } else if (filter === 'boosts' || filter === 'renotes') {
         query.andWhere('note.renoteId IS NOT NULL');
     }
 

@@ -1,11 +1,10 @@
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { mainRouter } from "@/router";
-import { instance } from "@/instance";
 
 export async function search() {
 	const { canceled, result: query } = await os.inputText({
-		type: instance.features.searchFilters ? "search" : "text",
+		type: "search",
 		title: i18n.ts.search,
 		placeholder: i18n.ts.searchPlaceholder,
 	});
