@@ -35,6 +35,12 @@
 					</div>
 				</div>
 				<div class="section _block">
+					<div class="title">{{ i18n.ts._filters._dialog.inFilters }}</div>
+					<div class="content">
+						<p><code>[-]in:bookmarks|favorites</code></p>
+					</div>
+				</div>
+				<div class="section _block">
 					<div class="title">{{ i18n.ts._filters._dialog.miscFilters }}</div>
 					<div class="content">
 						<p><code>[-]filter:followers|following</code></p>
@@ -59,6 +65,7 @@
 					<div class="title">{{ i18n.ts._filters._dialog.infoEnd }}</div>
 					<div class="content">
 						<p>{{ i18n.ts._filters._dialog.infoEnd1 }}</p>
+						<p><code>in:likes = in:reactions = in:favourites = in:favorites</code></p>
 						<p><code>filter:reply = filter:replies</code></p>
 						<p><code>search:word[s] = match:word[s]</code></p>
 						<p><code>domain: = host: = instance:</code></p>

@@ -1,7 +1,7 @@
 import { Brackets, SelectQueryBuilder, WhereExpressionBuilder } from "typeorm";
 import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
 import { sqlRegexEscape } from "@/misc/sql-regex-escape.js";
-import { Followings, Users } from "@/models/index.js";
+import { Followings, NoteFavorites, NoteReactions, Users } from "@/models/index.js";
 
 const filters = {
     "from": fromFilter,
@@ -24,10 +24,10 @@ const filters = {
     "-host": instanceFilterInverse,
     "filter": miscFilter,
     "-filter": miscFilterInverse,
+    "in": inFilter,
+    "-in": inFilterInverse,
     "has": attachmentFilter,
 } as Record<string, (query: SelectQueryBuilder<any>, search: string, id: number) => any>
-
-//TODO: editing the query should be possible, clicking search again resets it (it should be a twitter-like top of the page kind of deal)
 
 export function generateFtsQuery(query: SelectQueryBuilder<any>, q: string): void {
     const components = q.trim().split(" ");
@@ -156,11 +156,11 @@ function miscFilter(query: SelectQueryBuilder<any>, filter: string) {
     if (filter === 'followers') {
         subQuery = Followings.createQueryBuilder('following')
             .select('following.followerId')
-            .where('following.followeeId = :meId')
+            .where('following.followeeId = :meId');
     } else if (filter === 'following') {
         subQuery = Followings.createQueryBuilder('following')
             .select('following.followeeId')
-            .where('following.followerId = :meId')
+            .where('following.followerId = :meId');
     } else if (filter === 'replies' || filter === 'reply') {
         query.andWhere('note.replyId IS NOT NULL');
     } else if (filter === 'boosts' || filter === 'boost' || filter === 'renotes' || filter === 'renote') {
@@ -175,11 +175,11 @@ function miscFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
     if (filter === 'followers') {
         subQuery = Followings.createQueryBuilder('following')
             .select('following.followerId')
-            .where('following.followeeId = :meId')
+            .where('following.followeeId = :meId');
     } else if (filter === 'following') {
         subQuery = Followings.createQueryBuilder('following')
             .select('following.followeeId')
-            .where('following.followerId = :meId')
+            .where('following.followerId = :meId');
     } else if (filter === 'replies' || filter === 'reply') {
         query.andWhere('note.replyId IS NULL');
 	} else if (filter === 'boosts' || filter === 'boost' || filter === 'renotes' || filter === 'renote') {
@@ -187,6 +187,36 @@ function miscFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
     }
 
     if (subQuery !== null) query.andWhere(`note.userId NOT IN (${subQuery.getQuery()})`);
+}
+
+function inFilter(query: SelectQueryBuilder<any>, filter: string) {
+    let subQuery: SelectQueryBuilder<any> | null = null;
+    if (filter === 'bookmarks') {
+        subQuery = NoteFavorites.createQueryBuilder('bookmark')
+            .select('bookmark.noteId')
+            .where('bookmark.userId = :meId');
+    } else if (filter === 'favorites' || filter === 'favourites' || filter === 'reactions' || filter === 'likes') {
+        subQuery = NoteReactions.createQueryBuilder('react')
+            .select('react.noteId')
+            .where('react.userId = :meId');
+    }
+
+    if (subQuery !== null) query.andWhere(`note.id IN (${subQuery.getQuery()})`);
+}
+
+function inFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
+    let subQuery: SelectQueryBuilder<any> | null = null;
+    if (filter === 'bookmarks') {
+        subQuery = NoteFavorites.createQueryBuilder('bookmark')
+            .select('bookmark.noteId')
+            .where('bookmark.userId = :meId');
+    } else if (filter === 'favorites' || filter === 'favourites' || filter === 'reactions' || filter === 'likes') {
+        subQuery = NoteReactions.createQueryBuilder('react')
+            .select('react.noteId')
+            .where('react.userId = :meId');
+    }
+
+    if (subQuery !== null) query.andWhere(`note.id NOT IN (${subQuery.getQuery()})`);
 }
 
 function attachmentFilter(query: SelectQueryBuilder<any>, filter: string) {

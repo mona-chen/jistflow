@@ -1487,6 +1487,7 @@ _filters:
     title: "Advanced search filters"
     learnMore: "View advanced filters"
     wordFilters: "Filter by post text"
+    inFilters: "Filter by bookmark and/or favorite status"
     miscFilters: "Filter by following relationship and/or note type"
     userDomain: "Filter by author, mentioned users, reply user or instance domain"
     postDate: "Filter by post date"
