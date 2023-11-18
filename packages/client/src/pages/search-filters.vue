@@ -28,10 +28,10 @@
 				<div class="section _block">
 					<div class="title">{{ i18n.ts._filters._dialog.userDomain }}</div>
 					<div class="content">
-						<p><code>[-]from:[@]user[@host.tld]</code></p>
-						<p><code>[-]mention:[@]user[@host.tld]</code></p>
-						<p><code>[-]reply:[@]user[@host.tld]</code></p>
-						<p><code>[-]instance:domain.tld</code></p>
+						<p><code>[-]from:[@]user[@domain.tld]</code></p>
+						<p><code>[-]mention:[@]user[@domain.tld]</code></p>
+						<p><code>[-]reply:[@]user[@domain.tld]</code></p>
+						<p><code>[-]instance:local|domain.tld</code></p>
 					</div>
 				</div>
 				<div class="section _block">

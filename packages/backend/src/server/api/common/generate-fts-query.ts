@@ -134,8 +134,12 @@ function afterFilter(query: SelectQueryBuilder<any>, filter: string) {
 }
 
 function instanceFilter(query: SelectQueryBuilder<any>, filter: string, id: number) {
-    query.andWhere(`note.userHost = :instance_${id}`);
-    query.setParameter(`instance_${id}`, filter);
+    if (filter === 'local') {
+        query.andWhere(`note.userHost IS NULL`);
+    } else {
+        query.andWhere(`note.userHost = :instance_${id}`);
+        query.setParameter(`instance_${id}`, filter);
+    }
 }
 
 function instanceFilterInverse(query: SelectQueryBuilder<any>, filter: string, id: number) {
