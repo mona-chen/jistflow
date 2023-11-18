@@ -97,14 +97,16 @@ function fromFilterInverse(query: SelectQueryBuilder<any>, filter: string, id: n
 
 function mentionFilter(query: SelectQueryBuilder<any>, filter: string, id: number) {
     const userQuery = generateUserSubquery(filter, id);
-    query.andWhere(`note.mentions @> array[(${userQuery.getQuery()})]`);
-    query.setParameters(userQuery.getParameters());
+	query.addCommonTableExpression(userQuery.getQuery(), `cte_${id}`, { materialized: true })
+    query.andWhere(`note.mentions @> array[(SELECT * FROM cte_${id})]::varchar[]`);
+	query.setParameters(userQuery.getParameters());
 }
 
 function mentionFilterInverse(query: SelectQueryBuilder<any>, filter: string, id: number) {
     const userQuery = generateUserSubquery(filter, id);
-    query.andWhere(`NOT (note.mentions @> array[(${userQuery.getQuery()})])`);
-    query.setParameters(userQuery.getParameters());
+	query.addCommonTableExpression(userQuery.getQuery(), `cte_${id}`, { materialized: true })
+	query.andWhere(`NOT (note.mentions @> array[(SELECT * FROM cte_${id})]::varchar[])`);
+	query.setParameters(userQuery.getParameters());
 }
 
 function replyFilter(query: SelectQueryBuilder<any>, filter: string, id: number) {
