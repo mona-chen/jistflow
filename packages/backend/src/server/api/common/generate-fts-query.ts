@@ -1,7 +1,7 @@
-import { Brackets, IsNull, Not, SelectQueryBuilder } from "typeorm";
+import { Brackets, SelectQueryBuilder, WhereExpressionBuilder } from "typeorm";
 import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { sqlRegexEscape } from "@/misc/sql-regex-escape.js";
 import { Followings, Users } from "@/models/index.js";
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 
 const filters = {
     "from": fromFilter,
@@ -26,17 +26,24 @@ const filters = {
 } as Record<string, (query: SelectQueryBuilder<any>, search: string, id: number) => any>
 
 //TODO: editing the query should be possible, clicking search again resets it (it should be a twitter-like top of the page kind of deal)
+//TODO: UI and guide are missing for search|match: and case: filters
 
 export function generateFtsQuery(query: SelectQueryBuilder<any>, q: string): void {
     const components = q.trim().split(" ");
     const terms: string[] = [];
     let finalTerms: string[] = [];
     let counter = 0;
+    let caseSensitive = false;
+    let matchWords = false;
 
     for (const component of components) {
         const split = component.split(":");
         if (split.length > 1 && filters[split[0]] !== undefined)
             filters[split[0]](query, split.slice(1).join(":"), counter++);
+        else if(split.length > 1 && (split[0] === "search" || split[0] === "match"))
+            matchWords = split[1] === 'word' || split[1] === 'words';
+        else if(split.length > 1 && split[0] === "case")
+            caseSensitive = split[1] === 'sensitive';
         else terms.push(component);
     }
 
@@ -62,8 +69,7 @@ export function generateFtsQuery(query: SelectQueryBuilder<any>, q: string): voi
             query.andWhere(new Brackets(qb => {
                 for (const term of extractToken(terms, idx, i).split(' OR ')) {
                     const id = counter++;
-                    qb.orWhere(`note.text ILIKE :q_${id}`);
-                    query.setParameter(`q_${id}`, `%${sqlLikeEscape(term)}%`);
+                    appendSearchQuery(term, 'or', query, qb, id, term.startsWith('-'), matchWords, caseSensitive);
                 }
             }));
             state = 'idle';
@@ -76,10 +82,7 @@ export function generateFtsQuery(query: SelectQueryBuilder<any>, q: string): voi
 
     for (const term of finalTerms) {
         const id = counter++;
-        if (term.startsWith('-')) query.andWhere(`note.text NOT ILIKE :q_${id}`);
-        else query.andWhere(`note.text ILIKE :q_${id}`);
-
-        query.setParameter(`q_${id}`, `%${sqlLikeEscape(term.substring(term.startsWith('-') ? 1 : 0))}%`);
+        appendSearchQuery(term, 'and', query, query, id, term.startsWith('-'), matchWords, caseSensitive);
     }
 }
 
@@ -217,4 +220,19 @@ function extractToken(array: string[], start: number, end: number, trim: boolean
 
 function trimStartAndEnd(str: string) {
     return str.substring(1, str.length - 1);
+}
+
+function appendSearchQuery(term: string, mode: 'and' | 'or', query: SelectQueryBuilder<any>, qb: SelectQueryBuilder<any> | WhereExpressionBuilder, id: number, negate: boolean, matchWords: boolean, caseSensitive: boolean) {
+    const sql = `note.text ${getSearchMatchOperator(negate, matchWords, caseSensitive)} :q_${id}`;
+    if (mode === 'and') qb.andWhere(sql);
+    else if (mode === 'or') qb.orWhere(sql);
+    query.setParameter(`q_${id}`, escapeSqlSearchParam(term.substring(negate ? 1 : 0), matchWords));
+}
+
+function getSearchMatchOperator(negate: boolean, matchWords: boolean, caseSensitive: boolean) {
+    return `${negate ? 'NOT ' : ''}${matchWords ? caseSensitive ? '~' : '~*' : caseSensitive ? 'LIKE' : 'ILIKE'}`;
+}
+
+function escapeSqlSearchParam(param: string, matchWords: boolean) {
+    return matchWords ? `\\y${sqlRegexEscape(param)}\\y` : `%${sqlLikeEscape(param)}%`;
 }
