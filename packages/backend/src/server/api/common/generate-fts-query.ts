@@ -178,11 +178,13 @@ function attachmentFilter(query: SelectQueryBuilder<any>, filter: string) {
         case 'image':
         case 'video':
         case 'audio':
-            query.andWhere(`note.attachedFileTypes && array[:...types]::varchar[]`, { types: FILE_TYPE_BROWSERSAFE.filter(t => t.startsWith(`${filter}/`)) });
+            query.andWhere(`note."attachedFileTypes"::varchar ILIKE :type`, { type: `%${sqlLikeEscape(filter)}/%` });
             break;
         case 'file':
-            query.andWhere(`note.attachedFileTypes <> '{}'`);
-            query.andWhere(`NOT (note.attachedFileTypes && array[:...types]::varchar[])`, { types: FILE_TYPE_BROWSERSAFE });
+            query.andWhere(`note."attachedFileTypes" <> '{}'`);
+			query.andWhere(`NOT (note."attachedFileTypes"::varchar ILIKE '%image/%')`);
+			query.andWhere(`NOT (note."attachedFileTypes"::varchar ILIKE '%video/%')`);
+			query.andWhere(`NOT (note."attachedFileTypes"::varchar ILIKE '%audio/%')`);
             break;
         default:
             break;
