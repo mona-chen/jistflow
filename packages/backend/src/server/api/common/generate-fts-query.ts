@@ -23,61 +23,99 @@ const filters = {
     "filter": miscFilter,
     "-filter": miscFilterInverse,
     "has": attachmentFilter,
-} as Record<string, (query: SelectQueryBuilder<any>, search: string) => any>
+} as Record<string, (query: SelectQueryBuilder<any>, search: string, id: number) => any>
 
-//TODO: (phrase OR phrase2) should be treated as an OR part of the query
-//TODO: "phrase with multiple words" should be treated as one term
 //TODO: editing the query should be possible, clicking search again resets it (it should be a twitter-like top of the page kind of deal)
+//TODO: new filters are missing from the filter dropdown, and said dropdown should always show (remove the searchFilters meta prop), also we should fix the null bug
 
 export function generateFtsQuery(query: SelectQueryBuilder<any>, q: string): void {
     const components = q.split(" ");
     const terms: string[] = [];
+    let finalTerms: string[] = [];
+    let counter = 0;
 
     for (const component of components) {
         const split = component.split(":");
         if (split.length > 1 && filters[split[0]] !== undefined)
-            filters[split[0]](query, split.slice(1).join(":"));
+            filters[split[0]](query, split.slice(1).join(":"), counter++);
         else terms.push(component);
     }
 
-    for (const term of terms) {
-        if (term.startsWith('-')) query.andWhere("note.text NOT ILIKE :q", { q: `%${sqlLikeEscape(term.substring(1))}%` });
-        else query.andWhere("note.text ILIKE :q", { q: `%${sqlLikeEscape(term)}%` });
+    let idx = 0;
+    let state: 'idle' | 'quote' | 'parenthesis' = 'idle';
+    for (let i = 0; i < terms.length; i++) {
+        if (state === 'idle') {
+            if (terms[i].startsWith('"')) {
+                idx = i;
+                state = 'quote';
+            } else if (terms[i].startsWith('(')) {
+                idx = i;
+                state = 'parenthesis';
+            }
+            else {
+                finalTerms.push(terms[i]);
+            }
+        }
+        else if (state === 'quote' && terms[i].endsWith('"')) {
+            finalTerms.push(extractToken(terms, idx, i));
+            state = 'idle';
+        } else if (state === 'parenthesis' && terms[i].endsWith(')')) {
+            query.andWhere(new Brackets(qb => {
+                for (const term of extractToken(terms, idx, i).split(' OR ')) {
+                    const id = counter++;
+                    qb.orWhere(`note.text ILIKE :q_${id}`);
+                    query.setParameter(`q_${id}`, `%${sqlLikeEscape(term)}%`);
+                }
+            }));
+            state = 'idle';
+        }
+    }
+
+    if (state != "idle") {
+        finalTerms.push(...extractToken(terms, idx, terms.length - 1, false).substring(1).split(' '));
+    }
+
+    for (const term of finalTerms) {
+        const id = counter++;
+        if (term.startsWith('-')) query.andWhere(`note.text NOT ILIKE :q_${id}`);
+        else query.andWhere(`note.text ILIKE :q_${id}`);
+
+        query.setParameter(`q_${id}`, `%${sqlLikeEscape(term.substring(term.startsWith('-') ? 1 : 0))}%`);
     }
 }
 
-function fromFilter(query: SelectQueryBuilder<any>, filter: string) {
-    const userQuery = generateUserSubquery(filter);
+function fromFilter(query: SelectQueryBuilder<any>, filter: string, id: number) {
+    const userQuery = generateUserSubquery(filter, id);
     query.andWhere(`note.userId = (${userQuery.getQuery()})`);
     query.setParameters(userQuery.getParameters());
 }
 
-function fromFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
-    const userQuery = generateUserSubquery(filter);
+function fromFilterInverse(query: SelectQueryBuilder<any>, filter: string, id: number) {
+    const userQuery = generateUserSubquery(filter, id);
     query.andWhere(`note.userId <> (${userQuery.getQuery()})`);
     query.setParameters(userQuery.getParameters());
 }
 
-function mentionFilter(query: SelectQueryBuilder<any>, filter: string) {
-    const userQuery = generateUserSubquery(filter);
+function mentionFilter(query: SelectQueryBuilder<any>, filter: string, id: number) {
+    const userQuery = generateUserSubquery(filter, id);
     query.andWhere(`note.mentions @> array[(${userQuery.getQuery()})]`);
     query.setParameters(userQuery.getParameters());
 }
 
-function mentionFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
-    const userQuery = generateUserSubquery(filter);
+function mentionFilterInverse(query: SelectQueryBuilder<any>, filter: string, id: number) {
+    const userQuery = generateUserSubquery(filter, id);
     query.andWhere(`NOT (note.mentions @> array[(${userQuery.getQuery()})])`);
     query.setParameters(userQuery.getParameters());
 }
 
-function replyFilter(query: SelectQueryBuilder<any>, filter: string) {
-    const userQuery = generateUserSubquery(filter);
+function replyFilter(query: SelectQueryBuilder<any>, filter: string, id: number) {
+    const userQuery = generateUserSubquery(filter, id);
     query.andWhere(`note.replyUserId = (${userQuery.getQuery()})`);
     query.setParameters(userQuery.getParameters());
 }
 
-function replyFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
-    const userQuery = generateUserSubquery(filter);
+function replyFilterInverse(query: SelectQueryBuilder<any>, filter: string, id: number) {
+    const userQuery = generateUserSubquery(filter, id);
     query.andWhere(`note.replyUserId <> (${userQuery.getQuery()})`);
     query.setParameters(userQuery.getParameters());
 }
@@ -148,10 +186,9 @@ function attachmentFilter(query: SelectQueryBuilder<any>, filter: string) {
     }
 }
 
-function generateUserSubquery(filter: string) {
+function generateUserSubquery(filter: string, id: number) {
     if (filter.startsWith('@')) filter = filter.substring(1);
     const split = filter.split('@');
-    const id = Buffer.from(filter).toString('hex');
 
     const query = Users.createQueryBuilder('user')
         .select('user.id')
@@ -164,4 +201,13 @@ function generateUserSubquery(filter: string) {
         query.setParameter(`host_${id}`, split[1].toLowerCase());
 
     return query;
+}
+
+function extractToken(array: string[], start: number, end: number, trim: boolean = true) {
+    const slice = array.slice(start, end+1).join(" ");
+    return trim ? trimStartAndEnd(slice) : slice;
+}
+
+function trimStartAndEnd(str: string) {
+    return str.substring(1, str.length - 1);
 }
