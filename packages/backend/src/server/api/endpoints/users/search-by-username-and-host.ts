@@ -79,7 +79,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 			const query = Users.createQueryBuilder("user")
 				.where(`user.id IN (${followingQuery.getQuery()})`)
-				.andWhere("user.id != :meId", { meId: me.id })
 				.andWhere("user.isSuspended = FALSE")
 				.andWhere("user.usernameLower LIKE :username", {
 					username: `${sqlLikeEscape(ps.username.toLowerCase())}%`,
@@ -106,7 +105,6 @@ export default define(meta, paramDef, async (ps, me) => {
 			if (users.length < ps.limit) {
 				const otherQuery = await Users.createQueryBuilder("user")
 					.where(`user.id NOT IN (${followingQuery.getQuery()})`)
-					.andWhere("user.id != :meId", { meId: me.id })
 					.andWhere("user.isSuspended = FALSE")
 					.andWhere("user.usernameLower LIKE :username", {
 						username: `${sqlLikeEscape(ps.username.toLowerCase())}%`,
