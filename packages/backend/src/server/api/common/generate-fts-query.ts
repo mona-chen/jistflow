@@ -16,10 +16,12 @@ const filters = {
     "until": beforeFilter,
     "after": afterFilter,
     "since": afterFilter,
-    "domain": domainFilter,
-    "-domain": domainFilterInverse,
-    "host": domainFilter,
-    "-host": domainFilterInverse,
+    "instance": instanceFilter,
+    "-instance": instanceFilterInverse,
+    "domain": instanceFilter,
+    "-domain": instanceFilterInverse,
+    "host": instanceFilter,
+    "-host": instanceFilterInverse,
     "filter": miscFilter,
     "-filter": miscFilterInverse,
     "has": attachmentFilter,
@@ -131,12 +133,14 @@ function afterFilter(query: SelectQueryBuilder<any>, filter: string) {
     query.andWhere('note.createdAt > :after', { after: filter });
 }
 
-function domainFilter(query: SelectQueryBuilder<any>, filter: string) {
-    query.andWhere('note.userHost = :domain', { domain: filter });
+function instanceFilter(query: SelectQueryBuilder<any>, filter: string, id: number) {
+    query.andWhere(`note.userHost = :instance_${id}`);
+    query.setParameter(`instance_${id}`, filter);
 }
 
-function domainFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
-    query.andWhere('note.userHost <> :domain', { domain: filter });
+function instanceFilterInverse(query: SelectQueryBuilder<any>, filter: string, id: number) {
+    query.andWhere(`note.userHost <> :instance_${id}`);
+    query.setParameter(`instance_${id}`, filter);
 }
 
 function miscFilter(query: SelectQueryBuilder<any>, filter: string) {
@@ -180,9 +184,13 @@ function miscFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
 function attachmentFilter(query: SelectQueryBuilder<any>, filter: string) {
     switch(filter) {
         case 'image':
+            query.andWhere(`note."attachedFileTypes"::varchar ILIKE '%image/%'`);
+            break;
         case 'video':
+            query.andWhere(`note."attachedFileTypes"::varchar ILIKE '%video/%'`);
+            break;
         case 'audio':
-            query.andWhere(`note."attachedFileTypes"::varchar ILIKE :type`, { type: `%${sqlLikeEscape(filter)}/%` });
+            query.andWhere(`note."attachedFileTypes"::varchar ILIKE '%audio/%'`);
             break;
         case 'file':
             query.andWhere(`note."attachedFileTypes" <> '{}'`);
