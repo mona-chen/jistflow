@@ -30,7 +30,7 @@
 				<div class="section _block">
 					<div class="title">{{ i18n.ts._filters._dialog.miscFilters }}</div>
 					<div class="content">
-						<p><code>[-]filter:followers|following|replies|renotes|boosts</code></p>
+						<p><code>[-]filter:followers|following|replies|reply|renote[s]|boost[s]</code></p>
 					</div>
 				</div>
 				<div class="section _block">

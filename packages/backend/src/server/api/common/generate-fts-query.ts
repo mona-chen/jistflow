@@ -147,9 +147,9 @@ function miscFilter(query: SelectQueryBuilder<any>, filter: string) {
         subQuery = Followings.createQueryBuilder('following')
             .select('following.followeeId')
             .where('following.followerId = :meId')
-    } else if (filter === 'replies') {
+    } else if (filter === 'replies' || filter === 'reply') {
         query.andWhere('note.replyId IS NOT NULL');
-    } else if (filter === 'boosts' || filter === 'renotes') {
+    } else if (filter === 'boosts' || filter === 'boost' || filter === 'renotes' || filter === 'renote') {
         query.andWhere('note.renoteId IS NOT NULL');
     }
 
@@ -168,7 +168,7 @@ function miscFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
             .where('following.followerId = :meId')
     } else if (filter === 'replies') {
         query.andWhere('note.replyId IS NULL');
-    } else if (filter === 'boosts' || filter === 'renotes') {
+	} else if (filter === 'boosts' || filter === 'boost' || filter === 'renotes' || filter === 'renote') {
         query.andWhere('note.renoteId IS NULL');
     }
 
