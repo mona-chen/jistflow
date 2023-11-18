@@ -143,8 +143,12 @@ function instanceFilter(query: SelectQueryBuilder<any>, filter: string, id: numb
 }
 
 function instanceFilterInverse(query: SelectQueryBuilder<any>, filter: string, id: number) {
-    query.andWhere(`note.userHost <> :instance_${id}`);
-    query.setParameter(`instance_${id}`, filter);
+    if (filter === 'local') {
+        query.andWhere(`note.userHost IS NOT NULL`);
+    } else {
+        query.andWhere(`note.userHost <> :instance_${id}`);
+        query.setParameter(`instance_${id}`, filter);
+    }
 }
 
 function miscFilter(query: SelectQueryBuilder<any>, filter: string) {
@@ -176,7 +180,7 @@ function miscFilterInverse(query: SelectQueryBuilder<any>, filter: string) {
         subQuery = Followings.createQueryBuilder('following')
             .select('following.followeeId')
             .where('following.followerId = :meId')
-    } else if (filter === 'replies') {
+    } else if (filter === 'replies' || filter === 'reply') {
         query.andWhere('note.replyId IS NULL');
 	} else if (filter === 'boosts' || filter === 'boost' || filter === 'renotes' || filter === 'renote') {
         query.andWhere('note.renoteId IS NULL');
