@@ -45,18 +45,18 @@ export function generateFtsQuery(query: SelectQueryBuilder<any>, q: string): voi
     let state: 'idle' | 'quote' | 'parenthesis' = 'idle';
     for (let i = 0; i < terms.length; i++) {
         if (state === 'idle') {
-            if (terms[i].startsWith('"')) {
+            if ((terms[i].startsWith('"') && terms[i].endsWith('"')) || (terms[i].startsWith('(') && terms[i].endsWith(')'))) {
+                finalTerms.push(trimStartAndEnd(terms[i]));
+            } else if (terms[i].startsWith('"')) {
                 idx = i;
                 state = 'quote';
             } else if (terms[i].startsWith('(')) {
                 idx = i;
                 state = 'parenthesis';
-            }
-            else {
+            } else {
                 finalTerms.push(terms[i]);
             }
-        }
-        else if (state === 'quote' && terms[i].endsWith('"')) {
+        } else if (state === 'quote' && terms[i].endsWith('"')) {
             finalTerms.push(extractToken(terms, idx, i));
             state = 'idle';
         } else if (state === 'parenthesis' && terms[i].endsWith(')')) {
