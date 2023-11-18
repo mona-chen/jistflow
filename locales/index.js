@@ -71,14 +71,10 @@ module.exports = Object.entries(locales).reduce(
 		(a[k] = (() => {
 			const [lang] = k.split("-");
 			switch (k) {
-				case "ja-JP":
-					return v;
-				case "ja-KS":
 				case "en-US":
-					return merge(locales["ja-JP"], v);
+					return v;
 				default:
 					return merge(
-						locales["ja-JP"],
 						locales["en-US"],
 						locales[`${lang}-${primaries[lang]}`] || {},
 						v,
