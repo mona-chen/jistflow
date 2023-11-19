@@ -8,7 +8,7 @@
 				:display-back-button="true"
 		/></template>
 		<MkSpacer :content-max="800">
-			<MkSearch :query="query" :hideFilters="!$i || tab === 'users'" @query="search"/>
+			<MkSearch :query="searchQuery" :hideFilters="!$i || tab === 'users'" @query="search"/>
 			<swiper
 				:round-lengths="true"
 				:touch-angle="25"
@@ -27,7 +27,7 @@
 			>
 				<swiper-slide>
 					<template v-if="$i && tabs[swiperRef!.activeIndex] == 'notes'">
-						<template v-if="query == null || query.trim().length < 1">
+						<template v-if="searchQuery == null || searchQuery.trim().length < 1">
 							<transition :name="$store.state.animation ? 'zoom' : ''" appear>
 								<div class="_fullinfo" ref="notes">
 									<img
@@ -62,7 +62,7 @@
 					</template>
 				</swiper-slide>
 				<swiper-slide>
-					<template v-if="query == null || query.trim().length < 1">
+					<template v-if="searchQuery == null || searchQuery.trim().length < 1">
 						<transition :name="$store.state.animation ? 'zoom' : ''" appear>
 							<div class="_fullinfo" ref="notes">
 								<img
@@ -90,7 +90,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onMounted } from "vue";
+import { computed, watch, onMounted, onActivated, ref } from "vue";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import XNotes from "@/components/MkNotes.vue";
@@ -107,22 +107,25 @@ import MkSearch from "@/components/MkSearch.vue";
 import { mainRouter } from "@/router.js";
 import * as os from "@/os.js";
 
-const props = withDefaults(
-		defineProps<{
-			query: string;
-			channel?: string;
-		}>(),
-		{
-			query: ""
-		}
-);
+const getUrlParams = () =>
+		window.location.search
+				.substring(1)
+				.split("&")
+				.reduce((result, query) => {
+					const [k, v] = query.split("=");
+					result[k] = decodeURIComponent(v);
+					return result;
+				}, {});
+
+let searchQuery = $ref<string>(getUrlParams()['q'] ?? "");
+let channel = $ref<string|undefined>(getUrlParams()['channel'] ?? undefined);
 
 const notesPagination = {
 	endpoint: "notes/search" as const,
 	limit: 10,
 	params: computed(() => ({
-		query: props.query,
-		channelId: props.channel,
+		query: searchQuery,
+		channelId: channel,
 	})),
 };
 
@@ -130,7 +133,7 @@ const usersPagination = {
 	endpoint: "users/search" as const,
 	limit: 10,
 	params: computed(() => ({
-		query: props.query,
+		query: searchQuery,
 		origin: "combined",
 	})),
 };
@@ -170,7 +173,14 @@ function syncSlide(index) {
 }
 
 onMounted(() => {
-	syncSlide(tabs.indexOf(swiperRef.activeIndex));
+	syncSlide(tabs.indexOf(tab));
+});
+
+onActivated(() => {
+	searchQuery = getUrlParams()['q'];
+	channel = getUrlParams()['channel'] ?? undefined;
+
+	syncSlide(tabs.indexOf(tab));
 });
 
 definePageMetadata(
@@ -211,6 +221,7 @@ async function search(query: string) {
 		return;
 	}
 
+	searchQuery = q;
 	mainRouter.push(`/search?q=${encodeURIComponent(q)}`);
 }
 </script>
