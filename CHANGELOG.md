@@ -1,3 +1,20 @@
+## v2023.11.3
+This release contains yet more packaging and distribution-related changes, including some required for packaging the project for NixOS.
+
+### Backend
+- The backslash character is now correctly escaped in `sqlLikeEscape`, fixing search queries containing backslashes
+
+### Infrastructure and governance
+- The Dockerfile was streamlined and now builds the project with an immutable lockfile in the first stage
+
+### Miscellaneous
+- The `focus-production` yarn script now also updates `.yarnrc.yml`, fixing builds in some packaging environments
+- The default locale was changed to `en-US`, which should fix translation-related UI issues
+- A new yarn script - `pack-yarn` - was added to assist with packaging the project on NixOS
+
+### Attribution
+This release was made possible by project contributors: Jeder, Laura Hausmann & Pyrox
+
 ## v2023.11.2
 This release primarily contains project maintenance changes. For the first time, we are also distributing binary packages! Currently we support Arch Linux, DEB & RPM based distributions will follow.
 
