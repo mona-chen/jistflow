@@ -13,7 +13,7 @@ COPY . ./
 RUN --mount=type=cache,target=/iceshrimp/.yarncache cp -Tr .yarncache .yarn
 
 # Configure corepack and install dev mode dependencies for compilation
-RUN corepack enable && corepack prepare --activate && yarn --immutable --immutable-cache
+RUN corepack enable && corepack prepare --activate && yarn --immutable
 
 # Save yarn cache
 RUN --mount=type=cache,target=/iceshrimp/.yarncache rm -rf .yarncache/* && cp -Tr .yarn .yarncache
