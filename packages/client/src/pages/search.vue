@@ -104,8 +104,10 @@ import "swiper/scss";
 import "swiper/scss/virtual";
 import {instance} from "@/instance";
 import MkSearch from "@/components/MkSearch.vue";
-import { mainRouter } from "@/router.js";
+import { useRouter } from "@/router.js";
 import * as os from "@/os.js";
+
+const router = useRouter();
 
 const getUrlParams = () =>
 		window.location.search
@@ -194,12 +196,12 @@ async function search(query: string) {
 	const q = query.trim();
 
 	if (q.startsWith("@") && !q.includes(" ")) {
-		mainRouter.push(`/${q}`);
+		router.push(`/${q}`);
 		return;
 	}
 
 	if (q.startsWith("#")) {
-		mainRouter.push(`/tags/${encodeURIComponent(q.slice(1))}`);
+		router.push(`/tags/${encodeURIComponent(q.slice(1))}`);
 		return;
 	}
 
@@ -213,15 +215,15 @@ async function search(query: string) {
 		const res = await promise;
 
 		if (res.type === "User") {
-			mainRouter.push(`/@${res.object.username}@${res.object.host}`);
+			router.push(`/@${res.object.username}@${res.object.host}`);
 		} else if (res.type === "Note") {
-			mainRouter.push(`/notes/${res.object.id}`);
+			router.push(`/notes/${res.object.id}`);
 		}
 
 		return;
 	}
 
 	searchQuery = q;
-	mainRouter.push(`/search?q=${encodeURIComponent(q)}`);
+	router.push(`/search?q=${encodeURIComponent(q)}`);
 }
 </script>
