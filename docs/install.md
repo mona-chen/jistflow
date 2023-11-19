@@ -23,10 +23,6 @@ This document will guide you through manual installation of Iceshrimp. We also p
 ### Optional
 
 - [**FFmpeg**](https://ffmpeg.org/) for video transcoding
-- Full text search (Choose one)  
-  Iceshrimp has full text search powered by Postgres by default, however it's very slow, and these are alternatives for that
-  - [**Meilisearch**](https://www.meilisearch.com/) | [Installation guide](https://www.meilisearch.com/docs/learn/getting_started/quick_start) 
-  - [**Sonic**](https://crates.io/crates/sonic-server) (More lightweight, but less features) | [Installation guide](https://github.com/valeriansaliou/sonic#installation)
 
 ## Preparations
 
@@ -50,7 +46,6 @@ Following steps will require you to run them as the user you have made, so use `
 - Copy `.config/example.yml` to `.config/default.yml`
 - Edit `.config/default.yml` with text editor
 	- Make sure to set PostgreSQL and Redis section correctly
-	- Make sure to set/uncomment text search sections if you have chosen to set up a search backend
 
 ## Installing project dependencies
 

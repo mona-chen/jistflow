@@ -18,9 +18,7 @@ git clone https://iceshrimp.dev/iceshrimp/iceshrimp.git
 
 ### docker-compose.yml
 
-First, run `cp docs/examples/docker-compose.yml docker-compose.yml`, and edit `docker-compose.yml` if
-- you want to build the image yourself or choose a [different tag](https://iceshrimp.dev/iceshrimp/-/packages/container/iceshrimp/versions), and/or
-- you want a search engine for better search performance.
+First, run `cp docs/examples/docker-compose.yml docker-compose.yml`, and edit `docker-compose.yml` if you want to build the image yourself or choose a [different tag](https://iceshrimp.dev/iceshrimp/-/packages/container/iceshrimp/versions)
 
 ### .config
 
@@ -28,7 +26,6 @@ Run `cp .config/docker_example.env .config/docker.env`, and edit `.config/docker
 Run `cp .config/example-docker.yml .config/default.yml`, and edit `.config/default.yml` 
 - Replace example database credentials with the ones you entered in `.config/docker.env`
 - Change other configuration
-- Optionally, set up the search backend, if you have chosen to set one up.
 
 ## Installation and first start
 
