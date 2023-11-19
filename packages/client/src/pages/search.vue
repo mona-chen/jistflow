@@ -26,7 +26,7 @@
 				@slide-change="onSlideChange"
 			>
 				<swiper-slide>
-					<template v-if="$i && tabs[swiperRef!.activeIndex] == 'notes'">
+					<template v-if="$i">
 						<template v-if="searchQuery == null || searchQuery.trim().length < 1">
 							<transition :name="$store.state.animation ? 'zoom' : ''" appear>
 								<div class="_fullinfo" ref="notes">
@@ -41,11 +41,11 @@
 								</div>
 							</transition>
 						</template>
-						<template v-else>
+						<template v-else-if="tabs[swiperRef!.activeIndex] == 'notes'">
 							<XNotes ref="notes" :pagination="notesPagination" />
 						</template>
 					</template>
-					<template>
+					<template v-else>
 						<transition :name="$store.state.animation ? 'zoom' : ''" appear>
 							<div class="_fullinfo" ref="notes">
 								<img
