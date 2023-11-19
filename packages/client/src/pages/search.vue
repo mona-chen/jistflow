@@ -5,7 +5,6 @@
 				v-model:tab="tab"
 				:actions="headerActions"
 				:tabs="headerTabs"
-				:display-back-button="true"
 		/></template>
 		<MkSpacer :content-max="800">
 			<MkSearch :query="searchQuery" :hideFilters="!$i || tab === 'users'" @query="search"/>
