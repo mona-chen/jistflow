@@ -112,7 +112,7 @@ you: "Tu"
 clickToShow: "Fes clic per a mostrar"
 sensitive: "NSFW"
 add: "Afegeix"
-reaction: "Reaccions"
+reaction: "Reacció"
 reactionSetting: "Reaccions a mostrar al selector de reaccions"
 reactionSettingDescription2: "Arrossega per reordenar, fes clic per suprimir, prem
   \"+\" per afegir."
@@ -792,11 +792,11 @@ customEmojis: Emojis personalitzats
 cacheRemoteFilesDescription: Quan aquesta opció està desactivada, els fitxers remots
   es carreguen directament del servidor remot. Desactivar-la farà que baixi l'ús d'emmagatzematge,
   però incrementa el tràfic, perquè les miniatures no es generaran.
-flagAsBot: Marca aquest compte com a bot
+flagAsBot: Marca aquest compte com automatitzat
 flagAsBotDescription: Activa aquesta opció si aquest compte és controlat per un programa.
   Si s'activa, això actuarà com una bandera per a altres desenvolupadors i ajuda a
-  prevenir cadenes de interaccions infinites amb altres bots a més d'ajustar els sistemes
-  interns de Firefish per tractar aquest compte com un bot.
+  prevenir cadenes de interaccions infinites amb altres comptes automatitzats a més
+  d'ajustar els sistemes interns de Firefish per tractar aquest compte com automatitzat.
 flagAsCat: Ets un gat? 🐱
 flagShowTimelineReplies: Mostra respostes a la línia de temps
 flagAsCatDescription: Guanyaràs unes orelles de gat i parlares com un gat!
@@ -2127,7 +2127,7 @@ clipsDesc: Els clips són com marcadors categoritzats que es poden compartir. Po
 selectChannel: Selecciona un canal
 isLocked: Aquest compte té les següents aprovacions
 isPatron: Mecenes de Firefish
-isBot: Aquest compte és un bot
+isBot: Aquest es un compte automatitzat
 isModerator: Moderador
 isAdmin: Administrador
 _filters:
@@ -2199,3 +2199,16 @@ openServerInfo: Mostra la informació del servidor fent clic al símbol del serv
   en un missatge
 vibrate: Activar vibracions
 clickToShowPatterns: Fes clic per veure patrons de mòduls
+iconSet: Conjunt d'Icones
+_iconSets:
+  fill: Omplerts
+  regular: Normals
+  bold: Negreta
+  duotone: Bitó
+  light: Prims
+showAttachedNotes: Mostrar publicacions que contenen aquest fitxer
+reactions: Reaccions
+attachedToNotes: Publicacions que contenen aquest fitxer
+replies: Respostes
+quotes: Cites
+renotes: Impulsos
