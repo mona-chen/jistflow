@@ -8,6 +8,7 @@ import * as Acct from "iceshrimp-js/built/acct";
 
 const props = defineProps<{
 	query: string;
+	hideFilters?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -235,7 +236,7 @@ function onInputKeydown(evt: KeyboardEvent) {
 				<i class="ph-magnifying-glass ph-bold"></i>
 			</div>
 		</template>
-		<template #suffix>
+		<template v-if="!hideFilters" #suffix>
 			<button
 					v-tooltip.noDelay="i18n.ts.filter"
 					class="_buttonIcon"

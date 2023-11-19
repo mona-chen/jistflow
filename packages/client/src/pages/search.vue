@@ -8,7 +8,7 @@
 				:display-back-button="true"
 		/></template>
 		<MkSpacer :content-max="800">
-			<MkSearch :query="query" @query="search"/>
+			<MkSearch :query="query" :hideFilters="!$i || tab === 'users'" @query="search"/>
 			<swiper
 				:round-lengths="true"
 				:touch-angle="25"
