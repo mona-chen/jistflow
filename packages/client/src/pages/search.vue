@@ -113,7 +113,7 @@ const getUrlParams = () =>
 				.split("&")
 				.reduce((result, query) => {
 					const [k, v] = query.split("=");
-					result[k] = decodeURIComponent(v);
+					result[k] = decodeURIComponent(v.replace('+', '%20'));
 					return result;
 				}, {});
 
