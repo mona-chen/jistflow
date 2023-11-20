@@ -1485,8 +1485,8 @@ _time:
   day: "Day(s)"
 _filters:
   _dialog:
-    title: "Advanced search filters"
-    learnMore: "View advanced filters"
+    title: "Search filter syntax"
+    learnMore: "View filter syntax"
     wordFilters: "Filter by post text"
     inFilters: "Filter by bookmark and/or favorite status"
     miscFilters: "Filter by following relationship and/or note type"
