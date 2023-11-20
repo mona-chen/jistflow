@@ -2139,6 +2139,38 @@ _filters:
   notesBefore: Beiträge vor
   followingOnly: Von Benutzern denen ich folge
   followersOnly: Von Benutzern die mir folgen
+  _dialog:
+    learnMore: Filtersyntax ansehen
+    userDomain: Nach Autor, erwähnten Nutzern, antwortendem Nutzer oder Instanzdomain
+      filtern
+    info1: Text in eckigen klammern zeigen optionale Filter-Parameter an. Parameter-Optionen
+      sind mit einem |-Symbol getrennt.
+    title: Suchfilter-Syntax
+    wordFilters: Nach Post-Text filtern
+    inFilters: Nach Lesezeichen oder Favoritenstatus filtern
+    miscFilters: Nach Folge-Beziehung oder Post-Art filtern
+    postDate: Nach Post-Datum filtern
+    exclusivity: 'Beachte, dass der before: filter exklusiv, der after: filter aber
+      inklusiv ist.'
+    word: wort
+    phrase: wortwörtliche Phrase die (irgendwelche) Zeichen enthält
+    attachmentType: Nach Anhang-Typ filtern
+    matchOptions: Groß- und Kleinschreibung beachten und/oder ganze Wörter erkennen
+    info: Nomenklatur
+    info2: Ein Bindestrich in eckigen Klammern zeigt an, dass der Filter mit einem
+      Minus-Symbol invertiert werden kann.
+    infoEnd: Filter-Aliase
+    infoEnd1: Für einfachere Bedienung haben manche Filter Aliase, welche hier aufgelistet
+      sind.
+  repliesOnly: Nur Antworten
+  replyTo: Antwort an
+  mentioning: Erwähnt
+  inFavorites: Favorisiert
+  inBookmarks: Lesezeichen
+  excludeReplies: Antworten ausschließen
+  excludeRenotes: Boosts ausschließen
+  caseSensitive: Groß- und Kleinschreibung beachten
+  matchWords: Ganze Wörter durchsuchen
 isBot: Dieses Konto ist ein Bot
 isModerator: Moderator
 isAdmin: Administrator
@@ -2194,3 +2226,4 @@ antennaTimelineHint: Antennen zeigen übereinstimmende Posts in der Reihenfolge 
   in der sie erhalten werden, was nicht zwingend chronologisch ist.
 searchNotLoggedIn_1: Du musst zum benutzen der Volltextsuche angemeldet sein.
 showWithSparkles: Mit funkel-Animation anzeigen
+searchEmptyQuery: Gib einen Suchbegriff ein, um loszulegen.
