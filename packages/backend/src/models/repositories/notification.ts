@@ -22,6 +22,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 		options: {
 			_hintForEachNotes_?: {
 				myReactions: Map<Note["id"], NoteReaction | null>;
+				myRenotes: Map<Note["id"], boolean>;
 			};
 		},
 	): Promise<Packed<"Notification">> {
@@ -153,6 +154,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 			.map((x) => x.note!);
 		const noteIds = notes.map((n) => n.id);
 		const myReactionsMap = new Map<Note["id"], NoteReaction | null>();
+		const myRenotesMap = new Map<Note["id"], boolean>();
 		const renoteIds = notes
 			.filter((n) => n.renoteId != null)
 			.map((n) => n.renoteId!);
@@ -161,11 +163,21 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 			userId: meId,
 			noteId: In(targets),
 		});
+		const myRenotes = await Notes.createQueryBuilder('note')
+			.select('note.renoteId')
+			.where('note.userId = :meId', { meId })
+			.andWhere('note.renoteId IN array[:...targets]', { targets })
+			.getMany();
 
 		for (const target of targets) {
 			myReactionsMap.set(
 				target,
 				myReactions.find((reaction) => reaction.noteId === target) || null,
+			);
+
+			myRenotesMap.set(
+				target,
+				!!myRenotes.find(p => p.renoteId == target),
 			);
 		}
 
@@ -176,6 +188,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 				this.pack(x, {
 					_hintForEachNotes_: {
 						myReactions: myReactionsMap,
+						myRenotes: myRenotesMap
 					},
 				}).catch((e) => null),
 			),

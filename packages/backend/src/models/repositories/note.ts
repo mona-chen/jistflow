@@ -10,6 +10,7 @@ import {
 	Followings,
 	Polls,
 	Channels,
+	Notes,
 } from "../index.js";
 import type { Packed } from "@/misc/schema.js";
 import { nyaize } from "@/misc/nyaize.js";
@@ -95,6 +96,19 @@ async function populateMyReaction(
 	return undefined;
 }
 
+async function populateIsRenoted(
+	note: Note,
+	meId: User["id"],
+	_hint_?: {
+		myRenotes: Map<Note["id"], boolean>;
+	},
+) {
+	return _hint_?.myRenotes
+		? _hint_.myRenotes.get(note.id) ? true : undefined
+		: Notes.exist({ where: { renoteId: note.id, userId: meId } })
+			.then(res => res ? true : undefined);
+}
+
 export const NoteRepository = db.getRepository(Note).extend({
 	async isVisibleForMe(note: Note, meId: User["id"] | null): Promise<boolean> {
 		// This code must always be synchronized with the checks in generateVisibilityQuery.
@@ -156,6 +170,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 			detail?: boolean;
 			_hint_?: {
 				myReactions: Map<Note["id"], NoteReaction | null>;
+				myRenotes: Map<Note["id"], boolean>;
 			};
 		},
 	): Promise<Packed<"Note">> {
@@ -240,6 +255,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 			...(meId
 				? {
 						myReaction: populateMyReaction(note, meId, options?._hint_),
+						isRenoted: populateIsRenoted(note, meId, options?._hint_)
 				  }
 				: {}),
 
@@ -290,6 +306,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 			detail?: boolean;
 			_hint_?: {
 				myReactions: Map<Note["id"], NoteReaction | null>;
+				myRenotes: Map<Note["id"], boolean>;
 			};
 		},
 	): Promise<Packed<"Note"> | undefined> {
@@ -311,6 +328,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 
 		const meId = me ? me.id : null;
 		const myReactionsMap = new Map<Note["id"], NoteReaction | null>();
+		const myRenotesMap = new Map<Note["id"], boolean>();
 		if (meId) {
 			const renoteIds = notes
 				.filter((n) => n.renoteId != null)
@@ -320,11 +338,21 @@ export const NoteRepository = db.getRepository(Note).extend({
 				userId: meId,
 				noteId: In(targets),
 			});
+			const myRenotes = await Notes.createQueryBuilder('note')
+				.select('note.renoteId')
+				.where('note.userId = :meId', { meId })
+				.andWhere('note.renoteId IN (:...targets)', { targets })
+				.getMany();
 
 			for (const target of targets) {
 				myReactionsMap.set(
 					target,
 					myReactions.find((reaction) => reaction.noteId === target) || null,
+				);
+
+				myRenotesMap.set(
+					target,
+					!!myRenotes.find(p => p.renoteId == target),
 				);
 			}
 		}
@@ -337,6 +365,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 					...options,
 					_hint_: {
 						myReactions: myReactionsMap,
+						myRenotes: myRenotesMap
 					},
 				}),
 			),

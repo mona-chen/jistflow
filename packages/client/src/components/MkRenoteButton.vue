@@ -70,14 +70,7 @@ useTooltip(buttonRef, async (showing) => {
 	);
 });
 
-let hasRenotedBefore = $ref(false);
-os.api("notes/renotes", {
-	noteId: props.note.id,
-	userId: $i.id,
-	limit: 1,
-}).then((res) => {
-	hasRenotedBefore = res.length > 0;
-});
+let hasRenotedBefore = $ref(props.note.isRenoted ?? false);
 
 const renote = (viaKeyboard = false, ev?: MouseEvent) => {
 	pleaseLogin();

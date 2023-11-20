@@ -190,11 +190,15 @@ export const packedNoteSchema = {
 			optional: true,
 			nullable: false,
 		},
-
 		myReaction: {
 			type: "object",
 			optional: true,
 			nullable: true,
 		},
+		isRenoted: {
+			type: "boolean",
+			optional: true,
+			nullable: true,
+		}
 	},
 } as const;

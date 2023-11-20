@@ -151,6 +151,7 @@ export type Note = {
 	localOnly?: boolean;
 	channel?: Channel["id"];
 	myReaction?: string;
+	isRenoted?: boolean;
 	reactions: Record<string, number>;
 	renoteCount: number;
 	repliesCount: number;
