@@ -81,20 +81,14 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent } from "vue";
-import MkTextarea from "@/components/form/textarea.vue";
-import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
-import { instance } from "@/instance";
+import MkSpacer from "@/components/global/MkSpacer.vue";
+import MkPageHeader from "@/components/global/MkPageHeader.vue";
+import MkStickyContainer from "@/components/global/MkStickyContainer.vue";
 
 defineProps<{
 	popup?: boolean;
 }>();
-
-definePageMetadata({
-	title: i18n.ts._filters._dialog.title,
-	icon: "ph-funnel ph-bold ph-lg",
-});
 </script>
 
 <style lang="scss" scoped>
@@ -114,8 +108,7 @@ definePageMetadata({
 		> .content {
 			> p {
 				margin: 0;
-				padding: 16px;
-				padding-top: 0;
+				padding: 0 16px 16px;
 			}
 
 			> .preview {
