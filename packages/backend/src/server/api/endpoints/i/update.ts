@@ -215,22 +215,27 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (ps.emailNotificationTypes !== undefined)
 		profileUpdates.emailNotificationTypes = ps.emailNotificationTypes;
 
-	if (ps.avatarId) {
-		const avatar = await DriveFiles.findOneBy({ id: ps.avatarId });
+	const avatar = ps.avatarId ? await DriveFiles.findOneBy({ id: ps.avatarId }) : null;
+	const banner = ps.bannerId ? await DriveFiles.findOneBy({ id: ps.bannerId }) : null;
 
+	if (ps.avatarId) {
 		if (avatar == null || avatar.userId !== user.id)
 			throw new ApiError(meta.errors.noSuchAvatar);
 		if (!avatar.type.startsWith("image/"))
 			throw new ApiError(meta.errors.avatarNotAnImage);
+
+		updates.avatarUrl = DriveFiles.getDatabasePrefetchUrl(avatar, true);
+		updates.avatarBlurhash = avatar.blurhash;
 	}
 
 	if (ps.bannerId) {
-		const banner = await DriveFiles.findOneBy({ id: ps.bannerId });
-
 		if (banner == null || banner.userId !== user.id)
 			throw new ApiError(meta.errors.noSuchBanner);
 		if (!banner.type.startsWith("image/"))
 			throw new ApiError(meta.errors.bannerNotAnImage);
+
+		updates.bannerUrl = DriveFiles.getDatabasePrefetchUrl(banner, false);
+		updates.bannerBlurhash = banner.blurhash;
 	}
 
 	if (ps.pinnedPageId) {

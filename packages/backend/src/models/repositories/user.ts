@@ -339,6 +339,7 @@ export const UserRepository = db.getRepository(User).extend({
 				this.getIdenticonUrl(user.id)
 			);
 		} else if (user.avatarId) {
+			if (user.avatarUrl) return user.avatarUrl;
 			const avatar = await DriveFiles.findOneByOrFail({ id: user.avatarId });
 			return (
 				DriveFiles.getPublicUrl(avatar, true) || this.getIdenticonUrl(user.id)
@@ -349,7 +350,9 @@ export const UserRepository = db.getRepository(User).extend({
 	},
 
 	getAvatarUrlSync(user: User): string {
-		if (user.avatar) {
+		if (user.avatarId && user.avatarUrl) {
+			return user.avatarUrl;
+		} else if (user.avatar) {
 			return (
 				DriveFiles.getPublicUrl(user.avatar, true) ||
 				this.getIdenticonUrl(user.id)
@@ -388,17 +391,9 @@ export const UserRepository = db.getRepository(User).extend({
 
 		if (typeof src === "object") {
 			user = src;
-			if (src.avatar === undefined && src.avatarId)
-				src.avatar = (await DriveFiles.findOneBy({ id: src.avatarId })) ?? null;
-			if (src.banner === undefined && src.bannerId)
-				src.banner = (await DriveFiles.findOneBy({ id: src.bannerId })) ?? null;
 		} else {
 			user = await this.findOneOrFail({
 				where: { id: src },
-				relations: {
-					avatar: true,
-					banner: true,
-				},
 			});
 		}
 
@@ -474,7 +469,7 @@ export const UserRepository = db.getRepository(User).extend({
 			username: user.username,
 			host: user.host,
 			avatarUrl: this.getAvatarUrlSync(user),
-			avatarBlurhash: user.avatar?.blurhash || null,
+			avatarBlurhash: user.avatarId ? (user.avatarBlurhash ?? user.avatar?.blurhash ?? null) : null,
 			avatarColor: null, // 後方互換性のため
 			isAdmin: user.isAdmin || falsy,
 			isModerator: user.isModerator || falsy,
@@ -519,10 +514,10 @@ export const UserRepository = db.getRepository(User).extend({
 						lastFetchedAt: user.lastFetchedAt
 							? user.lastFetchedAt.toISOString()
 							: null,
-						bannerUrl: user.banner
+						bannerUrl: user.bannerId ? (user.bannerUrl ?? (user.banner
 							? DriveFiles.getPublicUrl(user.banner, false)
-							: null,
-						bannerBlurhash: user.banner?.blurhash || null,
+							: null)) : null,
+						bannerBlurhash: user.bannerId ? (user.bannerBlurhash ?? user.banner?.blurhash ?? null) : null,
 						bannerColor: null, // 後方互換性のため
 						isSilenced: user.isSilenced || falsy,
 						isSuspended: user.isSuspended || falsy,

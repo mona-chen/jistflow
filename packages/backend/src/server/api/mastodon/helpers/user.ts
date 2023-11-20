@@ -1,7 +1,7 @@
 import { Note } from "@/models/entities/note.js";
 import { ILocalUser, IRemoteUser, User } from "@/models/entities/user.js";
 import {
-    Blockings,
+    Blockings, DriveFiles,
     Followings,
     FollowRequests,
     Mutings,
@@ -173,11 +173,15 @@ export class UserHelpers {
         if (avatar) {
             const file = await MediaHelpers.uploadMediaBasic(avatar, ctx);
             updates.avatarId = file.id;
+            updates.avatarBlurhash = file.blurhash;
+            updates.avatarUrl = DriveFiles.getDatabasePrefetchUrl(file, true);
         }
 
         if (header) {
             const file = await MediaHelpers.uploadMediaBasic(header, ctx);
             updates.bannerId = file.id;
+            updates.bannerBlurhash = file.blurhash;
+            updates.bannerUrl = DriveFiles.getDatabasePrefetchUrl(file, false);
         }
 
         if (formData.fields_attributes) {

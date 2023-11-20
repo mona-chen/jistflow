@@ -103,6 +103,20 @@ export class User {
 	})
 	public avatarId: DriveFile["id"] | null;
 
+	@Column("varchar", {
+		length: 512,
+		nullable: true,
+		comment: "The URL of the avatar DriveFile",
+	})
+	public avatarUrl: string | null;
+
+	@Column("varchar", {
+		length: 128,
+		nullable: true,
+		comment: "The blurhash of the avatar DriveFile",
+	})
+	public avatarBlurhash: string | null;
+
 	@OneToOne((type) => DriveFile, {
 		onDelete: "SET NULL",
 	})
@@ -115,6 +129,20 @@ export class User {
 		comment: "The ID of banner DriveFile.",
 	})
 	public bannerId: DriveFile["id"] | null;
+
+	@Column("varchar", {
+		length: 512,
+		nullable: true,
+		comment: "The URL of the banner DriveFile",
+	})
+	public bannerUrl: string | null;
+
+	@Column("varchar", {
+		length: 128,
+		nullable: true,
+		comment: "The blurhash of the banner DriveFile",
+	})
+	public bannerBlurhash: string | null;
 
 	@OneToOne((type) => DriveFile, {
 		onDelete: "SET NULL",

@@ -409,16 +409,28 @@ export async function createPerson(
 		),
 	);
 
-	const avatarId = avatar ? avatar.id : null;
-	const bannerId = banner ? banner.id : null;
+	const avatarId = avatar?.id ?? null;
+	const avatarBlurhash = avatar?.blurhash ?? null;
+	const avatarUrl = avatar ? DriveFiles.getDatabasePrefetchUrl(avatar, true) : null;
+	const bannerId = banner?.id ?? null;
+	const bannerBlurhash = banner?.blurhash ?? null;
+	const bannerUrl = banner ? DriveFiles.getDatabasePrefetchUrl(banner, false) : null;
 
 	await Users.update(user!.id, {
 		avatarId,
+		avatarBlurhash,
+		avatarUrl,
 		bannerId,
+		bannerBlurhash,
+		bannerUrl,
 	});
 
 	user!.avatarId = avatarId;
+	user!.avatarBlurhash = avatarBlurhash;
+	user!.avatarUrl = avatarUrl;
 	user!.bannerId = bannerId;
+	user!.bannerBlurhash = bannerBlurhash;
+	user!.bannerUrl = bannerUrl;
 	//#endregion
 
 	//#region Get custom emoji
@@ -576,10 +588,14 @@ export async function updatePerson(
 
 	if (avatar) {
 		updates.avatarId = avatar.id;
+		updates.avatarUrl = DriveFiles.getDatabasePrefetchUrl(avatar, true);
+		updates.avatarBlurhash = avatar.blurhash;
 	}
 
 	if (banner) {
 		updates.bannerId = banner.id;
+		updates.bannerUrl = DriveFiles.getDatabasePrefetchUrl(banner, false);
+		updates.bannerBlurhash = banner.blurhash;
 	}
 
 	if (host) {

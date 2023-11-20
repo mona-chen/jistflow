@@ -1,6 +1,6 @@
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import { InternalStorage } from "./internal-storage.js";
-import { DriveFiles, Instances } from "@/models/index.js";
+import { DriveFiles, Instances, Users } from "@/models/index.js";
 import {
 	driveChart,
 	perUserDriveChart,
@@ -81,6 +81,8 @@ async function postProcess(file: DriveFile, isExpired = false) {
 			thumbnailAccessKey: `thumbnail-${uuid()}`,
 			webpublicAccessKey: `webpublic-${uuid()}`,
 		});
+		Users.update({ avatarId: file.id }, { avatarUrl: file.uri });
+		Users.update({ bannerId: file.id }, { bannerUrl: file.uri });
 	} else {
 		DriveFiles.delete(file.id);
 	}
