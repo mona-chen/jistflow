@@ -52,7 +52,7 @@ const strokeDashoffset = $computed(
 
 	> circle {
 		transform-origin: center;
-		transform: rotate(-90deg);
+		transform: rotate(45deg);
 		transition: stroke-dashoffset 0.5s ease;
 	}
 

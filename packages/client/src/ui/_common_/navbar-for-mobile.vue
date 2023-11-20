@@ -240,7 +240,7 @@ function more() {
 					bottom: 0;
 					border-radius: 999px;
 					background: linear-gradient(
-						90deg,
+						-45deg,
 						var(--buttonGradateA),
 						var(--buttonGradateB)
 					);

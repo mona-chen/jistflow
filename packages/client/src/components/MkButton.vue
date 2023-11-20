@@ -162,7 +162,7 @@ function onMousedown(evt: MouseEvent): void {
 		font-weight: bold;
 		color: var(--fgOnAccent) !important;
 		background: linear-gradient(
-			90deg,
+			-45deg,
 			var(--buttonGradateA),
 			var(--buttonGradateB)
 		);

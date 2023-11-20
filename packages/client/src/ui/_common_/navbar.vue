@@ -331,7 +331,7 @@ function more(ev: MouseEvent) {
 						bottom: 0;
 						border-radius: 999px;
 						background: linear-gradient(
-							90deg,
+							-45deg,
 							var(--buttonGradateA),
 							var(--buttonGradateB)
 						);
@@ -520,7 +520,7 @@ function more(ev: MouseEvent) {
 						aspect-ratio: 1/1;
 						border-radius: 100%;
 						background: linear-gradient(
-							90deg,
+							-45deg,
 							var(--buttonGradateA),
 							var(--buttonGradateB)
 						);

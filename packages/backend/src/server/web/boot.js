@@ -209,7 +209,7 @@
 		}
 
 		.button-big {
-			background: linear-gradient(90deg, rgb(196, 167, 231), rgb(235, 188, 186));
+			background: linear-gradient(-45deg, rgb(196, 167, 231), rgb(235, 188, 186));
 			line-height: 50px;
 		}
 

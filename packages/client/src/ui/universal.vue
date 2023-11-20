@@ -539,7 +539,7 @@ console.log(mainRouter.currentRoute.value.name);
 		width: 4rem;
 		background-position: center;
 		background: linear-gradient(
-			90deg,
+			-45deg,
 			var(--buttonGradateA),
 			var(--buttonGradateB)
 		);

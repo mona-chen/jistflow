@@ -315,7 +315,7 @@ hr {
 	@extend ._buttonPrimary;
 	color: var(--fgOnAccent);
 	background: linear-gradient(
-		90deg,
+		-45deg,
 		var(--buttonGradateA),
 		var(--buttonGradateB)
 	);
