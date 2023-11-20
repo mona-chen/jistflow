@@ -2117,7 +2117,7 @@ signupsDisabled: Les inscriptions sur cette instance sont actuellement désactiv
 apps: Applications
 userSaysSomethingReasonReply: "{noms} a répondu à une publication contenant {raison}"
 defaultValueIs: "défaut : {valeur}"
-searchPlaceholder: Recherchez sur Iceshrimp
+searchPlaceholder: Rechercher dans le Fédiverse
 removeReaction: Retirer votre réaction
 selectChannel: Sélectionner une chaîne
 expandOnNoteClick: Ouvrir la publications en cliquant
@@ -2187,12 +2187,45 @@ isAdmin: Administrateur·rice
 isPatron: Mécène Iceshrimp
 _filters:
   fromUser: De l’utilisateur
-  withFile: Avec fichier
+  withFile: Avec pièce jointe
   notesBefore: Publications précédentes
   notesAfter: Publications suivantes
   followersOnly: Abonnés uniquement
   followingOnly: Abonnements uniquement
-  fromDomain: Du domaine
+  fromDomain: De l’instance
+  _dialog:
+    exclusivity: 'Notez que le filtre before : est exclusif, tandis que le filtre
+      after : est inclusif.'
+    info1: Le texte entre parenthèses () indique les paramètres de filtrage optionnels
+      disponibles. Les options de paramètres sont signalées par un caractère pipe
+      |
+    infoEnd1: Pour des raisons de commodité et de prévention des fautes de frappe,
+      certains filtres ont des alias, qui sont énumérés ci-dessous.
+    title: Filtres de recherche avancée
+    learnMore: Voir les filtres avancés
+    inFilters: Filtrer par clip et/ou favori
+    miscFilters: Filtrer par statut d’abonnement et/ou type de publication
+    userDomain: Filtrer par auteur·ice, mention, réponse ou nom d’instance
+    postDate: Filtrer par date
+    wordFilters: Filtrer par le contenu du texte
+    word: mot
+    phrase: phrase littérale contenant des caractères (arbitraires)
+    attachmentType: Filtrer par type(s) de pièce(s) jointe(s)
+    matchOptions: Modifier la sensibilité à la casse et/ou activer la correspondance
+      exacte avec une suite de caractères
+    info: Nomenclature
+    info2: Un tiret entre crochets [-] indique la possibilité d'inverser/négativer
+      un filtre avec le caractère tiret -
+    infoEnd: Filtrer par aliases
+  replyTo: En réponse à
+  mentioning: Faisant mention à
+  inFavorites: Dans les favoris
+  inBookmarks: Dans les clips
+  repliesOnly: Réponses seulement
+  excludeReplies: Exclure les réponses
+  excludeRenotes: Exclure les boosts
+  caseSensitive: Sensible à la casse (respect des majuscules et des minuscules)
+  matchWords: Correspondance exacte avec une suite de caractères
 _dialog:
   charactersBelow: "Pas assez de caractères ! Actuel : {current}/Minimum : {min}"
   charactersExceeded: "Nombre maximal de caractères dépassé ! Actuel : {current}/Limite
@@ -2243,3 +2276,4 @@ _wellness:
   description: Ces paramètres vous permettent d’ajuster les options susceptibles de
     créer une dépendance ou d’induire de l’anxiété, trop souvent présentes sur les
     réseaux sociaux. Choisissez les paramètres qui vous conviennent le mieux.
+searchEmptyQuery: Veuillez saisir votre recherche.
