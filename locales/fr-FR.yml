@@ -2188,8 +2188,8 @@ isPatron: Mécène Iceshrimp
 _filters:
   fromUser: De l’utilisateur
   withFile: Avec pièce jointe
-  notesBefore: Publications précédentes
-  notesAfter: Publications suivantes
+  notesBefore: Publié avant le
+  notesAfter: Publié après le
   followersOnly: Abonnés uniquement
   followingOnly: Abonnements uniquement
   fromDomain: De l’instance
@@ -2201,8 +2201,8 @@ _filters:
       |
     infoEnd1: Pour des raisons de commodité et de prévention des fautes de frappe,
       certains filtres ont des alias, qui sont énumérés ci-dessous.
-    title: Filtres de recherche avancée
-    learnMore: Voir les filtres avancés
+    title: Syntaxe du filtre de recherche
+    learnMore: Voir la syntaxe du filtre
     inFilters: Filtrer par clip et/ou favori
     miscFilters: Filtrer par statut d’abonnement et/ou type de publication
     userDomain: Filtrer par auteur·ice, mention, réponse ou nom d’instance
@@ -2224,8 +2224,8 @@ _filters:
   repliesOnly: Réponses seulement
   excludeReplies: Exclure les réponses
   excludeRenotes: Exclure les boosts
-  caseSensitive: Sensible à la casse (respect des majuscules et des minuscules)
-  matchWords: Correspondance exacte avec une suite de caractères
+  caseSensitive: Sensible à la casse
+  matchWords: Correspondance exacte
 _dialog:
   charactersBelow: "Pas assez de caractères ! Actuel : {current}/Minimum : {min}"
   charactersExceeded: "Nombre maximal de caractères dépassé ! Actuel : {current}/Limite
