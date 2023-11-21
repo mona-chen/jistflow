@@ -193,8 +193,6 @@ export const db = new DataSource({
 	database: config.db.db,
 	extra: {
 		statement_timeout: 1000 * 10,
-		//FIXME: remove this once the avatar/banner joins backend refactor is complete
-		options: '-c geqo=on -c geqo_threshold=12 -c from_collapse_limit=40 -c join_collapse_limit=40',
 		...config.db.extra,
 	},
 	synchronize: process.env.NODE_ENV === "test",
