@@ -21,15 +21,12 @@ import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js"
 import { generatePaginationData } from "@/server/api/mastodon/middleware/pagination.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import { generateListQuery } from "@/server/api/common/generate-list-query.js";
+import { generateFollowingQuery } from "@/server/api/common/generate-following-query.js";
 
 export class TimelineHelpers {
     public static async getHomeTimeline(maxId: string | undefined, sinceId: string | undefined, minId: string | undefined, limit: number = 20, ctx: MastoContext): Promise<Note[]> {
         if (limit > 40) limit = 40;
         const user = ctx.user as ILocalUser;
-
-        const followingQuery = Followings.createQueryBuilder("following")
-            .select("following.followeeId")
-            .where("following.followerId = :followerId", { followerId: user.id });
 
         const query = PaginationHelpers.makePaginationQuery(
             Notes.createQueryBuilder("note"),
@@ -37,13 +34,9 @@ export class TimelineHelpers {
             maxId,
             minId
         )
-            .andWhere(
-                new Brackets((qb) => {
-                    qb.where(`note.userId IN (${followingQuery.getQuery()} UNION ALL VALUES (:meId))`, { meId: user.id });
-                }),
-            )
             .leftJoinAndSelect("note.renote", "renote");
 
+        await generateFollowingQuery(query, user);
         generateListQuery(query, user);
         generateChannelQuery(query, user);
         generateRepliesQuery(query, true, user);

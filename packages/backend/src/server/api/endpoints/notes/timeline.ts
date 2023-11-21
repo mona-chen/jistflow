@@ -12,6 +12,7 @@ import { generateBlockedUserQuery } from "../../common/generate-block-query.js";
 import { generateMutedUserRenotesQueryForNotes } from "../../common/generated-muted-renote-query.js";
 import { ApiError } from "../../error.js";
 import { generateListQuery } from "@/server/api/common/generate-list-query.js";
+import { generateFollowingQuery } from "@/server/api/common/generate-following-query.js";
 
 export const meta = {
 	tags: ["notes"],
@@ -65,19 +66,7 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
-	const hasFollowing =
-		(await Followings.count({
-			where: {
-				followerId: user.id,
-			},
-			take: 1,
-		})) !== 0;
-
 	//#region Construct query
-	const followingQuery = Followings.createQueryBuilder("following")
-		.select("following.followeeId")
-		.where("following.followerId = :followerId", { followerId: user.id });
-
 	const query = makePaginationQuery(
 		Notes.createQueryBuilder("note"),
 		ps.sinceId,
@@ -85,13 +74,6 @@ export default define(meta, paramDef, async (ps, user) => {
 		ps.sinceDate,
 		ps.untilDate,
 	)
-		.andWhere(
-			new Brackets((qb) => {
-				qb.where("note.userId = :meId", { meId: user.id });
-				if (hasFollowing)
-					qb.orWhere(`note.userId IN (${followingQuery.getQuery()})`);
-			}),
-		)
 		.innerJoinAndSelect("note.user", "user")
 		.leftJoinAndSelect("user.avatar", "avatar")
 		.leftJoinAndSelect("user.banner", "banner")
@@ -102,9 +84,9 @@ export default define(meta, paramDef, async (ps, user) => {
 		.leftJoinAndSelect("replyUser.banner", "replyUserBanner")
 		.leftJoinAndSelect("renote.user", "renoteUser")
 		.leftJoinAndSelect("renoteUser.avatar", "renoteUserAvatar")
-		.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner")
-		.setParameters(followingQuery.getParameters());
+		.leftJoinAndSelect("renoteUser.banner", "renoteUserBanner");
 
+	await generateFollowingQuery(query, user);
 	generateListQuery(query, user);
 	generateChannelQuery(query, user);
 	generateRepliesQuery(query, ps.withReplies, user);
