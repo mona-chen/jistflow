@@ -163,11 +163,13 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 			userId: meId,
 			noteId: In(targets),
 		});
-		const myRenotes = await Notes.createQueryBuilder('note')
-			.select('note.renoteId')
-			.where('note.userId = :meId', { meId })
-			.andWhere('note.renoteId IN (:...targets)', { targets })
-			.getMany();
+		const myRenotes = targets.length > 0
+			? await Notes.createQueryBuilder('note')
+				.select('note.renoteId')
+				.where('note.userId = :meId', { meId })
+				.andWhere('note.renoteId IN (:...targets)', { targets })
+				.getMany()
+			: [];
 
 		for (const target of targets) {
 			myReactionsMap.set(
