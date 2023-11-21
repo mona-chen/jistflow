@@ -166,7 +166,7 @@ export const NotificationRepository = db.getRepository(Notification).extend({
 		const myRenotes = await Notes.createQueryBuilder('note')
 			.select('note.renoteId')
 			.where('note.userId = :meId', { meId })
-			.andWhere('note.renoteId IN array[:...targets]', { targets })
+			.andWhere('note.renoteId IN (:...targets)', { targets })
 			.getMany();
 
 		for (const target of targets) {
