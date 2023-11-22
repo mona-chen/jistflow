@@ -139,21 +139,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		}
 	}
 
-	// We fetch more than requested because some may be filtered out, and if there's less than
-	// requested, the pagination stops.
-	const found = [];
-	const take = Math.floor(ps.limit * 1.5);
-	let skip = 0;
-	while (found.length < ps.limit) {
-		const notes = await query.take(take).skip(skip).getMany();
-		found.push(...(await Notes.packMany(notes, me)));
-		skip += take;
-		if (notes.length < take) break;
-	}
-
-	if (found.length > ps.limit) {
-		found.length = ps.limit;
-	}
-
-	return found;
+	const notes = await query.take(ps.limit).getMany();
+	return await Notes.packMany(notes, me);
 });

@@ -135,25 +135,10 @@ export default define(meta, paramDef, async (ps, user) => {
 		}
 	});
 
-	// We fetch more than requested because some may be filtered out, and if there's less than
-	// requested, the pagination stops.
-	const found = [];
-	const take = Math.floor(ps.limit * 1.5);
-	let skip = 0;
 	try {
-		while (found.length < ps.limit) {
-			const notes = await query.take(take).skip(skip).getMany();
-			found.push(...(await Notes.packMany(notes, user)));
-			skip += take;
-			if (notes.length < take) break;
-		}
+		const notes = await query.take(ps.limit).getMany();
+		return await Notes.packMany(notes, user);
 	} catch (error) {
 		throw new ApiError(meta.errors.queryError);
 	}
-
-	if (found.length > ps.limit) {
-		found.length = ps.limit;
-	}
-
-	return found;
 });
