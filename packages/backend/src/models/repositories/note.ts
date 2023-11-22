@@ -28,6 +28,7 @@ import {
 } from "@/misc/populate-emojis.js";
 import { db } from "@/db/postgre.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
+import { PackedUserCache } from "@/models/repositories/user.js";
 
 export async function populatePoll(note: Note, meId: User["id"] | null) {
 	const poll = await Polls.findOneByOrFail({ noteId: note.id });
@@ -173,6 +174,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 				myRenotes: Map<Note["id"], boolean>;
 			};
 		},
+		userCache: PackedUserCache = Users.getFreshPackedUserCache(),
 	): Promise<Packed<"Note">> {
 		const opts = Object.assign(
 			{
@@ -221,7 +223,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 			id: note.id,
 			createdAt: note.createdAt.toISOString(),
 			userId: note.userId,
-			user: Users.pack(note.user ?? note.userId, me, {
+			user: Users.packCached(note.user ?? note.userId, userCache, me, {
 				detail: false,
 			}),
 			text: text,
@@ -265,14 +267,14 @@ export const NoteRepository = db.getRepository(Note).extend({
 							? this.tryPack(note.reply || note.replyId, me, {
 									detail: false,
 									_hint_: options?._hint_,
-							  })
+							  }, userCache)
 							: undefined,
 
 						renote: note.renoteId
 							? this.pack(note.renote || note.renoteId, me, {
 									detail: true,
 									_hint_: options?._hint_,
-							  })
+							  }, userCache)
 							: undefined,
 				  }
 				: {}),
@@ -309,9 +311,10 @@ export const NoteRepository = db.getRepository(Note).extend({
 				myRenotes: Map<Note["id"], boolean>;
 			};
 		},
+		userCache: PackedUserCache = Users.getFreshPackedUserCache(),
 	): Promise<Packed<"Note"> | undefined> {
 		try {
-			return await this.pack(src, me, options);
+			return await this.pack(src, me, options, userCache);
 		} catch {
 			return undefined;
 		}

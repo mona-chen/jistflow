@@ -7,7 +7,6 @@ import type { Packed } from "@/misc/schema.js";
 import type { Promiseable } from "@/prelude/await-all.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
-import { getAntennas } from "@/misc/antenna-cache.js";
 import { USER_ACTIVE_THRESHOLD, USER_ONLINE_THRESHOLD } from "@/const.js";
 import { Cache } from "@/misc/cache.js";
 import { db } from "@/db/postgre.js";
@@ -37,6 +36,7 @@ import {
 	UserSecurityKeys,
 } from "../index.js";
 import type { Instance } from "../entities/instance.js";
+import AsyncLock from "async-lock";
 
 const userInstanceCache = new Cache<Instance | null>(
 	"userInstance",
@@ -58,6 +58,11 @@ type IsMeAndIsUserDetailed<
 	: Packed<"UserLite">;
 
 const ajv = new Ajv();
+
+export type PackedUserCache = {
+	locks: AsyncLock;
+	results: IsMeAndIsUserDetailed<any, any>[];
+}
 
 const localUsernameSchema = {
 	type: "string",
@@ -366,6 +371,37 @@ export const UserRepository = db.getRepository(User).extend({
 		return `${config.url}/identicon/${userId}`;
 	},
 
+	getFreshPackedUserCache(): PackedUserCache {
+		return {
+			locks: new AsyncLock(),
+			results: [],
+		};
+	},
+
+	async packCached<
+		ExpectsMe extends boolean | null = null,
+		D extends boolean = false,
+	>(
+		src: User["id"] | User,
+		cache: PackedUserCache,
+		me?: { id: User["id"] } | null | undefined,
+		options?: {
+			detail?: D;
+			includeSecrets?: boolean;
+			isPrivateMode?: boolean;
+		},
+	): Promise<IsMeAndIsUserDetailed<ExpectsMe, D>> {
+		const id = typeof src === "object" ? src.id : src;
+		return cache.locks.acquire(id, async () => {
+			const result = cache.results.find(p => p.id === id);
+			if (result) return result as IsMeAndIsUserDetailed<ExpectsMe, D>
+			return this.pack<ExpectsMe, D>(src, me, options).then(result => {
+				cache.results.push(result);
+				return result;
+			});
+		});
+	},
+
 	async pack<
 		ExpectsMe extends boolean | null = null,
 		D extends boolean = false,
@@ -638,8 +674,9 @@ export const UserRepository = db.getRepository(User).extend({
 			detail?: D;
 			includeSecrets?: boolean;
 		},
+		cache?: PackedUserCache,
 	): Promise<IsUserDetailed<D>[]> {
-		return Promise.all(users.map((u) => this.pack(u, me, options)));
+		return Promise.all(users.map((u) => this.packCached(u, cache ?? this.getFreshPackedUserCache(), me, options)));
 	},
 
 	isLocalUser,
