@@ -59,13 +59,13 @@ export default defineConfig(({ command, mode }) => {
 				Object.entries(locales).map(([k, v]) => [k, v._lang_]),
 			),
 			_ENV_: JSON.stringify(process.env.NODE_ENV),
-			_DEV_: process.env.NODE_ENV !== "production",
+			_DEV_: process.env.NODE_ENV !== "production" || process.env.VUE_ENV === "development",
 			_PERF_PREFIX_: JSON.stringify("Misskey:"),
 			_DATA_TRANSFER_DRIVE_FILE_: JSON.stringify("mk_drive_file"),
 			_DATA_TRANSFER_DRIVE_FOLDER_: JSON.stringify("mk_drive_folder"),
 			_DATA_TRANSFER_DECK_COLUMN_: JSON.stringify("mk_deck_column"),
 			__VUE_OPTIONS_API__: true,
-			__VUE_PROD_DEVTOOLS__: false,
+			__VUE_PROD_DEVTOOLS__: process.env.VUE_ENV === "development",
 		},
 
 		build: {
@@ -86,7 +86,7 @@ export default defineConfig(({ command, mode }) => {
 			outDir: `${__dirname}/../../built/_client_dist_`,
 			assetsDir: ".",
 			emptyOutDir: false,
-			sourcemap: process.env.NODE_ENV === "development",
+			sourcemap: process.env.NODE_ENV === "development" || process.env.VUE_ENV === "development",
 			reportCompressedSize: false,
 			commonjsOptions: {
 				include: [/iceshrimp-js/, /node_modules/],
