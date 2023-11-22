@@ -339,7 +339,7 @@ export const UserRepository = db.getRepository(User).extend({
 				this.getIdenticonUrl(user.id)
 			);
 		} else if (user.avatarId) {
-			if (user.avatarUrl) return user.avatarUrl;
+			if (user.avatarUrl) return DriveFiles.getFinalUrl(user.avatarUrl);
 			const avatar = await DriveFiles.findOneByOrFail({ id: user.avatarId });
 			return (
 				DriveFiles.getPublicUrl(avatar, true) || this.getIdenticonUrl(user.id)
@@ -351,7 +351,7 @@ export const UserRepository = db.getRepository(User).extend({
 
 	getAvatarUrlSync(user: User): string {
 		if (user.avatarId && user.avatarUrl) {
-			return user.avatarUrl;
+			return DriveFiles.getFinalUrl(user.avatarUrl);
 		} else if (user.avatar) {
 			return (
 				DriveFiles.getPublicUrl(user.avatar, true) ||
@@ -514,7 +514,7 @@ export const UserRepository = db.getRepository(User).extend({
 						lastFetchedAt: user.lastFetchedAt
 							? user.lastFetchedAt.toISOString()
 							: null,
-						bannerUrl: user.bannerId ? (user.bannerUrl ?? (user.banner
+						bannerUrl: user.bannerId ? (DriveFiles.getFinalUrlMaybe(user.bannerUrl) ?? (user.banner
 							? DriveFiles.getPublicUrl(user.banner, false)
 							: null)) : null,
 						bannerBlurhash: user.bannerId ? (user.bannerBlurhash ?? user.banner?.blurhash ?? null) : null,

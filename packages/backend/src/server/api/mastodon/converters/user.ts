@@ -35,12 +35,14 @@ export class UserConverter {
             const profile = UserProfiles.findOneBy({ userId: u.id });
             const bio = profile.then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), profile?.mentions, u.host).then(p => p ?? escapeMFM(profile?.description ?? "")));
             const avatar = u.avatarId
-                ? u.avatarUrl ?? (DriveFiles.findOneBy({ id: u.avatarId }))
+                ? DriveFiles.getFinalUrlMaybe(u.avatarUrl) ?? (DriveFiles.findOneBy({ id: u.avatarId }))
                     .then(p => p?.url ?? Users.getIdenticonUrl(u.id))
+					.then(p => DriveFiles.getFinalUrl(p))
                 : Users.getIdenticonUrl(u.id);
             const banner = u.bannerId
-                ? u.bannerUrl ?? (DriveFiles.findOneBy({ id: u.bannerId }))
-                    .then(p => p?.url ?? `${config.url}/static-assets/transparent.png`)
+                ? DriveFiles.getFinalUrlMaybe(u.bannerUrl) ?? (DriveFiles.findOneBy({ id: u.bannerId }))
+					.then(p => p?.url ?? `${config.url}/static-assets/transparent.png`)
+					.then(p => DriveFiles.getFinalUrl(p))
                 : `${config.url}/static-assets/transparent.png`;
 
             const isFollowedOrSelf = !!localUser &&

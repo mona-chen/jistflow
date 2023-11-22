@@ -31,6 +31,11 @@ export function metaToPugArgs(meta: Meta): object {
 	};
 }
 
+export function fetchMetaSync(): Meta | null {
+	return cache;
+}
+
+
 export async function fetchMeta(noCache = false): Promise<Meta> {
 	if (!noCache && cache) return cache;
 

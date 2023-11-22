@@ -8,6 +8,7 @@ import config from "@/config/index.js";
 import { appendQuery, query } from "@/prelude/url.js";
 import { DriveFolders, Users } from "../index.js";
 import { deepClone } from "@/misc/clone.js";
+import { fetchMetaSync } from "@/misc/fetch-meta.js";
 
 type PackOptions = {
 	detail?: boolean;
@@ -71,14 +72,9 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 			);
 		}
 
-		// リモートかつ期限切れはローカルプロキシを試みる
-		if (file.uri != null && file.isLink && config.proxyRemoteFiles) {
-			const key = thumbnail ? file.thumbnailAccessKey : file.webpublicAccessKey;
-
-			if (key && !key.match("/")) {
-				// 古いものはここにオブジェクトストレージキーが入ってるので除外
-				return `${config.url}/files/${key}`;
-			}
+		if (file.isLink && config.proxyRemoteFiles) {
+			const url = this.getDatabasePrefetchUrl(file, thumbnail);
+			if (url != null) return `${config.url}/proxy/${encodeURIComponent(new URL(url).pathname)}?${query({ url: url })}`;
 		}
 
 		return thumbnail
@@ -90,6 +86,25 @@ export const DriveFileRepository = db.getRepository(DriveFile).extend({
 		return thumbnail
 			? file.thumbnailUrl ?? file.webpublicUrl ?? file.url
 			: file.webpublicUrl ?? file.url;
+	},
+
+	getFinalUrl(url: string): string {
+		if (!config.proxyRemoteFiles) return url;
+		if (url.startsWith(`${config.url}/files`)) return url;
+		if (url.startsWith(`${config.url}/static-assets`)) return url;
+		if (url.startsWith(`${config.url}/identicon`)) return url;
+		if (url.startsWith(`${config.url}/avatar`)) return url;
+
+		const meta = fetchMetaSync();
+        const baseUrl = meta ? meta.objectStorageBaseUrl ?? `${meta.objectStorageUseSSL ? "https" : "http"}://${meta.objectStorageEndpoint}${meta.objectStoragePort ? `:${meta.objectStoragePort}` : ""}/${meta.objectStorageBucket}` : null;
+		if (baseUrl !== null && url.startsWith(baseUrl)) return url;
+
+		return `${config.url}/proxy/${encodeURIComponent(new URL(url).pathname)}?${query({ url: url })}`;
+	},
+
+	getFinalUrlMaybe(url?: string | null): string | null {
+		if (url == null) return null;
+		return this.getFinalUrl(url);
 	},
 
 	async calcDriveUsageOf(
