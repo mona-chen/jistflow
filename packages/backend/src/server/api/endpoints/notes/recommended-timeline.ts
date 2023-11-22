@@ -88,10 +88,8 @@ export default define(meta, paramDef, async (ps, user) => {
 		ps.sinceDate,
 		ps.untilDate,
 	)
-		.andWhere(
-			`(note.userHost = ANY ('{"${m.recommendedInstances.join('","')}"}'))`,
-		)
-		.andWhere("(note.visibility = 'public')")
+		.andWhere(`note.userHost IN (:...instances)`, { instances: m.recommendedInstances })
+		.andWhere("note.visibility = 'public'")
 		.innerJoinAndSelect("note.user", "user")
 		.leftJoinAndSelect("user.avatar", "avatar")
 		.leftJoinAndSelect("user.banner", "banner")
@@ -106,7 +104,6 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	generateChannelQuery(query, user);
 	generateRepliesQuery(query, ps.withReplies, user);
-	generateVisibilityQuery(query, user);
 	if (user) generateMutedUserQuery(query, user);
 	if (user) generateMutedNoteQuery(query, user);
 	if (user) generateBlockedUserQuery(query, user);
@@ -136,7 +133,6 @@ export default define(meta, paramDef, async (ps, user) => {
 			);
 		}
 	}
-	query.andWhere("note.visibility != 'hidden'");
 	//#endregion
 
 	process.nextTick(() => {
