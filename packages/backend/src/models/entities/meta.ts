@@ -518,4 +518,10 @@ export class Meta {
 		nullable: true,
 	})
 	public donationLink: string | null;
+
+	@Column("varchar", {
+		length: 64,
+		nullable: true,
+	})
+	public autofollowedAccount: string | null;
 }

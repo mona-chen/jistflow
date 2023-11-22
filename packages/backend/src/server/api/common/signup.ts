@@ -12,6 +12,8 @@ import { UsedUsername } from "@/models/entities/used-username.js";
 import { db } from "@/db/postgre.js";
 import config from "@/config/index.js";
 import { hashPassword } from "@/misc/password.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import follow from "@/services/following/create.js";
 
 export async function signup(opts: {
 	username: User["username"];
@@ -132,6 +134,20 @@ export async function signup(opts: {
 	});
 
 	const account = await Users.findOneByOrFail({ id: user.id });
+
+	const meta = await fetchMeta();
+
+	// If an autofollow account exists, follow it
+	if (meta.autofollowedAccount) {
+		const autofollowedAccount = await Users.findOneByOrFail({
+			usernameLower: meta.autofollowedAccount.toLowerCase(),
+			host: IsNull(),
+		});
+
+		if (autofollowedAccount) {
+			await follow(account, autofollowedAccount)
+		}
+	}
 
 	usersChart.update(account, true);
 	return { account, secret };

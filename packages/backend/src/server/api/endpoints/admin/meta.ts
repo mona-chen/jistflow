@@ -430,6 +430,11 @@ export const meta = {
 				optional: true,
 				nullable: true,
 			},
+			autofollowedAccount: {
+				type: "string",
+				optional: true,
+				nullable: true,
+			},
 		},
 	},
 } as const;
@@ -536,5 +541,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		enableServerMachineStats: instance.enableServerMachineStats,
 		enableIdenticonGeneration: instance.enableIdenticonGeneration,
 		donationLink: instance.donationLink,
+		autofollowedAccount: instance.autofollowedAccount,
 	};
 });

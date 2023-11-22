@@ -382,6 +382,22 @@
 								>
 							</FormInput>
 						</FormSection>
+
+						<FormSection>
+							<template #label>Auto-followed account</template>
+
+							<FormInput
+								v-model="autofollowedAccount"
+								class="_formBlock"
+							>
+								<template #prefix
+									><i class="ph-at ph-bold ph-lg"></i
+								></template>
+								<template #label
+									>Username</template
+								>
+							</FormInput>
+						</FormSection>
 					</div>
 				</FormSuspense>
 			</MkSpacer>
@@ -437,6 +453,7 @@ let defaultReaction: string = $ref("");
 let defaultReactionCustom: string = $ref("");
 let enableServerMachineStats: boolean = $ref(false);
 let enableIdenticonGeneration: boolean = $ref(false);
+let autofollowedAccount: string | null = $ref(null);
 
 async function init() {
 	const meta = await os.api("admin/meta");
@@ -478,6 +495,7 @@ async function init() {
 		: meta.defaultReaction;
 	enableServerMachineStats = meta.enableServerMachineStats;
 	enableIdenticonGeneration = meta.enableIdenticonGeneration;
+    autofollowedAccount = meta.autofollowedAccount;
 }
 
 function save() {
@@ -517,6 +535,7 @@ function save() {
 		defaultReaction,
 		enableServerMachineStats,
 		enableIdenticonGeneration,
+		autofollowedAccount,
 	}).then(() => {
 		fetchInstance();
 	});

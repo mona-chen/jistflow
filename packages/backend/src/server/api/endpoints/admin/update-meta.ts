@@ -3,6 +3,8 @@ import { insertModerationLog } from "@/services/insert-moderation-log.js";
 import { db } from "@/db/postgre.js";
 import define from "../../define.js";
 import { Metas } from "@/models/index.js";
+import { Users } from "@/models/index.js";
+
 
 export const meta = {
 	tags: ["admin"],
@@ -166,6 +168,7 @@ export const paramDef = {
 		enableServerMachineStats: { type: "boolean" },
 		enableIdenticonGeneration: { type: "boolean" },
 		donationLink: { type: "string", nullable: true },
+		autofollowedAccount: { type: "string", nullable: true },
 	},
 	required: [],
 } as const;
@@ -544,6 +547,14 @@ export default define(meta, paramDef, async (ps, me) => {
 		set.donationLink = ps.donationLink;
 		if (set.donationLink && !/^https?:\/\//i.test(set.donationLink)) {
 			set.donationLink = `https://${set.donationLink}`;
+		}
+	}
+
+	if (ps.autofollowedAccount !== undefined) {
+		// Verify account exists and is a local account
+		const user = await Users.findOneBy({ username: ps.autofollowedAccount, host: null });
+		if (user) {
+			set.autofollowedAccount = user.username;
 		}
 	}
 
