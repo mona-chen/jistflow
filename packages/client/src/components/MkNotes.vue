@@ -66,7 +66,6 @@ function setTimer() {
 	interval.value = setInterval(() => {
 		const viewport = document.documentElement.clientHeight;
 		const left = document.documentElement.scrollHeight - document.documentElement.scrollTop;
-		console.log(document.documentElement.scrollTop - lastFetchScrollTop.value);
 		if (left > Math.max(viewport * 3, 4000) || document.documentElement.scrollTop - lastFetchScrollTop.value < viewport) return;
 		pagingComponent.value.prefetchMore();
 		lastFetchScrollTop.value = document.documentElement.scrollTop;
