@@ -1,101 +1,96 @@
 <template>
-	<transition
-		:name="defaultStore.state.animation ? 'zoom' : ''"
-		mode="out-in"
-	>
-		<!-- v-if="!fetching" for now, I think there's something
-			 weird w/ some links stuck loading (?) -->
-		<article v-if="!fetching" class="url-preview" @click.stop>
-			<component
-				:is="self ? 'MkA' : 'a'"
-				:[attr]="self ? url.substring(local.length) : url"
-				rel="nofollow noopener"
-				:target="target"
-				:title="url"
-				:class="{
-					hasButton: tweetId || player.url,
-				}"
-			>
-				<div v-if="thumbnail" class="thumbnail">
-					<img :src="thumbnail" loading="lazy" />
-					<button
-						v-if="tweetId"
-						class="_button"
-						v-tooltip="
-							tweetExpanded ? i18n.ts.close : i18n.ts.expandTweet
-						"
-						@click.stop.prevent="tweetExpanded = !tweetExpanded"
-					>
-						<i
-							v-if="!tweetExpanded"
-							class="ph-twitter-logo ph-bold ph-lg"
-						></i>
-						<i v-else class="ph-x ph-bold ph-lg"></i>
-					</button>
-					<button
-						v-else-if="player.url"
-						class="_button"
-						v-tooltip="
-							playerEnabled ? i18n.ts.close : i18n.ts.enablePlayer
-						"
-						@click.stop.prevent="playerEnabled = !playerEnabled"
-					>
-						<i
-							v-if="!playerEnabled"
-							class="ph-play ph-bold ph-lg"
-						></i>
-						<i v-else class="ph-x ph-bold ph-lg"></i>
-					</button>
-				</div>
-				<div v-if="fetching">
-					<MkLoading mini />
-				</div>
-				<div v-else>
-					<h3 :title="title || undefined">{{ title || url }}</h3>
-					<p :title="description">
-						<span>
-							<span :title="sitename || undefined">
-								<img v-if="icon" class="icon" :src="icon" />
-								{{ sitename }}
-							</span>
-							{{ description }}
+	<!-- v-if="!fetching" for now, I think there's something
+		 weird w/ some links stuck loading (?) -->
+	<article v-if="!fetching" class="url-preview" @click.stop>
+		<component
+			:is="self ? 'MkA' : 'a'"
+			:[attr]="self ? url.substring(local.length) : url"
+			rel="nofollow noopener"
+			:target="target"
+			:title="url"
+			:class="{
+				hasButton: tweetId || player.url,
+			}"
+		>
+			<div v-if="thumbnail" class="thumbnail">
+				<img :src="thumbnail" loading="lazy" decoding="async" />
+				<button
+					v-if="tweetId"
+					class="_button"
+					v-tooltip="
+						tweetExpanded ? i18n.ts.close : i18n.ts.expandTweet
+					"
+					@click.stop.prevent="tweetExpanded = !tweetExpanded"
+				>
+					<i
+						v-if="!tweetExpanded"
+						class="ph-twitter-logo ph-bold ph-lg"
+					></i>
+					<i v-else class="ph-x ph-bold ph-lg"></i>
+				</button>
+				<button
+					v-else-if="player.url"
+					class="_button"
+					v-tooltip="
+						playerEnabled ? i18n.ts.close : i18n.ts.enablePlayer
+					"
+					@click.stop.prevent="playerEnabled = !playerEnabled"
+				>
+					<i
+						v-if="!playerEnabled"
+						class="ph-play ph-bold ph-lg"
+					></i>
+					<i v-else class="ph-x ph-bold ph-lg"></i>
+				</button>
+			</div>
+			<div v-if="fetching">
+				<MkLoading mini />
+			</div>
+			<div v-else>
+				<h3 :title="title || undefined">{{ title || url }}</h3>
+				<p :title="description">
+					<span>
+						<span :title="sitename || undefined">
+							<img v-if="icon" class="icon" :src="icon" />
+							{{ sitename }}
 						</span>
-					</p>
-				</div>
-			</component>
-			<iframe
-				v-if="playerEnabled"
-				:src="
-					player.url +
-					(player.url.match(/\?/)
-						? '&autoplay=1&auto_play=1'
-						: '?autoplay=1&auto_play=1')
-				"
-				:style="`aspect-ratio: ${
-					(player.width || 1) / (player.height || 1)
-				}`"
-				frameborder="0"
-				allow="autoplay; encrypted-media"
-				allowfullscreen
-				@click.stop
-			/>
-			<iframe
-				v-else-if="tweetId && tweetExpanded"
-				ref="tweet"
-				scrolling="no"
-				frameborder="no"
-				:style="{
-					position: 'relative',
-					width: '100%',
-					height: `${tweetHeight}px`,
-				}"
-				:src="`https://platform.twitter.com/embed/index.html?embedId=${embedId}&amp;hideCard=false&amp;hideThread=false&amp;lang=en&amp;theme=${
-					defaultStore.state.darkMode ? 'dark' : 'light'
-				}&amp;id=${tweetId}`"
-				@click.stop
-			></iframe>
-		</article>
-	</transition>
+						{{ description }}
+					</span>
+				</p>
+			</div>
+		</component>
+		<iframe
+			v-if="playerEnabled"
+			:src="
+				player.url +
+				(player.url.match(/\?/)
+					? '&autoplay=1&auto_play=1'
+					: '?autoplay=1&auto_play=1')
+			"
+			:style="`aspect-ratio: ${
+				(player.width || 1) / (player.height || 1)
+			}`"
+			frameborder="0"
+			allow="autoplay; encrypted-media"
+			allowfullscreen
+			@click.stop
+		/>
+		<iframe
+			v-else-if="tweetId && tweetExpanded"
+			ref="tweet"
+			scrolling="no"
+			frameborder="no"
+			:style="{
+				position: 'relative',
+				width: '100%',
+				height: `${tweetHeight}px`,
+			}"
+			:src="`https://platform.twitter.com/embed/index.html?embedId=${embedId}&amp;hideCard=false&amp;hideThread=false&amp;lang=en&amp;theme=${
+				defaultStore.state.darkMode ? 'dark' : 'light'
+			}&amp;id=${tweetId}`"
+			@click.stop
+		></iframe>
+	</article>
 </template>
 
 <script lang="ts" setup>
