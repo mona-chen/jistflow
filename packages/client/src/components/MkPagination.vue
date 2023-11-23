@@ -83,6 +83,7 @@ import {
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
 import {instance} from "@/instance";
+import { defaultStore } from "@/store.js";
 
 export type Paging<
 	E extends keyof misskey.Endpoints = keyof misskey.Endpoints,
@@ -242,7 +243,7 @@ const refresh = async (): void => {
 };
 
 const prefetchMore = async (): Promise<void> => {
-	if (props.disableAutoLoad || !$store.state.enableInfiniteScroll) return;
+	if (props.disableAutoLoad || !defaultStore.state.enableInfiniteScroll) return;
 	await fetchMore();
 }
 

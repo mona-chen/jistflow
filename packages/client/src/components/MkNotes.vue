@@ -42,6 +42,7 @@ import MkPagination from "@/components/MkPagination.vue";
 import { i18n } from "@/i18n";
 import { scroll } from "@/scripts/scroll";
 import {instance} from "@/instance";
+import { defaultStore } from "@/store.js";
 
 const tlEl = ref<HTMLElement>();
 
@@ -53,20 +54,22 @@ const props = defineProps<{
 const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
 const interval = ref<NodeJS.Timer>();
+const lastFetchScrollTop = ref(0);
 
 function scrollTop() {
 	if (!tlEl.value) return;
 	scroll(tlEl.value, { top: 0, behavior: "smooth" });
 }
 
-const setTimer = () => {
-	if ($store.state.enableInfiniteScroll && !interval.value) {
-		interval.value = setInterval(() => {
-			const viewport = document.documentElement.clientHeight;
-			const left = document.documentElement.scrollHeight - document.documentElement.scrollTop;
-			if (left <= viewport * 3) pagingComponent.value.prefetchMore();
-		}, 100);
-	}
+function setTimer() {
+	if (interval.value || !defaultStore.state.enableInfiniteScroll) return;
+	interval.value = setInterval(() => {
+		const viewport = document.documentElement.clientHeight;
+		const left = document.documentElement.scrollHeight - document.documentElement.scrollTop;
+		if (left > viewport * 3 || document.documentElement.scrollTop - lastFetchScrollTop.value < viewport) return;
+		pagingComponent.value.prefetchMore();
+		lastFetchScrollTop.value = document.documentElement.scrollTop;
+	}, 100);
 }
 
 function clearTimer() {
