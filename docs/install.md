@@ -125,6 +125,13 @@ If this is your first run, after Iceshrimp has started successfully, you'll be a
 - Run `sudo systemctl enable --now iceshrimp` in order to enable and start Iceshrimp.
 - (Optional) Check if instance is running using `sudo systemctl status iceshrimp`
 
+### Environment variables
+- `ICESHRIMP_CONFIG` (default: `.config/default.yml`) to change where the the config file is located
+- `ICESHRIMP_MEDIA_DIR` (default: `files`) to change where internally stored files are located
+- `ICESHRIMP_CUSTOM_DIR` (default: `custom`) to change where custom assets and locales are located (caution: assets are copied at build time or when running `yarn gulp`, not during startup!)
+
+Make sure you are specifying absolute paths when setting environment variables.
+
 ### Updating Iceshrimp
 
 Before you start, if you cloned the iceshrimp repository before the Git LFS migration, please follow [these instructions](https://iceshrimp.dev/iceshrimp/iceshrimp/wiki/Git-LFS#fixing-up-a-preexisting-cloned-repo) to get your repository back in sync.
