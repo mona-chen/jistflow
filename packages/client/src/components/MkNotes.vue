@@ -59,7 +59,7 @@ function scrollTop() {
 	scroll(tlEl.value, { top: 0, behavior: "smooth" });
 }
 
-function setTimer() {
+const setTimer = () => {
 	if ($store.state.enableInfiniteScroll && !interval.value) {
 		interval.value = setInterval(() => {
 			const viewport = document.documentElement.clientHeight;
