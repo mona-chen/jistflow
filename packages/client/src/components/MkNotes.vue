@@ -54,7 +54,7 @@ const props = defineProps<{
 const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
 const interval = ref<NodeJS.Timer>();
-const lastFetchScrollTop = ref(0);
+const lastFetchScrollTop = ref(document.documentElement.clientHeight / 2 * -1);
 
 function scrollTop() {
 	if (!tlEl.value) return;
