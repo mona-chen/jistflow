@@ -144,6 +144,7 @@ export type Mixin = {
 	driveUrl: string;
 	userAgent: string;
 	clientEntry: string;
+	mediaDir: string;
 };
 
 export type Config = Source & Mixin;

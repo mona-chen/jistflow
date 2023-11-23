@@ -6,6 +6,7 @@ const fs = require("fs");
 const yaml = require("js-yaml");
 const languages = [];
 const languages_custom = [];
+const customDir = process.env.ICESHRIMP_CUSTOM_DIR ?? __dirname + "/../custom";
 
 const merge = (...args) =>
 	args.reduce(
@@ -26,7 +27,7 @@ fs.readdirSync(__dirname).forEach((file) => {
 	}
 });
 
-fs.readdirSync(__dirname + "/../custom/locales").forEach((file) => {
+fs.readdirSync(`${customDir}/locales`).forEach((file) => {
 	if (file.includes(".yml")) {
 		file = file.slice(0, file.indexOf("."));
 		languages_custom.push(file);
@@ -57,7 +58,7 @@ const locales_custom = languages_custom.reduce(
 		(a[c] =
 			yaml.load(
 				clean(
-					fs.readFileSync(`${__dirname}/../custom/locales/${c}.yml`, "utf-8"),
+					fs.readFileSync(`${customDir}/locales/${c}.yml`, "utf-8"),
 				),
 			) || {}),
 		a

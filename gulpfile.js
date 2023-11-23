@@ -10,6 +10,7 @@ const cssnano = require("gulp-cssnano");
 
 const locales = require("./locales");
 const meta = require("./package.json");
+const customDir = process.env.ICESHRIMP_CUSTOM_DIR ?? "./custom";
 
 gulp.task("copy:backend:views", () =>
 	gulp
@@ -19,7 +20,7 @@ gulp.task("copy:backend:views", () =>
 
 gulp.task("copy:backend:custom", () =>
 	gulp
-		.src("./custom/assets/**/*")
+		.src(`${customDir}/assets/**/*`)
 		.pipe(gulp.dest("./packages/backend/assets/")),
 );
 
