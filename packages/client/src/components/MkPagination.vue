@@ -41,13 +41,11 @@
 				key="_more_"
 				class="cxiknjgy _gap"
 			>
+				<div
+					v-appear="$store.state.enableInfiniteScroll && !disableAutoLoad ? fetchMore : null"
+				/>
 				<MkButton
-					v-if="!moreFetching"
-					v-appear="
-						$store.state.enableInfiniteScroll && !disableAutoLoad
-							? fetchMore
-							: null
-					"
+					v-if="!moreFetching && !$store.state.enableInfiniteScroll && !disableAutoLoad"
 					class="button"
 					:disabled="moreFetching"
 					:style="{ cursor: moreFetching ? 'wait' : 'pointer' }"
@@ -109,7 +107,7 @@ export type Paging<
 	offsetMode?: boolean;
 };
 
-const SECOND_FETCH_LIMIT = 30;
+const SECOND_FETCH_LIMIT = 15;
 
 const props = withDefaults(
 	defineProps<{
@@ -118,7 +116,7 @@ const props = withDefaults(
 		displayLimit?: number;
 	}>(),
 	{
-		displayLimit: 30,
+		displayLimit: 15,
 	},
 );
 
@@ -242,6 +240,11 @@ const refresh = async (): void => {
 			},
 		);
 };
+
+const prefetchMore = async (): Promise<void> => {
+	if (props.disableAutoLoad || !$store.state.enableInfiniteScroll) return;
+	await fetchMore();
+}
 
 const fetchMore = async (): Promise<void> => {
 	if (
@@ -498,6 +501,7 @@ defineExpose({
 	append,
 	removeItem,
 	updateItem,
+	prefetchMore,
 });
 </script>
 

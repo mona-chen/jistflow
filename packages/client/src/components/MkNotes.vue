@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { onActivated, onDeactivated, onMounted, onUnmounted, ref } from "vue";
 import type { Paging } from "@/components/MkPagination.vue";
 import XNote from "@/components/MkNote.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
@@ -52,9 +52,33 @@ const props = defineProps<{
 
 const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
+const interval = ref<NodeJS.Timer>();
+
 function scrollTop() {
+	if (!tlEl.value) return;
 	scroll(tlEl.value, { top: 0, behavior: "smooth" });
 }
+
+function setTimer() {
+	if ($store.state.enableInfiniteScroll && !interval.value) {
+		interval.value = setInterval(() => {
+			const viewport = document.documentElement.clientHeight;
+			const left = document.documentElement.scrollHeight - document.documentElement.scrollTop;
+			if (left <= viewport * 3) pagingComponent.value.prefetchMore();
+		}, 100);
+	}
+}
+
+function clearTimer() {
+	if (!interval.value) return;
+	clearInterval(interval.value);
+	interval.value = undefined;
+}
+
+onMounted(setTimer);
+onActivated(setTimer);
+onUnmounted(clearTimer);
+onDeactivated(clearTimer);
 
 defineExpose({
 	pagingComponent,
