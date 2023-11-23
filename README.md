@@ -1,10 +1,14 @@
-# <img src="assets/logo.png" alt="Iceshrimp" width="400px">
+<p><img src="assets/logo.png" alt="Iceshrimp" width="400px"></p>
+<p><strong>Iceshrimp</strong> is a decentralized and federated social networking service, implementing the <strong>ActivityPub</strong> standard.<br>
+It was forked from <del>Calckey</del> Firefish (itself a fork of Misskey) in mid-2023, to focus on stability, performance and usability instead of new features.</p>
 
-- Iceshrimp is yet another Misskey fork (you know the drill by now)
-- Need help or want to contribute? Join the [matrix room](https://matrix.to/#/%23iceshrimp-dev:161.rocks)!
-- Documentation on installing (and updating) Iceshrimp:
-  - [Bare metal](docs/install.md)
-  - [Docker Compose](docs/docker-compose-install.md)
+---
+- Highlighted changes:
+	- First-class Mastodon client API support
+	- Significantly improved database performance
+	- Options to prune cached remote media automatically
+	- Proper support for split domain deployments, both local and remote
+	- So much more - Read the [changelog](CHANGELOG.md) to get an overview of all changes
 - Don't like the Web UI? We test our Mastodon-compatible API against the following clients:
   - [Elk](https://elk.zone), [Phanpy](https://phanpy.social/), [Enafore](https://enafore.social/), [Masto-FE-standalone](https://iceshrimp.dev/iceshrimp/masto-fe-standalone) (Web)
   - [Mona](https://apps.apple.com/us/app/mona-for-mastodon/id1659154653), [Toot!](https://apps.apple.com/us/app/toot-for-mastodon/id1229021451), [Ice Cubes](https://apps.apple.com/us/app/ice-cubes-for-mastodon/id6444915884), [Tusker](https://apps.apple.com/us/app/tusker/id1498334597), [Feditext](https://github.com/feditext/feditext), [Mastodon](https://apps.apple.com/us/app/mastodon-for-iphone-and-ipad/id1571998974) (iOS)
@@ -18,6 +22,14 @@
 - Project anti-goals:
   - Flashy marketing
   - Commercialization of any kind
+- Documentation on installing (and updating) Iceshrimp using:
+  - [Binary packages](https://iceshrimp.dev/iceshrimp/packaging)
+  - [Docker Compose](docs/docker-compose-install.md)
+  - [Manual installation](docs/install.md)
+- Want to sign up at an existing instance?
+	- Check out [FediDB](https://fedidb.org/software/iceshrimp) or [Fediverse Observer](https://iceshrimp.fediverse.observer/list) to get an overview of the instances that are out there.
+	- Please note that we do not operate a "flagship instance", the only project-affiliated domain is `iceshrimp.dev`.
+- Need help or want to contribute? Join the [matrix room](https://matrix.to/#/%23iceshrimp-dev:161.rocks)!
 
 ---
 
