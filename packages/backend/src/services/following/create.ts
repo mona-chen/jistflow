@@ -38,6 +38,7 @@ export async function insertFollowingDoc(
 		uri: User["host"];
 		inbox: User["inbox"];
 		sharedInbox: User["sharedInbox"];
+		isLocked: User["isLocked"];
 	},
 	follower: {
 		id: User["id"];
@@ -92,10 +93,12 @@ export async function insertFollowingDoc(
 			followerId: follower.id,
 		});
 
-		// Create notification that request was accepted.
-		createNotification(follower.id, "followRequestAccepted", {
-			notifierId: followee.id,
-		});
+		if (followee.isLocked) {
+			// Create notification that request was accepted.
+			createNotification(follower.id, "followRequestAccepted", {
+				notifierId: followee.id,
+			});
+		}
 	}
 
 	if (alreadyFollowed) return;

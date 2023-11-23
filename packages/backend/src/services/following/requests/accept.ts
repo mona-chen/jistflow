@@ -16,6 +16,7 @@ export default async function (
 		uri: User["host"];
 		inbox: User["inbox"];
 		sharedInbox: User["sharedInbox"];
+		isLocked: User["isLocked"];
 	},
 	follower: CacheableUser,
 ) {
