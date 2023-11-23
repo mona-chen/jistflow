@@ -7,7 +7,7 @@
 		:to="url"
 		@click.stop
 	>
-		<img class="icon" :src="`/avatar/@${username}@${host}`" alt="" />
+		<img class="icon" :src="`/avatar/@${username}@${host}`" alt="" loading="lazy" decoding="async" />
 		<span class="main">
 			<span class="username">@{{ username }}</span>
 			<span

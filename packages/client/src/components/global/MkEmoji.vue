@@ -7,6 +7,7 @@
 		:alt="alt"
 		:title="alt"
 		decoding="async"
+		loading="lazy"
 	/>
 	<img
 		v-else-if="char && !useOsNativeEmojis"
@@ -15,6 +16,7 @@
 		:alt="alt"
 		:title="alt"
 		decoding="async"
+		loading="lazy"
 	/>
 	<span v-else-if="char && useOsNativeEmojis">{{ char }}</span>
 	<span v-else>{{ emoji }}</span>

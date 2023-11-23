@@ -8,7 +8,7 @@
 		:title="acct(user)"
 		@click="onClick"
 	>
-		<img class="inner" :src="url" decoding="async" />
+		<img class="inner" :src="url" loading="lazy" decoding="async" />
 		<MkUserOnlineIndicator
 			v-if="showIndicator && user.instance == null"
 			class="indicator"
@@ -26,7 +26,7 @@
 		:target="target"
 		@click.stop
 	>
-		<img class="inner" :src="url" decoding="async" />
+		<img class="inner" :src="url" loading="lazy" decoding="async" />
 		<MkUserOnlineIndicator
 			v-if="showIndicator && user.instance == null"
 			class="indicator"

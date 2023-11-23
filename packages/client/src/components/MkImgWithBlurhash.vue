@@ -15,6 +15,7 @@
 		:class="{ cover }"
 		:style="{ 'object-fit': cover ? 'cover' : null }"
 		loading="lazy"
+		decoding="async"
 		@load="onLoad"
 	/>
 </template>
