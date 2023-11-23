@@ -993,8 +993,10 @@ _registry:
   domain: "Domaine"
   createKey: "Créer une clé"
 _aboutIceshrimp:
-  about: "Iceshrimp est un média social décentralisé et fédéré utilisant ActivityPub\n\
-    C'est un fork de Calckey/Firefish (qui est un fork de Misskey¹²)"
+  about: "Iceshrimp est un média social décentralisé et fédéré utilisant ActivityPub.\n\
+    C'est un fork de Calckey/Firefish (lui-même fork de Misskey) qui se concentre
+    sur la stabilité, les performances et la facilité d'utilisation plutôt que sur
+    de nouvelles fonctionnalités."
   contributors: "Principaux contributeurs"
   allContributors: "Tous les contributeurs"
   source: "Développement"
