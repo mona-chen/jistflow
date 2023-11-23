@@ -108,7 +108,7 @@
 		"qs": "6.11.2",
 		"random-seed": "0.3.0",
 		"ratelimiter": "3.4.1",
-		"re2": "^1.20.8",
+		"re2": "^1.20.9",
 		"redis-lock": "0.1.4",
 		"redis-semaphore": "5.3.1",
 		"reflect-metadata": "0.1.13",
