@@ -1,5 +1,5 @@
 <template>
-	<MkPagination ref="pagingComponent" :pagination="pagination" @reload="onReload">
+	<MkPagination ref="pagingComponent" :pagination="pagination">
 		<template #empty>
 			<div class="_fullinfo">
 				<img
@@ -59,10 +59,6 @@ const lastFetchScrollTop = ref(document.documentElement.clientHeight * -0.5);
 function scrollTop() {
 	if (!tlEl.value) return;
 	scroll(tlEl.value, { top: 0, behavior: "smooth" });
-}
-
-function onReload() {
-	lastFetchScrollTop.value = document.documentElement.clientHeight * -0.5;
 }
 
 function setTimer() {
