@@ -10,6 +10,9 @@ import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
 import { IMentionedRemoteUsers } from "@/models/entities/note.js";
+import { UserProfile } from "@/models/entities/user-profile.js";
+import { In } from "typeorm";
+import { unique } from "@/prelude/array.js";
 
 type Field = {
     name: string;
@@ -32,8 +35,13 @@ export class UserConverter {
                 acct = `${u.username}@${u.host}`;
                 acctUrl = `https://${u.host}/@${u.username}`;
             }
-            const profile = UserProfiles.findOneBy({ userId: u.id });
-            const bio = profile.then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), profile?.mentions, u.host).then(p => p ?? escapeMFM(profile?.description ?? "")));
+
+            const aggregateProfile = (ctx.userProfileAggregate as Map<string, UserProfile | null>)?.get(u.id);
+
+            const profile = aggregateProfile !== undefined
+                ? aggregateProfile
+                : UserProfiles.findOneBy({ userId: u.id });
+            const bio = Promise.resolve(profile).then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), profile?.mentions, u.host).then(p => p ?? escapeMFM(profile?.description ?? "")));
             const avatar = u.avatarId
                 ? DriveFiles.getFinalUrlMaybe(u.avatarUrl) ?? (DriveFiles.findOneBy({ id: u.avatarId }))
                     .then(p => p?.url ?? Users.getIdenticonUrl(u.id))
@@ -45,17 +53,18 @@ export class UserConverter {
 					.then(p => DriveFiles.getFinalUrl(p))
                 : `${config.url}/static-assets/transparent.png`;
 
-            const isFollowedOrSelf = !!localUser &&
-                (localUser.id === u.id ||
-                    Followings.exist({
-                        where: {
-                            followeeId: u.id,
-                            followerId: localUser.id,
-                        },
-                    })
-                );
+            const isFollowedOrSelf = (ctx.followedOrSelfAggregate as Map<string, boolean>)?.get(u.id)
+                ?? (!!localUser &&
+                    (localUser.id === u.id ||
+                        Followings.exist({
+                            where: {
+                                followeeId: u.id,
+                                followerId: localUser.id,
+                            },
+                        })
+                    ));
 
-            const followersCount = profile.then(async profile => {
+            const followersCount = Promise.resolve(profile).then(async profile => {
                 if (profile === null) return u.followersCount;
                 switch (profile.ffVisibility) {
                     case "public":
@@ -66,7 +75,7 @@ export class UserConverter {
                         return localUser?.id === profile.userId ? u.followersCount : 0;
                 }
             });
-            const followingCount = profile.then(async profile => {
+            const followingCount = Promise.resolve(profile).then(async profile => {
                 if (profile === null) return u.followingCount;
                 switch (profile.ffVisibility) {
                     case "public":
@@ -97,7 +106,7 @@ export class UserConverter {
                 header_static: banner,
                 emojis: populateEmojis(u.emojis, u.host).then(emoji => emoji.map((e) => EmojiConverter.encode(e))),
                 moved: null, //FIXME
-                fields: profile.then(profile => Promise.all(profile?.fields.map(async p => this.encodeField(p, u.host, profile?.mentions)) ?? [])),
+                fields: Promise.resolve(profile).then(profile => Promise.all(profile?.fields.map(async p => this.encodeField(p, u.host, profile?.mentions)) ?? [])),
                 bot: u.isBot,
                 discoverable: u.isExplorable
             }).then(p => {
@@ -109,7 +118,40 @@ export class UserConverter {
         });
     }
 
+    public static async aggregateData(users: User[], ctx: MastoContext): Promise<void> {
+        const user = ctx.user as ILocalUser | null;
+        const targets = unique(users.map(u => u.id));
+
+        const followedOrSelfAggregate = new Map<User["id"], boolean>();
+        const userProfileAggregate = new Map<User["id"], UserProfile | null>();
+
+        if (user) {
+            const followings = await Followings.createQueryBuilder('following')
+                .select('following.followeeId')
+                .where('following.followerId = :meId', { meId: user.id })
+                .andWhere('following.followeeId IN (:...targets)', { targets: targets.filter(u => u !== user.id) })
+                .getMany();
+
+            followedOrSelfAggregate.set(user.id, true);
+
+            for (const userId of targets.filter(u => u !== user.id)) {
+                followedOrSelfAggregate.set(userId, !!followings.find(f => f.followerId === userId));
+            }
+        }
+
+        const profiles = await UserProfiles.findBy({
+            userId: In(targets)
+        });
+
+        for (const userId of targets) {
+            userProfileAggregate.set(userId, profiles.find(p => p.userId === userId) ?? null);
+        }
+
+        ctx.followedOrSelfAggregate = followedOrSelfAggregate;
+    }
+
     public static async encodeMany(users: User[], ctx: MastoContext): Promise<MastodonEntity.Account[]> {
+        await this.aggregateData(users, ctx);
         const encoded = users.map(u => this.encode(u, ctx));
         return Promise.all(encoded);
     }

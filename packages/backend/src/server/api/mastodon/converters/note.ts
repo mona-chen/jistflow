@@ -1,4 +1,4 @@
-import { ILocalUser } from "@/models/entities/user.js";
+import { ILocalUser, User } from "@/models/entities/user.js";
 import { getNote } from "@/server/api/common/getters.js";
 import { Note } from "@/models/entities/note.js";
 import config from "@/config/index.js";
@@ -6,7 +6,7 @@ import mfm from "mfm-js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
-import { PopulatedEmoji, populateEmojis } from "@/misc/populate-emojis.js";
+import { aggregateNoteEmojis, PopulatedEmoji, populateEmojis, prefetchEmojis } from "@/misc/populate-emojis.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { DriveFiles, NoteFavorites, NoteReactions, Notes, NoteThreadMutings, UserNotePinings } from "@/models/index.js";
 import { decodeReaction } from "@/misc/reaction-lib.js";
@@ -16,11 +16,13 @@ import { populatePoll } from "@/models/repositories/note.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { awaitAll } from "@/prelude/await-all.js";
 import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
-import { IsNull } from "typeorm";
+import { In, IsNull } from "typeorm";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import { getStubMastoContext, MastoContext } from "@/server/api/mastodon/index.js";
 import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import isQuote from "@/misc/is-quote.js";
+import { unique } from "@/prelude/array.js";
+import { NoteReaction } from "@/models/entities/note-reaction.js";
 
 export class NoteConverter {
     public static async encode(note: Note, ctx: MastoContext, recurseCounter: number = 2): Promise<MastodonEntity.Status> {
@@ -46,39 +48,46 @@ export class NoteConverter {
             .filter((e) => e.name.indexOf("@") === -1)
             .map((e) => EmojiConverter.encode(e)));
 
-        const reactionCount = NoteReactions.countBy({ noteId: note.id });
+        const reactionCount = Object.values(note.reactions).reduce((a, b) => a + b, 0);
 
-        const reaction = user ? NoteReactions.findOneBy({
-            userId: user.id,
-            noteId: note.id,
-        }) : null;
+        const aggregateReaction = (ctx.reactionAggregate as Map<string, NoteReaction | null>)?.get(note.id);
+
+        const reaction = aggregateReaction !== undefined
+            ? aggregateReaction
+            : user ? NoteReactions.findOneBy({
+                userId: user.id,
+                noteId: note.id,
+            }) : null;
 
         const isFavorited = Promise.resolve(reaction).then(p => !!p);
 
-        const isReblogged = user ? Notes.exist({
-            where: {
-                userId: user.id,
-                renoteId: note.id,
-                text: IsNull(),
-            }
-        }) : null;
+        const isReblogged = (ctx.renoteAggregate as Map<string, boolean>)?.get(note.id)
+            ?? (user ? Notes.exist({
+                where: {
+                    userId: user.id,
+                    renoteId: note.id,
+                    text: IsNull(),
+                }
+            }) : null);
 
         const renote = note.renote ?? (note.renoteId && recurseCounter > 0 ? getNote(note.renoteId, user) : null);
 
-        const isBookmarked = user ? NoteFavorites.exist({
-            where: {
-                userId: user.id,
-                noteId: note.id,
-            },
-            take: 1,
-        }) : false;
+        const isBookmarked = (ctx.bookmarkAggregate as Map<string, boolean>)?.get(note.id)
+            ?? (user ? NoteFavorites.exist({
+                where: {
+                    userId: user.id,
+                    noteId: note.id,
+                },
+                take: 1,
+            }) : false);
 
-        const isMuted = user ? NoteThreadMutings.exist({
-            where: {
-                userId: user.id,
-                threadId: note.threadId || note.id,
-            }
-        }) : false;
+        const isMuted = (ctx.mutingAggregate as Map<string, boolean>)?.get(note.threadId ?? note.id)
+            ?? (user ? NoteThreadMutings.exist({
+                where: {
+                    userId: user.id,
+                    threadId: note.threadId || note.id,
+                }
+            }) : false);
 
         const files = DriveFiles.packMany(note.fileIds);
 
@@ -100,9 +109,10 @@ export class NoteConverter {
                 .then(p => p ?? escapeMFM(text))
             : "");
 
-        const isPinned = user && note.userId === user.id
-            ? UserNotePinings.exist({ where: { userId: user.id, noteId: note.id } })
-            : undefined;
+        const isPinned = (ctx.pinAggregate as Map<string, boolean>)?.get(note.id)
+            ?? (user && note.userId === user.id
+                ? UserNotePinings.exist({ where: { userId: user.id, noteId: note.id } })
+                : undefined);
 
         const tags = note.tags.map(tag => {
             return {
@@ -152,8 +162,87 @@ export class NoteConverter {
     }
 
     public static async encodeMany(notes: Note[], ctx: MastoContext): Promise<MastodonEntity.Status[]> {
+        await this.aggregateData(notes, ctx);
         const encoded = notes.map(n => this.encode(n, ctx));
         return Promise.all(encoded);
+    }
+
+    private static async aggregateData(notes: Note[], ctx: MastoContext): Promise<void> {
+        if (notes.length === 0) return;
+
+        const user = ctx.user as ILocalUser | null;
+        const reactionAggregate = new Map<Note["id"], NoteReaction | null>();
+        const renoteAggregate = new Map<Note["id"], boolean>();
+        const mutingAggregate = new Map<Note["id"], boolean>();
+        const bookmarkAggregate = new Map<Note["id"], boolean>();;
+        const pinAggregate = new Map<Note["id"], boolean>();
+
+        if (user?.id != null) {
+            const renoteIds = notes
+                .filter((n) => n.renoteId != null)
+                .map((n) => n.renoteId!);
+
+            const noteIds = unique(notes.map((n) => n.id));
+            const targets = unique([...noteIds, ...renoteIds]);
+            const mutingTargets = unique([...notes.map(n => n.threadId ?? n.id)]);
+            const pinTargets = unique([...notes.filter(n => n.userId === user.id).map(n => n.id)]);
+
+            const reactions = await NoteReactions.findBy({
+                userId: user.id,
+                noteId: In(targets),
+            });
+
+            const renotes = await Notes.createQueryBuilder('note')
+                .select('note.renoteId')
+                .where('note.userId = :meId', { meId: user.id })
+                .andWhere('note.renoteId IN (:...targets)', { targets })
+                .andWhere('note.text IS NULL')
+                .andWhere('note.hasPoll = FALSE')
+                .andWhere(`note.fileIds = '{}'`)
+                .getMany();
+
+            const mutings = await NoteThreadMutings.createQueryBuilder('muting')
+                .select('muting.threadId')
+                .where('muting.userId = :meId', { meId: user.id })
+                .andWhere('muting.threadId IN (:...targets)', { targets: mutingTargets })
+                .getMany();
+
+            const bookmarks = await NoteFavorites.createQueryBuilder('bookmark')
+                .select('bookmark.noteId')
+                .where('bookmark.userId = :meId', { meId: user.id })
+                .andWhere('bookmark.noteId IN (:...targets)', { targets })
+                .getMany();
+
+            const pins = pinTargets.length > 0 ? await UserNotePinings.createQueryBuilder('pin')
+                .select('pin.noteId')
+                .where('pin.userId = :meId', { meId: user.id })
+                .andWhere('pin.noteId IN (:...targets)', { targets: pinTargets })
+                .getMany() : [];
+
+            for (const target of targets) {
+                reactionAggregate.set(target, reactions.find(r => r.noteId === target) ?? null);
+                renoteAggregate.set(target, !!renotes.find(n => n.renoteId === target));
+                bookmarkAggregate.set(target, !!bookmarks.find(b => b.noteId === target));
+            }
+
+            for (const target of mutingTargets) {
+                mutingAggregate.set(target, !!mutings.find(m => m.threadId === target));
+            }
+
+            for (const target of pinTargets) {
+                mutingAggregate.set(target, !!pins.find(m => m.noteId === target));
+            }
+        }
+
+        ctx.reactionAggregate = reactionAggregate;
+        ctx.renoteAggregate = renoteAggregate;
+        ctx.mutingAggregate = mutingAggregate;
+        ctx.bookmarkAggregate = bookmarkAggregate;
+        ctx.pinAggregate = pinAggregate;
+
+        const users = notes.filter(p => !!p.user).map(p => p.user as User);
+        await UserConverter.aggregateData([...users], ctx)
+        await prefetchEmojis(aggregateNoteEmojis(notes));
     }
 
     private static encodeReactions(reactions: Record<string, number>, myReaction: string | undefined, populated: PopulatedEmoji[]): MastodonEntity.Reaction[] {

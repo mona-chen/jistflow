@@ -34,6 +34,7 @@ export class TimelineHelpers {
             maxId,
             minId
         )
+            .leftJoinAndSelect("note.user", "user")
             .leftJoinAndSelect("note.renote", "renote");
 
         await generateFollowingQuery(query, user);
