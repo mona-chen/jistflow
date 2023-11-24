@@ -18,44 +18,48 @@
 		</div>
 
 		<div v-else ref="rootEl" class="list">
-			<div
-				v-show="pagination.reversed && more"
-				key="_more_"
-				class="cxiknjgy _gap"
-			>
-				<MkButton
-					v-if="!moreFetching"
-					class="button"
-					:disabled="moreFetching"
-					:style="{ cursor: moreFetching ? 'wait' : 'pointer' }"
-					primary
-					@click="fetchMoreAhead"
-				>
-					{{ i18n.ts.loadMore }}
-				</MkButton>
-				<MkLoading v-else class="loading" />
-			</div>
-			<slot :items="items"></slot>
-			<div
-				v-show="!pagination.reversed && more"
-				key="_more_"
-				class="cxiknjgy _gap"
+			<MkPullToRefresh
+					:on-refresh="reloadAsync"
 			>
 				<div
-					v-appear="$store.state.enableInfiniteScroll && !disableAutoLoad ? fetchMore : null"
-				/>
-				<MkButton
-					v-if="!moreFetching && !$store.state.enableInfiniteScroll && !disableAutoLoad"
-					class="button"
-					:disabled="moreFetching"
-					:style="{ cursor: moreFetching ? 'wait' : 'pointer' }"
-					primary
-					@click="fetchMore"
+					v-show="pagination.reversed && more"
+					key="_more_"
+					class="cxiknjgy _gap"
 				>
-					{{ i18n.ts.loadMore }}
-				</MkButton>
-				<MkLoading v-else class="loading" />
-			</div>
+					<MkButton
+						v-if="!moreFetching"
+						class="button"
+						:disabled="moreFetching"
+						:style="{ cursor: moreFetching ? 'wait' : 'pointer' }"
+						primary
+						@click="fetchMoreAhead"
+					>
+						{{ i18n.ts.loadMore }}
+					</MkButton>
+					<MkLoading v-else class="loading" />
+				</div>
+				<slot :items="items"></slot>
+				<div
+					v-show="!pagination.reversed && more"
+					key="_more_"
+					class="cxiknjgy _gap"
+				>
+					<div
+						v-appear="$store.state.enableInfiniteScroll && !disableAutoLoad ? fetchMore : null"
+					/>
+					<MkButton
+						v-if="!moreFetching && !$store.state.enableInfiniteScroll && !disableAutoLoad"
+						class="button"
+						:disabled="moreFetching"
+						:style="{ cursor: moreFetching ? 'wait' : 'pointer' }"
+						primary
+						@click="fetchMore"
+					>
+						{{ i18n.ts.loadMore }}
+					</MkButton>
+					<MkLoading v-else class="loading" />
+				</div>
+			</MkPullToRefresh>
 		</div>
 	</transition>
 </template>
@@ -84,6 +88,7 @@ import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
 import {instance} from "@/instance";
 import { defaultStore } from "@/store.js";
+import MkPullToRefresh from "@/components/MkPullToRefresh.vue";
 
 export type Paging<
 	E extends keyof misskey.Endpoints = keyof misskey.Endpoints,
@@ -201,7 +206,12 @@ const reload = (): void => {
 	init();
 };
 
-const refresh = async (): void => {
+const reloadAsync = (): Promise<void> => {
+	items.value = [];
+	return init();
+};
+
+const refresh = async (): Promise<void> => {
 	const params = props.pagination.params
 		? isRef(props.pagination.params)
 			? props.pagination.params.value
@@ -503,6 +513,7 @@ defineExpose({
 	removeItem,
 	updateItem,
 	prefetchMore,
+	reloadAsync,
 });
 </script>
 
