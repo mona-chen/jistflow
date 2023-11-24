@@ -345,6 +345,9 @@ export const NoteRepository = db.getRepository(Note).extend({
 				.select('note.renoteId')
 				.where('note.userId = :meId', { meId })
 				.andWhere('note.renoteId IN (:...targets)', { targets })
+				.andWhere('note.text IS NULL')
+				.andWhere('note.hasPoll = FALSE')
+				.andWhere(`note.fileIds = '{}'`)
 				.getMany();
 
 			for (const target of targets) {
