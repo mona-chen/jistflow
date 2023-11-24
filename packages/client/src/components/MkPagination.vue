@@ -127,6 +127,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
+	(ev: "reload"): void;
 	(ev: "queue", count: number): void;
 }>();
 
@@ -206,9 +207,10 @@ const reload = (): void => {
 	init();
 };
 
-const reloadAsync = (): Promise<void> => {
+const reloadAsync = async (): Promise<void> => {
 	items.value = [];
-	return init();
+	await init();
+	emit("reload");
 };
 
 const refresh = async (): Promise<void> => {
