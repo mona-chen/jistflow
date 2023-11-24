@@ -23,7 +23,12 @@ export async function generateFollowingQuery(
 		return Notes.createQueryBuilder('note')
 			.where(`note.createdAt > :prev`, { prev })
 			.andWhere(`note.createdAt < :curr`, { curr })
-			.andWhere(`note.userId = ANY(array(${followingQuery.getQuery()} UNION ALL VALUES (:meId)))`, { meId: me.id })
+			.andWhere(
+				new Brackets((qb) => {
+					qb.where(`note.userId IN (${followingQuery.getQuery()})`);
+					qb.orWhere(`note.userId = :meId`, { meId: me.id });
+				})
+			)
 			.getCount()
 			.then(res => {
 				logger.info(`Calculating heuristics for user ${me.id} took ${new Date().getTime() - curr.getTime()}ms`);
