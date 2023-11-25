@@ -42,6 +42,7 @@ export async function updateUserProfileData(user: User, profile: UserProfile | n
 
 	updates.emojis = emojis;
 	updates.tags = tags;
+	updates.updatedAt = new Date();
 
 	updateUsertags(user, tags);
 
