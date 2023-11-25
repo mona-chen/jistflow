@@ -1,4 +1,4 @@
-import { JSDOM } from "jsdom";
+import { Window as HappyDom } from "happy-dom";
 import type * as mfm from "mfm-js";
 import config from "@/config/index.js";
 import { intersperse } from "@/prelude/array.js";
@@ -14,7 +14,7 @@ export async function toHtml(
 		return null;
 	}
 
-	const { window } = new JSDOM("");
+	const { window } = new HappyDom();
 
 	const doc = window.document;
 
@@ -82,7 +82,7 @@ export async function toHtml(
 
 		hashtag(node) {
 			const a = doc.createElement("a");
-			a.href = `${config.url}/tags/${node.props.hashtag}`;
+			a.setAttribute('href', `${config.url}/tags/${node.props.hashtag}`);
 			a.textContent = `#${node.props.hashtag}`;
 			a.setAttribute("rel", "tag");
 			return a;
@@ -108,7 +108,7 @@ export async function toHtml(
 
 		async link(node) {
 			const a = doc.createElement("a");
-			a.href = node.props.url;
+			a.setAttribute('href', node.props.url);
 			await appendChildren(node.children, a);
 			return a;
 		},
@@ -124,7 +124,7 @@ export async function toHtml(
 				el.setAttribute("class", "h-card");
 				el.setAttribute("translate", "no");
 				const a = doc.createElement("a");
-				a.href = resolved.href;
+				a.setAttribute('href', resolved.href);
 				a.className = "u-url mention";
 				const span = doc.createElement("span");
 				span.textContent = resolved.username;
@@ -157,14 +157,14 @@ export async function toHtml(
 
 		url(node) {
 			const a = doc.createElement("a");
-			a.href = node.props.url;
+			a.setAttribute('href', node.props.url);
 			a.textContent = node.props.url.replace(/^https?:\/\//, '');
 			return a;
 		},
 
 		search(node) {
 			const a = doc.createElement("a");
-			a.href = `${config.searchEngine}${node.props.query}`;
+			a.setAttribute('href', `${config.searchEngine}${node.props.query}`);
 			a.textContent = node.props.content;
 			return a;
 		},
