@@ -1,3 +1,56 @@
+## v2023.12-pre1
+It's been a while, but it's time for another prerelease. This release cycle is going to primarily focus on performance, both in the backend and the frontend.
+
+Note: This prerelease includes a lot of expensive migrations, which may take a while to run. We promise the performance benefits are worth the wait.
+
+### Highlights
+- Reworked full text search, retiring Meili/Sonic/Elastic in favor of Postgres gin_trgm with advanced search filter support
+- Significantly improved backend & API performance across the board
+
+### Backend
+- Support for external search backends was removed
+- Support for advanced search filters was added to the Postgres search backend
+- The `search-by-username-and-host` API endpoint no longer excludes the local user making the request
+- Renote status is now aggregated and returned with timeline responses instead of the client requesting it for each note individually
+- Heuristics for which timeline query to use for each user were added, drastically improving worst case timeline performance
+- Timeline queries were streamlined for improved performance, adding new multi-column indicies as appropriate
+- User avatar and banner URL & blurhash were duplicated into the user table, drastically improving query performance by saving up to 6 joins per query
+- The media proxy was reworked to not require a database query per requested file
+- A per-request packed user cache was added to the web API to improve performance, mimicking the existing Mastodon client API implementation
+- The web API now only fetches exactly as many notes as have been requested
+- The `re2` dependency was updated, fixing builds on NixOS
+- Environment variables that allow setting alternative locations for the config file, a second config file for secrets, the custom directory as well as the media directory were added
+- The `followRequestAccepted` notification is no longer emitted for non-locked accounts
+- The mfm-to-html renderer for outgoing ActivityPub messages was changed to happy-dom
+
+### Mastodon client API
+- Search now also supports filters, using the same syntax as the web client
+- NoteConverter and UserConverter now pre-aggregate applicable data in their respective `encodeMany` functions for improved performance
+- The `user` column is now joined where applicable for improved performance
+- The mfm-to-html renderer was changed to happy-dom, drastically improving timeline performance
+
+### UI/UX
+- The search dialog was replaced with a proper search page, and now supports additional search filters
+- A help page containing a list of all available search filters was added
+- All references to post indexing were removed, as manual indexing is no longer required
+- The search filter button is no longer visible in guest mode
+- Inactive search tabs are no longer loaded
+- Overscroll was disabled due to it causing graphical glitches and weird behavior, especially on desktop
+- All images in timeline views now have the `loading="lazy"` and `decoding="async"` attributes set
+- The URL card animation has been removed
+- Additional posts are now loaded in before reaching the bottom of the timeline
+- VueJS and Vite were updated to their respective latest versions
+
+### Infrastructure and governance
+- Docker builds with populated BuildKit caches no longer break if the yarn cache changes
+
+### Miscellaneous
+- References to external search backends were removed from the documentation & example configuration files
+- The installation docs now contain information on the available environment variables
+- The project readme was updated
+- All project imports of the deprecated punycode node module were switched over to the punycode.js replacement
+- Various translation updates
+
 ## v2023.11.3
 This release contains yet more packaging and distribution-related changes, including some required for packaging the project for NixOS.
 

@@ -1,7 +1,6 @@
 {
 	"name": "iceshrimp",
-	"version": "2023.11.3",
-	"codename": "aqua",
+	"version": "2023.12-pre1",
 	"repository": {
 		"type": "git",
 		"url": "https://iceshrimp.dev/iceshrimp/iceshrimp.git"
