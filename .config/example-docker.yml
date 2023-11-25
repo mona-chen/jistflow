@@ -184,6 +184,25 @@ reservedUsernames: [
 # Upload or download file size limits (bytes)
 #maxFileSize: 262144000
 
+#   ┌────────────────────────────────┐
+#───┘ Mastodon client API HTML Cache └──────────────────────────
+# Caution: rendered post html content is stored in redis (in-memory cache)
+#   for the duration of ttl, so don't set it too high if you have little system memory.
+#
+# The prewarm option causes every incoming user/note create/update event to
+#   be rendered so the cache is always "warm". This trades background cpu load for
+#   better request response time and better scaling, as posts won't have to be rendered
+#   on request.
+#
+# The dbFallback option stores html data that expires into postgres,
+#   which is more expensive than fetching it from redis,
+#   but cheaper than re-rendering the HTML.
+
+#htmlCache:
+#  ttl: 1h
+#  prewarm: false
+#  dbFallback: false
+
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Congrats, you've reached the end of the config file needed for most deployments!
 # Enjoy your Iceshrimp server!

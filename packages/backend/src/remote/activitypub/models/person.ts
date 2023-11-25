@@ -54,6 +54,7 @@ import {
 	getSubjectHostFromAcctParts
 } from "@/remote/resolve-user.js"
 import { RecursionLimiter } from "@/models/repositories/user-profile.js";
+import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 
 const logger = apLogger;
 
@@ -397,8 +398,9 @@ export async function createPerson(
 	// Hashtag update
 	updateUsertags(user!, tags);
 
-	// Mentions update
-	if (await limiter.shouldContinue()) UserProfiles.updateMentions(user!.id, limiter);
+	// Mentions update, then prewarm html cache
+	if (await limiter.shouldContinue()) UserProfiles.updateMentions(user!.id, limiter)
+		.then(_ => UserConverter.prewarmCacheById(user!.id));
 
 	//#region Fetch avatar and header image
 	const [avatar, banner] = await Promise.all(
@@ -635,8 +637,9 @@ export async function updatePerson(
 	// Hashtag Update
 	updateUsertags(user, tags);
 
-	// Mentions update
-	UserProfiles.updateMentions(user!.id);
+	// Mentions update, then prewarm html cache
+	UserProfiles.updateMentions(user!.id)
+		.then(_ => UserConverter.prewarmCacheById(user!.id));
 
 	// If the user in question is a follower, followers will also be updated.
 	await Followings.update(

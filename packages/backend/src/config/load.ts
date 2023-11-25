@@ -8,6 +8,7 @@ import { dirname } from "node:path";
 import * as yaml from "js-yaml";
 import type { Source, Mixin } from "./types.js";
 import Path from "node:path";
+import parseDuration from 'parse-duration'
 
 export default function load() {
 	const _filename = fileURLToPath(import.meta.url);
@@ -52,6 +53,15 @@ export default function load() {
 		error: '/twemoji/1f480.svg',
 		...config.images,
 	};
+
+	config.htmlCache = {
+		ttlSeconds: parseDuration(config.htmlCache?.ttl ?? '1h', 's')!,
+		prewarm: false,
+		dbFallback: false,
+		...config.htmlCache,
+	}
+
+	if (config.htmlCache.ttlSeconds == null) throw new Error('Failed to parse config.ttl');
 
 	config.searchEngine = config.searchEngine ?? 'https://duckduckgo.com/?q=';
 

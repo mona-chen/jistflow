@@ -41,6 +41,13 @@ export type Source = {
 		info?: string;
 	};
 
+	htmlCache?: {
+		ttl?: string;
+		ttlSeconds?: number;
+		prewarm?: boolean;
+		dbFallback?: boolean;
+	}
+
 	searchEngine?: string;
 
 	proxy?: string;

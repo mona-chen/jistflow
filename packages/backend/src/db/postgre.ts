@@ -71,12 +71,12 @@ import { UserPending } from "@/models/entities/user-pending.js";
 import { Webhook } from "@/models/entities/webhook.js";
 import { UserIp } from "@/models/entities/user-ip.js";
 import { NoteEdit } from "@/models/entities/note-edit.js";
-
 import { entities as charts } from "@/services/chart/entities.js";
-import { envOption } from "../env.js";
 import { dbLogger } from "./logger.js";
 import { OAuthApp } from "@/models/entities/oauth-app.js";
 import { OAuthToken } from "@/models/entities/oauth-token.js";
+import { HtmlNoteCacheEntry } from "@/models/entities/html-note-cache-entry.js";
+import { HtmlUserCacheEntry } from "@/models/entities/html-user-cache-entry.js";
 
 const sqlLogger = dbLogger.createSubLogger("sql", "gray", false);
 class MyCustomLogger implements Logger {
@@ -179,6 +179,8 @@ export const entities = [
 	UserIp,
 	OAuthApp,
 	OAuthToken,
+	HtmlNoteCacheEntry,
+	HtmlUserCacheEntry,
 	...charts,
 ];
 

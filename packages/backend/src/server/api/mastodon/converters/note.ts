@@ -8,7 +8,15 @@ import { VisibilityConverter } from "@/server/api/mastodon/converters/visibility
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
 import { aggregateNoteEmojis, PopulatedEmoji, populateEmojis, prefetchEmojis } from "@/misc/populate-emojis.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
-import { DriveFiles, NoteFavorites, NoteReactions, Notes, NoteThreadMutings, UserNotePinings } from "@/models/index.js";
+import {
+    DriveFiles,
+    HtmlNoteCacheEntries,
+    NoteFavorites,
+    NoteReactions,
+    Notes,
+    NoteThreadMutings,
+    UserNotePinings
+} from "@/models/index.js";
 import { decodeReaction } from "@/misc/reaction-lib.js";
 import { MentionConverter } from "@/server/api/mastodon/converters/mention.js";
 import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
@@ -23,8 +31,11 @@ import { NoteHelpers } from "@/server/api/mastodon/helpers/note.js";
 import isQuote from "@/misc/is-quote.js";
 import { unique } from "@/prelude/array.js";
 import { NoteReaction } from "@/models/entities/note-reaction.js";
+import { Cache } from "@/misc/cache.js";
+import { HtmlNoteCacheEntry } from "@/models/entities/html-note-cache-entry.js";
 
 export class NoteConverter {
+    private static noteContentHtmlCache = new Cache<string | null>('html:note:content', config.htmlCache?.ttlSeconds ?? 60 * 60);
     public static async encode(note: Note, ctx: MastoContext, recurseCounter: number = 2): Promise<MastodonEntity.Status> {
         const user = ctx.user as ILocalUser | null;
         const noteUser = note.user ?? UserHelpers.getUserCached(note.userId, ctx);
@@ -102,12 +113,16 @@ export class NoteConverter {
             return renote.url ?? renote.uri ?? `${config.url}/notes/${renote.id}`;
         });
 
+        const identifier = `${note.id}:${(note.updatedAt ?? note.createdAt).getTime()}`;
+
         const text = quoteUri.then(quoteUri => note.text !== null ? quoteUri !== null ? note.text.replaceAll(`RE: ${quoteUri}`, '').replaceAll(quoteUri, '').trimEnd() : note.text : null);
 
-        const content = text.then(text => text !== null
-            ? quoteUri.then(quoteUri => MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers), note.userHost, false, quoteUri))
-                .then(p => p ?? escapeMFM(text))
-            : "");
+        const content = this.noteContentHtmlCache.fetch(identifier, async () =>
+            Promise.resolve(await this.fetchFromCacheWithFallback(note, ctx) ?? text.then(text => text !== null
+                ? quoteUri.then(quoteUri => MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers), note.userHost, false, quoteUri))
+                    .then(p => p ?? escapeMFM(text))
+                : "")), true)
+            .then(p => p ?? '');
 
         const isPinned = (ctx.pinAggregate as Map<string, boolean>)?.get(note.id)
             ?? (user && note.userId === user.id
@@ -174,16 +189,28 @@ export class NoteConverter {
         const reactionAggregate = new Map<Note["id"], NoteReaction | null>();
         const renoteAggregate = new Map<Note["id"], boolean>();
         const mutingAggregate = new Map<Note["id"], boolean>();
-        const bookmarkAggregate = new Map<Note["id"], boolean>();;
+        const bookmarkAggregate = new Map<Note["id"], boolean>();
         const pinAggregate = new Map<Note["id"], boolean>();
+        const htmlNoteCacheAggregate = new Map<Note["id"], HtmlNoteCacheEntry | null>();
+
+        const renoteIds = notes
+            .filter((n) => n.renoteId != null)
+            .map((n) => n.renoteId!);
+
+        const noteIds = unique(notes.map((n) => n.id));
+        const targets = unique([...noteIds, ...renoteIds]);
+
+        if (config.htmlCache?.dbFallback) {
+            const htmlNoteCacheEntries = await HtmlNoteCacheEntries.findBy({
+                noteId: In(targets)
+            });
+
+            for (const target of targets) {
+                htmlNoteCacheAggregate.set(target, htmlNoteCacheEntries.find(n => n.noteId === target) ?? null);
+            }
+        }
 
         if (user?.id != null) {
-            const renoteIds = notes
-                .filter((n) => n.renoteId != null)
-                .map((n) => n.renoteId!);
-
-            const noteIds = unique(notes.map((n) => n.id));
-            const targets = unique([...noteIds, ...renoteIds]);
             const mutingTargets = unique([...notes.map(n => n.threadId ?? n.id)]);
             const pinTargets = unique([...notes.filter(n => n.userId === user.id).map(n => n.id)]);
 
@@ -239,9 +266,12 @@ export class NoteConverter {
         ctx.mutingAggregate = mutingAggregate;
         ctx.bookmarkAggregate = bookmarkAggregate;
         ctx.pinAggregate = pinAggregate;
+        ctx.htmlNoteCacheAggregate = htmlNoteCacheAggregate;
 
         const users = notes.filter(p => !!p.user).map(p => p.user as User);
+        const renoteUserIds = notes.filter(p => p.renoteUserId !== null).map(p => p.renoteUserId as string);
         await UserConverter.aggregateData([...users], ctx)
+        await UserConverter.aggregateDataByIds(renoteUserIds, ctx);
         await prefetchEmojis(aggregateNoteEmojis(notes));
     }
 
@@ -267,5 +297,50 @@ export class NoteConverter {
         const ctx = getStubMastoContext(user);
         NoteHelpers.fixupEventNote(note);
         return NoteConverter.encode(note, ctx);
+    }
+
+    private static async fetchFromCacheWithFallback(note: Note, ctx: MastoContext): Promise<string | null> {
+        if (!config.htmlCache?.dbFallback) return null;
+
+        let dbHit: HtmlNoteCacheEntry | Promise<HtmlNoteCacheEntry | null> | null | undefined = (ctx.htmlNoteCacheAggregate as Map<string, HtmlNoteCacheEntry | null> | undefined)?.get(note.id);
+        if (dbHit === undefined) dbHit = HtmlNoteCacheEntries.findOneBy({ noteId: note.id });
+
+        return Promise.resolve(dbHit)
+            .then(res => {
+                if (res === null || (res.updatedAt !== note.updatedAt)) {
+                    this.prewarmCache(note);
+                    return null;
+                }
+                return res;
+            })
+            .then(hit => hit?.updatedAt === note.updatedAt ? hit?.content ?? null : null);
+    }
+
+    public static async prewarmCache(note: Note): Promise<void> {
+        if (!config.htmlCache?.prewarm) return;
+        const identifier = `${note.id}:${(note.updatedAt ?? note.createdAt).getTime()}`;
+        if (await this.noteContentHtmlCache.get(identifier) !== undefined) return;
+
+        const quoteUri = note.renote
+            ? isQuote(note)
+                ? (note.renote.url ?? note.renote.uri ?? `${config.url}/notes/${note.renote.id}`)
+                : null
+            : null;
+
+        const text = note.text !== null ? quoteUri !== null ? note.text.replaceAll(`RE: ${quoteUri}`, '').replaceAll(quoteUri, '').trimEnd() : note.text : null;
+        const content = text !== null
+            ? MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers), note.userHost, false, quoteUri)
+                .then(p => p ?? escapeMFM(text))
+            : null;
+
+        if (note.user) UserConverter.prewarmCache(note.user);
+        else if (note.userId) UserConverter.prewarmCacheById(note.userId);
+
+        if (note.replyUserId) UserConverter.prewarmCacheById(note.replyUserId);
+        if (note.renoteUserId) UserConverter.prewarmCacheById(note.renoteUserId);
+        this.noteContentHtmlCache.set(identifier, await content);
+
+        if (config.htmlCache?.dbFallback)
+            HtmlNoteCacheEntries.upsert({ noteId: note.id, updatedAt: note.updatedAt, content: await content }, ["noteId"]);
     }
 }

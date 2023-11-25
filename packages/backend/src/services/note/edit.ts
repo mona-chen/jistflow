@@ -26,6 +26,7 @@ import { deliverToRelays } from "../relay.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 
 type Option = {
 	text?: string | null;
@@ -182,6 +183,8 @@ export default async function (
 	note = await Notes.findOneByOrFail({ id: note.id });
 
 	if (publishing) {
+		NoteConverter.prewarmCache(note);
+
 		// Publish update event for the updated note details
 		publishNoteStream(note.id, "updated", {
 			updatedAt: update.updatedAt,

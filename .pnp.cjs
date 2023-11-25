@@ -7275,6 +7275,7 @@ const RAW_RUNTIME_STATE =
           ["oauth", "npm:0.10.0"],\
           ["os-utils", "npm:0.0.14"],\
           ["otpauth", "npm:9.1.4"],\
+          ["parse-duration", "npm:1.1.0"],\
           ["parse5", "npm:7.1.2"],\
           ["pg", "virtual:aa59773ac87791c4813d53447077fcf8a847d6de5a301d34dc31286584b1dbb26d30d3adb5b4c41c1e8aea04371e926fda05c09c6253647c432e11d872a304ba#npm:8.11.1"],\
           ["private-ip", "npm:2.3.4"],\
@@ -19217,6 +19218,15 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["parent-module", "npm:1.0.1"],\
           ["callsites", "npm:3.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["parse-duration", [\
+      ["npm:1.1.0", {\
+        "packageLocation": "./.yarn/cache/parse-duration-npm-1.1.0-cb12528e2a-c26ab1e3fd.zip/node_modules/parse-duration/",\
+        "packageDependencies": [\
+          ["parse-duration", "npm:1.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\

@@ -1,6 +1,6 @@
 import { ILocalUser, User } from "@/models/entities/user.js";
 import config from "@/config/index.js";
-import { DriveFiles, Followings, UserProfiles, Users } from "@/models/index.js";
+import {DriveFiles, Followings, HtmlUserCacheEntries, UserProfiles, Users} from "@/models/index.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
@@ -9,10 +9,14 @@ import { awaitAll } from "@/prelude/await-all.js";
 import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
-import { IMentionedRemoteUsers } from "@/models/entities/note.js";
+import {IMentionedRemoteUsers, Note} from "@/models/entities/note.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { In } from "typeorm";
 import { unique } from "@/prelude/array.js";
+import { Cache } from "@/misc/cache.js";
+import { getUser } from "../../common/getters.js";
+import { HtmlUserCacheEntry } from "@/models/entities/html-user-cache-entry.js";
+import AsyncLock from "async-lock";
 
 type Field = {
     name: string;
@@ -21,6 +25,9 @@ type Field = {
 };
 
 export class UserConverter {
+    private static userBioHtmlCache = new Cache<string | null>('html:user:bio', config.htmlCache?.ttlSeconds ?? 60 * 60);
+    private static userFieldsHtmlCache = new Cache<MastodonEntity.Field[]>('html:user:fields', config.htmlCache?.ttlSeconds ?? 60 * 60);
+
     public static async encode(u: User, ctx: MastoContext): Promise<MastodonEntity.Account> {
         const localUser = ctx.user as ILocalUser | null;
         const cache = ctx.cache as AccountCache;
@@ -28,6 +35,7 @@ export class UserConverter {
             const cacheHit = cache.accounts.find(p => p.id == u.id);
             if (cacheHit) return cacheHit;
 
+            const identifier = `${u.id}:${(u.updatedAt ?? u.createdAt).getTime()}`;
             let fqn = `${u.username}@${u.host ?? config.domain}`;
             let acct = u.username;
             let acctUrl = `https://${u.host || config.host}/@${u.username}`;
@@ -38,15 +46,33 @@ export class UserConverter {
 
             const aggregateProfile = (ctx.userProfileAggregate as Map<string, UserProfile | null>)?.get(u.id);
 
+            let htmlCacheEntry: HtmlUserCacheEntry | null | undefined = undefined;
+            const htmlCacheEntryLock = new AsyncLock();
+
             const profile = aggregateProfile !== undefined
                 ? aggregateProfile
                 : UserProfiles.findOneBy({ userId: u.id });
-            const bio = Promise.resolve(profile).then(profile => MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), profile?.mentions, u.host).then(p => p ?? escapeMFM(profile?.description ?? "")));
+            const bio = this.userBioHtmlCache.fetch(identifier, async () => {
+                return htmlCacheEntryLock.acquire(u.id, async () => {
+                    if (htmlCacheEntry === undefined) await this.fetchFromCacheWithFallback(u, await profile, ctx);
+                    if (htmlCacheEntry === null) {
+                        return Promise.resolve(profile).then(async profile => {
+                            return MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), profile?.mentions, u.host)
+                                .then(p => p ?? escapeMFM(profile?.description ?? ""))
+                                .then(p => p !== '<p></p>' ? p : null)
+                        });
+                    }
+                    return htmlCacheEntry?.bio ?? null;
+                });
+            }, true)
+                .then(p => p ?? '<p></p>');
+
             const avatar = u.avatarId
                 ? DriveFiles.getFinalUrlMaybe(u.avatarUrl) ?? (DriveFiles.findOneBy({ id: u.avatarId }))
                     .then(p => p?.url ?? Users.getIdenticonUrl(u.id))
 					.then(p => DriveFiles.getFinalUrl(p))
                 : Users.getIdenticonUrl(u.id);
+
             const banner = u.bannerId
                 ? DriveFiles.getFinalUrlMaybe(u.bannerUrl) ?? (DriveFiles.findOneBy({ id: u.bannerId }))
 					.then(p => p?.url ?? `${config.url}/static-assets/transparent.png`)
@@ -75,6 +101,7 @@ export class UserConverter {
                         return localUser?.id === profile.userId ? u.followersCount : 0;
                 }
             });
+
             const followingCount = Promise.resolve(profile).then(async profile => {
                 if (profile === null) return u.followingCount;
                 switch (profile.ffVisibility) {
@@ -86,6 +113,17 @@ export class UserConverter {
                         return localUser?.id === profile.userId ? u.followingCount : 0;
                 }
             });
+
+            const fields =
+                this.userFieldsHtmlCache.fetch(identifier, async () => {
+                    return htmlCacheEntryLock.acquire(u.id, async () => {
+                        if (htmlCacheEntry === undefined) await this.fetchFromCacheWithFallback(u, await profile, ctx);
+                        if (htmlCacheEntry === null) {
+                            return Promise.resolve(profile).then(profile => Promise.all(profile?.fields.map(async p => this.encodeField(p, u.host, profile?.mentions)) ?? []));
+                        }
+                        return htmlCacheEntry?.fields ?? [];
+                    });
+                }, true);
 
             return awaitAll({
                 id: u.id,
@@ -106,7 +144,7 @@ export class UserConverter {
                 header_static: banner,
                 emojis: populateEmojis(u.emojis, u.host).then(emoji => emoji.map((e) => EmojiConverter.encode(e))),
                 moved: null, //FIXME
-                fields: Promise.resolve(profile).then(profile => Promise.all(profile?.fields.map(async p => this.encodeField(p, u.host, profile?.mentions)) ?? [])),
+                fields: fields,
                 bot: u.isBot,
                 discoverable: u.isExplorable
             }).then(p => {
@@ -124,6 +162,17 @@ export class UserConverter {
 
         const followedOrSelfAggregate = new Map<User["id"], boolean>();
         const userProfileAggregate = new Map<User["id"], UserProfile | null>();
+        const htmlUserCacheAggregate = ctx.htmlUserCacheAggregate ?? new Map<Note["id"], HtmlUserCacheEntry | null>();
+
+        if (config.htmlCache?.dbFallback) {
+            const htmlUserCacheEntries = await HtmlUserCacheEntries.findBy({
+                userId: In(targets)
+            });
+
+            for (const target of targets) {
+                htmlUserCacheAggregate.set(target, htmlUserCacheEntries.find(n => n.userId === target) ?? null);
+            }
+        }
 
         if (user) {
             const targetsWithoutSelf = targets.filter(u => u !== user.id);
@@ -152,6 +201,24 @@ export class UserConverter {
         }
 
         ctx.followedOrSelfAggregate = followedOrSelfAggregate;
+        ctx.htmlUserCacheAggregate = htmlUserCacheAggregate;
+    }
+
+    public static async aggregateDataByIds(userIds: User["id"][], ctx: MastoContext): Promise<void> {
+        const targets = unique(userIds);
+        const htmlUserCacheAggregate = ctx.htmlUserCacheAggregate ?? new Map<Note["id"], HtmlUserCacheEntry | null>();
+
+        if (config.htmlCache?.dbFallback) {
+            const htmlUserCacheEntries = await HtmlUserCacheEntries.findBy({
+                userId: In(targets)
+            });
+
+            for (const target of targets) {
+                htmlUserCacheAggregate.set(target, htmlUserCacheEntries.find(n => n.userId === target) ?? null);
+            }
+        }
+
+        ctx.htmlUserCacheAggregate = htmlUserCacheAggregate;
     }
 
     public static async encodeMany(users: User[], ctx: MastoContext): Promise<MastodonEntity.Account[]> {
@@ -166,5 +233,54 @@ export class UserConverter {
             value: await MfmHelpers.toHtml(mfm.parse(f.value), mentions, host, true) ?? escapeMFM(f.value),
             verified_at: f.verified ? (new Date()).toISOString() : null,
         }
+    }
+
+    private static async fetchFromCacheWithFallback(user: User, profile: UserProfile | null, ctx: MastoContext): Promise<HtmlUserCacheEntry | null> {
+        if (!config.htmlCache?.dbFallback) return null;
+
+        let dbHit: HtmlUserCacheEntry | Promise<HtmlUserCacheEntry | null> | null | undefined = (ctx.htmlUserCacheAggregate as Map<string, HtmlUserCacheEntry | null> | undefined)?.get(user.id);
+        if (dbHit === undefined) dbHit = HtmlUserCacheEntries.findOneBy({ userId: user.id });
+
+        return Promise.resolve(dbHit)
+            .then(res => {
+                if (res === null || (res.updatedAt !== user.updatedAt ?? user.createdAt)) {
+                    this.prewarmCache(user, profile);
+                    return null;
+                }
+                return res;
+            });
+    }
+
+    public static async prewarmCache(user: User, profile?: UserProfile | null): Promise<void> {
+        if (!config.htmlCache?.prewarm) return;
+        const identifier = `${user.id}:${(user.updatedAt ?? user.createdAt).getTime()}`;
+        if (profile !== null) {
+            if (profile === undefined) {
+                profile = await UserProfiles.findOneBy({userId: user.id});
+            }
+
+            if (await this.userBioHtmlCache.get(identifier) === undefined) {
+                const bio = MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), profile?.mentions, user.host)
+                    .then(p => p ?? escapeMFM(profile?.description ?? ""))
+                    .then(p => p !== '<p></p>' ? p : null);
+
+                this.userBioHtmlCache.set(identifier, await bio);
+
+                if (config.htmlCache?.dbFallback)
+                    HtmlUserCacheEntries.upsert({ userId: user.id, bio: await bio }, ["userId"]);
+            }
+
+            if (await this.userFieldsHtmlCache.get(identifier) === undefined) {
+                const fields = await Promise.all(profile!.fields.map(async p => this.encodeField(p, user.host, profile!.mentions)) ?? []);
+                this.userFieldsHtmlCache.set(identifier, fields);
+
+                if (config.htmlCache?.dbFallback)
+                    HtmlUserCacheEntries.upsert({ userId: user.id, updatedAt: user.updatedAt ?? user.createdAt, fields: fields }, ["userId"]);
+            }
+        }
+    }
+
+    public static async prewarmCacheById(userId: string): Promise<void> {
+        await this.prewarmCache(await getUser(userId));
     }
 }

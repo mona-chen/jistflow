@@ -65,6 +65,7 @@ import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
 import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
 import { RecursionLimiter } from "@/models/repositories/user-profile.js";
+import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 
 const mutedWordsCache = new Cache<
 	{ userId: UserProfile["userId"]; mutedWords: UserProfile["mutedWords"] }[]
@@ -341,8 +342,10 @@ export default async (
 		) {
 			await incRenoteCount(data.renote);
 		}
-
 		res(note);
+
+		// Prewarm html cache
+		NoteConverter.prewarmCache(note);
 
 		// 統計を更新
 		notesChart.update(note, true);

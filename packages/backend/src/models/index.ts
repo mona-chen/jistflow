@@ -69,6 +69,8 @@ import { NoteEdit } from "./entities/note-edit.js";
 import { OAuthApp } from "@/models/entities/oauth-app.js";
 import { OAuthToken } from "@/models/entities/oauth-token.js";
 import { UserProfileRepository } from "@/models/repositories/user-profile.js";
+import { HtmlNoteCacheEntry } from "@/models/entities/html-note-cache-entry.js";
+import { HtmlUserCacheEntry } from "@/models/entities/html-user-cache-entry.js";
 
 export const Announcements = db.getRepository(Announcement);
 export const AnnouncementReads = db.getRepository(AnnouncementRead);
@@ -136,3 +138,5 @@ export const Webhooks = db.getRepository(Webhook);
 export const PasswordResetRequests = db.getRepository(PasswordResetRequest);
 export const OAuthApps = db.getRepository(OAuthApp);
 export const OAuthTokens = db.getRepository(OAuthToken);
+export const HtmlUserCacheEntries = db.getRepository(HtmlUserCacheEntry);
+export const HtmlNoteCacheEntries = db.getRepository(HtmlNoteCacheEntry);
