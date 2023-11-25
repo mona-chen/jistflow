@@ -1,7 +1,7 @@
 ## v2023.12-pre1
 It's been a while, but it's time for another prerelease. This release cycle is going to primarily focus on performance, both in the backend and the frontend.
 
-Note: This prerelease includes a lot of expensive migrations, which may take a while to run. We promise the performance benefits are worth the wait.
+Note: This release preview includes a lot of expensive migrations, which may take a while to run. We promise the performance benefits are worth the wait.
 
 ### Highlights
 - Reworked full text search, retiring Meili/Sonic/Elastic in favor of Postgres gin_trgm with advanced search filter support
@@ -50,6 +50,9 @@ Note: This prerelease includes a lot of expensive migrations, which may take a w
 - The project readme was updated
 - All project imports of the deprecated punycode node module were switched over to the punycode.js replacement
 - Various translation updates
+
+### Attribution
+This release was made possible by project contributors: AntoineÐ & Laura Hausmann
 
 ## v2023.11.3
 This release contains yet more packaging and distribution-related changes, including some required for packaging the project for NixOS.
