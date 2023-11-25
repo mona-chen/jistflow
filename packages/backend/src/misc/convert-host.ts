@@ -1,6 +1,6 @@
 import { URL } from "node:url";
 import config from "@/config/index.js";
-import { toASCII } from "punycode";
+import punycode from "punycode/";
 
 export function getFullApAccount(username: string, host: string | null) {
 	return host
@@ -19,10 +19,10 @@ export function extractDbHost(uri: string) {
 }
 
 export function toPuny(host: string) {
-	return toASCII(host.toLowerCase());
+	return punycode.toASCII(host.toLowerCase());
 }
 
 export function toPunyNullable(host: string | null | undefined): string | null {
 	if (host == null) return null;
-	return toASCII(host.toLowerCase());
+	return punycode.toASCII(host.toLowerCase());
 }
