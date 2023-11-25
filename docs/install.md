@@ -89,6 +89,8 @@ yarn run init
 
 ### Optimizing performance
 
+If you are running Iceshrimp on a system with more than one CPU thread, you might want to set the `clusterLimit` config option to about half of your thread count, depending on your system configuration. Please note that each worker requires around 10 PostgreSQL connections, so be sure to set `max_connections` appropriately (aim for `(10 * no_workers) + 10`, if you have no other applications accessing the PostgreSQL database).
+
 For optimal database performance, it's highly recommended to configure PostgreSQL with [PGTune](https://pgtune.leopard.in.ua/) using the "Mixed type of application" profile. This is especially important should your database server use HDD instead of SATA or NVMe SSD storage.
 
 ## Setting up Webproxy

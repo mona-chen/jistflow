@@ -27,6 +27,8 @@ Run `cp .config/example-docker.yml .config/default.yml`, and edit `.config/defau
 - Replace example database credentials with the ones you entered in `.config/docker.env`
 - Change other configuration
 
+If you are running Iceshrimp on a system with more than one CPU thread, you might want to set the `clusterLimit` config option to about half of your thread count, depending on your system configuration. Please note that each worker requires around 10 PostgreSQL connections, so be sure to set `max_connections` appropriately. To do this with docker-compose, add `args: ["-c", "max_connections=n"]` to the `db:` section of `docker-compose.yml`, with `n` being `(10 * no_workers) + 10`.
+
 ## Installation and first start
 
 Choose a method, whether you chose to build the image yourself or not.  
