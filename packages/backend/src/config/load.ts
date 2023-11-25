@@ -16,6 +16,7 @@ export default function load() {
 	const dir = `${_dirname}/../../../..`;
 	const {
 		ICESHRIMP_CONFIG: configFile,
+		ICESHRIMP_SECRETS: secretsFile,
 		ICESHRIMP_MEDIA_DIR: mediaDir,
 	} = process.env;
 
@@ -33,7 +34,9 @@ export default function load() {
 			"utf-8",
 		),
 	);
-	const config = yaml.load(fs.readFileSync(path, "utf-8")) as Source;
+	let config = yaml.load(fs.readFileSync(path, "utf-8")) as Source;
+	if (secretsFile !== undefined)
+		config = Object.assign(config, yaml.load(fs.readFileSync(secretsFile, "utf-8")) as Source);
 
 	const mixin = {} as Mixin;
 
