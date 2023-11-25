@@ -7241,6 +7241,7 @@ const RAW_RUNTIME_STATE =
           ["fluent-ffmpeg", "npm:2.1.2"],\
           ["got", "npm:12.5.3"],\
           ["gunzip-maybe", "npm:1.4.2"],\
+          ["happy-dom", "npm:12.10.3"],\
           ["hpagent", "npm:0.1.2"],\
           ["iceshrimp-js", "workspace:packages/iceshrimp-js"],\
           ["ioredis", "npm:5.3.2"],\
@@ -9590,6 +9591,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/css-what-npm-2.1.3-a9583898e8-2a46608ecb.zip/node_modules/css-what/",\
         "packageDependencies": [\
           ["css-what", "npm:2.1.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["css.escape", [\
+      ["npm:1.5.1", {\
+        "packageLocation": "./.yarn/cache/css.escape-npm-1.5.1-b24d2ba77a-f6d38088d8.zip/node_modules/css.escape/",\
+        "packageDependencies": [\
+          ["css.escape", "npm:1.5.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -13661,6 +13671,21 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/hammerjs-npm-2.0.8-f656ba2573-9155d056f2.zip/node_modules/hammerjs/",\
         "packageDependencies": [\
           ["hammerjs", "npm:2.0.8"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["happy-dom", [\
+      ["npm:12.10.3", {\
+        "packageLocation": "./.yarn/cache/happy-dom-npm-12.10.3-5cca1a5e23-de82ddd1c9.zip/node_modules/happy-dom/",\
+        "packageDependencies": [\
+          ["happy-dom", "npm:12.10.3"],\
+          ["css.escape", "npm:1.5.1"],\
+          ["entities", "npm:4.5.0"],\
+          ["iconv-lite", "npm:0.6.3"],\
+          ["webidl-conversions", "npm:7.0.0"],\
+          ["whatwg-encoding", "npm:2.0.0"],\
+          ["whatwg-mimetype", "npm:3.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\

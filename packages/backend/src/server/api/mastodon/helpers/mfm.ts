@@ -1,5 +1,5 @@
 import { IMentionedRemoteUsers } from "@/models/entities/note.js";
-import { JSDOM } from "jsdom";
+import { Window as HappyDom } from "happy-dom";
 import config from "@/config/index.js";
 import { intersperse } from "@/prelude/array.js";
 import mfm from "mfm-js";
@@ -17,7 +17,7 @@ export class MfmHelpers {
             return null;
         }
 
-        const { window } = new JSDOM("");
+        const { window } = new HappyDom();
 
         const doc = window.document;
 
@@ -101,7 +101,7 @@ export class MfmHelpers {
 
             hashtag(node) {
                 const a = doc.createElement("a");
-                a.href = `${config.url}/tags/${node.props.hashtag}`;
+                a.setAttribute('href', `${config.url}/tags/${node.props.hashtag}`);
                 a.textContent = `#${node.props.hashtag}`;
                 a.setAttribute("rel", "tag");
                 a.setAttribute("class", "hashtag");
@@ -130,7 +130,7 @@ export class MfmHelpers {
                 const a = doc.createElement("a");
                 a.setAttribute("rel", "nofollow noopener noreferrer");
                 a.setAttribute("target", "_blank");
-                a.href = node.props.url;
+                a.setAttribute('href',node.props.url);
                 await appendChildren(node.children, a);
                 return a;
             },
@@ -146,7 +146,7 @@ export class MfmHelpers {
                     el.setAttribute("class", "h-card");
                     el.setAttribute("translate", "no");
                     const a = doc.createElement("a");
-                    a.href = resolved.href;
+                    a.setAttribute('href',resolved.href);
                     a.className = "u-url mention";
                     const span = doc.createElement("span");
                     span.textContent = resolved.username;
@@ -181,14 +181,14 @@ export class MfmHelpers {
                 const a = doc.createElement("a");
                 a.setAttribute("rel", "nofollow noopener noreferrer");
                 a.setAttribute("target", "_blank");
-                a.href = node.props.url;
+                a.setAttribute('href', node.props.url);
                 a.textContent = node.props.url.replace(/^https?:\/\//, '');
                 return a;
             },
 
             search(node) {
                 const a = doc.createElement("a");
-                a.href = `${config.searchEngine}${node.props.query}`;
+                a.setAttribute('href', `${config.searchEngine}${node.props.query}`);
                 a.textContent = node.props.content;
                 return a;
             },
@@ -204,7 +204,7 @@ export class MfmHelpers {
 
         if (quoteUri !== null) {
             const a = doc.createElement("a");
-            a.href = quoteUri;
+            a.setAttribute('href', quoteUri);
             a.textContent = quoteUri.replace(/^https?:\/\//, '');
 
             const quote = doc.createElement("span");
