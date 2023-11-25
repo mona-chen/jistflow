@@ -127,6 +127,7 @@ If this is your first run, after Iceshrimp has started successfully, you'll be a
 
 ### Environment variables
 - `ICESHRIMP_CONFIG` (default: `.config/default.yml`) to change where the the config file is located
+- `ICESHRIMP_SECRETS` (default: unset) if you want to keep your secrets in a separate config file
 - `ICESHRIMP_MEDIA_DIR` (default: `files`) to change where internally stored files are located
 - `ICESHRIMP_CUSTOM_DIR` (default: `custom`) to change where custom assets and locales are located (caution: assets are copied at build time or when running `yarn gulp`, not during startup!)
 
