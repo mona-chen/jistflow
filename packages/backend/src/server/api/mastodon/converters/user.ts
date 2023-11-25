@@ -126,17 +126,21 @@ export class UserConverter {
         const userProfileAggregate = new Map<User["id"], UserProfile | null>();
 
         if (user) {
-            const followings = await Followings.createQueryBuilder('following')
-                .select('following.followeeId')
-                .where('following.followerId = :meId', { meId: user.id })
-                .andWhere('following.followeeId IN (:...targets)', { targets: targets.filter(u => u !== user.id) })
-                .getMany();
+            const targetsWithoutSelf = targets.filter(u => u !== user.id);
+
+            if (targetsWithoutSelf.length > 0) {
+                const followings = await Followings.createQueryBuilder('following')
+                    .select('following.followeeId')
+                    .where('following.followerId = :meId', { meId: user.id })
+                    .andWhere('following.followeeId IN (:...targets)', { targets: targetsWithoutSelf })
+                    .getMany();
+
+                for (const userId of targetsWithoutSelf) {
+                    followedOrSelfAggregate.set(userId, !!followings.find(f => f.followerId === userId));
+                }
+            }
 
             followedOrSelfAggregate.set(user.id, true);
-
-            for (const userId of targets.filter(u => u !== user.id)) {
-                followedOrSelfAggregate.set(userId, !!followings.find(f => f.followerId === userId));
-            }
         }
 
         const profiles = await UserProfiles.findBy({
