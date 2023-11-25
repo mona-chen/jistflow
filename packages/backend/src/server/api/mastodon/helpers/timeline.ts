@@ -81,7 +81,9 @@ export class TimelineHelpers {
         if (local) query.andWhere("note.userHost IS NULL");
         if (!local) query.andWhere("note.channelId IS NULL");
 
-        query.leftJoinAndSelect("note.renote", "renote");
+        query
+            .leftJoinAndSelect("note.user", "user")
+            .leftJoinAndSelect("note.renote", "renote");
 
         generateRepliesQuery(query, true, user);
         if (user) {
@@ -113,6 +115,7 @@ export class TimelineHelpers {
         )
             .andWhere(`note.userId IN (${listQuery.getQuery()})`)
             .andWhere("note.visibility != 'specified'")
+            .leftJoinAndSelect("note.user", "user")
             .leftJoinAndSelect("note.renote", "renote")
             .setParameters({ listId: list.id });
 
@@ -148,7 +151,9 @@ export class TimelineHelpers {
         if (local) query.andWhere("note.userHost IS NULL");
         if (!local) query.andWhere("note.channelId IS NULL");
 
-        query.leftJoinAndSelect("note.renote", "renote");
+        query
+            .leftJoinAndSelect("note.user", "user")
+            .leftJoinAndSelect("note.renote", "renote");
 
         generateRepliesQuery(query, true, user);
         if (user) {
