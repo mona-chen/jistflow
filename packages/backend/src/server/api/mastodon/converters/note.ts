@@ -23,7 +23,7 @@ import { PollConverter } from "@/server/api/mastodon/converters/poll.js";
 import { populatePoll } from "@/models/repositories/note.js";
 import { FileConverter } from "@/server/api/mastodon/converters/file.js";
 import { awaitAll } from "@/prelude/await-all.js";
-import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
+import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { In, IsNull } from "typeorm";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import { getStubMastoContext, MastoContext } from "@/server/api/mastodon/index.js";
@@ -308,13 +308,39 @@ export class NoteConverter {
         return Promise.resolve(dbHit)
             .then(res => {
                 if (res === null || (res.updatedAt?.getTime() !== note.updatedAt?.getTime())) {
-                    this.prewarmCache(note);
-                    return null;
+                    return this.dbCacheMiss(note, ctx);
                 }
                 return res;
             })
             .then(hit => hit?.updatedAt === note.updatedAt ? hit?.content ?? null : null);
     }
+
+	private static async dbCacheMiss(note: Note, ctx: MastoContext): Promise<HtmlNoteCacheEntry | null> {
+		const identifier = `${note.id}:${(note.updatedAt ?? note.createdAt).getTime()}`;
+		const cache = ctx.cache as AccountCache;
+		return cache.locks.acquire(identifier, async () => {
+			const cachedContent = await this.noteContentHtmlCache.get(identifier);
+			if (cachedContent !== undefined) {
+				return { content: cachedContent } as HtmlNoteCacheEntry;
+			}
+
+			const quoteUri = note.renote
+				? isQuote(note)
+					? (note.renote.url ?? note.renote.uri ?? `${config.url}/notes/${note.renote.id}`)
+					: null
+				: null;
+
+			const text = note.text !== null ? quoteUri !== null ? note.text.replaceAll(`RE: ${quoteUri}`, '').replaceAll(quoteUri, '').trimEnd() : note.text : null;
+			const content = text !== null
+				? MfmHelpers.toHtml(mfm.parse(text), JSON.parse(note.mentionedRemoteUsers), note.userHost, false, quoteUri)
+					.then(p => p ?? escapeMFM(text))
+				: null;
+
+			HtmlNoteCacheEntries.upsert({ noteId: note.id, updatedAt: note.updatedAt, content: await content }, ["noteId"]);
+			await this.noteContentHtmlCache.set(identifier, await content);
+			return { content } as HtmlNoteCacheEntry;
+		});
+	}
 
     public static async prewarmCache(note: Note): Promise<void> {
         if (!config.htmlCache?.prewarm) return;

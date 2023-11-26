@@ -244,12 +244,47 @@ export class UserConverter {
         return Promise.resolve(dbHit)
             .then(res => {
                 if (res === null || (res.updatedAt.getTime() !== (user.lastFetchedAt ?? user.createdAt).getTime())) {
-                    this.prewarmCache(user, profile);
-                    return null;
+                    return this.dbCacheMiss(user, profile, ctx);
                 }
                 return res;
             });
     }
+
+	private static async dbCacheMiss(user: User, profile: UserProfile | null, ctx: MastoContext): Promise<HtmlUserCacheEntry | null> {
+		const identifier = `${user.id}:${(user.lastFetchedAt ?? user.createdAt).getTime()}`;
+		const cache = ctx.cache as AccountCache;
+		return cache.locks.acquire(identifier, async () => {
+			const cachedBio = await this.userBioHtmlCache.get(identifier);
+			const cachedFields = await this.userFieldsHtmlCache.get(identifier);
+			if (cachedBio !== undefined && cachedFields !== undefined) {
+				return { bio: cachedBio, fields: cachedFields } as HtmlUserCacheEntry;
+			}
+
+			if (profile === undefined) {
+				profile = await UserProfiles.findOneBy({ userId: user.id });
+			}
+
+			let bio: string | null | Promise<string | null> | undefined = cachedBio;
+			let fields: MastodonEntity.Field[] | Promise<MastodonEntity.Field[]> | undefined = cachedFields;
+
+			if (bio === undefined) {
+				bio = MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), profile?.mentions, user.host)
+					.then(p => p ?? escapeMFM(profile?.description ?? ""))
+					.then(p => p !== '<p></p>' ? p : null);
+			}
+
+			if (fields === undefined) {
+				fields = Promise.all(profile!.fields.map(async p => this.encodeField(p, user.host, profile!.mentions)) ?? []);
+			}
+
+			HtmlUserCacheEntries.upsert({ userId: user.id, updatedAt: user.lastFetchedAt ?? user.createdAt, bio: await bio, fields: await fields }, ["userId"]);
+
+			await this.userBioHtmlCache.set(identifier, await bio);
+			await this.userFieldsHtmlCache.set(identifier, await fields);
+
+			return { bio, fields } as HtmlUserCacheEntry;
+		});
+	}
 
     public static async prewarmCache(user: User, profile?: UserProfile | null, oldProfile?: UserProfile | null): Promise<void> {
         const identifier = `${user.id}:${(user.lastFetchedAt ?? user.createdAt).getTime()}`;
