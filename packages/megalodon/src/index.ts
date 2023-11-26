@@ -1,17 +1,17 @@
-import Response from "./response";
-import OAuth from "./oauth";
-import { isCancel, RequestCanceledError } from "./cancel";
-import { ProxyConfig } from "./proxy_config";
+import { RequestCanceledError, isCancel } from "./cancel";
+import Converter from "./converter";
+import Entity from "./entity";
+import FilterContext from "./filter_context";
 import generator, {
-	detector,
 	MegalodonInterface,
 	WebSocketInterface,
+	detector,
 } from "./megalodon";
 import Misskey from "./misskey";
-import Entity from "./entity";
 import NotificationType from "./notification";
-import FilterContext from "./filter_context";
-import Converter from "./converter";
+import OAuth from "./oauth";
+import { ProxyConfig } from "./proxy_config";
+import Response from "./response";
 
 export {
 	Response,

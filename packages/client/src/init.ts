@@ -22,6 +22,7 @@ if (accounts) {
 }
 // #endregion
 
+import { set } from "@/scripts/idb-proxy";
 import { compareVersions } from "compare-versions";
 import {
 	computed,
@@ -31,7 +32,6 @@ import {
 	version as vueVersion,
 	watch,
 } from "vue";
-import { set } from "@/scripts/idb-proxy";
 
 import { login, refreshAccount, signout, updateAccount } from "@/account";
 import components from "@/components";
