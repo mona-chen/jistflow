@@ -268,7 +268,7 @@ agreeTo: "Sono d'accordo con {0}"
 tos: "Termini d'uso"
 start: "Inizia"
 home: "Home"
-remoteUserCaution: "Le informazioni degli utenti remoti possono essere incomplete."
+remoteUserCaution: "Le informazioni degli utenti remoti sono incomplete."
 activity: "Attività"
 images: "Immagini"
 birthday: "Compleanno"
@@ -2180,3 +2180,5 @@ reactions: Reazioni
 replies: Risposte
 quotes: Citazioni
 renotes: Boost
+showAttachedNotes: Mostra i post con questo allegato
+attachedToNotes: Post con questo allegato
