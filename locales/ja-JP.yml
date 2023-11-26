@@ -2003,3 +2003,5 @@ _iconSets:
   regular: "標準"
   fill: "塗りつぶし"
   duotone: "2色"
+moreUrls: "固定するページ"
+moreUrlsDescription: "左下のヘルプメニューに固定したいページを以下の形式で、改行区切りで入力してください:\n\"表示名\": https://example.com/"

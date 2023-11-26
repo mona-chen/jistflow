@@ -383,6 +383,12 @@ export class Meta {
 	})
 	public ToSUrl: string | null;
 
+	@Column("jsonb", {
+		default: [],
+		nullable: false,
+	})
+	public moreUrls: [string, string][];
+
 	@Column("varchar", {
 		length: 512,
 		default: "https://git.joinfirefish.org/firefish/firefish",

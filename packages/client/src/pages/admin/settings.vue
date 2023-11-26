@@ -24,10 +24,17 @@
 
 						<FormInput v-model="tosUrl" class="_formBlock">
 							<template #prefix
-								><i :class="icon('ph-link-simple')"></i
+								><i :class="icon('ph-scroll')"></i
 							></template>
 							<template #label>{{ i18n.ts.tosUrl }}</template>
 						</FormInput>
+
+						<FormTextarea v-model="moreUrls" class="_formBlock">
+							<template #label>{{ i18n.ts.moreUrls }}</template>
+							<template #caption>{{
+								i18n.ts.moreUrlsDescription
+							}}</template>
+						</FormTextarea>
 
 						<FormSplit :min-width="300">
 							<FormInput
@@ -446,6 +453,7 @@ import icon from "@/scripts/icon";
 const name = ref<string | null>(null);
 const description = ref<string | null>(null);
 const tosUrl = ref<string | null>(null);
+const moreUrls = ref<string | null>(null);
 const maintainerName = ref<string | null>(null);
 const maintainerEmail = ref<string | null>(null);
 const donationLink = ref<string | null>(null);
@@ -480,12 +488,44 @@ const defaultReactionCustom = ref("");
 const enableServerMachineStats = ref(false);
 const enableIdenticonGeneration = ref(false);
 
+function isValidHttpUrl(src: string) {
+	let url: URL;
+	try {
+		url = new URL(src);
+	} catch (_) {
+		return false;
+	}
+	return url.protocol === "http:" || url.protocol === "https:";
+}
+
+function parseMoreUrls(src: string): { name: string; url: string }[] {
+	const toReturn: { name: string; url: string }[] = [];
+	const pattern = /"(.+)"\s*:\s*(http.+)/;
+	src.trim()
+		.split("\n")
+		.forEach((line) => {
+			const match = pattern.exec(line);
+			if (match != null && isValidHttpUrl(match[2]))
+				toReturn.push({ name: match[1], url: match[2] });
+			else console.error(`invalid syntax or invalid URL: ${line}`);
+		});
+	return toReturn;
+}
+
+function stringifyMoreUrls(src: { name: string; url: string }[]): string {
+	let toReturn = "";
+	for (const { name, url } of src)
+		toReturn = toReturn.concat(`"${name}": ${url}`, "\n");
+	return toReturn;
+}
+
 async function init() {
 	const meta = await os.api("admin/meta");
 	if (!meta) throw new Error("No meta");
 	name.value = meta.name;
 	description.value = meta.description;
 	tosUrl.value = meta.tosUrl;
+	moreUrls.value = stringifyMoreUrls(meta.moreUrls);
 	iconUrl.value = meta.iconUrl;
 	bannerUrl.value = meta.bannerUrl;
 	logoImageUrl.value = meta.logoImageUrl;
@@ -535,6 +575,7 @@ function save() {
 		name: name.value,
 		description: description.value,
 		tosUrl: tosUrl.value,
+		moreUrls: parseMoreUrls(moreUrls.value ?? ""),
 		iconUrl: iconUrl.value,
 		bannerUrl: bannerUrl.value,
 		logoImageUrl: logoImageUrl.value,

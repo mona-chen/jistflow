@@ -2161,3 +2161,5 @@ _iconSets:
   regular: "Regular"
   fill: "Filled"
   duotone: "Duotone"
+moreUrls: "Pinned pages"
+moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower left corner using this notation:\n\"Display name\": https://example.com/"
