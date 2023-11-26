@@ -1,6 +1,6 @@
 import { ILocalUser, User } from "@/models/entities/user.js";
 import config from "@/config/index.js";
-import {DriveFiles, Followings, HtmlUserCacheEntries, UserProfiles, Users} from "@/models/index.js";
+import { DriveFiles, Followings, HtmlUserCacheEntries, UserProfiles, Users } from "@/models/index.js";
 import { EmojiConverter } from "@/server/api/mastodon/converters/emoji.js";
 import { populateEmojis } from "@/misc/populate-emojis.js";
 import { escapeMFM } from "@/server/api/mastodon/converters/mfm.js";
@@ -9,7 +9,7 @@ import { awaitAll } from "@/prelude/await-all.js";
 import { AccountCache, UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { MfmHelpers } from "@/server/api/mastodon/helpers/mfm.js";
 import { MastoContext } from "@/server/api/mastodon/index.js";
-import {IMentionedRemoteUsers, Note} from "@/models/entities/note.js";
+import { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { In } from "typeorm";
 import { unique } from "@/prelude/array.js";
@@ -35,7 +35,7 @@ export class UserConverter {
             const cacheHit = cache.accounts.find(p => p.id == u.id);
             if (cacheHit) return cacheHit;
 
-            const identifier = `${u.id}:${(u.updatedAt ?? u.createdAt).getTime()}`;
+            const identifier = `${u.id}:${(u.lastFetchedAt ?? u.createdAt).getTime()}`;
             let fqn = `${u.username}@${u.host ?? config.domain}`;
             let acct = u.username;
             let acctUrl = `https://${u.host || config.host}/@${u.username}`;
@@ -243,7 +243,7 @@ export class UserConverter {
 
         return Promise.resolve(dbHit)
             .then(res => {
-                if (res === null || (res.updatedAt !== user.updatedAt ?? user.createdAt)) {
+                if (res === null || (res.updatedAt.getTime() !== (user.lastFetchedAt ?? user.createdAt).getTime())) {
                     this.prewarmCache(user, profile);
                     return null;
                 }
@@ -251,13 +251,24 @@ export class UserConverter {
             });
     }
 
-    public static async prewarmCache(user: User, profile?: UserProfile | null): Promise<void> {
-        if (!config.htmlCache?.prewarm) return;
-        const identifier = `${user.id}:${(user.updatedAt ?? user.createdAt).getTime()}`;
+    public static async prewarmCache(user: User, profile?: UserProfile | null, oldProfile?: UserProfile | null): Promise<void> {
+        const identifier = `${user.id}:${(user.lastFetchedAt ?? user.createdAt).getTime()}`;
         if (profile !== null) {
-            if (profile === undefined) {
-                profile = await UserProfiles.findOneBy({userId: user.id});
-            }
+			if (config.htmlCache?.dbFallback) {
+				if (profile === undefined) {
+					profile = await UserProfiles.findOneBy({ userId: user.id });
+				}
+				if (oldProfile !== undefined && profile?.fields === oldProfile?.fields && profile?.description === oldProfile?.description) {
+					HtmlUserCacheEntries.update({ userId: user.id }, { updatedAt: user.lastFetchedAt ?? user.createdAt });
+					return;
+				}
+			}
+
+			if (!config.htmlCache?.prewarm) return;
+
+			if (profile === undefined) {
+				profile = await UserProfiles.findOneBy({ userId: user.id });
+			}
 
             if (await this.userBioHtmlCache.get(identifier) === undefined) {
                 const bio = MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), profile?.mentions, user.host)
@@ -267,7 +278,7 @@ export class UserConverter {
                 this.userBioHtmlCache.set(identifier, await bio);
 
                 if (config.htmlCache?.dbFallback)
-                    HtmlUserCacheEntries.upsert({ userId: user.id, bio: await bio }, ["userId"]);
+                    HtmlUserCacheEntries.upsert({ userId: user.id, updatedAt: user.lastFetchedAt ?? user.createdAt, bio: await bio }, ["userId"]);
             }
 
             if (await this.userFieldsHtmlCache.get(identifier) === undefined) {
@@ -275,12 +286,12 @@ export class UserConverter {
                 this.userFieldsHtmlCache.set(identifier, fields);
 
                 if (config.htmlCache?.dbFallback)
-                    HtmlUserCacheEntries.upsert({ userId: user.id, updatedAt: user.updatedAt ?? user.createdAt, fields: fields }, ["userId"]);
+                    HtmlUserCacheEntries.upsert({ userId: user.id, updatedAt: user.lastFetchedAt ?? user.createdAt, fields: fields }, ["userId"]);
             }
         }
     }
 
-    public static async prewarmCacheById(userId: string): Promise<void> {
-        await this.prewarmCache(await getUser(userId));
+    public static async prewarmCacheById(userId: string, oldProfile?: UserProfile | null): Promise<void> {
+        await this.prewarmCache(await getUser(userId), undefined, oldProfile);
     }
 }

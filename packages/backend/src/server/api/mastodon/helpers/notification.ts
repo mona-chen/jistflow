@@ -31,7 +31,10 @@ export class NotificationHelpers {
         if (accountId !== undefined)
             query.andWhere("notification.notifierId = :notifierId", { notifierId: accountId });
 
-        query.leftJoinAndSelect("notification.note", "note");
+        query
+			.leftJoinAndSelect("notification.note", "note")
+			.leftJoinAndSelect("notification.notifier", "notifier")
+			.leftJoinAndSelect("notification.notifiee", "notifiee");
 
         return PaginationHelpers.execQueryLinkPagination(query, limit, minId !== undefined, ctx);
     }

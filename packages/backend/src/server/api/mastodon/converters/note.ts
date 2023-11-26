@@ -182,7 +182,7 @@ export class NoteConverter {
         return Promise.all(encoded);
     }
 
-    private static async aggregateData(notes: Note[], ctx: MastoContext): Promise<void> {
+    public static async aggregateData(notes: Note[], ctx: MastoContext): Promise<void> {
         if (notes.length === 0) return;
 
         const user = ctx.user as ILocalUser | null;
@@ -307,7 +307,7 @@ export class NoteConverter {
 
         return Promise.resolve(dbHit)
             .then(res => {
-                if (res === null || (res.updatedAt !== note.updatedAt)) {
+                if (res === null || (res.updatedAt?.getTime() !== note.updatedAt?.getTime())) {
                     this.prewarmCache(note);
                     return null;
                 }

@@ -1,4 +1,4 @@
-import { ILocalUser } from "@/models/entities/user.js";
+import { ILocalUser, User } from "@/models/entities/user.js";
 import { Notification } from "@/models/entities/notification.js";
 import { notificationTypes } from "@/types.js";
 import { UserConverter } from "@/server/api/mastodon/converters/user.js";
@@ -9,6 +9,8 @@ import { getNote } from "@/server/api/common/getters.js";
 import { getStubMastoContext, MastoContext } from "@/server/api/mastodon/index.js";
 import { Notifications } from "@/models/index.js";
 import isQuote from "@/misc/is-quote.js";
+import { unique } from "@/prelude/array.js";
+import { Note } from "@/models/entities/note.js";
 
 type NotificationType = typeof notificationTypes[number];
 
@@ -51,10 +53,20 @@ export class NotificationConverter {
     }
 
     public static async encodeMany(notifications: Notification[], ctx: MastoContext): Promise<MastodonEntity.Notification[]> {
+		await this.aggregateData(notifications, ctx);
         const encoded = notifications.map(u => this.encode(u, ctx));
         return Promise.all(encoded)
             .then(p => p.filter(n => n !== null) as MastodonEntity.Notification[]);
     }
+
+	private static async aggregateData(notifications: Notification[], ctx: MastoContext): Promise<void> {
+		if (notifications.length === 0) return;
+		const notes = unique(notifications.filter(p => p.note != null).map((n) => n.note as Note));
+		const users = unique(notifications.filter(p => p.notifier != null).map(n => n.notifier as User)
+			.concat(notifications.filter(p => p.notifiee != null).map(n => n.notifiee as User)));
+		await NoteConverter.aggregateData(notes, ctx);
+		await UserConverter.aggregateData(users, ctx);
+	}
 
     private static encodeNotificationType(t: NotificationType): MastodonEntity.NotificationType {
         //FIXME: Implement custom notification for followRequestAccepted

@@ -617,20 +617,22 @@ export async function updatePerson(
 		);
 	}
 
-	await UserProfiles.update(
-		{ userId: user.id },
-		{
-			url: url,
-			fields,
-			description: person._misskey_summary
-				? truncate(person._misskey_summary, summaryLength)
-				: person.summary
-					? await htmlToMfm(truncate(person.summary, summaryLength), person.tag)
-					: null,
-			birthday: bday ? bday[0] : null,
-			location: person["vcard:Address"] || null,
-		},
-	);
+	// Get old profile to see if we need to update any matching html cache entries
+	const oldProfile = await UserProfiles.findOneBy({ userId: user.id });
+
+	const newProfile = {
+		url: url,
+		fields,
+		description: person._misskey_summary
+			? truncate(person._misskey_summary, summaryLength)
+			: person.summary
+				? await htmlToMfm(truncate(person.summary, summaryLength), person.tag)
+				: null,
+		birthday: bday ? bday[0] : null,
+		location: person["vcard:Address"] || null
+	} as Partial<UserProfile>;
+
+	await UserProfiles.update({ userId: user.id }, newProfile);
 
 	publishInternalEvent("remoteUserUpdated", { id: user.id });
 
@@ -639,7 +641,7 @@ export async function updatePerson(
 
 	// Mentions update, then prewarm html cache
 	UserProfiles.updateMentions(user!.id)
-		.then(_ => UserConverter.prewarmCacheById(user!.id));
+		.then(_ => UserConverter.prewarmCacheById(user!.id, oldProfile));
 
 	// If the user in question is a follower, followers will also be updated.
 	await Followings.update(
