@@ -1,3 +1,14 @@
+## v2023.12-pre2
+This release contains an important security fix. Upgrading is therefore strongly recommended. If you are on or want to upgrade to a stable release, please refer to the stable backport release [v2023.11.4](https://iceshrimp.dev/iceshrimp/iceshrimp/releases/tag/v2023.11.4) instead.
+
+### Bug fixes
+- HTTP signatures are now properly validated everywhere
+
+### Attribution
+This release was made possible by project contributors: Laura Hausmann
+
+It also includes cherry-picked contributions from external contributors: perillamint, yunochi
+
 ## v2023.12-pre1
 It's been a while, but it's time for another prerelease. This release cycle is going to primarily focus on performance, both in the backend and the frontend.
 
