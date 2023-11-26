@@ -7,7 +7,7 @@
 
 There is a `docker-compose.yml` in the root of the project that you can use to build the container from source
 
-- .config/docker.env (**db config settings**)
+- .config/docker_example.env (**db config settings**)
 - .config/default.yml (**firefish server settings**)
 
 ## Configuring
@@ -16,7 +16,7 @@ Rename the files:
 
 `cp .config/example.yml .config/default.yml`
 
-`cp .config/example.env .config/docker.env`
+`cp .config/docker_example.env .config/docker.env`
 
 then edit them according to your environment.
 You can configure `docker.env` with anything you like, but you will have to pay attention to the `default.yml` file:

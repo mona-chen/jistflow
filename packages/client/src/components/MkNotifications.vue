@@ -3,7 +3,7 @@
 		<template #empty>
 			<div class="_fullinfo">
 				<img
-					src="/static-assets/badges/info.png"
+					src="/static-assets/badges/info.webp"
 					class="_ghost"
 					alt="Info"
 				/>
@@ -54,7 +54,7 @@ import XNotification from "@/components/MkNotification.vue";
 import XList from "@/components/MkDateSeparatedList.vue";
 import XNote from "@/components/MkNote.vue";
 import { stream } from "@/stream";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{

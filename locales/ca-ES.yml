@@ -112,7 +112,7 @@ you: "Tu"
 clickToShow: "Fes clic per a mostrar"
 sensitive: "NSFW"
 add: "Afegeix"
-reaction: "Reaccions"
+reaction: "Reacció"
 reactionSetting: "Reaccions a mostrar al selector de reaccions"
 reactionSettingDescription2: "Arrossega per reordenar, fes clic per suprimir, prem
   \"+\" per afegir."
@@ -792,11 +792,11 @@ customEmojis: Emojis personalitzats
 cacheRemoteFilesDescription: Quan aquesta opció està desactivada, els fitxers remots
   es carreguen directament del servidor remot. Desactivar-la farà que baixi l'ús d'emmagatzematge,
   però incrementa el tràfic, perquè les miniatures no es generaran.
-flagAsBot: Marca aquest compte com a bot
+flagAsBot: Marca aquest compte com automatitzat
 flagAsBotDescription: Activa aquesta opció si aquest compte és controlat per un programa.
   Si s'activa, això actuarà com una bandera per a altres desenvolupadors i ajuda a
-  prevenir cadenes de interaccions infinites amb altres bots a més d'ajustar els sistemes
-  interns de Firefish per tractar aquest compte com un bot.
+  prevenir cadenes de interaccions infinites amb altres comptes automatitzats a més
+  d'ajustar els sistemes interns de Firefish per tractar aquest compte com automatitzat.
 flagAsCat: Ets un gat? 🐱
 flagShowTimelineReplies: Mostra respostes a la línia de temps
 flagAsCatDescription: Guanyaràs unes orelles de gat i parlares com un gat!
@@ -944,7 +944,6 @@ dayX: '{day}'
 tosUrl: URL de les Condicions d'ús
 thisYear: Any
 thisMonth: Mes
-integration: Integracions
 driveCapacityPerRemoteAccount: Capacitat del Disc per usuari remot
 inMb: En megabytes
 iconUrl: Adreça URL de la icona
@@ -1036,8 +1035,6 @@ accept: Accepta
 reject: Rebutja
 yearX: '{year}'
 pages: Pàgines
-disconnectService: Desconnectar
-connectService: Connectar
 enableLocalTimeline: Activa la línea de temps local
 enableRecommendedTimeline: Activa la línea de temps de recomanacions
 pinnedClipId: ID del clip que vols fixar
@@ -1179,7 +1176,7 @@ emptyToDisableSmtpAuth: Deixa el nom d'usuari i la contrasenya sense emplenar pe
   desactivar la verificació SMTP
 smtpSecureInfo: Desactiva això quant facis servir STARTTLS
 testEmail: Envia un correu electrònic de verificació
-wordMute: Silenciar paraules
+wordMute: Paraules i llenguatge silenciats
 regexpError: Error a la Expressió Regular
 regexpErrorDescription: 'Hi ha un error a la expressió regular a la línea {line} de
   la teva {tab} de paraules silenciades:'
@@ -1441,7 +1438,8 @@ _accountDelete:
   requestAccountDelete: Sol·licitar la supressió del compte
 _ad:
   back: Enrera
-  reduceFrequencyOfThisAd: Mostrar aquest anunci menys
+  reduceFrequencyOfThisAd: Mostrar menys aquest anunci
+  adsBy: Anunci comunitari per {by}
 _gallery:
   my: La meva Galeria
   liked: Publicacions que m'han agradat
@@ -1539,8 +1537,8 @@ low: Baixa
 emailNotConfiguredWarning: L'adreça de correu electrònic no està definida.
 instanceSecurity: Seguretat del servidor
 privateMode: Mode Privat
-allowedInstances: Servidors a la llista blanca
-allowedInstancesDescription: Llista blanca de Hosts amb qui federar, cadascún separat
+allowedInstances: Servidors permesos
+allowedInstancesDescription: Llista permesa de Hosts amb qui federar, cadascún separat
   per una línia nova (només s'aplica en mode privat).
 previewNoteText: Mostra la vista prèvia
 customCss: CSS personalitzat
@@ -1552,7 +1550,7 @@ troubleshooting: Resolució de problemes
 learnMore: Més informació
 misskeyUpdated: Firefish s'ha actualitzat!
 translate: Tradueix
-translatedFrom: Traduït per {x}
+translatedFrom: Traduït del {x}
 aiChanMode: Ai-chan a la interfície d'usuari clàssica
 keepCw: Mantenir els avisos de contingut
 pubSub: Comptes Pub/Sub
@@ -1646,8 +1644,8 @@ customCssWarn: Aquesta configuració només s'ha d'utilitzar si sabeu què fa. L
 squareAvatars: Mostra avatars quadrats
 secureModeInfo: Quan es faci una solicitut d'altres servidors no contestar sense una
   prova.
-privateModeInfo: Quan està activat, només els servidors a la llista blanca es poden
-  federar amb el vostre servidor. Totes les publicacions s'amagaran al públic.
+privateModeInfo: Quan està activat, només els servidors a la llista es poden federar
+  amb el vostre servidor. Totes les publicacions s'amagaran al públic.
 useBlurEffect: Utilitzeu efectes de desenfocament a la interfície d'usuari
 accountDeletionInProgress: La supressió del compte està en curs
 unmuteThread: Desfés el silenci al fil
@@ -2040,6 +2038,13 @@ _wordMute:
     s'afegeixin a la línia de temps. A més, aquestes publicacions no s'afegiran a
     la línia de temps encara que es modifiquin les condicions.
   mutedNotes: Publicacions silenciades
+  muteLangsDescription2: Fes servir el codi del l'idioma. Per exemple en, fr, ja,
+    zh.
+  lang: Idioma
+  langDescription: Amagar les publicacions que coincideixin amb l'idioma a la línia
+    de temps.
+  muteLangs: Llenguatges silenciats
+  muteLangsDescription: Separar amb espais o línies no es per una condició OR.
 _auth:
   shareAccessAsk: Estàs segur que vols autoritzar aquesta aplicació per accedir al
     teu compte?
@@ -2122,7 +2127,7 @@ clipsDesc: Els clips són com marcadors categoritzats que es poden compartir. Po
 selectChannel: Selecciona un canal
 isLocked: Aquest compte té les següents aprovacions
 isPatron: Mecenes de Firefish
-isBot: Aquest compte és un bot
+isBot: Aquest es un compte automatitzat
 isModerator: Moderador
 isAdmin: Administrador
 _filters:
@@ -2192,3 +2197,18 @@ indexable: Indexable
 languageForTranslation: Idioma de traducció d'articles
 openServerInfo: Mostra la informació del servidor fent clic al símbol del servidor
   en un missatge
+vibrate: Activar vibracions
+clickToShowPatterns: Fes clic per veure patrons de mòduls
+iconSet: Conjunt d'Icones
+_iconSets:
+  fill: Omplerts
+  regular: Normals
+  bold: Negreta
+  duotone: Bitó
+  light: Prims
+showAttachedNotes: Mostrar publicacions que contenen aquest fitxer
+reactions: Reaccions
+attachedToNotes: Publicacions que contenen aquest fitxer
+replies: Respostes
+quotes: Cites
+renotes: Impulsos

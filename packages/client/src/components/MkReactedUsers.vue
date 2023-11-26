@@ -37,21 +37,21 @@
 
 <script lang="ts" setup>
 import { onMounted, ref, watch } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MkReactionIcon from "@/components/MkReactionIcon.vue";
 import MkUserCardMini from "@/components/MkUserCardMini.vue";
 import * as os from "@/os";
 
 const props = defineProps<{
-	noteId: misskey.entities.Note["id"];
+	noteId: firefish.entities.Note["id"];
 }>();
 
-const note = ref<misskey.entities.Note>();
-const tab = ref<string>();
+const note = ref<firefish.entities.Note>();
+const tab = ref<string | null>(null);
 const reactions = ref<string[]>();
 const users = ref();
 
-watch(tab, async () => {
+async function updateUsers(): void {
 	const res = await os.api("notes/reactions", {
 		noteId: props.noteId,
 		type: tab.value,
@@ -59,15 +59,17 @@ watch(tab, async () => {
 	});
 
 	users.value = res.map((x) => x.user);
-});
+}
+
+watch(tab, updateUsers);
 
 onMounted(() => {
 	os.api("notes/show", {
 		noteId: props.noteId,
-	}).then((res) => {
+	}).then(async (res) => {
 		reactions.value = Object.keys(res.reactions);
-		tab.value = reactions.value[0];
 		note.value = res;
+		await updateUsers();
 	});
 });
 </script>

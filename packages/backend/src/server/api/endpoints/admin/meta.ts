@@ -1,8 +1,7 @@
 import config from "@/config/index.js";
+import { MAX_CAPTION_TEXT_LENGTH, MAX_NOTE_TEXT_LENGTH } from "@/const.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
-import define from "../../define.js";
-import { Exp } from "@tensorflow/tfjs";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["meta"],
@@ -64,7 +63,7 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "/static-assets/badges/info.png",
+				default: "/static-assets/badges/info.webp",
 			},
 			bannerUrl: {
 				type: "string",
@@ -75,7 +74,7 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "/static-assets/badges/error.png",
+				default: "/static-assets/badges/error.webp",
 			},
 			iconUrl: {
 				type: "string",
@@ -166,21 +165,6 @@ export const meta = {
 				},
 			},
 			enableEmail: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
-			enableTwitterIntegration: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
-			enableGithubIntegration: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
-			enableDiscordIntegration: {
 				type: "boolean",
 				optional: false,
 				nullable: false,
@@ -325,36 +309,6 @@ export const meta = {
 				optional: true,
 				nullable: true,
 				format: "id",
-			},
-			twitterConsumerKey: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			twitterConsumerSecret: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			githubClientId: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			githubClientSecret: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			discordClientId: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			discordClientSecret: {
-				type: "string",
-				optional: true,
-				nullable: true,
 			},
 			summaryProxy: {
 				type: "string",
@@ -518,6 +472,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		description: instance.description,
 		langs: instance.langs,
 		tosUrl: instance.ToSUrl,
+		moreUrls: instance.moreUrls,
 		repositoryUrl: instance.repositoryUrl,
 		feedbackUrl: instance.feedbackUrl,
 		disableRegistration: instance.disableRegistration,
@@ -544,9 +499,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		defaultLightTheme: instance.defaultLightTheme,
 		defaultDarkTheme: instance.defaultDarkTheme,
 		enableEmail: instance.enableEmail,
-		enableTwitterIntegration: instance.enableTwitterIntegration,
-		enableGithubIntegration: instance.enableGithubIntegration,
-		enableDiscordIntegration: instance.enableDiscordIntegration,
 		enableServiceWorker: instance.enableServiceWorker,
 		translatorAvailable:
 			instance.deeplAuthKey != null || instance.libreTranslateApiUrl != null,
@@ -573,12 +525,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		enableSensitiveMediaDetectionForVideos:
 			instance.enableSensitiveMediaDetectionForVideos,
 		proxyAccountId: instance.proxyAccountId,
-		twitterConsumerKey: instance.twitterConsumerKey,
-		twitterConsumerSecret: instance.twitterConsumerSecret,
-		githubClientId: instance.githubClientId,
-		githubClientSecret: instance.githubClientSecret,
-		discordClientId: instance.discordClientId,
-		discordClientSecret: instance.discordClientSecret,
 		summalyProxy: instance.summalyProxy,
 		email: instance.email,
 		smtpSecure: instance.smtpSecure,

@@ -1,8 +1,8 @@
-import { IsNull, Not } from "typeorm";
-import { Users, Followings } from "@/models/index.js";
-import type { ILocalUser, IRemoteUser, User } from "@/models/entities/user.js";
-import { deliver } from "@/queue/index.js";
 import { skippedInstances } from "@/misc/skipped-instances.js";
+import type { ILocalUser, IRemoteUser, User } from "@/models/entities/user.js";
+import { Followings, Users } from "@/models/index.js";
+import { deliver } from "@/queue/index.js";
+import { IsNull, Not } from "typeorm";
 
 //#region types
 interface IRecipe {

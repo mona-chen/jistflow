@@ -33,7 +33,7 @@
 							v-if="item.indicate"
 							class="indicator"
 							:class="{
-								animateIndicator: $store.state.animation,
+								animateIndicator: defaultStore.state.animation,
 							}"
 							><i class="ph-circle ph-fill"></i
 						></span>
@@ -50,7 +50,7 @@
 							v-if="item.indicate"
 							class="indicator"
 							:class="{
-								animateIndicator: $store.state.animation,
+								animateIndicator: defaultStore.state.animation,
 							}"
 							><i class="ph-circle ph-fill"></i
 						></span>

@@ -1,4 +1,4 @@
-import type * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import type { Ref } from "vue";
 
 export type MenuAction = (ev: MouseEvent) => void;
@@ -17,7 +17,7 @@ export interface MenuLink {
 	textStyle?: string;
 	icon?: string;
 	indicate?: boolean;
-	avatar?: Misskey.entities.User;
+	avatar?: firefish.entities.User;
 }
 export interface MenuA {
 	type: "a";
@@ -31,7 +31,7 @@ export interface MenuA {
 }
 export interface MenuUser {
 	type: "user";
-	user: Misskey.entities.User;
+	user: firefish.entities.User;
 	active?: boolean;
 	indicate?: boolean;
 	hidden?: boolean;
@@ -54,7 +54,7 @@ export interface MenuButton {
 	accent?: boolean;
 	active?: boolean;
 	hidden?: boolean;
-	avatar?: Misskey.entities.User;
+	avatar?: firefish.entities.User;
 	action: MenuAction;
 }
 export interface MenuParent {

@@ -5,13 +5,13 @@ import * as childProcess from "child_process";
 import * as openapi from "@redocly/openapi-core";
 import {
 	async,
-	startServer,
-	signup,
+	port,
 	post,
 	request,
-	simpleGet,
-	port,
 	shutdownServer,
+	signup,
+	simpleGet,
+	startServer,
 } from "./utils.js";
 
 // Request Accept

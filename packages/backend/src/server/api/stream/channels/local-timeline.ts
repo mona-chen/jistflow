@@ -1,8 +1,8 @@
-import Channel from "../channel.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
 import { getWordHardMute } from "@/misc/check-word-mute.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
 import { isUserRelated } from "@/misc/is-user-related.js";
 import type { Packed } from "@/misc/schema.js";
+import Channel from "../channel.js";
 
 export default class extends Channel {
 	public readonly chName = "localTimeline";
@@ -60,7 +60,7 @@ export default class extends Channel {
 		// そのためレコードが存在するかのチェックでは不十分なので、改めてgetWordHardMuteを呼んでいる
 		if (
 			this.userProfile &&
-			(await getWordHardMute(note, this.user, this.userProfile.mutedWords))
+			(await getWordHardMute(note, this.user?.id, this.userProfile.mutedWords))
 		)
 			return;
 

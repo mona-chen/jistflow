@@ -2,7 +2,11 @@
 	<div ref="el" class="fdidabkc" :style="{ background: bg }" @click="onClick">
 		<template v-if="metadata">
 			<div class="titleContainer" @click="showTabsPopup">
-				<i v-if="metadata.icon" class="icon" :class="metadata.icon"></i>
+				<i
+					v-if="metadata.icon"
+					class="icon"
+					:class="icon(metadata.icon)"
+				></i>
 
 				<div class="title">
 					<div class="title">{{ metadata.title }}</div>
@@ -63,6 +67,7 @@ import { scrollToTop } from "@/scripts/scroll";
 import MkButton from "@/components/MkButton.vue";
 import { globalEvents } from "@/events";
 import { injectPageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 interface Tab {
 	key?: string | null;

@@ -1,9 +1,9 @@
 import {
-	Entity,
 	Column,
+	Entity,
 	Index,
-	OneToOne,
 	JoinColumn,
+	OneToOne,
 	PrimaryColumn,
 } from "typeorm";
 import { id } from "../id.js";

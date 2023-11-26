@@ -1,15 +1,15 @@
 import {
-	PrimaryColumn,
+	Column,
 	Entity,
 	Index,
 	JoinColumn,
-	Column,
 	ManyToOne,
+	PrimaryColumn,
 } from "typeorm";
-import { User } from "./user.js";
-import { DriveFile } from "./drive-file.js";
 import { id } from "../id.js";
+import { DriveFile } from "./drive-file.js";
 import { UserGroup } from "./user-group.js";
+import { User } from "./user.js";
 
 @Entity()
 export class MessagingMessage {

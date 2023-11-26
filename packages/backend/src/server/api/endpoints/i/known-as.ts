@@ -1,14 +1,14 @@
+import { DAY } from "@/const.js";
+import { parse } from "@/misc/acct.js";
 import type { User } from "@/models/entities/user.js";
 import { Users } from "@/models/index.js";
 import { resolveUser } from "@/remote/resolve-user.js";
+import define from "@/server/api/define.js";
+import { ApiError } from "@/server/api/error.js";
+import { apiLogger } from "@/server/api/logger.js";
 import acceptAllFollowRequests from "@/services/following/requests/accept-all.js";
 import { publishToFollowers } from "@/services/i/update.js";
 import { publishMainStream } from "@/services/stream.js";
-import { DAY } from "@/const.js";
-import { apiLogger } from "../../logger.js";
-import define from "../../define.js";
-import { ApiError } from "../../error.js";
-import { parse } from "@/misc/acct.js";
 
 export const meta = {
 	tags: ["users"],
@@ -33,7 +33,7 @@ export const meta = {
 			id: "4362f8dc-731f-4ad8-a694-be2a88922a24",
 		},
 		uriNull: {
-			message: "User ActivityPup URI is null.",
+			message: "User ActivityPub URI is null.",
 			code: "URI_NULL",
 			id: "bf326f31-d430-4f97-9933-5d61e4d48a23",
 		},

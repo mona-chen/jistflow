@@ -18,12 +18,12 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type * as misskey from "firefish-js";
-import { $i } from "@/account";
+import type * as firefish from "firefish-js";
+import { $i } from "@/reactiveAccount";
 import XReaction from "@/components/MkReactionsViewer.reaction.vue";
 
 const props = defineProps<{
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 }>();
 
 const reactionsEl = ref<HTMLElement>();

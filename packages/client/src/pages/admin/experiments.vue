@@ -14,7 +14,7 @@
 					@update:modelValue="save"
 				>
 					<template #label>
-						<i class="ph-download-simple ph-bold ph-lg"></i>
+						<i :class="icon('ph-download-simple')"></i>
 						{{ i18n.ts._experiments.enablePostImports }}
 					</template>
 					<template #caption>{{
@@ -36,6 +36,7 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const enablePostImports = ref(false);
 const meta = ref<MetaExperiments | null>(null);
@@ -71,6 +72,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts._experiments.title,
-	icon: "ph-flask ph-bold ph-lg",
+	icon: `${icon("ph-flask")}`,
 });
 </script>

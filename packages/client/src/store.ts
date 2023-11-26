@@ -17,6 +17,21 @@ const menuOptions = [
 	"search",
 ];
 
+export const defaultReactions = [
+	"⭐",
+	"❤️",
+	"😆",
+	"🤔",
+	"😮",
+	"🎉",
+	"💢",
+	"😥",
+	"😇",
+	"🥴",
+	"🔥",
+	"🐟",
+];
+
 // TODO: それぞれいちいちwhereとかdefaultというキーを付けなきゃいけないの冗長なのでなんとかする(ただ型定義が面倒になりそう)
 //       あと、現行の定義の仕方なら「whereが何であるかに関わらずキー名の重複不可」という制約を付けられるメリットもあるからそのメリットを引き継ぐ方法も考えないといけない
 export const defaultStore = markRaw(
@@ -26,23 +41,23 @@ export const defaultStore = markRaw(
 			default: 0,
 		},
 		tlHomeHintClosed: {
-			where: "device",
+			where: "account",
 			default: false,
 		},
 		tlLocalHintClosed: {
-			where: "device",
+			where: "account",
 			default: false,
 		},
 		tlRecommendedHintClosed: {
-			where: "device",
+			where: "account",
 			default: false,
 		},
 		tlSocialHintClosed: {
-			where: "device",
+			where: "account",
 			default: false,
 		},
 		tlGlobalHintClosed: {
-			where: "device",
+			where: "account",
 			default: false,
 		},
 		keepCw: {
@@ -83,19 +98,7 @@ export const defaultStore = markRaw(
 		},
 		reactions: {
 			where: "account",
-			default: [
-				"⭐",
-				"❤️",
-				"😆",
-				"🤔",
-				"😮",
-				"🎉",
-				"💢",
-				"😥",
-				"😇",
-				"🥴",
-				"🍮",
-			],
+			default: defaultReactions,
 		},
 		mutedWords: {
 			where: "account",
@@ -357,6 +360,15 @@ export const defaultStore = markRaw(
 			where: "device",
 			default: true,
 		},
+		iconSet: {
+			where: "device",
+			default: "ph-bold" as
+				| "ph-bold"
+				| "ph-duotone"
+				| "ph-light"
+				| "ph" // this is ph-regular
+				| "ph-fill",
+		},
 	}),
 );
 
@@ -373,11 +385,11 @@ interface Plugin {
 	ast: any[];
 }
 
+import darkTheme from "@/themes/d-rosepine.json5";
 /**
- * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
+ * Storage for configuration information that does not need to be constantly loaded into memory (non-reactive)
  */
 import lightTheme from "@/themes/l-rosepinedawn.json5";
-import darkTheme from "@/themes/d-rosepine.json5";
 
 export class ColdDeviceStorage {
 	public static default = {
@@ -464,12 +476,5 @@ export class ColdDeviceStorage {
 				ColdDeviceStorage.set(key, val);
 			},
 		};
-	}
-}
-
-// このファイルに書きたくないけどここに書かないと何故かVeturが認識しない
-declare module "@vue/runtime-core" {
-	interface ComponentCustomProperties {
-		$store: typeof defaultStore;
 	}
 }

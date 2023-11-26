@@ -225,8 +225,6 @@ instanceDescription: Tjenerbeskrivelse
 maintainerName: Administrator
 maintainerEmail: Administrator-epost
 monthX: '{month}'
-connectService: Koble til
-disconnectService: Koble fra
 enableLocalTimeline: Aktiver lokal tidslinje
 enableRegistration: Tillat registrering av nye brukere
 invite: Inviter
@@ -449,7 +447,6 @@ watch: Følg med på
 thisMonth: Måned
 today: I dag
 dayX: '{day}'
-integration: Integrasjoner
 yearX: '{year}'
 pages: Sider
 enableRecaptcha: Slå på reCAPTCHA

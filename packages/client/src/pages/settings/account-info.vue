@@ -179,9 +179,10 @@ import MkKeyValue from "@/components/MkKeyValue.vue";
 import * as os from "@/os";
 import number from "@/filters/number";
 import bytes from "@/filters/bytes";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const stats = ref<any>({});
 
@@ -195,6 +196,6 @@ onMounted(() => {
 
 definePageMetadata({
 	title: i18n.ts.accountInfo,
-	icon: "ph-info ph-bold ph-lg",
+	icon: `${icon("ph-info")}`,
 });
 </script>

@@ -15,7 +15,7 @@ import {
 	failedApiCall,
 	uploadFile,
 } from "../utils.js";
-import type * as misskey from "misskey-js";
+import type * as firefish from "firefish-js";
 import type { INestApplicationContext } from "@nestjs/common";
 
 describe("ユーザー", () => {
@@ -34,16 +34,16 @@ describe("ユーザー", () => {
 	};
 
 	// BUG misskey-jsとjson-schemaと実際に返ってくるデータが全部違う
-	type UserLite = misskey.entities.UserLite & {
+	type UserLite = firefish.entities.UserLite & {
 		badgeRoles: any[];
 	};
 
 	type UserDetailedNotMe = UserLite &
-		misskey.entities.UserDetailed & {
+		firefish.entities.UserDetailed & {
 			roles: any[];
 		};
 
-	type MeDetailed = UserDetailedNotMe & misskey.entities.MeDetailed;
+	type MeDetailed = UserDetailedNotMe & firefish.entities.MeDetailed;
 
 	type User = MeDetailed & { token: string };
 
@@ -69,6 +69,7 @@ describe("ユーザー", () => {
 			avatarBlurhash: user.avatarBlurhash,
 			isBot: user.isBot,
 			isCat: user.isCat,
+			speakAsCat: user.speakAsCat,
 			instance: user.instance,
 			emojis: user.emojis,
 			onlineStatus: user.onlineStatus,
@@ -182,12 +183,12 @@ describe("ユーザー", () => {
 
 	let root: User;
 	let alice: User;
-	let aliceNote: misskey.entities.Note;
-	let alicePage: misskey.entities.Page;
-	let aliceList: misskey.entities.UserList;
+	let aliceNote: firefish.entities.Note;
+	let alicePage: firefish.entities.Page;
+	let aliceList: firefish.entities.UserList;
 
 	let bob: User;
-	let bobNote: misskey.entities.Note;
+	let bobNote: firefish.entities.Note;
 
 	let carol: User;
 	let dave: User;
@@ -401,6 +402,7 @@ describe("ユーザー", () => {
 		assert.strictEqual(response.avatarBlurhash, null);
 		assert.strictEqual(response.isBot, false);
 		assert.strictEqual(response.isCat, false);
+		assert.strictEqual(response.speakAsCat, false);
 		assert.strictEqual(response.instance, undefined);
 		assert.deepStrictEqual(response.emojis, {});
 		assert.strictEqual(response.onlineStatus, "unknown");
@@ -538,6 +540,8 @@ describe("ユーザー", () => {
 		{ parameters: (): object => ({ isBot: false }) },
 		{ parameters: (): object => ({ isCat: true }) },
 		{ parameters: (): object => ({ isCat: false }) },
+		{ parameters: (): object => ({ speakAsCat: true }) },
+		{ parameters: (): object => ({ speakAsCat: false }) },
 		{ parameters: (): object => ({ injectFeaturedNote: true }) },
 		{ parameters: (): object => ({ injectFeaturedNote: false }) },
 		{ parameters: (): object => ({ receiveAnnouncementEmail: true }) },

@@ -148,11 +148,11 @@ cacheRemoteFiles: "Tembolokkan berkas remote"
 cacheRemoteFilesDescription: "Ketika pengaturan ini dinonaktifkan, berkas luar akan
   dimuat langsung dari server luar. Menonaktifkan ini akan mengurangi penggunaan penyimpanan,
   tapi dapat menyebabkan meningkatkan lalu lintas, mengingat keluku tidak akan dihasilkan."
-flagAsBot: "Atur akun ini sebagai Bot"
-flagAsBotDescription: "Jika akun ini dikendalikan oleh program, tetapkanlah opsi ini.
+flagAsBot: "Tandai akun ini sebagai akun otomatis"
+flagAsBotDescription: "Jika akun ini dikendalikan oleh program, aktifkan opsi ini.
   Jika diaktifkan, ini akan berfungsi sebagai tanda bagi pengembang lain untuk mencegah
-  interaksi berantai dengan bot lain dan menyesuaikan sistem internal Firefish untuk
-  memperlakukan akun ini sebagai bot."
+  interaksi berantai dengan akun otomatis lain dan menyesuaikan sistem internal Firefish
+  untuk memperlakukan akun ini sebagai akun otomatis."
 flagAsCat: "Atur akun ini sebagai kucing"
 flagAsCatDescription: "Kamu akan mendapatkan telinga kucing dan berbicara seperti
   seekor kucing!"
@@ -278,8 +278,7 @@ agreeTo: "Saya setuju kepada {0}"
 tos: "Syarat dan ketentuan"
 start: "Mulai"
 home: "Beranda"
-remoteUserCaution: "Informasi ini mungkin tidak mutakhir, karena pengguna ini berasal
-  dari instansi luar."
+remoteUserCaution: "Informasi dari pengguna luar tidak lengkap."
 activity: "Aktivitas"
 images: "Gambar"
 birthday: "Tanggal lahir"
@@ -342,9 +341,6 @@ dayX: "{day}"
 monthX: "{month}"
 yearX: "{year}"
 pages: "Halaman"
-integration: "Integrasi"
-connectService: "Sambungkan"
-disconnectService: "Putuskan"
 enableLocalTimeline: "Nyalakan linimasa lokal"
 enableGlobalTimeline: "Nyalakan linimasa global"
 disablingTimelinesInfo: "Admin dan Moderator akan selalu memiliki akses ke semua linimasa
@@ -637,7 +633,7 @@ emptyToDisableSmtpAuth: "Kosongkan nama pengguna dan kata sandi untuk menonaktif
 smtpSecure: "Gunakan SSL/TLS implisit untuk koneksi SMTP"
 smtpSecureInfo: "Matikan ini ketika menggunakan STARTTLS"
 testEmail: "Tes pengiriman surel"
-wordMute: "Bisukan kata"
+wordMute: "Bisukan kata dan bahasa"
 regexpError: "Kesalahan ekspresi reguler"
 regexpErrorDescription: "Galat terjadi pada baris {line} ekspresi reguler dari {tab}
   kata yang dibisukan:"
@@ -953,7 +949,8 @@ _accountDelete:
   inProgress: "Penghapusan sedang dalam proses"
 _ad:
   back: "Kembali"
-  reduceFrequencyOfThisAd: "Tampilkan iklan ini lebih sedikit"
+  reduceFrequencyOfThisAd: "Tampilkan banner ini lebih sedikit"
+  adsBy: Banner komunitas oleh {by}
 _forgotPassword:
   enterEmail: "Masukkan alamat surel yang kamu gunakan pada saat mendaftar. Sebuah
     tautan untuk mengatur ulang kata sandi kamu akan dikirimkan ke alamat surel tersebut."
@@ -1135,6 +1132,12 @@ _wordMute:
   soft: "Lembut"
   hard: "Keras"
   mutedNotes: "Postingan yang dibisukan"
+  muteLangsDescription2: Gunakan kode bahasa misalnya en, fr, ja, zh.
+  lang: Bahasa
+  langDescription: Sembunyikan postingan yang cocok dengan bahasa yang ditetapkan
+    dari timeline.
+  muteLangs: Bahasa yang dibisukan
+  muteLangsDescription: Pisahkan dengan spasi atau jeda baris untuk kondisi ATAU.
 _instanceMute:
   instanceMuteDescription: "Pengaturan ini akan membisukan postingan/pembagian apa
     saja dari server yang terdaftar, termasuk pengguna yang membalas pengguna lain
@@ -1262,8 +1265,8 @@ _tutorial:
     {introduction} atau \"Halo dunia!\" yang sederhana."
   step5_1: "Linimasa, linimasa di mana-mana!"
   step5_2: "Servermu memiliki {timelines} lini masa berbeda yang diaktifkan."
-  step5_3: "Lini masa Beranda {icon} adalah tempat di mana kamu bisa melihat postingan
-    dari akun yang kamu ikuti."
+  step5_3: "Lini masa Beranda {icon} adalah tempat kamu bisa melihat postingan dari
+    akun yang kamu ikuti."
   step5_4: "Linimasa Lokal {icon} adalah tempat kamu dapat melihat postingan dari
     siapa pun di server ini."
   step6_1: "Jadi, tempat apa ini?"
@@ -1917,9 +1920,9 @@ moderation: Moderasi
 userSaysSomethingReason: '{name} mengatakan {reason}'
 secureMode: Mode Aman (Pengambilan Terotorisasi)
 secureModeInfo: Saat meminta dari server lain, jangan kirim kembali tanpa bukti.
-privateModeInfo: Saat aktif, hanya server yang masuk daftar putih dapat terfederasi
-  dengan servermu. Semua postingan akan disembunyikan dari publik.
-allowedInstances: Server Masuk Daftar Putih
+privateModeInfo: Saat aktif, hanya server yang masuk daftar yang diizinkan yang dapat
+  terfederasi dengan servermu. Semua postingan akan disembunyikan dari publik.
+allowedInstances: Daftar Server Diizinkan
 newer: lebih baru
 userSaysSomethingReasonReply: '{name} membalas postingan berisi {reason}'
 userSaysSomethingReasonRenote: '{name} memposting ulang postingan berisi {reason}'
@@ -1929,8 +1932,8 @@ jumpToPrevious: Lompat ke sebelumnya
 flagSpeakAsCatDescription: Postinganmu akan nyampak dalam mode kucing
 cw: Peringatan konten
 flagSpeakAsCat: Bicara sebagai kucing
-allowedInstancesDescription: Host server akan masuk daftar putih untuk federasi, mereka
-  dipisahkan dengan baris baru (hanya diterapkan pada mode pribadi).
+allowedInstancesDescription: Server host akan masuk daftar yang diizinkan untuk federasi,
+  mereka dipisahkan dengan baris baru (hanya diterapkan pada mode pribadi).
 xl: XL
 privateMode: Mode Pribadi
 seperateRenoteQuote: Tombol posting ulang dan kutip terpisah
@@ -2001,7 +2004,7 @@ signupsDisabled: Pendaftaran ke server ini nonaktif, tapi kamu dapat selalu mend
   ke server lain! Jika kamu memiliki kode undangan server ini, harap masukkan di bawah
   ini.
 enableCustomKaTeXMacro: Aktifkan makro KaTeX khusus
-isBot: Akun ini bot
+isBot: Akun ini akun otomatis
 customMOTD: MOTD khusus (pesan layar percik)
 recommendedInstancesDescription: Server yang direkomendasikan dipisahkan dengan garis
   baru untuk tampil di linimasa rekomendasi.
@@ -2175,3 +2178,18 @@ indexable: Dapat diindeks
 languageForTranslation: Bahasa terjemahan kiriman
 openServerInfo: Tampilkan informasi server dengan mengeklik ticker server di sebuah
   kiriman
+vibrate: Putar getaran
+clickToShowPatterns: Klik untuk menampilkan pola modul
+iconSet: Set ikon
+_iconSets:
+  fill: Penuh
+  regular: Reguler
+  bold: Tebal
+  duotone: Duotone
+  light: Tipis
+reactions: Reaksi
+replies: Balasan
+quotes: Kutipan
+renotes: Postingan ulang
+showAttachedNotes: Tampilkan postingan dengan berkas ini
+attachedToNotes: Posting dengan berkas ini

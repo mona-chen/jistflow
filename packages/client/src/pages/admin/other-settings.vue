@@ -20,6 +20,7 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 async function init() {
 	await os.api("admin/meta");
@@ -34,7 +35,7 @@ function save() {
 const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-check ph-bold ph-lg",
+		icon: `${icon("ph-check")}`,
 		text: i18n.ts.save,
 		handler: save,
 	},
@@ -44,6 +45,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.other,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 });
 </script>

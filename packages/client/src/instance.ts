@@ -1,5 +1,5 @@
+import type * as firefish from "firefish-js";
 import { computed, reactive } from "vue";
-import type * as Misskey from "firefish-js";
 import { api } from "./os";
 
 // TODO: 他のタブと永続化されたstateを同期
@@ -7,7 +7,7 @@ import { api } from "./os";
 const instanceData = localStorage.getItem("instance");
 // TODO: instanceをリアクティブにするかは再考の余地あり
 
-export const instance: Misskey.entities.DetailedInstanceMetadata = reactive(
+export const instance: firefish.entities.DetailedInstanceMetadata = reactive(
 	instanceData
 		? JSON.parse(instanceData)
 		: {

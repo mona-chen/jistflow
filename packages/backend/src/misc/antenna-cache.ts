@@ -1,6 +1,6 @@
-import { Antennas } from "@/models/index.js";
-import type { Antenna } from "@/models/entities/antenna.js";
 import { subscriber } from "@/db/redis.js";
+import type { Antenna } from "@/models/entities/antenna.js";
+import { Antennas } from "@/models/index.js";
 
 let antennasFetched = false;
 let antennas: Antenna[] = [];

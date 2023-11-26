@@ -1,3 +1,5 @@
+import type * as firefish from "firefish-js";
+
 export interface Muted {
 	muted: boolean;
 	matched: string[];
@@ -7,7 +9,7 @@ export interface Muted {
 const NotMuted = { muted: false, matched: [] };
 
 function checkLangMute(
-	note: NoteLike,
+	note: firefish.entities.Note,
 	mutedLangs: Array<string | string[]>,
 ): Muted {
 	const mutedLangList = new Set(
@@ -20,7 +22,7 @@ function checkLangMute(
 }
 
 function checkWordMute(
-	note: NoteLike,
+	note: firefish.entities.Note,
 	mutedWords: Array<string | string[]>,
 ): Muted {
 	let text = `${note.cw ?? ""} ${note.text ?? ""}`;
@@ -72,15 +74,12 @@ function checkWordMute(
 }
 
 export function getWordSoftMute(
-	note: Record<string, any>,
-	me: Record<string, any> | null | undefined,
+	note: firefish.entities.Note,
+	meId: string | null | undefined,
 	mutedWords: Array<string | string[]>,
 	mutedLangs: Array<string | string[]>,
 ): Muted {
-	// 自分自身
-	if (me && note.userId === me.id) {
-		return NotMuted;
-	}
+	if (meId == null || note.userId === meId) return NotMuted;
 
 	if (mutedWords.length > 0) {
 		const noteMuted = checkWordMute(note, mutedWords);
@@ -106,14 +105,14 @@ export function getWordSoftMute(
 		}
 	}
 	if (mutedLangs.length > 0) {
-		let noteLangMuted = checkLangMute(note, mutedLangs);
+		const noteLangMuted = checkLangMute(note, mutedLangs);
 		if (noteLangMuted.muted) {
 			noteLangMuted.what = "note";
 			return noteLangMuted;
 		}
 
 		if (note.renote) {
-			let renoteLangMuted = checkLangMute(note, mutedLangs);
+			const renoteLangMuted = checkLangMute(note, mutedLangs);
 			if (renoteLangMuted.muted) {
 				renoteLangMuted.what = note.text == null ? "renote" : "quote";
 				return renoteLangMuted;
@@ -121,7 +120,7 @@ export function getWordSoftMute(
 		}
 
 		if (note.reply) {
-			let replyLangMuted = checkLangMute(note, mutedLangs);
+			const replyLangMuted = checkLangMute(note, mutedLangs);
 			if (replyLangMuted.muted) {
 				replyLangMuted.what = "reply";
 				return replyLangMuted;

@@ -30,7 +30,7 @@
 									).toLocaleTimeString(),
 								})
 							"
-							class="ph-pencil ph-bold"
+							:class="icon('ph-pencil', false)"
 							style="margin-left: 0.4rem"
 						></i>
 					</MkA>
@@ -40,7 +40,7 @@
 					v-if="showTicker"
 					class="ticker"
 					:instance="note.user.instance"
-					:host="note.user.host"
+					@click.stop="openServerInfo"
 				/>
 			</div>
 		</div>
@@ -50,17 +50,20 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { defaultStore } from "@/store";
 import MkVisibility from "@/components/MkVisibility.vue";
 import MkInstanceTicker from "@/components/MkInstanceTicker.vue";
 import { notePage } from "@/filters/note";
 import { userPage } from "@/filters/user";
 import { i18n } from "@/i18n";
+import { pageWindow } from "@/os";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 	pinned?: boolean;
+	canOpenServerInfo?: boolean;
 }>();
 
 const note = ref(props.note);
@@ -69,6 +72,15 @@ const showTicker =
 	defaultStore.state.instanceTicker === "always" ||
 	(defaultStore.state.instanceTicker === "remote" &&
 		note.value.user.instance);
+
+function openServerInfo() {
+	if (!props.canOpenServerInfo || !defaultStore.state.openServerInfo) return;
+	const instanceInfoUrl =
+		note.value.user.host == null
+			? "/about"
+			: `/instance-info/${note.value.user.host}`;
+	pageWindow(instanceInfoUrl);
+}
 </script>
 
 <style lang="scss" scoped>

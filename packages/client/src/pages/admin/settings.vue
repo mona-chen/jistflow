@@ -24,10 +24,17 @@
 
 						<FormInput v-model="tosUrl" class="_formBlock">
 							<template #prefix
-								><i class="ph-link-simple ph-bold ph-lg"></i
+								><i :class="icon('ph-scroll')"></i
 							></template>
 							<template #label>{{ i18n.ts.tosUrl }}</template>
 						</FormInput>
+
+						<FormTextarea v-model="moreUrls" class="_formBlock">
+							<template #label>{{ i18n.ts.moreUrls }}</template>
+							<template #caption>{{
+								i18n.ts.moreUrlsDescription
+							}}</template>
+						</FormTextarea>
 
 						<FormSplit :min-width="300">
 							<FormInput
@@ -46,7 +53,7 @@
 							>
 								<template #prefix
 									><i
-										class="ph-envelope-simple-open ph-bold ph-lg"
+										:class="icon('ph-envelope-simple-open')"
 									></i
 								></template>
 								<template #label>{{
@@ -59,7 +66,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-hand-heart ph-bold ph-lg"></i
+									><i :class="icon('ph-hand-heart')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.donationLink
@@ -167,7 +174,7 @@
 
 							<FormInput v-model="iconUrl" class="_formBlock">
 								<template #prefix
-									><i class="ph-link-simple ph-bold ph-lg"></i
+									><i :class="icon('ph-link-simple')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.iconUrl
@@ -176,7 +183,7 @@
 
 							<FormInput v-model="bannerUrl" class="_formBlock">
 								<template #prefix
-									><i class="ph-link-simple ph-bold ph-lg"></i
+									><i :class="icon('ph-link-simple')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.bannerUrl
@@ -188,7 +195,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-link-simple ph-bold ph-lg"></i
+									><i :class="icon('ph-link-simple')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.logoImageUrl
@@ -200,7 +207,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-link-simple ph-bold ph-lg"></i
+									><i :class="icon('ph-link-simple')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.backgroundImageUrl
@@ -209,7 +216,7 @@
 
 							<FormInput v-model="themeColor" class="_formBlock">
 								<template #prefix
-									><i class="ph-paconstte ph-bold ph-lg"></i
+									><i :class="icon('ph-paconstte')"></i
 								></template>
 								<template #label>{{
 									i18n.ts.themeColor
@@ -338,7 +345,7 @@
 									class="_formBlock"
 								>
 									<template #prefix
-										><i class="ph-key ph-bold ph-lg"></i
+										><i :class="icon('ph-key')"></i
 									></template>
 									<template #label>Public key</template>
 								</FormInput>
@@ -348,7 +355,7 @@
 									class="_formBlock"
 								>
 									<template #prefix
-										><i class="ph-key ph-bold ph-lg"></i
+										><i :class="icon('ph-key')"></i
 									></template>
 									<template #label>Private key</template>
 								</FormInput>
@@ -384,7 +391,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-key ph-bold ph-lg"></i
+									><i :class="icon('ph-key')"></i
 								></template>
 								<template #label>DeepL Auth Key</template>
 							</FormInput>
@@ -401,7 +408,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-link ph-bold ph-lg"></i
+									><i :class="icon('ph-link')"></i
 								></template>
 								<template #label
 									>Libre Translate API URL</template
@@ -413,7 +420,7 @@
 								class="_formBlock"
 							>
 								<template #prefix
-									><i class="ph-key ph-bold ph-lg"></i
+									><i :class="icon('ph-key')"></i
 								></template>
 								<template #label
 									>Libre Translate API Key</template
@@ -441,10 +448,12 @@ import * as os from "@/os";
 import { fetchInstance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const name = ref<string | null>(null);
 const description = ref<string | null>(null);
 const tosUrl = ref<string | null>(null);
+const moreUrls = ref<string | null>(null);
 const maintainerName = ref<string | null>(null);
 const maintainerEmail = ref<string | null>(null);
 const donationLink = ref<string | null>(null);
@@ -479,12 +488,44 @@ const defaultReactionCustom = ref("");
 const enableServerMachineStats = ref(false);
 const enableIdenticonGeneration = ref(false);
 
+function isValidHttpUrl(src: string) {
+	let url: URL;
+	try {
+		url = new URL(src);
+	} catch (_) {
+		return false;
+	}
+	return url.protocol === "http:" || url.protocol === "https:";
+}
+
+function parseMoreUrls(src: string): { name: string; url: string }[] {
+	const toReturn: { name: string; url: string }[] = [];
+	const pattern = /"(.+)"\s*:\s*(http.+)/;
+	src.trim()
+		.split("\n")
+		.forEach((line) => {
+			const match = pattern.exec(line);
+			if (match != null && isValidHttpUrl(match[2]))
+				toReturn.push({ name: match[1], url: match[2] });
+			else console.error(`invalid syntax or invalid URL: ${line}`);
+		});
+	return toReturn;
+}
+
+function stringifyMoreUrls(src: { name: string; url: string }[]): string {
+	let toReturn = "";
+	for (const { name, url } of src)
+		toReturn = toReturn.concat(`"${name}": ${url}`, "\n");
+	return toReturn;
+}
+
 async function init() {
 	const meta = await os.api("admin/meta");
 	if (!meta) throw new Error("No meta");
 	name.value = meta.name;
 	description.value = meta.description;
 	tosUrl.value = meta.tosUrl;
+	moreUrls.value = stringifyMoreUrls(meta.moreUrls);
 	iconUrl.value = meta.iconUrl;
 	bannerUrl.value = meta.bannerUrl;
 	logoImageUrl.value = meta.logoImageUrl;
@@ -534,6 +575,7 @@ function save() {
 		name: name.value,
 		description: description.value,
 		tosUrl: tosUrl.value,
+		moreUrls: parseMoreUrls(moreUrls.value ?? ""),
 		iconUrl: iconUrl.value,
 		bannerUrl: bannerUrl.value,
 		logoImageUrl: logoImageUrl.value,
@@ -576,7 +618,7 @@ function save() {
 const headerActions = computed(() => [
 	{
 		asFullButton: true,
-		icon: "ph-check ph-bold ph-lg",
+		icon: `${icon("ph-check")}`,
 		text: i18n.ts.save,
 		handler: save,
 	},
@@ -586,6 +628,6 @@ const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.general,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 });
 </script>

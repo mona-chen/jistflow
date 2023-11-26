@@ -18,7 +18,7 @@
 			</button>
 		</header>
 		<transition
-			:name="$store.state.animation ? 'folder-toggle' : ''"
+			:name="animation ? 'folder-toggle' : ''"
 			@enter="enter"
 			@after-enter="afterEnter"
 			@leave="leave"
@@ -34,6 +34,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { getUniqueId } from "@/os";
+import { defaultStore } from "@/store";
+// import icon from "@/scripts/icon";
 
 const localStoragePrefix = "ui:folder:";
 
@@ -60,6 +62,7 @@ export default defineComponent({
 							localStoragePrefix + this.persistKey,
 					  ) === "t"
 					: this.expanded,
+			animation: defaultStore.state.animation,
 		};
 	},
 	watch: {

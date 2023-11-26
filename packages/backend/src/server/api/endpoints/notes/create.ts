@@ -1,22 +1,22 @@
-import { In } from "typeorm";
-import create from "@/services/note/create.js";
-import type { User } from "@/models/entities/user.js";
-import {
-	Users,
-	DriveFiles,
-	Notes,
-	Channels,
-	Blockings,
-} from "@/models/index.js";
+import { MAX_NOTE_TEXT_LENGTH } from "@/const.js";
+import { HOUR } from "@/const.js";
+import type { Channel } from "@/models/entities/channel.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { Note } from "@/models/entities/note.js";
-import type { Channel } from "@/models/entities/channel.js";
-import { MAX_NOTE_TEXT_LENGTH } from "@/const.js";
-import { noteVisibilities } from "../../../../types.js";
-import { ApiError } from "../../error.js";
-import define from "../../define.js";
-import { HOUR } from "@/const.js";
-import { getNote } from "../../common/getters.js";
+import type { User } from "@/models/entities/user.js";
+import {
+	Blockings,
+	Channels,
+	DriveFiles,
+	Notes,
+	Users,
+} from "@/models/index.js";
+import { getNote } from "@/server/api/common/getters.js";
+import define from "@/server/api/define.js";
+import { ApiError } from "@/server/api/error.js";
+import create from "@/services/note/create.js";
+import { noteVisibilities } from "@/types.js";
+import { In } from "typeorm";
 
 export const meta = {
 	tags: ["notes"],
@@ -108,6 +108,7 @@ export const paramDef = {
 			},
 		},
 		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
+		lang: { type: "string", nullable: true, maxLength: 10 },
 		cw: { type: "string", nullable: true, maxLength: 100 },
 		localOnly: { type: "boolean", default: false },
 		noExtractMentions: { type: "boolean", default: false },
@@ -294,6 +295,7 @@ export default define(meta, paramDef, async (ps, user) => {
 			  }
 			: undefined,
 		text: ps.text || undefined,
+		lang: ps.lang,
 		reply,
 		renote,
 		cw: ps.cw,

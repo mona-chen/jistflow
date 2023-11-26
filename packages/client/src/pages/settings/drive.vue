@@ -38,7 +38,7 @@
 					uploadFolder ? uploadFolder.name : "-"
 				}}</template>
 				<template #suffixIcon
-					><i class="ph-folder-notch-open ph-bold ph-lg"></i
+					><i :class="icon('ph-folder-notch-open')"></i
 				></template>
 			</FormButton>
 			<FormSwitch v-model="keepOriginalUploading" class="_formBlock">
@@ -85,14 +85,15 @@ import { defaultStore } from "@/store";
 import MkChart from "@/components/MkChart.vue";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
+import icon from "@/scripts/icon";
 
 const fetching = ref(true);
 const usage = ref<any>(null);
 const capacity = ref<any>(null);
 const uploadFolder = ref<any>(null);
-const alwaysMarkNsfw = ref<boolean>($i.alwaysMarkNsfw);
-const autoSensitive = ref<boolean>($i.autoSensitive);
+const alwaysMarkNsfw = ref<boolean>($i != null && $i.alwaysMarkNsfw);
+const autoSensitive = ref<boolean>($i != null && $i.autoSensitive);
 
 const meterStyle = computed(() => {
 	return {
@@ -146,7 +147,7 @@ function saveProfile() {
 
 definePageMetadata({
 	title: i18n.ts.drive,
-	icon: "ph-cloud ph-bold ph-lg",
+	icon: `${icon("ph-cloud")}`,
 });
 </script>
 

@@ -44,17 +44,13 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, ref } from "vue";
+import { ref } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import { i18n } from "@/i18n";
 import { useInterval } from "@/scripts/use-interval";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 
 const name = "calendar";
 

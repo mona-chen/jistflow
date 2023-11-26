@@ -34,8 +34,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, toRef, watch } from "vue";
-import type * as misskey from "firefish-js";
+import { ref } from "vue";
+import type * as firefish from "firefish-js";
 import MarqueeText from "@/components/MkMarquee.vue";
 import * as os from "@/os";
 import { useInterval } from "@/scripts/use-interval";
@@ -51,7 +51,7 @@ const props = defineProps<{
 	refreshIntervalSec?: number;
 }>();
 
-const notes = ref<misskey.entities.Note[]>([]);
+const notes = ref<firefish.entities.Note[]>([]);
 const fetching = ref(true);
 const key = ref(0);
 

@@ -1,5 +1,8 @@
 <template>
-	<transition :name="$store.state.animation ? 'fade' : ''" mode="out-in">
+	<transition
+		:name="defaultStore.state.animation ? 'fade' : ''"
+		mode="out-in"
+	>
 		<MkLoading v-if="fetching" />
 
 		<MkError v-else-if="error" @retry="init()" />
@@ -8,7 +11,7 @@
 			<slot name="empty">
 				<div class="_fullinfo">
 					<img
-						src="/static-assets/badges/info.png"
+						src="/static-assets/badges/info.webp"
 						class="_ghost"
 						alt="Error"
 					/>
@@ -44,7 +47,8 @@
 				<MkButton
 					v-if="!moreFetching"
 					v-appear="
-						$store.state.enableInfiniteScroll && !disableAutoLoad
+						defaultStore.state.enableInfiniteScroll &&
+						!disableAutoLoad
 							? fetchMore
 							: null
 					"
@@ -65,7 +69,7 @@
 <script lang="ts" setup>
 import type { ComputedRef } from "vue";
 import { computed, isRef, onActivated, onDeactivated, ref, watch } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import {
 	getScrollContainer,
@@ -75,15 +79,16 @@ import {
 } from "@/scripts/scroll";
 import MkButton from "@/components/MkButton.vue";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
 
 export interface Paging<
-	E extends keyof misskey.Endpoints = keyof misskey.Endpoints,
+	E extends keyof firefish.Endpoints = keyof firefish.Endpoints,
 > {
 	endpoint: E;
 	limit: number;
 	params?:
-		| misskey.Endpoints[E]["req"]
-		| ComputedRef<misskey.Endpoints[E]["req"]>;
+		| firefish.Endpoints[E]["req"]
+		| ComputedRef<firefish.Endpoints[E]["req"]>;
 
 	/**
 	 * 検索APIのような、ページング不可なエンドポイントを利用する場合

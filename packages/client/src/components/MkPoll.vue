@@ -17,7 +17,7 @@
 				></div>
 				<span>
 					<template v-if="choice.isVoted"
-						><i class="ph-check ph-bold ph-lg"></i
+						><i :class="icon('ph-check')"></i
 					></template>
 					<Mfm
 						:text="choice.text"
@@ -53,15 +53,16 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { sum } from "@/scripts/array";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { useInterval } from "@/scripts/use-interval";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 	readOnly?: boolean;
 }>();
 

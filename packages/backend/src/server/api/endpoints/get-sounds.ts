@@ -1,5 +1,5 @@
+import define from "@/server/api/define.js";
 import { readdir } from "fs/promises";
-import define from "../define.js";
 
 export const meta = {
 	tags: ["meta"],

@@ -1,14 +1,14 @@
 import {
-	Entity,
-	PrimaryColumn,
-	Index,
 	Column,
-	ManyToOne,
+	Entity,
+	Index,
 	JoinColumn,
+	ManyToOne,
+	PrimaryColumn,
 } from "typeorm";
-import { User } from "./user.js";
-import { App } from "./app.js";
 import { id } from "../id.js";
+import { App } from "./app.js";
+import { User } from "./user.js";
 
 @Entity()
 export class AccessToken {

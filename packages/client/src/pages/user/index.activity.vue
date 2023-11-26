@@ -1,15 +1,12 @@
 <template>
 	<MkContainer>
 		<template #header
-			><i
-				class="ph-chart-bar ph-bold ph-lg"
-				style="margin-right: 0.5em"
-			></i
+			><i :class="icon('ph-chart-bar')" style="margin-right: 0.5em"></i
 			>{{ i18n.ts.activity }}</template
 		>
 		<template #func>
 			<button class="_button" @click="showMenu">
-				<i class="ph-dots-three-outline ph-bold ph-lg"></i>
+				<i :class="icon('ph-dots-three-outline')"></i>
 			</button>
 		</template>
 
@@ -31,15 +28,16 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MkContainer from "@/components/MkContainer.vue";
 import MkChart from "@/components/MkChart.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
-const props = withDefaults(
+withDefaults(
 	defineProps<{
-		user: misskey.entities.User;
+		user: firefish.entities.User;
 		limit?: number;
 	}>(),
 	{

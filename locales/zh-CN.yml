@@ -12,7 +12,7 @@ ok: "好"
 gotIt: "知道了！"
 cancel: "取消"
 enterUsername: "输入用户名"
-renotedBy: "转发自 {user}"
+renotedBy: "{user} 转发了"
 noNotes: "没有帖子"
 noNotifications: "没有通知"
 instance: "服务器"
@@ -49,6 +49,7 @@ sendMessage: "发送"
 copyUsername: "复制用户名"
 searchUser: "搜索用户"
 reply: "回复"
+replies: "回复"
 loadMore: "加载更多"
 showMore: "查看更多"
 showLess: "关闭"
@@ -58,7 +59,7 @@ followRequestAccepted: "关注请求已通过"
 mention: "提及"
 mentions: "提及"
 directNotes: "私信"
-importAndExport: "导入/导出数据"
+importAndExport: "导入 / 导出数据"
 import: "导入"
 export: "导出"
 files: "文件"
@@ -69,7 +70,7 @@ exportRequested: "导出请求已提交，这可能需要花一些时间，导�
 importRequested: "导入请求已提交，这可能需要花一点时间。"
 lists: "列表"
 noLists: "列表为空"
-note: "帖子"
+note: "发帖"
 notes: "帖子"
 following: "关注中"
 followers: "关注者"
@@ -94,11 +95,13 @@ unfollow: "取消关注"
 followRequestPending: "关注请求待批准"
 enterEmoji: "输入表情符号"
 renote: "转发"
+renotes: "转发"
 unrenote: "取消转发"
 renoted: "已转发。"
 cantRenote: "此帖子无法被转发。"
 cantReRenote: "转发无法被再次转发。"
 quote: "引用"
+quotes: "引用"
 pinnedNote: "已置顶的帖子"
 pinned: "置顶"
 you: "您"
@@ -106,6 +109,7 @@ clickToShow: "点击以显示"
 sensitive: "敏感内容"
 add: "添加"
 reaction: "回应"
+reactions: "回应"
 enableEmojiReaction: "启用表情符号回应"
 showEmojisInReactionNotifications: "在回应通知中显示表情符号"
 reactionSetting: "在回应选择器中显示的回应"
@@ -243,7 +247,7 @@ saved: "已保存"
 messaging: "聊天"
 upload: "本地上传"
 keepOriginalUploading: "保留原图"
-keepOriginalUploadingDescription: "上传图片时保留原始图片。如果关闭，会在上传时生成一张用于 web 发布的图片。"
+keepOriginalUploadingDescription: "上传图片时保留原始图片。如果关闭，会在上传时生成一张用于 Web 发布的图片。"
 fromDrive: "从网盘中"
 fromUrl: "从 URL"
 uploadFromUrl: "从 URL 上传"
@@ -321,9 +325,6 @@ dayX: "{day} 日"
 monthX: "{month} 月"
 yearX: "{year} 年"
 pages: "页面"
-integration: "整合"
-connectService: "连接"
-disconnectService: "断开连接"
 enableLocalTimeline: "启用本地时间线功能"
 enableGlobalTimeline: "启用全局时间线"
 disablingTimelinesInfo: "管理员和监察员将始终拥有对所有时间线的访问权，即使它们没有被启用。"
@@ -486,15 +487,16 @@ hideThisNote: "隐藏这条帖子"
 showFeaturedNotesInTimeline: "在时间线上显示热门推荐"
 objectStorage: "对象存储"
 useObjectStorage: "使用对象存储"
-objectStorageBaseUrl: "Base URL"
-objectStorageBaseUrlDesc: "用于引用的 URL。如果您正在使用 CDN 或反向代理，请指定其 URL。\n例如S3：“https://<bucket>.s3.amazonaws.com”，GCS：“https://storage.googleapis.com/<bucket>”，其它同理。"
+objectStorageBaseUrl: "根 URL"
+objectStorageBaseUrlDesc: "用于引用的 URL。如果您正在使用 CDN 或反向代理，请指定其 URL。\n例如S3：\"https://<bucket>.s3.amazonaws.com\"\
+  ，GCS：\"https://storage.googleapis.com/<bucket>\"，其它同理。"
 objectStorageBucket: "存储桶"
 objectStorageBucketDesc: "请指定使用的对象存储服务的存储桶名称。"
 objectStoragePrefix: "前缀"
 objectStoragePrefixDesc: "文件将存储在此前缀的目录下。"
-objectStorageEndpoint: "Endpoint"
-objectStorageEndpointDesc: "如果您使用 AWS S3 请留空。否则请根据您使用的服务商的说明来进行设置，指定 Endpoint 形式为
-  \"<host>\" 或 \"<host>:<port>\"。"
+objectStorageEndpoint: "端点 (Endpoint)"
+objectStorageEndpointDesc: "如果您使用 AWS S3 请留空。否则请根据您使用的服务商的说明来进行设置，指定端点 (Endpoint)
+  形式为 \"<host>\" 或 \"<host>:<port>\"。"
 objectStorageRegion: "可用区"
 objectStorageRegionDesc: "指定一个可用区，例如 \"xx-east-1\"。 如果您的对象存储服务没有可用区概念，请将其留空或填写 \"\
   us-east-1\"。\n对于 Cloudflare R2，可以填为 \"auto\"。"
@@ -502,7 +504,7 @@ objectStorageUseSSL: "使用 SSL"
 objectStorageUseSSLDesc: "如果不使用 HTTPS 进行 API 连接，请关闭"
 objectStorageUseProxy: "使用代理"
 objectStorageUseProxyDesc: "如果您不使用代理进行 API 连接，请将其关闭"
-objectStorageSetPublicRead: "上传时设置为 public-read"
+objectStorageSetPublicRead: "上传时设置为 \"public-read\""
 serverLogs: "服务器日志"
 deleteAll: "全部删除"
 showFixedPostForm: "在时间线顶部显示发帖框"
@@ -599,7 +601,7 @@ emptyToDisableSmtpAuth: "留空用户名和密码以禁用 SMTP 验证"
 smtpSecure: "在 SMTP 连接中使用隐式 SSL / TLS"
 smtpSecureInfo: "使用 STARTTLS 时关闭"
 testEmail: "邮件发送测试"
-wordMute: "文字过滤"
+wordMute: "文字和语言过滤"
 regexpError: "正则表达式错误"
 regexpErrorDescription: "{tab} 文字过滤的第 {line} 行的正则表达式有错误："
 instanceMute: "服务器静音"
@@ -608,7 +610,7 @@ makeActive: "启用"
 display: "显示"
 copy: "复制"
 metrics: "指标"
-overview: "服务器概况"
+overview: "概况"
 logs: "日志"
 delayed: "滞后"
 database: "数据库"
@@ -674,7 +676,7 @@ driveFilesCount: "网盘的文件数"
 driveUsage: "网盘的空间用量"
 noCrawle: "要求搜索引擎不索引该用户"
 noCrawleDescription: "要求外部搜索引擎不收录（索引）您的内容。"
-lockedAccountInfo: "即使通过了关注请求，只要您不将帖子可见范围设置成“关注者”，任何人都可以看到您的帖子。"
+lockedAccountInfo: "即使通过了关注请求，只要您不将帖子可见范围设置成「关注者」，任何人都可以看到您的帖子。"
 alwaysMarkSensitive: "默认将媒体文件标记为敏感内容"
 loadRawImages: "加载原始图像而不是显示缩略图"
 disableShowingAnimatedImages: "不播放动画"
@@ -689,8 +691,8 @@ useSystemFont: "使用系统默认字体"
 clips: "便签"
 experimentalFeatures: "实验性功能"
 developer: "开发者"
-makeExplorable: "使账号在“发现”中可见"
-makeExplorableDescription: "关闭时，账号不会显示在\"发现\"中。"
+makeExplorable: "使账号在「发现」中可见"
+makeExplorableDescription: "关闭时，账号不会显示在「发现」中。"
 showGapBetweenNotesInTimeline: "时间线上的帖子分开显示"
 duplicate: "复制"
 left: "左"
@@ -745,7 +747,7 @@ unlikeConfirm: "取消赞？"
 fullView: "全屏"
 quitFullView: "退出全屏"
 addDescription: "添加描述"
-userPagePinTip: "在帖子的菜单中选择“置顶”，即可显示该条帖子。"
+userPagePinTip: "在帖子的菜单中选择「置顶」，即可在此显示该条帖子。"
 notSpecifiedMentionWarning: "有未指定的提及"
 info: "关于"
 userInfo: "用户信息"
@@ -805,7 +807,7 @@ accountDeletionInProgress: "正在删除账号"
 usernameInfo: "在服务器上唯一标识您的账号的名称。您可以使用字母 (a ~ z, A ~ Z)、数字 (0 ~ 9) 和下划线 (_)。用户名以后不能更改。"
 aiChanMode: "小蓝模式"
 keepCw: "保留内容警告"
-pubSub: "推送 (Pub)/订阅 (Sub) 账号"
+pubSub: "推送 (Pub) / 订阅 (Sub) 账号"
 lastCommunication: "最近通信"
 resolved: "已解决"
 unresolved: "未解决"
@@ -822,8 +824,8 @@ makeReactionsPublicDescription: "将您发表过的回应设置成公开可见�
 classic: "居中"
 muteThread: "静音帖子串"
 unmuteThread: "取消静音帖子串"
-ffVisibility: "关注/关注者 可见性"
-ffVisibilityDescription: "您可以设置谁可以看到您的关注/关注者信息。"
+ffVisibility: "关注 / 关注者可见性"
+ffVisibilityDescription: "您可以设置谁可以看到您的关注 / 关注者信息。"
 continueThread: "查看更多帖子"
 deleteAccountConfirm: "这将不可逆转地删除账号，是否继续？"
 incorrectPassword: "密码错误。"
@@ -921,7 +923,7 @@ _emailUnavailable:
 _ffVisibility:
   public: "公开"
   followers: "仅对关注者可见"
-  private: "私信"
+  private: "私密"
 _signup:
   almostThere: "即将完成"
   emailAddressInfo: "请输入您所使用的电子邮件地址，它不会公开显示。"
@@ -935,7 +937,8 @@ _accountDelete:
   inProgress: "正在删除"
 _ad:
   back: "返回"
-  reduceFrequencyOfThisAd: "减少此广告的频率"
+  reduceFrequencyOfThisAd: "减少此横幅的频率"
+  adsBy: 社区横幅（作者：{by}）
 _forgotPassword:
   enterEmail: "请输入您注册账号时用的电子邮箱地址，密码重置链接将发送至该邮箱上。"
   ifNoEmail: "如果您在注册时没有输入电子邮件地址，请联系服务器管理员。"
@@ -1113,7 +1116,7 @@ _wordMute:
   muteLangs: "过滤语言"
   muteWordsDescription: "AND 条件用空格分隔，OR 条件用换行符分隔。"
   muteWordsDescription2: "将关键字用斜线括起来表示正则表达式。"
-  muteLangsDescription: "OR 条件用空格，换行符分隔"
+  muteLangsDescription: "OR 条件用空格或换行符分隔。"
   muteLangsDescription2: "使用语言代码。例: en, fr, ja, zh."
   softDescription: "隐藏时间线中指定条件的帖子。"
   langDescription: "从时间线中隐藏与设置语言匹配的帖子。"
@@ -1236,15 +1239,15 @@ _tutorial:
   step4_2: "对于第一条帖子，可以做一个 {introduction} 或一个简单的 \"hello world!\""
   step5_1: "时间线，无处不在的时间线！"
   step5_2: "您的服务器已启用 {timelines} 种不同的时间线。"
-  step5_3: "主页 {icon} 时间线是您可以看到您关注账号的帖子的时间线。"
+  step5_3: "首页{icon}时间线是您可以看到您关注账号的帖子的时间线。"
   step5_4: "本地{icon}时间线是您可以看到此服务器上其它用户的帖子的时间线。"
   step5_5: "社交{icon}时间线是主页和本地时间线的结合。"
   step5_6: "推荐{icon}时间线是您可以看到管理员推荐服务器的帖子的时间线。"
-  step5_7: "全球{icon}时间线是您可以看到来自其它所有互联服务器的帖子的时间线。"
+  step5_7: "全局{icon}时间线是您可以看到来自其它所有互联服务器的帖子的时间线。"
   step6_1: "那么，这里是什么地方？"
   step6_2: "好吧，您不只是加入 Firefish。您已经加入了 Fediverse 的一个门户，这是一个由成千上万台服务器组成的互联网络。"
   step6_3: "每个服务器的工作方式不同，并不是所有的服务器都运行 Firefish。但这个服务器是的! 这有点复杂，但您很快就会明白的。"
-  step6_4: "现在，去吧，去探索，去享受乐趣吧!"
+  step6_4: "现在，去吧，去探索，去享受乐趣吧！"
 _2fa:
   alreadyRegistered: "您已经注册了两步验证设备。"
   registerTOTP: "注册身份验证器应用"
@@ -1839,8 +1842,8 @@ customMOTD: 自定义 MOTD（启动屏幕消息）
 sendPushNotificationReadMessageCaption: 会短暂显示 "{emptyPushNotificationMessage}" 的通知，如果启用，可能会增加您的设备的耗电量。
 adminCustomCssWarn: 仅当您知道此设置的作用时才应使用它。输入不正确的值可能会导致每个人的客户端停止正常运行。请在用户设置中进行测试来确保您的 CSS
   正常工作。
-customMOTDDescription: 自定义 MOTD（启动屏幕）消息，一行一个，每次用户加载/刷新页面时都会随机显示。
-customSplashIconsDescription: 用换行符隔开的自定义启动屏幕图标的 URL，在用户每次加载/重新载入页面时随机显示。请确保图片是在一个静态的
+customMOTDDescription: 自定义 MOTD（启动屏幕）消息，一行一个，每次用户加载 / 重新加载页面时都会随机显示。
+customSplashIconsDescription: 用换行符隔开的自定义启动屏幕图标的 URL，在用户每次加载 / 重新加载页面时随机显示。请确保图片是在一个静态的
   URL 上，最好全部调整为 192x192 的大小。
 recommendedInstancesDescription: 推荐的服务器一行一个，它们将出现在推荐时间线中。
 splash: 启动画面
@@ -1863,7 +1866,7 @@ customSplashIcons: 自定义启动屏幕图标（urls）
 alt: 替代文字
 pushNotificationNotSupported: 您的浏览器或者服务器不支持推送通知
 showAds: 显示社区横幅
-enterSendsMessage: 按回车键发送信息（关闭则是 Ctrl + Retun 发送）
+enterSendsMessage: 按回车键发送信息（关闭则是 Ctrl + Return 发送）
 recommendedInstances: 推荐服务器
 updateAvailable: 可能有可用更新！
 swipeOnMobile: 允许在页面之间滑动
@@ -1916,7 +1919,7 @@ _skinTones:
 isModerator: 监察员
 isAdmin: 管理员
 findOtherInstance: 寻找其它服务器
-moveFromDescription: 这将为您的旧账号设置一个别名，以便您可以从该旧账号迁移到当前账号。在从旧账号迁移之前执行此操作。请输入格式如@person@server.com
+moveFromDescription: 这将为您的旧账号设置一个别名，以便您可以从该旧账号迁移到当前账号。在从旧账号迁移之前执行此操作。请输入格式如 @person@server.com
   的账号标签
 indexPosts: 索引帖子
 signupsDisabled: 该服务器目前关闭注册，但您随时可以在另一台服务器上注册！如果您有该服务器的邀请码，请在下面输入。
@@ -1976,7 +1979,7 @@ confirm: 确认
 importZip: 导入 ZIP
 exportZip: 导出 ZIP
 emojiPackCreator: 表情包创建工具
-objectStorageS3ForcePathStyleDesc: 打开此选项可构建格式为 's3.amazonaws.com/<bucket>/' 而非 '<bucket>.s3.amazonaws.com'
+objectStorageS3ForcePathStyleDesc: 打开此选项可构建格式为 "s3.amazonaws.com/<bucket>/" 而非 "<bucket>.s3.amazonaws.com"
   的端点 URL。
 objectStorageS3ForcePathStyle: 使用基于路径的端点 URL
 delete2fa: 禁用 2FA
@@ -1989,3 +1992,6 @@ detectPostLanguage: 自动检测语言，并显示外文帖子的翻译按钮
 indexableDescription: 允许内置搜索显示您的公开帖子
 indexable: 可索引的
 languageForTranslation: 帖子翻译语言
+vibrate: 播放振动
+openServerInfo: 点击帖子上的服务器滚动条时显示服务器信息
+clickToShowPatterns: 点击显示模块模式

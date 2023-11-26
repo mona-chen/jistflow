@@ -67,7 +67,7 @@
 						class="button _button"
 						@click.stop="reply()"
 					>
-						<i class="ph-arrow-u-up-left ph-bold ph-lg"></i>
+						<i :class="icon('ph-arrow-u-up-left')"></i>
 						<template v-if="appearNote.repliesCount > 0">
 							<p class="count">{{ appearNote.repliesCount }}</p>
 						</template>
@@ -109,7 +109,7 @@
 						class="button _button"
 						@click.stop="react()"
 					>
-						<i class="ph-smiley ph-bold ph-lg"></i>
+						<i :class="icon('ph-smiley')"></i>
 					</button>
 					<button
 						v-if="
@@ -121,7 +121,7 @@
 						class="button _button reacted"
 						@click.stop="undoReact(appearNote)"
 					>
-						<i class="ph-minus ph-bold ph-lg"></i>
+						<i :class="icon('ph-minus')"></i>
 					</button>
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
@@ -134,7 +134,7 @@
 						class="button _button"
 						@click.stop="translate"
 					>
-						<i class="ph-translate ph-bold ph-lg"></i>
+						<i :class="icon('ph-translate')"></i>
 					</button>
 					<button
 						ref="menuButton"
@@ -142,7 +142,7 @@
 						class="button _button"
 						@click.stop="menu()"
 					>
-						<i class="ph-dots-three-outline ph-bold ph-lg"></i>
+						<i :class="icon('ph-dots-three-outline')"></i>
 					</button>
 				</footer>
 			</div>
@@ -165,7 +165,7 @@
 				<div class="line"></div>
 				<MkA class="text _link" :to="notePage(note)"
 					>{{ i18n.ts.continueThread }}
-					<i class="ph-caret-double-right ph-bold ph-lg"></i
+					<i :class="icon('ph-caret-double-right')"></i
 				></MkA>
 			</div>
 		</template>
@@ -191,9 +191,7 @@
 <script lang="ts" setup>
 import { computed, inject, ref } from "vue";
 import type { Ref } from "vue";
-import type * as misskey from "firefish-js";
-import * as mfm from "mfm-js";
-import { detect as detectLanguage_ } from "tinyld";
+import type * as firefish from "firefish-js";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
 import MkSubNoteContent from "@/components/MkSubNoteContent.vue";
 import XReactionsViewer from "@/components/MkReactionsViewer.vue";
@@ -202,6 +200,7 @@ import XStarButtonNoEmoji from "@/components/MkStarButtonNoEmoji.vue";
 import XRenoteButton from "@/components/MkRenoteButton.vue";
 import XQuoteButton from "@/components/MkQuoteButton.vue";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
+import detectLanguage from "@/scripts/detect-language";
 import { url } from "@/config";
 import { pleaseLogin } from "@/scripts/please-login";
 import { getNoteMenu } from "@/scripts/get-note-menu";
@@ -211,18 +210,19 @@ import { useRouter } from "@/router";
 import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { reactionPicker } from "@/scripts/reaction-picker";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { defaultStore } from "@/store";
 import { deepClone } from "@/scripts/clone";
+import icon from "@/scripts/icon";
 
 const router = useRouter();
 
 const props = withDefaults(
 	defineProps<{
-		note: misskey.entities.Note;
-		conversation?: misskey.entities.Note[];
+		note: firefish.entities.Note;
+		conversation?: firefish.entities.Note[];
 		parentId?;
 		detailedView?;
 
@@ -262,20 +262,20 @@ const starButton = ref<InstanceType<typeof XStarButton>>();
 const renoteButton = ref<InstanceType<typeof XRenoteButton>>();
 const reactButton = ref<HTMLElement>();
 const appearNote = computed(() =>
-	isRenote ? (note.value.renote as misskey.entities.Note) : note.value,
+	isRenote ? (note.value.renote as firefish.entities.Note) : note.value,
 );
 const isDeleted = ref(false);
 const muted = ref(
 	getWordSoftMute(
 		note.value,
-		$i,
+		$i?.id,
 		defaultStore.state.mutedWords,
 		defaultStore.state.mutedLangs,
 	),
 );
 const translation = ref(null);
 const translating = ref(false);
-const replies: misskey.entities.Note[] =
+const replies: firefish.entities.Note[] =
 	props.conversation
 		?.filter(
 			(item) =>
@@ -287,15 +287,6 @@ const enableEmojiReactions = defaultStore.state.enableEmojiReactions;
 const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
 const lang = localStorage.getItem("lang");
 const translateLang = localStorage.getItem("translateLang");
-
-function detectLanguage(text: string) {
-	const nodes = mfm.parse(text);
-	const filtered = mfm.extract(nodes, (node) => {
-		return node.type === "text" || node.type === "quote";
-	});
-	const purified = mfm.toString(filtered);
-	return detectLanguage_(purified);
-}
 
 const isForeignLanguage: boolean =
 	defaultStore.state.detectPostLanguage &&
@@ -378,7 +369,7 @@ function undoReact(note): void {
 	});
 }
 
-const currentClipPage = inject<Ref<misskey.entities.Clip> | null>(
+const currentClipPage = inject<Ref<firefish.entities.Clip> | null>(
 	"currentClipPage",
 	null,
 );
@@ -421,7 +412,7 @@ function onContextmenu(ev: MouseEvent): void {
 					text: notePage(appearNote.value),
 				},
 				{
-					icon: "ph-browser ph-bold ph-lg",
+					icon: `${icon("ph-browser")}`,
 					text: i18n.ts.openInWindow,
 					action: () => {
 						os.pageWindow(notePage(appearNote.value));
@@ -429,7 +420,7 @@ function onContextmenu(ev: MouseEvent): void {
 				},
 				notePage(appearNote.value) != location.pathname
 					? {
-							icon: "ph-arrows-out-simple ph-bold ph-lg",
+							icon: `${icon("ph-arrows-out-simple")}`,
 							text: i18n.ts.showInPage,
 							action: () => {
 								router.push(
@@ -442,13 +433,13 @@ function onContextmenu(ev: MouseEvent): void {
 				null,
 				{
 					type: "a",
-					icon: "ph-arrow-square-out ph-bold ph-lg",
+					icon: `${icon("ph-arrow-square-out")}`,
 					text: i18n.ts.openInNewTab,
 					href: notePage(appearNote.value),
 					target: "_blank",
 				},
 				{
-					icon: "ph-link-simple ph-bold ph-lg",
+					icon: `${icon("ph-link-simple")}`,
 					text: i18n.ts.copyLink,
 					action: () => {
 						copyToClipboard(`${url}${notePage(appearNote.value)}`);
@@ -457,7 +448,7 @@ function onContextmenu(ev: MouseEvent): void {
 				note.value.user.host != null
 					? {
 							type: "a",
-							icon: "ph-arrow-square-up-right ph-bold ph-lg",
+							icon: `${icon("ph-arrow-square-up-right")}`,
 							text: i18n.ts.showOnRemote,
 							href: note.value.url ?? note.value.uri ?? "",
 							target: "_blank",
@@ -552,7 +543,7 @@ function noteClick(e) {
 					padding: 8px;
 					opacity: 0.7;
 					&:disabled {
-						opacity: 0.5 !important;
+						opacity: 0.3 !important;
 					}
 					flex-grow: 1;
 					max-width: 3.5em;

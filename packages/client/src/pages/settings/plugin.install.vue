@@ -10,7 +10,7 @@
 
 		<div class="_formBlock">
 			<FormButton :disabled="code == null" primary inline @click="install"
-				><i class="ph-check ph-bold ph-lg"></i>
+				><i :class="icon('ph-check')"></i>
 				{{ i18n.ts.install }}</FormButton
 			>
 		</div>
@@ -19,9 +19,9 @@
 
 <script lang="ts" setup>
 import { defineAsyncComponent, nextTick, ref } from "vue";
-import { AiScript, parse } from "@syuilo/aiscript";
-import { serialize } from "@syuilo/aiscript/built/serializer";
+import { Interpreter, Parser, utils } from "@syuilo/aiscript";
 import { v4 as uuid } from "uuid";
+import { compareVersions } from "compare-versions";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormButton from "@/components/MkButton.vue";
 import FormInfo from "@/components/MkInfo.vue";
@@ -30,10 +30,19 @@ import { ColdDeviceStorage } from "@/store";
 import { unisonReload } from "@/scripts/unison-reload";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
-const code = ref(null);
+const code = ref<string>();
 
-function installPlugin({ id, meta, ast, token }) {
+function isSupportedVersion(version: string): boolean {
+	try {
+		return compareVersions(version, "0.12.0") >= 0;
+	} catch (err) {
+		return false;
+	}
+}
+
+function installPlugin({ id, meta, src, token }) {
 	ColdDeviceStorage.set(
 		"plugins",
 		ColdDeviceStorage.get("plugins").concat({
@@ -41,25 +50,46 @@ function installPlugin({ id, meta, ast, token }) {
 			id,
 			active: true,
 			configData: {},
+			src,
 			token,
-			ast,
 		}),
 	);
 }
 
+const parser = new Parser();
+
 async function install() {
-	let ast;
-	try {
-		ast = parse(code.value);
-	} catch (err) {
+	if (code.value == null) return;
+
+	const scriptVersion = utils.getLangVersion(code.value);
+
+	if (scriptVersion == null) {
 		os.alert({
 			type: "error",
-			text: "Syntax error :(",
+			text: "No language version annotation found :(",
+		});
+		return;
+	}
+	if (!isSupportedVersion(scriptVersion)) {
+		os.alert({
+			type: "error",
+			text: `aiscript version '${scriptVersion}' is not supported :(`,
 		});
 		return;
 	}
 
-	const meta = AiScript.collectMetadata(ast);
+	let ast;
+	try {
+		ast = parser.parse(code.value);
+	} catch (err) {
+		os.alert({
+			type: "error",
+			text: `Syntax error : ${err}`,
+		});
+		return;
+	}
+
+	const meta = Interpreter.collectMetadata(ast);
 	if (meta == null) {
 		os.alert({
 			type: "error",
@@ -82,7 +112,7 @@ async function install() {
 	if (name == null || version == null || author == null) {
 		os.alert({
 			type: "error",
-			text: "Required property not found :(",
+			text: "Required property (name, version, author) not found :(",
 		});
 		return;
 	}
@@ -133,8 +163,8 @@ async function install() {
 			permissions,
 			config,
 		},
+		src: code.value,
 		token,
-		ast: serialize(ast),
 	});
 
 	os.success();
@@ -146,6 +176,6 @@ async function install() {
 
 definePageMetadata({
 	title: i18n.ts._plugin.install,
-	icon: "ph-download-simple ph-bold ph-lg",
+	icon: `${icon("ph-download-simple")}`,
 });
 </script>

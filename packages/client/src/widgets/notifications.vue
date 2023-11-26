@@ -6,7 +6,7 @@
 		class="mkw-notifications"
 	>
 		<template #header
-			><i class="ph-bell ph-bold ph-lg"></i
+			><i :class="icon('ph-bell')"></i
 			>{{ i18n.ts.notifications }}</template
 		>
 		<template #func
@@ -15,13 +15,13 @@
 				:aria-label="i18n.ts.markAllAsRead"
 				@click="os.apiWithDialog('notifications/mark-all-as-read')"
 			>
-				<i class="ph-check ph-bold ph-lg"></i></button
+				<i :class="icon('ph-check')"></i></button
 			><button
 				class="_button"
 				:aria-label="i18n.ts.notificationSetting"
 				@click="configureNotification()"
 			>
-				<i class="ph-gear-six ph-bold ph-lg"></i></button
+				<i :class="icon('ph-gear-six')"></i></button
 		></template>
 		<div>
 			<XNotifications :include-types="widgetProps.includingTypes" />
@@ -32,16 +32,13 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import MkContainer from "@/components/MkContainer.vue";
 import XNotifications from "@/components/MkNotifications.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const name = "notifications";
 

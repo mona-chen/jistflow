@@ -1,7 +1,7 @@
-import { IsNull } from "typeorm";
-import define from "../../../define.js";
-import { deleteFile } from "@/services/drive/delete-file.js";
 import { DriveFiles } from "@/models/index.js";
+import define from "@/server/api/define.js";
+import { deleteFile } from "@/services/drive/delete-file.js";
+import { IsNull } from "typeorm";
 
 export const meta = {
 	tags: ["admin"],

@@ -44,7 +44,7 @@
 					data-cy-signin-password
 				>
 					<template #prefix
-						><i class="ph-lock ph-bold ph-lg"></i
+						><i :class="icon('ph-lock')"></i
 					></template>
 					<template #caption
 						><button
@@ -96,7 +96,7 @@
 					>
 						<template #label>{{ i18n.ts.password }}</template>
 						<template #prefix
-							><i class="ph-lock ph-bold ph-lg"></i
+							><i :class="icon('ph-lock')"></i
 						></template>
 					</MkInput>
 					<MkInput
@@ -109,7 +109,7 @@
 					>
 						<template #label>{{ i18n.ts._2fa.token }}</template>
 						<template #prefix
-							><i class="ph-poker-chip ph-bold ph-lg"></i
+							><i :class="icon('ph-poker-chip')"></i
 						></template>
 					</MkInput>
 					<MkButton
@@ -124,53 +124,21 @@
 				</div>
 			</div>
 		</div>
-		<div class="social _section">
-			<a
-				v-if="meta && meta.enableTwitterIntegration"
-				class="_borderButton _gap"
-				:href="`${apiUrl}/signin/twitter`"
-				><i
-					class="ph-twitter-logo ph-bold ph-lg"
-					style="margin-right: 4px"
-				></i
-				>{{ i18n.t("signinWith", { x: "Twitter" }) }}</a
-			>
-			<a
-				v-if="meta && meta.enableGithubIntegration"
-				class="_borderButton _gap"
-				:href="`${apiUrl}/signin/github`"
-				><i
-					class="ph-github-logo ph-bold ph-lg"
-					style="margin-right: 4px"
-				></i
-				>{{ i18n.t("signinWith", { x: "GitHub" }) }}</a
-			>
-			<a
-				v-if="meta && meta.enableDiscordIntegration"
-				class="_borderButton _gap"
-				:href="`${apiUrl}/signin/discord`"
-				><i
-					class="ph-discord-logo ph-bold ph-lg"
-					style="margin-right: 4px"
-				></i
-				>{{ i18n.t("signinWith", { x: "Discord" }) }}</a
-			>
-		</div>
 	</form>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 import { toUnicode } from "punycode/";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import MkInfo from "@/components/MkInfo.vue";
-import { apiUrl, host as configHost } from "@/config";
+import { host as configHost } from "@/config";
 import { byteify, hexify } from "@/scripts/2fa";
 import * as os from "@/os";
 import { login } from "@/account";
-import { instance } from "@/instance";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const signing = ref(false);
 const user = ref(null);
@@ -183,8 +151,6 @@ const challengeData = ref(null);
 const queryingKey = ref(false);
 const hCaptchaResponse = ref(null);
 const reCaptchaResponse = ref(null);
-
-const meta = computed(() => instance);
 
 const emit = defineEmits<{
 	(ev: "login", v: any): void;

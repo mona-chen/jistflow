@@ -1,5 +1,5 @@
 import autobind from "autobind-decorator";
-import { AiScript, utils, values } from "@syuilo/aiscript";
+import { Interpreter, utils, values } from "@syuilo/aiscript";
 import type { Ref } from "vue";
 import { markRaw, ref, unref } from "vue";
 import { collectPageVars } from "../collect-page-vars";
@@ -19,7 +19,7 @@ export class Hpml {
 	private variables: Variable[];
 	private pageVars: PageVar[];
 	private envVars: Record<keyof typeof envVarsDef, any>;
-	public aiscript?: AiScript;
+	public aiscript?: Interpreter;
 	public pageVarUpdatedCallback?: values.VFn;
 	public canvases: Record<string, HTMLCanvasElement> = {};
 	public vars: Ref<Record<string, any>> = ref({});
@@ -40,7 +40,7 @@ export class Hpml {
 
 		if (this.opts.enableAiScript) {
 			this.aiscript = markRaw(
-				new AiScript(
+				new Interpreter(
 					{
 						...createAiScriptEnv({
 							storageKey: `pages:${this.page.id}`,

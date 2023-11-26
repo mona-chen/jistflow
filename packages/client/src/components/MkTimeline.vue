@@ -12,16 +12,16 @@
 	<div v-if="queue > 0" class="new">
 		<button
 			class="_buttonPrimary _shadow"
-			:class="{ instant: !$store.state.animation }"
+			:class="{ instant: !defaultStore.state.animation }"
 			@click="tlComponent.scrollTop()"
 		>
 			{{ i18n.ts.newNoteRecived }}
-			<i class="ph-arrow-up ph-bold"></i>
+			<i :class="icon('ph-arrow-up', false)"></i>
 		</button>
 	</div>
 	<XNotes
 		ref="tlComponent"
-		:no-gap="!$store.state.showGapBetweenNotesInTimeline"
+		:no-gap="!defaultStore.state.showGapBetweenNotesInTimeline"
 		:pagination="pagination"
 		@queue="(x) => (queue = x)"
 	/>
@@ -33,9 +33,10 @@ import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import { stream } from "@/stream";
 import * as sound from "@/scripts/sound";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	src: string;
@@ -43,6 +44,7 @@ const props = defineProps<{
 	antenna?: string;
 	channel?: string;
 	sound?: boolean;
+	fileId?: string;
 }>();
 
 const queue = ref(0);
@@ -194,6 +196,11 @@ if (props.src === "antenna") {
 		channelId: props.channel,
 	});
 	connection.on("note", prepend);
+} else if (props.src === "file") {
+	endpoint = "drive/files/attached-notes";
+	query = {
+		fileId: props.fileId,
+	};
 }
 
 function closeHint() {

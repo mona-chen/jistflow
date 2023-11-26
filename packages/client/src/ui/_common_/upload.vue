@@ -8,7 +8,7 @@
 				></div>
 				<div class="top">
 					<p class="name">
-						<i class="ph-circle-notch ph-bold ph-lg fa-pulse"></i
+						<i :class="icon('ph-circle-notch fa-pulse')"></i
 						>{{ ctx.name }}
 					</p>
 					<p class="status">
@@ -56,10 +56,10 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
 import * as os from "@/os";
 import { uploads } from "@/scripts/upload";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const zIndex = os.claimZIndex("high");
 </script>

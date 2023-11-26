@@ -17,7 +17,7 @@
 						<template #empty>
 							<div class="_fullinfo">
 								<img
-									src="/static-assets/badges/info.png"
+									src="/static-assets/badges/info.webp"
 									class="_ghost"
 									alt="Info"
 								/>
@@ -77,7 +77,7 @@
 								@click="onIndicatorClick"
 							>
 								<i
-									class="fas ph-fw ph-lg ph-arrow-circle-down-bold ph-lg"
+									class="fas ph-fw ph-arrow-circle-down-bold ph-lg"
 								></i
 								>{{ i18n.ts.newMessageExists }}
 							</button>
@@ -105,7 +105,7 @@ import {
 	ref,
 	watch,
 } from "vue";
-import type * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import * as Acct from "firefish-js/built/acct";
 import XMessage from "./messaging-room.message.vue";
 import XForm from "./messaging-room.form.vue";
@@ -122,9 +122,10 @@ import { stream } from "@/stream";
 import * as sound from "@/scripts/sound";
 import { vibrate } from "@/scripts/vibrate";
 import { i18n } from "@/i18n";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { defaultStore } from "@/store";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	userAcct?: string;
@@ -136,11 +137,11 @@ const formEl = ref<InstanceType<typeof XForm>>();
 const pagingComponent = ref<InstanceType<typeof MkPagination>>();
 
 const fetching = ref(true);
-const user = ref<Misskey.entities.UserDetailed | null>(null);
-const group = ref<Misskey.entities.UserGroup | null>(null);
-const typers = ref<Misskey.entities.User[]>([]);
-const connection: Misskey.ChannelConnection<
-	Misskey.Channels["messaging"]
+const user = ref<firefish.entities.UserDetailed | null>(null);
+const group = ref<firefish.entities.UserGroup | null>(null);
+const typers = ref<firefish.entities.User[]>([]);
+const connection: firefish.ChannelConnection<
+	firefish.Channels["messaging"]
 > | null = ref(null);
 const showIndicator = ref(false);
 const { animation } = defaultStore.reactiveState;
@@ -353,7 +354,7 @@ onMounted(() => {
 	definePageMetadata(
 		computed(() => ({
 			title: group.value != null ? group.value.name : user.value?.name,
-			icon: "ph-chats-teardrop-bold ph-lg",
+			icon: `${icon("ph-chats-teardrop-bold")}`,
 		})),
 	);
 });

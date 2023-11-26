@@ -4,7 +4,7 @@
 		:style="{ zIndex, top: top + 'px', left: left + 'px' }"
 	>
 		<transition
-			:name="$store.state.animation ? 'zoom' : ''"
+			:name="defaultStore.state.animation ? 'zoom' : ''"
 			@after-leave="emit('closed')"
 		>
 			<MkUrlPreview v-if="showing" class="_popup _shadow" :url="url" />
@@ -16,6 +16,7 @@
 import { onMounted, ref } from "vue";
 import MkUrlPreview from "@/components/MkUrlPreview.vue";
 import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 const props = defineProps<{
 	showing: boolean;

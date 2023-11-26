@@ -30,15 +30,35 @@
 			<template #label>{{ i18n.ts.overridedDeviceKind }}</template>
 			<option :value="null">{{ i18n.ts.auto }}</option>
 			<option value="smartphone">
-				<i class="ph-device-mobile ph-bold ph-lg" />
+				<i :class="icon('ph-device-mobile')" />
 				{{ i18n.ts.smartphone }}
 			</option>
 			<option value="tablet">
-				<i class="ph-device-tablet ph-bold ph-lg" />
+				<i :class="icon('ph-device-tablet')" />
 				{{ i18n.ts.tablet }}
 			</option>
 			<option value="desktop">
-				<i class="ph-desktop ph-bold ph-lg" /> {{ i18n.ts.desktop }}
+				<i :class="icon('ph-desktop')" />
+				{{ i18n.ts.desktop }}
+			</option>
+		</FormRadios>
+
+		<FormRadios v-model="iconSet" class="_formBlock">
+			<template #label>{{ i18n.ts.iconSet }}</template>
+			<option value="ph-bold" :aria-label="i18n.ts._iconSets.bold">
+				<i class="ph-bold ph-2x ph-smiley"></i>
+			</option>
+			<option value="ph-duotone" :aria-label="i18n.ts._iconSets.duotone">
+				<i class="ph-duotone ph-2x ph-smiley"></i>
+			</option>
+			<option value="ph-fill" :aria-label="i18n.ts._iconSets.fill">
+				<i class="ph-fill ph-2x ph-smiley"></i>
+			</option>
+			<option value="ph" :aria-label="i18n.ts._iconSets.regular">
+				<i class="ph ph-2x ph-smiley"></i>
+			</option>
+			<option value="ph-light" :aria-label="i18n.ts._iconSets.light">
+				<i class="ph-light ph-2x ph-smiley"></i>
 			</option>
 		</FormRadios>
 
@@ -80,6 +100,19 @@
 					{{ i18n.ts.reflectMayTakeTime }}</template
 				></FormSwitch
 			>
+			<!-- <FormSwitch
+				v-model="$i.injectFeaturedNote"
+				class="_formBlock"
+				@update:modelValue="onChangeInjectFeaturedNote"
+			>
+				{{ i18n.ts.showFeaturedNotesInTimeline }}
+			</FormSwitch> -->
+			<!-- <FormSwitch v-model="reportError" class="_formBlock"
+				>{{ i18n.ts.sendErrorReports
+				}}<template #caption>{{
+					i18n.ts.sendErrorReportsDescription
+				}}</template></FormSwitch
+			> -->
 			<FormSwitch v-model="detectPostLanguage" class="_formBlock">{{
 				i18n.ts.detectPostLanguage
 			}}</FormSwitch>
@@ -122,7 +155,7 @@
 				{{ i18n.ts._mfm.alwaysPlay }}
 				<template #caption>
 					<i
-						class="ph-warning ph-bold ph-lg"
+						:class="icon('ph-warning')"
 						style="color: var(--warn)"
 					></i>
 					{{ i18n.ts._mfm.warn }}
@@ -262,7 +295,7 @@
 		}}</FormLink>
 
 		<FormLink to="/settings/custom-katex-macro" class="_formBlock"
-			><template #icon><i class="ph-radical ph-bold ph-lg"></i></template
+			><template #icon><i :class="icon('ph-radical')"></i></template
 			>{{ i18n.ts.customKaTeXMacro }}</FormLink
 		>
 	</div>
@@ -270,7 +303,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import FormSwitch from "@/components/form/switch.vue";
 import FormSelect from "@/components/form/select.vue";
 import FormRadios from "@/components/form/radios.vue";
@@ -285,6 +318,7 @@ import { unisonReload } from "@/scripts/unison-reload";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
+import icon from "@/scripts/icon";
 
 const lang = ref(localStorage.getItem("lang"));
 const translateLang = ref(localStorage.getItem("translateLang"));
@@ -390,9 +424,23 @@ const detectPostLanguage = computed(
 const openServerInfo = computed(
 	defaultStore.makeGetterSetter("openServerInfo"),
 );
+const iconSet = computed(defaultStore.makeGetterSetter("iconSet"));
+
+// This feature (along with injectPromo) is currently disabled
+// function onChangeInjectFeaturedNote(v) {
+// 	os.api("i/update", {
+// 		injectFeaturedNote: v,
+// 	}).then((i) => {
+// 		$i!.injectFeaturedNote = i.injectFeaturedNote;
+// 	});
+// }
 
 watch(swipeOnDesktop, () => {
 	defaultStore.set("swipeOnMobile", true);
+});
+
+watch(iconSet, () => {
+	defaultStore.set("iconSet", iconSet.value);
 });
 
 watch(lang, () => {
@@ -440,6 +488,7 @@ watch(
 		advancedMfm,
 		autoplayMfm,
 		expandOnNoteClick,
+		iconSet,
 	],
 	async () => {
 		await reloadAsk();
@@ -448,6 +497,6 @@ watch(
 
 definePageMetadata({
 	title: i18n.ts.general,
-	icon: "ph-gear-six ph-bold ph-lg",
+	icon: `${icon("ph-gear-six")}`,
 });
 </script>

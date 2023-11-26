@@ -52,7 +52,7 @@ gulp.task("build:backend:script", () => {
 			"./packages/backend/src/server/web/bios.js",
 			"./packages/backend/src/server/web/cli.js",
 		])
-		.pipe(replace("LANGS", JSON.stringify(Object.keys(locales))))
+		.pipe(replace("SUPPORTED_LANGS", JSON.stringify(Object.keys(locales))))
 		.pipe(
 			terser({
 				toplevel: true,

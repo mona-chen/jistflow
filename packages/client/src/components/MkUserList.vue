@@ -3,7 +3,7 @@
 		<template #empty>
 			<div class="_fullinfo">
 				<img
-					src="/static-assets/badges/info.png"
+					src="/static-assets/badges/info.webp"
 					class="_ghost"
 					alt="Info"
 				/>
@@ -31,7 +31,7 @@ import type { Paging } from "@/components/MkPagination.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import { i18n } from "@/i18n";
 
-const props = defineProps<{
+defineProps<{
 	pagination: Paging;
 	noGap?: boolean;
 }>();

@@ -1,23 +1,23 @@
-import escapeRegexp from "escape-regexp";
 import config from "@/config/index.js";
+import { Cache } from "@/misc/cache.js";
+import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import type { Note } from "@/models/entities/note.js";
+import type { UserPublickey } from "@/models/entities/user-publickey.js";
 import type {
 	CacheableRemoteUser,
 	CacheableUser,
 } from "@/models/entities/user.js";
-import type { UserPublickey } from "@/models/entities/user-publickey.js";
-import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import {
-	Notes,
-	Users,
-	UserPublickeys,
 	MessagingMessages,
+	Notes,
+	UserPublickeys,
+	Users,
 } from "@/models/index.js";
-import { Cache } from "@/misc/cache.js";
 import { uriPersonCache, userByIdCache } from "@/services/user-cache.js";
+import escapeRegexp from "escape-regexp";
+import { resolvePerson, updatePerson } from "./models/person.js";
 import type { IObject } from "./type.js";
 import { getApId } from "./type.js";
-import { resolvePerson } from "./models/person.js";
 
 const publicKeyCache = new Cache<UserPublickey | null>("publicKey", 60 * 30);
 const publicKeyByUserIdCache = new Cache<UserPublickey | null>(
@@ -70,7 +70,7 @@ export function parseUri(value: string | IObject): UriParseResult {
 
 export default class DbResolver {
 	/**
-	 * AP Note => Misskey Note in DB
+	 * AP Note => Firefish Note in DB
 	 */
 	public async getNoteFromApId(value: string | IObject): Promise<Note | null> {
 		const parsed = parseUri(value);
@@ -114,7 +114,7 @@ export default class DbResolver {
 	}
 
 	/**
-	 * AP Person => Misskey User in DB
+	 * AP Person => Firefish User in DB
 	 */
 	public async getUserFromApId(
 		value: string | IObject,
@@ -147,11 +147,11 @@ export default class DbResolver {
 	}
 
 	/**
-	 * AP KeyId => Misskey User and Key
+	 * AP KeyId => Firefish User and Key
 	 */
 	public async getAuthUserFromKeyId(keyId: string): Promise<{
 		user: CacheableRemoteUser;
-		key: UserPublickey;
+		key: UserPublickey | null;
 	} | null> {
 		const key = await publicKeyCache.fetch(
 			keyId,
@@ -181,7 +181,7 @@ export default class DbResolver {
 	}
 
 	/**
-	 * AP Actor id => Misskey User and Key
+	 * AP Actor id => Firefish User and Key
 	 */
 	public async getAuthUserFromApId(uri: string): Promise<{
 		user: CacheableRemoteUser;
@@ -202,5 +202,16 @@ export default class DbResolver {
 			user,
 			key,
 		};
+	}
+
+	public async refetchPublicKeyForApId(
+		user: CacheableRemoteUser,
+	): Promise<UserPublickey | null> {
+		await updatePerson(user.uri!, undefined, undefined, user);
+		const key = await UserPublickeys.findOneBy({ userId: user.id });
+		if (key != null) {
+			await publicKeyByUserIdCache.set(user.id, key);
+		}
+		return key;
 	}
 }

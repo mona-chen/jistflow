@@ -28,9 +28,9 @@
 					>
 						<i
 							v-if="!tweetExpanded"
-							class="ph-twitter-logo ph-bold ph-lg"
+							:class="iconClass('ph-twitter-logo')"
 						></i>
-						<i v-else class="ph-x ph-bold ph-lg"></i>
+						<i v-else :class="iconClass('ph-x')"></i>
 					</button>
 					<button
 						v-else-if="player.url"
@@ -42,9 +42,9 @@
 					>
 						<i
 							v-if="!playerEnabled"
-							class="ph-play ph-bold ph-lg"
+							:class="iconClass('ph-play')"
 						></i>
-						<i v-else class="ph-x ph-bold ph-lg"></i>
+						<i v-else :class="iconClass('ph-x')"></i>
 					</button>
 				</div>
 				<div v-if="fetching">
@@ -103,6 +103,7 @@ import { onUnmounted, ref } from "vue";
 import { lang, url as local } from "@/config";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
+import iconClass from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{

@@ -2,7 +2,7 @@ import * as mfm from "mfm-js";
 import { defaultStore } from "@/store";
 import { expandKaTeXMacro } from "@/scripts/katex-macro";
 
-export function preprocess(text: string): string {
+export default function (text: string): string {
 	if (defaultStore.state.enableCustomKaTeXMacro) {
 		const parsedKaTeXMacro =
 			localStorage.getItem("customKaTeXMacroParsed") ?? "{}";

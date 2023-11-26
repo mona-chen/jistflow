@@ -29,18 +29,19 @@
 
 <script lang="ts" setup>
 import { computed, provide, ref, watch } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XNotes from "@/components/MkNotes.vue";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	clipId: string;
 }>();
 
-const clip = ref<misskey.entities.Clip>();
+const clip = ref<firefish.entities.Clip>();
 const pagination = {
 	endpoint: "clips/notes" as const,
 	limit: 10,
@@ -71,7 +72,7 @@ const headerActions = computed(() =>
 	clip.value && isOwned.value
 		? [
 				{
-					icon: "ph-pencil ph-bold ph-lg",
+					icon: `${icon("ph-pencil")}`,
 					text: i18n.ts.edit,
 					handler: async (): Promise<void> => {
 						const { canceled, result } = await os.form(
@@ -105,7 +106,7 @@ const headerActions = computed(() =>
 					},
 				},
 				{
-					icon: "ph-trash ph-bold ph-lg",
+					icon: `${icon("ph-trash")}`,
 					text: i18n.ts.delete,
 					danger: true,
 					handler: async (): Promise<void> => {
@@ -131,7 +132,7 @@ definePageMetadata(
 		clip.value
 			? {
 					title: clip.value.name,
-					icon: "ph-paperclip ph-bold ph-lg",
+					icon: `${icon("ph-paperclip")}`,
 			  }
 			: null,
 	),

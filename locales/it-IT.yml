@@ -147,11 +147,11 @@ cacheRemoteFiles: "Mantieni i file remoti nella cache"
 cacheRemoteFilesDescription: "Disabilitando questa opzione, i file remoti verranno
   scaricati direttamente dal loro server. L'opzione permette di risparmiare spazio
   ma aumenta il traffico di rete e non verranno generate anteprime."
-flagAsBot: "Questo account è un bot"
+flagAsBot: "Questo account è automatizzato"
 flagAsBotDescription: "Se l'account esegue principalmente operazioni automatiche,
-  attiva quest'opzione. Quando attivata, opera come un segnalatore per gli altri sviluppatori
-  allo scopo di prevenire catene d’interazione senza fine con altri bot, e di adeguare
-  i sistemi interni di Firefish perché trattino questo account come un bot."
+  attiva quest'opzione. Quando attivata, permette agli sviluppatori di prevenire catene
+  d’interazione senza fine con altri account automatizzati. Inoltre imposta Firefish
+  perché tratti questo account come automatizzato."
 flagAsCat: "Sei un gatto? 😺"
 flagAsCatDescription: "Ti compariranno le orecchie e parlerai come un gatto!"
 autoAcceptFollowed: "Accetta in automatico i follow dagli account che segui"
@@ -268,7 +268,7 @@ agreeTo: "Sono d'accordo con {0}"
 tos: "Termini d'uso"
 start: "Inizia"
 home: "Home"
-remoteUserCaution: "Le informazioni degli utenti remoti possono essere incomplete."
+remoteUserCaution: "Le informazioni degli utenti remoti sono incomplete."
 activity: "Attività"
 images: "Immagini"
 birthday: "Compleanno"
@@ -331,9 +331,6 @@ dayX: "{day}"
 monthX: "{month}"
 yearX: "{year}"
 pages: "Pagine"
-integration: "Integrazioni"
-connectService: "Connetti"
-disconnectService: "Disconnetti"
 enableLocalTimeline: "Abilita timeline locale"
 enableGlobalTimeline: "Abilita timeline federata"
 disablingTimelinesInfo: "Anche se disabiliti queste timeline, gli amministratori e
@@ -626,7 +623,7 @@ emptyToDisableSmtpAuth: "Lasciare username e password vuoti per disabilitare la 
 smtpSecure: "Usa la porta SSL/TLS predefinita per le connessioni SMTP"
 smtpSecureInfo: "Disabilita quando è attivo STARTTLS"
 testEmail: "Test di consegna email"
-wordMute: "Filtro parole"
+wordMute: "Filtro parole e lingua"
 instanceMute: "Server silenziati"
 userSaysSomething: "{name} ha detto qualcosa"
 makeActive: "Attiva"
@@ -901,7 +898,8 @@ _accountDelete:
     caricato.
 _ad:
   back: "Indietro"
-  reduceFrequencyOfThisAd: "Mostra meno spesso questa pubblicità"
+  reduceFrequencyOfThisAd: "Mostra meno spesso questo banner"
+  adsBy: Banner della comunità da {by}
 _forgotPassword:
   enterEmail: "Inserisci l'e-mail che hai registrato nel tuo profilo. Il link di ripristino
     della password verrà inviato a questo indirizzo."
@@ -1084,6 +1082,11 @@ _wordMute:
   soft: "Moderato"
   hard: "Severo"
   mutedNotes: "Post silenziati"
+  muteLangsDescription2: 'Usa il codice lingua, esempio: en, fr, ja, zh.'
+  lang: Lingua
+  langDescription: Nascondi dalla timeline i post in quest'insieme di lingue.
+  muteLangs: Lingue da non mostrare
+  muteLangsDescription: Separa andando a capo o con spazi per la condizione OR.
 _theme:
   explore: "Esplora temi"
   install: "Installa un tema"
@@ -1992,11 +1995,11 @@ secureMode: Modalità sicura (Acquisizione autorizzata)
 secureModeInfo: Le richieste dai server remoti non ricevono risposta senza prima una
   verifica.
 privateMode: Modalità privata
-allowedInstancesDescription: Gli host dei server che saranno federati in esclusiva,
+allowedInstancesDescription: Gli host dei server con cui sarà permessa la federazione,
   uno per riga (funziona solo in modalità privata).
-privateModeInfo: Se abilitata, solo i server in una whitelist potranno essere federati
+privateModeInfo: Se abilitata, solo i server nell'elenco potranno essere federati
   con questo server. Tutti i post saranno nascosti al pubblico.
-allowedInstances: Whitelist dei server
+allowedInstances: Elenco server permessi
 customCssWarn: Questa impostazione dovrebbe essere usata solo se sai cosa stai facendo.
   Inserire valori errati potrebbe bloccare il funzionamento del client.
 lastCommunication: Ultima comunicazione
@@ -2076,7 +2079,7 @@ noGraze: Per favore disattiva l'estenzione del browser "Graze for Mastodon", per
   interferisce con Firefish.
 silencedWarning: Vedi questa pagina perché gli utenti sono su un server che il tuo
   admin ha silenziato, quindi potrebbero essere spam.
-isBot: Questo account è un bot
+isBot: Questo account è automatizzato
 isLocked: Serve una approvazione per seguire questo account
 moveFromDescription: Questa operazione crea un alias del vecchio account in modo che
   tu possa migrare su questo nuovo account. Fallo PRIMA di migrare il tuo vecchio
@@ -2164,3 +2167,18 @@ indexable: Indicizzabile
 languageForTranslation: Linguaggio di traduzione dei post
 openServerInfo: Mostra informazioni sul server cliccando sul riquadro del server in
   un post
+vibrate: Abilita la vibrazione
+clickToShowPatterns: Clicca per vedere i pattern del modulo
+iconSet: Set di icone
+_iconSets:
+  fill: Con riempimento
+  regular: Regolare
+  bold: Grassetto
+  duotone: Con due toni
+  light: Sottile
+reactions: Reazioni
+replies: Risposte
+quotes: Citazioni
+renotes: Boost
+showAttachedNotes: Mostra i post con questo allegato
+attachedToNotes: Post con questo allegato

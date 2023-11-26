@@ -4,12 +4,12 @@
 		:naked="widgetProps.transparent"
 	>
 		<template #header
-			><i class="ph-hard-drives ph-bold ph-lg"></i
+			><i :class="icon('ph-hard-drives')"></i
 			>{{ i18n.ts._widgets.serverMetric }}</template
 		>
 		<template #func
 			><button class="_button" @click="toggleView()">
-				<i class="ph-sort-ascending ph-bold ph-lg"></i></button
+				<i :class="icon('ph-sort-ascending')"></i></button
 		></template>
 
 		<div v-if="!instance.enableServerMachineStats" class="mkw-serverMetric">
@@ -58,13 +58,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { onUnmounted, ref } from "vue";
 import type { Widget, WidgetComponentExpose } from "../widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "../widget";
+import { useWidgetPropsManager } from "../widget";
 import XCpuMemory from "./cpu-mem.vue";
 import XNet from "./net.vue";
 import XCpu from "./cpu.vue";
@@ -77,6 +73,7 @@ import * as os from "@/os";
 import { stream } from "@/stream";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
+import icon from "@/scripts/icon";
 
 const name = "serverMetric";
 

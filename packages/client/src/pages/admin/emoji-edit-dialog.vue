@@ -32,7 +32,7 @@
 					<template #label>{{ i18n.ts.license }}</template>
 				</MkTextarea>
 				<MkButton danger @click="del()"
-					><i class="ph-trash ph-bold ph-lg"></i>
+					><i :class="icon('ph-trash')"></i>
 					{{ i18n.ts.delete }}</MkButton
 				>
 			</div>
@@ -50,6 +50,7 @@ import MkTextarea from "@/components/form/textarea.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { emojiCategories } from "@/instance";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	emoji: any;

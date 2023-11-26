@@ -3,7 +3,7 @@
 		<template #empty>
 			<div class="_fullinfo">
 				<img
-					src="/static-assets/badges/info.png"
+					src="/static-assets/badges/info.webp"
 					class="_ghost"
 					alt="Info"
 				/>
@@ -45,7 +45,7 @@ import { scroll } from "@/scripts/scroll";
 
 const tlEl = ref<HTMLElement>();
 
-const props = defineProps<{
+defineProps<{
 	pagination: Paging;
 	noGap?: boolean;
 }>();

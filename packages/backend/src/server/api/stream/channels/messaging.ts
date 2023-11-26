@@ -1,12 +1,12 @@
-import {
-	readUserMessagingMessage,
-	readGroupMessagingMessage,
-	deliverReadActivity,
-} from "../../common/read-messaging-message.js";
-import Channel from "../channel.js";
-import { UserGroupJoinings, Users, MessagingMessages } from "@/models/index.js";
-import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
 import type { UserGroup } from "@/models/entities/user-group.js";
+import type { ILocalUser, IRemoteUser, User } from "@/models/entities/user.js";
+import { MessagingMessages, UserGroupJoinings, Users } from "@/models/index.js";
+import {
+	deliverReadActivity,
+	readGroupMessagingMessage,
+	readUserMessagingMessage,
+} from "@/server/api/common/read-messaging-message.js";
+import Channel from "../channel.js";
 import type { StreamMessages } from "../types.js";
 
 export default class extends Channel {

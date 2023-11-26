@@ -1,16 +1,16 @@
-import { FindManyOptions, In } from "typeorm";
-import { Notes } from "@/models/index.js";
-import { Note } from "@/models/entities/note.js";
 import config from "@/config/index.js";
 import es from "@/db/elasticsearch.js";
-import sonic from "@/db/sonic.js";
 import meilisearch, { MeilisearchNote } from "@/db/meilisearch.js";
-import define from "../../define.js";
-import { makePaginationQuery } from "../../common/make-pagination-query.js";
-import { generateVisibilityQuery } from "../../common/generate-visibility-query.js";
-import { generateMutedUserQuery } from "../../common/generate-muted-user-query.js";
-import { generateBlockedUserQuery } from "../../common/generate-block-query.js";
+import sonic from "@/db/sonic.js";
 import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { Note } from "@/models/entities/note.js";
+import { Notes } from "@/models/index.js";
+import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
+import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
+import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
+import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
+import define from "@/server/api/define.js";
+import { FindManyOptions, In } from "typeorm";
 
 export const meta = {
 	tags: ["notes"],
@@ -62,6 +62,7 @@ export const paramDef = {
 			type: "string",
 			default: "chronological",
 			nullable: true,
+			description: "Either 'chronological' or 'relevancy'",
 		},
 	},
 	required: ["query"],
@@ -75,9 +76,11 @@ export default define(meta, paramDef, async (ps, me) => {
 			ps.untilId,
 		);
 
-		if (ps.userId) {
+		if (ps.userId != null) {
 			query.andWhere("note.userId = :userId", { userId: ps.userId });
-		} else if (ps.channelId) {
+		}
+
+		if (ps.channelId != null) {
 			query.andWhere("note.channelId = :channelId", {
 				channelId: ps.channelId,
 			});
@@ -87,6 +90,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			.andWhere("note.text ILIKE :q", { q: `%${sqlLikeEscape(ps.query)}%` })
 			.andWhere("note.visibility = 'public'")
 			.innerJoinAndSelect("note.user", "user")
+			.andWhere("user.isIndexable = TRUE")
 			.leftJoinAndSelect("user.avatar", "avatar")
 			.leftJoinAndSelect("user.banner", "banner")
 			.leftJoinAndSelect("note.reply", "reply")
@@ -239,7 +243,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		while (found.length < ps.limit && start < noteIDs.length) {
 			const chunk = noteIDs.slice(start, start + chunkSize);
 
-			let query: FindManyOptions = {
+			const query: FindManyOptions = {
 				where: {
 					id: In(chunk),
 				},

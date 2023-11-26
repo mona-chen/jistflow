@@ -9,7 +9,7 @@ By submitting this merge request, you agree to follow our [Contribution Guidelin
 - [ ] I have made sure to run `pnpm run format` before submitting this pull request
 
 If this merge request makes changes to the Firefish API, please update `docs/api-change.md`
-- [ ] I updated the documentation
+- [ ] I updated the document / This merge request doesn't include API changes
 
 <!-- Uncomment if your merge request has multiple authors -->
 <!-- Co-authored-by: Name <email@email.com> -->

@@ -350,9 +350,6 @@ dayX: "{day}"
 monthX: "{month}"
 yearX: "{year}"
 pages: "Nutzer-Seiten"
-integration: "Integration"
-connectService: "Verbinden"
-disconnectService: "Trennen"
 enableLocalTimeline: "Local-Timeline aktivieren"
 enableGlobalTimeline: "Global-Timeline aktivieren"
 disablingTimelinesInfo: "Administratoren und Moderatoren haben immer Zugriff auf alle
@@ -405,6 +402,8 @@ withReplies: "Antworten beinhalten"
 connectedTo: "Mit folgenden Nutzerkonten verknüpft"
 notesAndReplies: "Beiträge und Antworten"
 withFiles: "Beiträge mit Dateien"
+attachedToNotes: "Beiträge mit dieser Datei"
+showAttachedNotes: "Zeige Beiträge mit dieser Datei"
 silence: "stummschalten"
 silenceConfirm: "Sind Sie sicher, dass Sie diesen Benutzer Stummschalten möchten?"
 unsilence: "Stummschaltung aufheben"
@@ -529,12 +528,12 @@ objectStorageBaseUrl: "Basis-URL"
 objectStorageBaseUrlDesc: "Die als Referenz verwendete URL. Verwendest du einen CDN
   oder Proxy, gib dessen URL an. \nFür S3 verwende 'https://<bucket>.s3.amazonaws.com'.
   Für GCS o.ä. verwende 'https://storage.googleapis.com/<bucket>'."
-objectStorageBucket: "Eimer"
+objectStorageBucket: "Bucket"
 objectStorageBucketDesc: "Bitte gib den Namen des Buckets an, der bei deinem Anbieter
   verwendet wird."
 objectStoragePrefix: "Prefix"
 objectStoragePrefixDesc: "Dateien werden in Ordnern unter diesem Prefix gespeichert."
-objectStorageEndpoint: "Limit"
+objectStorageEndpoint: "Endpunkt"
 objectStorageEndpointDesc: "Im Falle von S3 leerlassen, für andere Anbieter den relevanten
   Endpoint im Format „<host>“ oder „<host>:<port>“ angeben."
 objectStorageRegion: "Region"
@@ -1037,6 +1036,7 @@ _accountDelete:
 _ad:
   back: "Zurück"
   reduceFrequencyOfThisAd: "Diese Werbeanzeige weniger anzeigen"
+  adsBy: Community-Banner von {by}
 _forgotPassword:
   enterEmail: "Gib die Email-Adresse ein, mit der du dich registriert hast. An diese
     wird ein Link gesendet, mit dem du dein Passwort zurücksetzen kannst."
@@ -1243,6 +1243,7 @@ _wordMute:
   soft: "Leicht"
   hard: "Schwer"
   mutedNotes: "Stummgeschaltete Beiträge"
+  muteLangs: Stummgeschaltete Sprachen
 _instanceMute:
   instanceMuteDescription: "Schaltet alle Beiträge/Boosts stumm, die von den gelisteten
     Servern stammen, inklusive Antworten von Nutzern an einen Nutzer eines stummgeschalteten
@@ -2215,3 +2216,6 @@ indexable: Indexierbar
 languageForTranslation: Übersetzungssprache veröffentlichen
 openServerInfo: Anzeigen von Serverinformationen durch Anklicken des Server-Tickers
   in einem Beitrag
+vibrate: Vibrationen abspielen
+clickToShowPatterns: Klicken um Modul-Muster anzuzeigen
+replies: Antworten

@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts" setup>
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 
 const props = withDefaults(
 	defineProps<{
-		user: misskey.entities.User;
+		user: firefish.entities.User;
 		nowrap?: boolean;
 	}>(),
 	{

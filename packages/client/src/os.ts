@@ -1,22 +1,22 @@
 // TODO: なんでもかんでもos.tsに突っ込むのやめたいのでよしなに分割する
 
+import MkDialog from "@/components/MkDialog.vue";
+import MkPostFormDialog from "@/components/MkPostFormDialog.vue";
+import MkToast from "@/components/MkToast.vue";
+import MkWaitingDialog from "@/components/MkWaitingDialog.vue";
+import { url, apiUrl } from "@/config";
+import { $i } from "@/reactiveAccount";
+import type { MenuItem } from "@/types/menu";
+import { EventEmitter } from "eventemitter3";
+import * as firefish from "firefish-js";
+import insertTextAtCursor from "insert-text-at-cursor";
 import type { Component, Ref } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
-import { EventEmitter } from "eventemitter3";
-import insertTextAtCursor from "insert-text-at-cursor";
-import * as Misskey from "firefish-js";
 import { i18n } from "./i18n";
-import { apiUrl, url } from "@/config";
-import MkPostFormDialog from "@/components/MkPostFormDialog.vue";
-import MkWaitingDialog from "@/components/MkWaitingDialog.vue";
-import MkToast from "@/components/MkToast.vue";
-import MkDialog from "@/components/MkDialog.vue";
-import type { MenuItem } from "@/types/menu";
-import { $i } from "@/account";
 
 export const pendingApiRequestsCount = ref(0);
 
-const apiClient = new Misskey.api.APIClient({
+const apiClient = new firefish.api.APIClient({
 	origin: url,
 });
 
@@ -24,6 +24,7 @@ export const api = ((
 	endpoint: string,
 	data: Record<string, any> = {},
 	token?: string | null | undefined,
+	useToken = true,
 ) => {
 	pendingApiRequestsCount.value++;
 
@@ -42,7 +43,7 @@ export const api = ((
 			body: JSON.stringify(data),
 			credentials: "omit",
 			cache: "no-cache",
-			headers: authorization ? { authorization } : {},
+			headers: authorization && useToken ? { authorization } : {},
 		})
 			.then(async (res) => {
 				const body = res.status === 204 ? null : await res.json();
@@ -277,6 +278,7 @@ export function alert(props: {
 	type?: "error" | "info" | "success" | "warning" | "waiting" | "question";
 	title?: string | null;
 	text?: string | null;
+	isPlaintext?: boolean;
 }): Promise<void> {
 	return new Promise((resolve, reject) => {
 		if (props.text == null && props.type === "error") {
@@ -301,6 +303,7 @@ export function confirm(props: {
 	text?: string | null;
 	okText?: string;
 	cancelText?: string;
+	isPlaintext?: boolean;
 }): Promise<{ canceled: boolean }> {
 	return new Promise((resolve, reject) => {
 		popup(
@@ -323,6 +326,7 @@ export function yesno(props: {
 	type: "error" | "info" | "success" | "warning" | "waiting" | "question";
 	title?: string | null;
 	text?: string | null;
+	isPlaintext?: boolean;
 }): Promise<{ canceled: boolean }> {
 	return new Promise((resolve, reject) => {
 		popup(
@@ -651,7 +655,7 @@ export async function selectLocalUser() {
 	});
 }
 
-export async function selectInstance(): Promise<Misskey.entities.Instance> {
+export async function selectInstance(): Promise<firefish.entities.Instance> {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({
@@ -741,11 +745,11 @@ export async function pickEmoji(src: HTMLElement | null, opts) {
 }
 
 export async function cropImage(
-	image: Misskey.entities.DriveFile,
+	image: firefish.entities.DriveFile,
 	options: {
 		aspectRatio: number;
 	},
-): Promise<Misskey.entities.DriveFile> {
+): Promise<firefish.entities.DriveFile> {
 	return new Promise((resolve, reject) => {
 		popup(
 			defineAsyncComponent({

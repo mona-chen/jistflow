@@ -88,6 +88,7 @@ import { lookupFile } from "@/scripts/lookup-file";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const origin = ref("local");
 const type = ref(null);
@@ -122,12 +123,12 @@ function clear() {
 const headerActions = computed(() => [
 	{
 		text: i18n.ts.lookup,
-		icon: "ph-magnifying-glass ph-bold ph-lg",
+		icon: `${icon("ph-magnifying-glass")}`,
 		handler: lookupFile,
 	},
 	{
 		text: i18n.ts.clearCachedFiles,
-		icon: "ph-trash ph-bold ph-lg",
+		icon: `${icon("ph-trash")}`,
 		handler: clear,
 	},
 ]);
@@ -135,7 +136,7 @@ const headerActions = computed(() => [
 definePageMetadata(
 	computed(() => ({
 		title: i18n.ts.files,
-		icon: "ph-cloud ph-bold ph-lg",
+		icon: `${icon("ph-cloud")}`,
 	})),
 );
 </script>

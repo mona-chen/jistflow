@@ -64,7 +64,7 @@ import: "インポート"
 export: "エクスポート"
 files: "ファイル"
 download: "ダウンロード"
-driveFileDeleteConfirm: "ファイル「{name}」を消してしもうてええか？このファイルを添付した投稿も消えてまうで。"
+driveFileDeleteConfirm: "ファイル「{name}」を消してええんか？添付した全部の投稿から、きれいさっぱり消えてなくなるで。"
 unfollowConfirm: "{name}のフォローを解除してもええんか？"
 exportRequested: "エクスポートしてな、ってリクエストしたけど、これ多分めっちゃ時間かかるで。エクスポート終わったら「ドライブ」に突っ込んどくで。"
 importRequested: "インポートしてな、ってリクエストしたけど、これ多分めっちゃ時間かかるで。"
@@ -86,7 +86,7 @@ serverIsDead: "サーバーの応答がおまへん。ちーとの間待って�
 youShouldUpgradeClient: "このページを表示するには、リロードして新しいバージョンのクライアントを使うてや。"
 enterListName: "リスト名を入れてや"
 privacy: "プライバシー"
-makeFollowManuallyApprove: "自分が認めた人だけがこのアカウントをフォローできるようにする"
+makeFollowManuallyApprove: "ワイが認めた奴だけがワイをフォローできるようにする"
 defaultNoteVisibility: "もとからの公開範囲"
 follow: "フォロー"
 followRequest: "フォローを頼む"
@@ -138,9 +138,9 @@ addEmoji: "絵文字を追加"
 settingGuide: "ええ感じの設定"
 cacheRemoteFiles: "リモートのファイルをキャッシュする"
 cacheRemoteFilesDescription: "この設定を切っとくと、リモートファイルをキャッシュせず直リンクするようになるで。サーバーの容量は節約できるけど、サムネイルが作られんくなるから通信量が増えるで。"
-flagAsBot: "ワイはBotや 🤖"
+flagAsBot: "ワイはBotや🤖"
 flagAsBotDescription: "もしこのアカウントがプログラムによって運用されるんやったら、このフラグをオンにしてたのむで。オンにすると、反応の連鎖を防ぐためのフラグとして他の開発者に役立ったり、Firefishのシステム上での扱いがBotに合ったもんになったりするんやで。"
-flagAsCat: "ワイはCatや 🐯"
+flagAsCat: "ワイはCatや🐯"
 flagAsCatDescription: "自分、猫ちゃんならこのフラグつけてみ？"
 flagShowTimelineReplies: "タイムラインに返信を表示させたる"
 flagShowTimelineRepliesDescription: "有効にすると、タイムラインに他のユーザー宛ての投稿も表示したるで。"
@@ -246,8 +246,8 @@ uploadFromUrl: "URLアップロード"
 uploadFromUrlDescription: "このURLのファイルをアップロードしたいねん"
 uploadFromUrlRequested: "アップロードしたい言うといたで"
 uploadFromUrlMayTakeTime: "アップロード終わるんにちょい時間かかるかもしれへんわ。"
-explore: "みつける"
-messageRead: "もう読んだ"
+explore: "みっける"
+messageRead: "もう読まはった"
 noMoreHistory: "これより過去の履歴はあらへんで"
 startMessaging: "チャットやるで"
 nUsersRead: "{n}人が読んでもうた"
@@ -317,9 +317,6 @@ dayX: "{day}日"
 monthX: "{month}月"
 yearX: "{year}年"
 pages: "ページ"
-integration: "連携"
-connectService: "つなげるで"
-disconnectService: "切るで"
 enableLocalTimeline: "ローカルタイムラインを使えるようにする"
 enableGlobalTimeline: "グローバルタイムラインを使えるようにする"
 disablingTimelinesInfo: "ここらへんのタイムラインを使えんようにしてしもても、管理者とモデレーターは使えるままになってるで、そうやなかったら不便やからな。"
@@ -334,7 +331,7 @@ bannerUrl: "バナー画像のURL"
 backgroundImageUrl: "背景画像のURL"
 basicInfo: "基本情報"
 pinnedUsers: "ピン留めしたユーザー"
-pinnedUsersDescription: "「みつける」ページとかにピン留めしたいユーザーをここに書けばええんやで。他ん人との名前は改行で区切ればええんやで。"
+pinnedUsersDescription: "「みっける」ページとかにピン留めしときたい兄ちゃんらをここに書いといたらええわ。名前は改行で区切ればええで。"
 pinnedPages: "ピン留めページ"
 pinnedPagesDescription: "サーバーのいっちゃん上にピン留めしたいページのパスを、改行で区切って記述してな。"
 pinnedClipId: "ピン留めするクリップのID"
@@ -363,7 +360,7 @@ caseSensitive: "大文字と小文字は別もんや"
 withReplies: "返信も入れたって"
 connectedTo: "次のアカウントに繋がっとるで"
 notesAndReplies: "投稿と返信"
-withFiles: "ファイル付いとる"
+withFiles: "ファイル付いとるやつ"
 silence: "サイレンス"
 silenceConfirm: "サイレンスしよか？"
 unsilence: "サイレンスやめるで"
@@ -389,7 +386,7 @@ securityKeyName: "キーの名前"
 registerSecurityKey: "セキュリティキーを登録するで"
 lastUsed: "最後につこうた日"
 unregister: "登録やめる"
-passwordLessLogin: "パスワード無くてもログインできるようにする"
+passwordLessLogin: "パスワードなんか無うてもログインでけるようにする"
 resetPassword: "パスワードをリセット"
 newPasswordIs: "今度のパスワードは「{password}」や"
 reduceUiAnimation: "UIの動きやアニメーションを減らす"
@@ -398,8 +395,8 @@ notFound: "見つからへんね"
 notFoundDescription: "指定されたURLに該当するページはあらへんやった。"
 uploadFolder: "とりあえずアップロードしたやつ置いとく所"
 cacheClear: "キャッシュをほかす"
-markAsReadAllNotifications: "通知はもう全て読んだわっ"
-markAsReadAllUnreadNotes: "投稿は全て読んだわっ"
+markAsReadAllNotifications: "通知はもうぜんぶ読んだわっ"
+markAsReadAllUnreadNotes: "投稿はぜんぶ読んだわっ"
 markAsReadAllTalkMessages: "チャットはもうぜんぶ読んだわっ"
 help: "ヘルプ"
 inputMessageHere: "ここにメッセージ書いてや"
@@ -507,8 +504,8 @@ listen: "聴く"
 none: "なし"
 showInPage: "ページで表示"
 popout: "ポップアウト"
-volume: "音量"
-masterVolume: "全体の音量"
+volume: "やかましさ"
+masterVolume: "全体的なやかましさ"
 details: "もっと"
 chooseEmoji: "絵文字を選ぶ"
 unableToProcess: "なんか作業が止まってしまったようやね"
@@ -527,7 +524,7 @@ scratchpad: "スクラッチパッド"
 scratchpadDescription: "スクラッチパッドではAiScriptを色々試すことができるんや。Firefishに対して色々できるコードを書いて動かしてみたり、結果を見たりできるで。"
 output: "出力"
 script: "スクリプト"
-disablePagesScript: "Pagesのスクリプトを無効にしてや"
+disablePagesScript: "ページ機能のスクリプトを無効にしてや"
 updateRemoteUser: "リモートユーザー情報の更新してくれん？"
 deleteAllFiles: "すべてのファイルを削除"
 deleteAllFilesConfirm: "ホンマにすべてのファイルを削除するん？消したもんはもう戻ってこんのやで？"
@@ -684,7 +681,7 @@ clips: "クリップ"
 experimentalFeatures: "実験的機能やで"
 developer: "開発者やで"
 makeExplorable: "アカウントを見つけやすくするで"
-makeExplorableDescription: "オフにすると、「みつける」にアカウントが載らんくなるで。"
+makeExplorableDescription: "オフにすると、「みっける」ページに名前が載らんくなるで。"
 showGapBetweenNotesInTimeline: "タイムライン上の投稿を離して表示するで"
 duplicate: "複製"
 left: "左"
@@ -714,7 +711,7 @@ saveConfirm: "保存するで？"
 deleteConfirm: "ホンマに削除するで？"
 invalidValue: "有効な値じゃないみたいやで。"
 registry: "レジストリ"
-closeAccount: "アカウントを閉鎖する"
+closeAccount: "このアカウントにさいならする"
 currentVersion: "現在のバージョン"
 latestVersion: "最新のバージョン"
 youAreRunningUpToDateClient: "今使ってるクライアントが最新やで！"
@@ -872,8 +869,8 @@ _registry:
   domain: "ドメイン"
   createKey: "キーを作る"
 _aboutFirefish:
-  about: "Firefishは、ThatOneCalculatorが2022年にMisskeyをいじって作った、オープンなソースのソフトウェアや。"
-  contributors: "主な貢献者"
+  about: "Firefishは、ThatOneCalculatorが2022年にMisskeyをいじって作った、オープンなソースのソフトウエアーや。"
+  contributors: "ごっつい貢献者"
   allContributors: "全ての貢献者"
   source: "ソースコード"
   translation: "Firefishを翻訳"
@@ -1082,8 +1079,9 @@ _visibility:
   public: 公開
   homeDescription: ローカルTLやグローバルTLには流さへん
 _profile:
-  name: "名前"
+  name: "お名前"
   username: "ユーザー名"
+  youCanIncludeHashtags: ハッシュタグを書いてもええよ。
 _exportOrImport:
   allNotes: "すべての投稿"
   followingList: "フォロー"
@@ -1441,6 +1439,17 @@ _tutorial:
   step1_2: 使い始める前に、いくつか設定を済ませまひょ。すぐできますえ。
   step2_1: 最初に、あんさんのプロフィールを作りまひょ
   step2_2: プロフィールを設定しはることで、他ん人があんさんの投稿を見たり、フォローしたりするときの助けになってます。
+  step3_2: "あんさんのホームとソーシャルタイムラインは、どなたはんをフォローしはるかで決まります。ほな、いくつかアカウントをフォローしてみまひょ。\n\
+    プロフィールの右上にある、まあるい＋ボタンをクリックしはるとフォローできますえ。"
+  step4_1: 投稿しとーみ
+  step5_1: タイムライン！ 文字と写真の宝石箱や～
+  step5_2: うちのサーバーでは{timelines}種類のタイムラインをご用意しとります。
+  step4_2: 最初は{introduction}に投稿したり、シンプルに「ここは賑やかどすなぁ。ウチはそんなに喋れまへんが、どうぞよろしゅうに」などと投稿しはる方もいてます。
+  step5_7: グローバル{icon}タイムラインでは、接続しとるそこいらのサーバーからアレがガーッ流れてきてえらいこっちゃで。
+  step5_6: おすすめ{icon}タイムラインでは、うちの管理人がばりおすすめしとるサーバーの投稿を表示させとうよ。
+  step5_5: ソーシャル{icon}タイムラインでは、ホームタイムラインとローカルタイムラインの投稿が両方見られてホンマお得やわぁ。
+  step5_3: ホーム{icon}タイムラインでは、あんたはんがフォローしてはる兄ちゃんらの投稿が見られまんねん。
+  step5_4: ローカル{icon}タイムラインでは、このサーバーにおる人らの投稿を見られますわ。
 _postForm:
   _placeholders:
     b: なんかおましたか？
@@ -1449,7 +1458,7 @@ _postForm:
     d: なんや言いたいんちゃいますか？
     f: あんさん書くんを待っとるんどす...
     a: いまなにしとん？
-flagSpeakAsCat: 猫弁で話す
+flagSpeakAsCat: 猫弁で喋る
 flagSpeakAsCatDescription: オンにすると、ワレの投稿の「な」を「にゃ」に変換したるで。
 welcomeBackWithName: おおきに、{name}はん
 migration: アカウントの引っ越し

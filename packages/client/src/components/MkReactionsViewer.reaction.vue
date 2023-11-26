@@ -23,18 +23,18 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XDetails from "@/components/MkReactionsViewer.details.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import * as os from "@/os";
 import { useTooltip } from "@/scripts/use-tooltip";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 
 const props = defineProps<{
 	reaction: string;
 	count: number;
 	isInitial: boolean;
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 }>();
 
 const emit = defineEmits<{

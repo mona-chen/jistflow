@@ -1,6 +1,6 @@
 <template>
 	<transition
-		:name="$store.state.animation ? 'window' : ''"
+		:name="defaultStore.state.animation ? 'window' : ''"
 		appear
 		@after-leave="$emit('closed')"
 	>
@@ -54,21 +54,21 @@
 							class="button _button"
 							@click="unMaximize()"
 						>
-							<i class="ph-copy ph-bold ph-lg"></i>
+							<i :class="icon('ph-copy')"></i>
 						</button>
 						<button
 							v-else-if="canResize && !maximized"
 							class="button _button"
 							@click="maximize()"
 						>
-							<i class="ph-browser ph-bold ph-lg"></i>
+							<i :class="icon('ph-browser')"></i>
 						</button>
 						<button
 							v-if="closeButton"
 							class="button _button"
 							@click="close()"
 						>
-							<i class="ph-x ph-bold ph-lg"></i>
+							<i :class="icon('ph-x')"></i>
 						</button>
 					</span>
 				</div>
@@ -119,6 +119,8 @@ import { onBeforeUnmount, onMounted, provide, ref } from "vue";
 import contains from "@/scripts/contains";
 import * as os from "@/os";
 import type { MenuItem } from "@/types/menu";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const minHeight = 50;
 const minWidth = 250;

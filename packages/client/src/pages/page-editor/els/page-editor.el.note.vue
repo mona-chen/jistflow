@@ -1,7 +1,7 @@
 <template>
 	<XContainer :draggable="true" @remove="() => $emit('remove')">
 		<template #header
-			><i class="ph-sticker ph-bold ph-lg"></i>
+			><i :class="icon('ph-sticker')"></i>
 			{{ i18n.ts._pages.blocks.note }}</template
 		>
 
@@ -43,6 +43,7 @@ import XNote from "@/components/MkNote.vue";
 import XNoteDetailed from "@/components/MkNoteDetailed.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{

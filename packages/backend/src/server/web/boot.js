@@ -25,7 +25,12 @@
 	//#region Detect language & fetch translations
 	const v = localStorage.getItem("v") || VERSION;
 
-	const supportedLangs = LANGS;
+	let supportedLangs = [];
+	try {
+		supportedLangs = SUPPORTED_LANGS;
+	} catch {
+		console.warn("LANGS not found");
+	}
 	let lang = localStorage.getItem("lang");
 	if (lang == null || !supportedLangs.includes(lang)) {
 		if (supportedLangs.includes(navigator.language)) {

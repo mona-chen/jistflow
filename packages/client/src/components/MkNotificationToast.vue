@@ -1,7 +1,7 @@
 <template>
 	<div class="mk-notification-toast" :style="{ zIndex }">
 		<transition
-			:name="$store.state.animation ? 'notification-toast' : ''"
+			:name="defaultStore.state.animation ? 'notification-toast' : ''"
 			appear
 			@after-leave="$emit('closed')"
 		>
@@ -18,6 +18,7 @@
 import { onMounted, ref } from "vue";
 import XNotification from "@/components/MkNotification.vue";
 import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 defineProps<{
 	notification: any; // TODO

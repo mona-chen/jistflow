@@ -31,6 +31,7 @@ import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { parseKaTeXMacros } from "@/scripts/katex-macro";
 import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const localCustomKaTeXMacro = ref(
 	localStorage.getItem("customKaTeXMacro") ?? "",
@@ -61,6 +62,6 @@ watch(localCustomKaTeXMacro, async () => {
 
 definePageMetadata({
 	title: i18n.ts.customKaTeXMacro,
-	icon: "ph-radical ph-bold ph-lg",
+	icon: `${icon("ph-radical")}`,
 });
 </script>

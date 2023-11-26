@@ -2,7 +2,7 @@
 	<span class="mk-acct">
 		<span class="name">@{{ user.username }}</span>
 		<span
-			v-if="user.host || detail || $store.state.showFullAcct"
+			v-if="user.host || detail || defaultStore.state.showFullAcct"
 			class="host"
 			>@{{ user.host || host }}</span
 		>
@@ -10,12 +10,13 @@
 </template>
 
 <script lang="ts" setup>
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { toUnicode } from "punycode/";
 import { host as hostRaw } from "@/config";
+import { defaultStore } from "@/store";
 
 defineProps<{
-	user: misskey.entities.UserDetailed;
+	user: firefish.entities.UserDetailed;
 	detail?: boolean;
 }>();
 

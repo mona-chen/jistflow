@@ -111,9 +111,7 @@
 								>
 							</FormSuspense>
 							<MkButton @click="refreshMetadata"
-								><i
-									class="ph-arrows-clockwise ph-bold ph-lg"
-								></i>
+								><i :class="icon('ph-arrows-clockwise')"></i>
 								Refresh metadata</MkButton
 							>
 						</FormSection>
@@ -359,9 +357,10 @@ import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import MkUserCardMini from "@/components/MkUserCardMini.vue";
 import MkPagination from "@/components/MkPagination.vue";
+import { getProxiedImageUrlNullable } from "@/scripts/media-proxy";
+import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
-import { getProxiedImageUrlNullable } from "@/scripts/media-proxy";
 
 type AugmentedInstanceMetadata = firefish.entities.DetailedInstanceMetadata & {
 	blockedHosts: string[];
@@ -471,7 +470,7 @@ fetch();
 const headerActions = computed(() => [
 	{
 		text: `https://${props.host}`,
-		icon: "ph-arrow-square-out ph-bold ph-lg",
+		icon: `${icon("ph-arrow-square-out")}`,
 		handler: () => {
 			window.open(`https://${props.host}`, "_blank");
 		},
@@ -482,7 +481,7 @@ const theTabs = [
 	{
 		key: "overview",
 		title: i18n.ts.overview,
-		icon: "ph-info ph-bold ph-lg",
+		icon: `${icon("ph-info")}`,
 	},
 ];
 
@@ -491,17 +490,17 @@ if (iAmAdmin) {
 		{
 			key: "chart",
 			title: i18n.ts.charts,
-			icon: "ph-chart-bar ph-bold ph-lg",
+			icon: `${icon("ph-chart-bar")}`,
 		},
 		{
 			key: "users",
 			title: i18n.ts.users,
-			icon: "ph-users ph-bold ph-lg",
+			icon: `${icon("ph-users")}`,
 		},
 		{
 			key: "raw",
 			title: "Raw",
-			icon: "ph-code ph-bold ph-lg",
+			icon: `${icon("ph-code")}`,
 		},
 	);
 }
@@ -510,7 +509,7 @@ const headerTabs = computed(() => theTabs);
 
 definePageMetadata({
 	title: props.host,
-	icon: "ph-hard-drives ph-bold ph-lg",
+	icon: `${icon("ph-hard-drives")}`,
 });
 
 let swiperRef = null;

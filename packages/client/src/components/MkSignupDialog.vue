@@ -26,7 +26,7 @@ import XSignup from "@/components/MkSignup.vue";
 import XModalWindow from "@/components/MkModalWindow.vue";
 import { i18n } from "@/i18n";
 
-const props = withDefaults(
+withDefaults(
 	defineProps<{
 		autoSet?: boolean;
 	}>(),

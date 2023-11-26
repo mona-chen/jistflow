@@ -1,40 +1,41 @@
-import { In } from "typeorm";
-import create, { index } from "@/services/note/create.js";
-import type { IRemoteUser, User } from "@/models/entities/user.js";
-import {
-	Users,
-	DriveFiles,
-	Notes,
-	Channels,
-	Blockings,
-	UserProfiles,
-	Polls,
-	NoteEdits,
-} from "@/models/index.js";
+import { MAX_NOTE_TEXT_LENGTH } from "@/const.js";
+import { HOUR } from "@/const.js";
+import detectLanguage from "@/misc/detect-language.js";
+import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
+import { extractHashtags } from "@/misc/extract-hashtags.js";
+import { genId } from "@/misc/gen-id.js";
+// import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
+import { langmap } from "@/misc/langmap.js";
+import type { Channel } from "@/models/entities/channel.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
-import type { Channel } from "@/models/entities/channel.js";
-import { MAX_NOTE_TEXT_LENGTH } from "@/const.js";
-import { noteVisibilities } from "../../../../types.js";
-import { ApiError } from "../../error.js";
-import define from "../../define.js";
-import { HOUR } from "@/const.js";
-import { getNote } from "../../common/getters.js";
 import { Poll } from "@/models/entities/poll.js";
-import * as mfm from "mfm-js";
+import type { IRemoteUser, User } from "@/models/entities/user.js";
+import {
+	Blockings,
+	Channels,
+	DriveFiles,
+	NoteEdits,
+	Notes,
+	Polls,
+	UserProfiles,
+	Users,
+} from "@/models/index.js";
 import { concat } from "@/prelude/array.js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
-import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
-import { extractMentionedUsers } from "@/services/note/create.js";
-import { genId } from "@/misc/gen-id.js";
-import { publishNoteStream } from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";
+import { getNote } from "@/server/api/common/getters.js";
+import define from "@/server/api/define.js";
+import { ApiError } from "@/server/api/error.js";
+import { index } from "@/services/note/create.js";
+import { extractMentionedUsers } from "@/services/note/create.js";
 import { deliverToRelays } from "@/services/relay.js";
-// import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { publishNoteStream } from "@/services/stream.js";
+import { noteVisibilities } from "@/types.js";
+import * as mfm from "mfm-js";
+import { In } from "typeorm";
 
 export const meta = {
 	tags: ["notes"],
@@ -169,6 +170,7 @@ export const paramDef = {
 			},
 		},
 		text: { type: "string", maxLength: MAX_NOTE_TEXT_LENGTH, nullable: true },
+		lang: { type: "string", nullable: true, maxLength: 10 },
 		cw: { type: "string", nullable: true, maxLength: 250 },
 		localOnly: { type: "boolean", default: false },
 		noExtractMentions: { type: "boolean", default: false },
@@ -375,6 +377,16 @@ export default define(meta, paramDef, async (ps, user) => {
 		ps.text = null;
 	}
 
+	if (ps.lang) {
+		if (!Object.keys(langmap).includes(ps.lang.trim()))
+			throw new Error("invalid param");
+		ps.lang = ps.lang.trim().split("-")[0].split("@")[0];
+	} else if (ps.text) {
+		ps.lang = detectLanguage(ps.text);
+	} else {
+		ps.lang = null;
+	}
+
 	let tags = [];
 	let emojis = [];
 	let mentionedUsers = [];
@@ -531,6 +543,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	const update: Partial<Note> = {};
 	if (ps.text !== note.text) {
 		update.text = ps.text;
+	}
+	if (ps.lang !== note.lang) {
+		update.lang = ps.lang;
 	}
 	if (ps.cw !== note.cw || (ps.cw && !note.cw)) {
 		update.cw = ps.cw;

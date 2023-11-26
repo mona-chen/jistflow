@@ -89,7 +89,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MkInput from "@/components/form/input.vue";
 import FormSplit from "@/components/form/split.vue";
 import XModalWindow from "@/components/MkModalWindow.vue";
@@ -98,16 +98,16 @@ import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 
 const emit = defineEmits<{
-	(ev: "ok", selected: misskey.entities.UserDetailed): void;
+	(ev: "ok", selected: firefish.entities.UserDetailed): void;
 	(ev: "cancel"): void;
 	(ev: "closed"): void;
 }>();
 
 const username = ref("");
 const host = ref("");
-const users: misskey.entities.UserDetailed[] = ref([]);
-const recentUsers: misskey.entities.UserDetailed[] = ref([]);
-const selected: misskey.entities.UserDetailed | null = ref(null);
+const users: firefish.entities.UserDetailed[] = ref([]);
+const recentUsers: firefish.entities.UserDetailed[] = ref([]);
+const selected: firefish.entities.UserDetailed | null = ref(null);
 const dialogEl = ref();
 
 const search = () => {

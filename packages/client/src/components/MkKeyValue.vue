@@ -12,17 +12,17 @@
 				style="margin-left: 0.5em"
 				@click="copy_"
 			>
-				<i class="ph-clipboard-text ph-bold"></i>
+				<i :class="icon('ph-clipboard-text', false)"></i>
 			</button>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
 import copyToClipboard from "@/scripts/copy-to-clipboard";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{

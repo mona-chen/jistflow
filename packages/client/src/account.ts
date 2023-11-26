@@ -1,21 +1,16 @@
-import { defineAsyncComponent, reactive } from "vue";
-import type * as misskey from "firefish-js";
-import { i18n } from "./i18n";
-import { del, get, set } from "@/scripts/idb-proxy";
 import { apiUrl } from "@/config";
-import { alert, api, popup, popupMenu, success, waiting } from "@/os";
+import { alert, api, popup, popupMenu, waiting } from "@/os";
+import { $i } from "@/reactiveAccount";
+import icon from "@/scripts/icon";
+import { del, get, set } from "@/scripts/idb-proxy";
 import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
+import type * as firefish from "firefish-js";
+import { defineAsyncComponent } from "vue";
+import { i18n } from "./i18n";
 
 // TODO: 他のタブと永続化されたstateを同期
 
-type Account = misskey.entities.MeDetailed;
-
-const accountData = localStorage.getItem("account");
-
-// TODO: 外部からはreadonlyに
-export const $i = accountData
-	? reactive(JSON.parse(accountData) as Account)
-	: null;
+export type Account = firefish.entities.MeDetailed;
 
 export const iAmModerator = $i != null && ($i.isAdmin || $i.isModerator);
 export const iAmAdmin = $i?.isAdmin;
@@ -97,9 +92,8 @@ function fetchAccount(token: string): Promise<Account> {
 			.then((res) => {
 				if (res.error) {
 					if (res.error.id === "a8c724b3-6e9c-4b46-b1a8-bc3ed6258370") {
-						showSuspendedDialog().then(() => {
-							signout();
-						});
+						showSuspendedDialog();
+						signout();
 					} else {
 						alert({
 							type: "error",
@@ -113,6 +107,14 @@ function fetchAccount(token: string): Promise<Account> {
 				}
 			})
 			.catch(fail);
+	});
+}
+
+function showSuspendedDialog() {
+	alert({
+		type: "error",
+		title: i18n.ts.yourAccountSuspendedTitle,
+		text: i18n.ts.yourAccountSuspendedDescription,
 	});
 }
 
@@ -150,8 +152,8 @@ export async function openAccountMenu(
 	opts: {
 		includeCurrentAccount?: boolean;
 		withExtraOperation: boolean;
-		active?: misskey.entities.UserDetailed["id"];
-		onChoose?: (account: misskey.entities.UserDetailed) => void;
+		active?: firefish.entities.UserDetailed["id"];
+		onChoose?: (account: firefish.entities.UserDetailed) => void;
 	},
 	ev: MouseEvent,
 ) {
@@ -183,7 +185,7 @@ export async function openAccountMenu(
 		);
 	}
 
-	async function switchAccount(account: misskey.entities.UserDetailed) {
+	async function switchAccount(account: firefish.entities.UserDetailed) {
 		const storedAccounts = await getAccounts();
 		const token = storedAccounts.find((x) => x.id === account.id).token;
 		switchAccountWithToken(token);
@@ -200,7 +202,7 @@ export async function openAccountMenu(
 		userIds: storedAccounts.map((x) => x.id),
 	});
 
-	function createItem(account: misskey.entities.UserDetailed) {
+	function createItem(account: firefish.entities.UserDetailed) {
 		return {
 			type: "user",
 			user: account,
@@ -241,7 +243,7 @@ export async function openAccountMenu(
 					...accountItemPromises,
 					{
 						type: "parent",
-						icon: "ph-plus ph-bold ph-lg",
+						icon: `${icon("ph-plus")}`,
 						text: i18n.ts.addAccount,
 						children: [
 							{
@@ -260,13 +262,13 @@ export async function openAccountMenu(
 					},
 					{
 						type: "link",
-						icon: "ph-users ph-bold ph-lg",
+						icon: `${icon("ph-users")}`,
 						text: i18n.ts.manageAccounts,
 						to: "/settings/accounts",
 					},
 					{
 						type: "button",
-						icon: "ph-sign-out ph-bold ph-lg",
+						icon: `${icon("ph-sign-out")}`,
 						text: i18n.ts.logout,
 						action: () => {
 							signout();

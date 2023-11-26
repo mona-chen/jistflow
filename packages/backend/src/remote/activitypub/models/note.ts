@@ -1,58 +1,55 @@
-import promiseLimit from "promise-limit";
-import * as mfm from "mfm-js";
 import config from "@/config/index.js";
-import Resolver from "../resolver.js";
+import { getApLock } from "@/misc/app-lock.js";
+import { extractDbHost, toPuny } from "@/misc/convert-host.js";
+import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
+import { extractHashtags } from "@/misc/extract-hashtags.js";
+import { StatusError } from "@/misc/fetch.js";
+import { genId } from "@/misc/gen-id.js";
+import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
+import { langmap } from "@/misc/langmap.js";
+import { shouldBlockInstance } from "@/misc/should-block-instance.js";
+import { truncate } from "@/misc/truncate.js";
+import { DriveFile } from "@/models/entities/drive-file.js";
+import type { Emoji } from "@/models/entities/emoji.js";
+import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
+import type { CacheableRemoteUser } from "@/models/entities/user.js";
+import {
+	DriveFiles,
+	Emojis,
+	MessagingMessages,
+	NoteEdits,
+	Notes,
+	Polls,
+} from "@/models/index.js";
+import { UserProfiles } from "@/models/index.js";
+import { toArray, toSingle, unique } from "@/prelude/array.js";
+import { createMessage } from "@/services/messages/create.js";
 import post from "@/services/note/create.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
-import { resolvePerson } from "./person.js";
-import { resolveImage } from "./image.js";
-import type {
-	ILocalUser,
-	CacheableRemoteUser,
-} from "@/models/entities/user.js";
-import { htmlToMfm } from "../misc/html-to-mfm.js";
-import { extractApHashtags } from "./tag.js";
-import { unique, toArray, toSingle } from "@/prelude/array.js";
-import { extractPollFromQuestion } from "./question.js";
 import vote from "@/services/note/polls/vote.js";
+import { publishNoteStream } from "@/services/stream.js";
+import * as mfm from "mfm-js";
+import promiseLimit from "promise-limit";
+import { In } from "typeorm";
+import { parseAudience } from "../audience.js";
+import DbResolver from "../db-resolver.js";
 import { apLogger } from "../logger.js";
-import { DriveFile } from "@/models/entities/drive-file.js";
-import { extractDbHost, toPuny } from "@/misc/convert-host.js";
-import {
-	Emojis,
-	Polls,
-	MessagingMessages,
-	Notes,
-	NoteEdits,
-	DriveFiles,
-} from "@/models/index.js";
-import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
+import { htmlToMfm } from "../misc/html-to-mfm.js";
+import Resolver from "../resolver.js";
 import type { IObject, IPost } from "../type.js";
 import {
-	getOneApId,
 	getApId,
-	getOneApHrefNullable,
-	validPost,
-	isEmoji,
 	getApType,
+	getOneApHrefNullable,
+	getOneApId,
+	isEmoji,
+	validPost,
 } from "../type.js";
-import type { Emoji } from "@/models/entities/emoji.js";
-import { genId } from "@/misc/gen-id.js";
-import { getApLock } from "@/misc/app-lock.js";
-import { createMessage } from "@/services/messages/create.js";
-import { parseAudience } from "../audience.js";
+import { resolveImage } from "./image.js";
 import { extractApMentions } from "./mention.js";
-import DbResolver from "../db-resolver.js";
-import { StatusError } from "@/misc/fetch.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
-import { publishNoteStream } from "@/services/stream.js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
-import { UserProfiles } from "@/models/index.js";
-import { In } from "typeorm";
-import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
-import { truncate } from "@/misc/truncate.js";
-import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { resolvePerson } from "./person.js";
+import { extractPollFromQuestion } from "./question.js";
+import { extractApHashtags } from "./tag.js";
 
 const logger = apLogger;
 
@@ -247,7 +244,7 @@ export async function createNote(
 	// Quote
 	let quote: Note | undefined | null;
 
-	if (note._misskey_quote || note.quoteUrl || note.quoteUri) {
+	if (note.quoteUrl || note.quoteUri) {
 		const tryResolveNote = async (
 			uri: string,
 		): Promise<
@@ -284,7 +281,7 @@ export async function createNote(
 		};
 
 		const uris = unique(
-			[note._misskey_quote, note.quoteUrl, note.quoteUri].filter(
+			[note.quoteUrl, note.quoteUri].filter(
 				(x): x is string => typeof x === "string",
 			),
 		);
@@ -305,13 +302,24 @@ export async function createNote(
 
 	// Text parsing
 	let text: string | null = null;
+	let lang: string | null = null;
 	if (
 		note.source?.mediaType === "text/x.misskeymarkdown" &&
 		typeof note.source?.content === "string"
 	) {
 		text = note.source.content;
-	} else if (typeof note._misskey_content !== "undefined") {
-		text = note._misskey_content;
+		if (note.contentMap != null) {
+			const key = Object.keys(note.contentMap)[0];
+			lang = Object.keys(langmap).includes(key)
+				? key.trim().split("-")[0].split("@")[0]
+				: null;
+		}
+	} else if (note.contentMap != null) {
+		const entry = Object.entries(note.contentMap)[0];
+		lang = Object.keys(langmap).includes(entry[0])
+			? entry[0].trim().split("-")[0].split("@")[0]
+			: null;
+		text = htmlToMfm(entry[1], note.tag);
 	} else if (typeof note.content === "string") {
 		text = htmlToMfm(note.content, note.tag);
 	}
@@ -380,6 +388,7 @@ export async function createNote(
 			name: note.name,
 			cw,
 			text,
+			lang,
 			localOnly: false,
 			visibility,
 			visibleUsers,
@@ -567,13 +576,24 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 
 	// Text parsing
 	let text: string | null = null;
+	let lang: string | null = null;
 	if (
 		post.source?.mediaType === "text/x.misskeymarkdown" &&
 		typeof post.source?.content === "string"
 	) {
 		text = post.source.content;
-	} else if (typeof post._misskey_content !== "undefined") {
-		text = post._misskey_content;
+		if (post.contentMap != null) {
+			const key = Object.keys(post.contentMap)[0];
+			lang = Object.keys(langmap).includes(key)
+				? key.trim().split("-")[0].split("@")[0]
+				: null;
+		}
+	} else if (post.contentMap != null) {
+		const entry = Object.entries(post.contentMap)[0];
+		lang = Object.keys(langmap).includes(entry[0])
+			? entry[0].trim().split("-")[0].split("@")[0]
+			: null;
+		text = htmlToMfm(entry[1], post.tag);
 	} else if (typeof post.content === "string") {
 		text = htmlToMfm(post.content, post.tag);
 	}
@@ -666,6 +686,9 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 	const update = {} as Partial<Note>;
 	if (text && text !== note.text) {
 		update.text = text;
+	}
+	if (lang && lang !== note.lang) {
+		update.lang = lang;
 	}
 	if (cw !== note.cw) {
 		update.cw = cw ? cw : null;

@@ -1,72 +1,74 @@
-import * as mfm from "mfm-js";
-import es from "../../db/elasticsearch.js";
-import sonic from "../../db/sonic.js";
-import {
-	publishMainStream,
-	publishNotesStream,
-	publishNoteStream,
-} from "@/services/stream.js";
-import DeliverManager from "@/remote/activitypub/deliver-manager.js";
-import renderNote from "@/remote/activitypub/renderer/note.js";
-import renderCreate from "@/remote/activitypub/renderer/create.js";
-import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import { resolveUser } from "@/remote/resolve-user.js";
 import config from "@/config/index.js";
-import { updateHashtags } from "../update-hashtag.js";
-import { concat } from "@/prelude/array.js";
-import { insertNoteUnread } from "@/services/note/unread.js";
-import { registerOrFetchInstanceDoc } from "../register-or-fetch-instance-doc.js";
-import { extractMentions } from "@/misc/extract-mentions.js";
-import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
-import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
-import { Note } from "@/models/entities/note.js";
-import {
-	Mutings,
-	Users,
-	NoteWatchings,
-	Notes,
-	Instances,
-	UserProfiles,
-	MutedNotes,
-	Channels,
-	ChannelFollowings,
-	NoteThreadMutings,
-} from "@/models/index.js";
-import type { DriveFile } from "@/models/entities/drive-file.js";
-import type { App } from "@/models/entities/app.js";
-import { Not, In } from "typeorm";
-import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import { genId } from "@/misc/gen-id.js";
-import {
-	notesChart,
-	perUserNotesChart,
-	activeUsersChart,
-	instanceChart,
-} from "@/services/chart/index.js";
-import type { IPoll } from "@/models/entities/poll.js";
-import { Poll } from "@/models/entities/poll.js";
-import { createNotification } from "../create-notification.js";
-import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
+import es from "@/db/elasticsearch.js";
+import meilisearch from "@/db/meilisearch.js";
+import { db } from "@/db/postgre.js";
+import { redisClient } from "@/db/redis.js";
+import sonic from "@/db/sonic.js";
+import { getAntennas } from "@/misc/antenna-cache.js";
+import { Cache } from "@/misc/cache.js";
 import { checkHitAntenna } from "@/misc/check-hit-antenna.js";
 import { getWordHardMute } from "@/misc/check-word-mute.js";
-import { addNoteToAntenna } from "../add-note-to-antenna.js";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
-import { deliverToRelays, getCachedRelays } from "../relay.js";
-import type { Channel } from "@/models/entities/channel.js";
+import detectLanguage from "@/misc/detect-language.js";
+import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
+import { extractHashtags } from "@/misc/extract-hashtags.js";
+import { extractMentions } from "@/misc/extract-mentions.js";
+import { genId } from "@/misc/gen-id.js";
+import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
+import { langmap } from "@/misc/langmap.js";
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
-import { getAntennas } from "@/misc/antenna-cache.js";
-import { endedPollNotificationQueue } from "@/queue/queues.js";
-import { webhookDeliver } from "@/queue/index.js";
-import { Cache } from "@/misc/cache.js";
-import type { UserProfile } from "@/models/entities/user-profile.js";
-import { db } from "@/db/postgre.js";
-import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
-import meilisearch from "../../db/meilisearch.js";
-import { redisClient } from "@/db/redis.js";
+import { getActiveWebhooks } from "@/misc/webhook-cache.js";
+import type { App } from "@/models/entities/app.js";
+import type { Channel } from "@/models/entities/channel.js";
+import type { DriveFile } from "@/models/entities/drive-file.js";
+import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
+import { Note } from "@/models/entities/note.js";
+import type { IPoll } from "@/models/entities/poll.js";
+import { Poll } from "@/models/entities/poll.js";
+import type { UserProfile } from "@/models/entities/user-profile.js";
+import type { ILocalUser, IRemoteUser, User } from "@/models/entities/user.js";
+import {
+	ChannelFollowings,
+	Channels,
+	Instances,
+	MutedNotes,
+	Mutings,
+	NoteThreadMutings,
+	NoteWatchings,
+	Notes,
+	UserProfiles,
+	Users,
+} from "@/models/index.js";
+import { concat } from "@/prelude/array.js";
+import { webhookDeliver } from "@/queue/index.js";
+import { endedPollNotificationQueue } from "@/queue/queues.js";
+import DeliverManager from "@/remote/activitypub/deliver-manager.js";
+import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
+import renderCreate from "@/remote/activitypub/renderer/create.js";
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import renderNote from "@/remote/activitypub/renderer/note.js";
+import { resolveUser } from "@/remote/resolve-user.js";
+import { addNoteToAntenna } from "@/services/add-note-to-antenna.js";
+import {
+	activeUsersChart,
+	instanceChart,
+	notesChart,
+	perUserNotesChart,
+} from "@/services/chart/index.js";
+import { createNotification } from "@/services/create-notification.js";
+import { insertNoteUnread } from "@/services/note/unread.js";
+import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
+import {
+	publishMainStream,
+	publishNoteStream,
+	publishNotesStream,
+} from "@/services/stream.js";
+import { updateHashtags } from "@/services/update-hashtag.js";
+import * as mfm from "mfm-js";
 import { Mutex } from "redis-semaphore";
+import { In, Not } from "typeorm";
+import { deliverToRelays, getCachedRelays } from "../relay.js";
 
 const mutedWordsCache = new Cache<
 	{ userId: UserProfile["userId"]; mutedWords: UserProfile["mutedWords"] }[]
@@ -139,6 +141,7 @@ type Option = {
 	createdAt?: Date | null;
 	name?: string | null;
 	text?: string | null;
+	lang?: string | null;
 	reply?: Note | null;
 	renote?: Note | null;
 	files?: DriveFile[] | null;
@@ -170,9 +173,10 @@ export default async (
 	data: Option,
 	silent = false,
 ) =>
-	// rome-ignore lint/suspicious/noAsyncPromiseExecutor: FIXME
+	// biome-ignore lint/suspicious/noAsyncPromiseExecutor: FIXME
 	new Promise<Note>(async (res, rej) => {
-		const dontFederateInitially = data.visibility === "hidden";
+		const dontFederateInitially =
+			data.localOnly || data.visibility?.startsWith("hidden") === true;
 
 		// If you reply outside the channel, match the scope of the target.
 		// TODO (I think it's a process that could be done on the client side, but it's server side for now.)
@@ -206,7 +210,7 @@ export default async (
 		if (data.channel != null) data.visibility = "public";
 		if (data.channel != null) data.visibleUsers = [];
 		if (data.channel != null) data.localOnly = true;
-		if (data.visibility.startsWith("hidden"))
+		if (data.visibility.startsWith("hidden") && data.visibility !== "hidden")
 			data.visibility = data.visibility.slice(6);
 
 		// enforce silent clients on server
@@ -274,6 +278,16 @@ export default async (
 			data.text = data.text.trim();
 		} else {
 			data.text = null;
+		}
+
+		if (data.lang) {
+			if (!Object.keys(langmap).includes(data.lang.trim()))
+				throw new Error("invalid param");
+			data.lang = data.lang.trim().split("-")[0].split("@")[0];
+		} else if (data.text) {
+			data.lang = detectLanguage(data.text);
+		} else {
+			data.lang = null;
 		}
 
 		let tags = data.apHashtags;
@@ -367,18 +381,16 @@ export default async (
 			)
 			.then((us) => {
 				for (const u of us) {
-					getWordHardMute(data, { id: u.userId }, u.mutedWords).then(
-						(shouldMute) => {
-							if (shouldMute) {
-								MutedNotes.insert({
-									id: genId(),
-									userId: u.userId,
-									noteId: note.id,
-									reason: "word",
-								});
-							}
-						},
-					);
+					getWordHardMute(data, u.userId, u.mutedWords).then((shouldMute) => {
+						if (shouldMute) {
+							MutedNotes.insert({
+								id: genId(),
+								userId: u.userId,
+								noteId: note.id,
+								reason: "word",
+							});
+						}
+					});
 				}
 			});
 
@@ -712,6 +724,7 @@ async function insertNote(
 			: null,
 		name: data.name,
 		text: data.text,
+		lang: data.lang,
 		hasPoll: data.poll != null,
 		cw: data.cw == null ? null : data.cw,
 		tags: tags.map((tag) => normalizeForSearch(tag)),

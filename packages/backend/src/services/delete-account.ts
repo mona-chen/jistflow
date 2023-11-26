@@ -1,7 +1,7 @@
 import { Users } from "@/models/index.js";
 import { createDeleteAccountJob } from "@/queue/index.js";
-import { publishUserEvent } from "./stream.js";
-import { doPostSuspend } from "./suspend-user.js";
+import { publishUserEvent } from "@/services/stream.js";
+import { doPostSuspend } from "@/services/suspend-user.js";
 
 export async function deleteAccount(user: {
 	id: string;

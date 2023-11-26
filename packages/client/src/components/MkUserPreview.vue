@@ -1,6 +1,6 @@
 <template>
 	<transition
-		:name="$store.state.animation ? 'popup' : ''"
+		:name="defaultStore.state.animation ? 'popup' : ''"
 		appear
 		@after-leave="emit('closed')"
 	>
@@ -30,9 +30,10 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import * as Acct from "firefish-js/built/acct";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import MkUserInfo from "@/components/MkUserInfo.vue";
 import * as os from "@/os";
+import { defaultStore } from "@/store";
 
 const props = defineProps<{
 	showing: boolean;
@@ -47,7 +48,7 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex("middle");
-const user = ref<misskey.entities.UserDetailed | null>(null);
+const user = ref<firefish.entities.UserDetailed | null>(null);
 const top = ref(0);
 const left = ref(0);
 

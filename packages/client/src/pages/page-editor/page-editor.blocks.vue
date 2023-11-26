@@ -4,8 +4,8 @@
 		tag="div"
 		handle=".drag-handle"
 		:group="{ name: 'blocks' }"
-		animation="150"
-		swap-threshold="0.5"
+		:animation="150"
+		:swap-threshold="0.5"
 	>
 		<component
 			:is="'x-' + element.type"

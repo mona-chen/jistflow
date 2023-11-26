@@ -1,8 +1,8 @@
 // PIZZAX --- A lightweight store
 
+import { $i } from "@/reactiveAccount";
 import type { Ref } from "vue";
 import { onUnmounted, ref, watch } from "vue";
-import { $i } from "./account";
 import { api } from "./os";
 import { stream } from "./stream";
 

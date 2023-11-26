@@ -1,9 +1,9 @@
 import { db } from "@/db/postgre.js";
-import { NoteReaction } from "@/models/entities/note-reaction.js";
-import { Notes, Users } from "../index.js";
+import { decodeReaction } from "@/misc/reaction-lib.js";
 import type { Packed } from "@/misc/schema.js";
-import { convertLegacyReaction } from "@/misc/reaction-lib.js";
+import { NoteReaction } from "@/models/entities/note-reaction.js";
 import type { User } from "@/models/entities/user.js";
+import { Notes, Users } from "../index.js";
 
 export const NoteReactionRepository = db.getRepository(NoteReaction).extend({
 	async pack(
@@ -27,7 +27,7 @@ export const NoteReactionRepository = db.getRepository(NoteReaction).extend({
 			id: reaction.id,
 			createdAt: reaction.createdAt.toISOString(),
 			user: await Users.pack(reaction.user ?? reaction.userId, me),
-			type: convertLegacyReaction(reaction.reaction),
+			type: decodeReaction(reaction.reaction).reaction,
 			...(opts.withNote
 				? {
 						// may throw error
@@ -41,7 +41,7 @@ export const NoteReactionRepository = db.getRepository(NoteReaction).extend({
 		src: NoteReaction[],
 		me?: { id: User["id"] } | null | undefined,
 		options?: {
-			withNote: booleam;
+			withNote: boolean;
 		},
 	): Promise<Packed<"NoteReaction">[]> {
 		const reactions = await Promise.allSettled(

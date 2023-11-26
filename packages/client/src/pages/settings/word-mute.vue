@@ -54,7 +54,7 @@
 			</div>
 		</div>
 		<MkButton primary inline :disabled="!changed" @click="save()"
-			><i class="ph-floppy-disk-back ph-bold ph-lg"></i>
+			><i :class="icon('ph-floppy-disk-back')"></i>
 			{{ i18n.ts.save }}</MkButton
 		>
 	</div>
@@ -70,9 +70,10 @@ import MkTab from "@/components/MkTab.vue";
 import * as os from "@/os";
 import number from "@/filters/number";
 import { defaultStore } from "@/store";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const render = (mutedWords) =>
 	mutedWords
@@ -171,6 +172,6 @@ async function save() {
 
 definePageMetadata({
 	title: i18n.ts.wordMute,
-	icon: "ph-speaker-x ph-bold ph-lg",
+	icon: `${icon("ph-speaker-x")}`,
 });
 </script>

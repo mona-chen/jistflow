@@ -297,7 +297,7 @@ const props = withDefaults(
 	}
 
 	@keyframes mfm-rubberBand {
-		from {
+		0% {
 			transform: scale3d(1, 1, 1);
 		}
 		30% {
@@ -315,7 +315,7 @@ const props = withDefaults(
 		75% {
 			transform: scale3d(1.05, 0.95, 1);
 		}
-		to {
+		100% {
 			transform: scale3d(1, 1, 1);
 		}
 	}

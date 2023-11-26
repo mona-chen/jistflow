@@ -7,7 +7,7 @@
 			<div class="label">
 				Inbox queue<i
 					v-if="current.inbox.waiting > 0"
-					class="ph-warning ph-bold ph-lg icon"
+					:class="icon('ph-warning icon')"
 				></i>
 			</div>
 			<div class="values">
@@ -65,7 +65,7 @@
 			<div class="label">
 				Deliver queue<i
 					v-if="current.deliver.waiting > 0"
-					class="ph-warning ph-bold ph-lg icon"
+					:class="icon('ph-warning icon')"
 				></i>
 			</div>
 			<div class="values">
@@ -123,19 +123,15 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, reactive, ref } from "vue";
+import { onUnmounted, reactive } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import { stream } from "@/stream";
 import number from "@/filters/number";
 import * as sound from "@/scripts/sound";
-import * as os from "@/os";
 import { deepClone } from "@/scripts/clone";
+import icon from "@/scripts/icon";
 
 const name = "jobQueue";
 

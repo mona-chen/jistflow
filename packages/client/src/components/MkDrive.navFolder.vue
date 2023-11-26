@@ -8,31 +8,32 @@
 		@dragleave="onDragleave"
 		@drop.stop="onDrop"
 	>
-		<i v-if="folder == null" class="ph-cloud ph-bold ph-lg"></i>
+		<i v-if="folder == null" :class="icon('ph-cloud')"></i>
 		<span>{{ folder == null ? i18n.ts.drive : folder.name }}</span>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import type * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	folder?: Misskey.entities.DriveFolder;
-	parentFolder: Misskey.entities.DriveFolder | null;
+	folder?: firefish.entities.DriveFolder;
+	parentFolder: firefish.entities.DriveFolder | null;
 }>();
 
 const emit = defineEmits<{
-	(ev: "move", v?: Misskey.entities.DriveFolder): void;
+	(ev: "move", v?: firefish.entities.DriveFolder): void;
 	(
 		ev: "upload",
 		file: File,
-		folder?: Misskey.entities.DriveFolder | null,
+		folder?: firefish.entities.DriveFolder | null,
 	): void;
-	(ev: "removeFile", v: Misskey.entities.DriveFile["id"]): void;
-	(ev: "removeFolder", v: Misskey.entities.DriveFolder["id"]): void;
+	(ev: "removeFile", v: firefish.entities.DriveFile["id"]): void;
+	(ev: "removeFolder", v: firefish.entities.DriveFolder["id"]): void;
 }>();
 
 const hover = ref(false);

@@ -30,7 +30,7 @@
 						class="_button"
 						@click="$emit('close')"
 					>
-						<i class="ph-x ph-bold ph-lg"></i>
+						<i :class="icon('ph-x')"></i>
 					</button>
 					<span class="title">
 						<slot name="header"></slot>
@@ -41,7 +41,7 @@
 						class="_button"
 						@click="$emit('close')"
 					>
-						<i class="ph-x ph-bold ph-lg"></i>
+						<i :class="icon('ph-x')"></i>
 					</button>
 					<button
 						v-if="props.withOkButton"
@@ -50,7 +50,7 @@
 						:disabled="props.okButtonDisabled"
 						@click="$emit('ok')"
 					>
-						<i class="ph-check ph-bold ph-lg"></i>
+						<i :class="icon('ph-check')"></i>
 					</button>
 				</div>
 				<div class="body">
@@ -67,6 +67,7 @@ import { shallowRef } from "vue";
 import { FocusTrap } from "focus-trap-vue";
 import MkModal from "./MkModal.vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{

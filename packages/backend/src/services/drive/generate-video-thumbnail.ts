@@ -1,8 +1,7 @@
-import * as fs from "node:fs";
 import { createTempDir } from "@/misc/create-temp.js";
+import FFmpeg from "fluent-ffmpeg";
 import type { IImage } from "./image-processor.js";
 import { convertToWebp } from "./image-processor.js";
-import FFmpeg from "fluent-ffmpeg";
 
 export async function GenerateVideoThumbnail(source: string): Promise<IImage> {
 	const [dir, cleanup] = await createTempDir();

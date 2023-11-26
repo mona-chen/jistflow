@@ -2,7 +2,7 @@
 	<transition name="slide-fade">
 		<div v-if="show" class="_panel _shadow _acrylic" :class="$style.root">
 			<div :class="$style.icon">
-				<i class="ph-hand-heart ph-bold ph-5x" />
+				<i :class="icon('ph-hand-heart ph-5x', false)" />
 			</div>
 			<div :class="$style.main">
 				<div :class="$style.title">
@@ -52,7 +52,7 @@
 				:aria-label="i18n.t('close')"
 				@click="close"
 			>
-				<i class="ph-x ph-bold ph-lg"></i>
+				<i :class="icon('ph-x')"></i>
 			</button>
 		</div>
 	</transition>
@@ -65,6 +65,7 @@ import { host } from "@/config";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
 import { instance } from "@/instance";
+import icon from "@/scripts/icon";
 
 const show = ref(false);
 

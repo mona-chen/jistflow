@@ -35,31 +35,48 @@
 
 		<MkTab v-model="tab" :style="'underline'" @update:modelValue="loadTab">
 			<option value="replies">
-				<!-- <i class="ph-arrow-u-up-left ph-bold ph-lg"></i> -->
-				<span v-if="note.repliesCount > 0" class="count">{{
-					note.repliesCount
-				}}</span>
-				{{ i18n.ts._notification._types.reply }}
+				<!-- <i :class="icon('ph-arrow-u-up-left')"></i> -->
+				{{
+					wordWithCount(
+						note.repliesCount,
+						i18n.ts.reply,
+						i18n.ts.replies,
+					)
+				}}
 			</option>
 			<option v-if="note.renoteCount > 0" value="renotes">
-				<!-- <i class="ph-repeat ph-bold ph-lg"></i> -->
-				<span class="count">{{ note.renoteCount }}</span>
-				{{ i18n.ts._notification._types.renote }}
+				<!-- <i :class="icon('ph-rocket-launch')"></i> -->
+				{{
+					wordWithCount(
+						note.renoteCount,
+						i18n.ts.renote,
+						i18n.ts.renotes,
+					)
+				}}
 			</option>
 			<option v-if="reactionsCount > 0" value="reactions">
-				<!-- <i class="ph-smiley ph-bold ph-lg"></i> -->
-				<span class="count">{{ reactionsCount }}</span>
-				{{ i18n.ts.reaction }}
+				<!-- <i :class="icon('ph-smiley')"></i> -->
+				{{
+					wordWithCount(
+						reactionsCount,
+						i18n.ts.reaction,
+						i18n.ts.reactions,
+					)
+				}}
 			</option>
 			<option v-if="directQuotes?.length > 0" value="quotes">
-				<!-- <i class="ph-quotes ph-bold ph-lg"></i> -->
-				<span class="count">{{ directQuotes.length }}</span>
-				{{ i18n.ts._notification._types.quote }}
+				<!-- <i :class="icon('ph-quotes')"></i> -->
+				{{
+					wordWithCount(
+						directQuotes.length,
+						i18n.ts.quote,
+						i18n.ts.quotes,
+					)
+				}}
 			</option>
 			<option v-if="clips?.length > 0" value="clips">
-				<!-- <i class="ph-paperclip ph-bold ph-lg"></i> -->
-				<span class="count">{{ clips.length }}</span>
-				{{ i18n.ts.clips }}
+				<!-- <i :class="icon('ph-paperclip')"></i> -->
+				{{ wordWithCount(clips.length, i18n.ts.clip, i18n.ts.clips) }}
 			</option>
 		</MkTab>
 
@@ -151,7 +168,7 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, onUpdated, ref } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import type { NoteUpdatedEvent } from "firefish-js/built/streaming.types";
 import MkTab from "@/components/MkTab.vue";
 import MkNote from "@/components/MkNote.vue";
@@ -165,15 +182,16 @@ import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { defaultStore, noteViewInterruptors } from "@/store";
 import { reactionPicker } from "@/scripts/reaction-picker";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { deepClone } from "@/scripts/clone";
 import { stream } from "@/stream";
+// import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	note: misskey.entities.Note;
+	note: firefish.entities.Note;
 	pinned?: boolean;
 }>();
 
@@ -189,6 +207,11 @@ const softMuteReasonI18nSrc = (what?: string) => {
 
 	// I don't think here is reachable, but just in case
 	return i18n.ts.userSaysSomething;
+};
+
+const wordWithCount = (count: number, singular: string, plural: string) => {
+	if (count === 0) return plural;
+	return `${count} ${count === 1 ? singular : plural}`;
 };
 
 // plugin
@@ -212,17 +235,17 @@ const isDeleted = ref(false);
 const muted = ref(
 	getWordSoftMute(
 		note.value,
-		$i,
+		$i?.id,
 		defaultStore.state.mutedWords,
 		defaultStore.state.mutedLangs,
 	),
 );
 const translation = ref(null);
 const translating = ref(false);
-const conversation = ref<null | misskey.entities.Note[]>([]);
-const replies = ref<misskey.entities.Note[]>([]);
-const directReplies = ref<null | misskey.entities.Note[]>([]);
-const directQuotes = ref<null | misskey.entities.Note[]>([]);
+const conversation = ref<null | firefish.entities.Note[]>([]);
+const replies = ref<firefish.entities.Note[]>([]);
+const directReplies = ref<null | firefish.entities.Note[]>([]);
+const directQuotes = ref<null | firefish.entities.Note[]>([]);
 const clips = ref();
 const renotes = ref();
 let isScrolling;

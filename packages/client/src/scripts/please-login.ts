@@ -1,5 +1,5 @@
 import { defineAsyncComponent } from "vue";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { popup } from "@/os";
 import { vibrate } from "@/scripts/vibrate";

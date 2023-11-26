@@ -1,7 +1,7 @@
-import { Meta } from "@/models/entities/meta.js";
-import { insertModerationLog } from "@/services/insert-moderation-log.js";
 import { db } from "@/db/postgre.js";
-import define from "../../define.js";
+import { Meta } from "@/models/entities/meta.js";
+import define from "@/server/api/define.js";
+import { insertModerationLog } from "@/services/insert-moderation-log.js";
 
 export const meta = {
 	tags: ["admin"],
@@ -132,15 +132,6 @@ export const paramDef = {
 		deeplIsPro: { type: "boolean" },
 		libreTranslateApiUrl: { type: "string", nullable: true },
 		libreTranslateApiKey: { type: "string", nullable: true },
-		enableTwitterIntegration: { type: "boolean" },
-		twitterConsumerKey: { type: "string", nullable: true },
-		twitterConsumerSecret: { type: "string", nullable: true },
-		enableGithubIntegration: { type: "boolean" },
-		githubClientId: { type: "string", nullable: true },
-		githubClientSecret: { type: "string", nullable: true },
-		enableDiscordIntegration: { type: "boolean" },
-		discordClientId: { type: "string", nullable: true },
-		discordClientSecret: { type: "string", nullable: true },
 		enableEmail: { type: "boolean" },
 		email: { type: "string", nullable: true },
 		smtpSecure: { type: "boolean" },
@@ -152,6 +143,17 @@ export const paramDef = {
 		swPublicKey: { type: "string", nullable: true },
 		swPrivateKey: { type: "string", nullable: true },
 		tosUrl: { type: "string", nullable: true },
+		moreUrls: {
+			type: "array",
+			items: {
+				type: "object",
+				properties: {
+					name: { type: "string" },
+					url: { type: "string" },
+				},
+			},
+			nullable: true,
+		},
 		repositoryUrl: { type: "string" },
 		feedbackUrl: { type: "string" },
 		useObjectStorage: { type: "boolean" },
@@ -182,6 +184,18 @@ export const paramDef = {
 	},
 	required: [],
 } as const;
+
+function isValidHttpUrl(src: string) {
+	let url;
+
+	try {
+		url = new URL(src);
+	} catch (_) {
+		return false;
+	}
+
+	return url.protocol === "http:" || url.protocol === "https:";
+}
 
 export default define(meta, paramDef, async (ps, me) => {
 	const set = {} as Partial<Meta>;
@@ -395,42 +409,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		set.summalyProxy = ps.summalyProxy;
 	}
 
-	if (ps.enableTwitterIntegration !== undefined) {
-		set.enableTwitterIntegration = ps.enableTwitterIntegration;
-	}
-
-	if (ps.twitterConsumerKey !== undefined) {
-		set.twitterConsumerKey = ps.twitterConsumerKey;
-	}
-
-	if (ps.twitterConsumerSecret !== undefined) {
-		set.twitterConsumerSecret = ps.twitterConsumerSecret;
-	}
-
-	if (ps.enableGithubIntegration !== undefined) {
-		set.enableGithubIntegration = ps.enableGithubIntegration;
-	}
-
-	if (ps.githubClientId !== undefined) {
-		set.githubClientId = ps.githubClientId;
-	}
-
-	if (ps.githubClientSecret !== undefined) {
-		set.githubClientSecret = ps.githubClientSecret;
-	}
-
-	if (ps.enableDiscordIntegration !== undefined) {
-		set.enableDiscordIntegration = ps.enableDiscordIntegration;
-	}
-
-	if (ps.discordClientId !== undefined) {
-		set.discordClientId = ps.discordClientId;
-	}
-
-	if (ps.discordClientSecret !== undefined) {
-		set.discordClientSecret = ps.discordClientSecret;
-	}
-
 	if (ps.enableEmail !== undefined) {
 		set.enableEmail = ps.enableEmail;
 	}
@@ -477,6 +455,14 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (ps.tosUrl !== undefined) {
 		set.ToSUrl = ps.tosUrl;
+	}
+
+	if (ps.moreUrls !== undefined) {
+		const areUrlsVaild = ps.moreUrls.every(
+			(obj: { name: string; url: string }) => isValidHttpUrl(String(obj.url)),
+		);
+		if (!areUrlsVaild) throw new Error("invalid URL");
+		set.moreUrls = ps.moreUrls;
 	}
 
 	if (ps.repositoryUrl !== undefined) {

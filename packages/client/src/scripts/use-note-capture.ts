@@ -1,13 +1,13 @@
 import type { Ref } from "vue";
 import { onUnmounted } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { stream } from "@/stream";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import * as os from "@/os";
 
 export function useNoteCapture(props: {
 	rootEl: Ref<HTMLElement>;
-	note: Ref<misskey.entities.Note>;
+	note: Ref<firefish.entities.Note>;
 	isDeletedRef: Ref<boolean>;
 }) {
 	const note = props.note;

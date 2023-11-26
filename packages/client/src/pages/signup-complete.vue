@@ -10,6 +10,7 @@ import * as os from "@/os";
 import { login } from "@/account";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	code: string;
@@ -28,6 +29,6 @@ onMounted(async () => {
 
 definePageMetadata({
 	title: i18n.ts.signup,
-	icon: "ph-user ph-bold ph-lg",
+	icon: `${icon("ph-user")}`,
 });
 </script>

@@ -5,8 +5,8 @@
 			<span class="text"><slot name="label"></slot></span>
 			<span class="right">
 				<span class="text"><slot name="suffix"></slot></span>
-				<i v-if="opened" class="ph-caret-up ph-bold ph-lg icon"></i>
-				<i v-else class="ph-caret-down ph-bold ph-lg icon"></i>
+				<i v-if="opened" :class="icon('ph-caret-up icon')"></i>
+				<i v-else :class="icon('ph-caret-down icon')"></i>
 			</span>
 		</summary>
 		<div class="body">
@@ -18,9 +18,14 @@
 </template>
 
 <script lang="ts" setup>
-defineProps<{
+import { ref } from "vue";
+import icon from "@/scripts/icon";
+
+const props = defineProps<{
 	defaultOpen: boolean;
 }>();
+
+const opened = ref(props.defaultOpen);
 </script>
 
 <style lang="scss" scoped>

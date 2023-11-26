@@ -31,13 +31,14 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, watch } from "vue";
 import * as Acct from "firefish-js/built/acct";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import { acct as getAcct } from "@/filters/user";
 import * as os from "@/os";
 import { useRouter } from "@/router";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
+import icon from "@/scripts/icon";
 
 const XHome = defineAsyncComponent(() => import("./home.vue"));
 const XReactions = defineAsyncComponent(() => import("./reactions.vue"));
@@ -58,7 +59,7 @@ const props = withDefaults(
 useRouter();
 
 const tab = ref(props.page);
-const user = ref<null | misskey.entities.UserDetailed>(null);
+const user = ref<null | firefish.entities.UserDetailed>(null);
 const error = ref(null);
 
 function fetchUser(): void {
@@ -85,7 +86,7 @@ const headerTabs = computed(() =>
 				{
 					key: "home",
 					title: i18n.ts.overview,
-					icon: "ph-user ph-bold ph-lg",
+					icon: `${icon("ph-user")}`,
 				},
 				...(($i && $i.id === user.value.id) ||
 				user.value.publicReactions
@@ -93,7 +94,7 @@ const headerTabs = computed(() =>
 							{
 								key: "reactions",
 								title: i18n.ts.reaction,
-								icon: "ph-smiley ph-bold ph-lg",
+								icon: `${icon("ph-smiley")}`,
 							},
 					  ]
 					: []),
@@ -102,17 +103,17 @@ const headerTabs = computed(() =>
 							{
 								key: "clips",
 								title: i18n.ts.clips,
-								icon: "ph-paperclip ph-bold ph-lg",
+								icon: `${icon("ph-paperclip")}`,
 							},
 							{
 								key: "pages",
 								title: i18n.ts.pages,
-								icon: "ph-file-text ph-bold ph-lg",
+								icon: `${icon("ph-file-text")}`,
 							},
 							{
 								key: "gallery",
 								title: i18n.ts.gallery,
-								icon: "ph-image-square ph-bold ph-lg",
+								icon: `${icon("ph-image-square")}`,
 							},
 					  ]
 					: []),
@@ -124,7 +125,7 @@ definePageMetadata(
 	computed(() =>
 		user.value
 			? {
-					icon: "ph-user ph-bold ph-lg",
+					icon: `${icon("ph-user")}`,
 					title: user.value.name
 						? `${user.value.name} (@${user.value.username})`
 						: `@${user.value.username}`,

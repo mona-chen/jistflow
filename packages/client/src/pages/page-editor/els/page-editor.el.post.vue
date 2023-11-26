@@ -1,7 +1,7 @@
 <template>
 	<XContainer :draggable="true" @remove="() => $emit('remove')">
 		<template #header
-			><i class="ph-paper-plane-tilt ph-bold ph-lg"></i>
+			><i :class="icon('ph-paper-plane-tilt')"></i>
 			{{ i18n.ts._pages.blocks.post }}</template
 		>
 
@@ -31,6 +31,7 @@ import MkTextarea from "@/components/form/textarea.vue";
 import MkInput from "@/components/form/input.vue";
 import MkSwitch from "@/components/form/switch.vue";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 withDefaults(
 	defineProps<{

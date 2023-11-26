@@ -1,7 +1,7 @@
 <template>
 	<MkContainer :show-header="widgetProps.showHeader" class="mkw-trends">
 		<template #header
-			><i class="ph-hash ph-bold ph-lg"></i
+			><i :class="icon('ph-hash')"></i
 			>{{ i18n.ts._widgets.trends }}</template
 		>
 
@@ -10,7 +10,7 @@
 			<transition-group
 				v-else
 				tag="div"
-				:name="$store.state.animation ? 'chart' : ''"
+				:name="defaultStore.state.animation ? 'chart' : ''"
 				class="tags"
 			>
 				<div v-for="stat in stats" :key="stat.tag">
@@ -37,19 +37,17 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { ref } from "vue";
 import type { Widget, WidgetComponentExpose } from "./widget";
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import MkContainer from "@/components/MkContainer.vue";
 import MkMiniChart from "@/components/MkMiniChart.vue";
 import * as os from "@/os";
 import { useInterval } from "@/scripts/use-interval";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const name = "hashtags";
 

@@ -1,7 +1,7 @@
 <template>
 	<div class="_formRoot">
 		<FormButton class="_formBlock" @click="configure"
-			><template #icon><i class="ph-gear-six ph-bold ph-lg"></i></template
+			><template #icon><i :class="icon('ph-gear-six')"></i></template
 			>{{ i18n.ts.notificationSetting }}</FormButton
 		>
 		<FormSection>
@@ -54,10 +54,11 @@ import { notificationTypes } from "firefish-js";
 import FormButton from "@/components/MkButton.vue";
 import FormSection from "@/components/form/section.vue";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import MkPushNotificationAllowButton from "@/components/MkPushNotificationAllowButton.vue";
+import icon from "@/scripts/icon";
 
 const allowButton =
 	shallowRef<InstanceType<typeof MkPushNotificationAllowButton>>();
@@ -124,6 +125,6 @@ function onChangeSendReadMessage(v: boolean) {
 
 definePageMetadata({
 	title: i18n.ts.notifications,
-	icon: "ph-bell ph-bold ph-lg",
+	icon: `${icon("ph-bell")}`,
 });
 </script>

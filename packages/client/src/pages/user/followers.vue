@@ -18,11 +18,12 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
 import * as Acct from "firefish-js/built/acct";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XFollowList from "./follow-list.vue";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = withDefaults(
 	defineProps<{
@@ -31,7 +32,7 @@ const props = withDefaults(
 	{},
 );
 
-const user = ref<null | misskey.entities.UserDetailed>(null);
+const user = ref<null | firefish.entities.UserDetailed>(null);
 const error = ref(null);
 
 function fetchUser(): void {
@@ -58,7 +59,7 @@ definePageMetadata(
 	computed(() =>
 		user.value
 			? {
-					icon: "ph-user ph-bold ph-lg",
+					icon: `${icon("ph-user")}`,
 					title: user.value.name
 						? `${user.value.name} (@${user.value.username})`
 						: `@${user.value.username}`,

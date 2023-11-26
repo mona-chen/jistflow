@@ -1,14 +1,14 @@
 import {
+	Column,
 	Entity,
 	Index,
 	JoinColumn,
-	Column,
-	PrimaryColumn,
 	ManyToOne,
+	PrimaryColumn,
 } from "typeorm";
-import { User } from "./user.js";
 import { id } from "../id.js";
 import type { DriveFile } from "./drive-file.js";
+import { User } from "./user.js";
 
 @Entity()
 export class GalleryPost {

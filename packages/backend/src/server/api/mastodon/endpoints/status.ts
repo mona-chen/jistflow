@@ -1,17 +1,17 @@
-import Router from "@koa/router";
-import { getClient } from "../ApiMastodonCompatibleService.js";
-import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
-import axios from "axios";
 import querystring from "node:querystring";
+import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import { IdType, convertId } from "@/server/api/index.js";
+import Router from "@koa/router";
 import qs from "qs";
-import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
-import { convertId, IdType } from "../../index.js";
+import { getClient } from "../ApiMastodonCompatibleService.js";
 import {
 	convertAccount,
 	convertAttachment,
 	convertPoll,
 	convertStatus,
 } from "../converters.js";
+import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
 
 function normalizeQuery(data: any) {
 	const str = querystring.stringify(data);
@@ -216,10 +216,11 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/favourite",
 		async (ctx) => {
+			const meta = await fetchMeta();
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
-			const react = await getFirstReaction(BASE_URL, accessTokens);
+			const react = meta.defaultReaction;
 			try {
 				const a = (await client.createEmojiReaction(
 					convertId(ctx.params.id, IdType.FirefishId),
@@ -238,10 +239,11 @@ export function apiStatusMastodon(router: Router): void {
 	router.post<{ Params: { id: string } }>(
 		"/v1/statuses/:id/unfavourite",
 		async (ctx) => {
+			const meta = await fetchMeta();
 			const BASE_URL = `${ctx.protocol}://${ctx.hostname}`;
 			const accessTokens = ctx.headers.authorization;
 			const client = getClient(BASE_URL, accessTokens);
-			const react = await getFirstReaction(BASE_URL, accessTokens);
+			const react = meta.defaultReaction;
 			try {
 				const data = await client.deleteEmojiReaction(
 					convertId(ctx.params.id, IdType.FirefishId),
@@ -475,26 +477,4 @@ export function apiStatusMastodon(router: Router): void {
 			}
 		},
 	);
-}
-
-async function getFirstReaction(
-	BASE_URL: string,
-	accessTokens: string | undefined,
-) {
-	const accessTokenArr = accessTokens?.split(" ") ?? [null];
-	const accessToken = accessTokenArr[accessTokenArr.length - 1];
-	let react = "⭐";
-	try {
-		const api = await axios.post(`${BASE_URL}/api/i/registry/get-unsecure`, {
-			scope: ["client", "base"],
-			key: "reactions",
-			i: accessToken,
-		});
-		const reactRaw = api.data;
-		react = Array.isArray(reactRaw) ? api.data[0] : "⭐";
-		console.log(api.data);
-		return react;
-	} catch (e) {
-		return react;
-	}
 }

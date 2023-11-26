@@ -1,7 +1,7 @@
 import config from "@/config/index.js";
 import {
-	DB_MAX_NOTE_TEXT_LENGTH,
 	DB_MAX_IMAGE_COMMENT_LENGTH,
+	DB_MAX_NOTE_TEXT_LENGTH,
 } from "@/misc/hard-limits.js";
 
 export const MAX_NOTE_TEXT_LENGTH = Math.min(
@@ -68,6 +68,15 @@ export const FILE_TYPE_BROWSERSAFE = [
 	"audio/x-flac",
 	"audio/flac",
 	"audio/vnd.wave",
+
+	"audio/mod",
+	"audio/x-mod",
+	"audio/s3m",
+	"audio/x-s3m",
+	"audio/xm",
+	"audio/x-xm",
+	"audio/it",
+	"audio/x-it",
 ];
 /*
 https://github.com/sindresorhus/file-type/blob/main/supported.js

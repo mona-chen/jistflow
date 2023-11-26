@@ -1,33 +1,28 @@
-import { In } from "typeorm";
-import * as mfm from "mfm-js";
-import { Note } from "@/models/entities/note.js";
-import type { User } from "@/models/entities/user.js";
-import {
-	Users,
-	PollVotes,
-	DriveFiles,
-	NoteReactions,
-	Followings,
-	Polls,
-	Channels,
-} from "../index.js";
-import type { Packed } from "@/misc/schema.js";
+import { db } from "@/db/postgre.js";
+import { IdentifiableError } from "@/misc/identifiable-error.js";
 import { nyaize } from "@/misc/nyaize.js";
-import { awaitAll } from "@/prelude/await-all.js";
-import {
-	convertLegacyReaction,
-	convertLegacyReactions,
-	decodeReaction,
-} from "@/misc/reaction-lib.js";
-import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import {
 	aggregateNoteEmojis,
 	populateEmojis,
 	prefetchEmojis,
 } from "@/misc/populate-emojis.js";
-import { db } from "@/db/postgre.js";
-import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { detect as detectLanguage_ } from "tinyld";
+import { convertReactions, decodeReaction } from "@/misc/reaction-lib.js";
+import type { Packed } from "@/misc/schema.js";
+import type { NoteReaction } from "@/models/entities/note-reaction.js";
+import { Note } from "@/models/entities/note.js";
+import type { User } from "@/models/entities/user.js";
+import { awaitAll } from "@/prelude/await-all.js";
+import * as mfm from "mfm-js";
+import { In } from "typeorm";
+import {
+	Channels,
+	DriveFiles,
+	Followings,
+	NoteReactions,
+	PollVotes,
+	Polls,
+	Users,
+} from "../index.js";
 
 export async function populatePoll(note: Note, meId: User["id"] | null) {
 	const poll = await Polls.findOneByOrFail({ noteId: note.id });
@@ -77,7 +72,7 @@ async function populateMyReaction(
 	if (_hint_?.myReactions) {
 		const reaction = _hint_.myReactions.get(note.id);
 		if (reaction) {
-			return convertLegacyReaction(reaction.reaction);
+			return decodeReaction(reaction.reaction).reaction;
 		} else if (reaction === null) {
 			return undefined;
 		}
@@ -90,7 +85,7 @@ async function populateMyReaction(
 	});
 
 	if (reaction) {
-		return convertLegacyReaction(reaction.reaction);
+		return decodeReaction(reaction.reaction).reaction;
 	}
 
 	return undefined;
@@ -203,7 +198,6 @@ export const NoteRepository = db.getRepository(Note).extend({
 			host,
 		);
 
-		const lang = detectLanguage_(`${note.cw ?? ''}\n${note.text ?? ''}`) ?? "unknown"
 		const reactionEmoji = await populateEmojis(reactionEmojiNames, host);
 		const packed: Packed<"Note"> = await awaitAll({
 			id: note.id,
@@ -220,7 +214,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 				note.visibility === "specified" ? note.visibleUserIds : undefined,
 			renoteCount: note.renoteCount,
 			repliesCount: note.repliesCount,
-			reactions: convertLegacyReactions(note.reactions),
+			reactions: convertReactions(note.reactions),
 			reactionEmojis: reactionEmoji,
 			emojis: noteEmoji,
 			tags: note.tags.length > 0 ? note.tags : undefined,
@@ -263,14 +257,15 @@ export const NoteRepository = db.getRepository(Note).extend({
 							: undefined,
 				  }
 				: {}),
-			lang: lang,
+			lang: note.lang,
 		});
 
 		if (packed.user.isCat && packed.user.speakAsCat && packed.text) {
 			const tokens = packed.text ? mfm.parse(packed.text) : [];
 			function nyaizeNode(node: mfm.MfmNode) {
 				if (node.type === "quote") return;
-				if (node.type === "text") node.props.text = nyaize(node.props.text);
+				if (node.type === "text")
+					node.props.text = nyaize(node.props.text, packed.lang);
 
 				if (node.children) {
 					for (const child of node.children) {

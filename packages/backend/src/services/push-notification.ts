@@ -1,9 +1,9 @@
-import push from "web-push";
 import config from "@/config/index.js";
-import { SwSubscriptions } from "@/models/index.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import type { Packed } from "@/misc/schema.js";
 import { getNoteSummary } from "@/misc/get-note-summary.js";
+import type { Packed } from "@/misc/schema.js";
+import { SwSubscriptions } from "@/models/index.js";
+import push from "web-push";
 
 // Defined also packages/sw/types.ts#L14-L21
 type pushNotificationsTypes = {

@@ -1,7 +1,7 @@
-import type Bull from "bull";
 import type { ObjectStorageJobData } from "@/queue/types.js";
-import deleteFile from "./delete-file.js";
+import type Bull from "bull";
 import cleanRemoteFiles from "./clean-remote-files.js";
+import deleteFile from "./delete-file.js";
 
 const jobs = {
 	deleteFile,

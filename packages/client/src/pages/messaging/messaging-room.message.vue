@@ -16,7 +16,7 @@
 				>
 					<i
 						style="color: var(--accentLighten)"
-						class="ph-x-circle ph-fill ph-lg"
+						class="ph-x-circle ph-fill"
 					></i>
 				</button>
 				<div v-if="!message.isDeleted" class="content">
@@ -74,7 +74,7 @@
 				</template>
 				<MkTime :time="message.createdAt" />
 				<template v-if="message.is_edited"
-					><i class="ph-pencil ph-bold ph-lg"></i
+					><i :class="icon('ph-pencil')"></i
 				></template>
 			</footer>
 		</div>
@@ -85,16 +85,17 @@
 import { computed } from "vue";
 
 import * as mfm from "mfm-js";
-import type * as Misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XMediaList from "@/components/MkMediaList.vue";
 import { extractUrlFromMfm } from "@/scripts/extract-url-from-mfm";
 import MkUrlPreview from "@/components/MkUrlPreview.vue";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
-	message: Misskey.entities.MessagingMessage;
+	message: firefish.entities.MessagingMessage;
 	isGroup?: boolean;
 }>();
 

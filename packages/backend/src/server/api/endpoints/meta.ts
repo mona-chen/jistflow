@@ -1,10 +1,10 @@
-import JSON5 from "json5";
-import { IsNull, MoreThan } from "typeorm";
 import config from "@/config/index.js";
+import { MAX_CAPTION_TEXT_LENGTH, MAX_NOTE_TEXT_LENGTH } from "@/const.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { Ads, Emojis, Users } from "@/models/index.js";
-import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
-import define from "../define.js";
+import define from "@/server/api/define.js";
+import JSON5 from "json5";
+import { IsNull, MoreThan } from "typeorm";
 
 export const meta = {
 	tags: ["meta"],
@@ -63,6 +63,11 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: true,
+			},
+			moreUrls: {
+				type: "object",
+				optional: false,
+				nullable: false,
 			},
 			repositoryUrl: {
 				type: "string",
@@ -155,7 +160,7 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "/static-assets/badges/info.png",
+				default: "/static-assets/badges/info.webp",
 			},
 			bannerUrl: {
 				type: "string",
@@ -166,7 +171,7 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: false,
-				default: "/static-assets/badges/error.png",
+				default: "/static-assets/badges/error.webp",
 			},
 			iconUrl: {
 				type: "string",
@@ -268,21 +273,6 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
-			enableTwitterIntegration: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
-			enableGithubIntegration: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
-			enableDiscordIntegration: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
 			enableServiceWorker: {
 				type: "boolean",
 				optional: false,
@@ -339,21 +329,6 @@ export const meta = {
 						nullable: false,
 					},
 					objectStorage: {
-						type: "boolean",
-						optional: false,
-						nullable: false,
-					},
-					twitter: {
-						type: "boolean",
-						optional: false,
-						nullable: false,
-					},
-					github: {
-						type: "boolean",
-						optional: false,
-						nullable: false,
-					},
-					discord: {
 						type: "boolean",
 						optional: false,
 						nullable: false,
@@ -446,6 +421,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		description: instance.description,
 		langs: instance.langs,
 		tosUrl: instance.ToSUrl,
+		moreUrls: instance.moreUrls,
 		repositoryUrl: instance.repositoryUrl,
 		feedbackUrl: instance.feedbackUrl,
 
@@ -493,10 +469,6 @@ export default define(meta, paramDef, async (ps, me) => {
 				  })),
 		enableEmail: instance.enableEmail,
 
-		enableTwitterIntegration: instance.enableTwitterIntegration,
-		enableGithubIntegration: instance.enableGithubIntegration,
-		enableDiscordIntegration: instance.enableDiscordIntegration,
-
 		enableServiceWorker: instance.enableServiceWorker,
 
 		translatorAvailable:
@@ -539,9 +511,6 @@ export default define(meta, paramDef, async (ps, me) => {
 			hcaptcha: instance.enableHcaptcha,
 			recaptcha: instance.enableRecaptcha,
 			objectStorage: instance.useObjectStorage,
-			twitter: instance.enableTwitterIntegration,
-			github: instance.enableGithubIntegration,
-			discord: instance.enableDiscordIntegration,
 			serviceWorker: instance.enableServiceWorker,
 			postEditing: true,
 			postImports: instance.experimentalFeatures?.postImports || false,

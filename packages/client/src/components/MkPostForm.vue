@@ -11,7 +11,7 @@
 	>
 		<header>
 			<button v-if="!fixed" class="cancel _button" @click="cancel">
-				<i class="ph-x ph-bold ph-lg" :aria-label="i18n.t('close')"></i>
+				<i :class="icon('ph-x')" :aria-label="i18n.t('close')"></i>
 			</button>
 			<button
 				v-if="$props.editId == null"
@@ -29,7 +29,7 @@
 					>{{ maxTextLength - textLength }}</span
 				>
 				<span v-if="localOnly" class="local-only"
-					><i class="ph-users ph-bold ph-lg"></i
+					><i :class="icon('ph-users')"></i
 				></span>
 				<button
 					ref="visibilityButton"
@@ -39,16 +39,16 @@
 					@click="setVisibility"
 				>
 					<span v-if="visibility === 'public'"
-						><i class="ph-planet ph-bold ph-lg"></i
+						><i :class="icon('ph-planet')"></i
 					></span>
 					<span v-if="visibility === 'home'"
-						><i class="ph-house ph-bold ph-lg"></i
+						><i :class="icon('ph-house')"></i
 					></span>
 					<span v-if="visibility === 'followers'"
-						><i class="ph-lock ph-bold ph-lg"></i
+						><i :class="icon('ph-lock')"></i
 					></span>
 					<span v-if="visibility === 'specified'"
-						><i class="ph-envelope-simple-open ph-bold ph-lg"></i
+						><i :class="icon('ph-envelope-simple-open')"></i
 					></span>
 				</button>
 				<button
@@ -57,7 +57,7 @@
 					:class="{ active: showPreview }"
 					@click="showPreview = !showPreview"
 				>
-					<i class="ph-binoculars ph-bold ph-lg"></i>
+					<i :class="icon('ph-binoculars')"></i>
 				</button>
 				<button
 					class="submit _buttonGradate"
@@ -68,11 +68,13 @@
 					{{ submitText
 					}}<i
 						:class="
-							reply
-								? 'ph-arrow-u-up-left ph-bold ph-lg'
-								: renote
-								? 'ph-quotes ph-bold ph-lg'
-								: 'ph-paper-plane-tilt ph-bold ph-lg'
+							icon(
+								reply
+									? 'ph-arrow-u-up-left'
+									: renote
+									? 'ph-quotes'
+									: 'ph-paper-plane-tilt',
+							)
 						"
 					></i>
 				</button>
@@ -82,14 +84,14 @@
 			<XNoteSimple v-if="reply" class="preview" :note="reply" />
 			<XNoteSimple v-if="renote" class="preview" :note="renote" />
 			<div v-if="quoteId" class="with-quote">
-				<i class="ph-quotes ph-bold ph-lg"></i>
+				<i :class="icon('ph-quotes')"></i>
 				{{ i18n.ts.quoteAttached
 				}}<button
 					class="_button"
 					:aria-label="i18n.t('removeQuote')"
 					@click="quoteId = null"
 				>
-					<i class="ph-x ph-bold ph-lg"></i>
+					<i :class="icon('ph-x')"></i>
 				</button>
 			</div>
 			<div v-if="visibility === 'specified'" class="to-specified">
@@ -102,11 +104,11 @@
 							:aria-label="i18n.t('removeRecipient')"
 							@click="removeVisibleUser(u)"
 						>
-							<i class="ph-x ph-bold ph-lg"></i>
+							<i :class="icon('ph-x')"></i>
 						</button>
 					</span>
 					<button class="_button" @click="addVisibleUser">
-						<i class="ph-plus ph-bold ph-md ph-fw ph-lg"></i>
+						<i :class="icon('ph-plus ph-md ph-fw')"></i>
 					</button>
 				</div>
 			</div>
@@ -164,7 +166,7 @@
 					class="_button"
 					@click="chooseFileFrom"
 				>
-					<i class="ph-upload ph-bold ph-lg"></i>
+					<i :class="icon('ph-upload')"></i>
 				</button>
 				<button
 					v-tooltip="i18n.ts.poll"
@@ -172,7 +174,7 @@
 					:class="{ active: poll }"
 					@click="togglePoll"
 				>
-					<i class="ph-microphone-stage ph-bold ph-lg"></i>
+					<i :class="icon('ph-microphone-stage')"></i>
 				</button>
 				<button
 					v-tooltip="i18n.ts.useCw"
@@ -180,14 +182,14 @@
 					:class="{ active: useCw }"
 					@click="useCw = !useCw"
 				>
-					<i class="ph-eye-slash ph-bold ph-lg"></i>
+					<i :class="icon('ph-eye-slash')"></i>
 				</button>
 				<button
 					v-tooltip="i18n.ts.mention"
 					class="_button"
 					@click="insertMention"
 				>
-					<i class="ph-at ph-bold ph-lg"></i>
+					<i :class="icon('ph-at')"></i>
 				</button>
 				<button
 					v-tooltip="i18n.ts.hashtags"
@@ -195,14 +197,14 @@
 					:class="{ active: withHashtags }"
 					@click="withHashtags = !withHashtags"
 				>
-					<i class="ph-hash ph-bold ph-lg"></i>
+					<i :class="icon('ph-hash')"></i>
 				</button>
 				<button
 					v-tooltip="i18n.ts.emoji"
 					class="_button"
 					@click="insertEmoji"
 				>
-					<i class="ph-smiley ph-bold ph-lg"></i>
+					<i :class="icon('ph-smiley')"></i>
 				</button>
 				<button
 					v-if="postFormActions.length > 0"
@@ -210,7 +212,7 @@
 					class="_button"
 					@click="showActions"
 				>
-					<i class="ph-plug ph-bold ph-lg"></i>
+					<i :class="icon('ph-plug')"></i>
 				</button>
 				<!--	v-if="showMfmCheatsheet" -->
 				<button
@@ -218,7 +220,7 @@
 					class="_button right"
 					@click="openCheatSheet"
 				>
-					<i class="ph-question ph-bold ph-lg"></i>
+					<i :class="icon('ph-question')"></i>
 				</button>
 			</footer>
 			<datalist id="hashtags">
@@ -243,7 +245,7 @@ import {
 	watch,
 } from "vue";
 import * as mfm from "mfm-js";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import autosize from "autosize";
 import insertTextAtCursor from "insert-text-at-cursor";
 import { length } from "stringz";
@@ -266,37 +268,35 @@ import { defaultStore, notePostInterruptors, postFormActions } from "@/store";
 import MkInfo from "@/components/MkInfo.vue";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
-import {
-	$i,
-	getAccounts,
-	openAccountMenu as openAccountMenu_,
-} from "@/account";
+import { getAccounts, openAccountMenu as openAccountMenu_ } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { uploadFile } from "@/scripts/upload";
 import { deepClone } from "@/scripts/clone";
 import XCheatSheet from "@/components/MkCheatSheetDialog.vue";
-import { preprocess } from "@/scripts/preprocess";
+import preprocess from "@/scripts/preprocess";
 import { vibrate } from "@/scripts/vibrate";
+import icon from "@/scripts/icon";
 
 const modal = inject("modal");
 
 const props = withDefaults(
 	defineProps<{
-		reply?: misskey.entities.Note;
-		renote?: misskey.entities.Note;
+		reply?: firefish.entities.Note;
+		renote?: firefish.entities.Note;
 		channel?: any; // TODO
-		mention?: misskey.entities.User;
-		specified?: misskey.entities.User;
+		mention?: firefish.entities.User;
+		specified?: firefish.entities.User;
 		initialText?: string;
-		initialVisibility?: typeof misskey.noteVisibilities;
-		initialFiles?: misskey.entities.DriveFile[];
+		initialVisibility?: typeof firefish.noteVisibilities;
+		initialFiles?: firefish.entities.DriveFile[];
 		initialLocalOnly?: boolean;
-		initialVisibleUsers?: misskey.entities.User[];
-		initialNote?: misskey.entities.Note;
+		initialVisibleUsers?: firefish.entities.User[];
+		initialNote?: firefish.entities.Note;
 		instant?: boolean;
 		fixed?: boolean;
 		autofocus?: boolean;
 		showMfmCheatSheet?: boolean;
-		editId?: misskey.entities.Note["id"];
+		editId?: firefish.entities.Note["id"];
 	}>(),
 	{
 		initialVisibleUsers: () => [],
@@ -338,13 +338,12 @@ const visibility = ref(
 		((defaultStore.state.rememberNoteVisibility
 			? defaultStore.state.visibility
 			: defaultStore.state
-					.defaultNoteVisibility) as (typeof misskey.noteVisibilities)[number]),
+					.defaultNoteVisibility) as (typeof firefish.noteVisibilities)[number]),
 );
 const visibleUsers = ref([]);
 if (props.initialVisibleUsers) {
 	props.initialVisibleUsers.forEach(pushVisibleUser);
 }
-const autocomplete = ref(null);
 const draghover = ref(false);
 const quoteId = ref(null);
 const hasNotSpecifiedMentions = ref(false);
@@ -476,11 +475,11 @@ if (props.reply && props.reply.text != null) {
 			? `@${x.username}`
 			: `@${x.username}@${toASCII(otherHost)}`;
 
-		// 自分は除外
+		// exclude me
 		if ($i.username === x.username && (x.host == null || x.host === host))
 			continue;
 
-		// 重複は除外
+		// remove duplicates
 		if (text.value.includes(`${mention} `)) continue;
 
 		text.value += `${mention} `;
@@ -489,10 +488,10 @@ if (props.reply && props.reply.text != null) {
 
 if (props.channel) {
 	visibility.value = "public";
-	localOnly.value = true; // TODO: チャンネルが連合するようになった折には消す
+	localOnly.value = true; // TODO: Delete this once channels get federated
 }
 
-// 公開以外へのリプライ時は元の公開範囲を引き継ぐ
+// Inherit the original visibility
 if (
 	props.reply &&
 	["home", "followers", "specified"].includes(props.reply.visibility)
@@ -611,10 +610,6 @@ function togglePoll() {
 	}
 }
 
-function addTag(tag: string) {
-	insertTextAtCursor(textareaEl.value, ` #${tag} `);
-}
-
 function focus() {
 	if (textareaEl.value) {
 		textareaEl.value.focus();
@@ -718,6 +713,8 @@ function clear() {
 	quoteId.value = null;
 }
 
+// FIXME: ev.which is deprecated
+// https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/which
 function onKeydown(ev: KeyboardEvent) {
 	if (
 		(ev.which === 10 || ev.which === 13) &&
@@ -754,7 +751,7 @@ async function onPaste(ev: ClipboardEvent) {
 		}
 	}
 
-	const paste = ev.clipboardData.getData("text");
+	const paste = ev.clipboardData?.getData("text") ?? "";
 
 	if (!props.renote && !quoteId.value && paste.startsWith(url + "/notes/")) {
 		ev.preventDefault();
@@ -769,7 +766,7 @@ async function onPaste(ev: ClipboardEvent) {
 			}
 
 			quoteId.value = paste
-				.substr(url.length)
+				.substring(url.length)
 				.match(/^\/notes\/(.+?)\/?$/)[1];
 		});
 	}
@@ -980,7 +977,7 @@ function showActions(ev) {
 	);
 }
 
-const postAccount = ref<misskey.entities.UserDetailed | null>(null);
+const postAccount = ref<firefish.entities.UserDetailed | null>(null);
 
 function openAccountMenu(ev: MouseEvent) {
 	openAccountMenu_(

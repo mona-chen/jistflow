@@ -3,10 +3,10 @@
  */
 
 import * as fs from "node:fs";
-import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import * as yaml from "js-yaml";
-import type { Source, Mixin } from "./types.js";
+import type { Mixin, Source } from "./types.js";
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);

@@ -11,12 +11,12 @@
 </template>
 
 <script lang="ts" setup>
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XNoteHeader from "@/components/MkNoteHeader.vue";
 import MkSubNoteContent from "@/components/MkSubNoteContent.vue";
 
-const props = defineProps<{
-	note: misskey.entities.Note;
+defineProps<{
+	note: firefish.entities.Note;
 	pinned?: boolean;
 }>();
 </script>

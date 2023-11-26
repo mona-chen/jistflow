@@ -61,7 +61,7 @@
 								external
 							>
 								<template #icon
-									><i class="ph-code ph-bold ph-lg"></i
+									><i :class="icon('ph-code')"></i
 								></template>
 								{{ i18n.ts._aboutFirefish.source }}
 								<template #suffix>GitLab</template>
@@ -71,7 +71,7 @@
 								external
 							>
 								<template #icon
-									><i class="ph-money ph-bold ph-lg"></i
+									><i :class="icon('ph-money')"></i
 								></template>
 								{{ i18n.ts._aboutFirefish.donate }}
 								<template #suffix>Donate</template>
@@ -81,7 +81,7 @@
 								external
 							>
 								<template #icon
-									><i class="ph-translate ph-bold ph-lg"></i
+									><i :class="icon('ph-translate')"></i
 								></template>
 								{{ i18n.ts._aboutFirefish.translation }}
 								<template #suffix>Translate</template>
@@ -111,11 +111,15 @@
 							/></FormLink>
 							<FormLink to="/@panos@firefish.social"
 								><Mfm
-									:text="'@panos@firefish.social (Project Coordinator)'"
+									:text="'@panos@firefish.social (Project coordinator)'"
 							/></FormLink>
 							<FormLink to="/@blackspike@mastodon.cloud"
 								><Mfm
-									:text="'@blackspike@mastodon.cloud (Logo Design)'"
+									:text="'@blackspike@mastodon.cloud (Logo design)'"
+							/></FormLink>
+							<FormLink to="/@magi@minazukey.uk"
+								><Mfm
+									:text="'@magi@minazukey.uk (Error images)'"
 							/></FormLink>
 						</div>
 						<h3
@@ -215,6 +219,7 @@ import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
+import icon from "@/scripts/icon";
 
 let patrons = [],
 	sponsors = [];

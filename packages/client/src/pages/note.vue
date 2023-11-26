@@ -10,7 +10,7 @@
 		<MkSpacer :content-max="800" :margin-min="6">
 			<div class="fcuexfpr">
 				<transition
-					:name="$store.state.animation ? 'fade' : ''"
+					:name="defaultStore.state.animation ? 'fade' : ''"
 					mode="out-in"
 				>
 					<div v-if="appearNote" class="note">
@@ -28,7 +28,7 @@
 								class="load next"
 								@click="showNext = true"
 							>
-								<i class="ph-caret-up ph-bold ph-lg"></i>
+								<i :class="icon('ph-caret-up')"></i>
 								{{ `${i18n.ts.loadMore} (${i18n.ts.newer})` }}
 							</MkButton>
 							<div class="note _gap">
@@ -47,7 +47,7 @@
 								class="load prev"
 								@click="showPrev = true"
 							>
-								<i class="ph-caret-down ph-bold ph-lg"></i>
+								<i :class="icon('ph-caret-down')"></i>
 								{{ `${i18n.ts.loadMore} (${i18n.ts.older})` }}
 							</MkButton>
 						</div>
@@ -70,7 +70,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
-import type * as misskey from "firefish-js";
+import type * as firefish from "firefish-js";
 import XNoteDetailed from "@/components/MkNoteDetailed.vue";
 import XNotes from "@/components/MkNotes.vue";
 import MkRemoteCaution from "@/components/MkRemoteCaution.vue";
@@ -78,19 +78,21 @@ import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	noteId: string;
 }>();
 
-const note = ref<null | misskey.entities.Note>();
+const note = ref<null | firefish.entities.Note>();
 const hasPrev = ref(false);
 const hasNext = ref(false);
 const showPrev = ref(false);
 const showNext = ref(false);
 const error = ref();
 const isRenote = ref(false);
-const appearNote = ref<null | misskey.entities.Note>();
+const appearNote = ref<null | firefish.entities.Note>();
 
 const prevPagination = {
 	endpoint: "users/notes" as const,
@@ -136,7 +138,7 @@ function fetchNote() {
 				note.value.fileIds.length === 0 &&
 				note.value.poll == null;
 			appearNote.value = isRenote.value
-				? (note.value.renote as misskey.entities.Note)
+				? (note.value.renote as firefish.entities.Note)
 				: note.value;
 
 			Promise.all([

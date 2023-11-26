@@ -1,11 +1,11 @@
 <template>
 	<button
-		v-if="canRenote && $store.state.seperateRenoteQuote"
+		v-if="canRenote && defaultStore.state.seperateRenoteQuote"
 		v-tooltip.noDelay.bottom="i18n.ts.quote"
 		class="eddddedb _button"
 		@click.stop="quote()"
 	>
-		<i class="ph-quotes ph-bold ph-lg"></i>
+		<i :class="icon('ph-quotes')"></i>
 	</button>
 </template>
 
@@ -14,8 +14,10 @@ import { computed } from "vue";
 import type { Note } from "firefish-js/built/entities";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
+import { defaultStore } from "@/store";
+import icon from "@/scripts/icon";
 
 const props = defineProps<{
 	note: Note;

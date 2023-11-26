@@ -5,35 +5,34 @@
 import cluster from "node:cluster";
 import * as fs from "node:fs";
 import * as http from "node:http";
-import Koa from "koa";
-import Router from "@koa/router";
 import cors from "@koa/cors";
-import mount from "koa-mount";
+import Router from "@koa/router";
+import Koa from "koa";
 import koaLogger from "koa-logger";
+import mount from "koa-mount";
 import * as slow from "koa-slow";
 
-import { IsNull } from "typeorm";
 import config from "@/config/index.js";
-import Logger from "@/services/logger.js";
-import { UserProfiles, Users } from "@/models/index.js";
+import { envOption } from "@/env.js";
+import * as Acct from "@/misc/acct.js";
+import { createTemp } from "@/misc/create-temp.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { genIdenticon } from "@/misc/gen-identicon.js";
-import { createTemp } from "@/misc/create-temp.js";
-import { publishMainStream } from "@/services/stream.js";
-import * as Acct from "@/misc/acct.js";
-import { envOption } from "@/env.js";
-import megalodon, { MegalodonInterface } from "megalodon";
-import activityPub from "./activitypub.js";
-import nodeinfo from "./nodeinfo.js";
-import wellKnown from "./well-known.js";
-import apiServer from "./api/index.js";
-import fileServer from "./file/index.js";
-import proxyServer from "./proxy/index.js";
-import webServer from "./web/index.js";
-import { initializeStreamingServer } from "./api/streaming.js";
+import { Users } from "@/models/index.js";
+import Logger from "@/services/logger.js";
 import { koaBody } from "koa-body";
 import removeTrailingSlash from "koa-remove-trailing-slashes";
+import megalodon, { MegalodonInterface } from "megalodon";
+import { IsNull } from "typeorm";
 import { v4 as uuid } from "uuid";
+import activityPub from "./activitypub.js";
+import apiServer from "./api/index.js";
+import { initializeStreamingServer } from "./api/streaming.js";
+import fileServer from "./file/index.js";
+import nodeinfo from "./nodeinfo.js";
+import proxyServer from "./proxy/index.js";
+import webServer from "./web/index.js";
+import wellKnown from "./well-known.js";
 
 export const serverLogger = new Logger("server", "gray", false);
 
@@ -167,7 +166,6 @@ mastoRouter.post("/oauth/token", async (ctx) => {
 	const BASE_URL = `${ctx.request.protocol}://${ctx.request.hostname}`;
 	const generator = (megalodon as any).default;
 	const client = generator(BASE_URL, null) as MegalodonInterface;
-	let m = null;
 	let token = null;
 	if (body.code) {
 		//m = body.code.match(/^([a-zA-Z0-9]{8})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{4})([a-zA-Z0-9]{12})/);
