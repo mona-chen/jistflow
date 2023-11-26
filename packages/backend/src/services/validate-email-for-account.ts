@@ -1,6 +1,6 @@
-import { validate as validateEmail } from "deep-email-validator";
-import { UserProfiles } from "@/models/index.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
+import { UserProfiles } from "@/models/index.js";
+import { validate as validateEmail } from "deep-email-validator";
 
 export async function validateEmailForAccount(emailAddress: string): Promise<{
 	available: boolean;

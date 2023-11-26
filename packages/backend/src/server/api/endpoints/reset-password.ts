@@ -1,6 +1,6 @@
-import { UserProfiles, PasswordResetRequests } from "@/models/index.js";
-import define from "@/server/api/define.js";
 import { hashPassword } from "@/misc/password.js";
+import { PasswordResetRequests, UserProfiles } from "@/models/index.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["reset password"],

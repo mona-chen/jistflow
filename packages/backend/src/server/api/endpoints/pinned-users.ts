@@ -1,9 +1,9 @@
-import { IsNull } from "typeorm";
-import { Users } from "@/models/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
 import * as Acct from "@/misc/acct.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
 import type { User } from "@/models/entities/user.js";
+import { Users } from "@/models/index.js";
 import define from "@/server/api/define.js";
+import { IsNull } from "typeorm";
 
 export const meta = {
 	tags: ["users"],

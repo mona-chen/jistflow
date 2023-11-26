@@ -1,9 +1,9 @@
-import * as OTPAuth from "otpauth";
-import * as QRCode from "qrcode";
 import config from "@/config/index.js";
+import { comparePassword } from "@/misc/password.js";
 import { UserProfiles } from "@/models/index.js";
 import define from "@/server/api/define.js";
-import { comparePassword } from "@/misc/password.js";
+import * as OTPAuth from "otpauth";
+import * as QRCode from "qrcode";
 
 export const meta = {
 	requireCredential: true,

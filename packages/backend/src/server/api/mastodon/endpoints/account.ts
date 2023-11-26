@@ -1,7 +1,6 @@
+import { IdType, convertId } from "@/server/api/index.js";
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
-import { argsToBools, convertTimelinesArgsId, limitToInt } from "./timeline.js";
-import { convertId, IdType } from "@/server/api/index.js";
 import {
 	convertAccount,
 	convertFeaturedTag,
@@ -9,6 +8,7 @@ import {
 	convertRelationship,
 	convertStatus,
 } from "../converters.js";
+import { argsToBools, convertTimelinesArgsId, limitToInt } from "./timeline.js";
 
 const relationshipModel = {
 	id: "",
@@ -34,7 +34,7 @@ export function apiAccountMastodon(router: Router): void {
 		const client = getClient(BASE_URL, accessTokens);
 		try {
 			const data = await client.verifyAccountCredentials();
-			let acct = data.data;
+			const acct = data.data;
 			acct.id = convertId(acct.id, IdType.MastodonId);
 			acct.display_name = acct.display_name || acct.username;
 			acct.url = `${BASE_URL}/@${acct.url}`;
@@ -109,7 +109,7 @@ export function apiAccountMastodon(router: Router): void {
 				return;
 			}
 
-			let reqIds = [];
+			const reqIds = [];
 			for (let i = 0; i < ids.length; i++) {
 				reqIds.push(convertId(ids[i], IdType.FirefishId));
 			}
@@ -120,7 +120,7 @@ export function apiAccountMastodon(router: Router): void {
 			);
 		} catch (e: any) {
 			console.error(e);
-			let data = e.response.data;
+			const data = e.response.data;
 			data.users = users;
 			console.error(data);
 			ctx.status = 401;
@@ -250,7 +250,7 @@ export function apiAccountMastodon(router: Router): void {
 				const data = await client.followAccount(
 					convertId(ctx.params.id, IdType.FirefishId),
 				);
-				let acct = convertRelationship(data.data);
+				const acct = convertRelationship(data.data);
 				acct.following = true;
 				ctx.body = acct;
 			} catch (e: any) {
@@ -271,7 +271,7 @@ export function apiAccountMastodon(router: Router): void {
 				const data = await client.unfollowAccount(
 					convertId(ctx.params.id, IdType.FirefishId),
 				);
-				let acct = convertRelationship(data.data);
+				const acct = convertRelationship(data.data);
 				acct.following = false;
 				ctx.body = acct;
 			} catch (e: any) {

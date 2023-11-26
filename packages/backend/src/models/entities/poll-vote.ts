@@ -1,14 +1,14 @@
 import {
-	PrimaryColumn,
+	Column,
 	Entity,
 	Index,
 	JoinColumn,
-	Column,
 	ManyToOne,
+	PrimaryColumn,
 } from "typeorm";
-import { User } from "./user.js";
-import { Note } from "./note.js";
 import { id } from "../id.js";
+import { Note } from "./note.js";
+import { User } from "./user.js";
 
 @Entity()
 @Index(["userId", "noteId", "choice"], { unique: true })

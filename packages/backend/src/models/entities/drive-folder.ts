@@ -1,13 +1,13 @@
 import {
+	Column,
+	Entity,
+	Index,
 	JoinColumn,
 	ManyToOne,
-	Entity,
 	PrimaryColumn,
-	Index,
-	Column,
 } from "typeorm";
-import { User } from "./user.js";
 import { id } from "../id.js";
+import { User } from "./user.js";
 
 @Entity()
 export class DriveFolder {

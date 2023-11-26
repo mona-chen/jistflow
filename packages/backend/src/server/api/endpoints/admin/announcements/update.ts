@@ -1,5 +1,5 @@
-import define from "@/server/api/define.js";
 import { Announcements } from "@/models/index.js";
+import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 
 export const meta = {

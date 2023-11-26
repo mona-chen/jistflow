@@ -1,18 +1,18 @@
-import { publishMainStream, publishUserEvent } from "@/services/stream.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
-import renderReject from "@/remote/activitypub/renderer/reject.js";
-import { deliver, webhookDeliver } from "@/queue/index.js";
-import Logger from "../logger.js";
-import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
+import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import type { User } from "@/models/entities/user.js";
-import { Followings, Users, Instances } from "@/models/index.js";
+import { Followings, Instances, Users } from "@/models/index.js";
+import { deliver, webhookDeliver } from "@/queue/index.js";
+import renderFollow from "@/remote/activitypub/renderer/follow.js";
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import renderReject from "@/remote/activitypub/renderer/reject.js";
+import renderUndo from "@/remote/activitypub/renderer/undo.js";
 import {
 	instanceChart,
 	perUserFollowingChart,
 } from "@/services/chart/index.js";
-import { getActiveWebhooks } from "@/misc/webhook-cache.js";
+import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
+import { publishMainStream, publishUserEvent } from "@/services/stream.js";
+import Logger from "../logger.js";
 
 const logger = new Logger("following/delete");
 

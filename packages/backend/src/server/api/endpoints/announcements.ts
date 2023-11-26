@@ -1,6 +1,6 @@
-import { Announcements, AnnouncementReads } from "@/models/index.js";
-import define from "@/server/api/define.js";
+import { AnnouncementReads, Announcements } from "@/models/index.js";
 import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["meta"],

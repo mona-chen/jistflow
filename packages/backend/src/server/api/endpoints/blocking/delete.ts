@@ -1,9 +1,9 @@
-import deleteBlocking from "@/services/blocking/delete.js";
+import { HOUR } from "@/const.js";
+import { Blockings, Users } from "@/models/index.js";
+import { getUser } from "@/server/api/common/getters.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { getUser } from "@/server/api/common/getters.js";
-import { Blockings, Users } from "@/models/index.js";
-import { HOUR } from "@/const.js";
+import deleteBlocking from "@/services/blocking/delete.js";
 
 export const meta = {
 	tags: ["account"],

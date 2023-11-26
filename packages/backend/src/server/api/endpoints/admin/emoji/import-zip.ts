@@ -1,5 +1,5 @@
-import define from "@/server/api/define.js";
 import { createImportCustomEmojisJob } from "@/queue/index.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	secure: true,

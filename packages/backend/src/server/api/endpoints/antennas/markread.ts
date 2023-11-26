@@ -1,5 +1,5 @@
-import define from "@/server/api/define.js";
 import { Antennas } from "@/models/index.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["antennas", "account"],

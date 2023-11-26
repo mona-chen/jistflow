@@ -1,5 +1,5 @@
-import define from "@/server/api/define.js";
 import { Apps } from "@/models/index.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["account", "app"],

@@ -1,6 +1,6 @@
-import { publishMainStream } from "@/services/stream.js";
-import define from "@/server/api/define.js";
 import { MessagingMessages, UserGroupJoinings } from "@/models/index.js";
+import define from "@/server/api/define.js";
+import { publishMainStream } from "@/services/stream.js";
 
 export const meta = {
 	tags: ["account", "messaging"],

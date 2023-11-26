@@ -1,4 +1,3 @@
-import { Brackets } from "typeorm";
 import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import {
 	MessagingMessages,
@@ -6,6 +5,7 @@ import {
 	UserGroupJoinings,
 } from "@/models/index.js";
 import define from "@/server/api/define.js";
+import { Brackets } from "typeorm";
 
 export const meta = {
 	tags: ["messaging"],

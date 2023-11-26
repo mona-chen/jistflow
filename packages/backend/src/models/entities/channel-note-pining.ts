@@ -1,14 +1,14 @@
 import {
-	PrimaryColumn,
+	Column,
 	Entity,
 	Index,
 	JoinColumn,
-	Column,
 	ManyToOne,
+	PrimaryColumn,
 } from "typeorm";
-import { Note } from "./note.js";
-import { Channel } from "./channel.js";
 import { id } from "../id.js";
+import { Channel } from "./channel.js";
+import { Note } from "./note.js";
 
 @Entity()
 @Index(["channelId", "noteId"], { unique: true })

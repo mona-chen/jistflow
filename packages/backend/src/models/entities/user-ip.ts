@@ -1,4 +1,4 @@
-import { Entity, Index, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 import { id } from "../id.js";
 import type { User } from "./user.js";
 

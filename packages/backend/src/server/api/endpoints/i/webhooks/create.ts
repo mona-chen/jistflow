@@ -1,8 +1,8 @@
-import define from "@/server/api/define.js";
 import { genId } from "@/misc/gen-id.js";
-import { Webhooks } from "@/models/index.js";
-import { publishInternalEvent } from "@/services/stream.js";
 import { webhookEventTypes } from "@/models/entities/webhook.js";
+import { Webhooks } from "@/models/index.js";
+import define from "@/server/api/define.js";
+import { publishInternalEvent } from "@/services/stream.js";
 
 export const meta = {
 	tags: ["webhooks"],

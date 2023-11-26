@@ -1,6 +1,6 @@
-import define from "@/server/api/define.js";
-import Resolver from "@/remote/activitypub/resolver.js";
 import { HOUR } from "@/const.js";
+import Resolver from "@/remote/activitypub/resolver.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["federation"],
