@@ -90,8 +90,8 @@
 										color: color.forPreview
 											? color.forPreview
 											: theme.base === 'light'
-											  ? '#5f5f5f'
-											  : '#dadada',
+											? '#5f5f5f'
+											: '#dadada',
 									}"
 								>
 									A

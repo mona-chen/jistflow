@@ -50,7 +50,9 @@ function inbox(ctx: Router.RouterContext) {
 	let signature;
 
 	try {
-		signature = httpSignature.parseRequest(ctx.req, { headers: ['(request-target)', 'digest', 'host', 'date'] });
+		signature = httpSignature.parseRequest(ctx.req, {
+			headers: ["(request-target)", "digest", "host", "date"],
+		});
 	} catch (e) {
 		ctx.status = 401;
 		return;
@@ -93,8 +95,7 @@ async function parseJsonBodyOrFail(ctx: Router.RouterContext, next: Koa.Next) {
 
 	try {
 		await koaBodyParser(ctx, next);
-	}
-	catch {
+	} catch {
 		ctx.status = 400;
 		return;
 	}
