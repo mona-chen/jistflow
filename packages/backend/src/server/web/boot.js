@@ -144,7 +144,7 @@
 			</svg>
 			<h1>An error has occurred!</h1>
 			<button class="button-big" onclick="location.reload(true);">
-				<span class="button-label-big">Refresh</span>
+				<span class="button-label-big">&#8635; Refresh</span>
 			</button>
 			<p class="dont-worry">Don't worry, it's (probably) not your fault.</p>
 			<p>Please make sure your browser is up-to-date.</p>
@@ -152,19 +152,19 @@
 			<p>If the problem persists after refreshing, please contact your instance's administrator.<br>You may also try the following options:</p>
 			<a href="/flush">
 				<button class="button-small">
-					<span class="button-label-small">Clear preferences and cache</span>
+					<span class="button-label-small">&#128465; Clear preferences and cache</span>
 				</button>
 			</a>
 			<br>
 			<a href="/cli">
 				<button class="button-small">
-					<span class="button-label-small">Start the simple client</span>
+					<span class="button-label-small">&#128491; Start the simple client</span>
 				</button>
 			</a>
 			<br>
 			<a href="/bios">
 				<button class="button-small">
-					<span class="button-label-small">Start the repair tool</span>
+					<span class="button-label-small">&#9881; Start the repair tool</span>
 				</button>
 			</a>
 			<br>
@@ -229,7 +229,7 @@
 		.button-label-big {
 			color: #3b364c;
 			font-weight: bold;
-			font-size: 20px;
+			font-size: 2em;
 			padding: 12px;
 		}
 
