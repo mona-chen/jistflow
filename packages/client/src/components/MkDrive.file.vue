@@ -197,9 +197,9 @@ function toggleSensitive() {
 	});
 }
 
-function copyUrl() {
-	copyToClipboard(props.file.url);
-	os.success();
+async function copyUrl() {
+	await copyToClipboard(props.file.url);
+	await os.success();
 }
 /*
 function addApp() {

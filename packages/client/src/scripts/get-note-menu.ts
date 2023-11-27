@@ -99,19 +99,19 @@ export function getNoteMenu(props: {
 		);
 	}
 
-	function copyContent(): void {
-		copyToClipboard(appearNote.text);
-		os.success();
+	async function copyContent(): Promise<void> {
+		await copyToClipboard(appearNote.text);
+		await os.success();
 	}
 
-	function copyLink(): void {
-		copyToClipboard(`${url}/notes/${appearNote.id}`);
-		os.success();
+	async function copyLink(): Promise<void> {
+		await copyToClipboard(`${url}/notes/${appearNote.id}`);
+		await os.success();
 	}
 
-	function copyOriginal(): void {
-		copyToClipboard(appearNote.url ?? appearNote.uri);
-		os.success();
+	async function copyOriginal(): Promise<void> {
+		await copyToClipboard(appearNote.url ?? appearNote.uri);
+		await os.success();
 	}
 
 	function togglePin(pin: boolean): void {

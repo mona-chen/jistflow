@@ -124,8 +124,8 @@ const contextmenu = $computed(() => {
 		{
 			icon: "ph-link-simple ph-bold ph-lg",
 			text: i18n.ts.copyLink,
-			action: () => {
-				copyToClipboard(pageUrl);
+			action: async () => {
+				await copyToClipboard(pageUrl);
 			},
 		},
 	];

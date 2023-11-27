@@ -463,8 +463,8 @@ function onContextmenu(ev: MouseEvent): void {
 				{
 					icon: "ph-link-simple ph-bold ph-lg",
 					text: i18n.ts.copyLink,
-					action: () => {
-						copyToClipboard(`${url}${notePage(appearNote)}`);
+					action: async () => {
+						await copyToClipboard(`${url}${notePage(appearNote)}`);
 					},
 				},
 				appearNote.user.host != null

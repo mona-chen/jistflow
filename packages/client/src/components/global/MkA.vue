@@ -76,8 +76,8 @@ function onContextmenu(ev) {
 			{
 				icon: "ph-link-simple ph-bold ph-lg",
 				text: i18n.ts.copyLink,
-				action: () => {
-					copyToClipboard(`${url}${props.to}`);
+				action: async () => {
+					await copyToClipboard(`${url}${props.to}`);
 				},
 			},
 		],

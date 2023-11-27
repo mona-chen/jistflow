@@ -245,9 +245,9 @@ function fetchPage() {
 		});
 }
 
-function copyUrl() {
-	copyToClipboard(window.location.href);
-	os.success();
+async function copyUrl() {
+	await copyToClipboard(window.location.href);
+	await os.success();
 }
 
 function getBgImg(): string {

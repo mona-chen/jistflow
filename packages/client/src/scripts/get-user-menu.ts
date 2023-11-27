@@ -234,8 +234,8 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		{
 			icon: "ph-at ph-bold ph-lg",
 			text: i18n.ts.copyUsername,
-			action: () => {
-				copyToClipboard(`@${user.username}@${user.host || host}`);
+			action: async () => {
+				await copyToClipboard(`@${user.username}@${user.host || host}`);
 			},
 		},
 		{
@@ -253,22 +253,22 @@ export function getUserMenu(user, router: Router = mainRouter) {
 				{
 					icon: "ph-rss ph-bold ph-lg",
 					text: i18n.ts._feeds.rss,
-					action: () => {
-						copyToClipboard(`https://${host}/@${user.username}.rss`);
+					action: async () => {
+						await copyToClipboard(`https://${host}/@${user.username}.rss`);
 					},
 				},
 				{
 					icon: "ph-atom ph-bold ph-lg",
 					text: i18n.ts._feeds.atom,
-					action: () => {
-						copyToClipboard(`https://${host}/@${user.username}.atom`);
+					action: async () => {
+						await copyToClipboard(`https://${host}/@${user.username}.atom`);
 					},
 				},
 				{
 					icon: "ph-brackets-curly ph-bold ph-lg",
 					text: i18n.ts._feeds.jsonFeed,
-					action: () => {
-						copyToClipboard(`https://${host}/@${user.username}.json`);
+					action: async () => {
+						await copyToClipboard(`https://${host}/@${user.username}.json`);
 					},
 				},
 			],

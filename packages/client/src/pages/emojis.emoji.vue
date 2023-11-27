@@ -28,9 +28,9 @@ function menu(ev) {
 			{
 				text: i18n.ts.copy,
 				icon: "ph-clipboard-text ph-bold ph-lg",
-				action: () => {
-					copyToClipboard(`:${props.emoji.name}:`);
-					os.success();
+				action: async () => {
+					await copyToClipboard(`:${props.emoji.name}:`);
+					await os.success();
 				},
 			},
 			{

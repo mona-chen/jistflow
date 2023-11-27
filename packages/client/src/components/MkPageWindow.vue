@@ -128,8 +128,8 @@ const contextmenu = $computed(() => [
 	{
 		icon: "ph-link-simple ph-bold ph-lg",
 		text: i18n.ts.copyLink,
-		action: () => {
-			copyToClipboard(url + router.getCurrentPath());
+		action: async () => {
+			await copyToClipboard(url + router.getCurrentPath());
 		},
 	},
 ]);

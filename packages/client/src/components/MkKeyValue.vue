@@ -35,9 +35,9 @@ const props = withDefaults(
 	},
 );
 
-const copy_ = () => {
-	copyToClipboard(props.copy);
-	os.success();
+const copy_ = async () => {
+	await copyToClipboard(props.copy ?? '');
+	await os.success();
 };
 </script>
 

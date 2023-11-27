@@ -87,9 +87,9 @@ const selectedThemeCode = computed(() => {
 	return JSON5.stringify(selectedTheme.value, null, "\t");
 });
 
-function copyThemeCode() {
-	copyToClipboard(selectedThemeCode.value);
-	os.success();
+async function copyThemeCode() {
+	await copyToClipboard(selectedThemeCode.value ?? '');
+	await os.success();
 }
 
 function uninstall() {
