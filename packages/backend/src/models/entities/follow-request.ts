@@ -55,7 +55,7 @@ export class FollowRequest {
 
 	//#region Denormalized fields
 	@Column("varchar", {
-		length: 128,
+		length: 512,
 		nullable: true,
 		comment: "[Denormalized]",
 	})
@@ -76,7 +76,7 @@ export class FollowRequest {
 	public followerSharedInbox: string | null;
 
 	@Column("varchar", {
-		length: 128,
+		length: 512,
 		nullable: true,
 		comment: "[Denormalized]",
 	})
