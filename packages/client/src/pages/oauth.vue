@@ -107,7 +107,7 @@ const props = defineProps<{
 	lang?: string;
 }>();
 
-const _scopes = props.scope?.split(" ") ?? ['read'];
+const _scopes = props.scope?.split(" ")?.filter(p => p.length > 0) ?? ['read'];
 
 let state = $ref<string | null>(null);
 let code = $ref<string | null>(null);
