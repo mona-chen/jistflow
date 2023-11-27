@@ -105,6 +105,7 @@ const props = defineProps<{
 	scope?: string;
 	force_login?: boolean;
 	lang?: string;
+	state?: string;
 }>();
 
 const _scopes = props.scope?.split(" ")?.filter(p => p.length > 0) ?? ['read'];
@@ -165,6 +166,7 @@ async function accept(): Promise<void> {
 				redirectUri,
 				query({
 					code: res.code,
+					state: props.state,
 				}),
 		);
 	}

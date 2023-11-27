@@ -354,7 +354,8 @@ export const routes = [
 			redirect_uri: "redirect_uri",
 			scope: "scope",
 			force_login: "force_login",
-			lang: "lang"
+			lang: "lang",
+			state: "state",
 		}
 	},
 	{
