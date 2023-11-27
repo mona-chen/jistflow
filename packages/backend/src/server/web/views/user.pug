@@ -31,9 +31,6 @@ block meta
 		meta(name='misskey:user-username' content=user.username)
 		meta(name='misskey:user-id' content=user.id)
 
-		if profile.twitter
-			meta(name='twitter:creator' content=`@${profile.twitter.screenName}`)
-
 		if !sub
 			if !user.host
 				link(rel='alternate' href=`${config.url}/users/${user.id}` type='application/activity+json')

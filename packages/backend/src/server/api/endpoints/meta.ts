@@ -251,11 +251,6 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
-			enableTwitterIntegration: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
 			enableGithubIntegration: {
 				type: "boolean",
 				optional: false,
@@ -316,11 +311,6 @@ export const meta = {
 						nullable: false,
 					},
 					objectStorage: {
-						type: "boolean",
-						optional: false,
-						nullable: false,
-					},
-					twitter: {
 						type: "boolean",
 						optional: false,
 						nullable: false,
@@ -453,7 +443,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 		enableEmail: instance.enableEmail,
 
-		enableTwitterIntegration: instance.enableTwitterIntegration,
 		enableGithubIntegration: instance.enableGithubIntegration,
 		enableDiscordIntegration: instance.enableDiscordIntegration,
 
@@ -487,7 +476,6 @@ export default define(meta, paramDef, async (ps, me) => {
 			hcaptcha: instance.enableHcaptcha,
 			recaptcha: instance.enableRecaptcha,
 			objectStorage: instance.useObjectStorage,
-			twitter: instance.enableTwitterIntegration,
 			github: instance.enableGithubIntegration,
 			discord: instance.enableDiscordIntegration,
 			serviceWorker: true,

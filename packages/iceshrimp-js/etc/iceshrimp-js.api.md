@@ -2397,7 +2397,6 @@ type LiteInstanceMetadata = {
     	swPublickey: string | null;
     	maxNoteTextLength: number;
     	enableEmail: boolean;
-    	enableTwitterIntegration: boolean;
     	enableGithubIntegration: boolean;
     	enableDiscordIntegration: boolean;
     	enableServiceWorker: boolean;

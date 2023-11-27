@@ -140,11 +140,6 @@ export const meta = {
 				optional: false,
 				nullable: false,
 			},
-			enableTwitterIntegration: {
-				type: "boolean",
-				optional: false,
-				nullable: false,
-			},
 			enableGithubIntegration: {
 				type: "boolean",
 				optional: false,
@@ -256,36 +251,6 @@ export const meta = {
 				nullable: true,
 			},
 			recaptchaSecretKey: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			twitterConsumerKey: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			twitterConsumerSecret: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			githubClientId: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			githubClientSecret: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			discordClientId: {
-				type: "string",
-				optional: true,
-				nullable: true,
-			},
-			discordClientSecret: {
 				type: "string",
 				optional: true,
 				nullable: true,
@@ -483,9 +448,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		defaultLightTheme: instance.defaultLightTheme,
 		defaultDarkTheme: instance.defaultDarkTheme,
 		enableEmail: instance.enableEmail,
-		enableTwitterIntegration: instance.enableTwitterIntegration,
-		enableGithubIntegration: instance.enableGithubIntegration,
-		enableDiscordIntegration: instance.enableDiscordIntegration,
 		translatorAvailable:
 			instance.deeplAuthKey != null || instance.libreTranslateApiUrl != null,
 		pinnedPages: instance.pinnedPages,
@@ -504,12 +466,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		secureMode: instance.secureMode,
 		hcaptchaSecretKey: instance.hcaptchaSecretKey,
 		recaptchaSecretKey: instance.recaptchaSecretKey,
-		twitterConsumerKey: instance.twitterConsumerKey,
-		twitterConsumerSecret: instance.twitterConsumerSecret,
-		githubClientId: instance.githubClientId,
-		githubClientSecret: instance.githubClientSecret,
-		discordClientId: instance.discordClientId,
-		discordClientSecret: instance.discordClientSecret,
 		summalyProxy: instance.summalyProxy,
 		email: instance.email,
 		smtpSecure: instance.smtpSecure,

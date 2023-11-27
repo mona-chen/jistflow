@@ -7799,7 +7799,7 @@
 								},
 								{
 									"kind": "Content",
-									"text": "{\n\tmaintainerName: string | null;\n\tmaintainerEmail: string | null;\n\tversion: string;\n\tname: string | null;\n\turi: string;\n\tdescription: string | null;\n\ttosUrl: string | null;\n\tdisableRegistration: boolean;\n\tdisableLocalTimeline: boolean;\n\tdisableRecommendedTimeline: boolean;\n\tdisableGlobalTimeline: boolean;\n\tdriveCapacityPerLocalUserMb: number;\n\tdriveCapacityPerRemoteUserMb: number;\n\tenableHcaptcha: boolean;\n\thcaptchaSiteKey: string | null;\n\tenableRecaptcha: boolean;\n\trecaptchaSiteKey: string | null;\n\tswPublickey: string | null;\n\tmaxNoteTextLength: number;\n\tenableEmail: boolean;\n\tenableTwitterIntegration: boolean;\n\tenableGithubIntegration: boolean;\n\tenableDiscordIntegration: boolean;\n\tenableServiceWorker: boolean;\n\temojis: "
+									"text": "{\n\tmaintainerName: string | null;\n\tmaintainerEmail: string | null;\n\tversion: string;\n\tname: string | null;\n\turi: string;\n\tdescription: string | null;\n\ttosUrl: string | null;\n\tdisableRegistration: boolean;\n\tdisableLocalTimeline: boolean;\n\tdisableRecommendedTimeline: boolean;\n\tdisableGlobalTimeline: boolean;\n\tdriveCapacityPerLocalUserMb: number;\n\tdriveCapacityPerRemoteUserMb: number;\n\tenableHcaptcha: boolean;\n\thcaptchaSiteKey: string | null;\n\tenableRecaptcha: boolean;\n\trecaptchaSiteKey: string | null;\n\tswPublickey: string | null;\n\tmaxNoteTextLength: number;\n\tenableEmail: boolean;\n\tenableGithubIntegration: boolean;\n\tenableDiscordIntegration: boolean;\n\tenableServiceWorker: boolean;\n\temojis: "
 								},
 								{
 									"kind": "Reference",

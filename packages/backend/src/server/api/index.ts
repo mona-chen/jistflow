@@ -19,7 +19,6 @@ import signupPending from "./private/signup-pending.js";
 import verifyEmail from "./private/verify-email.js";
 import discord from "./service/discord.js";
 import github from "./service/github.js";
-import twitter from "./service/twitter.js";
 
 // Init app
 const app = new Koa();
@@ -112,8 +111,6 @@ router.post("/verify-email", verifyEmail);
 
 router.use(discord.routes());
 router.use(github.routes());
-router.use(twitter.routes());
-
 router.post("/miauth/:session/check", async (ctx) => {
 	const token = await AccessTokens.findOneBy({
 		session: ctx.params.session,

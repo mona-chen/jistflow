@@ -687,10 +687,6 @@ export async function resolvePerson(
 const services: {
 	[x: string]: (id: string, username: string) => any;
 } = {
-	"misskey:authentication:twitter": (userId, screenName) => ({
-		userId,
-		screenName,
-	}),
 	"misskey:authentication:github": (id, login) => ({ id, login }),
 	"misskey:authentication:discord": (id, name) => $discord(id, name),
 };

@@ -313,23 +313,6 @@ export class Meta {
 	@Column("boolean", {
 		default: false,
 	})
-	public enableTwitterIntegration: boolean;
-
-	@Column("varchar", {
-		length: 128,
-		nullable: true,
-	})
-	public twitterConsumerKey: string | null;
-
-	@Column("varchar", {
-		length: 128,
-		nullable: true,
-	})
-	public twitterConsumerSecret: string | null;
-
-	@Column("boolean", {
-		default: false,
-	})
 	public enableGithubIntegration: boolean;
 
 	@Column("varchar", {

@@ -124,9 +124,6 @@ export const paramDef = {
 		deeplIsPro: { type: "boolean" },
 		libreTranslateApiUrl: { type: "string", nullable: true },
 		libreTranslateApiKey: { type: "string", nullable: true },
-		enableTwitterIntegration: { type: "boolean" },
-		twitterConsumerKey: { type: "string", nullable: true },
-		twitterConsumerSecret: { type: "string", nullable: true },
 		enableGithubIntegration: { type: "boolean" },
 		githubClientId: { type: "string", nullable: true },
 		githubClientSecret: { type: "string", nullable: true },
@@ -363,17 +360,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		set.summalyProxy = ps.summalyProxy;
 	}
 
-	if (ps.enableTwitterIntegration !== undefined) {
-		set.enableTwitterIntegration = ps.enableTwitterIntegration;
-	}
-
-	if (ps.twitterConsumerKey !== undefined) {
-		set.twitterConsumerKey = ps.twitterConsumerKey;
-	}
-
-	if (ps.twitterConsumerSecret !== undefined) {
-		set.twitterConsumerSecret = ps.twitterConsumerSecret;
-	}
 
 	if (ps.enableGithubIntegration !== undefined) {
 		set.enableGithubIntegration = ps.enableGithubIntegration;

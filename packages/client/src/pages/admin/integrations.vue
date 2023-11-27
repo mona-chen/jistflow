@@ -47,13 +47,11 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 
-let enableTwitterIntegration: boolean = $ref(false);
 let enableGithubIntegration: boolean = $ref(false);
 let enableDiscordIntegration: boolean = $ref(false);
 
 async function init() {
 	const meta = await os.api("admin/meta");
-	enableTwitterIntegration = meta.enableTwitterIntegration;
 	enableGithubIntegration = meta.enableGithubIntegration;
 	enableDiscordIntegration = meta.enableDiscordIntegration;
 }

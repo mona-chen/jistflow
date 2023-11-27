@@ -1,50 +1,29 @@
 <template>
 	<div class="_formRoot">
 		<FormSection v-if="instance.enableDiscordIntegration">
-			<template #label
-				><i class="ph-discord-logo ph-bold ph-lg"></i> Discord</template
-			>
+			<template #label><i class="ph-discord-logo ph-bold ph-lg"></i> Discord</template>
 			<p v-if="integrations.discord">
 				{{ i18n.ts.connectedTo }}:
-				<a
-					:href="`https://discord.com/users/${integrations.discord.id}`"
-					rel="nofollow noopener"
-					target="_blank"
-					>@{{ integrations.discord.username }}#{{
+				<a :href="`https://discord.com/users/${integrations.discord.id}`" rel="nofollow noopener"
+					target="_blank">@{{ integrations.discord.username }}#{{
 						integrations.discord.discriminator
-					}}</a
-				>
+					}}</a>
 			</p>
-			<MkButton
-				v-if="integrations.discord"
-				danger
-				@click="disconnectDiscord"
-				>{{ i18n.ts.disconnectService }}</MkButton
-			>
+			<MkButton v-if="integrations.discord" danger @click="disconnectDiscord">{{ i18n.ts.disconnectService }}
+			</MkButton>
 			<MkButton v-else primary @click="connectDiscord">{{
 				i18n.ts.connectService
 			}}</MkButton>
 		</FormSection>
 
 		<FormSection v-if="instance.enableGithubIntegration">
-			<template #label
-				><i class="ph-github-logo ph-bold ph-lg"></i> GitHub</template
-			>
+			<template #label><i class="ph-github-logo ph-bold ph-lg"></i> GitHub</template>
 			<p v-if="integrations.github">
 				{{ i18n.ts.connectedTo }}:
-				<a
-					:href="`https://github.com/${integrations.github.login}`"
-					rel="nofollow noopener"
-					target="_blank"
-					>@{{ integrations.github.login }}</a
-				>
+				<a :href="`https://github.com/${integrations.github.login}`" rel="nofollow noopener" target="_blank">@{{
+					integrations.github.login }}</a>
 			</p>
-			<MkButton
-				v-if="integrations.github"
-				danger
-				@click="disconnectGithub"
-				>{{ i18n.ts.disconnectService }}</MkButton
-			>
+			<MkButton v-if="integrations.github" danger @click="disconnectGithub">{{ i18n.ts.disconnectService }}</MkButton>
 			<MkButton v-else primary @click="connectGithub">{{
 				i18n.ts.connectService
 			}}</MkButton>
@@ -62,7 +41,6 @@ import { instance } from "@/instance";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 
-const twitterForm = ref<Window | null>(null);
 const discordForm = ref<Window | null>(null);
 const githubForm = ref<Window | null>(null);
 
@@ -74,14 +52,6 @@ function openWindow(service: string, type: string) {
 		`${service}_${type}_window`,
 		"height=570, width=520",
 	);
-}
-
-function connectTwitter() {
-	twitterForm.value = openWindow("twitter", "connect");
-}
-
-function disconnectTwitter() {
-	openWindow("twitter", "disconnect");
 }
 
 function connectDiscord() {
@@ -107,9 +77,6 @@ onMounted(() => {
 		(document.location.protocol.startsWith("https") ? " secure" : "");
 
 	watch(integrations, () => {
-		if (integrations.value.twitter) {
-			if (twitterForm.value) twitterForm.value.close();
-		}
 		if (integrations.value.discord) {
 			if (discordForm.value) discordForm.value.close();
 		}
