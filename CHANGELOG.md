@@ -1,3 +1,30 @@
+## v2023.12-pre3
+This release preview primarily contains performance optimizations and regression fixes. Upgrading is recommended especially if you're running a big instance or have more than a couple thousand entries in the `muted_note` table.
+
+### Highlights
+- A HTML cache was added to the Mastodon client API, drastically improving performance (check the example config for more details & configuration options)
+- Word mute filters were completely reworked for better performance, especially at scale
+- A couple Mastodon OAuth regressions were fixed
+
+### Mastodon client API
+- Notes that were filtered out due to hard word mutes are now returned to clients with the FilterResult property instead of being silently dropped
+- Login with clients that leave a trailing `+` character in the scope parameter has been fixed
+- Login with clients that depend on the `state` parameter in the OAuth process has been fixed
+
+### Backend
+- updateUserProfileData now only triggers updateMentions once
+- Word mute data is now stored in redis instead of the database, significantly improving timeline query performance for larger instances
+- Database columns containing hostnames had their length increased to accomodate longer domain names
+
+### UI/UX
+- Copy to clipboard now uses the modern async clipboard API and no longer applies weird formatting to copied text
+
+### Miscellaneous
+- Various translation updates
+
+### Attribution
+This release was made possible by project contributors: AverageDood, Laura Hausmann & Pyrox
+
 ## v2023.12-pre2
 This release contains an important security fix. Upgrading is therefore strongly recommended. If you are on or want to upgrade to a stable release, please refer to the stable backport release [v2023.11.4](https://iceshrimp.dev/iceshrimp/iceshrimp/releases/tag/v2023.11.4) instead.
 
