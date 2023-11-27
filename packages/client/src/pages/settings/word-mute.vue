@@ -31,15 +31,6 @@
 						}}</template
 					>
 				</FormTextarea>
-				<MkKeyValue
-					v-if="hardWordMutedNotesCount != null"
-					class="_formBlock"
-				>
-					<template #key>{{ i18n.ts._wordMute.mutedNotes }}</template>
-					<template #value>{{
-						number(hardWordMutedNotesCount)
-					}}</template>
-				</MkKeyValue>
 			</div>
 		</div>
 		<MkButton primary inline :disabled="!changed" @click="save()"
@@ -77,12 +68,7 @@ const render = (mutedWords) =>
 const tab = ref("soft");
 const softMutedWords = ref(render(defaultStore.state.mutedWords));
 const hardMutedWords = ref(render($i!.mutedWords));
-const hardWordMutedNotesCount = ref(null);
 const changed = ref(false);
-
-os.api("i/get-word-muted-notes-count", {}).then((response) => {
-	hardWordMutedNotesCount.value = response?.count;
-});
 
 watch(softMutedWords, () => {
 	changed.value = true;

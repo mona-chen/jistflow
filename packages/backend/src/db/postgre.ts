@@ -61,7 +61,6 @@ import { Antenna } from "@/models/entities/antenna.js";
 import { PromoNote } from "@/models/entities/promo-note.js";
 import { PromoRead } from "@/models/entities/promo-read.js";
 import { Relay } from "@/models/entities/relay.js";
-import { MutedNote } from "@/models/entities/muted-note.js";
 import { Channel } from "@/models/entities/channel.js";
 import { ChannelFollowing } from "@/models/entities/channel-following.js";
 import { ChannelNotePining } from "@/models/entities/channel-note-pining.js";
@@ -168,7 +167,6 @@ export const entities = [
 	PromoNote,
 	PromoRead,
 	Relay,
-	MutedNote,
 	Channel,
 	ChannelFollowing,
 	ChannelNotePining,

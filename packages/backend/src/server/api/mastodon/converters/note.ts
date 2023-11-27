@@ -172,7 +172,7 @@ export class NoteConverter {
             reactions: populated.then(populated => Promise.resolve(reaction).then(reaction => this.encodeReactions(note.reactions, reaction?.reaction, populated))),
             bookmarked: isBookmarked,
             quote: reblog.then(reblog => isQuote(note) ? reblog : null),
-            edited_at: note.updatedAt?.toISOString()
+            edited_at: note.updatedAt?.toISOString() ?? null
         });
     }
 
@@ -336,7 +336,7 @@ export class NoteConverter {
 					.then(p => p ?? escapeMFM(text))
 				: null;
 
-			HtmlNoteCacheEntries.upsert({ noteId: note.id, updatedAt: note.updatedAt, content: await content }, ["noteId"]);
+			HtmlNoteCacheEntries.upsert({ noteId: note.id, updatedAt: note.updatedAt ?? note.createdAt, content: await content }, ["noteId"]);
 			await this.noteContentHtmlCache.set(identifier, await content);
 			return { content } as HtmlNoteCacheEntry;
 		});
@@ -367,6 +367,6 @@ export class NoteConverter {
         this.noteContentHtmlCache.set(identifier, await content);
 
         if (config.htmlCache?.dbFallback)
-            HtmlNoteCacheEntries.upsert({ noteId: note.id, updatedAt: note.updatedAt, content: await content }, ["noteId"]);
+            HtmlNoteCacheEntries.upsert({ noteId: note.id, updatedAt: note.updatedAt ?? note.createdAt, content: await content }, ["noteId"]);
     }
 }

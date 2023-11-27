@@ -203,6 +203,11 @@ reservedUsernames: [
 #  prewarm: false
 #  dbFallback: false
 
+# Duration hard muted notes are stored in redis for.
+# Increasing this trades higher memory consumption for lower cpu usage on repeated requests within the specified ttl.
+#wordMuteCache:
+#  ttl: 24h
+
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Congrats, you've reached the end of the config file needed for most deployments!
 # Enjoy your Iceshrimp server!

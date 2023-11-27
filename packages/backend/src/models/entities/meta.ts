@@ -520,7 +520,7 @@ export class Meta {
 	public donationLink: string | null;
 
 	@Column("varchar", {
-		length: 64,
+		length: 128,
 		nullable: true,
 	})
 	public autofollowedAccount: string | null;

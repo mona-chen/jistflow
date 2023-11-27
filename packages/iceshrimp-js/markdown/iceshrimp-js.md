@@ -28,7 +28,6 @@
 |  Variable | Description |
 |  --- | --- |
 |  [ffVisibility](./iceshrimp-js.ffvisibility.md) |  |
-|  [mutedNoteReasons](./iceshrimp-js.mutednotereasons.md) |  |
 |  [noteVisibilities](./iceshrimp-js.notevisibilities.md) |  |
 |  [notificationTypes](./iceshrimp-js.notificationtypes.md) |  |
 |  [permissions](./iceshrimp-js.permissions.md) |  |

@@ -27,7 +27,6 @@ import {
 	Notes,
 	Instances,
 	UserProfiles,
-	MutedNotes,
 	Channels,
 	ChannelFollowings,
 	NoteThreadMutings,
@@ -48,7 +47,6 @@ import { Poll } from "@/models/entities/poll.js";
 import { createNotification } from "../create-notification.js";
 import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
 import { checkHitAntenna } from "@/misc/check-hit-antenna.js";
-import { getWordHardMute } from "@/misc/check-word-mute.js";
 import { addNoteToAntenna } from "../add-note-to-antenna.js";
 import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { deliverToRelays, getCachedRelays } from "../relay.js";
@@ -57,8 +55,6 @@ import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 import { getAntennas } from "@/misc/antenna-cache.js";
 import { endedPollNotificationQueue } from "@/queue/queues.js";
 import { webhookDeliver } from "@/queue/index.js";
-import { Cache } from "@/misc/cache.js";
-import type { UserProfile } from "@/models/entities/user-profile.js";
 import { db } from "@/db/postgre.js";
 import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
@@ -66,10 +62,6 @@ import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
 import { RecursionLimiter } from "@/models/repositories/user-profile.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
-
-const mutedWordsCache = new Cache<
-	{ userId: UserProfile["userId"]; mutedWords: UserProfile["mutedWords"] }[]
->("mutedWords", 60 * 5);
 
 type NotificationType = "reply" | "renote" | "quote" | "mention";
 
@@ -366,33 +358,6 @@ export default async (
 
 		// Increment notes count (user)
 		incNotesCountOfUser(user);
-
-		// Word mute
-		mutedWordsCache
-			.fetch(null, () =>
-				UserProfiles.find({
-					where: {
-						enableWordMute: true,
-					},
-					select: ["userId", "mutedWords"],
-				}),
-			)
-			.then((us) => {
-				for (const u of us) {
-					getWordHardMute(data, { id: u.userId }, u.mutedWords).then(
-						(shouldMute) => {
-							if (shouldMute) {
-								MutedNotes.insert({
-									id: genId(),
-									userId: u.userId,
-									noteId: note.id,
-									reason: "word",
-								});
-							}
-						},
-					);
-				}
-			});
 
 		// Antenna
 		for (const antenna of await getAntennas()) {

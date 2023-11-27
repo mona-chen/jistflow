@@ -8,7 +8,6 @@ import { makePaginationQuery } from "../../common/make-pagination-query.js";
 import { generateVisibilityQuery } from "../../common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "../../common/generate-muted-user-query.js";
 import { generateRepliesQuery } from "../../common/generate-replies-query.js";
-import { generateMutedNoteQuery } from "../../common/generate-muted-note-query.js";
 import { generateChannelQuery } from "../../common/generate-channel-query.js";
 import { generateBlockedUserQuery } from "../../common/generate-block-query.js";
 import { generateMutedUserRenotesQueryForNotes } from "../../common/generated-muted-renote-query.js";
@@ -108,7 +107,6 @@ export default define(meta, paramDef, async (ps, user) => {
 	generateRepliesQuery(query, ps.withReplies, user);
 	generateVisibilityQuery(query, user);
 	generateMutedUserQuery(query, user);
-	generateMutedNoteQuery(query, user);
 	generateBlockedUserQuery(query, user);
 	generateMutedUserRenotesQueryForNotes(query, user);
 

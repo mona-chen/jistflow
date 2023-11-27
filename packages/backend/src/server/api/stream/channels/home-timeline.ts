@@ -1,8 +1,9 @@
 import Channel from "../channel.js";
-import { getWordHardMute } from "@/misc/check-word-mute.js";
 import { isUserRelated } from "@/misc/is-user-related.js";
 import { isInstanceMuted } from "@/misc/is-instance-muted.js";
 import type { Packed } from "@/misc/schema.js";
+import { isFiltered } from "@/misc/is-filtered.js";
+import { Note } from "@/models/entities/note.js";
 
 export default class extends Channel {
 	public readonly chName = "homeTimeline";
@@ -69,7 +70,7 @@ export default class extends Channel {
 		// そのためレコードが存在するかのチェックでは不十分なので、改めてgetWordHardMuteを呼んでいる
 		if (
 			this.userProfile &&
-			(await getWordHardMute(note, this.user, this.userProfile.mutedWords))
+			(await isFiltered(note as unknown as Note, this.user, this.userProfile))
 		)
 			return;
 

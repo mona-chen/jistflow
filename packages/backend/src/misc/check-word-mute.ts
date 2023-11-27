@@ -1,12 +1,16 @@
 import RE2 from "re2";
 import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
+import { Packed } from "@/misc/schema.js";
 
 type NoteLike = {
 	userId: Note["userId"];
 	text: Note["text"];
 	files?: Note["files"];
 	cw?: Note["cw"];
+	reply?: Note["reply"];
+	renote?: Note["renote"];
+	isFiltered?: Packed<"Note">["isFiltered"];
 };
 
 type UserLike = {
@@ -14,7 +18,7 @@ type UserLike = {
 };
 
 function checkWordMute(
-	note: NoteLike,
+	note: NoteLike | null | undefined,
 	mutedWords: Array<string | string[]>,
 ): boolean {
 	if (note == null) return false;
@@ -63,17 +67,13 @@ export async function getWordHardMute(
 	mutedWords: Array<string | string[]>,
 ): Promise<boolean> {
 	// 自分自身
-	if (me && note.userId === me.id) {
-		return false;
-	}
+	if (me && note.userId === me.id) return false;
+	if (mutedWords.length <= 0) return false;
+	if (note.isFiltered) return true;
 
-	if (mutedWords.length > 0) {
-		return (
-			checkWordMute(note, mutedWords) ||
-			checkWordMute(note.reply, mutedWords) ||
-			checkWordMute(note.renote, mutedWords)
-		);
-	}
-
-	return false;
+	return (
+		checkWordMute(note, mutedWords) ||
+		checkWordMute(note.reply, mutedWords) ||
+		checkWordMute(note.renote, mutedWords)
+	);
 }

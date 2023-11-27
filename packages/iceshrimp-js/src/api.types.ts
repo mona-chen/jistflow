@@ -90,10 +90,6 @@ export type Endpoints = {
 	"admin/update-meta": { req: TODO; res: TODO };
 	"admin/vacuum": { req: TODO; res: TODO };
 	"admin/accounts/create": { req: TODO; res: TODO };
-	"admin/ad/create": { req: TODO; res: TODO };
-	"admin/ad/delete": { req: { id: Ad["id"] }; res: null };
-	"admin/ad/list": { req: TODO; res: TODO };
-	"admin/ad/update": { req: TODO; res: TODO };
 	"admin/announcements/create": { req: TODO; res: TODO };
 	"admin/announcements/delete": { req: { id: Announcement["id"] }; res: null };
 	"admin/announcements/list": { req: TODO; res: TODO };
@@ -630,7 +626,6 @@ export type Endpoints = {
 	};
 	"i/gallery/likes": { req: TODO; res: TODO };
 	"i/gallery/posts": { req: TODO; res: TODO };
-	"i/get-word-muted-notes-count": { req: TODO; res: TODO };
 	"i/import-following": { req: TODO; res: TODO };
 	"i/import-user-lists": { req: TODO; res: TODO };
 	"i/move": { req: TODO; res: TODO };

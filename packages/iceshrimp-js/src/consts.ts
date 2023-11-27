@@ -20,8 +20,6 @@ export const noteVisibilities = [
 	"specified",
 ] as const;
 
-export const mutedNoteReasons = ["word", "manual", "spam", "other"] as const;
-
 export const ffVisibility = ["public", "followers", "private"] as const;
 
 export const permissions = [

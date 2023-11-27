@@ -162,17 +162,13 @@ const init = async (): Promise<void> => {
 					redisPaginationStr = res.pagination;
 					res = res.notes;
 				}
-				for (let i = 0; i < res.length; i++) {
-					const item = res[i];
-					if (props.pagination.reversed) {
-						if (i === res.length - 2) item._shouldInsertAd_ = true;
-					} else {
-						if (i === 3) item._shouldInsertAd_ = true;
-					}
-				}
+
+				const length = res.length;
+				res = (res as Item[]).filter(p => !p.isFiltered);
+
 				if (
 					!props.pagination.noPaging &&
-					res.length > (props.pagination.limit || 10)
+					length > (props.pagination.limit || 10)
 				) {
 					res.pop();
 					items.value = props.pagination.reversed
@@ -201,7 +197,7 @@ const reload = (): void => {
 	init();
 };
 
-const refresh = async (): void => {
+const refresh = async (): Promise<void> => {
 	const params = props.pagination.params
 		? isRef(props.pagination.params)
 			? props.pagination.params.value
@@ -290,15 +286,10 @@ const fetchMore = async (): Promise<void> => {
 					res = res.notes;
 				}
 
-				for (let i = 0; i < res.length; i++) {
-					const item = res[i];
-					if (props.pagination.reversed) {
-						if (i === res.length - 9) item._shouldInsertAd_ = true;
-					} else {
-						if (i === 10) item._shouldInsertAd_ = true;
-					}
-				}
-				if (res.length > SECOND_FETCH_LIMIT) {
+				const length = res.length;
+				res = (res as Item[]).filter(p => !p.isFiltered);
+
+				if (length > SECOND_FETCH_LIMIT) {
 					res.pop();
 					items.value = props.pagination.reversed
 						? [...res].reverse().concat(items.value)
@@ -361,7 +352,9 @@ const fetchMoreAhead = async (): Promise<void> => {
 					res = res.notes;
 				}
 
-				if (res.length > SECOND_FETCH_LIMIT) {
+				const length = res.length;
+				res = (res as Item[]).filter(p => !p.isFiltered);
+				if (length > SECOND_FETCH_LIMIT) {
 					res.pop();
 					items.value = props.pagination.reversed
 						? [...res].reverse().concat(items.value)
@@ -383,6 +376,7 @@ const fetchMoreAhead = async (): Promise<void> => {
 };
 
 const prepend = (item: Item): void => {
+	if (item.isFiltered) return;
 	if (props.pagination.reversed) {
 		if (rootEl.value) {
 			const container = getScrollContainer(rootEl.value);
@@ -446,6 +440,7 @@ const prepend = (item: Item): void => {
 };
 
 const append = (item: Item): void => {
+	if (item.isFiltered) return;
 	items.value.push(item);
 };
 

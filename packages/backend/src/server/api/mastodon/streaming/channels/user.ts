@@ -1,5 +1,4 @@
 import { MastodonStream } from "../channel.js";
-import { getWordHardMute } from "@/misc/check-word-mute.js";
 import { isUserRelated } from "@/misc/is-user-related.js";
 import { isInstanceMuted } from "@/misc/is-instance-muted.js";
 import { Note } from "@/models/entities/note.js";
@@ -8,6 +7,7 @@ import { StreamMessages } from "@/server/api/stream/types.js";
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
 import { AnnouncementConverter } from "@/server/api/mastodon/converters/announcement.js";
 import isQuote from "@/misc/is-quote.js";
+import { isFiltered } from "@/misc/is-filtered.js";
 
 export class MastodonStreamUser extends MastodonStream {
     public static shouldShare = true;
@@ -99,7 +99,7 @@ export class MastodonStreamUser extends MastodonStream {
         if (isUserRelated(note, this.blocking)) return false;
         if (isUserRelated(note, this.hidden)) return false;
         if (note.renoteId !== null && !isQuote(note) && this.renoteMuting.has(note.userId)) return false;
-        if (this.userProfile && (await getWordHardMute(note, this.user, this.userProfile.mutedWords))) return false;
+        if (this.userProfile && (await isFiltered(note as Note, this.user, this.userProfile))) return false;
 
         return true;
     }

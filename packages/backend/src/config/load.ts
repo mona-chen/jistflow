@@ -61,7 +61,13 @@ export default function load() {
 		...config.htmlCache,
 	}
 
-	if (config.htmlCache.ttlSeconds == null) throw new Error('Failed to parse config.ttl');
+	if (config.htmlCache.ttlSeconds == null) throw new Error('Failed to parse config.htmlCache.ttl');
+
+	config.wordMuteCache = {
+		ttlSeconds: parseDuration(config.wordMuteCache?.ttl ?? '24h', 's')!,
+	}
+
+	if (config.wordMuteCache.ttlSeconds == null) throw new Error('Failed to parse config.wordMuteCache.ttl');
 
 	config.searchEngine = config.searchEngine ?? 'https://duckduckgo.com/?q=';
 

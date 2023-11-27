@@ -1,11 +1,11 @@
 import { MastodonStream } from "../channel.js";
-import { getWordHardMute } from "@/misc/check-word-mute.js";
 import { Note } from "@/models/entities/note.js";
 import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { StreamMessages } from "@/server/api/stream/types.js";
 import { Packed } from "@/misc/schema.js";
 import { User } from "@/models/entities/user.js";
 import { UserListJoinings } from "@/models/index.js";
+import { isFiltered } from "@/misc/is-filtered.js";
 
 export class MastodonStreamList extends MastodonStream {
     public static shouldShare = false;
@@ -75,7 +75,7 @@ export class MastodonStreamList extends MastodonStream {
         if (!this.listUsers.includes(note.userId)) return false;
         if (note.channelId) return false;
         if (note.renoteId !== null && !note.text && this.renoteMuting.has(note.userId)) return false;
-        if (this.userProfile && (await getWordHardMute(note, this.user, this.userProfile.mutedWords))) return false;
+        if (this.userProfile && (await isFiltered(note as Note, this.user, this.userProfile))) return false;
         if (note.visibility === "specified") return !!note.visibleUserIds?.includes(this.user.id);
         if (note.visibility === "followers") return this.following.has(note.userId);
         return true;

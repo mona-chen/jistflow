@@ -199,6 +199,11 @@ export const packedNoteSchema = {
 			type: "boolean",
 			optional: true,
 			nullable: true,
-		}
+		},
+		isFiltered: {
+			type: "boolean",
+			optional: true,
+			nullable: true,
+		},
 	},
 } as const;

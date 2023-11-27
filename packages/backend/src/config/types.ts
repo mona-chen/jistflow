@@ -48,6 +48,11 @@ export type Source = {
 		dbFallback?: boolean;
 	}
 
+	wordMuteCache?: {
+		ttl?: string;
+		ttlSeconds?: number;
+	}
+
 	searchEngine?: string;
 
 	proxy?: string;

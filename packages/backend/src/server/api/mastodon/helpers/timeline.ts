@@ -6,7 +6,6 @@ import { generateChannelQuery } from "@/server/api/common/generate-channel-query
 import { generateRepliesQuery } from "@/server/api/common/generate-replies-query.js";
 import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
-import { generateMutedNoteQuery } from "@/server/api/common/generate-muted-note-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
 import { generateMutedUserRenotesQueryForNotes } from "@/server/api/common/generated-muted-renote-query.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
@@ -43,7 +42,6 @@ export class TimelineHelpers {
         generateRepliesQuery(query, true, user);
         generateVisibilityQuery(query, user);
         generateMutedUserQuery(query, user);
-        generateMutedNoteQuery(query, user);
         generateBlockedUserQuery(query, user);
         generateMutedUserRenotesQueryForNotes(query, user);
 
@@ -88,7 +86,6 @@ export class TimelineHelpers {
         generateRepliesQuery(query, true, user);
         if (user) {
             generateMutedUserQuery(query, user);
-            generateMutedNoteQuery(query, user);
             generateBlockedUserQuery(query, user);
             generateMutedUserRenotesQueryForNotes(query, user);
         }
@@ -158,7 +155,6 @@ export class TimelineHelpers {
         generateRepliesQuery(query, true, user);
         if (user) {
             generateMutedUserQuery(query, user);
-            generateMutedNoteQuery(query, user);
             generateBlockedUserQuery(query, user);
             generateMutedUserRenotesQueryForNotes(query, user);
         }

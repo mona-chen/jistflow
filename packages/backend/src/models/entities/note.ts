@@ -259,7 +259,7 @@ export class Note {
 		nullable: true,
 		comment: "The updated date of the Note.",
 	})
-	public updatedAt: Date;
+	public updatedAt: Date | null;
 	//#endregion
 
 	constructor(data: Partial<Note>) {
