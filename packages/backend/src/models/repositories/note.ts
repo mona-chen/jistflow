@@ -30,8 +30,6 @@ import { db } from "@/db/postgre.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import { PackedUserCache } from "@/models/repositories/user.js";
 import { isFiltered } from "@/misc/is-filtered.js";
-import { UserProfile } from "@/models/entities/user-profile.js";
-import { Cache } from "@/misc/cache.js";
 
 export async function populatePoll(note: Note, meId: User["id"] | null) {
 	const poll = await Polls.findOneByOrFail({ noteId: note.id });
@@ -330,6 +328,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 		options?: {
 			detail?: boolean;
 		},
+		userCache: PackedUserCache = Users.getFreshPackedUserCache(),
 	) {
 		if (notes.length === 0) return [];
 
@@ -377,7 +376,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 						myReactions: myReactionsMap,
 						myRenotes: myRenotesMap
 					},
-				}),
+				}, userCache),
 			),
 		);
 
