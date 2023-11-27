@@ -31,7 +31,7 @@ login: "Sign In"
 loggingIn: "Signing In"
 logout: "Sign Out"
 signup: "Sign Up"
-uploading: "Uploading..."
+uploading: "Uploading…"
 save: "Save"
 users: "Users"
 addUser: "Add a user"
@@ -251,7 +251,7 @@ noteDeleteConfirm: "Are you sure you want to delete this post?"
 pinLimitExceeded: "You cannot pin any more posts"
 intro: "Installation of Iceshrimp has been finished! Please create an admin user."
 done: "Done"
-processing: "Processing..."
+processing: "Processing…"
 preview: "Preview"
 default: "Default"
 defaultValueIs: "Default: {value}"
@@ -1023,9 +1023,9 @@ cannotUploadBecauseExceedsFileSizeLimit: "This file could not be uploaded becaus
   it exceeds the maximum allowed size."
 beta: "Beta"
 enableAutoSensitive: "Automatic sensitive-marking"
-enableAutoSensitiveDescription: "Allows automatic detection and marking of sensitive media
-  through Machine Learning where possible. Even if this option is disabled, it may
-  be enabled server-wide."
+enableAutoSensitiveDescription: "Allows automatic detection and marking of sensitive
+  media through Machine Learning where possible. Even if this option is disabled,
+  it may be enabled server-wide."
 activeEmailValidationDescription: "Enables stricter validation of email addresses,
   which includes checking for disposable addresses and by whether it can actually
   be communicated with. When unchecked, only the format of the email is validated."
@@ -1135,7 +1135,8 @@ searchEmptyQuery: "Please enter a search term."
 
 _sensitiveMediaDetection:
   description: "Reduces the effort of server moderation through automatically recognizing
-    sensitive media via Machine Learning. This will slightly increase the load on the server."
+    sensitive media via Machine Learning. This will slightly increase the load on
+    the server."
   sensitivity: "Detection sensitivity"
   sensitivityDescription: "Reducing the sensitivity will lead to fewer misdetections
     (false positives) whereas increasing it will lead to fewer missed detections (false
@@ -1492,16 +1493,20 @@ _filters:
     miscFilters: "Filter by following relationship and/or note type"
     userDomain: "Filter by author, mentioned users, reply user or instance domain"
     postDate: "Filter by post date"
-    exclusivity: "Note that the before: filter is exclusive, while the after: filter is inclusive."
+    exclusivity: "Note that the before: filter is exclusive, while the after: filter
+      is inclusive."
     word: "word"
     phrase: "literal phrase that contains (arbitrary) characters"
     attachmentType: "Filter by attachment type(s)"
     matchOptions: "Change case sensitivity and/or enable whole word matching"
     info: "Nomenclature"
-    info1: "Text in brackets signifies available optional filter parameters. Parameter options are signified by a pipe character."
-    info2: "A dash enclosed in brackets denotes the ability to invert/negate a filter with the dash character."
+    info1: "Text in brackets signifies available optional filter parameters. Parameter
+      options are signified by a pipe character."
+    info2: "A dash enclosed in brackets denotes the ability to invert/negate a filter
+      with the dash character."
     infoEnd: "Filter aliases"
-    infoEnd1: "For convenience and typo-prevention, some filters have aliases, which are listed below."
+    infoEnd1: "For convenience and typo-prevention, some filters have aliases, which
+      are listed below."
   fromUser: "From user"
   replyTo: "Replying to"
   mentioning: "Mentioning"
@@ -2167,7 +2172,8 @@ alwaysExpandCws: "Always expand posts with content warnings"
 hideFromHome: "Hide from home timeline"
 _wellness:
   name: "Wellness"
-  description: "These settings allow you to adjust possibly addictive or anxiety-inducing aspects of social media. Choose the settings that are ideal for you."
+  description: "These settings allow you to adjust possibly addictive or anxiety-inducing
+    aspects of social media. Choose the settings that are ideal for you."
   newPostsButton: "Enable new posts alert button"
   newPostsGlowOpacity: "New posts glow opacity"
   immediacy: "Immediacy"
