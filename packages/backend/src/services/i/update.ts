@@ -14,6 +14,7 @@ import acceptAllFollowRequests from "@/services/following/requests/accept-all.js
 import { UserProfile } from "@/models/entities/user-profile.js";
 import mfm from "mfm-js";
 import { promiseEarlyReturn } from "@/prelude/promise.js";
+import { UserConverter } from "@/server/api/mastodon/converters/user.js";
 
 export async function updateUserProfileData(user: User, profile: UserProfile | null, updates: Partial<User>, profileUpdates: Partial<UserProfile>, isSecure: boolean) {
 	if (!profile) profile = await UserProfiles.findOneByOrFail({ userId: user.id });
@@ -46,10 +47,11 @@ export async function updateUserProfileData(user: User, profile: UserProfile | n
 
 	updateUsertags(user, tags);
 
+	const oldProfile = await UserProfiles.findOneBy({ userId: user.id });
+
 	if (Object.keys(updates).length > 0) await Users.update(user.id, updates);
 	if (Object.keys(profileUpdates).length > 0) {
 		await UserProfiles.update(user.id, profileUpdates);
-		await promiseEarlyReturn(UserProfiles.updateMentions(user.id), 1500);
 	}
 
 	const iObj = await Users.pack<true, true>(user.id, user, {
@@ -68,9 +70,11 @@ export async function updateUserProfileData(user: User, profile: UserProfile | n
 		acceptAllFollowRequests(user);
 	}
 
-	UserProfiles.updateMentions(user.id).finally(() => {
-		publishToFollowers(user.id);
-	});
+	await promiseEarlyReturn(UserProfiles.updateMentions(user.id)
+		.finally(() => {
+			UserConverter.prewarmCacheById(user.id, oldProfile);
+			publishToFollowers(user.id);
+		}), 1500);
 
 	return iObj;
 }
