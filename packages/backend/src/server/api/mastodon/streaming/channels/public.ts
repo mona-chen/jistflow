@@ -6,7 +6,6 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { StreamMessages } from "@/server/api/stream/types.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import isQuote from "@/misc/is-quote.js";
-import { isFiltered } from "@/misc/is-filtered.js";
 
 export class MastodonStreamPublic extends MastodonStream {
     public static shouldShare = true;
@@ -40,7 +39,7 @@ export class MastodonStreamPublic extends MastodonStream {
     private async onNote(note: Note) {
         if (!await this.shouldProcessNote(note)) return;
 
-        const encoded = await NoteConverter.encodeEvent(note, this.user)
+        const encoded = await NoteConverter.encodeEvent(note, this.user, 'public')
         this.connection.send(this.chName, "update", encoded);
     }
 
@@ -50,7 +49,7 @@ export class MastodonStreamPublic extends MastodonStream {
 
         switch (data.type) {
             case "updated":
-                const encoded = await NoteConverter.encodeEvent(note, this.user);
+                const encoded = await NoteConverter.encodeEvent(note, this.user, 'public');
                 this.connection.send(this.chName, "status.update", encoded);
                 break;
             case "deleted":
@@ -72,7 +71,6 @@ export class MastodonStreamPublic extends MastodonStream {
         if (isUserRelated(note, this.muting)) return false;
         if (isUserRelated(note, this.blocking)) return false;
         if (note.renoteId !== null && !isQuote(note) && this.renoteMuting.has(note.userId)) return false;
-        if (this.userProfile && (await isFiltered(note as Note, this.user, this.userProfile))) return false;
 
         return true;
     }

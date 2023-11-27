@@ -50,9 +50,10 @@ function setupMiddleware(router: Router): void {
     router.use(CacheMiddleware);
 }
 
-export function getStubMastoContext(user: ILocalUser | null | undefined): any {
+export function getStubMastoContext(user: ILocalUser | null | undefined, filterContext?: string): any {
     return {
         user: user ?? null,
-        cache: UserHelpers.getFreshAccountCache()
+        cache: UserHelpers.getFreshAccountCache(),
+        filterContext: filterContext,
     };
 }

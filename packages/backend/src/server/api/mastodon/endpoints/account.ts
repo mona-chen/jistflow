@@ -6,6 +6,7 @@ import { UserHelpers } from "@/server/api/mastodon/helpers/user.js";
 import { ListHelpers } from "@/server/api/mastodon/helpers/list.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { SearchHelpers } from "@/server/api/mastodon/helpers/search.js";
+import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 
 export function setupEndpointsAccount(router: Router): void {
     router.get("/v1/accounts/verify_credentials",
@@ -52,6 +53,7 @@ export function setupEndpointsAccount(router: Router): void {
     router.get<{ Params: { id: string } }>(
         "/v1/accounts/:id/statuses",
         auth(false, ["read:statuses"]),
+        filterContext('account'),
         async (ctx) => {
             const query = await UserHelpers.getUserCachedOr404(ctx.params.id, ctx);
             const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)));

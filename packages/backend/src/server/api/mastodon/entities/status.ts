@@ -43,6 +43,7 @@ namespace MastodonEntity {
         quote: Status | null;
         bookmarked: boolean;
         edited_at: string | null;
+        filtered: Array<FilterResult> | null;
     };
 
     export type StatusCreationRequest = {

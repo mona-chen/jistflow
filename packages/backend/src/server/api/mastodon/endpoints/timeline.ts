@@ -5,6 +5,7 @@ import { NoteConverter } from "@/server/api/mastodon/converters/note.js";
 import { UserLists } from "@/models/index.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 
 //TODO: Move helper functions to a helper class
 export function limitToInt(q: ParsedUrlQuery, additional: string[] = []) {
@@ -53,6 +54,7 @@ export function normalizeUrlQuery(q: ParsedUrlQuery, arrayKeys: string[] = []): 
 export function setupEndpointsTimeline(router: Router): void {
     router.get("/v1/timelines/public",
         auth(true, ['read:statuses']),
+        filterContext('public'),
         async (ctx, reply) => {
             const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)));
             const res = await TimelineHelpers.getPublicTimeline(args.max_id, args.since_id, args.min_id, args.limit, args.only_media, args.local, args.remote, ctx);
@@ -61,6 +63,7 @@ export function setupEndpointsTimeline(router: Router): void {
     router.get<{ Params: { hashtag: string } }>(
         "/v1/timelines/tag/:hashtag",
         auth(false, ['read:statuses']),
+        filterContext('public'),
         async (ctx, reply) => {
             const tag = (ctx.params.hashtag ?? '').trim().toLowerCase();
             const args = normalizeUrlQuery(argsToBools(limitToInt(ctx.query)), ['any[]', 'all[]', 'none[]']);
@@ -70,6 +73,7 @@ export function setupEndpointsTimeline(router: Router): void {
     );
     router.get("/v1/timelines/home",
         auth(true, ['read:statuses']),
+        filterContext('home'),
         async (ctx, reply) => {
             const args = normalizeUrlQuery(limitToInt(ctx.query));
             const res = await TimelineHelpers.getHomeTimeline(args.max_id, args.since_id, args.min_id, args.limit, ctx);
@@ -78,6 +82,7 @@ export function setupEndpointsTimeline(router: Router): void {
     router.get<{ Params: { listId: string } }>(
         "/v1/timelines/list/:listId",
         auth(true, ['read:lists']),
+        filterContext('home'),
         async (ctx, reply) => {
             const list = await UserLists.findOneBy({ userId: ctx.user.id, id: ctx.params.listId });
             if (!list) throw new MastoApiError(404);

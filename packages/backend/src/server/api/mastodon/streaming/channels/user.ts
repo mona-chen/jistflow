@@ -7,7 +7,6 @@ import { StreamMessages } from "@/server/api/stream/types.js";
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
 import { AnnouncementConverter } from "@/server/api/mastodon/converters/announcement.js";
 import isQuote from "@/misc/is-quote.js";
-import { isFiltered } from "@/misc/is-filtered.js";
 
 export class MastodonStreamUser extends MastodonStream {
     public static shouldShare = true;
@@ -40,7 +39,7 @@ export class MastodonStreamUser extends MastodonStream {
     private async onNote(note: Note) {
         if (!await this.shouldProcessNote(note)) return;
 
-        const encoded = await NoteConverter.encodeEvent(note, this.user)
+        const encoded = await NoteConverter.encodeEvent(note, this.user, 'home')
         this.connection.send(this.chName, "update", encoded);
     }
 
@@ -50,7 +49,7 @@ export class MastodonStreamUser extends MastodonStream {
 
         switch (data.type) {
             case "updated":
-                const encoded = await NoteConverter.encodeEvent(note, this.user);
+                const encoded = await NoteConverter.encodeEvent(note, this.user, 'home');
                 this.connection.send(this.chName, "status.update", encoded);
                 break;
             case "deleted":
@@ -64,7 +63,7 @@ export class MastodonStreamUser extends MastodonStream {
     private async onUserEvent(data: StreamMessages["main"]["payload"]) {
         switch (data.type) {
             case "notification":
-                const encoded = await NotificationConverter.encodeEvent(data.body.id, this.user);
+                const encoded = await NotificationConverter.encodeEvent(data.body.id, this.user, 'notifications');
                 if (encoded) this.connection.send(this.chName, "notification", encoded);
                 break;
             default:
@@ -99,7 +98,6 @@ export class MastodonStreamUser extends MastodonStream {
         if (isUserRelated(note, this.blocking)) return false;
         if (isUserRelated(note, this.hidden)) return false;
         if (note.renoteId !== null && !isQuote(note) && this.renoteMuting.has(note.userId)) return false;
-        if (this.userProfile && (await isFiltered(note as Note, this.user, this.userProfile))) return false;
 
         return true;
     }

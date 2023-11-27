@@ -33,8 +33,6 @@ import { isFiltered } from "@/misc/is-filtered.js";
 import { UserProfile } from "@/models/entities/user-profile.js";
 import { Cache } from "@/misc/cache.js";
 
-const mutedWordsCache = new Cache<UserProfile["mutedWords"]>("mutedWords", 60 * 5);
-
 export async function populatePoll(note: Note, meId: User["id"] | null) {
 	const poll = await Polls.findOneByOrFail({ noteId: note.id });
 	const choices = poll.choices.map((c) => ({
@@ -180,7 +178,6 @@ export const NoteRepository = db.getRepository(Note).extend({
 			};
 		},
 		userCache: PackedUserCache = Users.getFreshPackedUserCache(),
-		profile?: { mutedWords: UserProfile["mutedWords"] } | null,
 	): Promise<Packed<"Note">> {
 		const opts = Object.assign(
 			{
@@ -193,11 +190,6 @@ export const NoteRepository = db.getRepository(Note).extend({
 		const note =
 			typeof src === "object" ? src : await this.findOneByOrFail({ id: src });
 		const host = note.userHost;
-		const meProfile = profile !== undefined
-			? profile
-			: meId !== null
-				? { mutedWords: await mutedWordsCache.fetch(meId, async () => UserProfiles.findOneBy({ userId: meId }).then(p => p?.mutedWords ?? [])) }
-				: null;
 
 		if (!(await this.isVisibleForMe(note, meId))) {
 			throw new IdentifiableError(
@@ -269,7 +261,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 				? {
 						myReaction: populateMyReaction(note, meId, options?._hint_),
 						isRenoted: populateIsRenoted(note, meId, options?._hint_),
-						isFiltered: isFiltered(note, me, await meProfile),
+						isFiltered: isFiltered(note, me),
 				  }
 				: {}),
 
@@ -338,7 +330,6 @@ export const NoteRepository = db.getRepository(Note).extend({
 		options?: {
 			detail?: boolean;
 		},
-		profile?: { mutedWords: UserProfile["mutedWords"] } | null,
 	) {
 		if (notes.length === 0) return [];
 
@@ -374,10 +365,6 @@ export const NoteRepository = db.getRepository(Note).extend({
 					!!myRenotes.find(p => p.renoteId == target),
 				);
 			}
-
-            profile = profile !== undefined
-				? profile
-                : { mutedWords: await mutedWordsCache.fetch(meId, async () => UserProfiles.findOneBy({ userId: meId }).then(p => p?.mutedWords ?? [])) };
 		}
 
 		await prefetchEmojis(aggregateNoteEmojis(notes));
@@ -390,7 +377,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 						myReactions: myReactionsMap,
 						myRenotes: myRenotesMap
 					},
-				}, undefined, profile),
+				}),
 			),
 		);
 

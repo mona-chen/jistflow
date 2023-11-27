@@ -95,8 +95,8 @@ export class NotificationConverter {
         }
     }
 
-    public static async encodeEvent(target: Notification["id"], user: ILocalUser): Promise<MastodonEntity.Notification | null> {
-        const ctx = getStubMastoContext(user);
+    public static async encodeEvent(target: Notification["id"], user: ILocalUser, filterContext?: string): Promise<MastodonEntity.Notification | null> {
+        const ctx = getStubMastoContext(user, filterContext);
         const notification = await Notifications.findOneByOrFail({ id: target });
         return this.encode(notification, ctx).catch(_ => null);
     }

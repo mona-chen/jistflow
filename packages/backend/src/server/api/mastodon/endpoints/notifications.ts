@@ -3,10 +3,12 @@ import { limitToInt, normalizeUrlQuery } from "./timeline.js";
 import { NotificationHelpers } from "@/server/api/mastodon/helpers/notification.js";
 import { NotificationConverter } from "@/server/api/mastodon/converters/notification.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
+import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 
 export function setupEndpointsNotifications(router: Router): void {
     router.get("/v1/notifications",
         auth(true, ['read:notifications']),
+        filterContext('notifications'),
         async (ctx) => {
             const args = normalizeUrlQuery(limitToInt(ctx.query), ['types[]', 'exclude_types[]']);
             const res = await NotificationHelpers.getNotifications(args.max_id, args.since_id, args.min_id, args.limit, args['types[]'], args['exclude_types[]'], args.account_id, ctx);
@@ -16,6 +18,7 @@ export function setupEndpointsNotifications(router: Router): void {
 
     router.get("/v1/notifications/:id",
         auth(true, ['read:notifications']),
+        filterContext('notifications'),
         async (ctx) => {
             const notification = await NotificationHelpers.getNotificationOr404(ctx.params.id, ctx);
             ctx.body = await NotificationConverter.encode(notification, ctx);

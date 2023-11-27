@@ -1,12 +1,13 @@
 namespace MastodonEntity {
     export type Filter = {
         id: string;
-        phrase: string;
+        title: string;
         context: Array<FilterContext>;
         expires_at: string | null;
-        irreversible: boolean;
-        whole_word: boolean;
+        filter_action: 'warn' | 'hide';
+        keywords: FilterKeyword[];
+        statuses: FilterStatus[];
     };
 
-    export type FilterContext = string;
+    export type FilterContext = 'home' | 'notifications' | 'public' | 'thread' | 'account';
 }

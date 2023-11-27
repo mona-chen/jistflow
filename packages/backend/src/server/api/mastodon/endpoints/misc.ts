@@ -4,6 +4,7 @@ import { argsToBools, limitToInt } from "@/server/api/mastodon/endpoints/timelin
 import { Announcements } from "@/models/index.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 
 export function setupEndpointsMisc(router: Router): void {
     router.get("/v1/custom_emojis",
@@ -48,6 +49,7 @@ export function setupEndpointsMisc(router: Router): void {
     );
 
     router.get("/v1/trends/statuses",
+        filterContext('public'),
         async (ctx) => {
             const args = limitToInt(ctx.query);
             ctx.body = await MiscHelpers.getTrendingStatuses(args.limit, args.offset, ctx);

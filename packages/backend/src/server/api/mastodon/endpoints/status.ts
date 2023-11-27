@@ -7,6 +7,7 @@ import { PollHelpers } from "@/server/api/mastodon/helpers/poll.js";
 import { toArray } from "@/prelude/array.js";
 import { auth } from "@/server/api/mastodon/middleware/auth.js";
 import { MastoApiError } from "@/server/api/mastodon/middleware/catch-errors.js";
+import { filterContext } from "@/server/api/mastodon/middleware/filter-context.js";
 
 export function setupEndpointsStatus(router: Router): void {
     router.post("/v1/statuses",
@@ -40,6 +41,7 @@ export function setupEndpointsStatus(router: Router): void {
     );
     router.get<{ Params: { id: string } }>("/v1/statuses/:id",
         auth(false, ["read:statuses"]),
+        filterContext('thread'),
         async (ctx) => {
             const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);
 
@@ -57,6 +59,7 @@ export function setupEndpointsStatus(router: Router): void {
     router.get<{ Params: { id: string } }>(
         "/v1/statuses/:id/context",
         auth(false, ["read:statuses"]),
+        filterContext('thread'),
         async (ctx) => {
             //FIXME: determine final limits within helper functions instead of here
             const note = await NoteHelpers.getNoteOr404(ctx.params.id, ctx);

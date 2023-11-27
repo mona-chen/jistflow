@@ -33,6 +33,7 @@ import { unique } from "@/prelude/array.js";
 import { NoteReaction } from "@/models/entities/note-reaction.js";
 import { Cache } from "@/misc/cache.js";
 import { HtmlNoteCacheEntry } from "@/models/entities/html-note-cache-entry.js";
+import { isFiltered } from "@/misc/is-filtered.js";
 
 export class NoteConverter {
     private static noteContentHtmlCache = new Cache<string | null>('html:note:content', config.htmlCache?.ttlSeconds ?? 60 * 60);
@@ -138,6 +139,21 @@ export class NoteConverter {
 
         const reblog = Promise.resolve(renote).then(renote => recurseCounter > 0 && renote ? this.encode(renote, ctx, isQuote(renote) && !isQuote(note) ? --recurseCounter : 0) : null);
 
+        const filtered = isFiltered(note, user).then(res => {
+            if (!res || ctx.filterContext == null || !['home', 'public'].includes(ctx.filterContext)) return null;
+            return [{
+                filter: {
+                    id: '0',
+                    title: 'Hard word mutes',
+                    context: ['home', 'public'],
+                    expires_at: null,
+                    filter_action: 'hide',
+                    keywords: [],
+                    statuses: [],
+                }
+            } as MastodonEntity.FilterResult];
+        });
+
         // noinspection ES6MissingAwait
         return await awaitAll({
             id: note.id,
@@ -172,7 +188,8 @@ export class NoteConverter {
             reactions: populated.then(populated => Promise.resolve(reaction).then(reaction => this.encodeReactions(note.reactions, reaction?.reaction, populated))),
             bookmarked: isBookmarked,
             quote: reblog.then(reblog => isQuote(note) ? reblog : null),
-            edited_at: note.updatedAt?.toISOString() ?? null
+            edited_at: note.updatedAt?.toISOString() ?? null,
+            filtered: filtered,
         });
     }
 
@@ -293,8 +310,8 @@ export class NoteConverter {
         }).filter(r => r.count > 0);
     }
 
-    public static async encodeEvent(note: Note, user: ILocalUser | undefined): Promise<MastodonEntity.Status> {
-        const ctx = getStubMastoContext(user);
+    public static async encodeEvent(note: Note, user: ILocalUser | undefined, filterContext?: string): Promise<MastodonEntity.Status> {
+        const ctx = getStubMastoContext(user, filterContext);
         NoteHelpers.fixupEventNote(note);
         return NoteConverter.encode(note, ctx);
     }

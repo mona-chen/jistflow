@@ -5,7 +5,6 @@ import { StreamMessages } from "@/server/api/stream/types.js";
 import { Packed } from "@/misc/schema.js";
 import { User } from "@/models/entities/user.js";
 import { UserListJoinings } from "@/models/index.js";
-import { isFiltered } from "@/misc/is-filtered.js";
 
 export class MastodonStreamList extends MastodonStream {
     public static shouldShare = false;
@@ -50,7 +49,7 @@ export class MastodonStreamList extends MastodonStream {
     private async onNote(note: Note) {
         if (!await this.shouldProcessNote(note)) return;
 
-        const encoded = await NoteConverter.encodeEvent(note, this.user)
+        const encoded = await NoteConverter.encodeEvent(note, this.user, 'home')
         this.connection.send(this.chName, "update", encoded);
     }
 
@@ -60,7 +59,7 @@ export class MastodonStreamList extends MastodonStream {
 
         switch (data.type) {
             case "updated":
-                const encoded = await NoteConverter.encodeEvent(note, this.user);
+                const encoded = await NoteConverter.encodeEvent(note, this.user, 'home');
                 this.connection.send(this.chName, "status.update", encoded);
                 break;
             case "deleted":
@@ -75,7 +74,6 @@ export class MastodonStreamList extends MastodonStream {
         if (!this.listUsers.includes(note.userId)) return false;
         if (note.channelId) return false;
         if (note.renoteId !== null && !note.text && this.renoteMuting.has(note.userId)) return false;
-        if (this.userProfile && (await isFiltered(note as Note, this.user, this.userProfile))) return false;
         if (note.visibility === "specified") return !!note.visibleUserIds?.includes(this.user.id);
         if (note.visibility === "followers") return this.following.has(note.userId);
         return true;
