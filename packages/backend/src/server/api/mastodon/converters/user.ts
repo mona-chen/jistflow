@@ -54,7 +54,7 @@ export class UserConverter {
                 : UserProfiles.findOneBy({ userId: u.id });
             const bio = this.userBioHtmlCache.fetch(identifier, async () => {
                 return htmlCacheEntryLock.acquire(u.id, async () => {
-                    if (htmlCacheEntry === undefined) await this.fetchFromCacheWithFallback(u, await profile, ctx);
+                    if (htmlCacheEntry === undefined) htmlCacheEntry = await this.fetchFromCacheWithFallback(u, await profile, ctx);
                     if (htmlCacheEntry === null) {
                         return Promise.resolve(profile).then(async profile => {
                             return MfmHelpers.toHtml(mfm.parse(profile?.description ?? ""), profile?.mentions, u.host)
@@ -117,7 +117,7 @@ export class UserConverter {
             const fields =
                 this.userFieldsHtmlCache.fetch(identifier, async () => {
                     return htmlCacheEntryLock.acquire(u.id, async () => {
-                        if (htmlCacheEntry === undefined) await this.fetchFromCacheWithFallback(u, await profile, ctx);
+                        if (htmlCacheEntry === undefined) htmlCacheEntry = await this.fetchFromCacheWithFallback(u, await profile, ctx);
                         if (htmlCacheEntry === null) {
                             return Promise.resolve(profile).then(profile => Promise.all(profile?.fields.map(async p => this.encodeField(p, u.host, profile?.mentions)) ?? []));
                         }
