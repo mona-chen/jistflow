@@ -19,6 +19,6 @@ export async function isFiltered(note: Note, user: { id: User["id"] } | null | u
 	if (!profile || profile.mutedWords.length < 1) return false;
 	const ts = (note.updatedAt ?? note.createdAt) as Date | string;
 	const identifier = (typeof ts === "string" ? new Date(ts) : ts)?.getTime() ?? '0';
-	return filteredNoteCache.fetch(`${note.id}:${ts}:${user.id}`,
+	return filteredNoteCache.fetch(`${note.id}:${identifier}:${user.id}`,
 		() => getWordHardMute(note, user, unique(profile!.mutedWords)));
 }
