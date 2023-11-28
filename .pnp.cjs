@@ -46,7 +46,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
-          ["@biomejs/biome", "npm:1.3.1"],\
+          ["@biomejs/biome", "npm:1.4.1"],\
           ["@bull-board/api", "virtual:6d3c013820dba430e71ebb352cb5205445a13ea3c7a848f57a7ff58fb0d6469fe4d374280277dac42cb77a6dbf8e924e64f2f0b3413c28a02da9d890c199e6d7#npm:5.6.0"],\
           ["@bull-board/ui", "npm:5.6.0"],\
           ["@types/gulp", "npm:4.0.13"],\
@@ -1154,70 +1154,70 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@biomejs/biome", [\
-      ["npm:1.3.1", {\
-        "packageLocation": "./.yarn/unplugged/@biomejs-biome-npm-1.3.1-6f9e52cf26/node_modules/@biomejs/biome/",\
+      ["npm:1.4.1", {\
+        "packageLocation": "./.yarn/unplugged/@biomejs-biome-npm-1.4.1-908a13650b/node_modules/@biomejs/biome/",\
         "packageDependencies": [\
-          ["@biomejs/biome", "npm:1.3.1"],\
-          ["@biomejs/cli-darwin-arm64", "npm:1.3.1"],\
-          ["@biomejs/cli-darwin-x64", "npm:1.3.1"],\
-          ["@biomejs/cli-linux-arm64", "npm:1.3.1"],\
-          ["@biomejs/cli-linux-x64", "npm:1.3.1"],\
-          ["@biomejs/cli-win32-arm64", "npm:1.3.1"],\
-          ["@biomejs/cli-win32-x64", "npm:1.3.1"]\
+          ["@biomejs/biome", "npm:1.4.1"],\
+          ["@biomejs/cli-darwin-arm64", "npm:1.4.1"],\
+          ["@biomejs/cli-darwin-x64", "npm:1.4.1"],\
+          ["@biomejs/cli-linux-arm64", "npm:1.4.1"],\
+          ["@biomejs/cli-linux-x64", "npm:1.4.1"],\
+          ["@biomejs/cli-win32-arm64", "npm:1.4.1"],\
+          ["@biomejs/cli-win32-x64", "npm:1.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@biomejs/cli-darwin-arm64", [\
-      ["npm:1.3.1", {\
-        "packageLocation": "./.yarn/unplugged/@biomejs-cli-darwin-arm64-npm-1.3.1-2e03173d1f/node_modules/@biomejs/cli-darwin-arm64/",\
+      ["npm:1.4.1", {\
+        "packageLocation": "./.yarn/unplugged/@biomejs-cli-darwin-arm64-npm-1.4.1-212e448754/node_modules/@biomejs/cli-darwin-arm64/",\
         "packageDependencies": [\
-          ["@biomejs/cli-darwin-arm64", "npm:1.3.1"]\
+          ["@biomejs/cli-darwin-arm64", "npm:1.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@biomejs/cli-darwin-x64", [\
-      ["npm:1.3.1", {\
-        "packageLocation": "./.yarn/unplugged/@biomejs-cli-darwin-x64-npm-1.3.1-d5708b1108/node_modules/@biomejs/cli-darwin-x64/",\
+      ["npm:1.4.1", {\
+        "packageLocation": "./.yarn/unplugged/@biomejs-cli-darwin-x64-npm-1.4.1-82a649f050/node_modules/@biomejs/cli-darwin-x64/",\
         "packageDependencies": [\
-          ["@biomejs/cli-darwin-x64", "npm:1.3.1"]\
+          ["@biomejs/cli-darwin-x64", "npm:1.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@biomejs/cli-linux-arm64", [\
-      ["npm:1.3.1", {\
-        "packageLocation": "./.yarn/unplugged/@biomejs-cli-linux-arm64-npm-1.3.1-1267480ce0/node_modules/@biomejs/cli-linux-arm64/",\
+      ["npm:1.4.1", {\
+        "packageLocation": "./.yarn/unplugged/@biomejs-cli-linux-arm64-npm-1.4.1-b36d609574/node_modules/@biomejs/cli-linux-arm64/",\
         "packageDependencies": [\
-          ["@biomejs/cli-linux-arm64", "npm:1.3.1"]\
+          ["@biomejs/cli-linux-arm64", "npm:1.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@biomejs/cli-linux-x64", [\
-      ["npm:1.3.1", {\
-        "packageLocation": "./.yarn/unplugged/@biomejs-cli-linux-x64-npm-1.3.1-d0d2c0ccd7/node_modules/@biomejs/cli-linux-x64/",\
+      ["npm:1.4.1", {\
+        "packageLocation": "./.yarn/unplugged/@biomejs-cli-linux-x64-npm-1.4.1-5d16748a6f/node_modules/@biomejs/cli-linux-x64/",\
         "packageDependencies": [\
-          ["@biomejs/cli-linux-x64", "npm:1.3.1"]\
+          ["@biomejs/cli-linux-x64", "npm:1.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@biomejs/cli-win32-arm64", [\
-      ["npm:1.3.1", {\
-        "packageLocation": "./.yarn/unplugged/@biomejs-cli-win32-arm64-npm-1.3.1-74426d6d7d/node_modules/@biomejs/cli-win32-arm64/",\
+      ["npm:1.4.1", {\
+        "packageLocation": "./.yarn/unplugged/@biomejs-cli-win32-arm64-npm-1.4.1-c4c34b05a3/node_modules/@biomejs/cli-win32-arm64/",\
         "packageDependencies": [\
-          ["@biomejs/cli-win32-arm64", "npm:1.3.1"]\
+          ["@biomejs/cli-win32-arm64", "npm:1.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@biomejs/cli-win32-x64", [\
-      ["npm:1.3.1", {\
-        "packageLocation": "./.yarn/unplugged/@biomejs-cli-win32-x64-npm-1.3.1-678d08024e/node_modules/@biomejs/cli-win32-x64/",\
+      ["npm:1.4.1", {\
+        "packageLocation": "./.yarn/unplugged/@biomejs-cli-win32-x64-npm-1.4.1-3e7f7458bb/node_modules/@biomejs/cli-win32-x64/",\
         "packageDependencies": [\
-          ["@biomejs/cli-win32-x64", "npm:1.3.1"]\
+          ["@biomejs/cli-win32-x64", "npm:1.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -14186,7 +14186,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["iceshrimp", "workspace:."],\
-          ["@biomejs/biome", "npm:1.3.1"],\
+          ["@biomejs/biome", "npm:1.4.1"],\
           ["@bull-board/api", "virtual:6d3c013820dba430e71ebb352cb5205445a13ea3c7a848f57a7ff58fb0d6469fe4d374280277dac42cb77a6dbf8e924e64f2f0b3413c28a02da9d890c199e6d7#npm:5.6.0"],\
           ["@bull-board/ui", "npm:5.6.0"],\
           ["@types/gulp", "npm:4.0.13"],\
