@@ -28,11 +28,17 @@ This release was made possible by project contributors: AverageDood, Laura Hausm
 ## v2023.12-pre2
 This release contains an important security fix. Upgrading is therefore strongly recommended. If you are on or want to upgrade to a stable release, please refer to the stable backport release [v2023.11.4](https://iceshrimp.dev/iceshrimp/iceshrimp/releases/tag/v2023.11.4) instead.
 
+### Added features
+- A new setting was added that allows admins to specify an account that's automatically followed on user registration
+
 ### Bug fixes
 - HTTP signatures are now properly validated everywhere
 
+### UI/UX
+- The gradient angles were adjusted to be in line with the design guidelines
+
 ### Attribution
-This release was made possible by project contributors: Laura Hausmann
+This release was made possible by project contributors: AntoineÐ, Latte macchiato & Laura Hausmann
 
 It also includes cherry-picked contributions from external contributors: perillamint, yunochi
 
