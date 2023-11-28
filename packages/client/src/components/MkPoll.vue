@@ -81,10 +81,10 @@ const timer = computed(() =>
 		remaining.value >= 86400
 			? "_poll.remainingDays"
 			: remaining.value >= 3600
-			? "_poll.remainingHours"
-			: remaining.value >= 60
-			? "_poll.remainingMinutes"
-			: "_poll.remainingSeconds",
+			  ? "_poll.remainingHours"
+			  : remaining.value >= 60
+			    ? "_poll.remainingMinutes"
+			    : "_poll.remainingSeconds",
 		{
 			s: Math.floor(remaining.value % 60),
 			m: Math.floor(remaining.value / 60) % 60,

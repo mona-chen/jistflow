@@ -88,8 +88,8 @@ const preferedModalType =
 	deviceKind === "desktop" && props.src != null
 		? "popup"
 		: deviceKind === "smartphone"
-		? "drawer"
-		: "dialog";
+		  ? "drawer"
+		  : "dialog";
 
 const modal = ref<InstanceType<typeof MkModal>>();
 

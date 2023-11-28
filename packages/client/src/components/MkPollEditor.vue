@@ -171,8 +171,8 @@ function get() {
 		...(expiration.value === "at"
 			? { expiresAt: calcAt() }
 			: expiration.value === "after"
-			? { expiredAfter: calcAfter() }
-			: {}),
+			  ? { expiredAfter: calcAfter() }
+			  : {}),
 	};
 }
 

@@ -127,18 +127,18 @@ const pagination = {
 		...(state.value === "federating"
 			? { federating: true }
 			: state.value === "subscribing"
-			? { subscribing: true }
-			: state.value === "publishing"
-			? { publishing: true }
-			: state.value === "suspended"
-			? { suspended: true }
-			: state.value === "blocked"
-			? { blocked: true }
-			: state.value === "silenced"
-			? { silenced: true }
-			: state.value === "notResponding"
-			? { notResponding: true }
-			: {}),
+			  ? { subscribing: true }
+			  : state.value === "publishing"
+			    ? { publishing: true }
+			    : state.value === "suspended"
+			      ? { suspended: true }
+			      : state.value === "blocked"
+			        ? { blocked: true }
+			        : state.value === "silenced"
+			          ? { silenced: true }
+			          : state.value === "notResponding"
+			            ? { notResponding: true }
+			            : {}),
 	})),
 };
 

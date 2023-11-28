@@ -98,14 +98,14 @@ function onEndpointChange() {
 				p.type === "String"
 					? ""
 					: p.type === "Number"
-					? 0
-					: p.type === "Boolean"
-					? false
-					: p.type === "Array"
-					? []
-					: p.type === "Object"
-					? {}
-					: null;
+					  ? 0
+					  : p.type === "Boolean"
+					    ? false
+					    : p.type === "Array"
+					      ? []
+					      : p.type === "Object"
+					        ? {}
+					        : null;
 		}
 		body.value = JSON5.stringify(endpointBody, null, 2);
 	});
