@@ -69,6 +69,7 @@ function toggle(x) {
 		transition: inherit;
 		user-select: none;
 		pointer-events: none;
+		outline: solid 2.5px var(--swutchOffFg);
 
 		> .knob {
 			position: absolute;
@@ -124,6 +125,7 @@ function toggle(x) {
 	> input:checked ~ .button {
 		background-color: var(--swutchOnBg) !important;
 		border-color: var(--swutchOnBg) !important;
+		outline: solid 2.5px var(--swutchOnFg);
 
 		> .knob {
 			left: 12px;
