@@ -1,6 +1,6 @@
 _lang_: "Nederlands"
-headlineIceshrimp: "Een open source, gedecentraliseerd, social media platform dat voor
-  altijd gratis is! 🚀"
+headlineIceshrimp: "Een open source, gedecentraliseerd, social media platform dat
+  voor altijd gratis is! 🚀"
 introIceshrimp: "Welkom! Iceshrimp is een open source, gedecentraliseerde microblogdienst.\n
   Maak \"notities\" om je gedachten te delen met iedereen om je heen. 📡\nMet \"reacties\"\
   \ kun je ook snel je mening geven over berichten van anderen. 👍\nLaten we een nieuwe
@@ -31,7 +31,7 @@ login: "Inloggen"
 loggingIn: "Aan het inloggen"
 logout: "Afmelden"
 signup: "Registreren"
-uploading: "Bezig met uploaden"
+uploading: "Bezig met uploaden…"
 save: "Opslaan"
 users: "Gebruikers"
 addUser: "Toevoegen gebruiker"
@@ -87,8 +87,8 @@ somethingHappened: "Er is iets misgegaan."
 retry: "Probeer opnieuw"
 pageLoadError: "Pagina laden mislukt"
 pageLoadErrorDescription: "Dit wordt normaal gesproken veroorzaakt door netwerkfouten
-  of door de cache van de browser. Probeer de cache te wissen en probeer het na een
-  tijdje wachten opnieuw."
+  of door de cache van de browser. Probeer de cache te wissen of probeer het na een
+  tijdje wachten, en herladen, opnieuw."
 serverIsDead: "De server reageert niet. Wacht even en probeer het opnieuw."
 youShouldUpgradeClient: "Werk je client bij om deze pagina te zien."
 enterListName: "Voer de naam van de lijst in"
@@ -131,7 +131,7 @@ blockConfirm: "Weet je zeker dat je dit account wil blokkeren?"
 unblockConfirm: "Ben je zeker dat je deze account wil blokkeren?"
 suspendConfirm: "Ben je zeker dat je deze account wil suspenderen?"
 unsuspendConfirm: "Ben je zeker dat je deze account wil opnieuw aanstellen?"
-flagAsBot: "Markeer dit account als een robot"
+flagAsBot: "Markeer dit account als een robot 🤖"
 flagAsBotDescription: "Als dit account van een programma wordt beheerd, zet deze vlag
   aan. Het aanzetten helpt andere ontwikkelaars om bijvoorbeeld onbedoelde feedback
   loops te doorbreken of om Iceshrimp meer geschikt te maken."
@@ -206,7 +206,7 @@ noteDeleteConfirm: "Ben je zeker dat je deze post wil verwijderen?"
 pinLimitExceeded: "Je kunt geen posts meer vastprikken"
 intro: "Installatie van Iceshrimp geëindigd! Maak nu een beheerder aan."
 done: "Klaar"
-processing: "Bezig met verwerken"
+processing: "Bezig met verwerken…"
 preview: "Voorbeeld"
 default: "Standaard"
 noCustomEmojis: "Er zijn geen emojis"
@@ -228,7 +228,7 @@ currentPassword: "Huidig wachtwoord"
 newPassword: "Nieuwe wachtwoord"
 newPasswordRetype: "Nieuw wachtwoord (herhalen)"
 attachFile: "Bestanden toevoegen"
-more: "Meer!"
+more: "Meer"
 featured: "Uitgelicht"
 usernameOrUserId: "Gebruikersnaam of id"
 noSuchUser: "Gebruiker niet gevonden"
@@ -239,7 +239,7 @@ remove: "Verwijderen"
 removed: "Succesvol verwijderd"
 removeAreYouSure: "Weet je zeker dat je \"{x}\" wil verwijderen?"
 deleteAreYouSure: "Weet je zeker dat je \"{x}\" wil verwijderen?"
-resetAreYouSure: "Resetten?"
+resetAreYouSure: "Weet je zeker dat je wilt resetten?"
 saved: "Opgeslagen"
 messaging: "Chat"
 upload: "Uploaden"
@@ -554,7 +554,7 @@ recaptchaSecretKey: Geheime sleutel
 antennas: Antennes
 antennaUsersDescription: Zet één gebruikersnaam per regel neer
 notesAndReplies: Posts en antwoorden
-withFiles: Met bestanden
+withFiles: Met bijlagen
 popularUsers: Populaire gebruikers
 recentlyUpdatedUsers: Recente actieve gebruikers
 recentlyRegisteredUsers: Nieuwe gebruikers
@@ -583,7 +583,7 @@ normalPassword: Middelmatig wachtwoord
 strongPassword: Sterk wachtwoord
 onlyOneFileCanBeAttached: Je kan maar één bestand toevoegen aan je bericht
 invitationCode: Uitnodigingscode
-checking: Controleren...
+checking: Controleren…
 uiLanguage: Gebruikersinterface taal
 aboutX: Over {x}
 youHaveNoGroups: Je hebt geen groepen
@@ -612,7 +612,7 @@ twoStepAuthentication: Tweefactorauthenticatie
 moderator: Moderator
 invitations: Uitnodigingen
 tooLong: Te lang
-doing: Verwerken...
+doing: Verwerken…
 silencedInstances: Gedempte Servers
 cacheRemoteFilesDescription: Als deze instelling is uitgeschakeld, worden externe
   bestanden direct van de externe server geladen. Het uitschakelen zal opslagruimte
@@ -682,3 +682,239 @@ serverLogs: Server logboek
 deleteAll: Verwijder alles
 showFixedPostForm: Toon het post formulier bovenaan de tijdlijn
 newNoteRecived: Er zijn nieuwe posts
+smtpPort: Poort
+database: Database
+previewNoteText: Voorvertoning laten zien
+saveAs: Opslaan als…
+expandAllCws: Inhoud voor alle reacties tonen
+listsDesc: Met lijsten kan je tijdlijnen maken met bepaalde gebruikers. Je kan deze
+  inzien via de tijdlijnen.
+selectChannel: Een kanaal selecteren
+silencedInstancesDescription: Geef de hostnames op van servers die je wilt dempen.
+  Accounts in de servers in deze lijst worden behandeld als 'gedempt' en kunnen alleen
+  volgverzoeken maken, en kunnen geen lokale accounts vermelden. Dit heeft geen effect
+  op geblokkeerde servers.
+usernameInvalidFormat: Je kan hoofd- en kleine letters, cijfers en liggende streepjes
+  gebruiken.
+noFollowRequests: Je hebt geen openstaande volgverzoeken
+objectStorageBaseUrlDesc: "De URL, ter referentie. Geef de URL van je CDN of proxy
+  als je een van beide gebruikt.\nVoor S3 gebruik 'https://<bucket>.s3.amazonaws.com'
+  en gebruik voor GCS of equivalente diensten 'https://storage.googleapis.com/<bucket>',
+  etc."
+removeAllFollowingDescription: Dit uitvoeren zal alle accounts van {host} ontvolgen.
+  Gebruik dit als de server bijvoorbeeld niet meer bestaat.
+yourAccountSuspendedDescription: Dit account is opgeschort doordat deze de server-voorwaarden
+  heeft overtreden, of iets soortgelijks. Neem contact op met de administrator als
+  je een meer gedetailleerde reden wilt weten. Maak alsjeblieft geen nieuw account
+  aan.
+leaveConfirm: Er zijn nog niet opgeslagen wijzigingen. Wil je ze verwerpen?
+tokenRequested: Toegang geven tot account
+pluginTokenRequestedDescription: Deze plugin zal de permissies die hier staan kunnen
+  gebruiken.
+emailConfigInfo: Wordt gebruikt om tijdens registratie je email te bevestigen of wanneer
+  je je wachtwoord vergeet
+regexpErrorDescription: 'Een fout is opgetreden in de regular expression op regel
+  {line} van je {tab} woorddempingen:'
+channelFederationWarn: Kanalen federeren nog niet naar andere servers
+makeExplorableDescription: Als je dit uit zet, verschijnt je account niet in het "Verkennen"-tabblad.
+sendErrorReports: Foutrapporten sturen
+sendErrorReportsDescription: "Wanneer deze optie aanstaat, wordt er gedetailleerde
+  foutinformatie gedeeld met Iceshrimp als een fout optreedt, zodat de kwaliteit van
+  Iceshrimp verbeterd kan worden.\n Dit bevat informatie zoals de versie van je besturingssysteem,
+  je browser, je activiteit binnen Iceshrimp, etc."
+receiveAnnouncementFromInstance: Notificaties van deze server ontvangen
+publish: Publiceren
+markAllAsRead: Alles als gelezen markeren
+notSpecifiedMentionWarning: Deze post noemt gebruikers die niet toegevoegd zijn als
+  ontvangers
+disabled: Uitgeschakeld
+noMaintainerInformationWarning: Beheerdersinformatie is niet geconfigureerd.
+privateModeInfo: Indien ingeschakeld kunnen alleen de servers in de lijst met je server
+  federeren. Alle posts worden van het brede publiek verborgen.
+allowedInstancesDescription: Hostnames van servers waarmee gefedereerd mag worden,
+  gescheiden door een regeleinde (alleen van toepassing in privémodus).
+iceshrimpUpdated: Iceshrimp is bijgewerkt!
+usernameInfo: Een naam die jouw account van anderen kan onderscheiden op deze server.  Je
+  kan het alfabet (a-z, A-Z), cijfers (0-9) of liggende streepjes (_) gebruiken. Gebruikersnamen
+  kunnen later niet gewijzigd worden.
+searchPlaceholder: Doorzoek de Fediverse
+collapseAllCws: Inhoud voor alle reacties verbergen
+removeReaction: Verwijder je reactie
+pinnedUsersDescription: Geef gebruikersnamen op, gescheiden door middel van lijnonderbrekingen,
+  om gepind te worden in het "Verkennen"-tabblad.
+pinnedPagesDescription: Geef de paden van de Pagina's op die je aan de top-pagina
+  van deze server wilt vastpinnen, gescheiden door lijnonderbrekingen.
+antennasDesc: "Antennas tonen nieuwe posts die voldoen aan criteria die jij instelt!\n
+  Ze zijn zichtbaar in de tijdlijnen-pagina."
+antennaKeywordsDescription: Onderbreek met spaties voor een 'AND'-conditie of met
+  lijnonderbrekingen voor een 'OR'-conditie.
+antennaInstancesDescription: Één server host per regel
+useCw: Inhoud verbergen
+showTitlebar: Titelbalk tonen
+learnMore: Meer informatie
+antennaTimelineHint: Antennes tonen overeenkomende posts in volgorde van binnenkomst.
+  Dat is niet per sé chronologisch.
+connectedTo: Volgende account(s) zijn verbonden
+signinRequired: Log alsjeblieft in of registreer voordat je verder gaat
+clientSettings: Client-instellingen
+showFeaturedNotesInTimeline: Toon uitgelichtte posts in tijdlijnen
+objectStorageRegionDesc: Geef een regio op, bijvoorbeeld 'xx-east-1'. Laat dit leeg
+  of vul 'us-east-1' in als je dienst geen onderscheid maakt tussen regios.
+objectStorageUseSSL: Gebruik SSL
+objectStorageSetPublicRead: Stel "public-read" in op upload
+userSuspended: Deze gebruiker is opgeschort.
+userSilenced: Deze gebruiker is gedempt.
+yourAccountSuspendedTitle: Dit account is opgeschort
+menu: Menu
+relays: Relays
+addRelay: Relay Toevoegen
+inboxUrl: Inbox-URL
+addedRelays: Toegevoegde Relays
+serviceworkerInfo: Moet ingeschakeld zijn voor pushnotificaties.
+deletedNote: Verwijderde post
+invisibleNote: Onzichtbare post
+enableInfiniteScroll: Automatisch meer laden
+visibility: Zichtbaarheid
+cannotChangeScopeWhenEditing: Je kan de zichtbaarheid van deze post tijdens het bewerken
+  niet wijzigen
+poll: Peiling
+enablePlayer: Videospeler openen
+disablePlayer: Videospeler sluiten
+expandTweet: Tweet uitklappen
+themeEditor: Thema-bewerker
+description: Omschrijving
+describeFile: Onderschrift toevoegen
+enterFileDescription: Ondertitel invoeren
+author: Auteur
+manage: Beheer
+plugins: Plugins
+width: Breedte
+height: Hoogte
+xl: XL
+large: Groot
+medium: Middel
+small: Klein
+generateAccessToken: Toegangstoken genereren
+permission: Permissies
+enableAll: Alles inschakelen
+disableAll: Alles uitschakelen
+notificationType: Notificatietype
+edit: Wijzigen
+emailServer: Emailserver
+enableEmail: Emaildistributie inschakelen
+email: Email
+emailAddress: Emailadres
+smtpConfig: SMTP-server Configuratie
+emptyToDisableSmtpAuth: Laat gebruikersnaam en wachtwoord leeg om SMTP-verificatie
+  uit te zetten
+smtpSecure: Implicit SSL/TLS voor SMTP-verbindingen gebruiken
+smtpSecureInfo: Zet dit uit wanneer STARTTLS wordt gebruikt
+testEmail: Emaillevering testen
+wordMute: Woord dempen
+regexpError: Regular Expression-fout
+instanceMute: Server Dempingen
+userSaysSomething: '{name} zei iets'
+userSaysSomethingReason: '{name} zei {reason}'
+userSaysSomethingReasonReply: '{name} heeft op een post met {reason} geantwoord'
+userSaysSomethingReasonRenote: '{name} heeft een post met {reason} geboost'
+userSaysSomethingReasonQuote: '{name} heeft een post met {reason} gequote'
+makeActive: Activeren
+create: Maken
+notificationSetting: Notificatieinstellingen
+notificationSettingDesc: Selecteer de types notificatie om te tonen.
+useGlobalSetting: Globale instellingen gebruiken
+showGapBetweenNotesInTimeline: Toont een scheiding tussen posts in de tijdlijn
+duplicate: Dubbel
+left: Links
+center: Midden
+wide: Wijd
+narrow: Smal
+reloadToApplySetting: Deze instelling wordt van alleen kracht nadat de pagina is herladen.
+  Wil je nu herladen?
+needReloadToApply: Herladen is nodig om dit te tonen.
+onlineUsersCount: '{n} gebruikers zijn online'
+nUsers: '{n} Gebruikers'
+nNotes: '{n} Posts'
+myTheme: Mijn thema
+backgroundColor: Achtergrondkleur
+accentColor: Accentkleur
+textColor: Tekstkleur
+advanced: Geavanceerd
+value: Waarde
+createdAt: Gemaakt op
+saveConfirm: Wijzigingen opslaan?
+deleteConfirm: Echt verwijderen?
+invalidValue: Ongeldige waarde.
+closeAccount: Account sluiten
+currentVersion: Huidige versie
+latestVersion: Nieuwste versie
+youAreRunningUpToDateClient: Je gebruikt de nieuwste versie van je client.
+newVersionOfClientAvailable: Er is een nieuwere versie van je client beschikbaar.
+capacity: Capaciteit
+apply: Toepassen
+emailNotification: Emailnotificaties
+inChannelSearch: In kanaal zoeken
+useReactionPickerForContextMenu: Reactie-kiezer openen na rechts klikken
+jumpToSpecifiedDate: Naar specifieke datum springen
+clear: Legen
+goBack: Terug
+fullView: Volledige weergave
+quitFullView: Volledige weergave verlaten
+addDescription: Omschrijving toevoegen
+info: Over
+userInfo: Gebruikersinformatie
+unknown: Onbekend
+onlineStatus: Onlinestatus
+hideOnlineStatus: Onlinestatus verbergen
+hideOnlineStatusDescription: Je onlinestatus verbergen verminderd het gemak van sommige
+  functies zoals de zoekfunctie.
+online: Online
+active: Actief
+offline: Offline
+notRecommended: Niet aanbevolen
+instanceBlocking: Federatiebeheer
+selectAccount: Account selecteren
+switchAccount: Account wijzigen
+enabled: Ingeschakeld
+quickAction: Snelle acties
+administration: Beheer
+accounts: Accounts
+switch: Omschakelen
+noBotProtectionWarning: Robotbescherming is niet geconfigureerd.
+configure: Configureren
+postToGallery: Nieuwe galerijpost maken
+gallery: Galerij
+recentPosts: Recente pagina's
+popularPosts: Populaire pagina's
+shareWithNote: Met post delen
+ads: Advertenties
+expiration: Deadline
+memo: Memo
+priority: Prioriteit
+high: Hoog
+middle: Midden
+low: Laag
+emailNotConfiguredWarning: Emailadres niet ingesteld.
+ratio: Verhouding
+secureMode: Veilige Modus (Authorized Fetch)
+instanceSecurity: Serverbeveiliging
+secureModeInfo: Bij verzoeken aan andere servers, niks terugsturen zonder bewijs.
+privateMode: Privémodus
+allowedInstances: Toegestane servers
+customCss: Aangepaste CSS
+customCssWarn: Deze instellingen horen alleen gebruikt te worden als je weet wat ze
+  doen. Foute waardes invoeren kan er voor zorgen dat de client niet meer goed werkt.
+global: Globaal
+recommended: Aanbevolen
+squareAvatars: Vierkante avatars tonen
+seperateRenoteQuote: Losse boost- en quoteknoppen
+sent: Verstuurd
+received: Ontvangen
+searchResult: Zoekresultaten
+hashtags: Hashtags
+troubleshooting: Foutoplossing
+useBlurEffect: Waas-effecten in de UI gebruiken
+whatIsNew: Wijzigijngen tonen
+translate: Vertalen
+accountDeletionInProgress: Account wordt momenteel verwijderd
+keepCw: Inhoudswaarschuwingen behouden
