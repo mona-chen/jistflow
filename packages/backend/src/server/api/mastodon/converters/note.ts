@@ -364,6 +364,10 @@ export class NoteConverter {
         const identifier = `${note.id}:${(note.updatedAt ?? note.createdAt).getTime()}`;
         if (await this.noteContentHtmlCache.get(identifier) !== undefined) return;
 
+        if (note.renoteId !== null && !note.renote) {
+            note.renote = await Notes.findOneBy({ id: note.renoteId });
+        }
+
         const quoteUri = note.renote
             ? isQuote(note)
                 ? (note.renote.url ?? note.renote.uri ?? `${config.url}/notes/${note.renote.id}`)
