@@ -36,8 +36,8 @@ addUser: "Añadir usuario"
 favorite: "Añadir a favoritos"
 favorites: "Favoritos"
 unfavorite: "Quitar de favoritos"
-favorited: "Añadido a favoritos"
-alreadyFavorited: "Ya está en favoritos"
+favorited: "Añadido a favoritos."
+alreadyFavorited: "Ya está en favoritos."
 cantFavorite: "No se puede añadir a favoritos."
 pin: "Fijar al perfil"
 unpin: "Desfijar"
@@ -155,7 +155,7 @@ flagAsBotDescription: "Si esta cuenta la gestiona un programa, activa esta opci�
 flagAsCat: "¿Eres un gato? 😺"
 flagAsCatDescription: "¡Te daremos orejitas y hablarás como un gato!"
 flagShowTimelineReplies: "Mostrar respuestas en la línea de tiempo"
-flagShowTimelineRepliesDescription: "Si la activas, se mostrarás las respuestas de
+flagShowTimelineRepliesDescription: "Si la activas, se mostrarán las respuestas de
   los usuarios a otros posts en la línea de tiempo."
 autoAcceptFollowed: "Aceptar automáticamente las peticiones de seguimiento de los
   usuarios que sigues"
@@ -181,7 +181,7 @@ recipient: "Recipiente(s)"
 annotation: "Comentarios"
 federation: "Federación"
 instances: "Servidores"
-registeredAt: "Registrado en"
+registeredAt: "Registrado el"
 latestRequestSentAt: "Ultima petición enviada"
 latestRequestReceivedAt: "Ultima petición recibida"
 latestStatus: "Último estado"
@@ -220,7 +220,7 @@ noteDeleteConfirm: "¿Quieres borrar esta publicación?"
 pinLimitExceeded: "Ya no se pueden fijar más publicaciones"
 intro: "¡La instalación de Iceshrimp ha terminado! Por favor, crea un usuario administrador."
 done: "Terminado"
-processing: "Procesando..."
+processing: "Procesando…"
 preview: "Vista previa"
 default: "Predeterminado"
 defaultValueIs: "Predeterminado: {value}"
@@ -281,7 +281,7 @@ activity: "Actividad"
 images: "Imágenes"
 birthday: "Fecha de nacimiento"
 yearsOld: "{age} años"
-registeredDate: "Registrado el"
+registeredDate: "Fecha de registro"
 location: "Lugar"
 theme: "Temas"
 themeForLightMode: "Tema para usar en Modo Claro"
@@ -458,7 +458,7 @@ onlyOneFileCanBeAttached: "Solo se puede añadir un archivo al mensaje"
 signinRequired: "Por favor, regístrate o inicia sesión para continuar"
 invitations: "Invitaciones"
 invitationCode: "Código de invitación"
-checking: "Comprobando..."
+checking: "Comprobando…"
 available: "Disponible"
 unavailable: "No disponible"
 usernameInvalidFormat: "Puedes usar letras, números, puntos y/o barras bajas."
@@ -485,7 +485,7 @@ joinOrCreateGroup: "Obtén una invitación para unirte a un grupo o crea el tuyo
 noHistory: "No hay historial"
 signinHistory: "Historial de inicios de sesión"
 disableAnimatedMfm: "Deshabilitar MFM con animaciones"
-doing: "Procesando..."
+doing: "Procesando…"
 category: "Categoría"
 tags: "Etiqueta"
 docSource: "Fuente del documento"
@@ -513,8 +513,8 @@ objectStorage: "Almacenamiento de objetos"
 useObjectStorage: "Usar almacenamiento de objetos"
 objectStorageBaseUrl: "URL Base"
 objectStorageBaseUrlDesc: "URL usada como referencia. Especifica la URL si estás utilizando
-  un CDN o Proxy\nPara S3, utiliza 'https://<depósito>.s3.amazonaws.com', y para GCS
-  o servicios equivalentes, usa 'https://storage.googleapis.com/<bucket>', etcétera."
+  un CDN o Proxy.\nPara S3, utiliza 'https://<depósito>.s3.amazonaws.com', y para
+  GCS o servicios equivalentes, usa 'https://storage.googleapis.com/<depósito>', etcétera."
 objectStorageBucket: "Depósito"
 objectStorageBucketDesc: "Especifique el nombre del depósito utilizado en el servicio
   configurado."
@@ -696,7 +696,7 @@ optional: "Opcional"
 createNewClip: "Crear clip nuevo"
 unclip: "Quitar clip"
 confirmToUnclipAlreadyClippedNote: "Esta publicación ya está incluida en el clip \"\
-  {name}\". ¿Quieres quitar la nota del clip?"
+  {name}\". ¿Quieres quitar la publicación del clip?"
 public: "Público"
 i18nInfo: "Iceshrimp está siendo traducido a varios idiomas gracias a voluntarios.
   Puedes colaborar en {link}."
@@ -713,7 +713,7 @@ sentReactionsCount: "Cantidad de reacciones hechas"
 receivedReactionsCount: "Cantidad de reacciones recibidas"
 pollVotesCount: "Cantidad de votaciones hechas"
 pollVotedCount: "Cantidad de votaciones recibidas"
-yes: "Si"
+yes: "Sí"
 no: "No"
 driveFilesCount: "Cantidad de archivos en el almacén"
 driveUsage: "Uso del almacén"
@@ -913,7 +913,7 @@ tenMinutes: "10 minutos"
 oneHour: "1 hora"
 oneDay: "1 día"
 oneWeek: "1 semana"
-reflectMayTakeTime: "Puede pasar un tiempo hasta que se reflejen los cambios"
+reflectMayTakeTime: "Puede pasar un tiempo hasta que se reflejen los cambios."
 failedToFetchAccountInformation: "No se pudo obtener la información de la cuenta"
 rateLimitExceeded: "Se excedió el límite de peticiones"
 cropImage: "Recortar imagen"
@@ -921,7 +921,7 @@ cropImageAsk: "¿Quieres recortar la imagen?"
 file: "Archivos"
 recentNHours: "Últimas {n} horas"
 recentNDays: "Últimos {n} días"
-noEmailServerWarning: "No se ha configurado un servidor de correo electrónico."
+noEmailServerWarning: "Servidor de correo no configurado."
 thereIsUnresolvedAbuseReportWarning: "Hay reportes sin resolver."
 recommended: "Recomendado"
 check: "Verificar"
@@ -1050,7 +1050,7 @@ _preferencesBackups:
   noBackups: "No existen copias de seguridad. Deberás asegurar las configuraciones
     del cliente en este servidor usando \"Crear nueva copia de seguridad\"."
   createdAt: "Creado en: {date} {time}"
-  updatedAt: "Actualizado en: {date} {time}"
+  updatedAt: "Actualizado el: {date} {time}"
   cannotLoad: "La carga falló"
   invalidFile: "Formato de archivo inválido"
   delete: Borrar copia de seguridad
@@ -1326,16 +1326,16 @@ _tutorial:
   title: "Cómo usar Iceshrimp"
   step1_1: "¡Bienvenido!"
   step1_2: "Vamos a configurar tu cuenta. ¡Estarás en marcha enseguida!"
-  step2_1: "En primer lugar, rellena tu perfil"
+  step2_1: "En primer lugar, rellena tu perfil."
   step2_2: "Dar algo de información sobre quién eres hará que sea más fácil para los
-    demás saber si quieren ver tus notas o seguirte."
+    demás saber si quieren ver tus publicaciones o seguirte."
   step3_1: "¡Ahora es el momento de seguir a algunas personas!"
   step3_2: "Tu página de inicio y tus líneas de tiempo sociales se basan en quién
     sigues, así que intenta seguir un par de cuentas para empezar.\nHaz clic en el
     círculo más en la parte superior derecha de un perfil para seguirlos."
-  step4_1: "Salgamos ahí fuera"
+  step4_1: "Salgamos ahí fuera."
   step4_2: "Para tu primera publicación, a algunas personas les gusta hacer un post
-    de {introduction} o un simple \"¡Hola mundo!\""
+    de #introducción o un simple \"¡Hola mundo!\""
   step5_1: "¡Líneas de tiempo, líneas de tiempo por todas partes!"
   step5_2: "Tu instancia tiene {timelines} diferentes líneas de tiempo habilitadas."
   step5_3: "La línea de tiempo Inicio {icon} es donde puedes ver las publicaciones
@@ -1628,14 +1628,14 @@ _pages:
     section: "Sección"
     image: "Imágenes"
     button: "Botón"
-    if: "si"
+    if: "Si"
     _if:
       variable: "Variable"
     post: "Formulario"
     _post:
       text: "Contenido"
-      attachCanvasImage: "Nota con lienzo como imagen"
-      canvasId: "Lienzo ID"
+      attachCanvasImage: "Adjuntar imagen canvas"
+      canvasId: "ID del canvas"
     textInput: "Entrada de texto"
     _textInput:
       name: "Nombre de variable"
@@ -1651,16 +1651,16 @@ _pages:
       name: "Nombre de variable"
       text: "Título"
       default: "Valor predeterminado"
-    canvas: "Lienzo"
+    canvas: "Canvas"
     _canvas:
-      id: "Lienzo ID"
-      width: "Ancho"
+      id: "ID del canvas"
+      width: "Anchura"
       height: "Altura"
-    note: "Nota embebida"
+    note: "Publicación embebida"
     _note:
-      id: "Id de la nota"
-      idDescription: "Pega la URL de la nota para configurarla"
-      detailed: "Ver Detalles"
+      id: "ID de la publicación"
+      idDescription: "Alternativamente, puedes pegar la URL de la publicacón aquí."
+      detailed: "Ver detalles"
     switch: "Interruptor"
     _switch:
       name: "Nombre de variable"
@@ -1679,7 +1679,7 @@ _pages:
         dialog: "Mostrar cuadro de diálogo"
         _dialog:
           content: "Contenido"
-        resetRandom: "Resetear número aleatorio"
+        resetRandom: "Reiniciar número aleatorio"
         pushEvent: "Enviar evento"
         _pushEvent:
           event: "Nombre del evento"
@@ -1689,7 +1689,7 @@ _pages:
         callAiScript: "Invocar AiScript"
         _callAiScript:
           functionName: "Nombre de la función"
-    radioButton: "Botón de opción"
+    radioButton: "Opción"
     _radioButton:
       name: "Nombre de variable"
       title: "Título"
@@ -1703,23 +1703,23 @@ _pages:
       comparison: "Comparar"
       random: "Aleatorio"
       value: "Valores"
-      fn: "funciones"
+      fn: "Funciones"
       text: "Manejo de texto"
-      convert: "Conversion"
+      convert: "Conversiones"
       list: "Listas"
     blocks:
       text: "Texto"
-      multiLineText: "Texto (multilinea)"
+      multiLineText: "Texto (multilínea)"
       textList: "Lista de texto"
       _textList:
-        info: "Separe cada texto con una linea nueva"
+        info: "Separa cada texto con una linea nueva"
       strLen: "Largo del texto"
       _strLen:
         arg1: "Texto"
-      strPick: "Extraer caracteres"
+      strPick: "Extraer carácteres"
       _strPick:
         arg1: "Texto"
-        arg2: "Posición del caracter"
+        arg2: "Posición del carácter"
       strReplace: "Sustituir texto"
       _strReplace:
         arg1: "Texto"
@@ -1763,11 +1763,11 @@ _pages:
       _notEq:
         arg1: "A"
         arg2: "B"
-      and: "A y B"
+      and: "A AND B"
       _and:
         arg1: "A"
         arg2: "B"
-      or: "A o B"
+      or: "A OR B"
       _or:
         arg1: "A"
         arg2: "B"
@@ -1789,7 +1789,7 @@ _pages:
         arg2: "B"
       if: "Si"
       _if:
-        arg1: "si"
+        arg1: "Si"
         arg2: "Entonces"
         arg3: "Si no"
       not: "Negación"
@@ -1797,7 +1797,7 @@ _pages:
         arg1: "Negación"
       random: "Aleatorio"
       _random:
-        arg1: "probabilidad"
+        arg1: "Probabilidad"
       rannum: "Número aleatorio"
       _rannum:
         arg1: "Mínimo"
@@ -1807,38 +1807,38 @@ _pages:
         arg1: "Listas"
       dailyRandom: "Aleatorio (Diariamente para cada usuario)"
       _dailyRandom:
-        arg1: "probabilidad"
+        arg1: "Probabilidad"
       dailyRannum: "Número aleatorio (Diariamente para cada usuario)"
       _dailyRannum:
         arg1: "Mínimo"
         arg2: "Máximo"
       dailyRandomPick: "Elegir aleatoriamente de la lista (Diariamente para cada usuario)"
       _dailyRandomPick:
-        arg1: "Listas"
-      seedRandom: "Aleatorio (semilla)"
+        arg1: "Lista"
+      seedRandom: "Aleatorio (con semilla)"
       _seedRandom:
         arg1: "Semilla"
-        arg2: "probabilidad"
-      seedRannum: "Número aleatorio (semilla)"
+        arg2: "Probabilidad"
+      seedRannum: "Número aleatorio (con semilla)"
       _seedRannum:
         arg1: "Semilla"
         arg2: "Mínimo"
         arg3: "Máximo"
-      seedRandomPick: "Elegir aleatoriamente de la lista (semilla)"
+      seedRandomPick: "Elegir aleatoriamente de la lista (con semilla)"
       _seedRandomPick:
         arg1: "Semilla"
-        arg2: "Listas"
+        arg2: "Lista"
       DRPWPM: "Elegir aleatoriamente de la lista ponderada (Diariamente para cada
         usuario)"
       _DRPWPM:
         arg1: "Lista de texto"
       pick: "Elegir de la lista"
       _pick:
-        arg1: "Listas"
+        arg1: "Lista"
         arg2: "Posición"
       listLen: "Obtener largo de la lista"
       _listLen:
-        arg1: "Listas"
+        arg1: "Lista"
       number: "Número"
       stringToNumber: "De texto a número"
       _stringToNumber:
@@ -1851,7 +1851,7 @@ _pages:
         arg1: "Texto"
       ref: "Variable"
       aiScriptVar: "Variable de AiScript"
-      fn: "funciones"
+      fn: "Función"
       _fn:
         slots: "Slots"
         slots-info: "Separe cada uno de los slots con una linea nueva"
@@ -1860,60 +1860,63 @@ _pages:
       _for:
         arg1: "Cantidad de repeticiones"
         arg2: "Acción"
-    typeError: "El slot {slot} acepta el tipo \"{expect}\" pero fue ingresado el tipo
-      \"{actual}\""
+    typeError: "El slot {slot} acepta el tipo \"{expect}\" pero fue introducido el
+      tipo \"{actual}\""
     thereIsEmptySlot: "El slot {slot} está vacío"
     types:
       string: "Texto"
       number: "Número"
       boolean: "Booleano"
-      array: "Listas"
+      array: "Lista"
       stringArray: "Lista de texto"
     emptySlot: "Slot vacío"
     enviromentVariables: "Variables de entorno"
-    pageVariables: "Items de la página"
+    pageVariables: "Variables de la página"
     argVariables: "Slot de entrada"
 _relayStatus:
   requesting: "Pendiente"
-  accepted: "Aceptar"
+  accepted: "Aceptado"
   rejected: "Rechazada"
 _notification:
   fileUploaded: "Archivo subido"
-  youGotMention: "Mención de {name}"
-  youGotReply: "Respuesta de {name}"
-  youGotQuote: "Citado por {name}"
-  youRenoted: "Renotado por {name}"
-  youGotPoll: "Encuestado por {name}"
-  youGotMessagingMessageFromUser: "{name} comenzó un chat contigo"
-  youGotMessagingMessageFromGroup: "Tienes un chat de {name}"
+  youGotMention: "{name} te ha mencionado"
+  youGotReply: "{name} te ha respondido"
+  youGotQuote: "{name} te ha citado"
+  youRenoted: "Impulsado por {name}"
+  youGotPoll: "{name} votó en tu encuesta"
+  youGotMessagingMessageFromUser: "{name} te mandó un mensaje"
+  youGotMessagingMessageFromGroup: "Un mensaje de chat fue enviado al grupo {name}"
   youWereFollowed: "te ha seguido"
-  youReceivedFollowRequest: "Has mandado una solicitud de seguimiento"
-  yourFollowRequestAccepted: "Tu solicitud de seguimiento fue aceptada"
-  youWereInvitedToGroup: "Invitado al grupo"
-  pollEnded: "Estan disponibles los resultados de la encuesta"
+  youReceivedFollowRequest: "Has recibido una petición de seguimiento"
+  yourFollowRequestAccepted: "Tu petición de seguimiento fue aceptada"
+  youWereInvitedToGroup: "{userName} te invitó a un grupo"
+  pollEnded: "Están disponibles los resultados de la encuesta"
   emptyPushNotificationMessage: "Se han actualizado las notificaciones push"
   _types:
     all: "Todo"
-    follow: "Siguiendo"
+    follow: "Seguidores nuevos"
     mention: "Menciones"
     reply: "Respuestas"
-    renote: "Renotar"
-    quote: "Citar"
-    reaction: "Reacción"
-    pollVote: "Votado en la encuesta"
+    renote: "Impulsos"
+    quote: "Citas"
+    reaction: "Reacciones"
+    pollVote: "Votos en encuestas"
     pollEnded: "La encuesta terminó"
-    receiveFollowRequest: "Recibió una solicitud de seguimiento"
-    followRequestAccepted: "El seguimiento fue aceptado"
-    groupInvited: "Invitado al grupo"
+    receiveFollowRequest: "Peticiones de seguimiento recibidas"
+    followRequestAccepted: "Peticiones de seguimineto aceptadas"
+    groupInvited: "Invitaciones a grupos"
     app: "Notificaciones desde aplicaciones"
   _actions:
-    followBack: "Te sigue de vuelta"
+    followBack: "te sigue de vuelta"
     reply: "Responder"
-    renote: "Renotar"
+    renote: "Impulsos"
+  voted: votó en tu encuesta
+  reacted: reaccionó a tu publicación
+  renoted: impulsó tu publicación
 _deck:
   alwaysShowMainColumn: "Siempre mostrar la columna principal"
   columnAlign: "Alinear columnas"
-  addColumn: "Agregar columna"
+  addColumn: "Añadir columna"
   configureColumn: "Ajustes de columna"
   swapLeft: "Mover a la izquierda"
   swapRight: "Mover a la derecha"
@@ -1935,9 +1938,12 @@ _deck:
     notifications: "Notificaciones"
     tl: "Linea de tiempo"
     antenna: "Antena"
-    list: "Listas"
+    list: "Lista"
     mentions: "Menciones"
-    direct: "Mensaje directo"
+    direct: "Mensajes directos"
+    channel: Canal
+  renameProfile: Renombrar perfil
+  nameAlreadyExists: Ya hay un perfil con ese nombre.
 manageGroups: Administrar grupos
 replayTutorial: Repetir tutorial
 privateMode: Modo privado
@@ -1982,7 +1988,7 @@ migration: Migración
 silenced: Silenciado
 deleted: Borrado
 edited: 'Editado el {date} a las {time}'
-editNote: Editar nota
+editNote: Editar publicación
 silenceThisInstance: Silenciar este servidor
 findOtherInstance: Buscar otro servidor
 userSaysSomethingReasonRenote: '{name} impulsó una publicación que contiene {reason]'
@@ -2162,3 +2168,41 @@ removeRecipient: Eliminar receptor
 removeMember: Eliminar miembro
 verifiedLink: Enlace verificado
 searchNotLoggedIn_2: Sin embargo, puedes buscar usando hashtags, y buscar usuarios.
+alwaysExpandCws: Expandir siempre las publicaciones con avisos de contenido
+_wellness:
+  newPostsButton: Activa la alerta de nuevas publicaciones
+  newPostsGlowOpacity: Opacidad del brillo de publicaciones nuevas
+  name: Bienestar
+  description: Estos ajustes te permiten ajustar algunos aspectos de las redes sociales
+    que podrían ser adictivos o productores de ansiedad. Elige los ajustes ideales
+    para ti.
+  immediacy: Inmediatez
+cwStyle: Aspecto del aviso de contenido
+_cwStyle:
+  modern: Moderno
+  classic: Clásico (Como Misskey/Foundkey)
+  alternative: Alternativo (Como Firefish)
+hideFromHome: Ocultar de la lína de tiempo Inicio
+_feeds:
+  jsonFeed: Feed JSON
+  copyFeed: Copiar feed
+  rss: RSS
+  atom: Atom
+_experiments:
+  title: Experimentos
+  enablePostImports: Activar importaciones de publicaciones
+  postImportsCaption: Permite a los usuarios importar publicaciones de cuentas antiguas
+    de Iceshrimp, Misskey, Mastodon, Akkoma y Pleroma. Puede que cause ralentizaciones
+    durante la carga si sufres cuello de botella.
+_skinTones:
+  mediumDark: Medio oscuro
+  dark: Oscuro
+  medium: Medio
+  yellow: Amarillo
+  light: Claro
+  mediumLight: Medio claro
+_dialog:
+  charactersExceeded: '¡Carácteres máximos superados! Actualmente: {current}/Límite:
+    {max}'
+  charactersBelow: '¡No hay carácteres suficientes! Actualmente: {current}/Límite:
+    {min}'
