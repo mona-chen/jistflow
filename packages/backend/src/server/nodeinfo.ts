@@ -114,6 +114,7 @@ router.get(nodeinfo2_0path, async (ctx) => {
 
 	// @ts-ignore
 	base.software.repository = undefined;
+	base.software.homepage = undefined;
 
 	ctx.body = { version: "2.0", ...base };
 	ctx.set("Cache-Control", "public, max-age=600");
