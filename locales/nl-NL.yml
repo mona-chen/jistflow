@@ -111,15 +111,15 @@ pinnedNote: "Vastgemaakte post"
 pinned: "Vastmaken aan profielpagina"
 you: "Jij"
 clickToShow: "Klik om te bekijken"
-sensitive: "NSFW"
+sensitive: "Gevoelig"
 add: "Toevoegen"
 reaction: "Reacties"
 reactionSettingDescription2: "Sleep om opnieuw te ordenen, Klik om te verwijderen,
   Druk op \"+\" om toe te voegen"
 rememberNoteVisibility: "Onthoud post zichtbaarheidsinstellingen"
 attachCancel: "Verwijder bijlage"
-markAsSensitive: "Markeren als NSFW"
-unmarkAsSensitive: "Geen NSFW"
+markAsSensitive: "Markeren als gevoelig"
+unmarkAsSensitive: "Niet gevoelig"
 enterFileName: "Bestandsnaam invoeren"
 mute: "Dempen"
 unmute: "Stop dempen"
@@ -298,7 +298,7 @@ copyUrl: "URL kopiëren"
 rename: "Hernoemen"
 avatar: "Avatar"
 banner: "Banner"
-nsfw: "NSFW"
+nsfw: "Gevoelig"
 whenServerDisconnected: "Wanneer de verbinding met de server wordt onderbroken"
 disconnectedFromServer: "Verbinding met de server onderbroken."
 inMb: "in megabytes"
@@ -333,29 +333,159 @@ file: "Bestanden"
 _email:
   _follow:
     title: "Je hebt een nieuwe volger"
+  _receiveFollowRequest:
+    title: Je hebt een volgverzoek ontvangen
 _mfm:
   mention: "Vermelding"
   quote: "Quote"
   search: "Zoeken"
+  warn: MFM kan snel bewegende of knipperende animaties bevatten
+  intro: MFM is een opmaaktaal die door Iceshrimp, Misskey, Akkoma, en anderen wordt
+    gerbuikt in posts en chats. Je kan hier een lijst vinden met alle beschikbare
+    MFM-commando's.
+  mentionDescription: Je kan een user benoemen met een apestaartje, gevolgd door een
+    gebruikersnaam.
+  dummy: Iceshrimp breidt de wereld van de Fediverse uit
+  twitchDescription: Geeft inhoud een sterk trillende animatie.
+  emojiDescription: Door de naam van een eigen emoji tussen dubbele punten te zetten,
+    kan er een eigen emoji getoond worden.
+  alwaysPlay: Altijd alle geanimeerde MMF afspelen
+  spin: Animatie (draaien)
+  boldDescription: Geeft nadruk op letters door ze dik te drukken.
+  fade: Vervagen
+  play: MFM afspelen
+  stop: MFM stoppen
+  url: URL
+  urlDescription: URL's kunnen getoond worden.
+  bold: Dikgedrukt
+  small: Klein
+  cheatSheet: MFM-spiekbriefje
+  advanced: Geavanceerd MFM
+  hashtag: Hashtag
+  hashtagDescription: Je kan een hashtag opgeven met een hekje (#) en tekst.
+  link: Link
+  linkDescription: Specifieke delen van tekst kunnen als een URL getoond worden.
+  advancedDescription: Indien uitgeschakeld, is alleen basis-opmaak mogelijk tenzij
+    geanimeerde MFM aan het afspelen is
+  center: Midden
+  inlineCode: Broncode (in tekst)
+  blockCode: Broncode (in blok)
+  inlineMath: Wiskundige formules (in tekst)
+  blockMath: Wiskundige formules (in blok)
+  smallDescription: Toont inhoud klein en dungedrukt.
+  centerDescription: Plaatst content in het midden.
+  inlineMathDescription: Toon wiskundige formules (KaTeX) in tekst
+  blockMathDescription: Toon wiskundige formules (KaTeX) in een blok
+  quoteDescription: Toont inhoud als een citaat.
+  flip: Spiegelen
+  flipDescription: Inhoud horizontaal of verticaal spiegelen.
+  jelly: Animatie (pudding)
+  jellyDescription: Geeft inhoud een pudding-achtige animatie.
+  tada: Animatie (Tada)
+  tadaDescription: Geeft inhoud een "Tada!"-achtige animatie.
+  inlineCodeDescription: Toont syntax-highlighting in text voor (programma-)code.
+  emoji: Eigen emoji
+  searchDescription: Toont een zoekveld met vooraf opgegeven tekst.
+  jump: Animatie (springen)
+  jumpDescription: Geeft content een 'springende' animatie.
+  blockCodeDescription: Toont syntax-highlighting voor (programma-)code in meerdere
+    regels in een blok.
+  shake: Animatie (schudden)
+  shakeDescription: Geeft inhoud een schudanimatie.
+  bounce: Animatie (stuiteren)
+  bounceDescription: Geeft inhoud een stuiterende animatie.
+  twitch: Animatie (trillen)
+  spinDescription: Geeft inhoud een draaiende animatie.
+  x2Description: Toont inhoud groter.
+  x3: Heel groot
+  x3Description: Toont inhoud nog groter.
+  x4: Ongelofelijk groot
+  position: Positie
+  x4Description: Toont inhoud nog groter-dan-groot.
+  blur: Vervaging
+  blurDescription: Vervaagt inhoud. Het zal helder worden weergegeven wanneer de muisaanwijzer
+    over de inhoud wordt geplaatst.
+  font: Lettertype
+  fontDescription: Stelt het lettertype voor de inhoud in.
+  rainbow: Regenboog
+  rainbowDescription: Laat de inhoud in regenboogkleuren tonen.
+  rotate: Draaien
+  rotateDescription: Draait inhoud met een specifieke hoek.
+  fadeDescription: Inhoud zal in- en uit vervagen.
+  crop: Bijsnijden
+  cropDescription: Inhoud bijsnijden.
+  scale: Schaal
+  scaleDescription: Inhoud op een bepaalde schaal schalen.
+  foreground: Voorgrondkleur
+  foregroundDescription: Wijzig de voorgrondkleur van de tekst.
+  background: Achtergrondkleur
+  backgroundDescription: Wijzig de achtergrondkleur van de tekst.
+  plain: Eenvoudig
+  x2: Groot
 _theme:
   keys:
     mention: "Vermelding"
     renote: "Herdelen"
+    wallpaperOverlay: Overlay op achtergrondbeeld
+    buttonHoverBg: Achtergrond van knop (zwevend)
+    messageBg: Chatachtergrond
+    accentDarken: Accent (donker)
+    accentLighten: Accent (licht)
+    fgHighlighted: Geselecteerde tekst
+  explore: Thema's verkennen
+  install: Een thema installeren
+  manage: Thema's beheren
+  code: Themacode
+  description: Omschrijving
+  installed: '{name} is geïnstalleerd'
+  installedThemes: Geïnstalleerde thema's
+  builtinThemes: Ingebouwde thema's
+  alreadyInstalled: Dit thema is al geïnstalleerd
+  make: Maak een thema
+  base: Basis
+  color: Kleur
 _sfx:
   note: "Notities"
   notification: "Meldingen"
   chat: "Chat"
+  noteMy: Eigen post
+  chatBg: Chat (achtergrond)
+  antenna: Antennes
+  channel: Kanaalnotificaties
 _widgets:
   notifications: "Meldingen"
   timeline: "Tijdlijn"
   activity: "Activiteit"
   federation: "Federatie"
   jobQueue: "Job Queue"
+  calendar: Kalender
+  trends: Trending
+  clock: Klok
+  rss: RSS-lezer
+  rssTicker: RSS-lichtkrant
+  photos: Foto's
+  digitalClock: Digitale klok
+  unixClock: UNIX-klok
+  button: Knop
+  onlineUsers: Online gebruikers
+  serverMetric: Serverstatistieken
+  serverInfo: Serverinfo
 _cw:
   show: "Laad meer"
+  chars: '{count} karakters'
+  hide: Inhoud verbergen
 _visibility:
   home: "Startpagina"
   followers: "Volgers"
+  public: Openbaar
+  publicDescription: Je post zal in alle openbare tijdlijnen zichtbaar zijn
+  homeDescription: Alleen naar thuistijdlijn posten
+  followersDescription: Je post alleen voor volgers en andere genoemde gebruikers
+    zichtbaar maken
+  specified: Direct
+  specifiedDescription: Alleen zichtbaar maken voor genoemde gebruikers
+  localOnly: Alleen lokaal
+  localOnlyDescription: Niet zichtbaar voor gebruikers buiten deze server
 _profile:
   username: "Gebruikersnaam"
 _exportOrImport:
@@ -367,8 +497,13 @@ _exportOrImport:
   excludeInactiveUsers: "Negeer inactieve gebruikers"
 _charts:
   federation: "Federatie"
+  notesTotal: Totaal aantal posts
+  filesTotal: Totaal aantal bestanden
 _timelines:
   home: "Startpagina"
+  recommended: Aanbevolen
+  social: Sociaal
+  global: Globaal
 _pages:
   blocks:
     image: "Afbeeldingen"
@@ -390,6 +525,28 @@ _pages:
         arg1: "Lijsten"
     types:
       array: "Lijsten"
+  created: Pagina succesvol gemaakt
+  editThisPage: Deze Pagina bewerken
+  viewPage: Je Pagina's inzien
+  like: Like
+  editPage: Deze pagina bewerken
+  newPage: Pagina aanmaken
+  updated: Pagina succesvol bewerkt
+  deleted: Pagina succesvol verwijderd
+  pageSetting: Pagina-instellingen
+  unlike: Like verwijderen
+  my: Mijn Pagina's
+  liked: Gelikete Pagina's
+  featured: Populair
+  inspector: Inspecteur
+  contents: Inhoud
+  content: Paginablok
+  variables: Variabelen
+  title: Titel
+  url: Pagina-URL
+  summary: Pagina-samenvatting
+  alignCenter: Centreren
+  viewSource: Bron weergeven
 _notification:
   youWereFollowed: "volgt jou"
   _types:
@@ -439,6 +596,8 @@ noInstances: Er zijn geen servers
 _signup:
   almostThere: Bijna klaar
   emailAddressInfo: Voer je emailadres in. Deze zal niet openbaar gemaakt worden.
+  emailSent: Een bevestigingsemail is naar je emailadres ({email}) verstuurd. Klik
+    op de bijgevoegde link om je account te voltooien.
 _ad:
   back: Terug
   reduceFrequencyOfThisAd: Toon deze advertentie minder
@@ -452,6 +611,10 @@ enableRecommendedTimeline: Schakel aanbevolen tijdlijn in
 _forgotPassword:
   enterEmail: Voer het emailadres in dat je gebruikte om te registreren. Een link
     waarmee je je wachtwoord opnieuw kunt instellen zal daar naartoe gestuurd worden.
+  contactAdmin: Deze server ondersteunt geen emailadressen, neem daarom contact op
+    met de serveradministrator om je wachtwoord te resetten.
+  ifNoEmail: Neem contact op met de serveradministrator als je geen email tijdens
+    je registratie hebt opgegeven.
 jumpToReply: Spring naar Antwoord
 newer: nieuwer
 older: ouder
@@ -473,6 +636,9 @@ showAds: Toon advertenties
 pushNotification: Pushmeldingen
 _gallery:
   my: Mijn Gallerij
+  liked: Gelikete posts
+  like: Like
+  unlike: Like verwijderen
 reactionSetting: Reacties om te tonen in het reactie selectie menu
 dayX: '{day}'
 renoteMute: Demp boosts
@@ -918,3 +1084,594 @@ whatIsNew: Wijzigijngen tonen
 translate: Vertalen
 accountDeletionInProgress: Account wordt momenteel verwijderd
 keepCw: Inhoudswaarschuwingen behouden
+forwardReport: Melding naar de betreffende server doorsturen
+notSet: Niet ingesteld
+editCode: Code wijzigen
+alwaysExpandCws: Altijd posts met inhoudswaarschuwingen uitklappen
+_wellness:
+  name: Welzijn
+  description: Met deze instellingen kan je wijzigijngen aan brengen aan mogelijk
+    verslavende of beangstigende aspecten van sociale media. Gebruik de instellingen
+    die het best voor jou werken.
+_cwStyle:
+  modern: Modern
+  classic: Klassiek (Misskey/Foundkey-achtig)
+  alternative: Alternatief (Firefish-achtig)
+alwaysMarkSensitive: Standaard als gevoelig markeren
+sensitiveMediaDetection: Gevoelige media detecteren
+enableAutoSensitive: Automatisch als gevloeg markeren
+enableAutoSensitiveDescription: Staat automatische detectie en markering van gevoelige
+  media door middel van Machine Learning toe, waar mogelijk. Zelfs als deze optie
+  uitstaat, kan dit ingeschakeld worden voor de hele server.
+cannotUploadBecauseInappropriate: Dit bestand kan niet geüpload worden omdat delen
+  hiervan mogelijk gevoelig zijn.
+refreshInterval: Vernieuwingsinterval
+fillAbuseReportDescription: Vul alsjeblieft details in over dit rapport. Als het over
+  een specifieke post gaat, voeg dan de URL toe.
+defaultNavigationBehaviour: Standaard navigatiegedrag
+unclip: Uit clip verwijderen
+confirmToUnclipAlreadyClippedNote: Deze post hoort al bij de clip "{name}". Wil je
+  deze in plaats daarvan uit deze clip verwijderen?
+receivedReactionsCount: Aantal ontvangen reacties
+noCrawleDescription: Verzoek zoekmachines om je profielpagina, posts, Pages etc. niet
+  te indexeren
+lockedAccountInfo: Zelfs als je volgverzoeken handmatig bevestigd, zullen posts voor
+  iedereen zichtbaar zijn, tenzij je de zichbaarheid van je post op "Alleen volgers"
+  instelt.
+oneWeek: Één week
+recentNHours: Afgelopen {n} uren
+requireAdminForView: Je moet met een administratieaccount inloggen om dit te kunnen
+  zien.
+isSystemAccount: Dit account is automatisch gemaakt, en wordt beheerd door het systeem.
+  Modereer, bewerk, verwijder of knoei niet met dit account, of anders kan je server
+  defect raken.
+_accountDelete:
+  mayTakeTime: Omdat het verwijderen van een account veel systeembronnen nodig heeft,
+    kan het even duren om te voltooien, afhankelijk van hoeveel inhoud je hebt gemaakt
+    en hoeveel bestanden je hebt geüpload.
+  accountDelete: Account verwijderen
+  sendEmail: Als je accountverwijdering is uitgevoerd, wordt er een email gestuurd
+    naar het adres gekoppeld aan dit account.
+  requestAccountDelete: Accocuntverwijdering verzoeken
+  started: Verwijdering is gestart.
+  inProgress: Accountverwijdering wordt uitgevoerd
+_instanceMute:
+  instanceMuteDescription: Dit zal alle posts/boosts van deze servers dempen, inclusief
+    deze van gebruikers die op een gebruiker van een gedempte server reageren.
+  instanceMuteDescription2: Met regeleinde onderbreken
+  title: Verbergt posts van deze servers.
+  heading: Lijst van gedempte servers
+_filters:
+  excludeRenotes: Boosts uitsluiten
+  _dialog:
+    learnMore: Filter-syntax tonen
+    title: Zoekfilter-syntax
+    postDate: Op post-datum filteren
+    exclusivity: 'Let op dat het before: filter exclusief is en dat het after: filter
+      inclusief is.'
+    word: woord
+    phrase: letterlijke zin die (willikeurige) karakters bevat
+    attachmentType: Op bijlage type(s) filteren
+  replyTo: In antwoord op
+  fromUser: Van gebruiker
+  followersOnly: Alleen volgers
+  repliesOnly: Alleen antwoorden
+  excludeReplies: Antwoorden uitsluiten
+  caseSensitive: Hoofdlettergevoelig
+_tutorial:
+  step2_2: Met wat basisinformatie kunnen mensen makkelijker beslissen of ze je posts
+    willen zien of je willen volgen.
+  step3_2: "Je thuis- en social-tijdlijnen zijn gebaseerd op wie je volgt, dus probeer
+    om te beginnen een paar accounts te volgen.\nKlik op het plus-cirkeltje in de
+    rechterbovenhoek van een profiel om diegene te volgen."
+  step6_3: Iedere server werkt anders, en ze draaien niet allemaal Iceshrimp. Deze
+    wel! Het is misschien wat lastig, maar je zal het in no time beter begrijpen.
+  step1_1: Welkom!
+  step1_2: Laten we beginnen. Je bent zo klaar!
+  step2_1: Vul eerst je profiel in.
+  step3_1: Nu is het tijd om wat mensen te gaan volgen!
+  step6_1: Dus, wat is deze plek?
+  step6_2: Nou, je bent niet alleen op Iceshrimp. Je hebt een portaal naar de Fediverse
+    geopend, een verbonden netwerk bestaande uit duizenden servers.
+numberOfPageCacheDescription: Dit getal verhogen zal het gemak voor gebruikers verhogen
+  maar zal meer last op de server leggen, en ook meer geheugen gebruiken.
+activeEmailValidationDescription: Schakelt strictere controle op de geldigheid van
+  emailadressen in, waaronder controleren op wegwerpadressen en of er ook daadwerkelijk
+  mee gecommuniceerd kan worden. Indien uitgeschakeld, wordt alleen het formaat van
+  het emailadres gecontrolerd.
+_sensitiveMediaDetection:
+  sensitivityDescription: De gevoeligheid van de detectie verlagen zal resulteren
+    in minder foute detecties (fout-positieven), maar dit verhogen zal leiden tot
+    mindere gemiste detecties (fout-negatieven).
+  analyzeVideos: Videoanalyse inschakelen
+  analyzeVideosDescription: Naast afbeeldingen ook video's analiseren. Dit zal de
+    last op de server lichtelijk verhogen.
+  setSensitiveFlagAutomatically: Als gevoelig markeren.
+  setSensitiveFlagAutomaticallyDescription: De resultaten van de interne detectie
+    zullen bewaard worden, ook wanneer deze optie uit staat.
+  description: Verminderd de last op servermoderatie door middel van het automatisch
+    herkennen van gevoelige media door Machine Learning. Dit zal de last op de server
+    lichtelijk verhogen.
+  sensitivity: Detectiegevoeligheid
+_preferencesBackups:
+  invalidFile: Ongeldig bestandsformaat
+  applyConfirm: Wil je echt de backup "{naam}" toepassen op dit apparaat? Bestaande
+    instellingen worden overschreven.
+  delete: Backup verwijderen
+  createdAt: 'Gemaakt op: {date} {time}'
+  saveConfirm: Backup als {naam} opslaan?
+  list: Gemaakte backups
+  saveNew: Nieuwe backup opslaan
+  loadFile: Van bestand inladen
+  apply: Toepassen op dit apparaat
+  save: Wijzigingen opslaan
+  inputName: Voer een naam in voor deze backup
+  cannotSave: Opslaan mislukt
+  nameAlreadyExists: Een backup genaamd "{name}" bestaat al. Geef een andere naam
+    op.
+  renameConfirm: Deze backup van "{old}" naar "{new}" hernoemen?
+  updatedAt: 'Geüpdatet op: {date} {time}'
+  cannotLoad: Inladen mislukt
+  deleteConfirm: De backup {name} verwijderen?
+  noBackups: Er bestaan geen backups. Je kan je clientinstellingen op deze server
+    opslaan door "Maak nieuwe backup" te gebruiken.
+_auth:
+  authRequired: Authorizatie benodigd
+  copyAsk: 'Plak alsjeblieft de volgende authorizatiecode in de applicatie:'
+  allPermissions: Volledige toegang tot je account
+  signedInAs: Ingelogd als
+moveFromDescription: 'Hiermee stel je een alias in van je oude account, zodat je van
+  dat account naar dit account kunt gaan. Doe dit VOORDAT je je oude account verplaatst.
+  Voer de tag van de account in als volgt in: @persoon@server.com'
+customKaTeXMacroDescription: "Stel hier macro's in om makkelijk wiskundige formules
+  te beschrijven! De notatie is confirm de LaTeX-commandodefinities en wordt geschreven
+  als \\newcommand{\\ name}{content} of \\newcommand{\\name}[number of arguments]{content}.
+  Bijvoorbeeld: newcommand{\\add}[2]{#1 + #2} zal \\add{3}{foo} naar 3 + foo uitpakken.
+  De krulhaakjes om de macro-naam kunnen veranderd worden naar ronde of cierkante
+  haakjes. Dit heeft effect op de haakjes die voor argumenten worden gebruikt. Er
+  kan slechts één macro per regel gedefinieerd worden, en je kan geen regelonderbreking
+  midden in de definitie plaatsen. Ongeldige regels worden genegeerd. Er is alleen
+  ondersteuning voor simpele stringvervangingsfuncties, geavanceerde syntax, zoals
+  conditional branching, kan niet worden gebruikt."
+_aboutIceshrimp:
+  morePatrons: We waarderen ook de steun van vele andere helpers die hier niet genoemd
+    worden. Dank jullie wel! 🥰
+  translation: Vertalingen
+  chatroom: Chatroom
+  documentation: Documentatie
+  roadmap: Roadmap
+  changelog: Changelog
+  donate: Doneer aan Iceshrimp
+  donateTitle: Gebruik je Iceshrimp graag?
+  pleaseDonateToIceshrimp: Overweeg een donatie aan Iceshrimp om de ontwikkeling te
+    steunen.
+  pleaseDonateToHost: Overweeg ook om aan je eigen server ({host}) te doneren, om
+    hun te steunen in operationele kosten.
+  donateHost: Doneer aan {host}
+  about: Iceshrimp is nóg een fork van Misskey, met no-nonsense verbeteringen, oplossing
+    en functies die je echt nodig hebt sinds 2023.
+  source: Iceshrimp-ontwikkeling
+  sponsors: Iceshrimp-sponsors
+  patrons: Iceshrimp-Patrons
+  patronsList: Op chronologische volgorde, niet op grootte van donatie. Doneer met
+    de bovenstaande link om je naam hier te krijgen!
+  contributors: Belangrijkste bijdragers
+  allContributors: Alle bijdragers
+_experiments:
+  postImportsCaption: Hiermee kunnen gebruikers hun posts van eerdere Iceshrimp, Misskey,
+    Mastodon, Akkoma en Pleroma-accounts importen. Dit kan tijdensh het laden voor
+    traagheid zorgen als de wachtrij vol zit.
+  enablePostImports: Post-importeren aanzetten
+hiddenTagsDescription: 'Geef de hashtags (zonder #) op die je uit Trending en Verkennen
+  wilt verbergen. Verborgen hashtags zijn nog steeds ontdekbaar via andere manieren.'
+pinnedClipId: ID van de clip on vast te zetten
+customMOTD: Zelf ingestelde dagelijkse boodschap (boodschappen in begroetingsscherm)
+customSplashIcons: Eigen iconen voor begroetingsscherm (URL's)
+sendPushNotificationReadMessageCaption: Een notificatie met de tekst "{emptyPushNotificationMessage}"
+  zal kort getoond worden. Dit kan batterijgebruik van je apparaat verhogen, indien
+  van toepassing.
+adminCustomCssWarn: Deze instelling hoort alleen gebruikt te worden als je weet wat
+  deze doet. Hier onjuiste waardes opgeven kan er voor zorgen dat IEDEREEN zijn clients
+  niet meer normaal werken. Controleer of je CSS werkt door het in de gebruikersinstellingen
+  te testen.
+enterSendsMessage: Druk op Return om in Chat om een bericht te sturen (uitschakelen
+  met Control + Return)
+caption: Automatische ondertiteling
+_weekday:
+  wednesday: Woensdag
+  sunday: Zondag
+  monday: Maandag
+  tuesday: Dinsdag
+  thursday: Donderdag
+  friday: Vrijdag
+  saturday: Zaterdag
+_poll:
+  totalVotes: '{n} totale stemmen'
+  showResult: Toon resultaten
+  voted: Gestemd
+  closed: Beëindigd
+  remainingDays: Nog {d} dag(en) en {h} u(u)r(en)
+  noOnlyOneChoice: Tenminste twee keuzes nodig
+  choiceN: Keuze {n}
+  noMore: Je kan niet nog meer opties toevoegen
+  expiration: Peiling beëindigen
+  infinite: Nooit
+  at: Eindigt op…
+  after: Eindigt na…
+  deadlineDate: Einddatum
+  deadlineTime: Tijd
+  votesCount: '{n} stemmen'
+  vote: Stem
+  remainingHours: Nog {h} u(u)r(en) en {m} minu(u)t(en)
+  remainingMinutes: Nog {m} minu(u)t(en) en {s} seconde(n)
+  remainingSeconds: Nog {s} seconde(n)
+_skinTones:
+  mediumLight: Middel-licht
+  yellow: Geel
+  light: Licht
+  medium: Middel
+  mediumDark: Middel-donker
+  dark: Donker
+enableCustomKaTeXMacro: Zelf geschreven KaTeX-macro's inschakelen
+noteId: Post-ID
+migration: Migratie
+moveTo: Huidig account naar een nieuw account verhuizen
+moveAccount: Verhuizen!
+recommendedInstances: Aanbevolen servers
+recommendedInstancesDescription: Aanbevolen servers die in de aanbevolen tijdlijn
+  zullen verschijnen, gescheiden door lijnonderbrekingen.
+logoImageUrl: Afbeeldings-URL logo
+showAdminUpdates: Geef aan wanneer er een nieuwe Iceshrimp-versie is (alleen voor
+  admins)
+updateAvailable: Er is misschien een update beschikbaar!
+moveAccountDescription: Dit proces is niet terug te draaien. Controleer dat je een
+  alias voor dit account hebt ingesteld op je nieuwe account voor je verhuist. Voer
+  de tag van het account in als @persoon@server.com
+moveFrom: Naar dit account verhuizen van een oud account
+moveFromLabel: 'Account waar je vandaan verhuist:'
+migrationConfirm: "Weet je absoluut zeker dat je je account wilt migreren naar {account}?
+  Als je dit eenmaal hebt gedaan, kun je het niet meer ongedaan maken en kun je je
+  account niet meer normaal gebruiken.\nZorg er ook voor dat je dit huidige account
+  hebt ingesteld als het account waarvan je verhuist."
+signupsDisabled: Aanmelden op deze server is niet toegestaan, maar je kan je altijd
+  op een andere server aanmelden! Als je een uitnodigingscode hebt voor deze server,
+  kan je deze hieronder invoeren.
+customSplashIconsDescription: URL's voor eigen iconen in het begroetingsscherm (gescheidden
+  door lijnonderbrekingen), worden willikeurig getoond wanneer een gebruiker de pagina
+  (her)laadt. Zorg ervoor dat deze op een vaste URL staan, bij voorkeur geschaald
+  naar 192x192.
+showUpdates: Toon een popup wanneer Iceshrimp geupdatet wordt
+splash: Begroetingsscherm
+swipeOnMobile: Vegen tussen pagina's toestaan
+swipeOnDesktop: Op desktop veeggebaren als op mobiel toestaan
+replayTutorial: Uitleg opnieuw starten
+defaultReaction: Standaard emoji-reactie voor inkomende en uitgaande posts
+license: Licentie
+customKaTeXMacro: Zelf gedefinieerde KaTeX-macro's
+preventAiLearning: AI-bot scraping voorkomen
+overridedDeviceKind: Apparaattype
+smartphone: Smartphone
+tablet: Tablet
+auto: Automatisch
+size: Grootte
+numberOfColumn: Aantal kolommen
+instanceDefaultLightTheme: Standaard licht thema voor de hele server
+instanceDefaultDarkTheme: Standaard donker thema voor de hele server
+instanceDefaultThemeDescription: Voer het thema-JSON in.
+mutePeriod: Duur van dempen
+indefinitely: Permanent
+tenMinutes: 10 minuten
+oneHour: Één uur
+oneDay: Één dag
+reflectMayTakeTime: Het kan even duren voor dit zichtbaar is.
+failedToFetchAccountInformation: Kan account informatie niet ophalen
+image: Afbeelding
+video: Video
+audio: Geluid
+recentNDays: Afgelopen {n} dagen
+noEmailServerWarning: Mailserver niet ingesteld.
+thereIsUnresolvedAbuseReportWarning: Er zijn onopgeloste meldingen.
+typeToConfirm: Voer {x} in om te bevestigen
+deleteAccount: Account verwijderen
+logoutConfirm: Echt uitloggen?
+type: Type
+speed: Snelheid
+slow: Langzaam
+fast: Snel
+themeColor: Kleur van de serverlichtkrant
+rateLimitExceeded: Rate-limiet overschreden
+driveCapOverrideLabel: Verander de schijfcapaciteit voor deze gebruiker
+driveCapOverrideCaption: Reset naar standaardwaarde door 0 of lager als waarde op
+  te geven.
+document: Documentatie
+numberOfPageCache: Aantal pagina's in cache
+statusbar: Statusbalk
+pleaseSelect: Selecteer een optie
+colored: Gekleurd
+label: Label
+check: Controle
+lastActiveDate: Laatst gebruikt op
+reverse: Omkeren
+localOnly: Alleen lokaal
+remoteOnly: Alleen buiten deze server
+failedToUpload: Upload mislukt
+account: Account
+cannotUploadBecauseExceedsFileSizeLimit: Dit bestand kan niet geupload worden omdat
+  het groter is dan de maximum toegestane grootte.
+beta: Beta.
+navbar: Navigatiebalk
+cannotUploadBecauseNoFreeSpace: Upload mislukt door gebrek aan Drive-capaciteit.
+shuffle: Shuffle
+moveToLabel: 'Account waar je heen gaat verhuizen:'
+removeRecipient: Ontvanger verwijderen
+removeMember: Lid verwijderen
+removeQuote: Citaat verwijderen
+_feeds:
+  atom: Atom
+  copyFeed: Feed kopiëren
+  rss: RSS
+  jsonFeed: JSON-feed
+reactionPickerSkinTone: Voorkeurshuidskleur voor emoji
+findOtherInstance: Een andere server vinden
+noGraze: Schakel alsjeblieft de "Graze for Mastodon" browserextensie uit, deze zorgt
+  voor storing met Iceshrimp.
+silencedWarning: Je ziet deze pagina omdat deze gebruikers van servers afkomstig zijn
+  die door je admin zijn gedemt, dus ze zijn mogelijk spam.
+isBot: Dit account is een robot
+isLocked: Dit account heeft volgverzoeken
+isAdmin: Administrator
+youHaveUnreadAnnouncements: Je hebt ongelezen aankondigingen
+donationLink: Link naar donatiepagina
+neverShow: Niet meer tonen
+remindMeLater: Misschien later
+verifiedLink: Geverifieerde link
+searchEmptyQuery: Geef alsjeblieft een zoekterm op.
+apps: Apps
+sendModMail: Moderatieboodschap sturen
+preventAiLearningDescription: Verzoek AI-taalmodellen van derden om de inhoud die
+  je upload, zoals posts en afbeeldingen, niet te bestuderen.
+isModerator: Moderator
+isPatron: Iceshrimp-Patron
+enableServerMachineStats: Server-hardwarestatistieken inschakelen
+enableIdenticonGeneration: Identicons genereren inschakelen
+showPopup: Gebruikers met popup informeren
+openInMainColumn: In hoofdkolom openen
+showWithSparkles: Met glinsteringen tonen
+_plugin:
+  installWarn: Installeer alsjeblieft geen onbetrouwbare plugins.
+  manage: Plugins beheren
+  install: Plugins installeren
+_nsfw:
+  respect: Gevoelige media verbergen
+  ignore: Gevoelige media niet verbergen
+  force: Alle media verbergen
+_registry:
+  scope: Scope
+  key: Sleutel
+  keys: Sleutels
+  domain: Domein
+  createKey: Sleutel maken
+_channel:
+  create: Kanaal maken
+  edit: Kanaal bewerken
+  featured: Trending
+  owned: Van jou
+  following: Gevolgd
+  usersCount: '{n} deelnemers'
+  notesCount: '{n} posts'
+  nameAndDescription: Naam en omschrijving
+  nameOnly: Alleen naam
+_messaging:
+  groups: Groepen
+  dms: Privé
+_menuDisplay:
+  sideFull: Zijkant
+  sideIcon: Zijkant (iconen)
+  top: Bovenkant
+  hide: Verbergen
+_wordMute:
+  muteWords: Gedempte woorden
+  muteWordsDescription: Onderbreek met spaties voor een 'AND'-conditie of met lijnonderbrekingen
+    voor een 'OR'-conditie.
+  mutedNotes: Gedempte woorden
+_instanceTicker:
+  none: Nooit tonen
+  remote: Voor gebruikers van andere servers tonen
+  always: Altijd tonen
+_serverDisconnectedBehavior:
+  reload: Automatisch herladen
+  dialog: Waarschuwingsvenster tonen
+  quiet: Een niet-nadrukkelijke waarschuwing tonen
+  nothing: Niks doen
+_ago:
+  secondsAgo: '{n}s geleden'
+  minutesAgo: '{n}min geleden'
+  hoursAgo: '{n}u geleden'
+  future: Toekomst
+  justNow: Zojuist
+  daysAgo: '{n}d geleden'
+  weeksAgo: '{n}w geleden'
+  yearsAgo: '{n}j geleden'
+  monthsAgo: '{n}m geleden'
+_time:
+  second: Seconde(n)
+  minute: Minu(u)t(en)
+  hour: U(u)r(en)
+  day: Dag(en)
+_2fa:
+  securityKeyNotSupported: Je browser ondersteunt geen beveiligingssleutels.
+  removeKeyConfirm: Wil je de sleutel {naam} echt verwijderen?
+_permissions:
+  "write:following": Andere accounts volgen en ontvolgen
+  "read:following": Informatie inzien over wie je volgt
+  "read:messaging": Je chats inzien
+  "write:messaging": Chatberichten schrijven of verwijderen
+  "read:mutes": Je gedempte gebruikers zien
+  "write:notes": Posts opstellen of verwijderen
+  "read:notifications": Notificaties inzien
+  "write:notifications": Notificaties beheren
+_postForm:
+  replyPlaceholder: Antwoord op deze post…
+  quotePlaceholder: Deze post citeren…
+  channelPlaceholder: Naar een kanaal posten…
+  _placeholders:
+    a: Wat ben je aan het doen?
+    b: Wat gebeurt er om je heen?
+    c: Waar denk je aan?
+    d: Wat heb je te zeggen?
+_instanceCharts:
+  usersTotal: Totaal aantal gebruikers
+  notesTotal: Totaal aantal posts
+_dialog:
+  charactersExceeded: 'Maximaal aantal karakters overschreden! Hudig aantal: {current}/Limiet:
+    {max}'
+  charactersBelow: 'Niet genoeg karakters! Huidig aantal: {current}/Limiet: {min}'
+searchNotLoggedIn_1: Je moet ingelogd zijn om op tekst te kunnen zoeken.
+searchNotLoggedIn_2: Je kunt wel zoeken op basis van hashtags, en je kunt naar gebruikers
+  zoeken.
+_emailUnavailable:
+  used: Dit emailadres wordt al gebruikt
+  format: Het formaat van dit emailadres is ongeldig
+  disposable: Wegwerp-emailadressen mogen niet worden gebruikt
+  mx: Deze mailserver is ongeldig
+  smtp: Deze mailserver reageert niet
+joinedGroups: Bijgetreden groepen
+transfer: Overdragen
+retype: Opnieuw invoeren
+quoteQuestion: Als citaat bijvoegen?
+expandOnNoteClick: Post openen na klikken
+objectStorageBucket: Bucket
+objectStorageBucketDesc: Geef de naam van de bucket op die je provider gebruikt.
+objectStoragePrefix: Prefix
+objectStoragePrefixDesc: Bestanden worden opgeslagen in mappen met deze prefix.
+objectStorageEndpoint: Endpoint
+objectStorageEndpointDesc: Laat dit leeg als je AWS S3 gebruikt, of geef het endpoint
+  op als '<host>' of <host>:<poort>', afhankelijk van de dienst die je gebruikt.
+objectStorageRegion: Regio
+expandOnNoteClickDesc: Indien uitgeschakeld, kun je nog steeds berichten openen in
+  het rechtermuisknopmenu of door op de tijd te klikken.
+divider: Scheidingslijn
+addItem: Item toevoegen
+preferencesBackups: Voorkeursbackups
+deck: Deck
+undeck: Deck verlaten
+useBlurEffectForModal: Vervagingseffect bij modals gebruiken
+useFullReactionPicker: Reactiekiezer op volledige grootte gebruiken
+display: Weergavetype
+copy: Kopiëren
+metrics: Statistieken
+overview: Overzicht
+logs: Logboeken
+delayed: Vertraagd
+channel: Kanalen
+useGlobalSettingDesc: Indien ingeschakeld, worden de notificatieinstellingen van je
+  account gebruikt. Indien uitgeschakeld, kan je invidiuele instellingen maken.
+other: Overig
+regenerateLoginToken: Inlogtoken opnieuw genereren
+regenerateLoginTokenDescription: Maakt een nieuwe token aan die intern wordt gebruikt
+  tijdens het inloggen. Normaal gesproken is deze handeling niet nodig. Als deze opnieuw
+  wordt gemaakt zullen alle apparaten worden uitgelogd.
+setMultipleBySeparatingWithSpace: Meerdere instellingen met spaties scheiden.
+fileIdOrUrl: Bestands-ID of URL
+behavior: Gedrag
+sample: Voorbeeld
+abuseReports: Meldingen
+reportAbuse: Melden
+reportAbuseOf: Melding {name}
+abuseReported: Je rapport is verstuurd. Hartelijk dank.
+reporter: Melder
+reporteeOrigin: Oorsprong van melding
+reporterOrigin: Oorsprong van melder
+forwardReportIsAnonymous: In plaats van jouw account wordt een anoniem systeemaccount
+  als melder doorgegeven aan de betrokken server.
+send: Versturen
+abuseMarkAsResolved: Rapport als opgelost markeren
+openInNewTab: In nieuw tabblad openen
+openInSideView: In zijweergave tonen
+editTheseSettingsMayBreakAccount: Deze instellingen wijzigen kan je account beschadigen.
+instanceTicker: Serverinformatie van posts
+waitingFor: Wacht op {x}
+random: Willekeurig
+system: Systeem
+switchUi: Layout wisselen
+desktop: Bureaublad
+clip: Clip
+createNew: Maak nieuw
+optional: Optioneel
+createNewClip: Nieuwe clip maken
+public: Openbaar
+i18nInfo: Iceshrimp wordt door vrijwilligers naar verschillende talen vertaald. Je
+  kunt helpen op {link}.
+manageAccessTokens: Accesstokens beheren
+accountInfo: Accountinfo
+notesCount: Aantal posts
+repliesCount: Aantal verstuurde reacties
+renotesCount: Aantal verstuurde boosts
+repliedCount: Aantal ontvangen reacties
+renotedCount: Aantal ontvangen boosts
+followingCount: Aantal gevolgde accounts
+followersCount: Aantal volgers
+sentReactionsCount: Aantal verstuurde reacties
+pollVotedCount: Ontvangen aantal stemmen op peilingen
+pollVotesCount: Verstuurd aantal stemmen op peilingen
+yes: Ja
+no: Nee
+driveFilesCount: Aantal Drive-bestanden
+driveUsage: Drive-ruimteverbruik
+noCrawle: Crawler-indexering weigeren
+loadRawImages: Orginele afbeeldingen in plaats van voorbeeldafbeeldingen laden
+disableShowingAnimatedImages: Geen geanimeerde afbeeldingen afspelen
+verificationEmailSent: Een bevestigingsmail is verstuurd. Volg de link daar om verificatie
+  te voltooien.
+emailVerified: Email is bevestigd
+noteFavoritesCount: Aantal favoriete posts
+pageLikesCount: Aantal gelikete Pages
+pageLikedCount: Aantal ontvangen Page-likes
+contact: Contact
+useSystemFont: Gebruik het standaardlettertype van het systeem
+clips: Clips
+clipsDesc: Clips zijn een soort deelbare bladwijzers op categorie. Je kan clips delen
+  via het menu van individuele posts.
+experimentalFeatures: Experiementele functies
+developer: Ontwikkelaar
+makeExplorable: Maak accout in "Verkennen" zichtbaar
+updatedAt: Vernieuwd op
+registry: Register
+usageAmount: Gebruik
+inUse: Gebruikt
+typingUsers: '{gebruikers} is/zijn aan het typen'
+showingPastTimeline: Er wordt een oude timeline getoond
+unlikeConfirm: Wil je echt je like verwijderen?
+userPagePinTip: Je kan posts hier laten zien door "Aan profiel vastmaken" te selecteren
+  vanuit het menu van een losse post.
+botProtection: Botbescherming
+translatedFrom: Uit {x} vertaald
+pubSub: Pub/Sub-accounts
+lastCommunication: Laatste communicatie
+resolved: Opgelost
+unresolved: Nog niet opgelost
+breakFollow: Volger verwijderen
+breakFollowConfirm: Weet je zeker dat je deze volger wilt verwijderen?
+itsOn: Ingeschakeld
+itsOff: Uitgeschakeld
+emailRequiredForSignup: Emailadres vereisen bij registratie
+filter: Filter
+controlPanel: Controlepaneel
+manageAccounts: Accounts beheren
+makeReactionsPublic: Reactiegeschiedenis publiek maken
+makeReactionsPublicDescription: Dit zal de lijst van je eerdere reacties publiek zichtbaar
+  maken.
+classic: Gecentreerd
+ffVisibility: Zichtbaarheid volgend/volgers
+ffVisibilityDescription: Je kan instellen wie kan zien wie je volgt en wie je volgers
+  zijn.
+continueThread: Thread voortzetten
+aiChanMode: AI-modus
+deleteAccountConfirm: Dit zal je account onherstelbaar verwijderen. Verdergaan?
+incorrectPassword: Wachtwoord fout.
+voteConfirm: Stem voor "{choice}" bevestigen?
+leaveGroup: Groep verlaten
+leaveGroupConfirm: Weet je zeker dat je "{name}" wilt verwijderen?
+clickToFinishEmailVerification: Klik op {{ok}} om emailverificatie te voltooien.
+alt: ALT
+useDrawerReactionPickerForMobile: Op mobiele apparaten uitklapbare reactiekiezer tonen
