@@ -918,7 +918,7 @@ numberOfColumn: "Nombre de colonnes"
 searchByGoogle: "Rechercher"
 instanceDefaultLightTheme: "Thème clair par défaut sur toute l’instance"
 instanceDefaultDarkTheme: "Thème sombre par défaut sur toute l’instance"
-instanceDefaultThemeDescription: "Saisissez le code du thème en format objet."
+instanceDefaultThemeDescription: "Saisissez le code du thème au format JSON."
 mutePeriod: "Durée de mise en sourdine"
 indefinitely: "Illimité"
 tenMinutes: "10 minutes"
@@ -1024,8 +1024,9 @@ _nsfw:
   force: "Cacher tous les médias"
 _mfm:
   cheatSheet: "Antisèche MFM"
-  intro: "MFM est un langage Markdown spécifique utilisable ici et là dans Iceshrimp.
-    Vous pouvez vérifier ici les structures utilisables avec MFM."
+  intro: "MFM est un langage basé sur le Markdown. Il est utilisable dans Iceshrimp,
+    Misskey, Akkoma et d’autre… Vous pouvez consulter les syntaxes utilisables avec
+    MFM."
   dummy: "La Fédiverse s’agrandit avec Iceshrimp"
   mention: "Mentionner"
   mentionDescription: "Vous pouvez afficher un utilisateur spécifique en indiquant
@@ -2001,7 +2002,7 @@ driveCapOverrideCaption: Réinitialiser la capacité à la valeur par défaut en
   0 ou moins.
 pleaseSelect: Sélectionner une option
 customMOTD: Message du jour personnalisé (Message d’écran de démarrage)
-refreshInterval: "Intervalle de mise à jour "
+refreshInterval: "Intervalle de mise à jour"
 type: Type
 speed: Vitesse
 slow: Lent
