@@ -149,6 +149,7 @@ import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import { version } from "@/config";
+import { isUpdateAvailable } from "@/scripts/is-update-available.js";
 
 const isEmpty = (x: string | null) => x == null || x === "";
 
@@ -196,26 +197,7 @@ if ($i?.isAdmin) {
 	});
 
 	if (defaultStore.state.showAdminUpdates) {
-		os.api("latest-version").then((res) => {
-			if (!res?.tag_name) {
-				updateAvailable = false;
-				return;
-			}
-
-			const tag = res.tag_name as string;
-			if (tag === `v${version}`) {
-				updateAvailable = false;
-				return;
-			}
-			const tagDate = tag.includes('-') ? tag.substring(0, tag.indexOf('-')) : tag;
-			const versionDate = version.includes('-') ? version.substring(0, version.indexOf('-')) : version;
-			if (tagDate < versionDate) {
-				updateAvailable = false;
-				return;
-			}
-			updateAvailable = true;
-			return;
-		});
+		updateAvailable = await isUpdateAvailable();
 	}
 }
 
@@ -639,7 +621,7 @@ function more(ev: MouseEvent) {
 							opacity: 1;
 						}
 					}
-					
+
 					&:hover,
 					&:focus-within {
 						&:before {

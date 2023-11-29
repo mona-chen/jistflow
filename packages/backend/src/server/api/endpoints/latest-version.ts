@@ -1,4 +1,5 @@
 import define from "../define.js";
+import config from "@/config/index.js";
 
 export const meta = {
 	tags: ["meta"],
@@ -16,7 +17,7 @@ export const paramDef = {
 export default define(meta, paramDef, async () => {
 	let tag_name;
 	await fetch(
-		"https://iceshrimp.dev/api/v1/repos/iceshrimp/iceshrimp/releases?draft=false&pre-release=false&page=1&limit=1",
+		`https://iceshrimp.dev/api/v1/repos/iceshrimp/iceshrimp/releases?draft=false&pre-release=${config.version.includes('-pre')}&page=1&limit=1`,
 	)
 		.then((response) => response.json())
 		.then((data) => {
