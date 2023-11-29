@@ -126,7 +126,9 @@ os.api("admin/abuse-user-reports", {
 });
 
 if (defaultStore.state.showAdminUpdates) {
-	updateAvailable = await isUpdateAvailable();
+	isUpdateAvailable().then(res => {
+		updateAvailable = res;
+	});
 }
 
 const NARROW_THRESHOLD = 600;

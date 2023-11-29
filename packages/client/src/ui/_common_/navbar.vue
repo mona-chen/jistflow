@@ -197,7 +197,9 @@ if ($i?.isAdmin) {
 	});
 
 	if (defaultStore.state.showAdminUpdates) {
-		updateAvailable = await isUpdateAvailable();
+		isUpdateAvailable().then(res => {
+			updateAvailable = res;
+		});
 	}
 }
 
