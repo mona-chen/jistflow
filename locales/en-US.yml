@@ -1141,7 +1141,7 @@ _sensitiveMediaDetection:
   sensitivityDescription: "Reducing the sensitivity will lead to fewer misdetections
     (false positives) whereas increasing it will lead to fewer missed detections (false
     negatives)."
-  setSensitiveFlagAutomatically: "Mark as NSFW"
+  setSensitiveFlagAutomatically: "Mark as sensitive"
   setSensitiveFlagAutomaticallyDescription: "The results of the internal detection
     will be retained even if this option is turned off."
   analyzeVideos: "Enable analysis of videos"
