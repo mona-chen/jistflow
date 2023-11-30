@@ -1219,6 +1219,13 @@ _wordMute:
   soft: "Suave"
   hard: "Duro"
   mutedNotes: "Publicaciones silenciadas"
+  muteLangsDescription2: 'Utilizar códigos de idioma, por ejemplo: en, fr, ja, zh.'
+  lang: Idioma
+  langDescription: Ocultar publicaciones de linea de tiempo que coincidan con el idioma
+    seleccionado.
+  muteLangs: Idiomas silenciados
+  muteLangsDescription: Separar con espacios o saltos de lineas para una condición
+    OR
 _instanceMute:
   instanceMuteDescription: "Silencia todas las publicaciones e impusos de los servidores
     seleccionados, incluyendo respuestas a los usuarios de las mismas."
@@ -2162,3 +2169,15 @@ silencedWarning: Esta página se muestra debido a que estos usuarios son de serv
   que tu administrador ha silenciado, ya que son presumiblemente fuente de spam.
 isBot: Esta cuenta es un bot
 clickToShowPatterns: Haz clic para mostrar patrones de módulos
+detectPostLanguage: Detectar automáticamente el idioma y mostrar el botón de traducción
+  para publicaciones en otros idiomas
+indexableDescription: Permitir que el buscador integrado muestre tus publicaciones
+reactions: Reacciones
+exportZip: Exportar ZIP
+emojiPackCreator: Creador de pack de Emoji
+importZip: Importar ZIP
+vibrate: Reproducir vibraciones
+openServerInfo: Mostrar información del servidor al presionar el simbolo del servidor
+  en una publicación
+languageForTranslation: Traducción de publicaciones
+confirm: Confirmar
