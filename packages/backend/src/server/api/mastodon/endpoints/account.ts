@@ -31,7 +31,9 @@ export function setupEndpointsAccount(router: Router): void {
     router.get("/v1/accounts/relationships",
         auth(true, ['read:follows']),
         async (ctx) => {
-            const ids = (normalizeUrlQuery(ctx.query, ['id[]'])['id[]'] ?? []);
+            const ids = normalizeUrlQuery(ctx.query, ['id[]'])['id[]']
+				?? normalizeUrlQuery(ctx.query, ['id'])['id']
+				?? [];
             ctx.body = await UserHelpers.getUserRelationhipToMany(ids, ctx.user.id);
         }
     );
