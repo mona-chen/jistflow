@@ -1,10 +1,10 @@
-import JSON5 from "json5";
-import { IsNull, MoreThan } from "typeorm";
 import config from "@/config/index.js";
+import { MAX_CAPTION_TEXT_LENGTH, MAX_NOTE_TEXT_LENGTH } from "@/const.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { Ads, Emojis, Users } from "@/models/index.js";
-import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
-import define from "../define.js";
+import define from "@/server/api/define.js";
+import JSON5 from "json5";
+import { IsNull, MoreThan } from "typeorm";
 
 export const meta = {
 	tags: ["meta"],
@@ -63,6 +63,11 @@ export const meta = {
 				type: "string",
 				optional: false,
 				nullable: true,
+			},
+			moreUrls: {
+				type: "object",
+				optional: false,
+				nullable: false,
 			},
 			repositoryUrl: {
 				type: "string",
@@ -416,6 +421,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		description: instance.description,
 		langs: instance.langs,
 		tosUrl: instance.ToSUrl,
+		moreUrls: instance.moreUrls,
 		repositoryUrl: instance.repositoryUrl,
 		feedbackUrl: instance.feedbackUrl,
 

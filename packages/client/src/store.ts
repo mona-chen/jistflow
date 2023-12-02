@@ -385,11 +385,11 @@ interface Plugin {
 	ast: any[];
 }
 
+import darkTheme from "@/themes/d-rosepine.json5";
 /**
  * Storage for configuration information that does not need to be constantly loaded into memory (non-reactive)
  */
 import lightTheme from "@/themes/l-rosepinedawn.json5";
-import darkTheme from "@/themes/d-rosepine.json5";
 
 export class ColdDeviceStorage {
 	public static default = {

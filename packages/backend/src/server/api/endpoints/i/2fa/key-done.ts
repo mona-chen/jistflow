@@ -1,15 +1,15 @@
-import { decode } from "msgpackr";
-import define from "../../../define.js";
+import config from "@/config/index.js";
+import { comparePassword } from "@/misc/password.js";
 import {
+	AttestationChallenges,
 	UserProfiles,
 	UserSecurityKeys,
-	AttestationChallenges,
 	Users,
 } from "@/models/index.js";
-import config from "@/config/index.js";
-import { procedures, hash } from "../../../2fa.js";
+import { hash, procedures } from "@/server/api/2fa.js";
+import define from "@/server/api/define.js";
 import { publishMainStream } from "@/services/stream.js";
-import { comparePassword } from "@/misc/password.js";
+import { decode } from "cbor-x";
 
 const rpIdHashReal = hash(Buffer.from(config.hostname, "utf-8"));
 
@@ -62,7 +62,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	const clientDataJSONHash = hash(Buffer.from(ps.clientDataJSON, "utf-8"));
 
-	const attestation = decode(Buffer.from(ps.attestationObject, "utf-8"));
+	const attestation = decode(Buffer.from(ps.attestationObject, "hex"));
 
 	const rpIdHash = attestation.authData.slice(0, 32);
 	if (!rpIdHashReal.equals(rpIdHash)) {
@@ -79,7 +79,13 @@ export default define(meta, paramDef, async (ps, user) => {
 	const credentialIdLength = authData.readUInt16BE(53);
 	const credentialId = authData.slice(55, 55 + credentialIdLength);
 	const publicKeyData = authData.slice(55 + credentialIdLength);
-	const publicKey: Map<number, any> = decode(publicKeyData);
+	const publicKey: Map<number, any> = new Map(
+		Object.entries(decode(publicKeyData)).map(([key, value]) => [
+			Number(key),
+			value,
+		]),
+	);
+
 	if (publicKey.get(3) !== -7) {
 		throw new Error("alg mismatch");
 	}

@@ -229,14 +229,7 @@ function edit() {
 
 watch(() => props.postId, fetchPost, { immediate: true });
 
-const headerActions = computed(() => [
-	{
-		icon: `${icon("ph-pencil")}`,
-		text: i18n.ts.edit,
-		handler: edit,
-	},
-]);
-
+const headerActions = computed(() => []);
 const headerTabs = computed(() => []);
 
 definePageMetadata(

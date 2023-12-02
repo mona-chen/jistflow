@@ -1,5 +1,5 @@
-import { computed, reactive } from "vue";
 import type * as firefish from "firefish-js";
+import { computed, reactive } from "vue";
 import { api } from "./os";
 
 // TODO: 他のタブと永続化されたstateを同期

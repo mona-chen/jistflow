@@ -44,6 +44,7 @@ export default defineComponent({
 			text: this.hpml.interpolate(this.block.text),
 			posted: false,
 			posting: false,
+			icon,
 		};
 	},
 	watch: {

@@ -1,7 +1,7 @@
 import type { Ref } from "vue";
-import { defineAsyncComponent, inject } from "vue";
+import { defineAsyncComponent } from "vue";
 import type * as firefish from "firefish-js";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
 import * as os from "@/os";

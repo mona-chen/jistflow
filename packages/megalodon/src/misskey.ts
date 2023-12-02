@@ -1,22 +1,22 @@
-import FormData from "form-data";
 import AsyncLock from "async-lock";
+import FormData from "form-data";
 
-import MisskeyAPI from "./misskey/api_client";
+import fs from "node:fs";
+import MegalodonEntity from "@/entity";
 import { DEFAULT_UA } from "./default";
-import { ProxyConfig } from "./proxy_config";
-import OAuth from "./oauth";
-import Response from "./response";
 import Entity from "./entity";
 import {
-	MegalodonInterface,
-	WebSocketInterface,
-	NoImplementedError,
 	ArgumentError,
+	MegalodonInterface,
+	NoImplementedError,
 	UnexpectedError,
+	WebSocketInterface,
 } from "./megalodon";
-import MegalodonEntity from "@/entity";
-import fs from "node:fs";
+import MisskeyAPI from "./misskey/api_client";
 import MisskeyNotificationType from "./misskey/notification";
+import OAuth from "./oauth";
+import { ProxyConfig } from "./proxy_config";
+import Response from "./response";
 
 type AccountCache = {
 	locks: AsyncLock;

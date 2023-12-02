@@ -50,9 +50,9 @@ import XMedia from "@/components/MkMedia.vue";
 import XModPlayer from "@/components/MkModPlayer.vue";
 import * as os from "@/os";
 import {
+	FILE_EXT_TRACKER_MODULES,
 	FILE_TYPE_BROWSERSAFE,
 	FILE_TYPE_TRACKER_MODULES,
-	FILE_EXT_TRACKER_MODULES,
 } from "@/const";
 
 const props = defineProps<{
@@ -196,9 +196,7 @@ const previewable = (file: firefish.entities.DriveFile): boolean => {
 
 const isModule = (file: firefish.entities.DriveFile): boolean => {
 	return (
-		FILE_TYPE_TRACKER_MODULES.some((type) => {
-			return file.type === type;
-		}) ||
+		FILE_TYPE_TRACKER_MODULES.includes(file.type) ||
 		FILE_EXT_TRACKER_MODULES.some((ext) => {
 			return file.name.toLowerCase().endsWith("." + ext);
 		})

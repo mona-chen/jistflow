@@ -19,10 +19,10 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from "vue";
 import { swInject } from "./sw-inject";
-import { pendingApiRequestsCount, popup, popups } from "@/os";
+import { popup, popups } from "@/os";
 import { uploads } from "@/scripts/upload";
 import * as sound from "@/scripts/sound";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { stream } from "@/stream";
 
 const XStreamIndicator = defineAsyncComponent(

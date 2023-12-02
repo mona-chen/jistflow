@@ -1,33 +1,33 @@
 <template>
-	<div class="mod-player-disabled" v-if="!available">
+	<div v-if="!available" class="mod-player-disabled">
 		<MkLoading v-if="fetching" />
 		<MkError v-else-if="error" @retry="load()" />
 	</div>
-	<div class="mod-player-disabled" v-else-if="hide" @click="toggleVisible()">
+	<div v-else-if="hide" class="mod-player-disabled" @click="toggleVisible()">
 		<div>
 			<b><i class="ph-warning"></i> {{ i18n.ts.sensitive }}</b>
 			<span>{{ i18n.ts.clickToShow }}</span>
 		</div>
 	</div>
 
-	<div class="mod-player-enabled" v-else>
+	<div v-else class="mod-player-enabled">
 		<div class="pattern-display">
-			<div class="mod-pattern" ref="modPattern" v-if="patternShow">
+			<div v-if="patternShow" ref="modPattern" class="mod-pattern">
 				<span
 					v-for="(row, i) in patData[currentPattern]"
-					ref="initRow"
-					v-bind:class="{ modRowActive: isRowActive(i) }"
 					v-if="patData.length !== 0"
+					ref="initRow"
+					:class="{ modRowActive: isRowActive(i) }"
 				>
-					<span v-bind:class="{ modColQuarter: i % 4 === 0 }">{{
+					<span :class="{ modColQuarter: i % 4 === 0 }">{{
 						indexText(i)
 					}}</span>
 					<span class="mod-row-inner">{{ getRowText(row) }}</span>
 				</span>
 				<MkLoading v-else />
 			</div>
-			<div class="mod-pattern" v-else @click="showPattern()">
-				<span class="modRowActive" ref="initRow">
+			<div v-else class="mod-pattern" @click="showPattern()">
+				<span ref="initRow" class="modRowActive">
 					<span class="modColQuarter">00</span>
 					<span class="mod-row-inner">|F-12Ev10XEF</span>
 				</span>
@@ -36,39 +36,39 @@
 			</div>
 		</div>
 		<div class="controls">
-			<button class="play" @click="playPause()" v-if="!loading">
-				<i class="ph-pause ph-fill" v-if="playing"></i>
-				<i class="ph-play ph-fill" v-else></i>
+			<button v-if="!loading" class="play" @click="playPause()">
+				<i v-if="playing" class="ph-pause ph-fill"></i>
+				<i v-else class="ph-play ph-fill"></i>
 			</button>
 			<MkLoading v-else :em="true" />
 			<button class="stop" @click="stop()">
 				<i class="ph-stop ph-fill"></i>
 			</button>
 			<button class="loop" @click="toggleLoop()">
-				<i class="ph-repeat ph-fill" v-if="loop === -1"></i>
-				<i class="ph-repeat-once ph-fill" v-else></i>
+				<i v-if="loop === -1" class="ph-repeat ph-fill"></i>
+				<i v-else class="ph-repeat-once ph-fill"></i>
 			</button>
 			<FormRange
+				ref="progress"
+				v-model="position"
 				class="progress"
 				:min="0"
 				:max="length"
-				v-model="position"
 				:step="0.1"
-				ref="progress"
 				:background="false"
 				:tooltips="false"
 				:instant="true"
 				@update:modelValue="performSeek()"
 			></FormRange>
 			<button class="mute" @click="toggleMute()">
-				<i class="ph-speaker-simple-x ph-fill" v-if="muted"></i>
-				<i class="ph-speaker-simple-high ph-fill" v-else></i>
+				<i v-if="muted" class="ph-speaker-simple-x ph-fill"></i>
+				<i v-else class="ph-speaker-simple-high ph-fill"></i>
 			</button>
 			<FormRange
+				v-model="player.context.gain.value"
 				class="volume"
 				:min="0"
 				:max="1"
-				v-model="player.context.gain.value"
 				:step="0.1"
 				:background="false"
 				:tooltips="false"
@@ -91,7 +91,7 @@
 				class="_button"
 				@click.stop="captionPopup"
 			>
-				<i class="ph-subtitles"></i>
+				<i :class="icon('ph-subtitles')"></i>
 			</button>
 			<button
 				v-if="!hide"
@@ -99,20 +99,20 @@
 				class="_button"
 				@click.stop="toggleVisible()"
 			>
-				<i class="ph-eye-slash"></i>
+				<i :class="icon('ph-eye-slash')"></i>
 			</button>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, nextTick, onDeactivated, onMounted } from "vue";
-import * as firefish from "firefish-js";
+import { nextTick, onDeactivated, onMounted, ref, shallowRef } from "vue";
+import type * as firefish from "firefish-js";
 import FormRange from "./form/range.vue";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
 import { defaultStore } from "@/store";
-import { ChiptuneJsPlayer, ChiptuneJsConfig } from "@/scripts/chiptune2";
+import { ChiptuneJsConfig, ChiptuneJsPlayer } from "@/scripts/chiptune2";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{
@@ -130,25 +130,25 @@ interface ModRow {
 const available = ref(false);
 const initRow = shallowRef<HTMLSpanElement>();
 const player = shallowRef(new ChiptuneJsPlayer(new ChiptuneJsConfig()));
-let hide = ref(
+const hide = ref(
 	defaultStore.state.nsfw === "force"
 		? true
 		: props.module.isSensitive && defaultStore.state.nsfw !== "ignore",
 );
-let playing = ref(false);
-let patternShow = ref(false);
-let modPattern = ref<HTMLDivElement>();
-let progress = ref<typeof FormRange>();
-let position = ref(0);
-let patData = shallowRef([] as ModRow[][]);
-let currentPattern = ref(0);
-let nbChannels = ref(0);
-let length = ref(1);
-let muted = ref(false);
-let loop = ref(0);
-let fetching = ref(true);
-let error = ref(false);
-let loading = ref(false);
+const playing = ref(false);
+const patternShow = ref(false);
+const modPattern = ref<HTMLDivElement>();
+const progress = ref<typeof FormRange>();
+const position = ref(0);
+const patData = shallowRef([] as ModRow[][]);
+const currentPattern = ref(0);
+const nbChannels = ref(0);
+const length = ref(1);
+const muted = ref(false);
+const loop = ref(0);
+const fetching = ref(true);
+const error = ref(false);
+const loading = ref(false);
 
 function load() {
 	player.value
@@ -168,10 +168,10 @@ function load() {
 
 onMounted(load);
 
-let currentRow = 0;
-let rowHeight = 0;
-let buffer = null;
-let isSeeking = false;
+let currentRow = 0,
+	rowHeight = 0,
+	buffer = null,
+	isSeeking = false;
 
 function captionPopup() {
 	os.alert({
@@ -293,7 +293,6 @@ function isRowActive(i: number) {
 		}
 		return true;
 	}
-	return;
 }
 
 function indexText(i: number) {
@@ -305,11 +304,11 @@ function indexText(i: number) {
 }
 
 function getRow(pattern: number, rowOffset: number) {
-	let notes: string[] = [],
-		insts: string[] = [],
-		vols: string[] = [],
-		fxs: string[] = [],
-		ops: string[] = [];
+	const notes: string[] = [];
+	const insts: string[] = [];
+	const vols: string[] = [];
+	const fxs: string[] = [];
+	const ops: string[] = [];
 
 	for (let channel = 0; channel < nbChannels.value; channel++) {
 		const part = player.value.getPatternRowChannel(

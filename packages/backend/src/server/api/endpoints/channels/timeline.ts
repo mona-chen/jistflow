@@ -1,7 +1,7 @@
-import define from "../../define.js";
-import { ApiError } from "../../error.js";
-import { Notes, Channels } from "@/models/index.js";
-import { makePaginationQuery } from "../../common/make-pagination-query.js";
+import { Channels, Notes } from "@/models/index.js";
+import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
+import define from "@/server/api/define.js";
+import { ApiError } from "@/server/api/error.js";
 import { activeUsersChart } from "@/services/chart/index.js";
 
 export const meta = {

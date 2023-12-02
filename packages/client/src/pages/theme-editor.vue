@@ -90,8 +90,8 @@
 										color: color.forPreview
 											? color.forPreview
 											: theme.base === 'light'
-											? '#5f5f5f'
-											: '#dadada',
+											  ? '#5f5f5f'
+											  : '#dadada',
 									}"
 								>
 									A
@@ -151,7 +151,7 @@ import FormButton from "@/components/MkButton.vue";
 import FormTextarea from "@/components/form/textarea.vue";
 import FormFolder from "@/components/form/folder.vue";
 
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import type { Theme } from "@/scripts/theme";
 import { applyTheme } from "@/scripts/theme";
 import lightTheme from "@/themes/_light.json5";

@@ -1,6 +1,6 @@
 // import { IsNull } from 'typeorm';
 import { fetchMeta } from "@/misc/fetch-meta.js";
-import define from "../define.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["meta"],

@@ -1,5 +1,5 @@
-import Redis from "ioredis";
 import config from "@/config/index.js";
+import Redis from "ioredis";
 
 export function createConnection() {
 	let source = config.redis;

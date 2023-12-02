@@ -22,11 +22,7 @@
 <script lang="ts" setup>
 import { ref, shallowRef } from "vue";
 
-import {
-	WidgetComponentEmits,
-	WidgetComponentProps,
-	useWidgetPropsManager,
-} from "./widget";
+import { useWidgetPropsManager } from "./widget";
 import type { Widget, WidgetComponentExpose } from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import MkContainer from "@/components/MkContainer.vue";

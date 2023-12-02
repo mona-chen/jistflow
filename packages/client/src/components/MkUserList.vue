@@ -31,7 +31,7 @@ import type { Paging } from "@/components/MkPagination.vue";
 import MkPagination from "@/components/MkPagination.vue";
 import { i18n } from "@/i18n";
 
-const props = defineProps<{
+defineProps<{
 	pagination: Paging;
 	noGap?: boolean;
 }>();

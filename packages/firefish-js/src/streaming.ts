@@ -1,5 +1,5 @@
 import { EventEmitter } from "eventemitter3";
-import ReconnectingWebsocket from "reconnecting-websocket";
+import ReconnectingWebsocket from "reconnecting";
 import { BroadcastEvents, Channels } from "./streaming.types";
 
 function autobind(instance: any): void {
@@ -26,8 +26,10 @@ export function urlQuery(
 ): string {
 	const params = Object.entries(obj)
 		.filter(([, v]) => (Array.isArray(v) ? v.length : v !== undefined))
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		.reduce(
+			// biome-ignore lint/suspicious/noAssignInExpressions: <Used for key assigning>
+			// biome-ignore lint/style/noNonNullAssertion: <>
+			// biome-ignore lint/style/noCommaOperator: <>
 			(a, [k, v]) => ((a[k] = v!), a),
 			{} as Record<string, string | number | boolean>,
 		);
@@ -45,7 +47,7 @@ type StreamEvents = {
 } & BroadcastEvents;
 
 /**
- * Misskey stream connection
+ * Firefish stream connection
  */
 export default class Stream extends EventEmitter<StreamEvents> {
 	private stream: ReconnectingWebsocket;
@@ -81,7 +83,6 @@ export default class Stream extends EventEmitter<StreamEvents> {
 			`${wsOrigin}/streaming?${query}`,
 			"",
 			{
-				minReconnectionDelay: 1, // https://github.com/pladaria/reconnecting-websocket/issues/91
 				WebSocket: options.WebSocket,
 			},
 		);

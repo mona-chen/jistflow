@@ -169,22 +169,22 @@ const transitionName = computed(() =>
 		? useSendAnime.value
 			? "send"
 			: type.value === "drawer"
-			? "modal-drawer"
-			: type.value === "popup"
-			? "modal-popup"
-			: "modal"
+			  ? "modal-drawer"
+			  : type.value === "popup"
+			    ? "modal-popup"
+			    : "modal"
 		: "",
 );
 const transitionDuration = computed(() =>
 	transitionName.value === "send"
 		? 400
 		: transitionName.value === "modal-popup"
-		? 100
-		: transitionName.value === "modal"
-		? 200
-		: transitionName.value === "modal-drawer"
-		? 200
-		: 0,
+		  ? 100
+		  : transitionName.value === "modal"
+		    ? 200
+		    : transitionName.value === "modal-drawer"
+		      ? 200
+		      : 0,
 );
 
 let contentClicking = false;

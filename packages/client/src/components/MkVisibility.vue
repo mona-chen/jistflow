@@ -17,7 +17,10 @@
 		></i>
 	</span>
 	<span v-if="note.localOnly" :class="$style.localOnly"
-		><i v-tooltip="i18n.ts._visibility.localOnly" class="ph-users ph-lg"></i
+		><i
+			v-tooltip="i18n.ts._visibility.localOnly"
+			:class="icon('ph-users')"
+		></i
 	></span>
 </template>
 

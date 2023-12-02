@@ -18,10 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
 import MkTooltip from "./MkTooltip.vue";
 
-const props = defineProps<{
+defineProps<{
 	users: any[]; // TODO
 	count: number;
 	targetElement: HTMLElement;

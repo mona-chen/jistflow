@@ -1,9 +1,9 @@
-# Firefish.js
+# Firefish-js
 
-Fork of firefish.js for Firefish
+## Firefish SDK for Node.js, Bun, and browsers
 
-https://www.npmjs.com/package/firefish-js
+![npm badge](https://img.shields.io/npm/dm/firefish-js?logo=npm&color=%23CB0000)
 
-To fully build, run `pnpm i && pnpm run render`.
+Fork of [misskey-js](https://www.npmjs.com/package/misskey-js)
 
-![Parody of the Javascript logo with "CK" instead of "JS"](https://codeberg.org/repo-avatars/80771-4d86135f67b9a460cdd1be9e91648e5f)
+<https://www.npmjs.com/package/firefish-js>

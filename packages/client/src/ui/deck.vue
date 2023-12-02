@@ -203,7 +203,7 @@ import XDrawerMenu from "@/ui/_common_/navbar-for-mobile.vue";
 import MkButton from "@/components/MkButton.vue";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { mainRouter } from "@/router";
 import { unisonReload } from "@/scripts/unison-reload";

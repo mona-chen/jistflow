@@ -35,7 +35,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
-const props = withDefaults(
+withDefaults(
 	defineProps<{
 		user: firefish.entities.User;
 		limit?: number;

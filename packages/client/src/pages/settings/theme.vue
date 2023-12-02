@@ -108,11 +108,11 @@
 					>{{ i18n.ts._theme.manage
 					}}<template #suffix>{{ themesCount }}</template></FormLink
 				>
-				<FormLink to="https://assets.firefish.io/theme/list" external
+				<!-- <FormLink to="https://assets.misskey.io/theme/list" external
 					><template #icon
 						><i :class="icon('ph-planet')"></i></template
 					>{{ i18n.ts._theme.explore }}</FormLink
-				>
+				> -->
 				<FormLink to="/settings/theme/install"
 					><template #icon
 						><i :class="icon('ph-download-simple')"></i></template

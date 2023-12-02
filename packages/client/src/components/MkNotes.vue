@@ -45,7 +45,7 @@ import { scroll } from "@/scripts/scroll";
 
 const tlEl = ref<HTMLElement>();
 
-const props = defineProps<{
+defineProps<{
 	pagination: Paging;
 	noGap?: boolean;
 }>();

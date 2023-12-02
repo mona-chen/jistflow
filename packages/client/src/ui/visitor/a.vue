@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { defineAsyncComponent, defineComponent } from "vue";
+import { defineComponent } from "vue";
 import XHeader from "./header.vue";
 import { host, instanceName } from "@/config";
 import { search } from "@/scripts/search";

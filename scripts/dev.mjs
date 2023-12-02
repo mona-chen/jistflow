@@ -1,32 +1,36 @@
-const execa = require("execa");
+import path, { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { execa } from "execa";
 
 (async () => {
+	const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 	await execa("pnpm", ["clean"], {
-		cwd: __dirname + "/../",
+		cwd: join(__dirname, "/../"),
 		stdout: process.stdout,
 		stderr: process.stderr,
 	});
 
 	execa("pnpm", ["dlx", "gulp", "watch"], {
-		cwd: __dirname + "/../",
+		cwd: join(__dirname, "/../"),
 		stdout: process.stdout,
 		stderr: process.stderr,
 	});
 
 	execa("pnpm", ["--filter", "backend", "watch"], {
-		cwd: __dirname + "/../",
+		cwd: join(__dirname, "/../"),
 		stdout: process.stdout,
 		stderr: process.stderr,
 	});
 
 	execa("pnpm", ["--filter", "client", "watch"], {
-		cwd: __dirname + "/../",
+		cwd: join(__dirname, "/../"),
 		stdout: process.stdout,
 		stderr: process.stderr,
 	});
 
 	execa("pnpm", ["--filter", "sw", "watch"], {
-		cwd: __dirname + "/../",
+		cwd: join(__dirname, "/../"),
 		stdout: process.stdout,
 		stderr: process.stderr,
 	});
@@ -34,7 +38,7 @@ const execa = require("execa");
 	const start = async () => {
 		try {
 			await execa("pnpm", ["start"], {
-				cwd: __dirname + "/../",
+				cwd: join(__dirname, "/../"),
 				stdout: process.stdout,
 				stderr: process.stderr,
 			});

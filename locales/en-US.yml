@@ -176,12 +176,11 @@ cacheRemoteFilesDescription:
   "When this setting is disabled, remote files are loaded
   directly from the remote server. Disabling this will decrease storage usage, but
   increase traffic, as thumbnails will not be generated."
-flagAsBot: "Mark this account as a bot"
-flagAsBotDescription:
-  "Enable this option if this account is controlled by a program.
+flagAsBot: "Mark this account as automated"
+flagAsBotDescription: "Enable this option if this account is controlled by a program.
   If enabled, it will act as a flag for other developers to prevent endless interaction
-  chains with other bots and adjust Jistflow's internal systems to treat this account
-  as a bot."
+  chains with other automated accounts and adjust Jistflow's internal systems to treat this
+  account as an automated account."
 flagAsCat: "Are you a cat? 😺"
 flagAsCatDescription: "You'll get cat ears and speak like a cat!"
 flagSpeakAsCat: "Speak as a cat"
@@ -328,7 +327,7 @@ agreeTo: "I agree to {0}"
 tos: "Terms of Service"
 start: "Begin"
 home: "Home"
-remoteUserCaution: "Information from remote users may be incomplete."
+remoteUserCaution: "Information from remote users are incomplete."
 activity: "Activity"
 images: "Images"
 birthday: "Birthday"
@@ -452,6 +451,8 @@ withReplies: "Include replies"
 connectedTo: "Following account(s) are connected"
 notesAndReplies: "Posts and replies"
 withFiles: "Including files"
+attachedToNotes: "Posts with this file"
+showAttachedNotes: "Show posts with this file"
 silence: "Silence"
 silenceConfirm: "Are you sure that you want to silence this user?"
 unsilence: "Undo silencing"
@@ -1192,7 +1193,7 @@ noGraze:
 silencedWarning:
   "This page is showing because these users are from servers your admin
   silenced, so they may potentially be spam."
-isBot: "This account is a bot"
+isBot: "This account is automated"
 isLocked: "This account has follow approvals"
 isModerator: "Moderator"
 isAdmin: "Administrator"
@@ -2280,3 +2281,5 @@ _iconSets:
   regular: "Regular"
   fill: "Filled"
   duotone: "Duotone"
+moreUrls: "Pinned pages"
+moreUrlsDescription: "Enter the pages you want to pin to the help menu in the lower left corner using this notation:\n\"Display name\": https://example.com/"

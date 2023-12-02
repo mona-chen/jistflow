@@ -45,7 +45,7 @@ import MkDriveFileThumbnail from "@/components/MkDriveFileThumbnail.vue";
 import bytes from "@/filters/bytes";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import icon from "@/scripts/icon";
 
 const props = withDefaults(
@@ -106,6 +106,12 @@ function getMenu() {
 			text: i18n.ts.download,
 			icon: `${icon("ph-download-simple")}`,
 			download: props.file.name,
+		},
+		{
+			type: "a",
+			href: `/my/drive/file/${props.file.id}/attached`,
+			text: i18n.ts.showAttachedNotes,
+			icon: `${icon("ph-paperclip")}`,
 		},
 		null,
 		{

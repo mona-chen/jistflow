@@ -1,5 +1,1131 @@
 # Changelog
 
+## [1.0.5-rc] - 2023-11-26
+
+### Bug Fixes
+
+- Fix: :bug: don't add TOS URL to info menu if it doesn't exist
+
+- Fix: :bug: speakLikeCat -> speakAsCat
+
+- Fix: :bug: Add missing references to speakAsCat
+
+- Fix: :bug: show speakAsCat if isCat
+
+- Fix: :bug: properly decode reaction
+
+- Fix: search MFM not working
+- Fix: :children_crossing: don't open server info on ticker on note sub
+
+- Fix: 🐛 normalize post language strings
+
+ref: !10603
+NOTE: if you upgraded to 4a7bad11c697b53712dfc162f87941dd16199c9c but before this commit, manually download and run this migration: https://git.joinfirefish.org/firefish/firefish/-/blob/0f5e09d3ae4429c99ee0719295eeb8f282d53fe2/packages/backend/migration/1695348946091-normalize-locales.js
+
+- Fix typo
+- Fix openServerInfo
+
+- Fix: non-Firefish cats not being nyanified
+- Fix: add missing class
+- Fix: 🐛 when favorouting/unfavouriting with Mastodon API, send instance default reaction
+
+- Fix typo
+- Fix: alt texts shouldn't be interpreted as MFM
+
+- Fix: preserve newline character in alt text
+
+- Fix: preserve newline character in alt text popup
+
+- Fix: :bug: passed props to VueDraggable
+
+- Fix: :bug: Have showSuspendedDialog properly defined in account.ts
+
+- Fix: chart typos, update to v1.0.4-beta31
+
+- Fix: this "else" is unneeded
+
+- Fix: featured note is currently disabled
+
+- Fix null error
+
+- Fix: properly implement "With credential" in the API console
+
+- Fix format/lint command
+
+- Fix: 🐛 strange heart reaction behavior
+
+- Fix: [page] adding child blocks to section block
+
+- Fix: [page] list "My Pages" properly
+
+- Fix: empty array causes parse error on server start
+
+- Fix: :bug: list "My Posts" properly in gallery
+
+ref: !10618
+
+- Fix lint commands
+
+- Fix: don't show trailing colon in notification toasts
+
+- Fix: _helpers.tpl port type string (#10780)
+
+- Fix: properly use singular/plural in MkNoteDetailed tabs
+
+- Fix typo
+
+- Fix: consider hard mutes in antennas
+
+- Fix: cache muted words
+
+- Fix: Refetch user keys when HTTP Signature validation fails
+
+Co-authored-by: Erin Shepherd <erin.shepherd@e43.eu>
+
+- Fix (workaround): imports in MkFolder is also broken
+
+- Fix?: icon and defaultStore imports
+
+- Fix textarea
+
+- Fix components/form/suspense.vue
+- Fix: properly bypass word mute check if signed out
+
+- Fix: null error in renote button
+
+- Fix: define icon
+
+- Fix: :bug: MkDialog/MkWaitingDialog icons
+
+- Fix: :bug: icon in titleContainer
+
+- Fix: :label: firefish-js types
+
+- Fix: 0 is falsy
+- Fix: :bug: Expose animation setting in MkFolder
+
+- Fix: localOnly icon isn't showing
+
+- Fix: Extract $i from account.ts into reactiveAccount.ts to fix circular dependency
+
+Co-authored-by: minneyar <speed@sakabatou.net>
+
+- Fix: overlooked fix in cdf839bc
+
+- Fix: "_lang_" should be the language name, not the translation of "English"
+
+- Fix: targetLang is `xx-yy` or `xx_yy`
+- Fix: check isIndexable in built-in post search
+- Fix: :recycle: set en-US as default lang for type
+
+- Fix icon in page.post.vue
+- Fix: reactions_not_public condition
+
+- Fix(minor): consistent mfm parsing
+- Fix: icons in MkModPlayer
+- Fix: Use "iconClass" instead of "icon" in MkDialog; remove "null" in input field
+
+Co-authored-by: minneyar <speed@sakabatou.net>
+
+- Fix import notes federated initially
+
+Co-authored-by: CGsama <CGsama@outlook.com>
+
+- Fix: add missing entry in manifest.json so that PWA can use it
+
+- Fix: :recycle: add data.localOnly back to dontFederateInitially check
+
+ref: https://git.joinfirefish.org/firefish/firefish/-/merge_requests/10639#note_2651
+
+- Fix: upgrade AiScript!
+There are braking changes in the AiScript syntax, so existing plugins must alse be upgraded
+Also, I didn't include the function that can call remote servers' API (which is present in the latest Misskey)
+
+Co-authored-by: syuilo <syuilotan@yahoo.co.jp>
+Co-authored-by: Sayamame-beans <61457993+Sayamame-beans@users.noreply.github.com>
+
+- Fix: anyone (not only the owner) can press the edit button of an album
+- Fix: wrong string substitution (misskey.io -> firefish.io) + stop depending on misskey.io (close #10813)
+
+- Fix: :bug: SOMETHING_HAPPENED_IN_PROMISE when LANGS isn't found
+
+- Fix
+
+- Fix: syntax error
+at least this compiles
+
+- Fix: 🔒 Fix HTTP signature validation
+
+Co-authored-by: perillamint <perillamint@silicon.moe>
+Co-authored-by: yunochi <yuno@yunochi.com>
+
+
+### Documentation
+
+- Docs: 📝 migrating to sharkey
+
+- Docs: 📝 Add note about Access-Control-Allow-Origin header to readme
+
+- Docs: :memo: badges for firefish-js readme
+
+- Docs: :memo: remove bundle size badge from firefish-js
+
+Won't stay in sync with published ver
+
+- Docs: :memo: format badge as markdown
+
+- Docs: :memo: Misskey -> Firefish in documentation/comments/WebAuthn name
+
+
+### Features
+
+- Feat: :necktie: ToS button on signed out screen 3 dots
+
+Passes "two-click" rule
+
+Closes #10646
+
+- Feat: :sparkles: Show instance default reactions on welcome page instead of hardcoded
+
+- Add back _misskey_quote & _misskey_vote extensions
+
+- Feat: ✨ Add post language data to backend and API
+
+- Feat: ✨ Implement module player
+
+- Feat: :bento: new error images
+
+ref: https://minazukey.uk/notes/9jzr3jsrwvcmlcjp
+
+- Feat: :lipstick: Use Atkinson Hyperlegible as default font
+
+- Feat: show all reacted users initially in reactions tab
+
+- Feat: :sparkles: allow users to choose icon set
+
+Co-authored-by: naskya <m@naskya.net>
+
+- Feat: client: add page 'posts with file attached'
+
+Based on FoundKey commit 3747d7ecb1.
+Closes #10695
+
+- Feat: :sparkles: Support for _misskey_summary
+
+Co-authored-by: kakkokari-gtyih <daisho7308+f@gmail.com>
+ref: https://github.com/misskey-dev/misskey/pull/12184
+
+- Feat: ability to pin custom pages to the help menu
+
+
+### Miscellaneous Tasks
+
+- Chore: Translated using Weblate (Catalan)
+
+Currently translated at 100.0% (1861 of 1861 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ca/
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1861 of 1861 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Turkish)
+
+Currently translated at 99.5% (1853 of 1861 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/tr/
+
+- Chore: Translated using Weblate (Chinese (Simplified))
+
+Currently translated at 100.0% (1861 of 1861 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hans/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: :art: format
+
+- Chore: change function name
+I used `detectLanguage_` in client just because I wanted to use the name `detectLanguage` for another function (and the name `detect` sounds ambiguous)
+- Chore: :art: format
+
+- Chore: Translated using Weblate (Chinese (Simplified))
+
+Currently translated at 100.0% (1861 of 1861 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hans/
+
+- Chore: Translated using Weblate (Chinese (Traditional))
+
+Currently translated at 98.8% (1839 of 1861 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hant/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: :art: format
+
+- Chore: Added translation using Weblate (Hindi)
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 100.0% (1861 of 1861 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: Translated using Weblate (Chinese (Simplified))
+
+Currently translated at 100.0% (1861 of 1861 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hans/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Update build/rebuild command
+- Chore: Translated using Weblate (Catalan)
+
+Currently translated at 100.0% (1862 of 1862 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ca/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: remove unused import
+
+- Chore: make language detection a reusable function in frontend as well
+
+- Chore: default export preprocess function
+
+- Chore: Translated using Weblate (English)
+
+Currently translated at 100.0% (1862 of 1862 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/en/
+
+- Chore: Translated using Weblate (Catalan)
+
+Currently translated at 99.8% (1859 of 1862 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ca/
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 99.8% (1859 of 1862 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Chinese (Simplified))
+
+Currently translated at 99.7% (1858 of 1862 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hans/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 99.8% (1861 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 100.0% (1863 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: :arrow_up: up pnpm
+
+- Chore: Translated using Weblate (Catalan)
+
+Currently translated at 100.0% (1863 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ca/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1863 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Japanese)
+
+Currently translated at 99.5% (1854 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja/
+
+- Chore: Translated using Weblate (Japanese (Kansai))
+
+Currently translated at 70.2% (1308 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja_KS/
+
+- Chore: Translated using Weblate (Dutch)
+
+Currently translated at 32.5% (607 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/nl/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: add a description of an API parameter
+
+- Chore: preserve newline in MkInfo
+
+- Chore: move showFeaturedNotesInTimeline setting to appropriate section
+
+- Chore/docs: @firefish -> @firefish@fedi.software
+- Chore: Translated using Weblate (Spanish)
+
+Currently translated at 98.6% (1837 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/es/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Update build/rebuild command
+firefish-js/built is imported by multiple workspaces
+
+- Chore: :arrow_up: up deps
+
+- Chore: Translated using Weblate (Japanese)
+
+Currently translated at 99.5% (1854 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja/
+
+- Chore: Translated using Weblate (Japanese (Kansai))
+
+Currently translated at 70.4% (1313 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja_KS/
+
+- Chore: Translated using Weblate (Turkish)
+
+Currently translated at 99.3% (1850 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/tr/
+
+- Chore: Translated using Weblate (Chinese (Traditional))
+
+Currently translated at 98.8% (1841 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hant/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (French)
+
+Currently translated at 99.6% (1856 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/fr/
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1863 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Japanese)
+
+Currently translated at 99.6% (1857 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Japanese)
+
+Currently translated at 100.0% (1863 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja/
+
+- Chore: Translated using Weblate (Japanese)
+
+Currently translated at 100.0% (1863 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja/
+
+- Chore: Translated using Weblate (Japanese)
+
+Currently translated at 100.0% (1863 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (German)
+
+Currently translated at 99.5% (1854 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/de/
+
+- Chore: Translated using Weblate (Chinese (Simplified))
+
+Currently translated at 99.8% (1860 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hans/
+
+- Chore: Translated using Weblate (Chinese (Traditional))
+
+Currently translated at 99.7% (1859 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hant/
+
+- Chore: update the merge request template
+- Chore: make tlHintClosed account setting
+
+- Chore: update lockfile
+
+- Chore: minor refactor of check-hit-antenna
+
+- Chore: minor refactor of check-word-mute
+
+- Chore: format
+
+- Chore: :fire: remove firefish-js changelog
+
+outdated, all changes in master changelog
+
+- Chore: upgrade biome + lint & format
+
+- Chore: :package: add homepage for firefish-js npm
+
+- Chore: run lint
+
+- Chore: Translated using Weblate (Catalan)
+
+Currently translated at 100.0% (1863 of 1863 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ca/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1870 of 1870 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 99.8% (1868 of 1870 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: Translated using Weblate (Japanese (Kansai))
+
+Currently translated at 70.3% (1315 of 1870 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja_KS/
+
+- Chore: Translated using Weblate (Chinese (Traditional))
+
+Currently translated at 99.7% (1866 of 1870 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hant/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Polish)
+
+Currently translated at 91.6% (1714 of 1870 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/pl/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: up lockfile
+
+- Chore: lint
+
+- Chore: update ja-JP.yml
+- Chore: Translated using Weblate (French)
+
+Currently translated at 100.0% (1870 of 1870 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/fr/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: organize backend imports
+
+* remove unused/duplicate imports
+* replace paths like "../../../define.js" to be more readable
+* add missing @types packages
+
+- Chore: add missing @types packages for client
+
+- Chore: remove unused imports/variables
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1870 of 1870 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 99.8% (1868 of 1870 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: up pnpm version
+v8.10.0 has a regression
+- Chore: up lockfile
+
+- Chore: Translated using Weblate (Russian)
+
+Currently translated at 98.7% (1846 of 1870 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ru/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: upgrade dependencies (except for @swc/core and megalodon)
+
+- Chore: lint
+
+- Chore: format
+
+- Chore: Translated using Weblate (German)
+
+Currently translated at 98.8% (1848 of 1870 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/de/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: remove unused dependencies
+
+- Chore: Translated using Weblate (Catalan)
+
+Currently translated at 100.0% (1872 of 1872 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ca/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore (English locale, minor): remote users info are definitely incomplete
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1872 of 1872 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1872 of 1872 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 100.0% (1872 of 1872 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: format
+
+- Chore: :rotating_light: lint
+
+- Chore: lint import order
+
+- Chore: :fire: remove unused ID methods
+
+
+### Refactor
+
+- Refactor: :fire: remove legacy reactions
+
+BREAKING: Breaks emoji reaction compatibility with Misskey versions before custom reactions were added (v9?)
+
+- Refactor: :fire: Remove _misskey_content and _misskey_quote
+
+Should improve federation performance by removing duplicate content
+
+BREAKING: Breaks MFM content and quote compatibility with Misskey before v12/v11(?)
+
+- Refactor: :fire: remove _misskey_reaction and _misskey_votes
+
+BREAKING: breaks poll federation with very old Misskey versions
+
+- Refactor: :sparkles: Make speakAsCat an ActivityPub extension
+
+https://joinfirefish.org/ns/#speakascat
+Closes #10744
+
+- Refactor: 🔥🐟 We're Firefish, not Misskey
+
+Changes the default reactions to end with 🔥🐟 instead of 🍮
+
+- Refactor: 🔥 remove old tests
+
+- Refactor: :boom: properly deprecate legacy reactions
+
+- Refactor: :recycle: unessicary function
+
+- Refactor: :lipstick: module player uses theme colors
+
+- Refactor: :bento: use webp for error images instead of avif
+
+Ended up having better compression and wider compatibility
+
+- Refactor: :lipstick: Make disabled buttons slightly more visible
+
+- Refactor the rebuild command
+
+- Refactor: ♻️ use upstream megalodon
+
+- Refactor: :recycle: firefish-js build
+
+- Refactor: :heavy_minus_sign: remove semver from firefish-js
+
+- Refactor: :globe_with_meridians: bot -> automated
+
+Matches Mastodon, prevents confusion
+
+Ref: https://firefish.community/notes/9lcootq9f108qzz2
+
+- Refactor: :fire: remove unused reference to MisskeyClient
+
+- Enhance: increase emoji picker search results
+
+Co-authored-by: naskya <m@naskya.net>
+
+- Refactor (minor): update MkPostForm
+
+
+### Styling
+
+- Style: :art: Replace to and from with 0% and 100% in CSS @keyframes
+
+Closes #10752
+
+- Style: 💄 use rocket as icon for boosting 🚀
+
+- Style: more contrast for disabled boost button
+
+
+## [1.0.4-beta31] - 2023-09-20
+
+### Bug Fixes
+
+- Fix: :ambulance: downgrade swc to 1.3.78
+
+Closes #10751
+
+
+### Miscellaneous Tasks
+
+- Chore: :bookmark: v1.0.4-beta31
+
+
+## [1.0.4-beta3] - 2023-09-20
+
+### Bug Fixes
+
+- Fix: :ambulance: incorrect end tag
+
+- Fix: :bulb: biome still uses `rome-ignore`
+
+- Fix: :bug: smaller maskable icon
+
+- Fix: release redis locks
+
+- Fix: require credentials in the notes/translate endpoint
+
+- Fix mfm import
+
+- Fix: don't show translate button if signed out
+
+- Fix (minor): noteId is not a number
+
+- Fix: Use node 20.5 in Dockerfile
+
+Co-authored-by: Minneyar <minneyar@fuzzyfox.social>
+
+- Fix: follow requests pagination looping bug
+https://astolfo.social/notes/9jeibgm1wyfk9oha
+
+- Fix?: speakAsCat not being federated
+
+- Fix: "show replies in timeline" refactoring was not backward compatible
+
+- Fix: change local icon to users to fit the style of the existing tab
+
+- Fix: :alembic: Fix variables?
+
+
+### Documentation
+
+- Docs: :lock: robots.txt asset
+
+Closes #10640, #10608
+
+- Docs: :memo: merge request co-authored-by
+
+- Docs: 📝 1.0.4-beta3 changelog
+
+- Docs: 📝 changelog typos
+
+
+### Features
+
+- Feat: :bookmark: 1.0.4-beta2
+
+- Feat: :sparkles: `indexable` User property
+
+- Feat: sticky drive header
+This makes it easy to get files out of a folder to the parent directory.
+- Feat: open server info by clicking the ticker
+
+- Feat: vibration
+
+- Add vibration to new post button
+
+
+### Miscellaneous Tasks
+
+- Chore: Translated using Weblate (French)
+
+Currently translated at 100.0% (1850 of 1850 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/fr/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: :arrow_up: up photoswipe
+
+- Chore: Translated using Weblate (Spanish)
+
+Currently translated at 99.4% (1839 of 1850 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/es/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: :art: format
+
+- Chore: update docs/MR template
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 99.8% (1848 of 1850 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: add biome binaries to dev dependencies
+
+- Chore: Translated using Weblate (Catalan)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ca/
+
+- Chore: Translated using Weblate (German)
+
+Currently translated at 99.9% (1853 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/de/
+
+- Chore: Translated using Weblate (French)
+
+Currently translated at 99.7% (1849 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/fr/
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: Translated using Weblate (Japanese (Kansai))
+
+Currently translated at 69.7% (1293 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja_KS/
+
+- Chore: Translated using Weblate (Norwegian Bokmål)
+
+Currently translated at 88.9% (1649 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/nb_NO/
+
+- Chore: Translated using Weblate (Swedish)
+
+Currently translated at 37.6% (698 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/sv/
+
+- Chore: Translated using Weblate (Turkish)
+
+Currently translated at 99.9% (1853 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/tr/
+
+- Chore: Translated using Weblate (Chinese (Simplified))
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hans/
+
+- Chore: Translated using Weblate (Korean)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ko/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Norwegian Bokmål)
+
+Currently translated at 89.0% (1651 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/nb_NO/
+
+- Chore: Translated using Weblate (Norwegian Bokmål)
+
+Currently translated at 89.4% (1658 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/nb_NO/
+
+- Chore: Translated using Weblate (Norwegian Bokmål)
+
+Currently translated at 90.2% (1674 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/nb_NO/
+
+- Chore: Translated using Weblate (Japanese (Kansai))
+
+Currently translated at 69.7% (1294 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja_KS/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: round down elapsed time
+- Chore: Translated using Weblate (German)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/de/
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Japanese)
+
+Currently translated at 99.7% (1850 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja/
+
+- Chore: Translated using Weblate (Japanese (Kansai))
+
+Currently translated at 70.4% (1307 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja_KS/
+
+- Chore: Translated using Weblate (Turkish)
+
+Currently translated at 100.0% (1854 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/tr/
+
+- Chore: Translated using Weblate (Chinese (Traditional))
+
+Currently translated at 97.7% (1813 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hant/
+
+- Chore: Translated using Weblate (Galician)
+
+Currently translated at 17.5% (326 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/gl/
+
+- Chore: Translated using Weblate (Bulgarian (bul_BG))
+
+Currently translated at 23.5% (436 of 1854 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/bul_BG/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+- Chore: Translated using Weblate (Catalan)
+
+Currently translated at 100.0% (1855 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ca/
+
+- Chore: Translated using Weblate (German)
+
+Currently translated at 100.0% (1855 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/de/
+
+- Chore: Translated using Weblate (French)
+
+Currently translated at 99.9% (1854 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/fr/
+
+- Chore: Translated using Weblate (Indonesian)
+
+Currently translated at 100.0% (1855 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/id/
+
+- Chore: Translated using Weblate (Italian)
+
+Currently translated at 100.0% (1855 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/it/
+
+- Chore: Translated using Weblate (Japanese)
+
+Currently translated at 99.7% (1851 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/ja/
+
+- Chore: Translated using Weblate (Chinese (Traditional))
+
+Currently translated at 98.1% (1820 of 1855 strings)
+
+Translation: Firefish/locales
+Translate-URL: https://hosted.weblate.org/projects/firefish/locales/zh_Hant/
+
+- Chore: Merge branch 'origin/develop' into Weblate.
+
+
+### Performance
+
+- Perf: :zap: seperate web and queue workers
+
+Co-authored-by: Johann150 <johann@qwertqwefsday.eu>
+
+- Perf: :zap: Replace JSDOM with Happy DOM
+
+- Perf: :zap: use existing response
+
+
+### Refactor
+
+- Refactor: :recycle: Migrate auth.vue to composition API
+
+
+### Styling
+
+- Style
+
+
 ## [1.0.4-beta2] - 2023-09-02
 
 ### Bug Fixes
@@ -15,6 +1141,8 @@
 - Fix: :bug: revert last part of c0eac56355a0c40ac4d9c0bae82917506e011dc3 to properly paginate antennas/notes query
 
 - Fix: :bug: make admin users page properly direct user cards to about page
+
+- Fix?
 
 - Fix: :globe_with_meridians: copying origin: "remote" -> "origin"
 
@@ -104,6 +1232,12 @@ Closes #10581
 
 - Fix: :busts_in_silhouette: naskya is fullstack
 
+- Fix locale
+
+- Fix
+
+- Fix: :green_heart: Docker env for CI
+
 - Fix: :green_heart: Docker env for CI
 
 - Fix: :green_heart: docker service alias
@@ -123,6 +1257,9 @@ Closes #10581
 - Fix: :bug: offline html responsive viewport
 
 - Fix: building re2 in Dockerfile
+- Fix: :ambulance: proper conditional
+
+I need sleep... or coffee
 
 - Fix: :children_crossing: make importing emoji packs clearer
 
@@ -171,6 +1308,29 @@ fixes chrome mobile rotating screen even when device rotation is off
 
 - Fix: :lipstick: Announcement padding/margins
 
+- Fix: :ambulance: incorrect end tag
+
+
+### Documentation
+
+- Docs: :memo: repo move
+
+- Docs: :memo: fix link
+
+- Docs: :memo: 1.0.3 changelog
+
+- Docs: :memo: 1.0.3 changelog
+
+- Docs: :memo: Add explicit FoundKey commits to CHANGELOG
+
+- Docs: :memo: AUR package
+
+- Docs: :memo: remove links to FIREFISH.md
+
+Closes #10601
+
+- Docs: :memo: 1.0.4-beta changelog
+
 
 ### Features
 
@@ -201,6 +1361,8 @@ Co-authored-by: Acid Chicken (硫酸鶏) <root@acid-chiken.com>
 - Feat: Fetch total posts of users on create/update
 
 - Feat: post translation in Traditional Chinese
+
+- Feat: :bookmark: 1.0.4-beta2
 
 
 ### Miscellaneous Tasks
@@ -4422,7 +5584,7 @@ Currently translated at 99.5% (1745 of 1753 strings)
 Translation: Calckey/locales
 Translate-URL: https://hosted.weblate.org/projects/calckey/locales/de/
 
-- Chore: formatting
+- Crmatting
 
 - Chore: update example config
 
@@ -6387,6 +7549,330 @@ premature partial from #9415
 
 - Fix
 
+- Fix
+
+- Fix cleo's oopsie
+
+- Fix import
+
+- Fix import once and for all
+
+- Fix migratio
+- Fix ap person to db model
+
+fixed entries of movedToUri and added entries of alsoKnownAs
+
+- Fixed it for good
+
+- Fix more icons
+
+- Fix remote move queue
+
+- Fix queue?
+
+- Fixed stupidness again
+
+- Fix ??
+
+- Fix import
+
+- Fix path
+
+- Fix liked pages
+
+- Fix liked pages endpoint
+
+- Fix??
+
+- Fix remote move queue
+
+- Fix queue?
+
+maybe pls
+
+debug log
+
+fixed stupidness again
+
+make remote mig work
+
+- Fix path
+
+- Fix unicode weirdness
+
+- Fix: call functions properly
+
+- Fix viewing basic federaion info
+
+- Fix: migration labels
+
+- Fix: label
+
+- Fix ckjs
+
+- Fix calckeyjs
+
+- Fix calckey-js | fix migration url
+
+- Fix locale
+
+- Fix alsoKnownAs federation
+
+- Fix redis in ci
+
+- Fix federation of moved to to pleroma
+because it expects it to be non-existant if its null.
+
+- Fix docker ci
+
+
+### Documentation
+
+- Docs: deps
+
+- Docs: 📝 better links
+
+- Docs: 📝 be more descriptive with new techs
+
+- Docs: 📝 scylla will be optional
+
+- Docs: 📝 better links
+
+- Docs: 📝 be more descriptive with new techs
+
+- Docs: 📝 scylla will be optional
+
+- Docs: 📝 account migration
+
+
+### Features
+
+- Feat: Docker update script (closes #9159)
+
+- Feat: Docker update script (closes #9159)
+
+- Feat: :sparkles: Add delete all lists
+
+- Add ui back
+
+- Add local move follower migration
+
+- Feat: customizable max note length
+
+- Add check for already moved
+
+
+### Miscellaneous Tasks
+
+- Update person model
+
+
+## [.12.119.0-calc.18] - 2022-12-04
+
+### Bug Fixes
+
+- Fix #9140
+
+- Fix cursor in note thread
+
+- Fix problems from #9146
+
+- Fix
+
+- Fix
+
+- Fix
+
+
+### Documentation
+
+- Docs: another tip
+
+- Docs: 📝 improve install instructions
+
+- Docs: 📝 formatting
+
+- Docs: 📝 optional deps
+
+- Docs: custom locales
+
+- Docs: a11y
+
+- Docs: reflect last change in readme
+
+
+## [.12.119.0-calc.17] - 2022-11-22
+
+### Bug Fixes
+
+- Fix defaults
+
+- Fix patrons
+
+- Fixes
+
+- Fix gulpfile
+
+- Fix again
+
+- Fix out link
+
+- Fix: don't do icon transform by default
+
+
+### Performance
+
+- Perf: :zap: load icons css last
+
+- Perf: :zap: load icons css last
+
+
+### Styling
+
+- Style
+
+
+### Testing
+
+- Test api docs
+
+
+## [.12.119.0-calc.15] - 2022-11-19
+
+### Bug Fixes
+
+
+### Documentation
+
+- Docs: :memo: improve documentation, nginx
+
+- Docs: :memo: tip
+
+- Docs: :memo: open port tip
+
+- Docs: 📝 alt text for calc
+
+- Docs: 📝 typo
+
+It's "available". Thank you luke :P
+
+- Docs: 📝 typo
+
+- Docs: 📝 official account
+
+
+### Features
+
+- Feat: ✨ Page drafts
+
+
+### Miscellaneous Tasks
+
+- Chore: :arrow_up: upgrade packages
+
+- Chore: :arrow_up: yarn 3.3.0
+
+
+### Styling
+
+- Style
+
+
+### Testing
+
+- Test
+
+
+## [.12.119.0-calc.14] - 2022-11-15
+
+### Bug Fixes
+
+- Fix: :bug: fix image size in dms
+
+- Fix: actually set in-dm to be true if in dm
+
+- Fix serviceworker
+
+
+### Documentation
+
+- Docs: tips
+
+
+### Refactor
+
+- Refactor
+
+
+## [.12.119.0-calc.13] - 2022-11-15
+
+### Bug Fixes
+
+- Fix pinned users
+
+- Fix pinned users list
+
+- Fix: 🐛 no double import
+
+- Fix: workaround for sticky image container header
+
+- Fix i18n
+
+- Fix pages index
+
+- Fix pages swiping
+
+- Fix?
+
+- Fix chat message
+
+- Fix pages margin
+
+- Fix user profile
+
+- Fix fill out profile step of tutorial
+
+
+### Documentation
+
+- Docs: fix typo
+
+
+### Miscellaneous Tasks
+
+- Chore: :arrow_up: update deps
+
+
+### Refactor
+
+- Refactor: :recycle: Replace all `$ts` with i18n
+
+
+### Testing
+
+- Test
+
+- Test explore page fix
+
+
+## [.12.119.0-calc.12] - 2022-11-10
+
+### Bug Fixes
+
+- Fix imports
+
+- Fix style
+
+
+### Miscellaneous Tasks
+
+- Chore: :package: package upgrades
+
+
+## [.12.119.0-calc.10] - 2022-11-09
+
+### Bug Fixes
+
 - Fix: :bug: wrong placement
 
 - Fix?
@@ -6427,173 +7913,6 @@ premature partial from #9415
 
 - Fix
 
-- Fix imports
-
-- Fix style
-
-- Fix pinned users
-
-- Fix pinned users list
-
-- Fix: 🐛 no double import
-
-- Fix: workaround for sticky image container header
-
-- Fix i18n
-
-- Fix pages index
-
-- Fix pages swiping
-
-- Fix?
-
-- Fix chat message
-
-- Fix pages margin
-
-- Fix user profile
-
-- Fix fill out profile step of tutorial
-
-- Fix: :bug: fix image size in dms
-
-- Fix: actually set in-dm to be true if in dm
-
-- Fix serviceworker
-
-- Fix
-
-- Fix: don't show rtl if disabled, regardless of perms
-
-- Fix
-
-- Fix
-
-- Fix locale
-
-- Fix
-
-- Fix defaults
-
-- Fix patrons
-
-- Fixes
-
-- Fix gulpfile
-
-- Fix again
-
-- Fix out link
-
-- Fix: don't do icon transform by default
-
-- Fix #9140
-
-- Fix cursor in note thread
-
-- Fix problems from #9146
-
-- Fix
-
-- Fix
-
-- Fix
-
-- Fix
-
-- Fix
-
-- Fix cleo's oopsie
-
-- Fix imports
-
-- Fix import once and for all
-
-- Fix migration
-
-- Fix
-
-- Fixes
-
-- Fix
-
-- Fix
-
-- Fix
-
-- Fix ap person to db model
-
-fixed entries of movedToUri and added entries of alsoKnownAs
-
-- Fixed it for good
-
-- Fix more icons
-
-- Fix remote move queue
-
-- Fix queue?
-
-- Fixed stupidness again
-
-- Fix ??
-
-- Fix import
-
-- Fix path
-
-- Fix liked pages
-
-- Fix liked pages endpoint
-
-- Fix??
-
-- Fix remote move queue
-
-- Fix queue?
-
-maybe pls
-
-debug log
-
-fixed stupidness again
-
-fix ??
-
-fix import
-
-im a idiot lol
-
-make remote mig work
-
-- Fix path
-
-- Fix unicode weirdness
-
-- Fix: call functions properly
-
-- Fix viewing basic federaion info
-
-- Fix: migration labels
-
-- Fix: label
-
-- Fix ckjs
-
-- Fix calckeyjs
-
-- Fix calckey-js | fix migration url
-
-- Fix locale
-
-- Fix alsoKnownAs federation
-
-- Fix redis in ci
-
-- Fix federation of moved to to pleroma
-because it expects it to be non-existant if its null.
-
-- Fix docker ci
-
 
 ### Documentation
 
@@ -6613,66 +7932,8 @@ because it expects it to be non-existant if its null.
 
 - Docs: 📝 tips & tricks
 
-- Docs: fix typo
-
-- Docs: tips
-
-- Docs: :memo: improve documentation, nginx
-
-- Docs: :memo: tip
-
-- Docs: :memo: open port tip
-
-- Docs: 📝 alt text for calc
-
-- Docs: 📝 typo
-
-It's "available". Thank you luke :P
-
-- Docs: 📝 typo
-
-- Docs: 📝 official account
-
-- Docs: another tip
-
-- Docs: 📝 improve install instructions
-
-- Docs: 📝 formatting
-
-- Docs: 📝 optional deps
-
-- Docs: custom locales
-
-- Docs: a11y
-
-- Docs: reflect last change in readme
-
-- Docs: deps
-
-- Docs: 📝 better links
-
-- Docs: 📝 be more descriptive with new techs
-
-- Docs: 📝 scylla will be optional
-
-- Docs: 📝 better links
-
-- Docs: 📝 be more descriptive with new techs
-
-- Docs: 📝 scylla will be optional
-
-- Docs: 📝 account migration
-
 
 ### Features
-
-- Feat: :art: move reaction button
-
-- Feat: :sparkles: Star button
-
-- Feat: :art: add ripple to star react
-
-- Feat: :art: add ripple to star react
 
 - Feat: :sparkles: Toggle showing calckey updates as admin
 
@@ -6692,22 +7953,6 @@ It's "available". Thank you luke :P
 
 - Add effects, japanese translation
 
-- Feat: ✨ Page drafts
-
-- Feat: Docker update script (closes #9159)
-
-- Feat: Docker update script (closes #9159)
-
-- Feat: :sparkles: Add delete all lists
-
-- Add ui back
-
-- Add local move follower migration
-
-- Feat: customizable max note length
-
-- Add check for already moved
-
 
 ### Miscellaneous Tasks
 
@@ -6717,40 +7962,12 @@ It's "available". Thank you luke :P
 
 - Update deps
 
-- Chore: :package: package upgrades
-
-- Chore: :arrow_up: update deps
-
-- Chore: :arrow_up: upgrade packages
-
-- Chore: :arrow_up: yarn 3.3.0
-
-- Update person model
-
-
-### Performance
-
-- Perf: :zap: load icons css last
-
-- Perf: :zap: load icons css last
-
 
 ### Refactor
 
 - Refactor readme
 
 - Refactor: :alembic: try `active-class`
-
-- Refactor: :recycle: Replace all `$ts` with i18n
-
-- Refactor
-
-
-### Styling
-
-- Style
-
-- Style
 
 
 ### Testing
@@ -6769,84 +7986,103 @@ It's "available". Thank you luke :P
 
 - Test
 
-- Test
 
-- Test explore page fix
+## [.12.119.0-calc.4.1] - 2022-10-26
 
-- Test
+### Bug Fixes
 
-- Test api docs
+- Fix
+
+
+## [.12.119.0-calc.4] - 2022-10-26
+
+### Features
+
+- Feat: :art: move reaction button
+
+- Feat: :sparkles: Star button
+
+- Feat: :art: add ripple to star react
+
+- Feat: :art: add ripple to star react
 
 
 ## [12.119.0-calc.3] - 2022-10-26
 
+## [.12.119.0-calc.2] - 2022-10-26
+
 ### Bug Fixes
 
-- Fix streaming
+- Fix: :bug: No swiper on desktop
 
-- Fix gulpfile
+- Fix dup import
 
-- Fix caption in admin settings
+- Fix dup import
 
-- Fix: :fire: Remove meta implementation in routing for now
+- Fix channels
 
-- Fix: recommended timeline
+- Fix clicking cw button on reply
 
-I doubt itll work, but...
+- Fix: Profile bg blur respects user blur choice
 
-🙏
+- Fix
 
-hail mairy
+- Fix link
 
-certified typeorm moment
+- Fix
 
-im stuff
+- Fix
 
-debug log
+- Fix
 
-not a fan of js/ts
+- Fix
 
-istg
 
-missing parenthesis
+### Documentation
 
-postgres can kiss my ass
+- Docs :memo: 🐳
 
-didnt need `::string[]` i think
 
-hide caption button
+### Features
 
-Remove debug log
+- Feat: :sparkles: Add setting for swipe behavior
 
-Clean up
+- Add console log
 
-no longer beta!
 
-fix streaming
+### Miscellaneous Tasks
 
-- Fix: caption in admin settings
+- Chore: quote-button --> MkQuoteButton
 
-Move splash below theme
 
-Splash below theme
+### Testing
 
-- Fix: :alembic: Attempt to fix routing
+- Test
 
-- Fix: :pencil2: Async typo
+- Test
 
-- Fix: :pencil2: Same typo as before...
+- Testing
 
-- Fix: :lock: Remove timeline source if not logged in and guest tl isn't enabled
+- Test
 
-- Fix: :bug: No computed on declared var
+- Testtt
 
-- Fix: :bug: Allow timeline if logged in, loll
 
-- Fix: :bug: timeline secured
+## [.12.119.0-calc.1] - 2022-09-14
 
-- Fix: :bug: Remove header tabs if guest not enabled and not logged in
+### Documentation
 
-- Fix: :package: Fix yarn.lock
+- Docker-compose: replace misskey with calckey to fix example
+
+
+### Features
+
+- Feat: ✨ Warning in control panel if there's update
+
+
+## [.12.119.0-calc] - 2022-09-14
+
+### Bug Fixes
 
 - Fix: :alembic: Try swiped-events
 
@@ -6986,50 +8222,8 @@ Fixed a typo that made a required property be undefined.
 
 - Fix: :bug: motd
 
-- Fix: :bug: No swiper on desktop
-
-- Fix dup import
-
-- Fix dup import
-
-- Fix channels
-
-- Fix clicking cw button on reply
-
-- Fix: Profile bg blur respects user blur choice
-
-- Fix
-
-- Fix link
-
-- Fix
-
-- Fix
-
-- Fix
-
-- Fix
-
 
 ### Documentation
-
-- Docs: :memo: Remove duplicate line
-
-- Docs: :memo: npm -> yarn
-
-- Docs: :memo: Add links
-
-- Docs: :memo: Notable differences
-
-- Docs: :memo: Customize instructions
-
-- Docs: :memo: checksum behavior note
-
-- Docs: :memo: emojis!
-
-- Docs: :memo: planning join reasons
-
-- Docs: :memo: warning for node 18.6.0
 
 - Docs: :memo: Add swipe to WIP
 
@@ -7049,41 +8243,8 @@ Fixed a typo that made a required property be undefined.
 
 - Docs: 📝 Docker instructions 🐋
 
-- Docker-compose: replace misskey with calckey to fix example
-
-- Docs :memo: 🐳
-
 
 ### Features
-
-- Feat: ✨ custom css/assets
-
-typo
-
-fix gulpfile
-
-- Feat: ✨ togglable guest timeline
-
-default false
-
-rc 9
-
-no async
-
-welcome explore button to `/explore`
-
-fix: :fire: Remove meta implementation in routing for now
-
-- Feat: :bookmark: 12.118.1-calc release!
-
-- Feat: show header with current user avatar on TL (#9051)
-
-* feat: show header with current user avatar on TL
-
-* refactor(client): use displayMyAvatar prop instead of metadata
-
-* refactor(client): prefer v-if to `display: none;`
-- Feat: :bookmark: .1
 
 - Feat: :sparkles: foundkey: add recollapsing quote notes
 
@@ -7141,22 +8302,8 @@ fix: :fire: Remove meta implementation in routing for now
 
 - Feat: :bookmark: v12.119.0
 
-- Feat: ✨ Warning in control panel if there's update
-
-- Feat: :sparkles: Add setting for swipe behavior
-
-- Add console log
-
 
 ### Miscellaneous Tasks
-
-- Chore: :loud_sound: Test logging
-
-- Chore: :alembic: More debugging
-
-- Chore: :bookmark: Bump to .3
-
-- Update deps
 
 - Chore: :package: Use proper misskey browser image resizer package
 
@@ -7228,8 +8375,6 @@ Co-authored-by: Acid Chicken (硫酸鶏) <root@acid-chicken.com>
 
 - Chore: :fire: rm tabs
 
-- Chore: quote-button --> MkQuoteButton
-
 
 ### Refactor
 
@@ -7277,17 +8422,153 @@ Swiper everywhere, attempt to sync to header bar
 - Refactor: :sparkles: Move group actions to header bar
 
 
-### Testing
+## [.12.118.1-calc.1] - 2022-08-15
 
-- Test
+### Bug Fixes
 
-- Test
+- Fix: :package: Fix yarn.lock
 
-- Testing
 
-- Test
+### Documentation
 
-- Testtt
+- Docs: :memo: Add links
+
+- Docs: :memo: Notable differences
+
+- Docs: :memo: Customize instructions
+
+- Docs: :memo: checksum behavior note
+
+- Docs: :memo: emojis!
+
+- Docs: :memo: planning join reasons
+
+- Docs: :memo: warning for node 18.6.0
+
+
+### Features
+
+- Feat: show header with current user avatar on TL (#9051)
+
+* feat: show header with current user avatar on TL
+
+* refactor(client): use displayMyAvatar prop instead of metadata
+
+* refactor(client): prefer v-if to `display: none;`
+- Feat: :bookmark: .1
+
+
+### Miscellaneous Tasks
+
+- Update deps
+
+
+## [.12.118.1-calc] - 2022-08-10
+
+### Bug Fixes
+
+- Fix streaming
+
+- Fix gulpfile
+
+- Fix caption in admin settings
+
+- Fix: :fire: Remove meta implementation in routing for now
+
+- Fix: recommended timeline
+
+I doubt itll work, but...
+
+🙏
+
+hail mairy
+
+certified typeorm moment
+
+im stuff
+
+debug log
+
+not a fan of js/ts
+
+istg
+
+missing parenthesis
+
+postgres can kiss my ass
+
+didnt need `::string[]` i think
+
+hide caption button
+
+Remove debug log
+
+Clean up
+
+no longer beta!
+
+fix streaming
+
+- Fix: caption in admin settings
+
+Move splash below theme
+
+Splash below theme
+
+- Fix: :alembic: Attempt to fix routing
+
+- Fix: :pencil2: Async typo
+
+- Fix: :pencil2: Same typo as before...
+
+- Fix: :lock: Remove timeline source if not logged in and guest tl isn't enabled
+
+- Fix: :bug: No computed on declared var
+
+- Fix: :bug: Allow timeline if logged in, loll
+
+- Fix: :bug: timeline secured
+
+- Fix: :bug: Remove header tabs if guest not enabled and not logged in
+
+
+### Documentation
+
+- Docs: :memo: Remove duplicate line
+
+- Docs: :memo: npm -> yarn
+
+
+### Features
+
+- Feat: ✨ custom css/assets
+
+typo
+
+fix gulpfile
+
+- Feat: ✨ togglable guest timeline
+
+default false
+
+rc 9
+
+no async
+
+welcome explore button to `/explore`
+
+fix: :fire: Remove meta implementation in routing for now
+
+- Feat: :bookmark: 12.118.1-calc release!
+
+
+### Miscellaneous Tasks
+
+- Chore: :loud_sound: Test logging
+
+- Chore: :alembic: More debugging
+
+- Chore: :bookmark: Bump to .3
 
 
 ## [12.118.1-calc.rc.5.1] - 2022-08-09
@@ -7455,8 +8736,6 @@ Co-authored-by: Andreas Nedbal <github-bf215181b5140522137b3d4f6b73544a@desu.ema
 
 ### Bug Fixes
 
-- Fix
-
 - Fix search
 
 - Fix(client): タイミングによっては tag-cloud でエラーが発生するのを修正
@@ -7592,6 +8871,13 @@ Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.c
 - Refactor queue chart to composition API
 
 - Refactor pages/auth.form.vue to composition API
+
+
+## [.12.117.1.2-calc] - 2022-07-20
+
+### Bug Fixes
+
+- Fix
 
 
 ## [12.117.1.1-calc] - 2022-07-19

@@ -64,7 +64,6 @@ import { i18n } from "@/i18n";
 import type { PageMetadata } from "@/scripts/page-metadata";
 import { provideMetadataReceiver } from "@/scripts/page-metadata";
 import { Router } from "@/nirax";
-import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 
 const props = defineProps<{

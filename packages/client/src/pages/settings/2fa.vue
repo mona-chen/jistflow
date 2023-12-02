@@ -120,7 +120,7 @@ import MkSwitch from "@/components/form/switch.vue";
 import FormSection from "@/components/form/section.vue";
 import MkFolder from "@/components/MkFolder.vue";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -279,7 +279,7 @@ async function addSecurityKey() {
 			challenge: byteify(challenge.challenge, "base64"),
 			rp: {
 				id: hostname,
-				name: "Misskey",
+				name: "Firefish",
 			},
 			user: {
 				id: byteify($i!.id, "ascii"),

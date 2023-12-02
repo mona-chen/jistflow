@@ -258,7 +258,7 @@ watch(q, () => {
 	const newQ = q.value.replace(/:/g, "").toLowerCase();
 
 	const searchCustom = () => {
-		const max = 16;
+		const max = 100;
 		const emojis = customEmojis;
 		const matches = new Set<firefish.entities.CustomEmoji>();
 

@@ -1,10 +1,8 @@
-import define from "../../define.js";
-import { Brackets } from "typeorm";
-import { Endpoint } from "@/server/api/endpoint-base.js";
-import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import { Channels } from "@/models/index.js";
-import { DI } from "@/di-symbols.js";
 import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
+import { Channels } from "@/models/index.js";
+import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
+import define from "@/server/api/define.js";
+import { Brackets } from "typeorm";
 
 export const meta = {
 	tags: ["channels"],

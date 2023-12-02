@@ -32,15 +32,9 @@
 		"types": [
 			"vite/client",
 		],
-		"lib": [
-			"esnext",
-			"dom"
-		],
+		"lib": ["esnext", "dom"],
 		"jsx": "preserve"
 	},
 	"compileOnSave": false,
-	"include": [
-		"./**/*.ts",
-		"./**/*.vue"
-	]
+	"include": ["./**/*.ts", "./**/*.vue"]
 }

@@ -1,10 +1,8 @@
-import megalodon, { MegalodonInterface } from "megalodon";
+import { IdType, convertId } from "@/server/api/index.js";
 import Router from "@koa/router";
-import { koaBody } from "koa-body";
-import { convertId, IdType } from "../../index.js";
 import { getClient } from "../ApiMastodonCompatibleService.js";
-import { convertTimelinesArgsId } from "./timeline.js";
 import { convertNotification } from "../converters.js";
+import { convertTimelinesArgsId } from "./timeline.js";
 function toLimitToInt(q: any) {
 	if (q.limit) if (typeof q.limit === "string") q.limit = parseInt(q.limit, 10);
 	return q;

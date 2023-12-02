@@ -1,4 +1,4 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { listRelay } from "@/services/relay.js";
 
 export const meta = {

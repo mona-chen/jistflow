@@ -259,12 +259,12 @@ const fetchMore = async (): Promise<void> => {
 						offset: offset.value,
 				  }
 				: props.pagination.reversed
-				? {
-						sinceId: items.value[0].id,
-				  }
-				: {
-						untilId: items.value[items.value.length - 1].id,
-				  }),
+				  ? {
+							sinceId: items.value[0].id,
+				    }
+				  : {
+							untilId: items.value[items.value.length - 1].id,
+				    }),
 		})
 		.then(
 			(res) => {
@@ -320,12 +320,12 @@ const fetchMoreAhead = async (): Promise<void> => {
 						offset: offset.value,
 				  }
 				: props.pagination.reversed
-				? {
-						untilId: items.value[0].id,
-				  }
-				: {
-						sinceId: items.value[items.value.length - 1].id,
-				  }),
+				  ? {
+							untilId: items.value[0].id,
+				    }
+				  : {
+							sinceId: items.value[items.value.length - 1].id,
+				    }),
 		})
 		.then(
 			(res) => {

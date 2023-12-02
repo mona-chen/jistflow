@@ -66,7 +66,7 @@ import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import { stream } from "@/stream";
 import { i18n } from "@/i18n";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { getUserMenu } from "@/scripts/get-user-menu";
 import { useRouter } from "@/router";
 import { vibrate } from "@/scripts/vibrate";

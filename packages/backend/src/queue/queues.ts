@@ -1,11 +1,11 @@
 import config from "@/config/index.js";
 import { initialize as initializeQueue } from "./initialize.js";
 import type {
-	DeliverJobData,
-	InboxJobData,
 	DbJobData,
-	ObjectStorageJobData,
+	DeliverJobData,
 	EndedPollNotificationJobData,
+	InboxJobData,
+	ObjectStorageJobData,
 	WebhookDeliverJobData,
 } from "./types.js";
 

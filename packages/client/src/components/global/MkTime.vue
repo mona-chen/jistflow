@@ -29,11 +29,11 @@ const _time =
 	props.time == null
 		? NaN
 		: typeof props.time === "number"
-		? props.time
-		: (props.time instanceof Date
-				? props.time
-				: new Date(props.time)
-		  ).getTime();
+		  ? props.time
+		  : (props.time instanceof Date
+					? props.time
+					: new Date(props.time)
+		    ).getTime();
 const invalid = Number.isNaN(_time);
 const absolute = !invalid ? dateTimeFormat.format(_time) : i18n.ts._ago.invalid;
 
@@ -46,20 +46,30 @@ const relative = computed<string>(() => {
 	return ago >= 31536000
 		? i18n.t("_ago.yearsAgo", { n: Math.floor(ago / 31536000).toString() })
 		: ago >= 2592000
-		? i18n.t("_ago.monthsAgo", { n: Math.floor(ago / 2592000).toString() })
-		: ago >= 604800
-		? i18n.t("_ago.weeksAgo", { n: Math.floor(ago / 604800).toString() })
-		: ago >= 86400
-		? i18n.t("_ago.daysAgo", { n: Math.floor(ago / 86400).toString() })
-		: ago >= 3600
-		? i18n.t("_ago.hoursAgo", { n: Math.floor(ago / 3600).toString() })
-		: ago >= 60
-		? i18n.t("_ago.minutesAgo", { n: (~~(ago / 60)).toString() })
-		: ago >= 10
-		? i18n.t("_ago.secondsAgo", { n: (~~(ago % 60)).toString() })
-		: ago >= -1
-		? i18n.ts._ago.justNow
-		: i18n.ts._ago.future;
+		  ? i18n.t("_ago.monthsAgo", {
+					n: Math.floor(ago / 2592000).toString(),
+		    })
+		  : ago >= 604800
+		    ? i18n.t("_ago.weeksAgo", {
+						n: Math.floor(ago / 604800).toString(),
+		      })
+		    : ago >= 86400
+		      ? i18n.t("_ago.daysAgo", {
+							n: Math.floor(ago / 86400).toString(),
+		        })
+		      : ago >= 3600
+		        ? i18n.t("_ago.hoursAgo", {
+								n: Math.floor(ago / 3600).toString(),
+		          })
+		        : ago >= 60
+		          ? i18n.t("_ago.minutesAgo", { n: (~~(ago / 60)).toString() })
+		          : ago >= 10
+		            ? i18n.t("_ago.secondsAgo", {
+										n: (~~(ago % 60)).toString(),
+		              })
+		            : ago >= -1
+		              ? i18n.ts._ago.justNow
+		              : i18n.ts._ago.future;
 });
 
 let tickId: number;

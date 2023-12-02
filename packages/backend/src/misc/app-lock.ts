@@ -1,4 +1,4 @@
-import { redisClient } from "../db/redis.js";
+import { redisClient } from "@/db/redis.js";
 import { Mutex } from "redis-semaphore";
 
 /**

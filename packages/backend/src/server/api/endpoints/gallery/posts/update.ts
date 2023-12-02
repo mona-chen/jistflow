@@ -1,9 +1,7 @@
-import define from "../../../define.js";
-import { DriveFiles, GalleryPosts } from "@/models/index.js";
-import { GalleryPost } from "@/models/entities/gallery-post.js";
-import { ApiError } from "../../../error.js";
-import type { DriveFile } from "@/models/entities/drive-file.js";
 import { HOUR } from "@/const.js";
+import type { DriveFile } from "@/models/entities/drive-file.js";
+import { DriveFiles, GalleryPosts } from "@/models/index.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["gallery"],

@@ -1,9 +1,9 @@
-import Resolver from "../../resolver.js";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import rejectFollow from "./follow.js";
-import type { IReject } from "../../type.js";
-import { isFollow, getApType } from "../../type.js";
 import { apLogger } from "../../logger.js";
+import Resolver from "../../resolver.js";
+import type { IReject } from "../../type.js";
+import { getApType, isFollow } from "../../type.js";
+import rejectFollow from "./follow.js";
 
 const logger = apLogger;
 

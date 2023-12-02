@@ -11,32 +11,30 @@
 			</div>
 			<div
 				v-else-if="!input && !select"
-				:class="[$style.icon, $style['type_' + type]]"
+				:class="[$style.icon, $style[`type_${type}`]]"
 			>
 				<i
 					v-if="type === 'success'"
-					:class="$style.iconInner"
-					class="ph-check ph-lg"
+					:class="[$style.iconInner, iconClass('ph-check')]"
 				></i>
 				<i
 					v-else-if="type === 'error'"
-					:class="$style.iconInner"
-					class="ph-circle-wavy-warning ph-lg"
+					:class="[
+						$style.iconInner,
+						iconClass('ph-circle-wavy-warning'),
+					]"
 				></i>
 				<i
 					v-else-if="type === 'warning'"
-					:class="$style.iconInner"
-					class="ph-warning ph-lg"
+					:class="[$style.iconInner, iconClass('ph-warning')]"
 				></i>
 				<i
 					v-else-if="type === 'info'"
-					:class="$style.iconInner"
-					class="ph-info ph-lg"
+					:class="[$style.iconInner, iconClass('ph-info')]"
 				></i>
 				<i
 					v-else-if="type === 'question'"
-					:class="$style.iconInner"
-					class="ph-circle-question ph-lg"
+					:class="[$style.iconInner, iconClass('ph-question')]"
 				></i>
 				<MkLoading
 					v-else-if="type === 'waiting'"
@@ -117,7 +115,7 @@
 				v-if="input && input.type === 'paragraph'"
 				v-model="inputValue"
 				autofocus
-				:type="paragraph"
+				type="paragraph"
 				:placeholder="input.placeholder || undefined"
 			>
 			</MkTextarea>
@@ -193,7 +191,7 @@
 					@click="
 						() => {
 							action.callback();
-							modal?.close();
+							modal?.close(null);
 						}
 					"
 					>{{ action.text }}</MkButton
@@ -320,7 +318,7 @@ const inputEl = ref<typeof MkInput>();
 
 function done(canceled: boolean, result?) {
 	emit("done", { canceled, result });
-	modal.value?.close();
+	modal.value?.close(null);
 }
 
 async function ok() {
@@ -329,8 +327,8 @@ async function ok() {
 	const result = props.input
 		? inputValue.value
 		: props.select
-		? selectedValue.value
-		: true;
+		  ? selectedValue.value
+		  : true;
 	done(false, result);
 }
 
@@ -361,106 +359,134 @@ function formatDateToYYYYMMDD(date) {
 	return `${year}-${month}-${day}`;
 }
 
+/**
+ * Appends a new search parameter to the value in the input field.
+ * Trims any extra whitespace before and after, then adds a space at the end so a user can immediately
+ * begin typing a new criteria.
+ * @param value The value to append.
+ */
+function appendFilter(value: string) {
+	return (
+		[
+			typeof inputValue.value === "string"
+				? inputValue.value.trim()
+				: inputValue.value,
+			value,
+		]
+			.join(" ")
+			.trim() + " "
+	);
+}
+
 async function openSearchFilters(ev) {
 	await os.popupMenu(
 		[
 			{
-				icon: `${icon("ph-user")}`,
+				icon: `${iconClass("ph-user")}`,
 				text: i18n.ts._filters.fromUser,
 				action: () => {
 					os.selectUser().then((user) => {
-						inputValue.value += " from:@" + Acct.toString(user);
+						inputValue.value = appendFilter(
+							"from:@" + Acct.toString(user),
+						);
 					});
 				},
 			},
 			{
 				type: "parent",
 				text: i18n.ts._filters.withFile,
-				icon: `${icon("ph-paperclip")}`,
+				icon: `${iconClass("ph-paperclip")}`,
 				children: [
 					{
 						text: i18n.ts.image,
-						icon: `${icon("ph-image-square")}`,
+						icon: `${iconClass("ph-image-square")}`,
 						action: () => {
-							inputValue.value += " has:image";
+							inputValue.value = appendFilter("has:image");
 						},
 					},
 					{
 						text: i18n.ts.video,
-						icon: `${icon("ph-video-camera")}`,
+						icon: `${iconClass("ph-video-camera")}`,
 						action: () => {
-							inputValue.value += " has:video";
+							inputValue.value = appendFilter("has:video");
 						},
 					},
 					{
 						text: i18n.ts.audio,
-						icon: `${icon("ph-music-note")}`,
+						icon: `${iconClass("ph-music-note")}`,
 						action: () => {
-							inputValue.value += " has:audio";
+							inputValue.value = appendFilter("has:audio");
 						},
 					},
 					{
 						text: i18n.ts.file,
-						icon: `${icon("ph-file")}`,
+						icon: `${iconClass("ph-file")}`,
 						action: () => {
-							inputValue.value += " has:file";
+							inputValue.value = appendFilter("has:file");
 						},
 					},
 				],
 			},
 			{
-				icon: `${icon("ph-link")}`,
+				icon: `${iconClass("ph-link")}`,
 				text: i18n.ts._filters.fromDomain,
 				action: () => {
-					inputValue.value += " domain:";
+					inputValue.value = appendFilter("domain:");
 				},
 			},
 			{
-				icon: `${icon("ph-calendar-blank")}`,
+				icon: `${iconClass("ph-calendar-blank")}`,
 				text: i18n.ts._filters.notesBefore,
 				action: () => {
 					os.inputDate({
 						title: i18n.ts._filters.notesBefore,
 					}).then((res) => {
 						if (res.canceled) return;
-						inputValue.value +=
-							" before:" + formatDateToYYYYMMDD(res.result);
+						inputValue.value = appendFilter(
+							"before:" + formatDateToYYYYMMDD(res.result),
+						);
 					});
 				},
 			},
 			{
-				icon: `${icon("ph-calendar-blank")}`,
+				icon: `${iconClass("ph-calendar-blank")}`,
 				text: i18n.ts._filters.notesAfter,
 				action: () => {
 					os.inputDate({
 						title: i18n.ts._filters.notesAfter,
 					}).then((res) => {
 						if (res.canceled) return;
-						inputValue.value +=
-							" after:" + formatDateToYYYYMMDD(res.result);
+						inputValue.value = appendFilter(
+							"after:" + formatDateToYYYYMMDD(res.result),
+						);
 					});
 				},
 			},
 			{
-				icon: `${icon("ph-eye")}`,
+				icon: `${iconClass("ph-eye")}`,
 				text: i18n.ts._filters.followingOnly,
 				action: () => {
-					inputValue.value += " filter:following ";
+					inputValue.value = appendFilter("filter:following");
 				},
 			},
 			{
-				icon: `${icon("ph-users-three")}`,
+				icon: `${iconClass("ph-users-three")}`,
 				text: i18n.ts._filters.followersOnly,
 				action: () => {
-					inputValue.value += " filter:followers ";
+					inputValue.value = appendFilter("filter:followers");
 				},
 			},
 		],
 		ev.target,
 		{ noReturnFocus: true },
 	);
-	inputEl.value.focus();
-	inputEl.value.selectRange(inputValue.value.length, inputValue.value.length); // cursor at end
+	inputEl.value?.focus();
+	if (typeof inputValue.value === "string") {
+		inputEl.value?.selectRange(
+			inputValue.value.length,
+			inputValue.value.length,
+		); // cursor at end
+	}
 }
 
 onMounted(() => {

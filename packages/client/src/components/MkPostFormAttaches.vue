@@ -35,7 +35,6 @@ import { VueDraggable } from "vue-draggable-plus";
 import MkDriveFileThumbnail from "@/components/MkDriveFileThumbnail.vue";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 
 const props = defineProps({

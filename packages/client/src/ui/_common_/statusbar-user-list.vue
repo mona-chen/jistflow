@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, toRef, watch } from "vue";
+import { ref } from "vue";
 import type * as firefish from "firefish-js";
 import MarqueeText from "@/components/MkMarquee.vue";
 import * as os from "@/os";

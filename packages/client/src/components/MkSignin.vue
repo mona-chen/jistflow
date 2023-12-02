@@ -128,12 +128,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 import { toUnicode } from "punycode/";
 import MkButton from "@/components/MkButton.vue";
 import MkInput from "@/components/form/input.vue";
 import MkInfo from "@/components/MkInfo.vue";
-import { apiUrl, host as configHost } from "@/config";
+import { host as configHost } from "@/config";
 import { byteify, hexify } from "@/scripts/2fa";
 import * as os from "@/os";
 import { login } from "@/account";

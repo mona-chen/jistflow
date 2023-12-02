@@ -17,8 +17,8 @@
 						? i18n.ts.selectFiles
 						: i18n.ts.selectFolders
 					: type === "file"
-					? i18n.ts.selectFile
-					: i18n.ts.selectFolder
+					  ? i18n.ts.selectFile
+					  : i18n.ts.selectFolder
 			}}
 			<span
 				v-if="selected.length > 0"

@@ -1,6 +1,5 @@
-import { getHtml } from "@/misc/fetch.js";
-import { Window } from "happy-dom";
 import config from "@/config/index.js";
+import { Window } from "happy-dom";
 
 async function getRelMeLinks(url: string): Promise<string[]> {
 	try {

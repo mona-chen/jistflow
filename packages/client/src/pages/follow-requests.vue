@@ -88,7 +88,7 @@ import { acct, userPage } from "@/filters/user";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import icon from "@/scripts/icon";
 
 const paginationComponent = ref<InstanceType<typeof MkPagination>>();

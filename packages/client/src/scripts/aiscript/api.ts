@@ -1,6 +1,6 @@
 import { utils, values } from "@syuilo/aiscript";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 
 export function createAiScriptEnv(opts) {
 	let apiRequests = 0;
@@ -53,6 +53,9 @@ export function createAiScriptEnv(opts) {
 					localStorage.getItem(`aiscript:${opts.storageKey}:${key.value}`),
 				),
 			);
+		}),
+		"Mk:url": values.FN_NATIVE(() => {
+			return values.STR(window.location.href);
 		}),
 	};
 }

@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { id } from "../id.js";
-import { User } from "./user.js";
 import type { Clip } from "./clip.js";
+import { User } from "./user.js";
 
 @Entity()
 export class Meta {
@@ -382,6 +382,12 @@ export class Meta {
 		nullable: true,
 	})
 	public ToSUrl: string | null;
+
+	@Column("jsonb", {
+		default: [],
+		nullable: false,
+	})
+	public moreUrls: [string, string][];
 
 	@Column("varchar", {
 		length: 512,

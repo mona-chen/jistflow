@@ -1,18 +1,18 @@
 // TODO: なんでもかんでもos.tsに突っ込むのやめたいのでよしなに分割する
 
+import MkDialog from "@/components/MkDialog.vue";
+import MkPostFormDialog from "@/components/MkPostFormDialog.vue";
+import MkToast from "@/components/MkToast.vue";
+import MkWaitingDialog from "@/components/MkWaitingDialog.vue";
+import { url, apiUrl } from "@/config";
+import { $i } from "@/reactiveAccount";
+import type { MenuItem } from "@/types/menu";
+import { EventEmitter } from "eventemitter3";
+import * as firefish from "firefish-js";
+import insertTextAtCursor from "insert-text-at-cursor";
 import type { Component, Ref } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
-import { EventEmitter } from "eventemitter3";
-import insertTextAtCursor from "insert-text-at-cursor";
-import * as firefish from "firefish-js";
 import { i18n } from "./i18n";
-import { apiUrl, url } from "@/config";
-import MkPostFormDialog from "@/components/MkPostFormDialog.vue";
-import MkWaitingDialog from "@/components/MkWaitingDialog.vue";
-import MkToast from "@/components/MkToast.vue";
-import MkDialog from "@/components/MkDialog.vue";
-import type { MenuItem } from "@/types/menu";
-import { $i } from "@/account";
 
 export const pendingApiRequestsCount = ref(0);
 
@@ -24,7 +24,7 @@ export const api = ((
 	endpoint: string,
 	data: Record<string, any> = {},
 	token?: string | null | undefined,
-	useToken: boolean = true,
+	useToken = true,
 ) => {
 	pendingApiRequestsCount.value++;
 

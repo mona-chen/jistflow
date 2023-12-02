@@ -402,6 +402,8 @@ withReplies: "Antworten beinhalten"
 connectedTo: "Mit folgenden Nutzerkonten verknüpft"
 notesAndReplies: "Beiträge und Antworten"
 withFiles: "Beiträge mit Dateien"
+attachedToNotes: "Beiträge mit dieser Datei"
+showAttachedNotes: "Zeige Beiträge mit dieser Datei"
 silence: "stummschalten"
 silenceConfirm: "Sind Sie sicher, dass Sie diesen Benutzer Stummschalten möchten?"
 unsilence: "Stummschaltung aufheben"
@@ -2216,3 +2218,4 @@ openServerInfo: Anzeigen von Serverinformationen durch Anklicken des Server-Tick
   in einem Beitrag
 vibrate: Vibrationen abspielen
 clickToShowPatterns: Klicken um Modul-Muster anzuzeigen
+replies: Antworten

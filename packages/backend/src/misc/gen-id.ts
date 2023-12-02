@@ -1,8 +1,8 @@
 import config from "@/config/index.js";
 import {
 	nativeCreateId,
-	nativeInitIdGenerator,
 	nativeGetTimestamp,
+	nativeInitIdGenerator,
 } from "native-utils/built/index.js";
 
 const length = Math.min(Math.max(config.cuid?.length ?? 16, 16), 24);

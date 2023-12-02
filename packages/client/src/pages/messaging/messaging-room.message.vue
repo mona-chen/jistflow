@@ -90,7 +90,7 @@ import XMediaList from "@/components/MkMediaList.vue";
 import { extractUrlFromMfm } from "@/scripts/extract-url-from-mfm";
 import MkUrlPreview from "@/components/MkUrlPreview.vue";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 

@@ -51,7 +51,8 @@ import XForm from "./auth.form.vue";
 import MkSignin from "@/components/MkSignin.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
 import * as os from "@/os";
-import { $i, login } from "@/account";
+import { login } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 
 const props = defineProps<{

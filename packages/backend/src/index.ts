@@ -1,5 +1,5 @@
 /**
- * Misskey Entry Point!
+ * Firefish Entry Point
  */
 
 import { EventEmitter } from "node:events";

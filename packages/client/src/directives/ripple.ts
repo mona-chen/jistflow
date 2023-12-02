@@ -1,8 +1,9 @@
+import type { Ref } from "vue";
 import Ripple from "@/components/MkRipple.vue";
 import { popup } from "@/os";
 
 export default {
-	mounted(el, binding, vn) {
+	mounted(el: HTMLElement, binding: Ref<boolean>) {
 		// 明示的に false であればバインドしない
 		if (binding.value === false) return;
 

@@ -46,7 +46,7 @@ import MkHeatmap from "@/components/MkHeatmap.vue";
 import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 

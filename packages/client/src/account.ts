@@ -1,22 +1,16 @@
-import { defineAsyncComponent, reactive } from "vue";
-import type * as firefish from "firefish-js";
-import { i18n } from "./i18n";
-import { del, get, set } from "@/scripts/idb-proxy";
 import { apiUrl } from "@/config";
 import { alert, api, popup, popupMenu, waiting } from "@/os";
-import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
+import { $i } from "@/reactiveAccount";
 import icon from "@/scripts/icon";
+import { del, get, set } from "@/scripts/idb-proxy";
+import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
+import type * as firefish from "firefish-js";
+import { defineAsyncComponent } from "vue";
+import { i18n } from "./i18n";
 
 // TODO: 他のタブと永続化されたstateを同期
 
-type Account = firefish.entities.MeDetailed;
-
-const accountData = localStorage.getItem("account");
-
-// TODO: 外部からはreadonlyに
-export const $i = accountData
-	? reactive(JSON.parse(accountData) as Account)
-	: null;
+export type Account = firefish.entities.MeDetailed;
 
 export const iAmModerator = $i != null && ($i.isAdmin || $i.isModerator);
 export const iAmAdmin = $i?.isAdmin;
@@ -100,7 +94,6 @@ function fetchAccount(token: string): Promise<Account> {
 					if (res.error.id === "a8c724b3-6e9c-4b46-b1a8-bc3ed6258370") {
 						showSuspendedDialog();
 						signout();
-						return;
 					} else {
 						alert({
 							type: "error",

@@ -113,9 +113,9 @@ const url =
 	props.raw || defaultStore.state.loadRawImages
 		? props.media.url
 		: defaultStore.state.disableShowingAnimatedImages &&
-		  props.media.type.startsWith("image")
-		? getStaticImageUrl(props.media.thumbnailUrl)
-		: props.media.thumbnailUrl;
+		    props.media.type.startsWith("image")
+		  ? getStaticImageUrl(props.media.thumbnailUrl)
+		  : props.media.thumbnailUrl;
 
 const mediaType = computed(() => {
 	return props.media.type === "video/quicktime"

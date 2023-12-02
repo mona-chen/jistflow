@@ -5,10 +5,9 @@
 </template>
 
 <script lang="ts" setup>
-import {} from "vue";
 import XValue from "./MkObjectView.value.vue";
 
-const props = defineProps<{
+defineProps<{
 	value: Record<string, unknown>;
 }>();
 </script>

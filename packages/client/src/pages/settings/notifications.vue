@@ -54,7 +54,7 @@ import { notificationTypes } from "firefish-js";
 import FormButton from "@/components/MkButton.vue";
 import FormSection from "@/components/form/section.vue";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import MkPushNotificationAllowButton from "@/components/MkPushNotificationAllowButton.vue";

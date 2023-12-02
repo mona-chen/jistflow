@@ -28,7 +28,7 @@ import XDetails from "@/components/MkReactionsViewer.details.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import * as os from "@/os";
 import { useTooltip } from "@/scripts/use-tooltip";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 
 const props = defineProps<{
 	reaction: string;

@@ -1,11 +1,11 @@
 import {
+	backgroundQueue,
+	dbQueue,
 	deliverQueue,
 	inboxQueue,
-	dbQueue,
 	objectStorageQueue,
-	backgroundQueue,
 } from "@/queue/queues.js";
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["admin"],

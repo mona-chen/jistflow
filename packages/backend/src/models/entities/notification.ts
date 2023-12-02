@@ -1,18 +1,18 @@
+import { notificationTypes } from "@/types.js";
 import {
+	Column,
 	Entity,
 	Index,
 	JoinColumn,
 	ManyToOne,
-	Column,
 	PrimaryColumn,
 } from "typeorm";
-import { User } from "./user.js";
 import { id } from "../id.js";
-import { Note } from "./note.js";
-import { FollowRequest } from "./follow-request.js";
-import { UserGroupInvitation } from "./user-group-invitation.js";
 import { AccessToken } from "./access-token.js";
-import { notificationTypes } from "@/types.js";
+import { FollowRequest } from "./follow-request.js";
+import { Note } from "./note.js";
+import { UserGroupInvitation } from "./user-group-invitation.js";
+import { User } from "./user.js";
 
 @Entity()
 export class Notification {

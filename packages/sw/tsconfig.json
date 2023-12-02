@@ -27,13 +27,8 @@
 			"node_modules/@types",
 			"@types",
 		],
-		"lib": [
-			"esnext",
-			"webworker"
-		]
+		"lib": ["esnext", "webworker"]
 	},
 	"compileOnSave": false,
-	"include": [
-		"./**/*.ts", "./**/*.d.ts", "./**/*.tsx", "./**/*.vue"
-	]
+	"include": ["./**/*.ts", "./**/*.d.ts", "./**/*.tsx", "./**/*.vue"]
 }

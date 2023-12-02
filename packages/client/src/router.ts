@@ -1,21 +1,21 @@
+import { iAmModerator } from "@/account";
+import { Router } from "@/nirax";
+import MkError from "@/pages/_error_.vue";
+import MkLoading from "@/pages/_loading_.vue";
+import { $i } from "@/reactiveAccount";
 import type { AsyncComponentLoader } from "vue";
 import { defineAsyncComponent, inject } from "vue";
-import { Router } from "@/nirax";
-import { $i, iAmModerator } from "@/account";
-import MkLoading from "@/pages/_loading_.vue";
-import MkError from "@/pages/_error_.vue";
-import { api } from "@/os";
-import { ui } from "@/config";
+// import { api } from "@/os";
 
-function getGuestTimelineStatus() {
-	api("meta", {
-		detail: false,
-	}).then((meta) => {
-		return meta.enableGuestTimeline;
-	});
-}
+// function getGuestTimelineStatus() {
+// 	api("meta", {
+// 		detail: false,
+// 	}).then((meta) => {
+// 		return meta.enableGuestTimeline;
+// 	});
+// }
 
-const guestTimeline = getGuestTimelineStatus();
+// const guestTimeline = getGuestTimelineStatus();
 
 const page = (loader: AsyncComponentLoader<any>) =>
 	defineAsyncComponent({
@@ -580,6 +580,11 @@ export const routes = [
 	{
 		path: "/my/drive/folder/:folder",
 		component: page(() => import("./pages/drive.vue")),
+		loginRequired: true,
+	},
+	{
+		path: "/my/drive/file/:fileId/attached",
+		component: page(() => import("./pages/attached-files.vue")),
 		loginRequired: true,
 	},
 	{

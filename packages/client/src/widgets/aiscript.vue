@@ -27,14 +27,18 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { AiScript, parse, utils } from "@syuilo/aiscript";
-import type { Widget, WidgetComponentExpose } from "./widget";
+import { Interpreter, Parser, utils } from "@syuilo/aiscript";
 import { useWidgetPropsManager } from "./widget";
+import type {
+	WidgetComponentEmits,
+	WidgetComponentExpose,
+	WidgetComponentProps,
+} from "./widget";
 import type { GetFormResultType } from "@/scripts/form";
 import * as os from "@/os";
 import MkContainer from "@/components/MkContainer.vue";
 import { createAiScriptEnv } from "@/scripts/aiscript/api";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
 
@@ -55,11 +59,8 @@ const widgetPropsDef = {
 
 type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 
-// 現時点ではvueの制限によりimportしたtypeをジェネリックに渡せない
-// const props = defineProps<WidgetComponentProps<WidgetProps>>();
-// const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
-const props = defineProps<{ widget?: Widget<WidgetProps> }>();
-const emit = defineEmits<{ (ev: "updateProps", props: WidgetProps) }>();
+const props = defineProps<WidgetComponentProps<WidgetProps>>();
+const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
 
 const { widgetProps, configure } = useWidgetPropsManager(
 	name,
@@ -76,9 +77,11 @@ const logs = ref<
 	}[]
 >([]);
 
+const parser = new Parser();
+
 const run = async () => {
 	logs.value = [];
-	const aiscript = new AiScript(
+	const aiscript = new Interpreter(
 		createAiScriptEnv({
 			storageKey: "widget",
 			token: $i?.token,
@@ -121,11 +124,11 @@ const run = async () => {
 
 	let ast;
 	try {
-		ast = parse(widgetProps.script);
+		ast = parser.parse(widgetProps.script);
 	} catch (err) {
 		os.alert({
 			type: "error",
-			text: "Syntax error :(",
+			text: `Syntax error : ${err}`,
 		});
 		return;
 	}
@@ -134,7 +137,7 @@ const run = async () => {
 	} catch (err) {
 		os.alert({
 			type: "error",
-			text: err,
+			text: String(err),
 		});
 	}
 };

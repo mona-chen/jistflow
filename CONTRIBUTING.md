@@ -94,9 +94,9 @@ An actual domain will be assigned so you can test the federation.
 	- The tag name must be the version
 
 ## Development
-During development, it is useful to use the `yarn dev` command.
+During development, it is useful to use the `pnpm run dev` command.
 This command monitors the server-side and client-side source files and automatically builds them if they are modified.
-In addition, it will also automatically start the Misskey server process.
+In addition, it will also automatically start the Firefish server process.
 
 ## Testing
 - Test codes are located in [`/test`](/test).
@@ -119,20 +119,13 @@ yarn test
 
 #### Run specify test
 ```
-TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true TS_NODE_PROJECT="./test/tsconfig.json" yarn dlx mocha test/foo.ts --require ts-node/register
+TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true TS_NODE_PROJECT="./test/tsconfig.json" pnpx mocha test/foo.ts --require ts-node/register
 ```
 
-### e2e tests
-TODO
-
-## Continuous integration
-Misskey uses GitHub Actions for executing automated tests.
-Configuration files are located in [`/.github/workflows`](/.github/workflows).
-
 ## Vue
-Misskey uses Vue(v3) as its front-end framework.
+Firefish uses Vue(v3) as its front-end framework.
 - Use TypeScript.
-- **When creating a new component, please use the Composition API (with [setup sugar](https://v3.vuejs.org/api/sfc-script-setup.html) and [ref sugar](https://github.com/vuejs/rfcs/discussions/369)) instead of the Options API.**
+- **When creating a new component, please use the Composition API (with [setup syntax](https://v3.vuejs.org/api/sfc-script-setup.html) and [ref syntax](https://github.com/vuejs/rfcs/discussions/369)) instead of the Options API.**
 	- Some of the existing components are implemented in the Options API, but it is an old implementation. Refactors that migrate those components to the Composition API are also welcome.
 
 ## nirax

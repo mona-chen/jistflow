@@ -392,7 +392,7 @@ import { userPage } from "@/filters/user";
 import { defaultStore } from "@/store";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { host } from "@/config";
 import icon from "@/scripts/icon";
 

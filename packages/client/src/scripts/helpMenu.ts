@@ -5,6 +5,31 @@ import { host } from "@/config";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
+import type { MenuItem } from "@/types/menu";
+
+const instanceSpecificItems: MenuItem[] = [];
+
+if (instance.tosUrl != null) {
+	instanceSpecificItems.push({
+		type: "button",
+		text: i18n.ts.tos,
+		icon: `${icon("ph-scroll")}`,
+		action: () => {
+			window.open(instance.tosUrl, "_blank");
+		},
+	});
+}
+
+for (const { name, url } of instance.moreUrls) {
+	instanceSpecificItems.push({
+		type: "button",
+		text: name,
+		icon: `${icon("ph-link-simple")}`,
+		action: () => {
+			window.open(url, "_blank");
+		},
+	});
+}
 
 export function openHelpMenu_(ev: MouseEvent) {
 	os.popupMenu(
@@ -25,16 +50,9 @@ export function openHelpMenu_(ev: MouseEvent) {
 				icon: `${icon("ph-lightbulb")}`,
 				to: "/about-firefish",
 			},
-			instance.tosUrl
-				? {
-						type: "button",
-						text: i18n.ts.tos,
-						icon: `${icon("ph-scroll")}`,
-						action: () => {
-							window.open(instance.tosUrl, "_blank");
-						},
-				  }
-				: null,
+			...(instanceSpecificItems.length >= 2 ? [null] : []),
+			...instanceSpecificItems,
+			null,
 			{
 				type: "button",
 				text: i18n.ts.apps,

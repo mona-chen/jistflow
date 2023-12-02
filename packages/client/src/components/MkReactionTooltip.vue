@@ -21,7 +21,7 @@
 import MkTooltip from "./MkTooltip.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 
-const props = defineProps<{
+defineProps<{
 	reaction: string;
 	emojis: any[]; // TODO
 	targetElement: HTMLElement;

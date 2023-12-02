@@ -98,11 +98,11 @@ url: "https://{{ .Values.firefish.domain }}/"
 #───┘ Port and TLS settings └───────────────────────────────────
 
 #
-# Misskey requires a reverse proxy to support HTTPS connections.
+# Firefish requires a reverse proxy to support HTTPS connections.
 #
 #                 +----- https://example.tld/ ------------+
 #   +------+      |+-------------+      +----------------+|
-#   | User | ---> || Proxy (443) | ---> | Misskey (3000) ||
+#   | User | ---> || Proxy (443) | ---> | Firefish (3000) ||
 #   +------+      |+-------------+      +----------------+|
 #                 +---------------------------------------+
 #
@@ -110,7 +110,7 @@ url: "https://{{ .Values.firefish.domain }}/"
 #   An encrypted connection with HTTPS is highly recommended
 #   because tokens may be transferred in GET requests.
 
-# The port that your Misskey server should listen on.
+# The port that your Firefish server should listen on.
 port: 3000
 
 #   ┌──────────────────────────┐

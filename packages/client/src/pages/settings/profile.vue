@@ -170,7 +170,7 @@ import FormSlot from "@/components/form/slot.vue";
 import { selectFile } from "@/scripts/select-file";
 import * as os from "@/os";
 import { i18n } from "@/i18n";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { langmap } from "@/scripts/langmap";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { host } from "@/config";

@@ -33,7 +33,7 @@ import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import { stream } from "@/stream";
 import * as sound from "@/scripts/sound";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
@@ -44,6 +44,7 @@ const props = defineProps<{
 	antenna?: string;
 	channel?: string;
 	sound?: boolean;
+	fileId?: string;
 }>();
 
 const queue = ref(0);
@@ -195,6 +196,11 @@ if (props.src === "antenna") {
 		channelId: props.channel,
 	});
 	connection.on("note", prepend);
+} else if (props.src === "file") {
+	endpoint = "drive/files/attached-notes";
+	query = {
+		fileId: props.fileId,
+	};
 }
 
 function closeHint() {

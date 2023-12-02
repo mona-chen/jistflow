@@ -1,8 +1,8 @@
-import define from "../../../define.js";
-import { Emojis } from "@/models/index.js";
-import { insertModerationLog } from "@/services/insert-moderation-log.js";
-import { ApiError } from "../../../error.js";
 import { db } from "@/db/postgre.js";
+import { Emojis } from "@/models/index.js";
+import define from "@/server/api/define.js";
+import { ApiError } from "@/server/api/error.js";
+import { insertModerationLog } from "@/services/insert-moderation-log.js";
 
 export const meta = {
 	tags: ["admin"],

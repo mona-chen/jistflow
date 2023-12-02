@@ -27,7 +27,7 @@ import Ripple from "@/components/MkRipple.vue";
 import XDetails from "@/components/MkUsersTooltip.vue";
 import { pleaseLogin } from "@/scripts/please-login";
 import * as os from "@/os";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { useTooltip } from "@/scripts/use-tooltip";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";

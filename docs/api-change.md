@@ -4,6 +4,11 @@ Breaking changes are indicated by the :warning: icon.
 
 ## v1.0.5 (unreleased)
 
+### dev21
+
+- `admin/update-meta` can now take `moreUrls` parameter, and response of `admin/meta` now includes `moreUrls`
+  - These URLs are used for the help menu ([related merge request](https://git.joinfirefish.org/firefish/firefish/-/merge_requests/10640))
+
 ### dev18
 
 - :warning: response of `meta` no longer includes the following:

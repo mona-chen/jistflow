@@ -1,4 +1,4 @@
-import define from "../../../define.js";
+import define from "@/server/api/define.js";
 import { getJsonSchema } from "@/services/chart/core.js";
 import { perUserFollowingChart } from "@/services/chart/index.js";
 

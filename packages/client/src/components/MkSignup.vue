@@ -371,10 +371,10 @@ function onChangeUsername(): void {
 		const err = !username.value.match(/^[a-zA-Z0-9_]+$/)
 			? "invalid-format"
 			: username.value.length < 1
-			? "min-range"
-			: username.value.length > 20
-			? "max-range"
-			: null;
+			  ? "min-range"
+			  : username.value.length > 20
+			    ? "max-range"
+			    : null;
 
 		if (err) {
 			usernameState.value = err;
@@ -410,16 +410,16 @@ function onChangeEmail(): void {
 			emailState.value = result.available
 				? "ok"
 				: result.reason === "used"
-				? "unavailable:used"
-				: result.reason === "format"
-				? "unavailable:format"
-				: result.reason === "disposable"
-				? "unavailable:disposable"
-				: result.reason === "mx"
-				? "unavailable:mx"
-				: result.reason === "smtp"
-				? "unavailable:smtp"
-				: "unavailable";
+				  ? "unavailable:used"
+				  : result.reason === "format"
+				    ? "unavailable:format"
+				    : result.reason === "disposable"
+				      ? "unavailable:disposable"
+				      : result.reason === "mx"
+				        ? "unavailable:mx"
+				        : result.reason === "smtp"
+				          ? "unavailable:smtp"
+				          : "unavailable";
 		})
 		.catch(() => {
 			emailState.value = "error";

@@ -1,7 +1,7 @@
-import { v4 as uuid } from "uuid";
 import config from "@/config/index.js";
 import { getUserKeypair } from "@/misc/keypair-store.js";
 import type { User } from "@/models/entities/user.js";
+import { v4 as uuid } from "uuid";
 import { LdSignature } from "../misc/ld-signature.js";
 import type { IActivity } from "../type.js";
 
@@ -43,6 +43,7 @@ export const renderActivity = (x: any): IActivity | null => {
 					_misskey_talk: "misskey:_misskey_talk",
 					_misskey_reaction: "misskey:_misskey_reaction",
 					_misskey_votes: "misskey:_misskey_votes",
+					_misskey_summary: "misskey:_misskey_summary",
 					isCat: "misskey:isCat",
 					// Fedibird
 					fedibird: "http://fedibird.com/ns#",

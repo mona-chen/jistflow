@@ -17,11 +17,11 @@
 <script lang="ts">
 import type { PropType } from "vue";
 import { defineComponent, nextTick, onMounted, onUnmounted } from "vue";
-import { parse } from "@syuilo/aiscript";
+import { Parser } from "@syuilo/aiscript";
 import XBlock from "./page.block.vue";
 import { Hpml } from "@/scripts/hpml/evaluator";
 import { url } from "@/config";
-import { $i } from "@/account";
+import { $i } from "@/reactiveAccount";
 import { defaultStore } from "@/store";
 
 export default defineComponent({
@@ -42,12 +42,14 @@ export default defineComponent({
 			enableAiScript: !defaultStore.state.disablePagesScript,
 		});
 
+		const parser = new Parser();
+
 		onMounted(() => {
 			nextTick(() => {
 				if (props.page.script && hpml.aiscript) {
 					let ast;
 					try {
-						ast = parse(props.page.script);
+						ast = parser.parse(props.page.script);
 					} catch (err) {
 						console.error(err);
 						/* os.alert({
