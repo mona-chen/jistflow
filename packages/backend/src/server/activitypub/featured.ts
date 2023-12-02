@@ -28,13 +28,19 @@ export default async (ctx: Router.RouterContext) => {
 		return;
 	}
 
-	const pinings = await UserNotePinings.find({
+	const pinning = await UserNotePinings.find({
 		where: { userId: user.id },
 		order: { id: "DESC" },
 	});
 
-	const pinnedNotes = await Promise.all(
-		pinings.map((pining) => Notes.findOneByOrFail({ id: pining.noteId })),
+	const pinnedNotes = (
+		await Promise.all(
+			pinning.map((pinnedNote) =>
+				this.notesRepository.findOneByOrFail({ id: pinnedNote.noteId }),
+			),
+		)
+	).filter(
+		(note) => !note.localOnly && ["public", "home"].includes(note.visibility),
 	);
 
 	const renderedNotes = await Promise.all(
