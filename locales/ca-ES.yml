@@ -895,7 +895,7 @@ nUsersRead: llegit per {n}
 agreeTo: Estic d'acord amb {0}
 activity: Activitat
 home: Inici
-remoteUserCaution: La informació dels usuaris remots pot estar incompleta.
+remoteUserCaution: La informació dels usuaris remots és incompleta.
 themeForDarkMode: Tema a fer servir en mode fosc
 light: Clar
 registeredDate: Data de registre
@@ -2212,3 +2212,6 @@ attachedToNotes: Publicacions que contenen aquest fitxer
 replies: Respostes
 quotes: Cites
 renotes: Impulsos
+moreUrls: Pàgines fixades
+moreUrlsDescription: "Introdueix les pàgines que vols fixar al menú d'ajuda a la part
+  inferior esquerra fent servir aquesta notació:\n\"Nom a mostrar\": https://example.com/"
