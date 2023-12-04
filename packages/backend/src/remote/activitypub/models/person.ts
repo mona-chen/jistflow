@@ -276,26 +276,26 @@ export async function createPerson(
 						followersCount !== undefined
 							? followersCount
 							: person.followers &&
-							  typeof person.followers !== "string" &&
-							  isCollectionOrOrderedCollection(person.followers)
-							? person.followers.totalItems
-							: undefined,
+								typeof person.followers !== "string" &&
+								isCollectionOrOrderedCollection(person.followers)
+								? person.followers.totalItems
+								: undefined,
 					followingCount:
 						followingCount !== undefined
 							? followingCount
 							: person.following &&
-							  typeof person.following !== "string" &&
-							  isCollectionOrOrderedCollection(person.following)
-							? person.following.totalItems
-							: undefined,
+								typeof person.following !== "string" &&
+								isCollectionOrOrderedCollection(person.following)
+								? person.following.totalItems
+								: undefined,
 					notesCount:
 						notesCount !== undefined
 							? notesCount
 							: person.outbox &&
-							  typeof person.outbox !== "string" &&
-							  isCollectionOrOrderedCollection(person.outbox)
-							? person.outbox.totalItems
-							: undefined,
+								typeof person.outbox !== "string" &&
+								isCollectionOrOrderedCollection(person.outbox)
+								? person.outbox.totalItems
+								: undefined,
 					featured: person.featured ? getApId(person.featured) : undefined,
 					uri: person.id,
 					tags,
@@ -315,8 +315,8 @@ export async function createPerson(
 					description: person._misskey_summary
 						? truncate(person._misskey_summary, summaryLength)
 						: person.summary
-						? htmlToMfm(truncate(person.summary, summaryLength), person.tag)
-						: null,
+							? htmlToMfm(truncate(person.summary, summaryLength), person.tag)
+							: null,
 					url: url,
 					fields,
 					birthday: bday ? bday[0] : null,
@@ -527,26 +527,26 @@ export async function updatePerson(
 			followersCount !== undefined
 				? followersCount
 				: person.followers &&
-				  typeof person.followers !== "string" &&
-				  isCollectionOrOrderedCollection(person.followers)
-				? person.followers.totalItems
-				: undefined,
+					typeof person.followers !== "string" &&
+					isCollectionOrOrderedCollection(person.followers)
+					? person.followers.totalItems
+					: undefined,
 		followingCount:
 			followingCount !== undefined
 				? followingCount
 				: person.following &&
-				  typeof person.following !== "string" &&
-				  isCollectionOrOrderedCollection(person.following)
-				? person.following.totalItems
-				: undefined,
+					typeof person.following !== "string" &&
+					isCollectionOrOrderedCollection(person.following)
+					? person.following.totalItems
+					: undefined,
 		notesCount:
 			notesCount !== undefined
 				? notesCount
 				: person.outbox &&
-				  typeof person.outbox !== "string" &&
-				  isCollectionOrOrderedCollection(person.outbox)
-				? person.outbox.totalItems
-				: undefined,
+					typeof person.outbox !== "string" &&
+					isCollectionOrOrderedCollection(person.outbox)
+					? person.outbox.totalItems
+					: undefined,
 		featured: person.featured,
 		emojis: emojiNames,
 		name: truncate(person.name, nameLength),
@@ -590,9 +590,11 @@ export async function updatePerson(
 		{
 			url: url,
 			fields,
-			description: person.summary
-				? htmlToMfm(truncate(person.summary, summaryLength), person.tag)
-				: null,
+			description: person._misskey_summary
+				? truncate(person._misskey_summary, summaryLength)
+				: person.summary
+					? htmlToMfm(truncate(person.summary, summaryLength), person.tag)
+					: null,
 			birthday: bday ? bday[0] : null,
 			location: person["vcard:Address"] || null,
 		},
