@@ -37,7 +37,7 @@ export function openHelpMenu_(ev: MouseEvent) {
 				text: i18n.ts.apps,
 				icon: "ph-device-mobile ph-bold ph-lg",
 				action: () => {
-					window.open("https://iceshrimp.dev/apps", "_blank");
+					window.open("https://iceshrimp.dev/iceshrimp/iceshrimp/src/branch/dev/APPS.md", "_blank");
 				},
 			},
 			{
