@@ -57,47 +57,20 @@ export function addSkinTone(emoji: string, skinTone?: number) {
 	}
 }
 
-const unicodeFifteenEmojis = [
-	"🫨",
-	"🩷",
-	"🩵",
-	"🩶",
-	"🫷",
-	"🫸",
-	"🫎",
-	"🫏",
-	"🪽",
-	"🐦‍⬛",
-	"🪿",
-	"🪼",
-	"🪻",
-	"🫚",
-	"🫛",
-	"🪭",
-	"🪮",
-	"🪇",
-	"🪈",
-	"🪯",
-	"🛜",
-];
-
 const newData = {};
 
-Object.keys(data).forEach((originalCategory) => {
+for (const originalCategory of Object.keys(data)) {
 	const newCategory = categoryMapping[originalCategory];
 	if (newCategory) {
 		newData[newCategory] = newData[newCategory] || [];
-		Object.keys(data[originalCategory]).forEach((emojiIndex) => {
+		for (const emojiIndex of Object.keys(data[originalCategory])) {
 			const emojiObj = { ...data[originalCategory][emojiIndex] };
-			if (unicodeFifteenEmojis.includes(emojiObj.emoji)) {
-				return;
-			}
 			emojiObj.category = newCategory;
 			emojiObj.keywords = keywordSet[emojiObj.emoji];
 			newData[newCategory].push(emojiObj);
-		});
+		}
 	}
-});
+}
 
 export const emojilist: UnicodeEmojiDef[] = Object.keys(newData).reduce(
 	(acc, category) => {
