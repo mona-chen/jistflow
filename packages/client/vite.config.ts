@@ -72,6 +72,7 @@ export default defineConfig(({ command, mode }) => {
 			target: ["chrome87", "firefox78", "safari14", "es2017"],
 			manifest: "manifest.json",
 			rollupOptions: {
+				strictDeprecations: true,
 				input: {
 					app: "./src/init.ts",
 				},
