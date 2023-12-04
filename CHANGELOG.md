@@ -1,3 +1,27 @@
+## v2023.12-pre4
+This release preview primarily fixes bugs & regressions. Note: If you are upgrading from `-pre3` and had the HTML cache prewarm functionality enabled, you might want to clear it (`DELETE FROM "html_note_cache_entry";`), as quote URLs were not stored correctly due to an oversight.
+
+### Mastodon client API
+- The html cache prewarm functionality now correctly includes quote URLs
+- Follow status indicators now work properly in apps that rely on an undocumented Mastodon API behavior (e.g. toot!)
+
+### Backend
+- Relative URLs are no longer proxied, fixing the local instance icon indicator in the default configuration
+
+### UI/UX
+- The update check in the admin panel now works as expected
+- Toggles now have outlines for better visibility
+- The client error screen was improved with new colors and icons
+- The Twitter integration was removed, as it hasn't been functional since their API changes
+- The apps help button now links to a new page in the repository ([APPS.md](https://iceshrimp.dev/iceshrimp/iceshrimp/src/branch/dev/APPS.md))
+
+### Miscellaneous
+- The biome code formatter version and configuration were updated
+- Various translation updates
+
+### Attribution
+This release was made possible by project contributors: AntoineÐ, AverageDood, Froggo, Laura Hausmann & Pyrox
+
 ## v2023.12-pre3
 This release preview primarily contains performance optimizations and regression fixes. Upgrading is recommended especially if you're running a big instance or have more than a couple thousand entries in the `muted_note` table.
 
