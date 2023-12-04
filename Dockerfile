@@ -1,5 +1,5 @@
 ## Install dev and compilation dependencies, build files
-FROM node:20 as build
+FROM node:20-slim as build
 WORKDIR /firefish
 
 # Install compilation dependencies
@@ -48,11 +48,11 @@ RUN env NODE_ENV=production sh -c "pnpm run --filter '!native-utils' build && pn
 RUN pnpm i --prod --frozen-lockfile
 
 ## Runtime container
-FROM node:20
+FROM node:20-slim
 WORKDIR /firefish
 
 # Install runtime dependencies
-RUN apt-get update && apt-get install -y libvips-dev zip unzip tini ffmpeg
+RUN apt-get update && apt-get install -y --no-install-recommends libvips-dev zip unzip tini ffmpeg
 
 COPY . ./
 
