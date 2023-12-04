@@ -20,7 +20,7 @@ This release preview primarily fixes bugs & regressions. Note: If you are upgrad
 - Various translation updates
 
 ### Attribution
-This release was made possible by project contributors: AntoineÐ, AverageDood, Froggo, Laura Hausmann & Pyrox
+This release was made possible by project contributors: AntoineÐ, AverageDood, Froggo, Laura Hausmann, Minybol & Pyrox
 
 ## v2023.12-pre3
 This release preview primarily contains performance optimizations and regression fixes. Upgrading is recommended especially if you're running a big instance or have more than a couple thousand entries in the `muted_note` table.
@@ -541,7 +541,7 @@ This release was made possible by project contributors: AntoineÐ, Aylam, Jeder,
 - The [code of conduct](CODE_OF_CONDUCT.md) has been updated
 
 ### Attribution
-This release was made possible by project contributors: Anthial, AntoineD, April John, aylamz, Froggo, Jeder, Laura Hausmann, Luna, maikelthedev, moshibar, ShittyKopper & Vyr Cossont
+This release was made possible by project contributors: Anthial, AntoineÐ, April John, aylamz, Froggo, Jeder, Laura Hausmann, Luna, maikelthedev, moshibar, ShittyKopper & Vyr Cossont
 
 It also includes cherry-picked contributions from external contributors: Namekuji, Natty, ThatOneCalculator & Naskya
 
