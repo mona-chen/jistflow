@@ -29,7 +29,6 @@
 		"@bull-board/api": "5.9.1",
 		"@bull-board/koa": "5.9.1",
 		"@bull-board/ui": "5.9.1",
-		"@discordapp/twemoji": "14.1.2",
 		"@elastic/elasticsearch": "8.10.0",
 		"@koa/cors": "4.0.0",
 		"@koa/multer": "3.0.2",

@@ -165,6 +165,7 @@ router.get("/apple-touch-icon.png", async (ctx) => {
 	});
 });
 
+// Local Twemoji
 router.get("/twemoji/(.*)", async (ctx) => {
 	const path = ctx.path.replace("/twemoji/", "");
 
@@ -179,10 +180,15 @@ router.get("/twemoji/(.*)", async (ctx) => {
 	);
 
 	await send(ctx as any, path, {
-		root: `${_dirname}/../../../node_modules/@discordapp/twemoji/dist/svg/`,
+		root: `${staticAssets}/twemoji/`,
 		maxage: 30 * DAY,
 	});
 });
+
+/***
+* Unused
+* If reimplemented, use 72x72 from CDN
+*
 
 router.get("/twemoji-badge/(.*)", async (ctx) => {
 	const path = ctx.path.replace("/twemoji-badge/", "");
@@ -237,6 +243,7 @@ router.get("/twemoji-badge/(.*)", async (ctx) => {
 	ctx.set("Content-Type", "image/png");
 	ctx.body = buffer;
 });
+*/
 
 // ServiceWorker
 router.get("/sw.js", async (ctx) => {

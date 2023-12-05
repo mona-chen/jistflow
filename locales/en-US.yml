@@ -1156,6 +1156,8 @@ detectPostLanguage: "Automatically detect the language and show a translate butt
 vibrate: "Play vibrations"
 openServerInfo: "Show server information by clicking the server ticker on a post"
 iconSet: "Icon set"
+useEmojiCdn: "Get Twemoji from CDN"
+useEmojiCdnDescription: "Use Twemoji from the JSDelivr CDN instead of the server's assets."
 
 _sensitiveMediaDetection:
   description: "Reduces the effort of server moderation through automatically recognizing

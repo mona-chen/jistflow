@@ -1,4 +1,9 @@
-export const twemojiSvgBase = "/twemoji";
+import { defaultStore } from "@/store";
+
+export const twemojiSvgBase =
+	defaultStore.state.useEmojiCdn ?
+	"https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg"
+	: "/twemoji";
 
 export function char2fileName(char: string): string {
 	let codes = Array.from(char).map((x) => x.codePointAt(0)?.toString(16));
