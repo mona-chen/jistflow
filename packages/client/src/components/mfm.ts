@@ -61,7 +61,7 @@ export default defineComponent({
 		const validNumber = (n: string | null | undefined) => {
 			if (n == null) return null;
 			const parsed = parseFloat(n);
-			return !isNaN(parsed) && isFinite(parsed) && parsed > 0;
+			return !Number.isNaN(parsed) && Number.isFinite(parsed) && parsed > 0;
 		};
 		// const validEase = (e: string | null | undefined) => {
 		// 	if (e == null) return null;

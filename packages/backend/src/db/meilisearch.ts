@@ -154,7 +154,7 @@ function timestampToUnix(timestamp: string) {
 	if (unix === 0) {
 		// Try to parse the timestamp as JavaScript Date
 		const date = Date.parse(timestamp);
-		if (isNaN(date)) return 0;
+		if (Number.isNaN(date)) return 0;
 		unix = date / 1000;
 	}
 

@@ -201,7 +201,7 @@ export default async (
 		const now = new Date();
 		if (
 			!data.createdAt ||
-			isNaN(data.createdAt.getTime()) ||
+			Number.isNaN(data.createdAt.getTime()) ||
 			data.createdAt > now
 		)
 			data.createdAt = now;
@@ -782,7 +782,7 @@ async function insertNote(
 				await transactionalEntityManager.insert(Note, insert);
 
 				let expiresAt: Date | null;
-				if (!data.poll.expiresAt || isNaN(data.poll.expiresAt.getTime())) {
+				if (!data.poll.expiresAt || Number.isNaN(data.poll.expiresAt.getTime())) {
 					expiresAt = null;
 				} else {
 					expiresAt = data.poll.expiresAt;

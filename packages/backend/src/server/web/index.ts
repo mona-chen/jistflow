@@ -301,12 +301,12 @@ const getFeed = async (
 		return;
 	}
 	let thread = parseInt(threadDepth, 10);
-	if (isNaN(thread) || thread < 0 || thread > 30) {
+	if (Number.isNaN(thread) || thread < 0 || thread > 30) {
 		thread = 3;
 	}
 	let history = parseInt(historyCount, 10);
 	//cant be 0 here or it will get all posts
-	if (isNaN(history) || history <= 0 || history > 30) {
+	if (Number.isNaN(history) || history <= 0 || history > 30) {
 		history = 20;
 	}
 	return (
@@ -315,9 +315,9 @@ const getFeed = async (
 			user,
 			thread,
 			history,
-			!isNaN(noteInTitle),
-			isNaN(noRenotes),
-			isNaN(noReplies),
+			!Number.isNaN(noteInTitle),
+			Number.isNaN(noRenotes),
+			Number.isNaN(noReplies),
 		))
 	);
 };
