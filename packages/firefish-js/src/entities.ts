@@ -223,6 +223,12 @@ export type Notification = {
 			note: Note;
 	  }
 	| {
+			type: "pollEnded";
+			user: User;
+			userId: User["id"];
+			note: Note;
+	  }
+	| {
 			type: "follow";
 			user: User;
 			userId: User["id"];

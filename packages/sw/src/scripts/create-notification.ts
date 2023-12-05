@@ -19,11 +19,11 @@ const closeNotificationsByTags = async (tags: string[]): Promise<void> => {
 };
 
 const iconUrl = (name: BadgeNames): string =>
-	`/static-assets/tabler-badges/${name}.png`;
+	`/static-assets/notification-badges/${name}.png`;
 /* How to add a new badge:
- * 1. Find the icon and download png from https://tabler-icons.io/
- * 2. vips resize ~/Downloads/icon-name.png vipswork.png 0.4; vips scRGB2BW vipswork.png ~/icon-name.png"[compression=9,strip]"; rm vipswork.png;
- * 3. mv ~/icon-name.png ~/misskey/packages/backend/assets/tabler-badges/
+ * 1. Find the icon from https://phosphoricons.com/
+ * 2. Choose #000000 as the color, 96px as the size, and bold as the weight
+ * 3. Move icon-name.png to packages/backend/assets/notification-badges/
  * 4. Add 'icon-name' to BadgeNames
  * 5. Add `badge: iconUrl('icon-name'),`
  */
@@ -131,7 +131,7 @@ async function composeNotification(
 						{
 							body: data.body.note.text || "",
 							icon: data.body.user.avatarUrl,
-							badge: iconUrl("retweet"),
+							badge: iconUrl("boost"),
 							data,
 							actions: [
 								{
@@ -150,7 +150,7 @@ async function composeNotification(
 						{
 							body: data.body.note.text || "",
 							icon: data.body.user.avatarUrl,
-							badge: iconUrl("quote-right"),
+							badge: iconUrl("quote"),
 							data,
 							actions: [
 								{
@@ -182,8 +182,7 @@ async function composeNotification(
 						badge = badgeUrl.href;
 						reaction = name.split("@")[0];
 					} else {
-						// Unicode絵文字の場合
-						badge = `/twemoji-badge/${char2fileName(reaction)}.png`;
+						badge = iconUrl("reaction");
 					}
 
 					if (
@@ -219,7 +218,7 @@ async function composeNotification(
 						{
 							body: data.body.note.text || "",
 							icon: data.body.user.avatarUrl,
-							badge: iconUrl("poll-h"),
+							badge: iconUrl("poll"),
 							data,
 						},
 					];
@@ -229,7 +228,7 @@ async function composeNotification(
 						t("_notification.pollEnded"),
 						{
 							body: data.body.note.text || "",
-							badge: iconUrl("clipboard-check-solid"),
+							badge: iconUrl("clipboard-check"),
 							data,
 						},
 					];
@@ -273,7 +272,7 @@ async function composeNotification(
 						}),
 						{
 							body: data.body.invitation.group.name,
-							badge: iconUrl("id-card-alt"),
+							badge: iconUrl("id-card"),
 							data,
 							actions: [
 								{
