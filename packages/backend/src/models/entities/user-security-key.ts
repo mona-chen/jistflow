@@ -1,13 +1,13 @@
 import {
-	Column,
-	Entity,
-	Index,
-	JoinColumn,
-	ManyToOne,
 	PrimaryColumn,
+	Entity,
+	JoinColumn,
+	Column,
+	ManyToOne,
+	Index,
 } from "typeorm";
-import { id } from "../id.js";
 import { User } from "./user.js";
+import { id } from "../id.js";
 
 @Entity()
 export class UserSecurityKey {

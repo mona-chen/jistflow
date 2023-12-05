@@ -1,14 +1,14 @@
-import config from "@/config/index.js";
-import { verifyHcaptcha, verifyRecaptcha } from "@/misc/captcha.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { genId } from "@/misc/gen-id.js";
-import { hashPassword } from "@/misc/password.js";
-import { RegistrationTickets, UserPendings, Users } from "@/models/index.js";
-import { signup } from "@/server/api/common/signup.js";
-import { sendEmail } from "@/services/send-email.js";
-import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
 import type Koa from "koa";
 import rndstr from "rndstr";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import { verifyHcaptcha, verifyRecaptcha } from "@/misc/captcha.js";
+import { Users, RegistrationTickets, UserPendings } from "@/models/index.js";
+import { signup } from "@/server/api/common/signup.js";
+import config from "@/config/index.js";
+import { sendEmail } from "@/services/send-email.js";
+import { genId } from "@/misc/gen-id.js";
+import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
+import { hashPassword } from "@/misc/password.js";
 
 export default async (ctx: Koa.Context) => {
 	const body = ctx.request.body;

@@ -1,7 +1,7 @@
 import { Notes } from "@/models/index.js";
-import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
-import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
 import define from "@/server/api/define.js";
+import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
+import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
 
 export const meta = {
 	tags: ["notes"],

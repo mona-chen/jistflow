@@ -1,9 +1,9 @@
-import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { Users } from "@/models/index.js";
-import { getUser } from "@/server/api/common/getters.js";
+import cancelFollowRequest from "@/services/following/requests/cancel.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import cancelFollowRequest from "@/services/following/requests/cancel.js";
+import { getUser } from "@/server/api/common/getters.js";
+import { Users } from "@/models/index.js";
+import { IdentifiableError } from "@/misc/identifiable-error.js";
 
 export const meta = {
 	tags: ["following", "account"],

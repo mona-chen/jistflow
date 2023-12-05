@@ -1,14 +1,14 @@
 import {
-	Column,
+	PrimaryColumn,
 	Entity,
 	Index,
 	JoinColumn,
+	Column,
 	OneToOne,
-	PrimaryColumn,
 } from "typeorm";
-import { id } from "../id.js";
 import { Note } from "./note.js";
 import type { User } from "./user.js";
+import { id } from "../id.js";
 
 @Entity()
 export class PromoNote {

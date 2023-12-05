@@ -1,9 +1,9 @@
+import { IsNull } from "typeorm";
+import { Users, Followings, UserProfiles } from "@/models/index.js";
 import { toPunyNullable } from "@/misc/convert-host.js";
-import { Followings, UserProfiles, Users } from "@/models/index.js";
-import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { IsNull } from "typeorm";
+import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 
 export const meta = {
 	tags: ["users"],

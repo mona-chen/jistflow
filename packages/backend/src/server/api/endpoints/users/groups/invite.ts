@@ -1,14 +1,14 @@
+import {
+	UserGroups,
+	UserGroupJoinings,
+	UserGroupInvitations,
+} from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import type { UserGroupInvitation } from "@/models/entities/user-group-invitation.js";
-import {
-	UserGroupInvitations,
-	UserGroupJoinings,
-	UserGroups,
-} from "@/models/index.js";
-import { getUser } from "@/server/api/common/getters.js";
-import define from "@/server/api/define.js";
-import { ApiError } from "@/server/api/error.js";
 import { createNotification } from "@/services/create-notification.js";
+import { getUser } from "@/server/api/common/getters.js";
+import { ApiError } from "@/server/api/error.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["groups", "users"],

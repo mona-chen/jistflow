@@ -1,7 +1,7 @@
 import { URL } from "node:url";
 import define from "@/server/api/define.js";
-import { ApiError } from "@/server/api/error.js";
 import { addRelay } from "@/services/relay.js";
+import { ApiError } from "@/server/api/error.js";
 
 export const meta = {
 	tags: ["admin"],

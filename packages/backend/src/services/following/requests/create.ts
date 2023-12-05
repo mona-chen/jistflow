@@ -1,12 +1,12 @@
-import config from "@/config/index.js";
-import { genId } from "@/misc/gen-id.js";
+import { publishMainStream } from "@/services/stream.js";
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import renderFollow from "@/remote/activitypub/renderer/follow.js";
+import { deliver } from "@/queue/index.js";
 import type { User } from "@/models/entities/user.js";
 import { Blockings, FollowRequests, Users } from "@/models/index.js";
-import { deliver } from "@/queue/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import { genId } from "@/misc/gen-id.js";
 import { createNotification } from "@/services/create-notification.js";
-import { publishMainStream } from "@/services/stream.js";
+import config from "@/config/index.js";
 
 export default async function (
 	follower: {

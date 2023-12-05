@@ -1,4 +1,4 @@
-import { Column, Entity, Index, PrimaryColumn } from "typeorm";
+import { PrimaryColumn, Entity, Index, Column } from "typeorm";
 import { id } from "../id.js";
 
 @Entity()

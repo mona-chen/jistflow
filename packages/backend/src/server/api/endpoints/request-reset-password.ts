@@ -1,11 +1,11 @@
-import config from "@/config/index.js";
-import { HOUR } from "@/const.js";
-import { genId } from "@/misc/gen-id.js";
-import { PasswordResetRequests, UserProfiles, Users } from "@/models/index.js";
-import define from "@/server/api/define.js";
-import { sendEmail } from "@/services/send-email.js";
 import rndstr from "rndstr";
 import { IsNull } from "typeorm";
+import config from "@/config/index.js";
+import { Users, UserProfiles, PasswordResetRequests } from "@/models/index.js";
+import { sendEmail } from "@/services/send-email.js";
+import { genId } from "@/misc/gen-id.js";
+import define from "@/server/api/define.js";
+import { HOUR } from "@/const.js";
 
 export const meta = {
 	tags: ["reset password"],

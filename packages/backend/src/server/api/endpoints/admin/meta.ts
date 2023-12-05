@@ -1,6 +1,6 @@
 import config from "@/config/index.js";
-import { MAX_CAPTION_TEXT_LENGTH, MAX_NOTE_TEXT_LENGTH } from "@/const.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
+import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
 import define from "@/server/api/define.js";
 
 export const meta = {

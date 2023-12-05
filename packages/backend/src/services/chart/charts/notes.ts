@@ -1,8 +1,8 @@
-import type { Note } from "@/models/entities/note.js";
-import { Notes } from "@/models/index.js";
-import { IsNull, Not } from "typeorm";
 import type { KVs } from "../core.js";
 import Chart from "../core.js";
+import { Notes } from "@/models/index.js";
+import { Not, IsNull } from "typeorm";
+import type { Note } from "@/models/entities/note.js";
 import { name, schema } from "./entities/notes.js";
 
 /**

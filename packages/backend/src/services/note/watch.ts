@@ -1,8 +1,8 @@
+import type { User } from "@/models/entities/user.js";
+import type { Note } from "@/models/entities/note.js";
+import { NoteWatchings } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import type { NoteWatching } from "@/models/entities/note-watching.js";
-import type { Note } from "@/models/entities/note.js";
-import type { User } from "@/models/entities/user.js";
-import { NoteWatchings } from "@/models/index.js";
 
 export default async (me: User["id"], note: Note) => {
 	// 自分の投稿はwatchできない

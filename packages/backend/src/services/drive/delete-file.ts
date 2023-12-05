@@ -1,15 +1,15 @@
-import { fetchMeta } from "@/misc/fetch-meta.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
+import { InternalStorage } from "./internal-storage.js";
 import { DriveFiles } from "@/models/index.js";
-import { createDeleteObjectStorageFileJob } from "@/queue/index.js";
 import {
 	driveChart,
-	instanceChart,
 	perUserDriveChart,
+	instanceChart,
 } from "@/services/chart/index.js";
-import { v4 as uuid } from "uuid";
-import { InternalStorage } from "./internal-storage.js";
+import { createDeleteObjectStorageFileJob } from "@/queue/index.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
 import { getS3 } from "./s3.js";
+import { v4 as uuid } from "uuid";
 
 export async function deleteFile(file: DriveFile, isExpired = false) {
 	if (file.storedInternal) {

@@ -1,12 +1,12 @@
-import { EventEmitter } from "events";
 import type * as http from "node:http";
+import { EventEmitter } from "events";
 import type { ParsedUrlQuery } from "querystring";
 import * as websocket from "websocket";
 
 import { subscriber as redisClient } from "@/db/redis.js";
 import { Users } from "@/models/index.js";
-import authenticate from "./authenticate.js";
 import MainStreamConnection from "./stream/index.js";
+import authenticate from "./authenticate.js";
 
 export const initializeStreamingServer = (server: http.Server) => {
 	// Init websocket server

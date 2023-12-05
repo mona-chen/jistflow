@@ -2,51 +2,51 @@ import { URL } from "node:url";
 import promiseLimit from "promise-limit";
 
 import config from "@/config/index.js";
-import { db } from "@/db/postgre.js";
-import { fromHtml } from "@/mfm/from-html.js";
-import { toPuny } from "@/misc/convert-host.js";
-import { StatusError } from "@/misc/fetch.js";
-import { genId } from "@/misc/gen-id.js";
-import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
-import { normalizeForSearch } from "@/misc/normalize-for-search.js";
-import { truncate } from "@/misc/truncate.js";
-import type { Emoji } from "@/models/entities/emoji.js";
+import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import type { Note } from "@/models/entities/note.js";
-import { UserNotePining } from "@/models/entities/user-note-pining.js";
-import { UserProfile } from "@/models/entities/user-profile.js";
-import { UserPublickey } from "@/models/entities/user-publickey.js";
-import type { CacheableUser, IRemoteUser } from "@/models/entities/user.js";
-import { User } from "@/models/entities/user.js";
+import { updateUsertags } from "@/services/update-hashtag.js";
 import {
-	Followings,
+	Users,
 	Instances,
+	Followings,
 	UserProfiles,
 	UserPublickeys,
-	Users,
 } from "@/models/index.js";
-import { toArray } from "@/prelude/array.js";
+import type { IRemoteUser, CacheableUser } from "@/models/entities/user.js";
+import { User } from "@/models/entities/user.js";
+import type { Emoji } from "@/models/entities/emoji.js";
+import { UserNotePining } from "@/models/entities/user-note-pining.js";
+import { genId } from "@/misc/gen-id.js";
 import { instanceChart, usersChart } from "@/services/chart/index.js";
+import { UserPublickey } from "@/models/entities/user-publickey.js";
+import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
+import { toPuny } from "@/misc/convert-host.js";
+import { UserProfile } from "@/models/entities/user-profile.js";
+import { toArray } from "@/prelude/array.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";
-import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
-import { publishInternalEvent } from "@/services/stream.js";
-import { updateUsertags } from "@/services/update-hashtag.js";
+import { normalizeForSearch } from "@/misc/normalize-for-search.js";
+import { truncate } from "@/misc/truncate.js";
+import { StatusError } from "@/misc/fetch.js";
 import { uriPersonCache } from "@/services/user-cache.js";
+import { publishInternalEvent } from "@/services/stream.js";
+import { db } from "@/db/postgre.js";
 import { apLogger } from "../logger.js";
 import { htmlToMfm } from "../misc/html-to-mfm.js";
-import Resolver from "../resolver.js";
+import { fromHtml } from "@/mfm/from-html.js";
 import type { IActor, IObject } from "../type.js";
 import {
-	getApId,
-	getApType,
-	getOneApHrefNullable,
-	isActor,
-	isCollection,
 	isCollectionOrOrderedCollection,
+	isCollection,
+	getApId,
+	getOneApHrefNullable,
 	isPropertyValue,
+	getApType,
+	isActor,
 } from "../type.js";
-import { resolveImage } from "./image.js";
-import { extractEmojis, resolveNote } from "./note.js";
+import Resolver from "../resolver.js";
 import { extractApHashtags } from "./tag.js";
+import { resolveNote, extractEmojis } from "./note.js";
+import { resolveImage } from "./image.js";
 
 const logger = apLogger;
 
@@ -475,10 +475,10 @@ export async function updatePerson(
 
 	if (typeof person.followers === "string") {
 		try {
-			const data = await fetch(person.followers, {
+			let data = await fetch(person.followers, {
 				headers: { Accept: "application/json" },
 			});
-			const json_data = JSON.parse(await data.text());
+			let json_data = JSON.parse(await data.text());
 
 			followersCount = json_data.totalItems;
 		} catch {
@@ -490,10 +490,10 @@ export async function updatePerson(
 
 	if (typeof person.following === "string") {
 		try {
-			const data = await fetch(person.following, {
+			let data = await fetch(person.following, {
 				headers: { Accept: "application/json" },
 			});
-			const json_data = JSON.parse(await data.text());
+			let json_data = JSON.parse(await data.text());
 
 			followingCount = json_data.totalItems;
 		} catch {
@@ -505,10 +505,10 @@ export async function updatePerson(
 
 	if (typeof person.outbox === "string") {
 		try {
-			const data = await fetch(person.outbox, {
+			let data = await fetch(person.outbox, {
 				headers: { Accept: "application/json" },
 			});
-			const json_data = JSON.parse(await data.text());
+			let json_data = JSON.parse(await data.text());
 
 			notesCount = json_data.totalItems;
 		} catch (e) {

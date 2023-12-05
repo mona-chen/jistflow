@@ -1,8 +1,8 @@
-import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { isUserRelated } from "@/misc/is-user-related.js";
-import { Notes } from "@/models/index.js";
 import Channel from "../channel.js";
+import { Notes } from "@/models/index.js";
+import { isUserRelated } from "@/misc/is-user-related.js";
 import type { StreamMessages } from "../types.js";
+import { IdentifiableError } from "@/misc/identifiable-error.js";
 
 export default class extends Channel {
 	public readonly chName = "antenna";

@@ -1,6 +1,6 @@
-import { updatePerson } from "@/remote/activitypub/models/person.js";
-import { getRemoteUser } from "@/server/api/common/getters.js";
 import define from "@/server/api/define.js";
+import { getRemoteUser } from "@/server/api/common/getters.js";
+import { updatePerson } from "@/remote/activitypub/models/person.js";
 
 export const meta = {
 	tags: ["federation"],

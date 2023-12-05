@@ -1,9 +1,9 @@
-import { isUserRelated } from "@/misc/is-user-related.js";
-import type { Packed } from "@/misc/schema.js";
-import type { User } from "@/models/entities/user.js";
-import { Users } from "@/models/index.js";
 import Channel from "../channel.js";
+import { Users } from "@/models/index.js";
+import { isUserRelated } from "@/misc/is-user-related.js";
+import type { User } from "@/models/entities/user.js";
 import type { StreamMessages } from "../types.js";
+import type { Packed } from "@/misc/schema.js";
 
 export default class extends Channel {
 	public readonly chName = "channel";

@@ -1,6 +1,6 @@
-import { Webhooks } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import { Webhooks } from "@/models/index.js";
 import { publishInternalEvent } from "@/services/stream.js";
 
 export const meta = {

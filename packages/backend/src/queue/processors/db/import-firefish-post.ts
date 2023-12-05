@@ -1,15 +1,15 @@
-import { genId } from "@/misc/gen-id.js";
 import * as Post from "@/misc/post.js";
-import type { DriveFile } from "@/models/entities/drive-file.js";
-import type { Note } from "@/models/entities/note.js";
-import { Users } from "@/models/index.js";
-import { NoteEdits, Notes } from "@/models/index.js";
-import { createImportCkPostJob } from "@/queue/index.js";
-import type { DbUserImportMastoPostJobData } from "@/queue/types.js";
-import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
 import create from "@/services/note/create.js";
-import type Bull from "bull";
+import { Users } from "@/models/index.js";
+import type { DbUserImportMastoPostJobData } from "@/queue/types.js";
 import { queueLogger } from "../../logger.js";
+import { uploadFromUrl } from "@/services/drive/upload-from-url.js";
+import type { DriveFile } from "@/models/entities/drive-file.js";
+import type Bull from "bull";
+import { createImportCkPostJob } from "@/queue/index.js";
+import { Notes, NoteEdits } from "@/models/index.js";
+import type { Note } from "@/models/entities/note.js";
+import { genId } from "@/misc/gen-id.js";
 
 const logger = queueLogger.createSubLogger("import-firefish-post");
 
@@ -39,7 +39,7 @@ export async function importCkPost(
 	*/
 	const urls = (post.files || [])
 		.map((x: any) => x.url)
-		.filter((x: string) => x.startsWith("http"));
+		.filter((x: String) => x.startsWith("http"));
 	const files: DriveFile[] = [];
 	for (const url of urls) {
 		try {

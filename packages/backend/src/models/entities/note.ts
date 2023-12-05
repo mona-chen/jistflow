@@ -1,16 +1,16 @@
 import {
-	Column,
 	Entity,
 	Index,
 	JoinColumn,
-	ManyToOne,
+	Column,
 	PrimaryColumn,
+	ManyToOne,
 } from "typeorm";
-import { noteVisibilities } from "../../types.js";
-import { id } from "../id.js";
-import { Channel } from "./channel.js";
-import type { DriveFile } from "./drive-file.js";
 import { User } from "./user.js";
+import type { DriveFile } from "./drive-file.js";
+import { id } from "../id.js";
+import { noteVisibilities } from "../../types.js";
+import { Channel } from "./channel.js";
 
 @Entity()
 @Index("IDX_NOTE_TAGS", { synchronize: false })

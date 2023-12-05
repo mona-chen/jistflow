@@ -1,11 +1,11 @@
 import type Koa from "koa";
 
-import { fetchMeta } from "@/misc/fetch-meta.js";
 import type { User } from "@/models/entities/user.js";
 import { UserIps } from "@/models/index.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import type { IEndpoint } from "./endpoints.js";
 import authenticate, { AuthenticationError } from "./authenticate.js";
 import call from "./call.js";
-import type { IEndpoint } from "./endpoints.js";
 import { ApiError } from "./error.js";
 
 const userIpHistories = new Map<User["id"], Set<string>>();

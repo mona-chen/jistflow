@@ -1,9 +1,9 @@
+import type Bull from "bull";
 import { Notes, PollVotes } from "@/models/index.js";
 // import { queueLogger } from "../logger.js";
 import type { EndedPollNotificationJobData } from "@/queue/types.js";
 import { createNotification } from "@/services/create-notification.js";
 import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
-import type Bull from "bull";
 
 // unused
 // const logger = queueLogger.createSubLogger("ended-poll-notification");

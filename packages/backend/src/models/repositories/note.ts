@@ -1,28 +1,28 @@
-import { db } from "@/db/postgre.js";
-import { IdentifiableError } from "@/misc/identifiable-error.js";
+import { In } from "typeorm";
+import * as mfm from "mfm-js";
+import { Note } from "@/models/entities/note.js";
+import type { User } from "@/models/entities/user.js";
+import {
+	Users,
+	PollVotes,
+	DriveFiles,
+	NoteReactions,
+	Followings,
+	Polls,
+	Channels,
+} from "../index.js";
+import type { Packed } from "@/misc/schema.js";
 import { nyaize } from "@/misc/nyaize.js";
+import { awaitAll } from "@/prelude/await-all.js";
+import { convertReactions, decodeReaction } from "@/misc/reaction-lib.js";
+import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import {
 	aggregateNoteEmojis,
 	populateEmojis,
 	prefetchEmojis,
 } from "@/misc/populate-emojis.js";
-import { convertReactions, decodeReaction } from "@/misc/reaction-lib.js";
-import type { Packed } from "@/misc/schema.js";
-import type { NoteReaction } from "@/models/entities/note-reaction.js";
-import { Note } from "@/models/entities/note.js";
-import type { User } from "@/models/entities/user.js";
-import { awaitAll } from "@/prelude/await-all.js";
-import * as mfm from "mfm-js";
-import { In } from "typeorm";
-import {
-	Channels,
-	DriveFiles,
-	Followings,
-	NoteReactions,
-	PollVotes,
-	Polls,
-	Users,
-} from "../index.js";
+import { db } from "@/db/postgre.js";
+import { IdentifiableError } from "@/misc/identifiable-error.js";
 
 export async function populatePoll(note: Note, meId: User["id"] | null) {
 	const poll = await Polls.findOneByOrFail({ noteId: note.id });

@@ -1,9 +1,9 @@
-import type { Notification } from "@/models/entities/notification.js";
-import type { User } from "@/models/entities/user.js";
-import { Notifications, Users } from "@/models/index.js";
-import { pushNotification } from "@/services/push-notification.js";
-import { publishMainStream } from "@/services/stream.js";
 import { In } from "typeorm";
+import { publishMainStream } from "@/services/stream.js";
+import { pushNotification } from "@/services/push-notification.js";
+import type { User } from "@/models/entities/user.js";
+import type { Notification } from "@/models/entities/notification.js";
+import { Notifications, Users } from "@/models/index.js";
 
 export async function readNotification(
 	userId: User["id"],

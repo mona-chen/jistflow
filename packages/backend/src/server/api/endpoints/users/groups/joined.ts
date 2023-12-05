@@ -1,6 +1,6 @@
-import { UserGroupJoinings, UserGroups } from "@/models/index.js";
+import { Not, In } from "typeorm";
+import { UserGroups, UserGroupJoinings } from "@/models/index.js";
 import define from "@/server/api/define.js";
-import { In, Not } from "typeorm";
 
 export const meta = {
 	tags: ["groups", "account"],

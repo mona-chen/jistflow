@@ -1,18 +1,18 @@
 import { URL } from "node:url";
-import { toPuny } from "@/misc/convert-host.js";
-import { StatusError } from "@/misc/fetch.js";
-import { shouldSkipInstance } from "@/misc/skipped-instances.js";
-import { Instances } from "@/models/index.js";
-import type { DeliverJobData } from "@/queue/types.js";
 import request from "@/remote/activitypub/request.js";
+import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
+import Logger from "@/services/logger.js";
+import { Instances } from "@/models/index.js";
 import {
 	apRequestChart,
 	federationChart,
 	instanceChart,
 } from "@/services/chart/index.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";
-import Logger from "@/services/logger.js";
-import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
+import { toPuny } from "@/misc/convert-host.js";
+import { StatusError } from "@/misc/fetch.js";
+import { shouldSkipInstance } from "@/misc/skipped-instances.js";
+import type { DeliverJobData } from "@/queue/types.js";
 import type Bull from "bull";
 
 const logger = new Logger("deliver");

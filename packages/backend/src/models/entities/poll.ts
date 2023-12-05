@@ -1,15 +1,15 @@
 import {
-	Column,
+	PrimaryColumn,
 	Entity,
 	Index,
 	JoinColumn,
+	Column,
 	OneToOne,
-	PrimaryColumn,
 } from "typeorm";
-import { noteVisibilities } from "../../types.js";
 import { id } from "../id.js";
 import { Note } from "./note.js";
 import type { User } from "./user.js";
+import { noteVisibilities } from "../../types.js";
 
 @Entity()
 export class Poll {

@@ -1,6 +1,6 @@
 import { URL } from "node:url";
-import { toASCII } from "punycode";
 import config from "@/config/index.js";
+import { toASCII } from "punycode";
 
 export function getFullApAccount(username: string, host: string | null) {
 	return host

@@ -1,8 +1,8 @@
-import { genId } from "@/misc/gen-id.js";
-import type { Channel } from "@/models/entities/channel.js";
-import { Channels, DriveFiles } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import { Channels, DriveFiles } from "@/models/index.js";
+import type { Channel } from "@/models/entities/channel.js";
+import { genId } from "@/misc/gen-id.js";
 
 export const meta = {
 	tags: ["channels"],

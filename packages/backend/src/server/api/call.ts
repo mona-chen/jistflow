@@ -1,15 +1,15 @@
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { getIpHash } from "@/misc/get-ip-hash.js";
-import type { AccessToken } from "@/models/entities/access-token.js";
-import type { CacheableLocalUser } from "@/models/entities/user.js";
-import type Koa from "koa";
 import { performance } from "perf_hooks";
-import compatibility from "./compatibility.js";
+import type Koa from "koa";
+import type { CacheableLocalUser } from "@/models/entities/user.js";
+import type { AccessToken } from "@/models/entities/access-token.js";
+import { getIpHash } from "@/misc/get-ip-hash.js";
+import { limiter } from "./limiter.js";
 import type { IEndpointMeta } from "./endpoints.js";
 import endpoints from "./endpoints.js";
+import compatibility from "./compatibility.js";
 import { ApiError } from "./error.js";
-import { limiter } from "./limiter.js";
 import { apiLogger } from "./logger.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
 
 const accessDenied = {
 	message: "Access denied.",

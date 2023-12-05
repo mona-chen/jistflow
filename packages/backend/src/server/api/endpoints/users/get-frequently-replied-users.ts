@@ -1,9 +1,9 @@
-import { Notes, Users } from "@/models/index.js";
+import { Not, In, IsNull } from "typeorm";
 import { maximum } from "@/prelude/array.js";
-import { getUser } from "@/server/api/common/getters.js";
+import { Notes, Users } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { In, IsNull, Not } from "typeorm";
+import { getUser } from "@/server/api/common/getters.js";
 
 export const meta = {
 	tags: ["users"],

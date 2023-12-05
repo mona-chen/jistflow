@@ -1,17 +1,17 @@
+import type Bull from "bull";
 import * as fs from "node:fs";
 import AdmZip from "adm-zip";
-import type Bull from "bull";
 
-import * as path from "path";
-import { db } from "@/db/postgre.js";
+import { queueLogger } from "../../logger.js";
 import { createTempDir } from "@/misc/create-temp.js";
 import { downloadUrl } from "@/misc/download-url.js";
-import { genId } from "@/misc/gen-id.js";
 import { DriveFiles, Emojis } from "@/models/index.js";
 import type { DbUserImportJobData } from "@/queue/types.js";
 import { addFile } from "@/services/drive/add-file.js";
+import { genId } from "@/misc/gen-id.js";
+import { db } from "@/db/postgre.js";
 import probeImageSize from "probe-image-size";
-import { queueLogger } from "../../logger.js";
+import * as path from "path";
 
 const logger = queueLogger.createSubLogger("import-custom-emojis");
 
@@ -92,7 +92,7 @@ export async function importCustomEmojis(
 		} else {
 			logger.info("starting emoji import without metadata");
 			// Since we lack metadata, we import into a randomized category name instead
-			const categoryName = genId();
+			let categoryName = genId();
 
 			let containedEmojis = fs.readdirSync(outputPath);
 

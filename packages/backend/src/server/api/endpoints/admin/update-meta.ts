@@ -1,7 +1,7 @@
-import { db } from "@/db/postgre.js";
 import { Meta } from "@/models/entities/meta.js";
-import define from "@/server/api/define.js";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
+import { db } from "@/db/postgre.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["admin"],

@@ -1,5 +1,7 @@
 // https://gist.github.com/nfantone/1eaa803772025df69d07f4dbf5df7e58
 
+"use strict";
+
 /**
  * @callback BeforeShutdownListener
  * @param {string} [signalOrEvent] The exit signal or event name received on the process.

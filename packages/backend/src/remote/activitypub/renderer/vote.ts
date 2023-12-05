@@ -1,8 +1,8 @@
 import config from "@/config/index.js";
 import type { Note } from "@/models/entities/note.js";
+import type { IRemoteUser, User } from "@/models/entities/user.js";
 import type { PollVote } from "@/models/entities/poll-vote.js";
 import type { Poll } from "@/models/entities/poll.js";
-import type { IRemoteUser, User } from "@/models/entities/user.js";
 
 export default async function renderVote(
 	user: { id: User["id"] },

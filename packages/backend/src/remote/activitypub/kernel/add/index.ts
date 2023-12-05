@@ -1,7 +1,7 @@
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import { addPinned } from "@/services/i/pin.js";
-import { resolveNote } from "../../models/note.js";
 import type { IAdd } from "../../type.js";
+import { resolveNote } from "../../models/note.js";
+import { addPinned } from "@/services/i/pin.js";
 
 export default async (
 	actor: CacheableRemoteUser,

@@ -1,8 +1,8 @@
 import { db } from "@/db/postgre.js";
-import type { Packed } from "@/misc/schema.js";
 import { MessagingMessage } from "@/models/entities/messaging-message.js";
+import { Users, DriveFiles, UserGroups } from "../index.js";
+import type { Packed } from "@/misc/schema.js";
 import type { User } from "@/models/entities/user.js";
-import { DriveFiles, UserGroups, Users } from "../index.js";
 
 export const MessagingMessageRepository = db
 	.getRepository(MessagingMessage)

@@ -1,10 +1,10 @@
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import { renderBlock } from "@/remote/activitypub/renderer/block.js";
+import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { deliver } from "@/queue/index.js";
+import Logger from "@/services/logger.js";
 import type { CacheableUser } from "@/models/entities/user.js";
 import { Blockings, Users } from "@/models/index.js";
-import { deliver } from "@/queue/index.js";
-import { renderBlock } from "@/remote/activitypub/renderer/block.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
-import Logger from "@/services/logger.js";
 
 const logger = new Logger("blocking/delete");
 

@@ -1,28 +1,28 @@
 import { URL } from "node:url";
-import { extractDbHost, toPuny } from "@/misc/convert-host.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { StatusError } from "@/misc/fetch.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
-import type { UserPublickey } from "@/models/entities/user-publickey.js";
-import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import { Instances } from "@/models/index.js";
-import { verifySignature } from "@/remote/activitypub/check-fetch.js";
-import DbResolver from "@/remote/activitypub/db-resolver.js";
-import { LdSignature } from "@/remote/activitypub/misc/ld-signature.js";
-import { resolvePerson } from "@/remote/activitypub/models/person.js";
+import type Bull from "bull";
+import httpSignature from "@peertube/http-signature";
 import perform from "@/remote/activitypub/perform.js";
-import { getApId } from "@/remote/activitypub/type.js";
+import Logger from "@/services/logger.js";
+import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
+import { Instances } from "@/models/index.js";
 import {
 	apRequestChart,
 	federationChart,
 	instanceChart,
 } from "@/services/chart/index.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import { toPuny, extractDbHost } from "@/misc/convert-host.js";
+import { getApId } from "@/remote/activitypub/type.js";
 import { fetchInstanceMetadata } from "@/services/fetch-instance-metadata.js";
-import Logger from "@/services/logger.js";
-import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
-import httpSignature from "@peertube/http-signature";
-import type Bull from "bull";
 import type { InboxJobData } from "../types.js";
+import DbResolver from "@/remote/activitypub/db-resolver.js";
+import { resolvePerson } from "@/remote/activitypub/models/person.js";
+import { LdSignature } from "@/remote/activitypub/misc/ld-signature.js";
+import { StatusError } from "@/misc/fetch.js";
+import type { CacheableRemoteUser } from "@/models/entities/user.js";
+import type { UserPublickey } from "@/models/entities/user-publickey.js";
+import { shouldBlockInstance } from "@/misc/should-block-instance.js";
+import { verifySignature } from "@/remote/activitypub/check-fetch.js";
 
 const logger = new Logger("inbox");
 

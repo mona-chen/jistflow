@@ -1,12 +1,13 @@
-import config from "@/config/index.js";
 import { redisClient } from "@/db/redis.js";
+import type { User } from "@/models/entities/user.js";
+import type { Note } from "@/models/entities/note.js";
+import type { UserList } from "@/models/entities/user-list.js";
+import type { UserGroup } from "@/models/entities/user-group.js";
+import config from "@/config/index.js";
 import type { Antenna } from "@/models/entities/antenna.js";
 import type { Channel } from "@/models/entities/channel.js";
-import type { Note } from "@/models/entities/note.js";
-import type { UserGroup } from "@/models/entities/user-group.js";
-import type { UserList } from "@/models/entities/user-list.js";
-import type { User } from "@/models/entities/user.js";
 import type {
+	StreamChannels,
 	AdminStreamTypes,
 	AntennaStreamTypes,
 	BroadcastTypes,
@@ -18,7 +19,6 @@ import type {
 	MessagingIndexStreamTypes,
 	MessagingStreamTypes,
 	NoteStreamTypes,
-	StreamChannels,
 	UserListStreamTypes,
 	UserStreamTypes,
 } from "@/server/api/stream/types.js";

@@ -1,5 +1,5 @@
 import config from "@/config/index.js";
-import type { ILocalUser, User } from "@/models/entities/user.js";
+import type { User, ILocalUser } from "@/models/entities/user.js";
 import { Users } from "@/models/index.js";
 
 export default (mention: User) => ({

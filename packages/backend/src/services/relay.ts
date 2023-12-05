@@ -1,17 +1,17 @@
-import { Cache } from "@/misc/cache.js";
-import { genId } from "@/misc/gen-id.js";
-import type { Relay } from "@/models/entities/relay.js";
-import type { ILocalUser, User } from "@/models/entities/user.js";
-import { Relays, Users } from "@/models/index.js";
-import { deliver } from "@/queue/index.js";
+import { IsNull } from "typeorm";
 import { renderFollowRelay } from "@/remote/activitypub/renderer/follow-relay.js";
 import {
-	attachLdSignature,
 	renderActivity,
+	attachLdSignature,
 } from "@/remote/activitypub/renderer/index.js";
 import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { deliver } from "@/queue/index.js";
+import type { ILocalUser, User } from "@/models/entities/user.js";
+import { Users, Relays } from "@/models/index.js";
+import { genId } from "@/misc/gen-id.js";
+import { Cache } from "@/misc/cache.js";
+import type { Relay } from "@/models/entities/relay.js";
 import { createSystemUser } from "@/services/create-system-user.js";
-import { IsNull } from "typeorm";
 
 const ACTOR_USERNAME = "relay.actor" as const;
 

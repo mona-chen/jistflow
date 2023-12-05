@@ -1,6 +1,6 @@
-import { comparePassword, hashPassword } from "@/misc/password.js";
-import { UserProfiles } from "@/models/index.js";
 import define from "@/server/api/define.js";
+import { UserProfiles } from "@/models/index.js";
+import { hashPassword, comparePassword } from "@/misc/password.js";
 
 export const meta = {
 	requireCredential: true,

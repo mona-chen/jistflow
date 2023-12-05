@@ -1,45 +1,45 @@
-import { extractDbHost } from "@/misc/convert-host.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import { toArray } from "@/prelude/array.js";
-import { apLogger } from "../logger.js";
-import Resolver from "../resolver.js";
 import {
-	getApId,
-	isAccept,
-	isAdd,
-	isAnnounce,
-	isBlock,
-	isCollection,
-	isCollectionOrOrderedCollection,
 	isCreate,
 	isDelete,
-	isFlag,
-	isFollow,
-	isLike,
-	isMove,
-	isRead,
-	isReject,
-	isRemove,
-	isUndo,
 	isUpdate,
+	isRead,
+	isFollow,
+	isAccept,
+	isReject,
+	isAdd,
+	isRemove,
+	isAnnounce,
+	isLike,
+	isUndo,
+	isBlock,
+	isCollectionOrOrderedCollection,
+	isCollection,
+	isFlag,
+	isMove,
+	getApId,
 } from "../type.js";
-import type { IActivity, IObject } from "../type.js";
-import accept from "./accept/index.js";
-import add from "./add/index.js";
-import announce from "./announce/index.js";
-import block from "./block/index.js";
+import { apLogger } from "../logger.js";
+import Resolver from "../resolver.js";
 import create from "./create/index.js";
 import performDeleteActivity from "./delete/index.js";
-import flag from "./flag/index.js";
-import follow from "./follow.js";
-import like from "./like.js";
-import move from "./move/index.js";
-import { performReadActivity } from "./read.js";
-import reject from "./reject/index.js";
-import remove from "./remove/index.js";
-import undo from "./undo/index.js";
 import performUpdateActivity from "./update/index.js";
+import { performReadActivity } from "./read.js";
+import follow from "./follow.js";
+import undo from "./undo/index.js";
+import like from "./like.js";
+import announce from "./announce/index.js";
+import accept from "./accept/index.js";
+import reject from "./reject/index.js";
+import add from "./add/index.js";
+import remove from "./remove/index.js";
+import block from "./block/index.js";
+import flag from "./flag/index.js";
+import move from "./move/index.js";
+import type { IObject, IActivity } from "../type.js";
+import { extractDbHost } from "@/misc/convert-host.js";
+import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 
 export async function performActivity(
 	actor: CacheableRemoteUser,

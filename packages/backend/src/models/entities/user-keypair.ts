@@ -1,6 +1,6 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
-import { id } from "../id.js";
+import { PrimaryColumn, Entity, JoinColumn, Column, OneToOne } from "typeorm";
 import { User } from "./user.js";
+import { id } from "../id.js";
 
 @Entity()
 export class UserKeypair {

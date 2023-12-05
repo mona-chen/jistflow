@@ -1,9 +1,9 @@
+import rndstr from "rndstr";
 import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
-import { NoteReactions, Notes, UserProfiles } from "@/models/index.js";
-import rndstr from "rndstr";
-import { generateBlockedUserQuery } from "./generate-block-query.js";
+import { Notes, UserProfiles, NoteReactions } from "@/models/index.js";
 import { generateMutedUserQuery } from "./generate-muted-user-query.js";
+import { generateBlockedUserQuery } from "./generate-block-query.js";
 
 // TODO: リアクション、Renote、返信などをしたノートは除外する
 

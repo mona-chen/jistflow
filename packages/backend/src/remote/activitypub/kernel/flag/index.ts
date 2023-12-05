@@ -1,10 +1,10 @@
-import config from "@/config/index.js";
-import { genId } from "@/misc/gen-id.js";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import { AbuseUserReports, Users } from "@/models/index.js";
-import { In } from "typeorm";
+import config from "@/config/index.js";
 import type { IFlag } from "../../type.js";
 import { getApIds } from "../../type.js";
+import { AbuseUserReports, Users } from "@/models/index.js";
+import { In } from "typeorm";
+import { genId } from "@/misc/gen-id.js";
 
 export default async (
 	actor: CacheableRemoteUser,

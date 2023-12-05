@@ -1,18 +1,18 @@
-import config from "@/config/index.js";
-import { DAY } from "@/const.js";
-import { parse } from "@/misc/acct.js";
 import type { User } from "@/models/entities/user.js";
-import { Followings, Users } from "@/models/index.js";
+import { resolveUser } from "@/remote/resolve-user.js";
+import { DAY } from "@/const.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import { resolveUser } from "@/remote/resolve-user.js";
-import { getUser } from "@/server/api/common/getters.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
 import { apiLogger } from "@/server/api/logger.js";
-import create from "@/services/following/create.js";
 import deleteFollowing from "@/services/following/delete.js";
+import create from "@/services/following/create.js";
+import { getUser } from "@/server/api/common/getters.js";
+import { Followings, Users } from "@/models/index.js";
+import config from "@/config/index.js";
 import { publishMainStream } from "@/services/stream.js";
+import { parse } from "@/misc/acct.js";
 
 export const meta = {
 	tags: ["users"],

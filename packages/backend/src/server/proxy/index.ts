@@ -2,9 +2,9 @@
  * Media Proxy
  */
 
+import Koa from "koa";
 import cors from "@koa/cors";
 import Router from "@koa/router";
-import Koa from "koa";
 import { proxyMedia } from "./proxy-media.js";
 
 // Init app

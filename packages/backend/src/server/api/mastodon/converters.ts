@@ -1,5 +1,5 @@
-import { IdType, convertId } from "@/server/api/index.js";
 import { Entity } from "megalodon";
+import { convertId, IdType } from "@/server/api/index.js";
 
 function simpleConvert(data: any) {
 	// copy the object to bypass weird pass by reference bugs

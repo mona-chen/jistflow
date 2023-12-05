@@ -1,6 +1,6 @@
-import { UserIps } from "@/models/index.js";
 import type Bull from "bull";
 import { LessThan } from "typeorm";
+import { UserIps } from "@/models/index.js";
 
 import { queueLogger } from "../../logger.js";
 

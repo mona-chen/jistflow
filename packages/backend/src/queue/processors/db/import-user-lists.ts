@@ -1,20 +1,20 @@
 import type Bull from "bull";
 
+import { queueLogger } from "../../logger.js";
 import * as Acct from "@/misc/acct.js";
-import { isSelfHost, toPuny } from "@/misc/convert-host.js";
-import { downloadTextFile } from "@/misc/download-text-file.js";
-import { genId } from "@/misc/gen-id.js";
-import {
-	DriveFiles,
-	UserListJoinings,
-	UserLists,
-	Users,
-} from "@/models/index.js";
-import type { DbUserImportJobData } from "@/queue/types.js";
 import { resolveUser } from "@/remote/resolve-user.js";
 import { pushUserToUserList } from "@/services/user-list/push.js";
+import { downloadTextFile } from "@/misc/download-text-file.js";
+import { isSelfHost, toPuny } from "@/misc/convert-host.js";
+import {
+	DriveFiles,
+	Users,
+	UserLists,
+	UserListJoinings,
+} from "@/models/index.js";
+import { genId } from "@/misc/gen-id.js";
+import type { DbUserImportJobData } from "@/queue/types.js";
 import { IsNull } from "typeorm";
-import { queueLogger } from "../../logger.js";
 
 const logger = queueLogger.createSubLogger("import-user-lists");
 

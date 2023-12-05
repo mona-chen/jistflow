@@ -1,7 +1,7 @@
-import { isUserRelated } from "@/misc/is-user-related.js";
-import { normalizeForSearch } from "@/misc/normalize-for-search.js";
-import type { Packed } from "@/misc/schema.js";
 import Channel from "../channel.js";
+import { normalizeForSearch } from "@/misc/normalize-for-search.js";
+import { isUserRelated } from "@/misc/is-user-related.js";
+import type { Packed } from "@/misc/schema.js";
 
 export default class extends Channel {
 	public readonly chName = "hashtag";

@@ -1,16 +1,16 @@
-import type { Packed } from "@/misc/schema.js";
-import type { Channel } from "@/models/entities/channel.js";
+import { publishMainStream } from "@/services/stream.js";
 import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
 import {
-	ChannelFollowings,
-	Followings,
 	NoteUnreads,
 	Users,
+	Followings,
+	ChannelFollowings,
 } from "@/models/index.js";
+import { Not, IsNull, In } from "typeorm";
+import type { Channel } from "@/models/entities/channel.js";
 import { readNotificationByQuery } from "@/server/api/common/read-notification.js";
-import { publishMainStream } from "@/services/stream.js";
-import { In, IsNull, Not } from "typeorm";
+import type { Packed } from "@/misc/schema.js";
 
 /**
  * Mark notes as read

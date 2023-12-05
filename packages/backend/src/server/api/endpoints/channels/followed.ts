@@ -1,5 +1,5 @@
-import { ChannelFollowings, Channels } from "@/models/index.js";
 import define from "@/server/api/define.js";
+import { Channels, ChannelFollowings } from "@/models/index.js";
 
 export const meta = {
 	tags: ["channels", "account"],

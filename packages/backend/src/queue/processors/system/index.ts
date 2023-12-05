@@ -1,10 +1,10 @@
 import type Bull from "bull";
-import { checkExpiredMutings } from "./check-expired-mutings.js";
+import { tickCharts } from "./tick-charts.js";
+import { resyncCharts } from "./resync-charts.js";
 import { cleanCharts } from "./clean-charts.js";
+import { checkExpiredMutings } from "./check-expired-mutings.js";
 import { clean } from "./clean.js";
 import { setLocalEmojiSizes } from "./local-emoji-size.js";
-import { resyncCharts } from "./resync-charts.js";
-import { tickCharts } from "./tick-charts.js";
 import { verifyLinks } from "./verify-links.js";
 
 const jobs = {

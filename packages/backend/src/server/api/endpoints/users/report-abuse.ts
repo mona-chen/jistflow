@@ -1,14 +1,14 @@
-import { toHtml } from "@/mfm/to-html.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { genId } from "@/misc/gen-id.js";
-import { AbuseUserReports, UserProfiles, Users } from "@/models/index.js";
-import { getUser } from "@/server/api/common/getters.js";
-import define from "@/server/api/define.js";
-import { ApiError } from "@/server/api/error.js";
-import { sendEmail } from "@/services/send-email.js";
-import { publishAdminStream } from "@/services/stream.js";
 import * as mfm from "mfm-js";
 import sanitizeHtml from "sanitize-html";
+import { publishAdminStream } from "@/services/stream.js";
+import { AbuseUserReports, UserProfiles, Users } from "@/models/index.js";
+import { genId } from "@/misc/gen-id.js";
+import { sendEmail } from "@/services/send-email.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import { getUser } from "@/server/api/common/getters.js";
+import { ApiError } from "@/server/api/error.js";
+import define from "@/server/api/define.js";
+import { toHtml } from "@/mfm/to-html.js";
 
 export const meta = {
 	tags: ["users"],

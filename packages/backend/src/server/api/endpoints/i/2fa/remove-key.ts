@@ -1,6 +1,6 @@
 import { comparePassword } from "@/misc/password.js";
-import { UserProfiles, UserSecurityKeys, Users } from "@/models/index.js";
 import define from "@/server/api/define.js";
+import { UserProfiles, UserSecurityKeys, Users } from "@/models/index.js";
 import { publishMainStream } from "@/services/stream.js";
 
 export const meta = {

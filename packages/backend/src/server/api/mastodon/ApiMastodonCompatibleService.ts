@@ -1,21 +1,21 @@
-import { Users } from "@/models/index.js";
-import { IdType, convertId } from "@/server/api/index.js";
 import Router from "@koa/router";
 import megalodon, { MegalodonInterface } from "megalodon";
-import { IsNull } from "typeorm";
+import { apiAuthMastodon } from "./endpoints/auth.js";
+import { apiAccountMastodon } from "./endpoints/account.js";
+import { apiStatusMastodon } from "./endpoints/status.js";
+import { apiFilterMastodon } from "./endpoints/filter.js";
+import { apiTimelineMastodon } from "./endpoints/timeline.js";
+import { apiNotificationsMastodon } from "./endpoints/notifications.js";
+import { apiSearchMastodon } from "./endpoints/search.js";
+import { getInstance } from "./endpoints/meta.js";
 import {
 	convertAccount,
 	convertAnnouncement,
 	convertFilter,
 } from "./converters.js";
-import { apiAccountMastodon } from "./endpoints/account.js";
-import { apiAuthMastodon } from "./endpoints/auth.js";
-import { apiFilterMastodon } from "./endpoints/filter.js";
-import { getInstance } from "./endpoints/meta.js";
-import { apiNotificationsMastodon } from "./endpoints/notifications.js";
-import { apiSearchMastodon } from "./endpoints/search.js";
-import { apiStatusMastodon } from "./endpoints/status.js";
-import { apiTimelineMastodon } from "./endpoints/timeline.js";
+import { convertId, IdType } from "@/server/api/index.js";
+import { Users } from "@/models/index.js";
+import { IsNull } from "typeorm";
 
 export function getClient(
 	BASE_URL: string,

@@ -1,7 +1,7 @@
 import { URL } from "node:url";
-import { getAgentByUrl } from "@/misc/fetch.js";
-import type { Meta } from "@/models/entities/meta.js";
 import S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
+import type { Meta } from "@/models/entities/meta.js";
+import { getAgentByUrl } from "@/misc/fetch.js";
 
 export function getS3(meta: Meta) {
 	const u =

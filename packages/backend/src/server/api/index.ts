@@ -2,31 +2,31 @@
  * API Server
  */
 
-import config from "@/config/index.js";
-import { AccessTokens, Users } from "@/models/index.js";
-import cors from "@koa/cors";
-import multer from "@koa/multer";
-import Router from "@koa/router";
 import Koa from "koa";
-import { koaBody } from "koa-body";
+import Router from "@koa/router";
+import multer from "@koa/multer";
 import bodyParser from "koa-bodyparser";
-import handler from "./api-handler.js";
-import compatibility from "./compatibility.js";
-import endpoints from "./endpoints.js";
+import cors from "@koa/cors";
 import {
 	apiMastodonCompatible,
 	getClient,
 } from "./mastodon/ApiMastodonCompatibleService.js";
-import { convertAttachment } from "./mastodon/converters.js";
+import { AccessTokens, Users } from "@/models/index.js";
+import config from "@/config/index.js";
+import endpoints from "./endpoints.js";
+import compatibility from "./compatibility.js";
+import handler from "./api-handler.js";
+import signup from "./private/signup.js";
 import signin from "./private/signin.js";
 import signupPending from "./private/signup-pending.js";
-import signup from "./private/signup.js";
 import verifyEmail from "./private/verify-email.js";
+import { koaBody } from "koa-body";
+import { convertAttachment } from "./mastodon/converters.js";
 
 // TODO?: should we avoid importing things from built directory?
 import {
-	IdConvertType as IdType,
 	convertId,
+	IdConvertType as IdType,
 } from "native-utils/built/index.js";
 
 // re-export native rust id conversion (function and enum)

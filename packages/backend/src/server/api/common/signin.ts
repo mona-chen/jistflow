@@ -1,9 +1,9 @@
 import type Koa from "koa";
 
 import config from "@/config/index.js";
-import { genId } from "@/misc/gen-id.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { Signins } from "@/models/index.js";
+import { genId } from "@/misc/gen-id.js";
 import { publishMainStream } from "@/services/stream.js";
 
 export default function (ctx: Koa.Context, user: ILocalUser, redirect = false) {

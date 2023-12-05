@@ -1,9 +1,9 @@
-import { Emojis } from "@/models/index.js";
 import type Bull from "bull";
 import { IsNull } from "typeorm";
+import { Emojis } from "@/models/index.js";
 
-import { getEmojiSize } from "@/misc/emoji-meta.js";
 import { queueLogger } from "../../logger.js";
+import { getEmojiSize } from "@/misc/emoji-meta.js";
 
 const logger = queueLogger.createSubLogger("local-emoji-size");
 

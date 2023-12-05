@@ -1,12 +1,12 @@
-import { getActiveWebhooks } from "@/misc/webhook-cache.js";
-import type { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
-import { FollowRequests, Followings, Users } from "@/models/index.js";
-import { deliver, webhookDeliver } from "@/queue/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import renderReject from "@/remote/activitypub/renderer/reject.js";
+import { deliver, webhookDeliver } from "@/queue/index.js";
 import { publishMainStream, publishUserEvent } from "@/services/stream.js";
+import type { ILocalUser, IRemoteUser } from "@/models/entities/user.js";
+import { Users, FollowRequests, Followings } from "@/models/index.js";
 import { decrementFollowing } from "./delete.js";
+import { getActiveWebhooks } from "@/misc/webhook-cache.js";
 
 type Local =
 	| ILocalUser

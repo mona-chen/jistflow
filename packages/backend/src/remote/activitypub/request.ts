@@ -1,9 +1,9 @@
 import config from "@/config/index.js";
 import { getUserKeypair } from "@/misc/keypair-store.js";
 import type { User } from "@/models/entities/user.js";
-import { apLogger } from "@/remote/activitypub/logger.js";
 import { getResponse } from "../../misc/fetch.js";
-import { createSignedGet, createSignedPost } from "./ap-request.js";
+import { createSignedPost, createSignedGet } from "./ap-request.js";
+import { apLogger } from "@/remote/activitypub/logger.js";
 
 export default async (user: { id: User["id"] }, url: string, object: any) => {
 	const body = JSON.stringify(object);

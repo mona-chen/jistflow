@@ -1,10 +1,10 @@
 import type Bull from "bull";
 
-import { DriveFiles, Users } from "@/models/index.js";
-import type { DbUserJobData } from "@/queue/types.js";
-import { deleteFileSync } from "@/services/drive/delete-file.js";
-import { MoreThan } from "typeorm";
 import { queueLogger } from "../../logger.js";
+import { deleteFileSync } from "@/services/drive/delete-file.js";
+import { Users, DriveFiles } from "@/models/index.js";
+import { MoreThan } from "typeorm";
+import type { DbUserJobData } from "@/queue/types.js";
 
 const logger = queueLogger.createSubLogger("delete-drive-files");
 

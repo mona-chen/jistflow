@@ -1,10 +1,10 @@
-import type { User } from "@/models/entities/user.js";
-import { Followings, Notifications, Users } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import deleteFollowing from "@/services/following/delete.js";
+import { Users, Followings, Notifications } from "@/models/index.js";
+import type { User } from "@/models/entities/user.js";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
-import { publishUserEvent } from "@/services/stream.js";
 import { doPostSuspend } from "@/services/suspend-user.js";
+import { publishUserEvent } from "@/services/stream.js";
 
 export const meta = {
 	tags: ["admin"],

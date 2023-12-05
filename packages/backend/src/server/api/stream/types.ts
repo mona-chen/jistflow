@@ -1,20 +1,20 @@
 import type { EventEmitter } from "events";
-import type { Packed } from "@/misc/schema.js";
-import type { AbuseUserReport } from "@/models/entities/abuse-user-report.js";
-import type { Antenna } from "@/models/entities/antenna.js";
+import type Emitter from "strict-event-emitter-types";
 import type { Channel } from "@/models/entities/channel.js";
+import type { User } from "@/models/entities/user.js";
+import type { UserProfile } from "@/models/entities/user-profile.js";
+import type { Note } from "@/models/entities/note.js";
+import type { Antenna } from "@/models/entities/antenna.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
 import type { DriveFolder } from "@/models/entities/drive-folder.js";
-import type { MessagingMessage } from "@/models/entities/messaging-message.js";
-import type { Note } from "@/models/entities/note.js";
-import type { Page } from "@/models/entities/page.js";
-import type { Signin } from "@/models/entities/signin.js";
-import type { UserGroup } from "@/models/entities/user-group.js";
 import type { UserList } from "@/models/entities/user-list.js";
-import type { UserProfile } from "@/models/entities/user-profile.js";
-import type { User } from "@/models/entities/user.js";
+import type { MessagingMessage } from "@/models/entities/messaging-message.js";
+import type { UserGroup } from "@/models/entities/user-group.js";
+import type { AbuseUserReport } from "@/models/entities/abuse-user-report.js";
+import type { Signin } from "@/models/entities/signin.js";
+import type { Page } from "@/models/entities/page.js";
+import type { Packed } from "@/misc/schema.js";
 import type { Webhook } from "@/models/entities/webhook";
-import type Emitter from "strict-event-emitter-types";
 
 //#region Stream type-body definitions
 export interface InternalStreamTypes {

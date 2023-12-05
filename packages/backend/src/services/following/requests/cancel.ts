@@ -1,11 +1,11 @@
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import renderFollow from "@/remote/activitypub/renderer/follow.js";
+import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { deliver } from "@/queue/index.js";
+import { publishMainStream } from "@/services/stream.js";
 import { IdentifiableError } from "@/misc/identifiable-error.js";
 import type { User } from "@/models/entities/user.js";
-import { FollowRequests, Users } from "@/models/index.js";
-import { deliver } from "@/queue/index.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
-import { publishMainStream } from "@/services/stream.js";
+import { Users, FollowRequests } from "@/models/index.js";
 
 export default async function (
 	followee: {

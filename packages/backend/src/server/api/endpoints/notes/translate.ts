@@ -1,12 +1,12 @@
 import { URLSearchParams } from "node:url";
+import fetch from "node-fetch";
 import config from "@/config/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
+import { Converter } from "opencc-js";
 import { getAgentByUrl } from "@/misc/fetch.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import { ApiError } from "@/server/api/error.js";
 import { getNote } from "@/server/api/common/getters.js";
 import define from "@/server/api/define.js";
-import { ApiError } from "@/server/api/error.js";
-import fetch from "node-fetch";
-import { Converter } from "opencc-js";
 
 export const meta = {
 	tags: ["notes"],

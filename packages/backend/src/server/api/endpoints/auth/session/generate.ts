@@ -1,9 +1,9 @@
+import { v4 as uuid } from "uuid";
 import config from "@/config/index.js";
-import { genId } from "@/misc/gen-id.js";
-import { Apps, AuthSessions } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { v4 as uuid } from "uuid";
+import { Apps, AuthSessions } from "@/models/index.js";
+import { genId } from "@/misc/gen-id.js";
 
 export const meta = {
 	tags: ["auth"],

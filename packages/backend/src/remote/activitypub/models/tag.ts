@@ -1,5 +1,5 @@
 import { toArray } from "@/prelude/array.js";
-import type { IApHashtag, IObject } from "../type.js";
+import type { IObject, IApHashtag } from "../type.js";
 import { isHashtag } from "../type.js";
 
 export function extractApHashtags(

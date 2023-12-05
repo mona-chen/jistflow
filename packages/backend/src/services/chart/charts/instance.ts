@@ -1,9 +1,9 @@
-import { toPuny } from "@/misc/convert-host.js";
-import type { DriveFile } from "@/models/entities/drive-file.js";
-import type { Note } from "@/models/entities/note.js";
-import { DriveFiles, Followings, Notes, Users } from "@/models/index.js";
 import type { KVs } from "../core.js";
 import Chart from "../core.js";
+import { DriveFiles, Followings, Users, Notes } from "@/models/index.js";
+import type { DriveFile } from "@/models/entities/drive-file.js";
+import type { Note } from "@/models/entities/note.js";
+import { toPuny } from "@/misc/convert-host.js";
 import { name, schema } from "./entities/instance.js";
 
 /**

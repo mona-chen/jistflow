@@ -1,5 +1,5 @@
-import * as mfm from "mfm-js";
 import { detect } from "tinyld";
+import * as mfm from "mfm-js";
 
 export default function detectLanguage(text: string): string {
 	const nodes = mfm.parse(text);

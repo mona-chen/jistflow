@@ -1,6 +1,6 @@
 import type { ObjectStorageFileJobData } from "@/queue/types.js";
-import { deleteObjectStorageFile } from "@/services/drive/delete-file.js";
 import type Bull from "bull";
+import { deleteObjectStorageFile } from "@/services/drive/delete-file.js";
 
 export default async (job: Bull.Job<ObjectStorageFileJobData>) => {
 	const key: string = job.data.key;

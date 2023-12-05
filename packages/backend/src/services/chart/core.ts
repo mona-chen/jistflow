@@ -4,20 +4,20 @@
  * Tests located in test/chart
  */
 
-import { db } from "@/db/postgre.js";
-import { getChartInsertLock } from "@/misc/app-lock.js";
-import {
-	addTime,
-	dateUTC,
-	isTimeBefore,
-	isTimeSame,
-	subtractTime,
-} from "@/prelude/time.js";
 import * as nestedProperty from "nested-property";
-import promiseLimit from "promise-limit";
-import type { Repository } from "typeorm";
-import { Between, EntitySchema, LessThan } from "typeorm";
 import Logger from "../logger.js";
+import type { Repository } from "typeorm";
+import { EntitySchema, LessThan, Between } from "typeorm";
+import {
+	dateUTC,
+	isTimeSame,
+	isTimeBefore,
+	subtractTime,
+	addTime,
+} from "@/prelude/time.js";
+import { getChartInsertLock } from "@/misc/app-lock.js";
+import { db } from "@/db/postgre.js";
+import promiseLimit from "promise-limit";
 
 const logger = new Logger("chart", "white", process.env.NODE_ENV !== "test");
 

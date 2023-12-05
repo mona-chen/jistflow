@@ -1,13 +1,13 @@
+import type { ApObject } from "./type.js";
+import { getApIds } from "./type.js";
+import type Resolver from "./resolver.js";
+import { resolvePerson } from "./models/person.js";
+import { unique, concat } from "@/prelude/array.js";
+import promiseLimit from "promise-limit";
 import type {
 	CacheableRemoteUser,
 	CacheableUser,
 } from "@/models/entities/user.js";
-import { concat, unique } from "@/prelude/array.js";
-import promiseLimit from "promise-limit";
-import { resolvePerson } from "./models/person.js";
-import type Resolver from "./resolver.js";
-import type { ApObject } from "./type.js";
-import { getApIds } from "./type.js";
 
 type Visibility = "public" | "home" | "followers" | "specified";
 

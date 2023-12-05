@@ -1,12 +1,12 @@
+import renderDelete from "@/remote/activitypub/renderer/delete.js";
+import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import { deliver } from "@/queue/index.js";
 import config from "@/config/index.js";
 import type { User } from "@/models/entities/user.js";
-import { Followings, Users } from "@/models/index.js";
-import { deliver } from "@/queue/index.js";
-import renderDelete from "@/remote/activitypub/renderer/delete.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { Users, Followings } from "@/models/index.js";
+import { Not, IsNull } from "typeorm";
 import { publishInternalEvent } from "@/services/stream.js";
-import { IsNull, Not } from "typeorm";
 
 export async function doPostUnsuspend(user: User) {
 	publishInternalEvent("userChangeSuspendedState", {

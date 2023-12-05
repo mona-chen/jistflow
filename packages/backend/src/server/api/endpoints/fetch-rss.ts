@@ -1,7 +1,7 @@
-import config from "@/config/index.js";
-import { getResponse } from "@/misc/fetch.js";
-import define from "@/server/api/define.js";
 import Parser from "rss-parser";
+import { getResponse } from "@/misc/fetch.js";
+import config from "@/config/index.js";
+import define from "@/server/api/define.js";
 
 const rssParser = new Parser();
 

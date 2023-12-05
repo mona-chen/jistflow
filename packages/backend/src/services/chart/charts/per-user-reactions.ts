@@ -1,8 +1,8 @@
-import type { Note } from "@/models/entities/note.js";
-import type { User } from "@/models/entities/user.js";
-import { Users } from "@/models/index.js";
 import type { KVs } from "../core.js";
 import Chart from "../core.js";
+import type { User } from "@/models/entities/user.js";
+import type { Note } from "@/models/entities/note.js";
+import { Users } from "@/models/index.js";
 import { name, schema } from "./entities/per-user-reactions.js";
 
 /**

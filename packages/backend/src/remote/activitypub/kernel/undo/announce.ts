@@ -1,8 +1,8 @@
-import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import { Notes } from "@/models/index.js";
-import deleteNote from "@/services/note/delete.js";
+import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import type { IAnnounce } from "../../type.js";
 import { getApId } from "../../type.js";
+import deleteNote from "@/services/note/delete.js";
 
 export const undoAnnounce = async (
 	actor: CacheableRemoteUser,

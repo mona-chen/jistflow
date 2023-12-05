@@ -1,8 +1,8 @@
-import { hashPassword } from "@/misc/password.js";
-import { UserProfiles, Users } from "@/models/index.js";
 import define from "@/server/api/define.js";
 // import bcrypt from "bcryptjs";
 import rndstr from "rndstr";
+import { Users, UserProfiles } from "@/models/index.js";
+import { hashPassword } from "@/misc/password.js";
 
 export const meta = {
 	tags: ["admin"],

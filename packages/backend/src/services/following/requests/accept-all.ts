@@ -1,6 +1,6 @@
+import accept from "./accept.js";
 import type { User } from "@/models/entities/user.js";
 import { FollowRequests, Users } from "@/models/index.js";
-import accept from "./accept.js";
 
 /**
  * Approve all follow requests for the specified user

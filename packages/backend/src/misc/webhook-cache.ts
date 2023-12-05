@@ -1,6 +1,6 @@
-import { subscriber } from "@/db/redis.js";
-import type { Webhook } from "@/models/entities/webhook.js";
 import { Webhooks } from "@/models/index.js";
+import type { Webhook } from "@/models/entities/webhook.js";
+import { subscriber } from "@/db/redis.js";
 
 let webhooksFetched = false;
 let webhooks: Webhook[] = [];

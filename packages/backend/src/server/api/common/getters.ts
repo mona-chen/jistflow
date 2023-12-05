@@ -1,6 +1,6 @@
 import { IdentifiableError } from "@/misc/identifiable-error.js";
-import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
+import type { Note } from "@/models/entities/note.js";
 import { Notes, Users } from "@/models/index.js";
 import { generateVisibilityQuery } from "./generate-visibility-query.js";
 

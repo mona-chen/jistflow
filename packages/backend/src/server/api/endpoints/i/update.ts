@@ -1,20 +1,20 @@
-import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
-import { langmap } from "@/misc/langmap.js";
-import { normalizeForSearch } from "@/misc/normalize-for-search.js";
-import type { UserProfile } from "@/models/entities/user-profile.js";
-import type { User } from "@/models/entities/user.js";
-import { DriveFiles, Pages, UserProfiles, Users } from "@/models/index.js";
-import define from "@/server/api/define.js";
-import { ApiError } from "@/server/api/error.js";
-import { verifyLink } from "@/services/fetch-rel-me.js";
+import RE2 from "re2";
+import * as mfm from "mfm-js";
+import { publishMainStream, publishUserEvent } from "@/services/stream.js";
 import acceptAllFollowRequests from "@/services/following/requests/accept-all.js";
 import { publishToFollowers } from "@/services/i/update.js";
-import { publishMainStream, publishUserEvent } from "@/services/stream.js";
+import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
+import { extractHashtags } from "@/misc/extract-hashtags.js";
 import { updateUsertags } from "@/services/update-hashtag.js";
+import { Users, DriveFiles, UserProfiles, Pages } from "@/models/index.js";
+import type { User } from "@/models/entities/user.js";
+import type { UserProfile } from "@/models/entities/user-profile.js";
 import { notificationTypes } from "@/types.js";
-import * as mfm from "mfm-js";
-import RE2 from "re2";
+import { normalizeForSearch } from "@/misc/normalize-for-search.js";
+import { langmap } from "@/misc/langmap.js";
+import { verifyLink } from "@/services/fetch-rel-me.js";
+import { ApiError } from "@/server/api/error.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["account"],

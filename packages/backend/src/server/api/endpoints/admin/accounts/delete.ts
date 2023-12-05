@@ -1,8 +1,8 @@
-import { Users } from "@/models/index.js";
-import { createDeleteAccountJob } from "@/queue/index.js";
 import define from "@/server/api/define.js";
-import { publishUserEvent } from "@/services/stream.js";
+import { Users } from "@/models/index.js";
 import { doPostSuspend } from "@/services/suspend-user.js";
+import { publishUserEvent } from "@/services/stream.js";
+import { createDeleteAccountJob } from "@/queue/index.js";
 
 export const meta = {
 	tags: ["admin"],

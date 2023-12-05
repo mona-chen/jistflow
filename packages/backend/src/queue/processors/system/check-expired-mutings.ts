@@ -1,8 +1,8 @@
-import { Mutings } from "@/models/index.js";
-import { publishUserEvent } from "@/services/stream.js";
 import type Bull from "bull";
 import { In } from "typeorm";
+import { Mutings } from "@/models/index.js";
 import { queueLogger } from "../../logger.js";
+import { publishUserEvent } from "@/services/stream.js";
 
 const logger = queueLogger.createSubLogger("check-expired-mutings");
 

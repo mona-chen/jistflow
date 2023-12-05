@@ -1,41 +1,41 @@
-import { MAX_NOTE_TEXT_LENGTH } from "@/const.js";
-import { HOUR } from "@/const.js";
-import detectLanguage from "@/misc/detect-language.js";
-import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
-import { genId } from "@/misc/gen-id.js";
-// import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
-import { langmap } from "@/misc/langmap.js";
-import type { Channel } from "@/models/entities/channel.js";
-import type { DriveFile } from "@/models/entities/drive-file.js";
-import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
-import { Poll } from "@/models/entities/poll.js";
+import { In } from "typeorm";
+import { index } from "@/services/note/create.js";
 import type { IRemoteUser, User } from "@/models/entities/user.js";
 import {
-	Blockings,
-	Channels,
-	DriveFiles,
-	NoteEdits,
-	Notes,
-	Polls,
-	UserProfiles,
 	Users,
+	DriveFiles,
+	Notes,
+	Channels,
+	Blockings,
+	UserProfiles,
+	Polls,
+	NoteEdits,
 } from "@/models/index.js";
+import type { DriveFile } from "@/models/entities/drive-file.js";
+import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
+import type { Channel } from "@/models/entities/channel.js";
+import { MAX_NOTE_TEXT_LENGTH } from "@/const.js";
+import { noteVisibilities } from "@/types.js";
+import { ApiError } from "@/server/api/error.js";
+import define from "@/server/api/define.js";
+import { HOUR } from "@/const.js";
+import { getNote } from "@/server/api/common/getters.js";
+import { Poll } from "@/models/entities/poll.js";
+import * as mfm from "mfm-js";
 import { concat } from "@/prelude/array.js";
+import { extractHashtags } from "@/misc/extract-hashtags.js";
+import { extractCustomEmojisFromMfm } from "@/misc/extract-custom-emojis-from-mfm.js";
+import { extractMentionedUsers } from "@/services/note/create.js";
+import { genId } from "@/misc/gen-id.js";
+import { publishNoteStream } from "@/services/stream.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
 import renderUpdate from "@/remote/activitypub/renderer/update.js";
-import { getNote } from "@/server/api/common/getters.js";
-import define from "@/server/api/define.js";
-import { ApiError } from "@/server/api/error.js";
-import { index } from "@/services/note/create.js";
-import { extractMentionedUsers } from "@/services/note/create.js";
 import { deliverToRelays } from "@/services/relay.js";
-import { publishNoteStream } from "@/services/stream.js";
-import { noteVisibilities } from "@/types.js";
-import * as mfm from "mfm-js";
-import { In } from "typeorm";
+// import { deliverQuestionUpdate } from "@/services/note/polls/update.js";
+import { langmap } from "@/misc/langmap.js";
+import detectLanguage from "@/misc/detect-language.js";
 
 export const meta = {
 	tags: ["notes"],

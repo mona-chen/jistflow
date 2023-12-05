@@ -1,6 +1,6 @@
 import { redisClient } from "@/db/redis.js";
+import { encode, decode } from "msgpackr";
 import { ChainableCommander } from "ioredis";
-import { decode, encode } from "msgpackr";
 
 export class Cache<T> {
 	private ttl: number;

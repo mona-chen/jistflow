@@ -1,6 +1,6 @@
-import { UserProfiles, UserSecurityKeys, Users } from "@/models/index.js";
-import define from "@/server/api/define.js";
+import { Users, UserProfiles, UserSecurityKeys } from "@/models/index.js";
 import { publishMainStream } from "@/services/stream.js";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["admin"],

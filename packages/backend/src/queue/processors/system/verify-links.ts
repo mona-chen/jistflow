@@ -1,9 +1,9 @@
 import type Bull from "bull";
 
 import { UserProfiles } from "@/models/index.js";
-import { verifyLink } from "@/services/fetch-rel-me.js";
 import { Not } from "typeorm";
 import { queueLogger } from "../../logger.js";
+import { verifyLink } from "@/services/fetch-rel-me.js";
 
 const logger = queueLogger.createSubLogger("verify-links");
 

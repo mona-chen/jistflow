@@ -1,8 +1,8 @@
-import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
-import { Channels } from "@/models/index.js";
-import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import define from "@/server/api/define.js";
 import { Brackets } from "typeorm";
+import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
+import { Channels } from "@/models/index.js";
+import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
 
 export const meta = {
 	tags: ["channels"],

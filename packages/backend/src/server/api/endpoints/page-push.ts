@@ -1,7 +1,7 @@
-import { Pages, Users } from "@/models/index.js";
+import { publishMainStream } from "@/services/stream.js";
+import { Users, Pages } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { publishMainStream } from "@/services/stream.js";
 
 export const meta = {
 	requireCredential: true,

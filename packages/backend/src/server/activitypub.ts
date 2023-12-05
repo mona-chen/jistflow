@@ -1,40 +1,40 @@
 import Router from "@koa/router";
-import httpSignature from "@peertube/http-signature";
 import bodyParser from "koa-bodyparser";
+import httpSignature from "@peertube/http-signature";
 
-import config from "@/config/index.js";
+import { In, IsNull, Not } from "typeorm";
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import renderNote from "@/remote/activitypub/renderer/note.js";
+import renderKey from "@/remote/activitypub/renderer/key.js";
+import { renderPerson } from "@/remote/activitypub/renderer/person.js";
+import renderEmoji from "@/remote/activitypub/renderer/emoji.js";
+import { inbox as processInbox } from "@/queue/index.js";
 import { isSelfHost } from "@/misc/convert-host.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { getUserKeypair } from "@/misc/keypair-store.js";
-import type { ILocalUser, User } from "@/models/entities/user.js";
 import {
-	Emojis,
-	FollowRequests,
-	NoteReactions,
 	Notes,
 	Users,
+	Emojis,
+	NoteReactions,
+	FollowRequests,
 } from "@/models/index.js";
-import { inbox as processInbox } from "@/queue/index.js";
+import type { ILocalUser, User } from "@/models/entities/user.js";
+import { renderLike } from "@/remote/activitypub/renderer/like.js";
+import { getUserKeypair } from "@/misc/keypair-store.js";
 import {
 	checkFetch,
 	getSignatureUser,
 	verifyDigest,
 } from "@/remote/activitypub/check-fetch.js";
-import renderEmoji from "@/remote/activitypub/renderer/emoji.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderKey from "@/remote/activitypub/renderer/key.js";
-import { renderLike } from "@/remote/activitypub/renderer/like.js";
-import renderNote from "@/remote/activitypub/renderer/note.js";
-import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import { getInstanceActor } from "@/services/instance-actor.js";
-import Koa from "koa";
-import { In, IsNull, Not } from "typeorm";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import Featured from "./activitypub/featured.js";
-import Followers from "./activitypub/followers.js";
 import Following from "./activitypub/following.js";
+import Followers from "./activitypub/followers.js";
 import Outbox, { packActivity } from "./activitypub/outbox.js";
 import { serverLogger } from "./index.js";
+import config from "@/config/index.js";
+import Koa from "koa";
 
 // Init router
 const router = new Router();

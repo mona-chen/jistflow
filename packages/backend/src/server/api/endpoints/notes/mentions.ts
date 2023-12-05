@@ -1,12 +1,12 @@
-import { Followings, Notes } from "@/models/index.js";
+import { Brackets } from "typeorm";
+import read from "@/services/note/read.js";
+import { Notes, Followings } from "@/models/index.js";
+import define from "@/server/api/define.js";
+import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
+import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
+import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import { generateBlockedUserQuery } from "@/server/api/common/generate-block-query.js";
 import { generateMutedNoteThreadQuery } from "@/server/api/common/generate-muted-note-thread-query.js";
-import { generateMutedUserQuery } from "@/server/api/common/generate-muted-user-query.js";
-import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
-import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
-import define from "@/server/api/define.js";
-import read from "@/services/note/read.js";
-import { Brackets } from "typeorm";
 
 export const meta = {
 	tags: ["notes"],

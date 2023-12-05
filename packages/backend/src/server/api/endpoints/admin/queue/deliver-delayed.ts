@@ -1,5 +1,5 @@
-import { URL } from "node:url";
 import { deliverQueue } from "@/queue/queues.js";
+import { URL } from "node:url";
 import define from "@/server/api/define.js";
 
 export const meta = {

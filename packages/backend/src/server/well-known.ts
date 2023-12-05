@@ -2,12 +2,12 @@ import Router from "@koa/router";
 
 import config from "@/config/index.js";
 import * as Acct from "@/misc/acct.js";
-import type { User } from "@/models/entities/user.js";
-import { Users } from "@/models/index.js";
+import { links } from "./nodeinfo.js";
 import { escapeAttribute, escapeValue } from "@/prelude/xml.js";
+import { Users } from "@/models/index.js";
+import type { User } from "@/models/entities/user.js";
 import type { FindOptionsWhere } from "typeorm";
 import { IsNull } from "typeorm";
-import { links } from "./nodeinfo.js";
 
 // Init router
 const router = new Router();
