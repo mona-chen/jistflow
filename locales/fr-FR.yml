@@ -2267,7 +2267,7 @@ searchNotLoggedIn_2: Toutefois, vous pouvez effectuer des recherches à l'aide d
   et rechercher des utilisateurs.
 antennaTimelineHint: Les antennes affichent les messages correspondants dans l'ordre
   dans lequel ils ont été reçus, ce qui n'est pas nécessairement chronologique.
-alwaysExpandCws: Toujours afficher les messages avec des avertissements sur le contenu
+alwaysExpandCws: Toujours dérouler les messages avec des avertissements sur le contenu
 hideFromHome: Cacher de la timeline «Principal»
 _wellness:
   newPostsButton: Activer le bouton d’alerte «Voir les nouvelles publications»
