@@ -994,8 +994,8 @@ addRe: "閲覧注意の投稿への返信で、注釈の先頭に\"re:\"を追�
 languageForTranslation: "投稿翻訳に使用する言語"
 detectPostLanguage: "投稿の言語を自動検出し、外国語の投稿に翻訳ボタンを表示する"
 iconSet: "アイコンのスタイル"
-useEmojiCdn: "CDN から Twemoji を使用する"
-useEmojiCdnDescription: "サーバーのアセットではなく、JSDelivr CDN から Twemoji を使用してください。"
+useEmojiCdn: "CDNのTwemojiを利用する"
+useEmojiCdnDescription: "サーバー上に保存されているTwemojiのアセットの代わりに、JSDelivr CDNから配信されたものを用います。"
 
 _sensitiveMediaDetection:
   description: "機械学習を使って自動でセンシティブなメディアを検出し、モデレーションに役立てられます。サーバーの負荷が少し増えます。"
