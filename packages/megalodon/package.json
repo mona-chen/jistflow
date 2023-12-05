@@ -45,7 +45,6 @@
     "object-assign-deep": "^0.4.0",
     "parse-link-header": "^2.0.0",
     "socks-proxy-agent": "^7.0.0",
-    "typescript": "4.9.4",
     "uuid": "^9.0.0",
     "ws": "8.12.0",
     "async-lock": "1.4.0"
@@ -74,7 +73,8 @@
     "lodash": "^4.17.14",
     "prettier": "^2.8.3",
     "ts-jest": "^29.0.5",
-    "typedoc": "^0.23.24"
+    "typedoc": "^0.23.24",
+    "typescript": "4.9.4"
   },
   "directories": {
     "lib": "lib",
