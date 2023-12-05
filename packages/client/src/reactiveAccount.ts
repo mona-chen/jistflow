@@ -1,5 +1,5 @@
-import type { Account } from "@/account";
 import { reactive } from "vue";
+import type { Account } from "@/account";
 
 const accountData = localStorage.getItem("account");
 

@@ -1,3 +1,4 @@
+import { Interpreter, Parser, utils, values } from "@syuilo/aiscript";
 import { inputText } from "@/os";
 import { createAiScriptEnv } from "@/scripts/aiscript/api";
 import {
@@ -7,7 +8,6 @@ import {
 	postFormActions,
 	userActions,
 } from "@/store";
-import { Interpreter, Parser, utils, values } from "@syuilo/aiscript";
 
 const parser = new Parser();
 const pluginContexts = new Map<string, Interpreter>();

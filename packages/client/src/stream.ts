@@ -1,7 +1,7 @@
-import { url } from "@/config";
-import { $i } from "@/reactiveAccount";
 import * as firefish from "firefish-js";
 import { markRaw } from "vue";
+import { url } from "@/config";
+import { $i } from "@/reactiveAccount";
 
 export const stream = markRaw(
 	new firefish.Stream(

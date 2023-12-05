@@ -1,18 +1,18 @@
 // TODO: なんでもかんでもos.tsに突っ込むのやめたいのでよしなに分割する
 
-import MkDialog from "@/components/MkDialog.vue";
-import MkPostFormDialog from "@/components/MkPostFormDialog.vue";
-import MkToast from "@/components/MkToast.vue";
-import MkWaitingDialog from "@/components/MkWaitingDialog.vue";
-import { url, apiUrl } from "@/config";
-import { $i } from "@/reactiveAccount";
-import type { MenuItem } from "@/types/menu";
 import { EventEmitter } from "eventemitter3";
 import * as firefish from "firefish-js";
 import insertTextAtCursor from "insert-text-at-cursor";
 import type { Component, Ref } from "vue";
 import { defineAsyncComponent, markRaw, ref } from "vue";
 import { i18n } from "./i18n";
+import MkDialog from "@/components/MkDialog.vue";
+import MkPostFormDialog from "@/components/MkPostFormDialog.vue";
+import MkToast from "@/components/MkToast.vue";
+import MkWaitingDialog from "@/components/MkWaitingDialog.vue";
+import { apiUrl, url } from "@/config";
+import { $i } from "@/reactiveAccount";
+import type { MenuItem } from "@/types/menu";
 
 export const pendingApiRequestsCount = ref(0);
 
