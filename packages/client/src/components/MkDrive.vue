@@ -1,6 +1,6 @@
 <template>
 	<div class="yfudmmck">
-		<nav>
+		<nav :style="fullPageHeader ? '' : {'position': 'fixed'}">
 			<div class="path" @contextmenu.prevent.stop="() => {}">
 				<XNavFolder
 					:class="{ current: folder == null }"
@@ -157,10 +157,12 @@ const props = withDefaults(
 		type?: string;
 		multiple?: boolean;
 		select?: "file" | "folder" | null;
+		fullPageHeader?: boolean;
 	}>(),
 	{
 		multiple: false,
 		select: null,
+		fullPageHeader: false,
 	},
 );
 
@@ -786,7 +788,6 @@ onBeforeUnmount(() => {
 		overflow: auto;
 		font-size: 0.9em;
 		box-shadow: 0 1px 0 var(--divider);
-		position: fixed;
 		background-color: var(--bg);
 
 		&,
