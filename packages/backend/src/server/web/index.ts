@@ -180,7 +180,7 @@ router.get("/twemoji/(.*)", async (ctx) => {
 	);
 
 	await send(ctx as any, path, {
-		root: `${staticAssets}/twemoji/`,
+		root: `${_dirname}/../../../node_modules/@discordapp/twemoji/dist/svg/`,
 		maxage: 30 * DAY,
 	});
 });

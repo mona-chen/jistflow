@@ -1,7 +1,7 @@
 import { defaultStore } from "@/store";
 
 export const twemojiSvgBase = defaultStore.state.useEmojiCdn
-	? "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg"
+	? "https://cdn.jsdelivr.net/gh/discord/twemoji@latest/assets/svg"
 	: "/twemoji";
 
 export function char2fileName(char: string): string {
