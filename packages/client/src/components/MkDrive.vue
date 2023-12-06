@@ -1,6 +1,12 @@
 <template>
 	<div class="yfudmmck">
-		<nav :style="fullPageHeader ? '' : { position: 'fixed' }">
+		<nav
+			:style="
+				fullPageHeader
+					? { 'padding-inline': '24px', height: '55px' }
+					: { position: 'fixed' }
+			"
+		>
 			<div class="path" @contextmenu.prevent.stop="() => {}">
 				<XNavFolder
 					:class="{ current: folder == null }"
@@ -800,6 +806,7 @@ onBeforeUnmount(() => {
 			vertical-align: bottom;
 			line-height: 42px;
 			white-space: nowrap;
+			align-self: center;
 
 			> * {
 				display: inline-block;
