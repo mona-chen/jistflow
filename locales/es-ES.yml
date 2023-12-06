@@ -2109,7 +2109,7 @@ moveToLabel: 'Cuenta a la que migras:'
 enableCustomKaTeXMacro: Activar macros KaTeX personalizadas
 noteId: ID de la publicación
 signupsDisabled: Los registros en esta instancia ahora mismo están desactivados, ¡pero
-  puedes registrarte en otro servidos! Si tienes un código de invitación para esta
+  puedes registrarte en otro servidor! Si tienes un código de invitación para esta
   instancia, por favor, introdúcelo debajo.
 defaultReaction: Reacción emoji por defecto para las publicaciones
 customKaTeXMacro: Macros KaTeX personalizadas
