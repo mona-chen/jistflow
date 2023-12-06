@@ -782,7 +782,10 @@ async function insertNote(
 				await transactionalEntityManager.insert(Note, insert);
 
 				let expiresAt: Date | null;
-				if (!data.poll.expiresAt || Number.isNaN(data.poll.expiresAt.getTime())) {
+				if (
+					!data.poll.expiresAt ||
+					Number.isNaN(data.poll.expiresAt.getTime())
+				) {
 					expiresAt = null;
 				} else {
 					expiresAt = data.poll.expiresAt;

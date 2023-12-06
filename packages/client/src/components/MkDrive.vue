@@ -1,6 +1,6 @@
 <template>
 	<div class="yfudmmck">
-		<nav :style="fullPageHeader ? '' : {'position': 'fixed'}">
+		<nav :style="fullPageHeader ? '' : { position: 'fixed' }">
 			<div class="path" @contextmenu.prevent.stop="() => {}">
 				<XNavFolder
 					:class="{ current: folder == null }"
