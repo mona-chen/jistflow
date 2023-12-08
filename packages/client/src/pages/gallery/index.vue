@@ -25,80 +25,88 @@
 				@slide-change="onSlideChange"
 			>
 				<swiper-slide>
-					<MkFolder class="_gap">
-						<template #header
-							><i class="ph-clock ph-bold ph-lg"></i>
-							{{ i18n.ts.recentPosts }}</template
-						>
+					<template v-if="tab == 'explore'">
+						<MkFolder class="_gap">
+							<template #header
+								><i class="ph-clock ph-bold ph-lg"></i>
+								{{ i18n.ts.recentPosts }}</template
+							>
+							<MkPagination
+								v-slot="{ items }"
+								:pagination="recentPostsPagination"
+								:disable-auto-load="true"
+							>
+								<div class="vfpdbgtk">
+									<MkGalleryPostPreview
+										v-for="post in items"
+										:key="post.id"
+										:post="post"
+										class="post"
+									/>
+								</div>
+							</MkPagination>
+						</MkFolder>
+						<MkFolder class="_gap">
+							<template #header
+								><i class="ph-fire-simple ph-bold ph-lg"></i>
+								{{ i18n.ts.popularPosts }}</template
+							>
+							<MkPagination
+								v-slot="{ items }"
+								:pagination="popularPostsPagination"
+								:disable-auto-load="true"
+							>
+								<div class="vfpdbgtk">
+									<MkGalleryPostPreview
+										v-for="post in items"
+										:key="post.id"
+										:post="post"
+										class="post"
+									/>
+								</div>
+							</MkPagination>
+						</MkFolder>
+					</template>
+				</swiper-slide>
+				<swiper-slide>
+					<template v-if="tab == 'liked'">
 						<MkPagination
 							v-slot="{ items }"
-							:pagination="recentPostsPagination"
-							:disable-auto-load="true"
+							:pagination="likedPostsPagination"
 						>
 							<div class="vfpdbgtk">
 								<MkGalleryPostPreview
-									v-for="post in items"
-									:key="post.id"
-									:post="post"
+									v-for="like in items"
+									:key="like.id"
+									:post="like.post"
 									class="post"
 								/>
 							</div>
 						</MkPagination>
-					</MkFolder>
-					<MkFolder class="_gap">
-						<template #header
-							><i class="ph-fire-simple ph-bold ph-lg"></i>
-							{{ i18n.ts.popularPosts }}</template
-						>
+					</template>
+				</swiper-slide>
+				<swiper-slide>
+					<template v-if="tab == 'my'">
+						<div class="buttoncontainer">
+							<MkButton class="new primary" @click="create()"
+							><i class="ph-plus ph-bold ph-lg"></i>
+								{{ i18n.ts.postToGallery }}</MkButton
+							>
+						</div>
 						<MkPagination
 							v-slot="{ items }"
-							:pagination="popularPostsPagination"
-							:disable-auto-load="true"
+							:pagination="myPostsPagination"
 						>
 							<div class="vfpdbgtk">
 								<MkGalleryPostPreview
-									v-for="post in items"
-									:key="post.id"
-									:post="post"
+									v-for="mypost in items"
+									:key="mypost.id"
+									:post="mypost"
 									class="post"
 								/>
 							</div>
 						</MkPagination>
-					</MkFolder>
-				</swiper-slide>
-				<swiper-slide>
-					<MkPagination
-						v-slot="{ items }"
-						:pagination="likedPostsPagination"
-					>
-						<div class="vfpdbgtk">
-							<MkGalleryPostPreview
-								v-for="like in items"
-								:key="like.id"
-								:post="like.post"
-								class="post"
-							/>
-						</div>
-					</MkPagination>
-				</swiper-slide>
-				<swiper-slide>
-					<MkA to="/gallery/new" class="_link" style="margin: 16px"
-						><i class="ph-plus ph-bold ph-lg"></i>
-						{{ i18n.ts.postToGallery }}</MkA
-					>
-					<MkPagination
-						v-slot="{ items }"
-						:pagination="myPostsPagination"
-					>
-						<div class="vfpdbgtk">
-							<MkGalleryPostPreview
-								v-for="mypost in items"
-								:key="mypost.id"
-								:post="mypost"
-								class="post"
-							/>
-						</div>
-					</MkPagination>
+					</template>
 				</swiper-slide>
 			</swiper>
 		</MkSpacer>
@@ -119,6 +127,7 @@ import { useRouter } from "@/router";
 import { defaultStore } from "@/store";
 import "swiper/scss";
 import "swiper/scss/virtual";
+import MkButton from "@/components/MkButton.vue";
 
 const router = useRouter();
 
@@ -205,11 +214,21 @@ function syncSlide(index) {
 }
 
 onMounted(() => {
-	syncSlide(tabs.indexOf(swiperRef.activeIndex));
+	syncSlide(tabs.indexOf(tab));
 });
+
+function create() {
+	router.push("/gallery/new");
+}
 </script>
 
 <style lang="scss" scoped>
+.buttoncontainer {
+	display: grid;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
 .vfpdbgtk {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));

@@ -24,55 +24,62 @@
 				@slide-change="onSlideChange"
 			>
 				<swiper-slide>
-					<div class="rknalgpo">
-						<MkPagination
-							v-slot="{ items }"
-							:pagination="featuredPagesPagination"
-						>
-							<MkPagePreview
-								v-for="page in items"
-								:key="page.id"
-								class="ckltabjg"
-								:page="page"
-							/>
-						</MkPagination>
-					</div>
-				</swiper-slide>
-				<swiper-slide>
-					<div class="rknalgpo liked">
-						<MkPagination
-							v-slot="{ items }"
-							:pagination="likedPagesPagination"
-						>
-							<MkPagePreview
-								v-for="like in items"
-								:key="like.page.id"
-								class="ckltabjg"
-								:page="like.page"
-							/>
-						</MkPagination>
-					</div>
-				</swiper-slide>
-				<swiper-slide>
-					<div class="rknalgpo my">
-						<div class="buttoncontainer">
-							<MkButton class="new primary" @click="create()"
-								><i class="ph-plus ph-bold ph-lg"></i>
-								{{ i18n.ts._pages.newPage }}</MkButton
+					<template v-if="tab == 'featured'">
+						<div class="rknalgpo">
+							<MkPagination
+								v-slot="{ items }"
+								:pagination="featuredPagesPagination"
 							>
+								<MkPagePreview
+									v-for="page in items"
+									:key="page.id"
+									class="ckltabjg"
+									:page="page"
+								/>
+							</MkPagination>
 						</div>
-						<MkPagination
-							v-slot="{ items }"
-							:pagination="myPagesPagination"
-						>
-							<MkPagePreview
-								v-for="mypage in items"
-								:key="mypage.id"
-								class="ckltabjg"
-								:page="mypage"
-							/>
-						</MkPagination>
-					</div>
+					</template>
+				</swiper-slide>
+				<swiper-slide>
+					<template v-if="tab == 'liked'">
+						<div class="rknalgpo liked">
+							<MkPagination
+								v-slot="{ items }"
+								:pagination="likedPagesPagination"
+								key="likedPagesPagination"
+							>
+								<MkPagePreview
+									v-for="like in items"
+									:key="like.page.id"
+									class="ckltabjg"
+									:page="like.page"
+								/>
+							</MkPagination>
+						</div>
+					</template>
+				</swiper-slide>
+				<swiper-slide>
+					<template v-if="tab == 'my'">
+						<div class="rknalgpo my">
+							<div class="buttoncontainer">
+								<MkButton class="new primary" @click="create()"
+									><i class="ph-plus ph-bold ph-lg"></i>
+									{{ i18n.ts._pages.newPage }}</MkButton
+								>
+							</div>
+							<MkPagination
+								v-slot="{ items }"
+								:pagination="myPagesPagination"
+							>
+								<MkPagePreview
+									v-for="mypage in items"
+									:key="mypage.id"
+									class="ckltabjg"
+									:page="mypage"
+								/>
+							</MkPagination>
+						</div>
+					</template>
 				</swiper-slide>
 			</swiper>
 		</MkSpacer>
@@ -96,8 +103,8 @@ import "swiper/scss/virtual";
 
 const router = useRouter();
 
-let tab = $ref("featured");
 const tabs = ["featured", "liked", "my"];
+let tab = $ref(tabs[0]);
 watch($$(tab), () => syncSlide(tabs.indexOf(tab)));
 
 const featuredPagesPagination = {
@@ -166,7 +173,7 @@ function syncSlide(index) {
 }
 
 onMounted(() => {
-	syncSlide(tabs.indexOf(swiperRef.activeIndex));
+	syncSlide(tabs.indexOf(tab));
 });
 </script>
 
