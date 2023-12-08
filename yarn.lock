@@ -72,7 +72,7 @@ __metadata:
   peerDependencies:
     "@babel/core": ">=7.11.0"
     eslint: ^7.5.0 || ^8.0.0
-  checksum: 3660ce8c7e56a2d342a491ea549bf61d13df9bbd60e46d58ea528ab1b357ec5e08c646575d98c08566daea45068d9d84a9b3b0868af98707b98c03709ddd5481
+  checksum: bc487f67aac64f1f8b351b8ec5e83bd1de5770e2e39c648d4df486e4079110f8594ef5b60b6e8379a9bb944dbbe5d96295f04fa47ef17901186568875b804b99
   languageName: node
   linkType: hard
 
