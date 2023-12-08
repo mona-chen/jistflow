@@ -77,6 +77,7 @@ sudo -u postgres psql
 create database iceshrimp with encoding = 'UTF8';
 create user iceshrimp with encrypted password '{YOUR_PASSWORD}';
 grant all privileges on database iceshrimp to iceshrimp;
+alter database iceshrimp owner to iceshrimp;
 \q
 ```
 
