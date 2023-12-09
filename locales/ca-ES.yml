@@ -2215,3 +2215,6 @@ renotes: Impulsos
 moreUrls: Pàgines fixades
 moreUrlsDescription: "Introdueix les pàgines que vols fixar al menú d'ajuda a la part
   inferior esquerra fent servir aquesta notació:\n\"Nom a mostrar\": https://example.com/"
+useEmojiCdn: Aconsegueix Twemoji des d'un CDN
+useEmojiCdnDescription: Fes servir Twemoji des del CDN de JSDeliver en lloc de fer
+  servir el del propi servidor.
