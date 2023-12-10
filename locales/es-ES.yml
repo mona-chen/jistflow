@@ -112,7 +112,7 @@ you: "Tú"
 clickToShow: "Click para ver"
 sensitive: "Marcado como sensible"
 add: "Añadir"
-reaction: "Reacción"
+reaction: "Reacciones"
 reactionSetting: "Reacciones para mostrar en el menú de reacciones"
 reactionSettingDescription2: "Arrastra para reordenar, click para borrar, pulsa \"\
   +\" para añadir."
@@ -602,7 +602,7 @@ author: "Autor"
 leaveConfirm: "Hay modificaciones sin guardar. ¿Quieres descartarlas?"
 manage: "Administrar"
 plugins: "Plugins"
-preferencesBackups: "Copias de seguridad de preferencias"
+preferencesBackups: "Copias de seguridad"
 deck: "Deck"
 undeck: "Quitar Deck"
 useBlurEffectForModal: "Usar efecto borroso en modales"
@@ -934,8 +934,8 @@ isSystemAccount: "Cuenta creada y operada automáticamente por el sistema. Por f
 typeToConfirm: "Escribe {x} para confirmar"
 deleteAccount: "Borrar cuenta"
 document: "Documentación"
-numberOfPageCache: "Cantidad de páginas en cahé"
-numberOfPageCacheDescription: "Incremendar este número mejora la conveniencia pero
+numberOfPageCache: "Cantidad de páginas en caché"
+numberOfPageCacheDescription: "Incrementar este número mejora la conveniencia pero
   tambien puede aumentar la carga y la memoria que se usa."
 logoutConfirm: "¿Cerrar sesión?"
 lastActiveDate: "Utilizado por última vez el"
@@ -1085,7 +1085,7 @@ _aboutIceshrimp:
     arriba para tener tu nombre aquí!
 _nsfw:
   respect: "Ocultar multimedia sensible"
-  ignore: "No esconder multimedia sensible"
+  ignore: "No ocultar multimedia sensible"
   force: "Ocultar toda la multimedia"
 _mfm:
   cheatSheet: "Hoja de referencia de MFM"
@@ -1164,7 +1164,7 @@ _mfm:
   play: Reproducir MFM
   stop: Parar MFM
   warn: MFM podría contener animaciones muy rápidas o parpadeantes
-  alwaysPlay: Siempre reproducir todos los MFM animados
+  alwaysPlay: Reproducir siempre los MFM animados
   advanced: MFM avanzado
   advancedDescription: Si se desactiva, solo permitirá marcado básico a no ser que
     una animación MFM se reproduzca
@@ -2204,5 +2204,5 @@ _skinTones:
 _dialog:
   charactersExceeded: '¡Carácteres máximos superados! Actualmente: {current}/Límite:
     {max}'
-  charactersBelow: '¡No hay carácteres suficientes! Actualmente: {current}/Límite:
+  charactersBelow: '¡No hay carácteres suficientes! Actualmente: {current} / Mínimo:
     {min}'
