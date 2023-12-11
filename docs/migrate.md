@@ -93,8 +93,10 @@ git checkout v2023.11.4 # or any other tag or dev
 
 ## Firefish
 Run `docker exec -it firefish_web /bin/sh` if using docker, before doing reverts.
-Go to `packages/backend`, revert migrations manually using `pnpm run revertmigration:typeorm` for every migration, until `FirefishRepo1689957674000` has been reverted. Command will not terminate properly after reverting, so you'll have to Ctrl-C.
-If you are migrating from versions newer than 1.0.3, you'll also have to run `pnpm run revertmigration:cargo` for every migration, until `m20230806_170616_fix_antenna_stream_ids` has been reverted.
+
+Go to `packages/backend`, revert migrations manually using `pnpm run revertmigration:typeorm` for every migration, until `FirefishRepo1689957674000` has been reverted. Command will not terminate properly after reverting, so you'll have to Ctrl-C.  
+
+If you are migrating from versions newer than 1.0.3, you'll also have to run `pnpm run revertmigration:cargo` for every migration, until `m20230806_170616_fix_antenna_stream_ids` has been reverted. 
 
 Build and run migrations using your preferred method.
 
