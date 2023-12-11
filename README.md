@@ -26,6 +26,7 @@ It was forked from <del>Calckey</del> Firefish (itself a fork of Misskey) in mid
   - [Binary packages](https://iceshrimp.dev/iceshrimp/packaging)
   - [Docker Compose](docs/docker-compose-install.md)
   - [Manual installation](docs/install.md)
+- Documentation on migrating from Firefish, Foundkey and Misskey can be found [here](docs/migrate.md).
 - Want to sign up at an existing instance?
 	- Check out [FediDB](https://fedidb.org/software/iceshrimp) or [Fediverse Observer](https://iceshrimp.fediverse.observer/list) to get an overview of the instances that are out there.
 	- Please note that we do not operate a "flagship instance", the only project-affiliated domain is `iceshrimp.dev`.
