@@ -18,6 +18,7 @@ import { Channel } from "./channel.js";
 @Index("IDX_NOTE_VISIBLE_USER_IDS", { synchronize: false })
 @Index("IDX_note_userId_id", ["userId", "id"])
 @Index("IDX_note_id_userHost", ["id", "userHost"])
+@Index("IDX_note_createdAt_userId", ["createdAt", "userId"])
 export class Note {
 	@PrimaryColumn(id())
 	public id: string;
