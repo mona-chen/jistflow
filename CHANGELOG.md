@@ -1,3 +1,33 @@
+## v2023.12
+### Release notes
+This release contains only very minor changes if you're upgrading from `v2023.12-pre4`, but for users who skipped the prereleases, lots has changed. We primarily spent this release cycle on improving performance, we hope you enjoy a snappier experience!
+
+The information below is an *aggregate* of all release highlights since the last stable release.
+
+### Highlights
+- Reworked full text search, retiring Meili/Sonic/Elastic in favor of Postgres gin_trgm with advanced search filter support
+- Significantly improved backend & API performance across the board
+- A HTML cache was added to the Mastodon client API, drastically improving performance (check the example config for more details & configuration options)
+- Word mute filters were completely reworked for better performance, especially at scale
+- A couple Mastodon OAuth regressions were fixed
+
+### Backend
+- Unnecessary table joins were removed for the i/notifications API endpoint, improving performance
+
+### UI/UX
+- The pages and gallery tab navigation was fixed
+- The center and small MFM tags now autocomplete properly
+
+### Miscellaneous
+- The documentation on creating a database during the install process was improved
+- Dependencies were updated and deduplicated, saving disk space
+- Migration docs for Firefish were added
+- JetBrains AI was disabled globally in the monorepo
+- Various translation updates
+
+### Attribution
+This release was made possible by project contributors: AntoineÐ, AverageDood, Jeder, Laura Hausmann, Pyrox, Salif Mehmed & Tournesol
+
 ## v2023.12-pre4
 This release preview primarily fixes bugs & regressions. Note: If you are upgrading from `-pre3` and had the HTML cache prewarm functionality enabled, you might want to clear it (`DELETE FROM "html_note_cache_entry";`), as quote URLs were not stored correctly due to an oversight.
 
