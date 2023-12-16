@@ -778,7 +778,7 @@ emailNotConfiguredWarning: "メアドの設定がされてへんで。"
 ratio: "比率"
 previewNoteText: "本文を下見するで"
 customCss: "カスタムCSS"
-customCssWarn: "この設定は必ず知識のある人がやらなあかんで。あんま良くない設定をしたるとクライアントがちゃんと使えへんくなってくで。"
+customCssWarn: "この設定は必ず知識のある人がやらなあかん。下手にいじるとわやなって使えんくなってまうで。"
 global: "グローバル"
 squareAvatars: "アイコンを四角形で表示するで"
 sent: "送信"
@@ -1444,7 +1444,7 @@ _tutorial:
   step4_1: 投稿しとーみ
   step5_1: タイムライン！ 文字と写真の宝石箱や～
   step5_2: うちのサーバーでは{timelines}種類のタイムラインをご用意しとります。
-  step4_2: 最初は{introduction}に投稿したり、シンプルに「ここは賑やかどすなぁ。ウチはそんなに喋れまへんが、どうぞよろしゅうに」などと投稿しはる方もいてます。
+  step4_2: 最初は{introduction}に投稿したり、シンプルに「ここは賑やかどすなぁ」などと投稿しはる方もいてます。
   step5_7: グローバル{icon}タイムラインでは、接続しとるそこいらのサーバーからアレがガーッ流れてきてえらいこっちゃで。
   step5_6: おすすめ{icon}タイムラインでは、うちの管理人がばりおすすめしとるサーバーの投稿を表示させとうよ。
   step5_5: ソーシャル{icon}タイムラインでは、ホームタイムラインとローカルタイムラインの投稿が両方見られてホンマお得やわぁ。
@@ -1462,3 +1462,4 @@ flagSpeakAsCat: 猫弁で喋る
 flagSpeakAsCatDescription: オンにすると、ワレの投稿の「な」を「にゃ」に変換したるで。
 welcomeBackWithName: おおきに、{name}はん
 migration: アカウントの引っ越し
+makeReactionsPublicDescription: あんたが付けたリアクションの一覧をみんなにも見せたるで。
