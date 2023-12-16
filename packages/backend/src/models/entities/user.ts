@@ -158,6 +158,7 @@ export class User {
 	})
 	public tags: string[];
 
+	@Index()
 	@Column("boolean", {
 		default: false,
 		comment: "Whether the User is suspended.",
