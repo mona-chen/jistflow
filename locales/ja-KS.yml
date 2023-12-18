@@ -714,7 +714,7 @@ registry: "レジストリ"
 closeAccount: "このアカウントにさいならする"
 currentVersion: "現在のバージョン"
 latestVersion: "最新のバージョン"
-youAreRunningUpToDateClient: "今使ってるクライアントが最新やで！"
+youAreRunningUpToDateClient: "今使こてるクライアントが最新やで！"
 newVersionOfClientAvailable: "新しいバージョンのクライアントが使えるで。"
 usageAmount: "使用量"
 capacity: "容量"
@@ -793,7 +793,7 @@ whatIsNew: "更新情報を見るで"
 translate: "翻訳"
 translatedFrom: "{x}から翻訳するで"
 accountDeletionInProgress: "アカウント削除しとるで待っとってなー"
-usernameInfo: "サーバー上であんたのアカウントをあんたやと分かるようにするための名前やで。アルファベット(a~z, A~Z)、数字(0~9)、それとアンダーバー(_)が使って考えてな。この名前は後から変更することはできへんからちゃんと考えるんやで。"
+usernameInfo: "サーバー上であんたのアカウントをあんたや分かるようにするための名前や。アルファベット(a~z, A~Z)、数字(0~9)、それとアンダーバー(_)が使えるで。この名前は後から変更することはでけへんから、ちゃんと考えや。"
 aiChanMode: "藍モードやで"
 keepCw: "CWを維持するで"
 pubSub: "Pub/Subのアカウント"
@@ -812,7 +812,7 @@ typeToConfirm: "この操作をやるんなら {x} と入力してなー"
 deleteAccount: "アカウント削除するで"
 document: "ドキュメント"
 numberOfPageCache: "ページキャッシュ数やで"
-numberOfPageCacheDescription: "増やすと使いやすくなる、負荷とメモリ使用量が増えてくで。一長一短やな。"
+numberOfPageCacheDescription: "増やすと使いやすくなるけど、サーバーの負荷とメモリ使用量が増えてまう。一長一短やな。"
 logoutConfirm: "ログアウトしまっか？"
 lastActiveDate: "最後に使った日時"
 statusbar: "ステータスバー"
@@ -1450,6 +1450,11 @@ _tutorial:
   step5_5: ソーシャル{icon}タイムラインでは、ホームタイムラインとローカルタイムラインの投稿が両方見られてホンマお得やわぁ。
   step5_3: ホーム{icon}タイムラインでは、あんたはんがフォローしてはる兄ちゃんらの投稿が見られまんねん。
   step5_4: ローカル{icon}タイムラインでは、このサーバーにおる人らの投稿を見られますわ。
+  step6_1: ほんなら、ここはどないな場所なん？
+  step6_2: 実は、あんたはんはFirefishに参加しただけやあらしまへん。ここは、何千もの相互接続されたサーバーが構成しとる Fediverse への入口どす。
+  step6_3: 
+    それぞれのサーバーでは必ずしもFirefishが使われとるわけやなく、異なる動作をしはるサーバーもあります。せやけど、あんたはんは他のサーバーのアカウントもフォローしたり、返信・ブーストしたりできます。一見難儀そやけど、だんない！あんじょうやれますえ。
+  step6_4: これで完了どす。楽しんどくれやす！
 _postForm:
   _placeholders:
     b: なんかおましたか？
@@ -1459,7 +1464,7 @@ _postForm:
     f: あんさん書くんを待っとるんどす...
     a: いまなにしとん？
 flagSpeakAsCat: 猫弁で喋る
-flagSpeakAsCatDescription: オンにすると、ワレの投稿の「な」を「にゃ」に変換したるで。
+flagSpeakAsCatDescription: オンにすると、ワレの投稿の「な」「na」を「にゃ」「nya」に変換したるで。
 welcomeBackWithName: おおきに、{name}はん
 migration: アカウントの引っ越し
 makeReactionsPublicDescription: あんたが付けたリアクションの一覧をみんなにも見せたるで。
