@@ -1,3 +1,16 @@
+## v2023.12.1
+### Release notes
+This release contains performance improvements and minor bugfixes. Upgrading is recommended, especially if you are still experiencing performance issues with notifications and/or the home timeline.
+
+### Highlights
+- Performance issues with the home timeline heuristics query as well as the notifications query have been resolved
+
+### UI/UX
+- A bug in which an extra colon was shown at the end of some notifications has been resolved
+
+### Attribution
+This release was made possible by project contributors: Laura Hausmann & mia
+
 ## v2023.12
 ### Release notes
 This release contains only very minor changes if you're upgrading from `v2023.12-pre4`, but for users who skipped the prereleases, lots has changed. We primarily spent this release cycle on improving performance, we hope you enjoy a snappier experience!
