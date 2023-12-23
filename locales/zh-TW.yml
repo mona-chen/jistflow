@@ -22,7 +22,7 @@ otherSettings: "其他設定"
 openInWindow: "在新視窗開啟"
 profile: "個人檔案"
 timeline: "時間軸"
-noAccountDescription: "此用戶還沒有自我介紹。"
+noAccountDescription: "此使用者尚未自我介紹。"
 login: "登入"
 loggingIn: "登入中"
 logout: "登出"
@@ -127,8 +127,8 @@ block: "封鎖"
 unblock: "解除封鎖"
 suspend: "凍結"
 unsuspend: "解除凍結"
-blockConfirm: "確定要封鎖此用戶？"
-unblockConfirm: "確定解除封鎖此用戶？"
+blockConfirm: "確定要封鎖此使用者嗎？"
+unblockConfirm: "確定要解除封鎖此使用者嗎？"
 suspendConfirm: "確定凍結此帳號？"
 unsuspendConfirm: "確定解凍此帳號？"
 selectList: "選擇清單"
@@ -145,12 +145,12 @@ addEmoji: "加入表情符號"
 settingGuide: "推薦設定"
 cacheRemoteFiles: "快取遠端檔案"
 cacheRemoteFilesDescription: "禁用此設定會停止遠端檔案的緩存，從而節省儲存空間，但資料會因直接連線從而產生額外數據花費。"
-flagAsBot: "標記此帳號是機器人"
-flagAsBotDescription: "如果本帳戶是由程式控制，請啟用此選項。啟用後，會作為標示幫助其他開發者防止機器人之間產生無限互動的行為，並會調整Firefish內部系統將本帳戶識別為機器人。"
+flagAsBot: "標記此帳號為自動化帳號"
+flagAsBotDescription: "如果本帳戶是由程式控制，請啟用此選項。此選項將作為一個標示以幫助其他開發者防止自動化帳號之間產生無限互動的行為，並會調整Firefish內部系統將此帳號識別為自動化帳號。"
 flagAsCat: "你是喵咪嗎？w😺"
 flagAsCatDescription: "如果想將本帳戶標示為一隻貓，請開啟此標示！"
 flagShowTimelineReplies: "在時間軸上顯示貼文的回覆"
-flagShowTimelineRepliesDescription: "啟用時，時間軸除了顯示用戶的貼文以外，還會顯示用戶對其他貼文的回覆。"
+flagShowTimelineRepliesDescription: "啟用後，時間軸除了顯示使用者的貼文之外，也會顯示使用者對其他貼文的回覆。"
 autoAcceptFollowed: "自動准予追隨中使用者的追隨請求"
 addAccount: "添加帳戶"
 loginFailed: "登入失敗"
@@ -163,7 +163,7 @@ searchWith: "搜尋: {q}"
 youHaveNoLists: "你沒有任何清單"
 followConfirm: "你真的要追隨 「{name}」 嗎？"
 proxyAccount: "代理帳戶"
-proxyAccountDescription: "代理帳戶是在某些情況下充當其他伺服器用戶的帳戶。例如，當使用者將一個來自其他伺服器的帳戶放在列表中時，由於沒有其他使用者追蹤該帳戶，該指令不會傳送到該伺服器上，因此會由代理帳戶追蹤。"
+proxyAccountDescription: "代理帳戶是在某些情況下代替本地使用者追隨遠端使用者的帳戶。例如，當本地使用者將遠端使用者加入清單時，若沒有其他本地使用者追隨該遠端使用者，該遠端使用者的動態將不會發送到本地伺服器，因此將以代理帳戶代為追隨。"
 host: "主機"
 selectUser: "選取使用者"
 recipient: "收件人"
@@ -199,8 +199,8 @@ clearCachedFilesConfirm: "確定要清除所有遠端暫存資料嗎？"
 blockedInstances: "已封鎖的伺服器"
 blockedInstancesDescription: "請逐行輸入需要封鎖的伺服器。已封鎖的伺服器將無法與本伺服器進行通訊。"
 muteAndBlock: "靜音和封鎖"
-mutedUsers: "已靜音用戶"
-blockedUsers: "已封鎖用戶"
+mutedUsers: "已靜音的使用者"
+blockedUsers: "已封鎖的使用者"
 noUsers: "沒有任何使用者"
 editProfile: "編輯個人檔案"
 noteDeleteConfirm: "確定刪除此貼文嗎？"
@@ -222,7 +222,7 @@ publishing: "直播中"
 notResponding: "沒有回應"
 instanceFollowing: "追蹤伺服器"
 instanceFollowers: "伺服器的追蹤者"
-instanceUsers: "此伺服器的用戶"
+instanceUsers: "此伺服器的使用者"
 changePassword: "修改密碼"
 security: "安全性"
 retypedNotMatch: "兩次輸入不一致。"
@@ -262,7 +262,7 @@ agreeTo: "我同意{0}"
 tos: "使用條款"
 start: "開始"
 home: "首頁"
-remoteUserCaution: "由於該使用者來自遠端實例，因此資料可能是非即時的。"
+remoteUserCaution: "遠端使用者的資訊並不完整。"
 activity: "動態"
 images: "圖片"
 birthday: "生日"
@@ -330,14 +330,14 @@ disablingTimelinesInfo: "即使您關閉了時間軸功能，管理員和板主�
 registration: "註冊"
 enableRegistration: "開啟新使用者註冊"
 invite: "邀請"
-driveCapacityPerLocalAccount: "每個本地用戶的雲端空間大小"
-driveCapacityPerRemoteAccount: "每個非本地用戶的雲端容量"
+driveCapacityPerLocalAccount: "每個本地使用者的雲端容量"
+driveCapacityPerRemoteAccount: "每個遠端使用者的雲端容量"
 inMb: "以MB為單位"
 iconUrl: "圖標網址"
 bannerUrl: "橫幅圖像網址"
 backgroundImageUrl: "背景圖片的來源網址"
 basicInfo: "基本資訊"
-pinnedUsers: "置頂用戶"
+pinnedUsers: "置頂的使用者"
 pinnedUsersDescription: "在「探索」頁面中使用換行標記想要置頂的使用者。"
 pinnedPages: "已釘選的頁面"
 pinnedPagesDescription: "輸入要固定至伺服器首頁的頁面路徑，一行一個。"
@@ -362,14 +362,14 @@ antennaKeywordsDescription: "用空格分隔指定AND、用換行符分隔指定
 notifyAntenna: "通知有新貼文"
 withFileAntenna: "僅帶有附件的貼文"
 enableServiceworker: "開啟 ServiceWorker"
-antennaUsersDescription: "指定用換行符分隔的用戶名"
+antennaUsersDescription: "指定使用者名稱，一行一個"
 caseSensitive: "區分大小寫"
 withReplies: "包含回覆"
 connectedTo: "您的帳戶已連接到以下社交帳戶"
 notesAndReplies: "貼文與回覆"
 withFiles: "附件"
 silence: "禁言"
-silenceConfirm: "確定要禁言此用戶嗎？"
+silenceConfirm: "確定要禁言此使用者嗎？"
 unsilence: "解除禁言"
 unsilenceConfirm: "確定要解除禁言嗎？"
 popularUsers: "熱門使用者"
@@ -537,7 +537,7 @@ deleteAllFilesConfirm: "確定要刪除所有檔案嗎？"
 removeAllFollowing: "解除所有追蹤"
 removeAllFollowingDescription: "解除{host}所有的追蹤。在伺服器不再存在時執行。"
 userSuspended: "此使用者已被停用。"
-userSilenced: "該用戶已被禁言。"
+userSilenced: "該使用者已被禁言。"
 yourAccountSuspendedTitle: "帳戶已被凍結"
 yourAccountSuspendedDescription: "由於違反了伺服器的服務條款或其他原因，該帳戶已被凍結。 您可以與管理員連繫以了解更多訊息。 請不要創建一個新的帳戶。"
 menu: "選單"
@@ -660,7 +660,7 @@ repliesCount: "回覆數量"
 renotesCount: "轉發數量"
 repliedCount: "回覆數量"
 renotedCount: "轉發次數"
-followingCount: "正在跟隨的用戶數量"
+followingCount: "追隨中的使用者數量"
 followersCount: "跟隨者數量"
 sentReactionsCount: "反應發送次數"
 receivedReactionsCount: "反應收到次數"
@@ -700,7 +700,7 @@ needReloadToApply: "必須重新載入才會生效。"
 showTitlebar: "顯示標題列"
 clearCache: "清除快取資料"
 onlineUsersCount: "{n}人正在線上"
-nUsers: "{n}用戶"
+nUsers: "{n}使用者"
 nNotes: "{n}貼文"
 sendErrorReports: "傳送錯誤報告"
 sendErrorReportsDescription: "開啟後，錯誤出現時將會與 Firefish 分享詳細紀錄，對於 Firefish 的開發會有非常大的幫助。\n
@@ -746,7 +746,7 @@ addDescription: "添加描述"
 userPagePinTip: "在貼文的選單中選擇\"置頂\"，即可置頂該貼文至您的個人檔案頁面。"
 notSpecifiedMentionWarning: "此貼文有未指定的提及"
 info: "資訊"
-userInfo: "用戶資料"
+userInfo: "使用者資訊"
 unknown: "未知"
 onlineStatus: "在線狀態"
 hideOnlineStatus: "隱藏在線狀態"
@@ -891,7 +891,7 @@ cannotUploadBecauseNoFreeSpace: "由於雲端硬碟沒有可用空間，因此�
 beta: "Beta"
 enableAutoSensitive: "自動NSFW判定"
 enableAutoSensitiveDescription: "如可用，請利用機器學習在媒體上自動設置 NSFW 旗標。 即使關閉此功能，依伺服器而定也可能會自動設置。"
-activeEmailValidationDescription: "積極地驗證用戶的電子郵件地址，判斷它是否為免洗地址，或者它是否可以通信。 若關閉，則只會檢查字元是否正確。"
+activeEmailValidationDescription: "強化驗證使用者的電子郵件地址，包含判斷是否為免洗信箱，以及是否可以實際通訊。 停用此選項時，只會檢查是否符合電子郵件地址的形式。"
 navbar: "導覽列"
 shuffle: "隨機"
 account: "帳戶"
@@ -918,7 +918,7 @@ _emailUnavailable:
   smtp: "郵件伺服器沒有應答"
 _ffVisibility:
   public: "發佈"
-  followers: "只有關注你的用戶能看到"
+  followers: "僅追隨者可見"
   private: "私密"
 _signup:
   almostThere: "即將完成"
@@ -1002,7 +1002,7 @@ _mfm:
   intro: "MFM是Misskey、Firefish、Akkoma等專用的標記語言，可以在各個位置使用。 您可以這裏看到MFM可用語法列表。"
   dummy: "Firefish拓展了Fediverse的世界"
   mention: "提及"
-  mentionDescription: "透過 @+用戶名 來標示特定使用者。"
+  mentionDescription: "透過 @+使用者名稱 來標示特定使用者。"
   hashtag: "#tag"
   hashtagDescription: "可以使用\"#\"符號後加文字表示話題標籤。"
   url: "URL"
@@ -1122,7 +1122,7 @@ _wordMute:
   muteLangs: 被靜音的語言
   muteLangsDescription: OR條件以空格或換行進行分隔。
 _instanceMute:
-  instanceMuteDescription: "包括對被靜音伺服器上的用戶的回覆，被設定的伺服器上所有貼文及轉發都會被靜音。"
+  instanceMuteDescription: "將設定的伺服器的所有貼文及轉發靜音。對被靜音伺服器的使用者的回覆也將被靜音。"
   instanceMuteDescription2: "設定時以換行進行分隔"
   title: "被設定的伺服器，貼文將被隱藏。"
   heading: "將會被靜音的伺服器"
@@ -1236,7 +1236,7 @@ _tutorial:
   step5_1: "時間軸，到處都是時間軸！"
   step5_2: "您的伺服器已啟用了{timelines}個時間軸。"
   step5_3: "首頁 {icon} 時間軸是顯示你追蹤的帳號的貼文。"
-  step5_4: "本地 {icon} 時間軸是你可以看到伺服器中所有其他用戶的貼文的時間軸。"
+  step5_4: "本地{icon}時間軸是你可以看到此伺服器上所有使用者的貼文的時間軸。"
   step5_5: "社交 {icon} 時間軸是你的 首頁時間軸 和 本地時間軸 的結合體。"
   step5_6: "推薦 {icon} 時間軸是顯示你的伺服器管理員推薦的貼文。"
   step5_7: "全球 {icon} 時間軸是顯示來自所有其他連接的伺服器的貼文。"
@@ -1268,16 +1268,17 @@ _2fa:
   renewTOTPOk: 重新配置
   step3Title: 輸入驗證碼
   securityKeyNotSupported: 您使用的瀏覧器不支援安全金鑰(Security key)。
+  step2Click: 點擊此二維條碼以註冊2FA至你的安全密鑰或手機的Authenticator應用程式。
 _permissions:
   "read:account": "查看我的帳戶資訊"
   "write:account": "更改我的帳戶資訊"
-  "read:blocks": "已封鎖用戶名單"
-  "write:blocks": "編輯已封鎖用戶名單"
+  "read:blocks": "查看封鎖的使用者名單"
+  "write:blocks": "編輯封鎖的使用者名單"
   "read:drive": "存取雲端硬碟"
   "write:drive": "編輯雲端硬碟的檔案"
   "read:favorites": "瀏覽我的最愛"
   "write:favorites": "編輯我的最愛列表"
-  "read:following": "查看追隨中的用戶資訊"
+  "read:following": "查看追隨中的使用者資訊"
   "write:following": "追隨/解除追隨"
   "read:messaging": "顯示訊息"
   "write:messaging": "撰寫或刪除私人訊息"
@@ -1343,7 +1344,7 @@ _widgets:
   postForm: "發佈窗口"
   slideshow: "幻燈片"
   button: "按鈕"
-  onlineUsers: "線上的用戶"
+  onlineUsers: "線上的使用者"
   jobQueue: "佇列"
   serverMetric: "伺服器指標"
   aiscript: "AiScript 控制台"
@@ -1416,14 +1417,14 @@ _profile:
   metadataContent: "内容"
   changeAvatar: "更換大頭貼"
   changeBanner: "變更橫幅圖像"
-  locationDescription: 如果你先輸入你所在的城市，則會向其他用戶顯示你的當地時間。
+  locationDescription: 如果你先輸入你所在的城市，則會向其他使用者顯示你的當地時間。
 _exportOrImport:
   allNotes: "所有貼文"
   followingList: "追隨中"
   muteList: "靜音"
   blockingList: "封鎖"
   userLists: "清單"
-  excludeMutingUsers: "排除被靜音的用戶"
+  excludeMutingUsers: "排除被靜音的使用者"
   excludeInactiveUsers: "排除不活躍帳戶"
 _charts:
   federation: "站台聯邦"
@@ -1826,16 +1827,16 @@ _messaging:
 manageGroups: 管理群組
 replayTutorial: 重新播放教程
 moveFromLabel: '您想遷移的舊帳戶:'
-customMOTDDescription: 自訂MOTD(啟動畫面)訊息，一行一個。每次用戶載入/重新整理頁面時將會隨機顯示。
+customMOTDDescription: 自訂MOTD(啟動畫面)訊息，一行一個。使用者載入/重新整理頁面時將隨機顯示。
 privateModeInfo: 啟用後，只有列入允許名單的伺服器才能與你的伺服器聯合。所有貼文都將對公眾隱藏。
-adminCustomCssWarn: 除非你知道它的作用，否則請不要使用此設定。 輸入不正確的值可能會導致每個人的客戶端無法正常運行。你可在你的的用戶設定中測試，確保你的
-  CSS 正常工作。
+adminCustomCssWarn: 除非你知道它的作用，否則請不要使用此設定。 輸入不正確的值可能會導致每個人的用戶端無法正常運行。你可在你的使用者設定中先行測試，以確保你的
+  CSS 正常運作。
 showUpdates: Firefish 更新時顯示彈出視窗
 recommendedInstances: 建議的伺服器
 caption: 自動加上替代文字(alt)
 enterSendsMessage: 在 Messaging 中按 Return 發送消息 (如關閉則是 Ctrl + Return)
 migrationConfirm: "您確定要將你的帳戶遷移到 {account} 嗎？ 一旦這樣做，你將無法復原，而你將無法再次正常使用您的帳戶。\n另外，請確保你已將此當前帳戶設置為您要遷移的帳戶。"
-customSplashIconsDescription: 每次用戶加載/重新加載頁面時，以換行符號分隔的自定啟動畫面圖標的網址將隨機顯示。請確保圖片位於靜態網址上，最好所有圖片解析度調整為
+customSplashIconsDescription: 自訂啟動畫面的圖標網址，一行一個。使用者載入/重新整理頁面時將隨機顯示。請確保圖片位於靜態網址上，最好每個圖片的解析度皆縮放為
   192x192。
 accountMoved: '該使用者已遷移至新帳戶:'
 showAds: 顯示社群橫幅
@@ -1873,7 +1874,8 @@ silenced: 已靜音
 _experiments:
   title: 試驗功能
   enablePostImports: 啟用匯入貼文的功能
-  postImportsCaption: 允許用戶從舊有的Firefish・Misskey・Mastodon・Akkoma・Pleroma帳號匯入貼文。在伺服器佇列堵塞時匯入貼文可能會導致載入速度變慢。
+  postImportsCaption: 
+    允許使用者從舊有的Firefish・Misskey・Mastodon・Akkoma・Pleroma帳號匯入貼文。在伺服器佇列堵塞時匯入貼文可能會導致載入速度變慢。
 findOtherInstance: 找找另一個伺服器
 noGraze: 瀏覽器擴充元件 "Graze for Mastodon" 會與Firefish發生衝突，請停用該擴充元件。
 userSaysSomethingReasonRenote: '{name} 轉發了包含 {reason} 的貼文'
@@ -1903,7 +1905,7 @@ newer: 較新
 older: 較舊
 jumpToPrevious: 跳到上一個
 removeReaction: 移除你的反應
-listsDesc: 清單可以創建一個只有您指定用戶的時間軸。 可以從時間軸頁面訪問它們。
+listsDesc: 清單可以讓您創建含用指定使用者的時間軸。您可以在時間軸頁面查看它們。
 flagSpeakAsCatDescription: 在喵咪模式下你的貼文會被喵化ヾ(•ω•`)o
 antennasDesc: "天線會顯示符合您設置條件的新貼文！\n 可以從時間軸訪問它們。"
 expandOnNoteClick: 點擊以打開貼文
@@ -1937,7 +1939,7 @@ isAdmin: 管理員
 isPatron: Firefish 項目贊助者
 silencedWarning: 顯示此頁面是因為這些使用者來自您伺服器管理員已靜音的伺服器，因此他們可能是垃圾訊息。
 signupsDisabled: 此伺服器目前停止註冊，但您隨時可以在另一台伺服器上註冊！如果您有此伺服器的邀請碼，請在下面輸入。
-showPopup: 通過彈出式視窗通知用戶
+showPopup: 通過彈出式視窗通知使用者
 showWithSparkles: 讓標題閃閃發光
 youHaveUnreadAnnouncements: 您有未讀的公告
 donationLink: 連結到贊助頁面
@@ -1946,7 +1948,7 @@ remindMeLater: 可能之後
 removeQuote: 删除引用
 removeRecipient: 刪除收件者
 removeMember: 刪除成員
-isBot: 此帳戶是機器人
+isBot: 此帳號為自動化帳號
 verifiedLink: 已驗證連結
 _filters:
   followersOnly: 只顯示關注者的
@@ -2003,3 +2005,7 @@ _iconSets:
   light: 細線
 showAttachedNotes: 顯示有此附件的貼文
 attachedToNotes: 帶有此附件的貼文
+useEmojiCdn: 使用CDN的Twemoji
+useEmojiCdnDescription: 使用JSDelivr CDN提供的Twemoji，而不使用儲存在伺服器上的檔案。
+moreUrls: 置頂的頁面
+moreUrlsDescription: "請以下列形式輸入欲釘選在左下角幫助選單的頁面，一行一個：\n\"顯示名稱\": https://example.com/"
