@@ -130,6 +130,18 @@ export default async (
 		});
 	}
 
+	if (token && ep.meta.requireAdmin) {
+		throw new ApiError(accessDenied, {
+			reason: "Apps cannot use admin privileges.",
+		});
+	}
+
+	if (token && ep.meta.requireModerator) {
+		throw new ApiError(accessDenied, {
+			reason: "Apps cannot use moderator privileges.",
+		});
+	}
+
 	// Cast non JSON input
 	if ((ep.meta.requireFile || ctx?.method === "GET") && ep.params.properties) {
 		for (const k of Object.keys(ep.params.properties)) {
