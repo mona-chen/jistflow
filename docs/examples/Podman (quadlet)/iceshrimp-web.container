@@ -1,0 +1,16 @@
+[Unit]
+Description=Iceshrimp container
+[Container]
+Image=iceshrimp.dev/iceshrimp/iceshrimp:latest
+ContainerName=iceshrimp_web
+HostName=web
+PublishPort=3000:3000
+Network=iceshrimp.network
+Environment=NODE_ENV=production
+Volume=%h/services/iceshrimp/files:/iceshrimp/files:z
+Volume=%h/services/iceshrimp/.config:/iceshrimp/.config:ro,z
+[Service]
+Restart=on-failure
+TimeoutStartSec=900
+[Install]
+WantedBy=multi-user.target default.target

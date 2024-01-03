@@ -1,0 +1,14 @@
+[Unit]
+Description=Iceshrimp PostgreSQL container
+[Container]
+Image=docker.io/postgres:15-alpine
+ContainerName=iceshrimp_db
+HostName=db
+Network=iceshrimp.network
+EnvironmentFile=%h/services/iceshrimp/.config/docker.env
+Volume=%h/services/iceshrimp/db:/var/lib/postgresql/data:Z
+[Service]
+Restart=on-failure
+TimeoutStartSec=900
+[Install]
+WantedBy=iceshrimp-web.service

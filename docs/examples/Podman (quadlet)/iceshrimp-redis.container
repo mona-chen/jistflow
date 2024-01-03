@@ -1,0 +1,14 @@
+[Unit]
+Description=Iceshrimp Redis container
+[Container]
+Image=docker.io/redis:7.0-alpine
+ContainerName=iceshrimp_redis
+HostName=redis
+Network=iceshrimp.network
+Volume=%h/services/iceshrimp/redis:/data:Z
+[Service]
+Restart=on-failure
+TimeoutStartSec=900
+[Install]
+WantedBy=iceshrimp-web.service
+
