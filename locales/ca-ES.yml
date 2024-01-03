@@ -29,7 +29,7 @@ login: "Inicia sessió"
 loggingIn: "Iniciant sessió"
 logout: "Tanca la sessió"
 signup: "Registra'm"
-uploading: "S'està pujant…"
+uploading: "Carregant…"
 save: "Desa"
 users: "Usuaris"
 addUser: "Afegeix un usuari"
@@ -85,8 +85,8 @@ somethingHappened: "S'ha produït un error"
 retry: "Torna-ho a intentar"
 pageLoadError: "S'ha produït un error en carregar la pàgina."
 pageLoadErrorDescription: "Això normalment es deu a errors de xarxa o a la memòria
-  cau del navegador. Prova d'esborrar la memòria cau i torna-ho a provar després d'esperar
-  una estona."
+  cau del navegador. Prova d'esborrar la memòria cau o espera una estona abans de
+  recarregar la pàgina."
 serverIsDead: "Aquest servidor no respon. Espera una estona i torna-ho a provar."
 youShouldUpgradeClient: "Per veure aquesta pàgina, actualitzeu-la per actualitzar
   el vostre client."
@@ -110,7 +110,7 @@ pinnedNote: "Publicació fixada"
 pinned: "Fixa al perfil"
 you: "Tu"
 clickToShow: "Fes clic per a mostrar"
-sensitive: "NSFW"
+sensitive: "Sensible"
 add: "Afegeix"
 reaction: "Reaccions"
 reactionSetting: "Reaccions a mostrar al selector de reaccions"
@@ -118,8 +118,8 @@ reactionSettingDescription2: "Arrossega per reordenar, fes clic per suprimir, pr
   \"+\" per afegir."
 rememberNoteVisibility: "Recorda la configuració de visibilitat de les notes"
 attachCancel: "Elimina el fitxer adjunt"
-markAsSensitive: "Marca com a NSFW"
-unmarkAsSensitive: "Desmarca com a NSFW"
+markAsSensitive: "Marca com a sensible"
+unmarkAsSensitive: "Desmarca com a sensible"
 enterFileName: "Introdueix un nom de fitxer"
 mute: "Silencia"
 unmute: "Deixa de silenciar"
@@ -129,7 +129,7 @@ suspend: "Suspèn"
 unsuspend: "Treu la suspensió"
 instances: "Servidors"
 remove: "Elimina"
-nsfw: "NSFW"
+nsfw: "Sensible"
 pinnedNotes: "Publicacions fixades"
 userList: "Llistes"
 smtpUser: "Nom d'usuari"
@@ -148,9 +148,9 @@ _mfm:
   search: "Cercar"
   dummy: Iceshrimp amplia el món del Fediverse
   hashtag: Etiqueta
-  intro: MFM és un llenguatge de marques utilitzat a Iceshrimp, Iceshrimp, Akkoma i més
-    que es pot utilitzar en molts llocs. Aquí podeu veure una llista de tota la sintaxi
-    MFM disponible.
+  intro: MFM és un llenguatge de marques utilitzat a Iceshrimp, Misskey, Akkoma i
+    més que es pot utilitzar en publicacions i xats. Aquí podeu veure una llista de
+    tota la sintaxi MFM disponible.
   hashtagDescription: Podeu especificar una etiqueta mitjançant un coixinet i un text.
   url: URL
   urlDescription: Es poden mostrar URLS.
@@ -792,7 +792,7 @@ customEmojis: Emojis personalitzats
 cacheRemoteFilesDescription: Quan aquesta opció està desactivada, els fitxers remots
   es carreguen directament del servidor remot. Desactivar-la farà que baixi l'ús d'emmagatzematge,
   però incrementa el tràfic, perquè les miniatures no es generaran.
-flagAsBot: Marca aquest compte com a bot
+flagAsBot: Marcar aquest compte com a bot 🤖
 flagAsBotDescription: Activa aquesta opció si aquest compte és controlat per un programa.
   Si s'activa, això actuarà com una bandera per a altres desenvolupadors i ajuda a
   prevenir cadenes de interaccions infinites amb altres bots a més d'ajustar els sistemes
@@ -848,7 +848,7 @@ done: Fet
 preview: Vista prèvia
 default: Per defecte
 intro: La instal·lació de Iceshrimp ha acabat! Crea un compte d'usuari d'administració.
-processing: S'està processant
+processing: Processant…
 noCustomEmojis: No hi ha cap emoji
 noJobs: No hi ha cap feina
 federating: Federant
@@ -861,7 +861,7 @@ instanceFollowing: Seguint al servidor
 instanceFollowers: Seguidors del servidor
 security: Seguretat
 newPasswordRetype: Torna a entrar la nova contrasenya
-more: Més!
+more: Més
 featured: Destacat
 usernameOrUserId: Nom o ID d'usuari
 noSuchUser: No s'ha trobat l'usuari
@@ -872,8 +872,8 @@ newPassword: Nova contrasenya
 announcements: Anuncis
 imageUrl: URL de la imatge
 removed: S'ha eliminat correctament
-removeAreYouSure: Segur que vols eliminar «{x}»?
-deleteAreYouSure: Segur que vols eliminar «{x}»?
+removeAreYouSure: Segur que vols eliminar "{x}"?
+deleteAreYouSure: Segur que vols eliminar "{x}"?
 resetAreYouSure: Segur que vols restablir?
 fromUrl: Des d'una URL
 saved: S'ha desat
@@ -1097,7 +1097,7 @@ noMessagesYet: Encara no hi han missatges
 signinRequired: Si us plau registrat o inicia sessió per continuar
 invitations: Invitacions
 invitationCode: Codi d'invitació
-checking: Comprovant...
+checking: Comprovant…
 usernameInvalidFormat: Pots fer servir lletres en majúscules o minúscules, nombres
   i guions baixos.
 tooShort: Massa curt
@@ -1117,7 +1117,7 @@ disableDrawer: No facis servir els menús amb estil de calaix
 noHistory: No hi ha historial disponible
 signinHistory: Historial d'inicis de sessió
 disableAnimatedMfm: Desactiva les animacions amb MFM
-doing: Processant...
+doing: Processant…
 category: Categoría
 existingAccount: El compte ja existeix
 regenerate: Regenerar
@@ -1293,12 +1293,12 @@ openInSideView: Obrir a la vista lateral
 defaultNavigationBehaviour: Navegació per defecte
 editTheseSettingsMayBreakAccount: Si edites aquestes configuracions pots fer mal bé
   el teu compte.
-userSilenced: Aquest usuari ha sigut silenciat.
+userSilenced: Usuari silenciat.
 instanceTicker: Informació de notes del servidor
 waitingFor: Esperant a {x}
 random: Aleatori
 system: Sistema
-switchUi: Interfície d'usuari
+switchUi: Canvia la disposició
 createNewClip: Crear un clip nou
 unclip: Treure clip
 public: Públic
@@ -1313,7 +1313,7 @@ noCrawle: Rebutjar la indexació dels restrejadors
 driveUsage: Espai fet servir al Disk
 noCrawleDescription: No permetre que els buscadors guardin la informació de les pàgines
   de perfil, notes, Pàgines, etc.
-alwaysMarkSensitive: Marcar per defecte com a NSFW
+alwaysMarkSensitive: Marcar per defecte com a sensible
 lockedAccountInfo: Si has configurat la visibilitat del compte per "Només seguidors"
   les teves notes no seren visibles per a ningú més, inclús si has d'aprovar els teus
   seguidors manualment.
@@ -1389,8 +1389,8 @@ splash: Pantalla de Benvinguda
 swipeOnDesktop: Permet lliscar a l'estil del mòbil a l'escriptori
 updateAvailable: Pot ser que hi hagi una actualització disponible!
 logoImageUrl: URL de la imatge del logotip
-showAdminUpdates: Indica que hi ha disponible una versió nova de Iceshrimp (només per
-  a administradors)
+showAdminUpdates: Indica que hi ha disponible una versió nova de Iceshrimp (només
+  per a administradors)
 replayTutorial: Repetició del tutorial
 migration: Migració
 moveAccountDescription: Aquest procés és irreversible. Assegureu-vos que hàgiu configurat
@@ -1403,14 +1403,14 @@ moveFromDescription: Això establirà un àlies del vostre compte antic perquè 
   anterior. Introduïu l'etiqueta del compte amb el format @persona@servidor.com
 _sensitiveMediaDetection:
   description: Redueix l'esforç de moderació del servidor mitjançant el reconeixement
-    automàtic dels mitjans NSFW mitjançant l'aprenentatge automàtic. Això augmentarà
+    automàtic dels mitjans sensibles mitjançant l'aprenentatge automàtic. Això augmentarà
     lleugerament la càrrega al servidor.
   setSensitiveFlagAutomaticallyDescription: Els resultats de la detecció interna es
     conservaran encara que aquesta opció estigui desactivada.
   analyzeVideos: Activa l'anàlisi de vídeos
   analyzeVideosDescription: Analitza vídeos a més d'imatges. Això augmentarà lleugerament
     la càrrega al servidor.
-  setSensitiveFlagAutomatically: Marca com a NSFW
+  setSensitiveFlagAutomatically: Marcar com a sensible
   sensitivity: Sensibilitat de detecció
   sensitivityDescription: La reducció de la sensibilitat comportarà menys deteccions
     errònies (falsos positius), mentre que augmentar-la comportarà menys deteccions
@@ -1481,6 +1481,7 @@ _preferencesBackups:
     La configuració existent d'aquest dispositiu es sobreescriurà.
   list: Còpies de seguretat creades
   cannotSave: S'ha produït un error en desar
+  delete: Esborrar còpia de seguretat
 _registry:
   domain: Domini
   createKey: Crea la clau
@@ -1540,9 +1541,9 @@ low: Baixa
 emailNotConfiguredWarning: L'adreça de correu electrònic no està definida.
 instanceSecurity: Seguretat del servidor
 privateMode: Mode Privat
-allowedInstances: Servidors a la llista blanca
-allowedInstancesDescription: Llista blanca de Hosts amb qui federar, cadascún separat
-  per una línia nova (només s'aplica en mode privat).
+allowedInstances: Llista de servidors permesos
+allowedInstancesDescription: Llista de Hosts amb qui federar, cadascún separat per
+  una línia nova (només s'aplica en mode privat).
 previewNoteText: Mostra la vista prèvia
 customCss: CSS personalitzat
 recommended: Recomanat
@@ -1581,36 +1582,40 @@ recentNDays: Últims {n} dies
 noEmailServerWarning: El servidor de correu electrònic no està configurat.
 check: Comprovar
 fast: Ràpida
-sensitiveMediaDetection: Detecció de mitjans NSFW
+sensitiveMediaDetection: Detecció de mitjans sensobles
 remoteOnly: Només remotes
 failedToUpload: S'ha produït un error en la càrrega
 cannotUploadBecauseInappropriate: Aquest fitxer no s'ha pogut carregar perquè s'han
-  detectat parts d'aquest com a potencialment NSFW.
+  detectat parts d'aquest com a potencialment sensible.
 cannotUploadBecauseNoFreeSpace: La pujada ha fallat a causa de la manca d'espai al
   Disc.
-enableAutoSensitive: Marcatge automàtic NSFW
+enableAutoSensitive: Marcar automàticament com sensible
 moveTo: Mou el compte actual al compte nou
 customKaTeXMacro: Macros KaTeX personalitzats
 _aboutIceshrimp:
   contributors: Col·laboradors principals
   allContributors: Tots els col·laboradors
   donate: Fes una donació a Iceshrimp
-  source: Codi font
-  translation: Tradueix Iceshrimp
-  about: Iceshrimp és una bifurcació de Iceshrimp feta per ThatOneCalculator, que està
-    en desenvolupament des del 2022.
+  source: Desenvolupament de l'Iceshrimp
+  translation: Traduccions
+  about: Iceshrimp és una bifurcació de Iceshrimp feta per ThatOneCalculator, que
+    està en desenvolupament des del 2022.
   morePatrons: També agraïm el suport de molts altres ajudants que no figuren aquí.
     Gràcies! 🥰
   patrons: Mecenes de Iceshrimp
   patronsList: Llistats cronològicament, no per la quantitat donada. Fes una donació
     amb l'enllaç de dalt per veure el teu nom aquí!
   donateTitle: T'agrada Iceshrimp?
-  pleaseDonateToIceshrimp: Penseu en fer una donació a Iceshrimp per donar suport al seu
-    desenvolupament.
+  pleaseDonateToIceshrimp: Penseu en fer una donació a Iceshrimp per donar suport
+    al seu desenvolupament.
   pleaseDonateToHost: Penseu també en fer una donació a la vostre instància, {host},
     per ajudar-lo a suportar els costos de funcionament.
   donateHost: Fes una donació a {host}
   sponsors: Patrocinadors de Calckey
+  chatroom: Sala de xat
+  documentation: Documentació
+  roadmap: Full de ruta
+  changelog: Registre de canvis
 unknown: Desconegut
 pageLikesCount: Nombre de pàgines amb M'agrada
 youAreRunningUpToDateClient: Estás fent servir la versió del client més nova.
@@ -1646,16 +1651,16 @@ customCssWarn: Aquesta configuració només s'ha d'utilitzar si sabeu què fa. L
 squareAvatars: Mostra avatars quadrats
 secureModeInfo: Quan es faci una solicitut d'altres servidors no contestar sense una
   prova.
-privateModeInfo: Quan està activat, només els servidors a la llista blanca es poden
-  federar amb el vostre servidor. Totes les publicacions s'amagaran al públic.
+privateModeInfo: Quan està activat, només els servidors a la llista poden federar
+  amb el vostre servidor. Totes les publicacions s'amagaran al públic.
 useBlurEffect: Utilitzeu efectes de desenfocament a la interfície d'usuari
 accountDeletionInProgress: La supressió del compte està en curs
 unmuteThread: Desfés el silenci al fil
 deleteAccountConfirm: Això suprimirà el vostre compte de manera irreversible. Procedir?
 requireAdminForView: Heu d'iniciar sessió amb un compte d'administrador per veure-ho.
 enableAutoSensitiveDescription: Permet la detecció i el marcatge automàtics dels mitjans
-  NSFW mitjançant Machine Learning sempre que sigui possible. Fins i tot si aquesta
-  opció està desactivada, és possible que estigui habilitada a tot el servidor.
+  sensible mitjançant l'aprenentatge automàtic sempre que sigui possible. Fins i tot
+  si aquesta opció està desactivada, és possible que estigui habilitada a tot el servidor.
 localOnly: Només local
 customKaTeXMacroDescription: "Configura macros per escriure expressions matemàtiques
   fàcilment! La notació s'ajusta a les definicions de l'ordre LaTeX i s'escriu com
@@ -1719,12 +1724,12 @@ accentColor: Color principal
 textColor: Color del text
 value: Valor
 sendErrorReportsDescription: "Quan està activat, quan es produeixi un problema la
-  informació detallada d'errors es compartirà amb Iceshrimp, ajudant a millorar la qualitat
-  de Iceshrimp.\nAixò inclourà informació com la versió del vostre sistema operatiu,
-  quin navegador utilitzeu, la vostra activitat a Iceshrimp, etc."
+  informació detallada d'errors es compartirà amb Iceshrimp, ajudant a millorar la
+  qualitat de Iceshrimp.\nAixò inclourà informació com la versió del vostre sistema
+  operatiu, quin navegador utilitzeu, la vostra activitat a Iceshrimp, etc."
 myTheme: El meu tema
 backgroundColor: Color de fons
-saveAs: Desa com...
+saveAs: Desar com…
 advanced: Avançat
 invalidValue: Valor invàlid.
 createdAt: Data de creació
@@ -1740,7 +1745,7 @@ typingUsers: L'{users} està escrivint
 oneDay: Un dia
 instanceDefaultLightTheme: Tema de llum predeterminat per a tot el servidor
 instanceDefaultDarkTheme: Tema fosc predeterminat per tot el servidor
-instanceDefaultThemeDescription: Introduïu el codi del tema en format d'objecte.
+instanceDefaultThemeDescription: Introdueix el codi JSON del tema.
 mutePeriod: Durada del silenci
 indefinitely: Permanentment
 tenMinutes: 10 minuts
@@ -1782,8 +1787,8 @@ defaultReaction: Reacció d'emoji predeterminada per a notes sortints i entrants
 enableCustomKaTeXMacro: Activa les macros KaTeX personalitzades
 noteId: ID de la publicació
 _nsfw:
-  respect: Amaga els mitjans NSFW
-  ignore: No amagueu els mitjans NSFW
+  respect: Amaga els mitjans sensibles
+  ignore: No amagueu els mitjans sensibles
   force: Amaga tots els mitjans
 inUse: Utilitzat
 ffVisibilityDescription: Et permet configurar qui pot veure a qui segueixes i qui
@@ -1822,7 +1827,7 @@ lastActiveDate: Data d'últim ús
 statusbar: Barra d'estat
 pleaseSelect: Selecciona una opció
 colored: Color
-refreshInterval: "Interval d'actualització "
+refreshInterval: "Interval d'actualització"
 speed: Velocitat
 cannotUploadBecauseExceedsFileSizeLimit: Aquest fitxer no s'ha pogut carregar perquè
   supera la mida màxima permesa.
@@ -2112,7 +2117,7 @@ expandOnNoteClick: Obre la publicació amb un clic
 expandOnNoteClickDesc: Si està desactivat, encara pots obrir les publicacions al menú
   del botó dret o fent clic a la marca de temps.
 channelFederationWarn: Els canals encara no es federen amb altres servidors
-searchPlaceholder: Cerca a Iceshrimp
+searchPlaceholder: Cerca al Fediverse
 listsDesc: Les llistes et permeten crear línies de temps amb usuaris específics. Es
   pot accedir des de la pàgina de línies de temps.
 clipsDesc: Els clips són com marcadors categoritzats que es poden compartir. Podeu
@@ -2131,6 +2136,23 @@ _filters:
   followersOnly: Només seguidors
   withFile: Amb arxiu
   fromUser: De l'usuari
+  _dialog:
+    learnMore: Veure la sintaxi del filtre
+    wordFilters: Filtrar per el text de la publicació
+    inFilters: Filtra per marcador i/o estat preferit
+    miscFilters: Filtra per seguiment i/o tipus de publicació
+    userDomain: Filtra per autor, usuaris esmentats, usuari contestat o domini de
+      l'instancia
+    postDate: Filtra per data de publicació
+    exclusivity: 'Tingues en compte que abans:filtre és excloïen, mentres que després:
+      filtre és inclusiu.'
+    word: Paraula
+    phrase: Frase literal que conté (arbitràriament) caràcters
+    attachmentType: Filtra per tipus d'ajunt(s)
+    info: Nomenclatura
+    title: Sintaxi del filtre de cerca
+    matchOptions: Canvia la sensibilitat de majúscules i minúscules i/o habilita la
+      coincidència de paraules senceres
 image: Imatge
 video: Vídeo
 audio: Àudio
@@ -2167,3 +2189,14 @@ _feeds:
   atom: Atom
   jsonFeed: Feed JSON
   copyFeed: Copiar feed
+collapseAllCws: Ocultar el contingut de totes les respostes
+searchNotLoggedIn_2: No obstant això, pots cercar fent servir etiquetes, i cercar
+  usuaris.
+searchEmptyQuery: Introdueix un terme de cerca.
+antennaTimelineHint: Les Antenes mostren les publicacions en ordre d'entrada, que
+  no necessàriament ha de ser cronològic.
+expandAllCws: Mostrar el contingut de totes les respostes
+cannotChangeScopeWhenEditing: No pots canviar la visibilitat d'aquesta publicació
+  mentre edites
+openInMainColumn: Obrir a la columna principal
+searchNotLoggedIn_1: Has d'estar autenticat per poder utilitzar la cerca de text complet.
