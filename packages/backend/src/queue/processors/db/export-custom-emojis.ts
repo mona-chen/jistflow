@@ -68,7 +68,9 @@ export async function exportCustomEmojis(
 
 	for (const emoji of customEmojis) {
 		const ext = mime.extension(emoji.type);
-		const fileName = emoji.name + (ext ? `.${ext}` : "");
+		// there are some restrictions on file names, so to be safe the files are
+		// named after their database id instead of the actual emoji name
+		const fileName = emoji.id + (ext ? '.' + ext : '');
 		const emojiPath = `${path}/${fileName}`;
 		fs.writeFileSync(emojiPath, "", "binary");
 		let downloaded = false;

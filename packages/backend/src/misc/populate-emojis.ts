@@ -41,13 +41,10 @@ function normalizeHost(
 }
 
 function parseEmojiStr(emojiName: string, noteUserHost: string | null) {
-	const match = emojiName.match(/^(\w+)(?:@([\w.-]+))?$/);
-	if (!match) return { name: null, host: null };
-
-	const name = match[1];
-
-	// ホスト正規化
-	const host = toPunyNullable(normalizeHost(match[2], noteUserHost));
+	// emojiName may be of the form `emoji@host`, turn it into a suitable form
+	const match = emojiName.split("@");
+	const name = match[0];
+	const host = toPunyNullable(normalizeHost(match[1], noteUserHost));
 
 	return { name, host };
 }
