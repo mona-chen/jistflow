@@ -115,7 +115,7 @@ you: "Du"
 clickToShow: "Zum Anzeigen anklicken"
 sensitive: "NSFW"
 add: "Hinzufügen"
-reaction: "Reaktionen"
+reaction: "Reaktion"
 reactionSetting: "Reaktionen, die in der Reaktionsauswahl angezeigt werden sollen"
 reactionSettingDescription2: "Ziehen Sie, um neu zu ordnen, klicken Sie, um zu löschen,
   drücken Sie \"+\", um hinzuzufügen."
@@ -286,7 +286,7 @@ agreeTo: "Ich stimme {0} zu"
 tos: "Nutzungsbedingungen"
 start: "Beginnen Sie"
 home: "Home"
-remoteUserCaution: "Informationen von Nutzern anderer Server sind möglicherweise unvollständig."
+remoteUserCaution: "Informationen von Nutzern anderer Server sind unvollständig."
 activity: "Aktivität"
 images: "Bilder"
 birthday: "Geburtstag"
@@ -651,7 +651,7 @@ emptyToDisableSmtpAuth: "Nutzername und Passwort leer lassen, um SMTP-Verifizier
 smtpSecure: "Für SMTP-Verbindungen implizit SSL/TLS verwenden"
 smtpSecureInfo: "Schalte dies aus, falls du STARTTLS verwendest"
 testEmail: "Emailversand testen"
-wordMute: "Wortfilter"
+wordMute: "Wort- und Sprache-Filter"
 regexpError: "Fehler in einem regulären Ausdruck"
 regexpErrorDescription: "Im regulären Ausdruck deines {tab}en Wortfilters ist ein
   Fehler aufgetreten:"
@@ -1035,7 +1035,7 @@ _accountDelete:
   inProgress: "Löschung in Bearbeitung"
 _ad:
   back: "Zurück"
-  reduceFrequencyOfThisAd: "Diese Werbeanzeige weniger anzeigen"
+  reduceFrequencyOfThisAd: "Diese Anzeige weniger anzeigen"
   adsBy: Community-Banner von {by}
 _forgotPassword:
   enterEmail: "Gib die Email-Adresse ein, mit der du dich registriert hast. An diese
@@ -1244,6 +1244,9 @@ _wordMute:
   hard: "Schwer"
   mutedNotes: "Stummgeschaltete Beiträge"
   muteLangs: Stummgeschaltete Sprachen
+  muteLangsDescription: Mit Leerzeichen oder Zeilenumbrüchen trennen für ODER-Kondition.
+  muteLangsDescription2: Sprachcode verwenden, z.B. en, fr, ja, zh..
+  lang: Sprache
 _instanceMute:
   instanceMuteDescription: "Schaltet alle Beiträge/Boosts stumm, die von den gelisteten
     Servern stammen, inklusive Antworten von Nutzern an einen Nutzer eines stummgeschalteten
@@ -2146,7 +2149,7 @@ _filters:
   notesBefore: Beiträge vor
   followingOnly: Nur Folgende
   followersOnly: Nur Follower
-isBot: Dieses Konto ist ein Bot
+isBot: Dieses Konto ist ein automatisiert
 isModerator: Moderator
 isAdmin: Administrator
 _dialog:
@@ -2219,3 +2222,8 @@ openServerInfo: Anzeigen von Serverinformationen durch Anklicken des Server-Tick
 vibrate: Vibrationen abspielen
 clickToShowPatterns: Klicken um Modul-Muster anzuzeigen
 replies: Antworten
+reactions: Reaktionen
+_iconSets:
+  bold: Fett
+  light: Hell
+moreUrls: Angeheftete Seiten
