@@ -39,9 +39,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
-            - pnpm
+            - yarn
             - run
-            - start
+            - migrateandstart
           env:
             - name: "NODE_ENV"
               value: "production"

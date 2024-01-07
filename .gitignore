@@ -81,3 +81,7 @@ pnpm*
 # Nix Development shell items
 .devenv
 .direnv
+
+# helm chart dependencies
+chart/charts
+chart/Chart.lock
