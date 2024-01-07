@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: docker.io/thatonecalculator/iceshrimp
+  repository: iceshrimp.dev/iceshrimp/iceshrimp
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: latest
 
 iceshrimp:
   isManagedHosting: true
