@@ -1,17 +1,17 @@
-import querystring from "node:querystring";
-import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { IdType, convertId } from "@/server/api/index.js";
 import Router from "@koa/router";
-import qs from "qs";
 import { getClient } from "../ApiMastodonCompatibleService.js";
+import { emojiRegexAtStartToEnd } from "@/misc/emoji-regex.js";
+import querystring from "node:querystring";
+import qs from "qs";
+import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
+import { convertId, IdType } from "@/server/api/index.js";
 import {
 	convertAccount,
 	convertAttachment,
 	convertPoll,
 	convertStatus,
 } from "../converters.js";
-import { convertTimelinesArgsId, limitToInt } from "./timeline.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
 
 function normalizeQuery(data: any) {
 	const str = querystring.stringify(data);

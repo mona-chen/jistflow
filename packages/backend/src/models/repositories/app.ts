@@ -1,8 +1,8 @@
 import { db } from "@/db/postgre.js";
-import type { Packed } from "@/misc/schema.js";
 import { App } from "@/models/entities/app.js";
-import type { User } from "../entities/user.js";
 import { AccessTokens } from "../index.js";
+import type { Packed } from "@/misc/schema.js";
+import type { User } from "../entities/user.js";
 
 export const AppRepository = db.getRepository(App).extend({
 	async pack(

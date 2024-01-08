@@ -1,14 +1,14 @@
 import {
-	Column,
+	PrimaryColumn,
 	Entity,
 	Index,
 	JoinColumn,
+	Column,
 	ManyToOne,
-	PrimaryColumn,
 } from "typeorm";
+import { User } from "./user.js";
 import { id } from "../id.js";
 import { DriveFile } from "./drive-file.js";
-import { User } from "./user.js";
 
 @Entity()
 export class Channel {

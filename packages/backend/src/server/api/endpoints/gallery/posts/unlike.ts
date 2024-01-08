@@ -1,6 +1,6 @@
-import { GalleryLikes, GalleryPosts } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import { GalleryPosts, GalleryLikes } from "@/models/index.js";
 
 export const meta = {
 	tags: ["gallery"],

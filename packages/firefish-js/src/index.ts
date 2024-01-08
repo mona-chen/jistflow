@@ -1,8 +1,8 @@
-import { Acct } from "./acct";
 import { Endpoints } from "./api.types";
-import * as consts from "./consts";
 import Stream, { Connection } from "./streaming";
 import { Channels } from "./streaming.types";
+import { Acct } from "./acct";
+import * as consts from "./consts";
 
 export { Endpoints, Stream, Connection as ChannelConnection, Channels, Acct };
 

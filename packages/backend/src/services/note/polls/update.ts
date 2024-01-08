@@ -1,9 +1,9 @@
-import type { Note } from "@/models/entities/note.js";
-import { Notes, Users } from "@/models/index.js";
-import { deliverToFollowers } from "@/remote/activitypub/deliver-manager.js";
+import renderUpdate from "@/remote/activitypub/renderer/update.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
-import renderUpdate from "@/remote/activitypub/renderer/update.js";
+import { Users, Notes } from "@/models/index.js";
+import type { Note } from "@/models/entities/note.js";
+import { deliverToFollowers } from "@/remote/activitypub/deliver-manager.js";
 import { deliverToRelays } from "@/services/relay.js";
 
 export async function deliverQuestionUpdate(noteId: Note["id"]) {

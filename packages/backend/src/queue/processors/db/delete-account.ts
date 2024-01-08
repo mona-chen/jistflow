@@ -1,13 +1,13 @@
-import meilisearch from "@/db/meilisearch.js";
-import type { DriveFile } from "@/models/entities/drive-file.js";
-import type { Note } from "@/models/entities/note.js";
+import type Bull from "bull";
+import { queueLogger } from "../../logger.js";
 import { DriveFiles, Notes, UserProfiles, Users } from "@/models/index.js";
 import type { DbUserDeleteJobData } from "@/queue/types.js";
+import type { Note } from "@/models/entities/note.js";
+import type { DriveFile } from "@/models/entities/drive-file.js";
+import { MoreThan } from "typeorm";
 import { deleteFileSync } from "@/services/drive/delete-file.js";
 import { sendEmail } from "@/services/send-email.js";
-import type Bull from "bull";
-import { MoreThan } from "typeorm";
-import { queueLogger } from "../../logger.js";
+import meilisearch from "@/db/meilisearch.js";
 
 const logger = queueLogger.createSubLogger("delete-account");
 

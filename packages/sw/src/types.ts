@@ -37,15 +37,17 @@ export type PushNotificationDataMap = {
 
 export type BadgeNames =
 	| "null"
-	| "antenna"
-	| "arrow-back-up"
 	| "at"
-	| "chart-arrows"
-	| "circle-check"
-	| "medal"
+	| "boost"
+	| "check"
+	| "clipboard-check"
+	| "clock"
+	| "comments"
+	| "id-card"
 	| "messages"
 	| "plus"
+	| "poll"
 	| "quote"
-	| "repeat"
-	| "user-plus"
-	| "users";
+	| "reaction"
+	| "reply"
+	| "user-plus";

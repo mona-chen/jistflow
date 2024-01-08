@@ -1,10 +1,10 @@
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import { apLogger } from "../../logger.js";
-import { updateNote } from "../../models/note.js";
-import { updatePerson } from "../../models/person.js";
-import Resolver from "../../resolver.js";
 import type { IUpdate } from "../../type.js";
 import { getApType, isActor } from "../../type.js";
+import { apLogger } from "../../logger.js";
+import { updateNote } from "../../models/note.js";
+import Resolver from "../../resolver.js";
+import { updatePerson } from "../../models/person.js";
 
 /**
  * Handler for the Update activity

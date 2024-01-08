@@ -1,7 +1,7 @@
+import rndstr from "rndstr";
 import type { Note } from "@/models/entities/note.js";
 import type { User } from "@/models/entities/user.js";
-import { Notes, PromoNotes, PromoReads, Users } from "@/models/index.js";
-import rndstr from "rndstr";
+import { PromoReads, PromoNotes, Notes, Users } from "@/models/index.js";
 
 export async function injectPromo(timeline: Note[], user?: User | null) {
 	if (timeline.length < 5) return;

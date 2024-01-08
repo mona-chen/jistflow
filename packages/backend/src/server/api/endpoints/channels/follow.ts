@@ -1,7 +1,7 @@
-import { genId } from "@/misc/gen-id.js";
-import { ChannelFollowings, Channels } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import { Channels, ChannelFollowings } from "@/models/index.js";
+import { genId } from "@/misc/gen-id.js";
 import { publishUserEvent } from "@/services/stream.js";
 
 export const meta = {

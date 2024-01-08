@@ -1,8 +1,8 @@
-import { Emojis } from "@/models/index.js";
-import { IsNull } from "typeorm";
-import { toPunyNullable } from "./convert-host.js";
 import { emojiRegex } from "./emoji-regex.js";
 import { fetchMeta } from "./fetch-meta.js";
+import { Emojis } from "@/models/index.js";
+import { toPunyNullable } from "./convert-host.js";
+import { IsNull } from "typeorm";
 
 export function convertReactions(reactions: Record<string, number>) {
 	const result = new Map();

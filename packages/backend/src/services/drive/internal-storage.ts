@@ -1,8 +1,8 @@
 import * as fs from "node:fs";
 import * as fsPromises from "node:fs/promises";
 import * as Path from "node:path";
-import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
 import config from "@/config/index.js";
 
 const _filename = fileURLToPath(import.meta.url);

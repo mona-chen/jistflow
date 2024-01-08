@@ -1,6 +1,6 @@
-import { Column, Entity, Index, PrimaryColumn } from "typeorm";
-import { id } from "../id.js";
+import { Entity, PrimaryColumn, Index, Column } from "typeorm";
 import type { User } from "./user.js";
+import { id } from "../id.js";
 
 @Entity()
 export class Hashtag {

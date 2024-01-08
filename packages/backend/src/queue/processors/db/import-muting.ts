@@ -1,15 +1,15 @@
 import type Bull from "bull";
 
-import * as Acct from "@/misc/acct.js";
-import { isSelfHost, toPuny } from "@/misc/convert-host.js";
-import { downloadTextFile } from "@/misc/download-text-file.js";
-import { genId } from "@/misc/gen-id.js";
-import type { User } from "@/models/entities/user.js";
-import { DriveFiles, Mutings, Users } from "@/models/index.js";
-import type { DbUserImportJobData } from "@/queue/types.js";
-import { resolveUser } from "@/remote/resolve-user.js";
-import { IsNull } from "typeorm";
 import { queueLogger } from "../../logger.js";
+import * as Acct from "@/misc/acct.js";
+import { resolveUser } from "@/remote/resolve-user.js";
+import { downloadTextFile } from "@/misc/download-text-file.js";
+import { isSelfHost, toPuny } from "@/misc/convert-host.js";
+import { Users, DriveFiles, Mutings } from "@/models/index.js";
+import type { DbUserImportJobData } from "@/queue/types.js";
+import type { User } from "@/models/entities/user.js";
+import { genId } from "@/misc/gen-id.js";
+import { IsNull } from "typeorm";
 
 const logger = queueLogger.createSubLogger("import-muting");
 

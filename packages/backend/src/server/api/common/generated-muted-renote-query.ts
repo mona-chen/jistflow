@@ -1,6 +1,6 @@
+import { Brackets, SelectQueryBuilder } from "typeorm";
 import { User } from "@/models/entities/user.js";
 import { RenoteMutings } from "@/models/index.js";
-import { Brackets, SelectQueryBuilder } from "typeorm";
 
 export function generateMutedUserRenotesQueryForNotes(
 	q: SelectQueryBuilder<any>,

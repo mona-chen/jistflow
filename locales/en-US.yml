@@ -1234,6 +1234,8 @@ detectPostLanguage:
 vibrate: "Play vibrations"
 openServerInfo: "Show server information by clicking the server ticker on a post"
 iconSet: "Icon set"
+useEmojiCdn: "Get Twemoji from CDN"
+useEmojiCdnDescription: "Use Twemoji from the JSDelivr CDN instead of the server's assets."
 
 _sensitiveMediaDetection:
   description:

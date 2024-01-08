@@ -1,9 +1,9 @@
-import { genId } from "@/misc/gen-id.js";
-import type { Muting } from "@/models/entities/muting.js";
-import { Mutings, NoteWatchings } from "@/models/index.js";
-import { getUser } from "@/server/api/common/getters.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import { getUser } from "@/server/api/common/getters.js";
+import { genId } from "@/misc/gen-id.js";
+import { Mutings, NoteWatchings } from "@/models/index.js";
+import type { Muting } from "@/models/entities/muting.js";
 import { publishUserEvent } from "@/services/stream.js";
 
 export const meta = {

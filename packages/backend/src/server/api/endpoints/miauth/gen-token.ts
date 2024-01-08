@@ -1,7 +1,7 @@
+import define from "@/server/api/define.js";
+import { AccessTokens } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import { secureRndstr } from "@/misc/secure-rndstr.js";
-import { AccessTokens } from "@/models/index.js";
-import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["auth"],

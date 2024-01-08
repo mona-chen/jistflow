@@ -1,7 +1,7 @@
+import { IsNull } from "typeorm";
 import { Emojis } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { IsNull } from "typeorm";
 
 export const meta = {
 	tags: ["meta"],

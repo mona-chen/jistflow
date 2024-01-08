@@ -1,6 +1,6 @@
 import { db } from "@/db/postgre.js";
-import type { Packed } from "@/misc/schema.js";
 import { Emoji } from "@/models/entities/emoji.js";
+import type { Packed } from "@/misc/schema.js";
 
 export const EmojiRepository = db.getRepository(Emoji).extend({
 	async pack(src: Emoji["id"] | Emoji): Promise<Packed<"Emoji">> {

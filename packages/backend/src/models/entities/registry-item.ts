@@ -1,13 +1,13 @@
 import {
-	Column,
+	PrimaryColumn,
 	Entity,
 	Index,
 	JoinColumn,
+	Column,
 	ManyToOne,
-	PrimaryColumn,
 } from "typeorm";
-import { id } from "../id.js";
 import { User } from "./user.js";
+import { id } from "../id.js";
 
 // TODO: 同じdomain、同じscope、同じkeyのレコードは二つ以上存在しないように制約付けたい
 @Entity()

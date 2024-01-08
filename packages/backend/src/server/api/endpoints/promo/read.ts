@@ -1,8 +1,8 @@
-import { genId } from "@/misc/gen-id.js";
 import { PromoReads } from "@/models/index.js";
-import { getNote } from "@/server/api/common/getters.js";
+import { genId } from "@/misc/gen-id.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import { getNote } from "@/server/api/common/getters.js";
 
 export const meta = {
 	tags: ["notes"],

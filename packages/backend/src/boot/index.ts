@@ -5,11 +5,11 @@ import Xev from "xev";
 import Logger from "@/services/logger.js";
 import { envOption } from "../env.js";
 
-import os from "node:os";
 // for typeorm
 import "reflect-metadata";
 import { masterMain } from "./master.js";
 import { workerMain } from "./worker.js";
+import os from "node:os";
 
 const logger = new Logger("core", "cyan");
 const clusterLogger = logger.createSubLogger("cluster", "orange", false);

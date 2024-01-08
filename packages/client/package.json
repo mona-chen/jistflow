@@ -10,7 +10,6 @@
 		"format": "pnpm biome format * --write && pnpm prettier --write '**/*.{scss,vue}' --cache --cache-strategy metadata"
 	},
 	"devDependencies": {
-		"@discordapp/twemoji": "14.1.2",
 		"@eslint-sets/eslint-config-vue3": "^5.10.0",
 		"@eslint-sets/eslint-config-vue3-ts": "^3.3.0",
 		"@phosphor-icons/web": "^2.0.3",

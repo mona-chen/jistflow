@@ -1,7 +1,7 @@
-import type { User } from "@/models/entities/user.js";
-import { Mutings, UserProfiles } from "@/models/index.js";
 import type { SelectQueryBuilder } from "typeorm";
 import { Brackets } from "typeorm";
+import type { User } from "@/models/entities/user.js";
+import { Mutings, UserProfiles } from "@/models/index.js";
 
 export function generateMutedUserQuery(
 	q: SelectQueryBuilder<any>,

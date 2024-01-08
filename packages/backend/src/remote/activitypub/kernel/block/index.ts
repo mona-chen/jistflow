@@ -1,8 +1,8 @@
-import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import { Users } from "@/models/index.js";
-import block from "@/services/blocking/create.js";
-import DbResolver from "../../db-resolver.js";
 import type { IBlock } from "../../type.js";
+import block from "@/services/blocking/create.js";
+import type { CacheableRemoteUser } from "@/models/entities/user.js";
+import DbResolver from "../../db-resolver.js";
+import { Users } from "@/models/index.js";
 
 export default async (
 	actor: CacheableRemoteUser,

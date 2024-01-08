@@ -1,5 +1,5 @@
-import { Users } from "@/models/index.js";
 import define from "@/server/api/define.js";
+import { Users } from "@/models/index.js";
 import { insertModerationLog } from "@/services/insert-moderation-log.js";
 import { publishInternalEvent } from "@/services/stream.js";
 export const meta = {

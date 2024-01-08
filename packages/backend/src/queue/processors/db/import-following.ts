@@ -1,14 +1,14 @@
-import follow from "@/services/following/create.js";
 import { IsNull } from "typeorm";
+import follow from "@/services/following/create.js";
 
 import * as Acct from "@/misc/acct.js";
-import { isSelfHost, toPuny } from "@/misc/convert-host.js";
-import { downloadTextFile } from "@/misc/download-text-file.js";
-import { DriveFiles, Users } from "@/models/index.js";
-import type { DbUserImportJobData } from "@/queue/types.js";
 import { resolveUser } from "@/remote/resolve-user.js";
-import type Bull from "bull";
+import { downloadTextFile } from "@/misc/download-text-file.js";
+import { isSelfHost, toPuny } from "@/misc/convert-host.js";
+import { Users, DriveFiles } from "@/models/index.js";
+import type { DbUserImportJobData } from "@/queue/types.js";
 import { queueLogger } from "../../logger.js";
+import type Bull from "bull";
 
 const logger = queueLogger.createSubLogger("import-following");
 

@@ -1,9 +1,9 @@
 import * as crypto from "node:crypto";
-import { genId } from "@/misc/gen-id.js";
-import { secureRndstr } from "@/misc/secure-rndstr.js";
-import { AccessTokens, Apps, AuthSessions } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import { AuthSessions, AccessTokens, Apps } from "@/models/index.js";
+import { genId } from "@/misc/gen-id.js";
+import { secureRndstr } from "@/misc/secure-rndstr.js";
 
 export const meta = {
 	tags: ["auth"],

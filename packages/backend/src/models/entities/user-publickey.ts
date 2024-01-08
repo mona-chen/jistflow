@@ -1,13 +1,13 @@
 import {
-	Column,
+	PrimaryColumn,
 	Entity,
 	Index,
 	JoinColumn,
+	Column,
 	OneToOne,
-	PrimaryColumn,
 } from "typeorm";
-import { id } from "../id.js";
 import { User } from "./user.js";
+import { id } from "../id.js";
 
 @Entity()
 export class UserPublickey {

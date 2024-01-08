@@ -1,9 +1,9 @@
-import type { CacheableUser } from "@/models/entities/user.js";
-import { toArray, unique } from "@/prelude/array.js";
 import promiseLimit from "promise-limit";
-import Resolver from "../resolver.js";
-import type { IApMention, IObject } from "../type.js";
+import { toArray, unique } from "@/prelude/array.js";
+import type { CacheableUser } from "@/models/entities/user.js";
+import type { IObject, IApMention } from "../type.js";
 import { isMention } from "../type.js";
+import Resolver from "../resolver.js";
 import { resolvePerson } from "./person.js";
 
 export async function extractApMentions(

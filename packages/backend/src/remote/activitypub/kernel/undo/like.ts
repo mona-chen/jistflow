@@ -1,8 +1,8 @@
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import deleteReaction from "@/services/note/reaction/delete.js";
-import { fetchNote } from "../../models/note.js";
 import type { ILike } from "../../type.js";
 import { getApId } from "../../type.js";
+import deleteReaction from "@/services/note/reaction/delete.js";
+import { fetchNote } from "../../models/note.js";
 
 /**
  * Process Undo.Like activity

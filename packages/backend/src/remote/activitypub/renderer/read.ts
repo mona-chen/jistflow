@@ -1,6 +1,6 @@
 import config from "@/config/index.js";
-import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import type { User } from "@/models/entities/user.js";
+import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 
 export const renderReadActivity = (
 	user: { id: User["id"] },

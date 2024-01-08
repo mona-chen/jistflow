@@ -1,8 +1,8 @@
 import { db } from "@/db/postgre.js";
-import type { Packed } from "@/misc/schema.js";
+import { DriveFolders, DriveFiles } from "../index.js";
 import { DriveFolder } from "@/models/entities/drive-folder.js";
 import { awaitAll } from "@/prelude/await-all.js";
-import { DriveFiles, DriveFolders } from "../index.js";
+import type { Packed } from "@/misc/schema.js";
 
 export const DriveFolderRepository = db.getRepository(DriveFolder).extend({
 	async pack(

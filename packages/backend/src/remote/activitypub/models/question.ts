@@ -1,10 +1,10 @@
 import config from "@/config/index.js";
-import type { IPoll } from "@/models/entities/poll.js";
-import { Notes, Polls } from "@/models/index.js";
-import { apLogger } from "../logger.js";
 import Resolver from "../resolver.js";
 import type { IObject, IQuestion } from "../type.js";
 import { getApId, isQuestion } from "../type.js";
+import { apLogger } from "../logger.js";
+import { Notes, Polls } from "@/models/index.js";
+import type { IPoll } from "@/models/entities/poll.js";
 
 export async function extractPollFromQuestion(
 	source: string | IObject,

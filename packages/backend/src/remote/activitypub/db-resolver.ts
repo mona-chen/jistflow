@@ -1,23 +1,23 @@
+import escapeRegexp from "escape-regexp";
 import config from "@/config/index.js";
-import { Cache } from "@/misc/cache.js";
-import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import type { Note } from "@/models/entities/note.js";
-import type { UserPublickey } from "@/models/entities/user-publickey.js";
 import type {
 	CacheableRemoteUser,
 	CacheableUser,
 } from "@/models/entities/user.js";
+import type { UserPublickey } from "@/models/entities/user-publickey.js";
+import type { MessagingMessage } from "@/models/entities/messaging-message.js";
 import {
-	MessagingMessages,
 	Notes,
-	UserPublickeys,
 	Users,
+	UserPublickeys,
+	MessagingMessages,
 } from "@/models/index.js";
+import { Cache } from "@/misc/cache.js";
 import { uriPersonCache, userByIdCache } from "@/services/user-cache.js";
-import escapeRegexp from "escape-regexp";
-import { resolvePerson, updatePerson } from "./models/person.js";
 import type { IObject } from "./type.js";
 import { getApId } from "./type.js";
+import { resolvePerson, updatePerson } from "./models/person.js";
 
 const publicKeyCache = new Cache<UserPublickey | null>("publicKey", 60 * 30);
 const publicKeyByUserIdCache = new Cache<UserPublickey | null>(

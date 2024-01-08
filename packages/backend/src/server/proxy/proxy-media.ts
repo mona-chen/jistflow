@@ -1,17 +1,17 @@
-import { promises } from "node:dns";
 import * as fs from "node:fs";
 import net from "node:net";
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
-import { createTemp } from "@/misc/create-temp.js";
-import { downloadUrl } from "@/misc/download-url.js";
-import { StatusError } from "@/misc/fetch.js";
-import { detectType } from "@/misc/get-file-info.js";
-import { isMimeImage } from "@/misc/is-mime-image.js";
-import type { IImage } from "@/services/drive/image-processor.js";
-import { convertToWebp } from "@/services/drive/image-processor.js";
+import { promises } from "node:dns";
 import type Koa from "koa";
 import sharp from "sharp";
+import type { IImage } from "@/services/drive/image-processor.js";
+import { convertToWebp } from "@/services/drive/image-processor.js";
+import { createTemp } from "@/misc/create-temp.js";
+import { downloadUrl } from "@/misc/download-url.js";
+import { detectType } from "@/misc/get-file-info.js";
+import { StatusError } from "@/misc/fetch.js";
+import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
 import { serverLogger } from "../index.js";
+import { isMimeImage } from "@/misc/is-mime-image.js";
 
 export async function proxyMedia(ctx: Koa.Context) {
 	let url = "url" in ctx.query ? ctx.query.url : `https://${ctx.params.url}`;

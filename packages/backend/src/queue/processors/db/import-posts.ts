@@ -1,13 +1,13 @@
 import { downloadTextFile } from "@/misc/download-text-file.js";
 import { processMastoNotes } from "@/misc/process-masto-notes.js";
-import { DriveFiles, Users } from "@/models/index.js";
+import { Users, DriveFiles } from "@/models/index.js";
+import type { DbUserImportPostsJobData } from "@/queue/types.js";
+import { queueLogger } from "../../logger.js";
+import type Bull from "bull";
 import {
 	createImportCkPostJob,
 	createImportMastoPostJob,
 } from "@/queue/index.js";
-import type { DbUserImportPostsJobData } from "@/queue/types.js";
-import type Bull from "bull";
-import { queueLogger } from "../../logger.js";
 
 const logger = queueLogger.createSubLogger("import-posts");
 

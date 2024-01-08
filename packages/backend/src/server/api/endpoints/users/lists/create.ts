@@ -1,6 +1,6 @@
+import { UserLists } from "@/models/index.js";
 import { genId } from "@/misc/gen-id.js";
 import type { UserList } from "@/models/entities/user-list.js";
-import { UserLists } from "@/models/index.js";
 import define from "@/server/api/define.js";
 
 export const meta = {

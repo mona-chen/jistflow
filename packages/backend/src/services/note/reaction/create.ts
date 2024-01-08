@@ -1,26 +1,26 @@
-import { genId } from "@/misc/gen-id.js";
-import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
-import { decodeReaction, toDbReaction } from "@/misc/reaction-lib.js";
-import type { NoteReaction } from "@/models/entities/note-reaction.js";
-import type { Note } from "@/models/entities/note.js";
-import type { IRemoteUser, User } from "@/models/entities/user.js";
-import {
-	Blockings,
-	Emojis,
-	NoteReactions,
-	NoteWatchings,
-	Notes,
-	Users,
-} from "@/models/index.js";
+import { publishNoteStream } from "@/services/stream.js";
+import { renderLike } from "@/remote/activitypub/renderer/like.js";
 import DeliverManager from "@/remote/activitypub/deliver-manager.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import { renderLike } from "@/remote/activitypub/renderer/like.js";
-import { perUserReactionsChart } from "@/services/chart/index.js";
-import { createNotification } from "@/services/create-notification.js";
-import { publishNoteStream } from "@/services/stream.js";
+import { toDbReaction, decodeReaction } from "@/misc/reaction-lib.js";
+import type { User, IRemoteUser } from "@/models/entities/user.js";
+import type { Note } from "@/models/entities/note.js";
+import {
+	NoteReactions,
+	Users,
+	NoteWatchings,
+	Notes,
+	Emojis,
+	Blockings,
+} from "@/models/index.js";
 import { IsNull, Not } from "typeorm";
+import { perUserReactionsChart } from "@/services/chart/index.js";
+import { genId } from "@/misc/gen-id.js";
+import { createNotification } from "@/services/create-notification.js";
 import deleteReaction from "./delete.js";
+import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
+import type { NoteReaction } from "@/models/entities/note-reaction.js";
+import { IdentifiableError } from "@/misc/identifiable-error.js";
 
 export default async (
 	user: { id: User["id"]; host: User["host"] },

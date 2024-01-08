@@ -1,6 +1,6 @@
 import * as fs from "node:fs";
-import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
 import * as nsfw from "nsfwjs";
 import si from "systeminformation";
 

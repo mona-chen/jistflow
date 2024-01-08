@@ -1,21 +1,21 @@
-import { genId } from "@/misc/gen-id.js";
-import type { IRemoteUser } from "@/models/entities/user.js";
-import {
-	Blockings,
-	NoteWatchings,
-	PollVotes,
-	Polls,
-	Users,
-} from "@/models/index.js";
+import { Not } from "typeorm";
+import { publishNoteStream } from "@/services/stream.js";
+import { createNotification } from "@/services/create-notification.js";
 import { deliver } from "@/queue/index.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderVote from "@/remote/activitypub/renderer/vote.js";
+import {
+	PollVotes,
+	NoteWatchings,
+	Users,
+	Polls,
+	Blockings,
+} from "@/models/index.js";
+import type { IRemoteUser } from "@/models/entities/user.js";
+import { genId } from "@/misc/gen-id.js";
 import { getNote } from "@/server/api/common/getters.js";
-import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import { createNotification } from "@/services/create-notification.js";
-import { publishNoteStream } from "@/services/stream.js";
-import { Not } from "typeorm";
+import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["notes"],

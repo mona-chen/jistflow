@@ -1,12 +1,12 @@
-import { comparePassword } from "@/misc/password.js";
-import { UserProfiles, Users } from "@/models/index.js";
-import generateUserToken from "@/server/api/common/generate-native-user-token.js";
-import define from "@/server/api/define.js";
 import {
 	publishInternalEvent,
 	publishMainStream,
 	publishUserEvent,
 } from "@/services/stream.js";
+import generateUserToken from "@/server/api/common/generate-native-user-token.js";
+import define from "@/server/api/define.js";
+import { Users, UserProfiles } from "@/models/index.js";
+import { comparePassword } from "@/misc/password.js";
 
 export const meta = {
 	requireCredential: true,

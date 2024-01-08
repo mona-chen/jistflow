@@ -1,55 +1,55 @@
+import promiseLimit from "promise-limit";
+import * as mfm from "mfm-js";
 import config from "@/config/index.js";
-import { getApLock } from "@/misc/app-lock.js";
-import { extractDbHost, toPuny } from "@/misc/convert-host.js";
-import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
-import { extractHashtags } from "@/misc/extract-hashtags.js";
-import { StatusError } from "@/misc/fetch.js";
-import { genId } from "@/misc/gen-id.js";
-import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
-import { langmap } from "@/misc/langmap.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
-import { truncate } from "@/misc/truncate.js";
-import { DriveFile } from "@/models/entities/drive-file.js";
-import type { Emoji } from "@/models/entities/emoji.js";
-import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
-import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import {
-	DriveFiles,
-	Emojis,
-	MessagingMessages,
-	NoteEdits,
-	Notes,
-	Polls,
-} from "@/models/index.js";
-import { UserProfiles } from "@/models/index.js";
-import { toArray, toSingle, unique } from "@/prelude/array.js";
-import { createMessage } from "@/services/messages/create.js";
+import Resolver from "../resolver.js";
 import post from "@/services/note/create.js";
 import { extractMentionedUsers } from "@/services/note/create.js";
-import vote from "@/services/note/polls/vote.js";
-import { publishNoteStream } from "@/services/stream.js";
-import * as mfm from "mfm-js";
-import promiseLimit from "promise-limit";
-import { In } from "typeorm";
-import { parseAudience } from "../audience.js";
-import DbResolver from "../db-resolver.js";
-import { apLogger } from "../logger.js";
+import { resolvePerson } from "./person.js";
+import { resolveImage } from "./image.js";
+import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import { htmlToMfm } from "../misc/html-to-mfm.js";
-import Resolver from "../resolver.js";
+import { extractApHashtags } from "./tag.js";
+import { unique, toArray, toSingle } from "@/prelude/array.js";
+import { extractPollFromQuestion } from "./question.js";
+import vote from "@/services/note/polls/vote.js";
+import { apLogger } from "../logger.js";
+import { DriveFile } from "@/models/entities/drive-file.js";
+import { extractDbHost, toPuny } from "@/misc/convert-host.js";
+import {
+	Emojis,
+	Polls,
+	MessagingMessages,
+	Notes,
+	NoteEdits,
+	DriveFiles,
+} from "@/models/index.js";
+import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
 import type { IObject, IPost } from "../type.js";
 import {
-	getApId,
-	getApType,
-	getOneApHrefNullable,
 	getOneApId,
-	isEmoji,
+	getApId,
+	getOneApHrefNullable,
 	validPost,
+	isEmoji,
+	getApType,
 } from "../type.js";
-import { resolveImage } from "./image.js";
+import type { Emoji } from "@/models/entities/emoji.js";
+import { genId } from "@/misc/gen-id.js";
+import { getApLock } from "@/misc/app-lock.js";
+import { createMessage } from "@/services/messages/create.js";
+import { parseAudience } from "../audience.js";
 import { extractApMentions } from "./mention.js";
-import { resolvePerson } from "./person.js";
-import { extractPollFromQuestion } from "./question.js";
-import { extractApHashtags } from "./tag.js";
+import DbResolver from "../db-resolver.js";
+import { StatusError } from "@/misc/fetch.js";
+import { shouldBlockInstance } from "@/misc/should-block-instance.js";
+import { publishNoteStream } from "@/services/stream.js";
+import { extractHashtags } from "@/misc/extract-hashtags.js";
+import { UserProfiles } from "@/models/index.js";
+import { In } from "typeorm";
+import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
+import { truncate } from "@/misc/truncate.js";
+import { type Size, getEmojiSize } from "@/misc/emoji-meta.js";
+import { langmap } from "@/misc/langmap.js";
 
 const logger = apLogger;
 

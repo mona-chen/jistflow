@@ -1,17 +1,17 @@
+import { LessThan, IsNull } from "typeorm";
 import config from "@/config/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import type { Following } from "@/models/entities/following.js";
-import { Followings, UserProfiles, Users } from "@/models/index.js";
 import * as url from "@/prelude/url.js";
-import { checkFetch } from "@/remote/activitypub/check-fetch.js";
-import renderFollowUser from "@/remote/activitypub/renderer/follow-user.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderOrderedCollectionPage from "@/remote/activitypub/renderer/ordered-collection-page.js";
 import renderOrderedCollection from "@/remote/activitypub/renderer/ordered-collection.js";
-import type Router from "@koa/router";
-import { IsNull, LessThan } from "typeorm";
-import type { FindOptionsWhere } from "typeorm";
+import renderOrderedCollectionPage from "@/remote/activitypub/renderer/ordered-collection-page.js";
+import renderFollowUser from "@/remote/activitypub/renderer/follow-user.js";
+import { Users, Followings, UserProfiles } from "@/models/index.js";
+import type { Following } from "@/models/entities/following.js";
+import { checkFetch } from "@/remote/activitypub/check-fetch.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
 import { setResponseType } from "../activitypub.js";
+import type { FindOptionsWhere } from "typeorm";
+import type Router from "@koa/router";
 
 export default async (ctx: Router.RouterContext) => {
 	const verify = await checkFetch(ctx.req);

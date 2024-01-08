@@ -1,9 +1,9 @@
 import { db } from "@/db/postgre.js";
-import type { Packed } from "@/misc/schema.js";
-import { Muting } from "@/models/entities/muting.js";
-import type { User } from "@/models/entities/user.js";
-import { awaitAll } from "@/prelude/await-all.js";
 import { Users } from "../index.js";
+import { Muting } from "@/models/entities/muting.js";
+import { awaitAll } from "@/prelude/await-all.js";
+import type { Packed } from "@/misc/schema.js";
+import type { User } from "@/models/entities/user.js";
 
 export const MutingRepository = db.getRepository(Muting).extend({
 	async pack(

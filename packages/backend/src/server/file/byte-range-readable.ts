@@ -1,6 +1,6 @@
+import { Readable, ReadableOptions } from "node:stream";
 import { Buffer } from "node:buffer";
 import * as fs from "node:fs";
-import { Readable, ReadableOptions } from "node:stream";
 
 interface ByteRange {
 	start: bigint;
@@ -82,7 +82,7 @@ function extractRanges(
 }
 
 function createBoundary(len: number): string {
-	const chars = [];
+	let chars = [];
 	for (let i = 0; i < len; i = i + 1) {
 		chars[i] = BOUNDARY_CHARS.charAt(
 			Math.floor(Math.random() * BOUNDARY_CHARS.length),

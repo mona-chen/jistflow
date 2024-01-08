@@ -1,7 +1,7 @@
-import { genId } from "@/misc/gen-id.js";
-import { GalleryLikes, GalleryPosts } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import { GalleryPosts, GalleryLikes } from "@/models/index.js";
+import { genId } from "@/misc/gen-id.js";
 
 export const meta = {
 	tags: ["gallery"],

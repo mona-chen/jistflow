@@ -1,8 +1,8 @@
-import { DAY } from "@/const.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import type { Instance } from "@/models/entities/instance.js";
-import { Instances } from "@/models/index.js";
 import { Brackets } from "typeorm";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import { Instances } from "@/models/index.js";
+import type { Instance } from "@/models/entities/instance.js";
+import { DAY } from "@/const.js";
 import { shouldBlockInstance } from "./should-block-instance.js";
 
 // Threshold from last contact after which an instance will be considered

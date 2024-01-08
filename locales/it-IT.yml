@@ -2182,3 +2182,8 @@ quotes: Citazioni
 renotes: Boost
 showAttachedNotes: Mostra i post con questo allegato
 attachedToNotes: Post con questo allegato
+moreUrls: Pagine del menu di aiuto
+moreUrlsDescription: "Inserisci con questo formato le pagine che vuoi aggiungere al
+  menu di aiuto nell'angolo in basso a sinistra:\n\"Nome link\": https://example.com/"
+useEmojiCdn: Scarica Twemoji da CDN
+useEmojiCdnDescription: Usa Twemoji dalla CDN di JSDelivr invece che dal server locale.

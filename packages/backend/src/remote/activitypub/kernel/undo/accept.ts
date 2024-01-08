@@ -1,8 +1,8 @@
+import unfollow from "@/services/following/delete.js";
+import type { IAccept } from "../../type.js";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import { Followings } from "@/models/index.js";
-import unfollow from "@/services/following/delete.js";
 import DbResolver from "../../db-resolver.js";
-import type { IAccept } from "../../type.js";
 
 export default async (
 	actor: CacheableRemoteUser,

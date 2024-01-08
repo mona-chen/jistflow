@@ -1,16 +1,16 @@
-import config from "@/config/index.js";
-import detectLanguage from "@/misc/detect-language.js";
-import type { DriveFile } from "@/models/entities/drive-file.js";
-import type { Emoji } from "@/models/entities/emoji.js";
-import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
-import type { Poll } from "@/models/entities/poll.js";
-import { DriveFiles, Emojis, Notes, Polls, Users } from "@/models/index.js";
-import toHtml from "@/remote/activitypub/misc/get-note-html.js";
 import { In, IsNull } from "typeorm";
-import renderDocument from "./document.js";
+import config from "@/config/index.js";
+import type { Note, IMentionedRemoteUsers } from "@/models/entities/note.js";
+import type { DriveFile } from "@/models/entities/drive-file.js";
+import { DriveFiles, Notes, Users, Emojis, Polls } from "@/models/index.js";
+import type { Emoji } from "@/models/entities/emoji.js";
+import type { Poll } from "@/models/entities/poll.js";
+import toHtml from "@/remote/activitypub/misc/get-note-html.js";
+import detectLanguage from "@/misc/detect-language.js";
 import renderEmoji from "./emoji.js";
-import renderHashtag from "./hashtag.js";
 import renderMention from "./mention.js";
+import renderHashtag from "./hashtag.js";
+import renderDocument from "./document.js";
 
 export default async function renderNote(
 	note: Note,

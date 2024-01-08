@@ -1,15 +1,15 @@
 import {
-	Column,
+	PrimaryColumn,
 	Entity,
 	Index,
 	JoinColumn,
+	Column,
 	ManyToOne,
-	PrimaryColumn,
 } from "typeorm";
-import { id } from "../id.js";
-import { UserGroupJoining } from "./user-group-joining.js";
-import { UserList } from "./user-list.js";
 import { User } from "./user.js";
+import { id } from "../id.js";
+import { UserList } from "./user-list.js";
+import { UserGroupJoining } from "./user-group-joining.js";
 
 @Entity()
 export class Antenna {

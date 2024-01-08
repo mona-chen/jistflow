@@ -1,6 +1,6 @@
-import { Followings, Users } from "@/models/index.js";
 import define from "@/server/api/define.js";
 import deleteFollowing from "@/services/following/delete.js";
+import { Followings, Users } from "@/models/index.js";
 
 export const meta = {
 	tags: ["admin"],

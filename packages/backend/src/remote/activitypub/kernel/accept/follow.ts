@@ -1,8 +1,8 @@
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import accept from "@/services/following/requests/accept.js";
-import { relayAccepted } from "@/services/relay.js";
-import DbResolver from "../../db-resolver.js";
 import type { IFollow } from "../../type.js";
+import DbResolver from "../../db-resolver.js";
+import { relayAccepted } from "@/services/relay.js";
 
 export default async (
 	actor: CacheableRemoteUser,

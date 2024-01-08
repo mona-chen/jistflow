@@ -1,13 +1,13 @@
+import { publishMainStream } from "@/services/stream.js";
+import define from "@/server/api/define.js";
+import rndstr from "rndstr";
 import config from "@/config/index.js";
+import { Users, UserProfiles } from "@/models/index.js";
+import { sendEmail } from "@/services/send-email.js";
+import { ApiError } from "@/server/api/error.js";
+import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
 import { HOUR } from "@/const.js";
 import { comparePassword } from "@/misc/password.js";
-import { UserProfiles, Users } from "@/models/index.js";
-import define from "@/server/api/define.js";
-import { ApiError } from "@/server/api/error.js";
-import { sendEmail } from "@/services/send-email.js";
-import { publishMainStream } from "@/services/stream.js";
-import { validateEmailForAccount } from "@/services/validate-email-for-account.js";
-import rndstr from "rndstr";
 
 export const meta = {
 	requireCredential: true,

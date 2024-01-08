@@ -1,14 +1,14 @@
 import {
-	Column,
 	Entity,
-	Index,
 	JoinColumn,
+	Column,
 	ManyToOne,
 	PrimaryColumn,
+	Index,
 } from "typeorm";
+import { Note } from "./note.js";
 import { id } from "../id.js";
 import { DriveFile } from "./drive-file.js";
-import { Note } from "./note.js";
 
 @Entity()
 export class NoteEdit {

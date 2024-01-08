@@ -1,7 +1,7 @@
 import { db } from "@/db/postgre.js";
 import { NoteFavorite } from "@/models/entities/note-favorite.js";
-import type { User } from "@/models/entities/user.js";
 import { Notes } from "../index.js";
+import type { User } from "@/models/entities/user.js";
 
 export const NoteFavoriteRepository = db.getRepository(NoteFavorite).extend({
 	async pack(

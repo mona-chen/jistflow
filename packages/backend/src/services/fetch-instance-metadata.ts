@@ -1,12 +1,12 @@
 import { URL } from "node:url";
-import { getFetchInstanceMetadataLock } from "@/misc/app-lock.js";
-import { getAgentByUrl, getJson } from "@/misc/fetch.js";
-import type { Instance } from "@/models/entities/instance.js";
-import { Instances } from "@/models/index.js";
-import Logger from "@/services/logger.js";
 import { Window } from "happy-dom";
 import fetch from "node-fetch";
 import tinycolor from "tinycolor2";
+import { getJson, getAgentByUrl } from "@/misc/fetch.js";
+import type { Instance } from "@/models/entities/instance.js";
+import { Instances } from "@/models/index.js";
+import { getFetchInstanceMetadataLock } from "@/misc/app-lock.js";
+import Logger from "@/services/logger.js";
 
 const logger = new Logger("metadata", "cyan");
 

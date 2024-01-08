@@ -1,17 +1,17 @@
 import { generateKeyPair } from "node:crypto";
-import config from "@/config/index.js";
-import { db } from "@/db/postgre.js";
-import { toPunyNullable } from "@/misc/convert-host.js";
-import { genId } from "@/misc/gen-id.js";
-import { hashPassword } from "@/misc/password.js";
-import { UsedUsername } from "@/models/entities/used-username.js";
-import { UserKeypair } from "@/models/entities/user-keypair.js";
-import { UserProfile } from "@/models/entities/user-profile.js";
-import { User } from "@/models/entities/user.js";
-import { UsedUsernames, Users } from "@/models/index.js";
-import { usersChart } from "@/services/chart/index.js";
-import { IsNull } from "typeorm";
 import generateUserToken from "./generate-native-user-token.js";
+import { User } from "@/models/entities/user.js";
+import { Users, UsedUsernames } from "@/models/index.js";
+import { UserProfile } from "@/models/entities/user-profile.js";
+import { IsNull } from "typeorm";
+import { genId } from "@/misc/gen-id.js";
+import { toPunyNullable } from "@/misc/convert-host.js";
+import { UserKeypair } from "@/models/entities/user-keypair.js";
+import { usersChart } from "@/services/chart/index.js";
+import { UsedUsername } from "@/models/entities/used-username.js";
+import { db } from "@/db/postgre.js";
+import config from "@/config/index.js";
+import { hashPassword } from "@/misc/password.js";
 
 export async function signup(opts: {
 	username: User["username"];

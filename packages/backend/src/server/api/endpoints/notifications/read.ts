@@ -1,5 +1,5 @@
-import { readNotification } from "@/server/api/common/read-notification.js";
 import define from "@/server/api/define.js";
+import { readNotification } from "@/server/api/common/read-notification.js";
 
 export const meta = {
 	tags: ["notifications", "account"],

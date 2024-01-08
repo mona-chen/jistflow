@@ -1,20 +1,20 @@
+import { Brackets, IsNull } from "typeorm";
 import config from "@/config/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import type { Note } from "@/models/entities/note.js";
-import { Notes, Users } from "@/models/index.js";
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import renderOrderedCollection from "@/remote/activitypub/renderer/ordered-collection.js";
+import renderOrderedCollectionPage from "@/remote/activitypub/renderer/ordered-collection-page.js";
+import renderNote from "@/remote/activitypub/renderer/note.js";
+import renderCreate from "@/remote/activitypub/renderer/create.js";
+import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
 import { countIf } from "@/prelude/array.js";
 import * as url from "@/prelude/url.js";
+import { Users, Notes } from "@/models/index.js";
+import type { Note } from "@/models/entities/note.js";
 import { checkFetch } from "@/remote/activitypub/check-fetch.js";
-import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
-import renderCreate from "@/remote/activitypub/renderer/create.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderNote from "@/remote/activitypub/renderer/note.js";
-import renderOrderedCollectionPage from "@/remote/activitypub/renderer/ordered-collection-page.js";
-import renderOrderedCollection from "@/remote/activitypub/renderer/ordered-collection.js";
-import type Router from "@koa/router";
-import { Brackets, IsNull } from "typeorm";
-import { setResponseType } from "../activitypub.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
 import { makePaginationQuery } from "../api/common/make-pagination-query.js";
+import { setResponseType } from "../activitypub.js";
+import type Router from "@koa/router";
 
 export default async (ctx: Router.RouterContext) => {
 	const verify = await checkFetch(ctx.req);

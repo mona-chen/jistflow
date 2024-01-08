@@ -1,7 +1,7 @@
 import type Bull from "bull";
 
-import { driveChart, notesChart, usersChart } from "@/services/chart/index.js";
 import { queueLogger } from "../../logger.js";
+import { driveChart, notesChart, usersChart } from "@/services/chart/index.js";
 
 const logger = queueLogger.createSubLogger("resync-charts");
 

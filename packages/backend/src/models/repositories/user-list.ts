@@ -1,7 +1,7 @@
 import { db } from "@/db/postgre.js";
-import type { Packed } from "@/misc/schema.js";
 import { UserList } from "@/models/entities/user-list.js";
 import { UserListJoinings } from "../index.js";
+import type { Packed } from "@/misc/schema.js";
 
 export const UserListRepository = db.getRepository(UserList).extend({
 	async pack(src: UserList["id"] | UserList): Promise<Packed<"UserList">> {

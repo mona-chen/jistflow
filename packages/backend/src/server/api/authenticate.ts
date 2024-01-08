@@ -1,13 +1,13 @@
-import { Cache } from "@/misc/cache.js";
-import type { AccessToken } from "@/models/entities/access-token.js";
-import type { App } from "@/models/entities/app.js";
+import isNativeToken from "./common/is-native-token.js";
 import type { CacheableLocalUser, ILocalUser } from "@/models/entities/user.js";
-import { AccessTokens, Apps, Users } from "@/models/index.js";
+import { Users, AccessTokens, Apps } from "@/models/index.js";
+import type { AccessToken } from "@/models/entities/access-token.js";
+import { Cache } from "@/misc/cache.js";
+import type { App } from "@/models/entities/app.js";
 import {
 	localUserByIdCache,
 	localUserByNativeTokenCache,
 } from "@/services/user-cache.js";
-import isNativeToken from "./common/is-native-token.js";
 
 const appCache = new Cache<App>("app", 60 * 30);
 

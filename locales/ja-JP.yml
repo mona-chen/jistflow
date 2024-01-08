@@ -981,7 +981,7 @@ customKaTeXMacroDescription: "数式入力を楽にするためのマクロを�
   が 3 + foo に展開されます。また、マクロの名前を囲む波括弧を丸括弧 () および角括弧 [] に変更した場合、マクロの引数に使用する括弧が変更されます。マクロの定義は一行に一つのみで、途中で改行はできません。マクロの定義が無効な行は無視されます。文字列を単純に置換する機能のみに対応していて、条件分岐などの高度な構文は使用できません。"
 enableCustomKaTeXMacro: "カスタムKaTeXマクロを有効にする"
 preventAiLearning: "AIによる学習を防止"
-preventAiLearningDescription: "投稿したノート、添付した画像などのコンテンツを学習の対象にしないようAIに要求します。これはnoaiフラグをHTMLレスポンスに含めることによって実現されます。"
+preventAiLearningDescription: "投稿した文章や、添付した画像などのコンテンツを学習の対象にしないようAIに要求します。これはnoaiフラグをHTMLレスポンスに含めることによって実現されます。"
 noGraze: "ブラウザの拡張機能「Graze for Mastodon」は、Firefishの動作を妨げるため、無効にしてください。"
 enableServerMachineStats: "サーバーのマシン情報を公開する"
 enableIdenticonGeneration: "ユーザーごとのIdenticon生成を有効にする"
@@ -994,6 +994,8 @@ addRe: "閲覧注意の投稿への返信で、注釈の先頭に\"re:\"を追�
 languageForTranslation: "投稿翻訳に使用する言語"
 detectPostLanguage: "投稿の言語を自動検出し、外国語の投稿に翻訳ボタンを表示する"
 iconSet: "アイコンのスタイル"
+useEmojiCdn: "CDNのTwemojiを利用する"
+useEmojiCdnDescription: "サーバー上に保存されているTwemojiのアセットの代わりに、JSDelivr CDNから配信されたものを用います。"
 
 _sensitiveMediaDetection:
   description: "機械学習を使って自動でセンシティブなメディアを検出し、モデレーションに役立てられます。サーバーの負荷が少し増えます。"
@@ -1031,7 +1033,7 @@ _ad:
 _forgotPassword:
   enterEmail: "アカウントに登録したメールアドレスを入力してください。そのアドレス宛てに、パスワードリセット用のリンクが送信されます。"
   ifNoEmail: "メールアドレスを登録していない場合は、管理者までお問い合わせください。"
-  contactAdmin: "このインスタンスではメールアドレスの登録がサポートされていないため、パスワードリセットを行う場合は管理者までお問い合わせください。"
+  contactAdmin: "このサーバーではメールアドレスの登録がサポートされていないため、パスワードリセットを行う場合は管理者までお問い合わせください。"
 _gallery:
   my: "自分の投稿"
   liked: "いいねした投稿"

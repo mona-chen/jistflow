@@ -1,7 +1,7 @@
+import define from "@/server/api/define.js";
+import { Instances } from "@/models/index.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
 import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
-import { Instances } from "@/models/index.js";
-import define from "@/server/api/define.js";
 
 export const meta = {
 	tags: ["federation"],

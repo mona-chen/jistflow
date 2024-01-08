@@ -1,9 +1,9 @@
-import config from "@/config/index.js";
-import { StatusError, getResponse } from "@/misc/fetch.js";
-import { Webhooks } from "@/models/index.js";
-import Logger from "@/services/logger.js";
 import type Bull from "bull";
+import Logger from "@/services/logger.js";
 import type { WebhookDeliverJobData } from "../types.js";
+import { getResponse, StatusError } from "@/misc/fetch.js";
+import { Webhooks } from "@/models/index.js";
+import config from "@/config/index.js";
 
 const logger = new Logger("webhook");
 

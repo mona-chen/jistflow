@@ -1,6 +1,6 @@
-import { IdType, convertId } from "@/server/api/index.js";
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
+import { IdType, convertId } from "@/server/api/index.js";
 import { convertFilter } from "../converters.js";
 
 export function apiFilterMastodon(router: Router): void {

@@ -1,10 +1,10 @@
-import config from "@/config/index.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { getJson } from "@/misc/fetch.js";
-import { query } from "@/prelude/url.js";
-import Logger from "@/services/logger.js";
 import type Koa from "koa";
 import summaly from "summaly";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import Logger from "@/services/logger.js";
+import config from "@/config/index.js";
+import { query } from "@/prelude/url.js";
+import { getJson } from "@/misc/fetch.js";
 
 const logger = new Logger("url-preview");
 

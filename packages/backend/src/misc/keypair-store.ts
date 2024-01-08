@@ -1,6 +1,6 @@
-import type { UserKeypair } from "@/models/entities/user-keypair.js";
-import type { User } from "@/models/entities/user.js";
 import { UserKeypairs } from "@/models/index.js";
+import type { User } from "@/models/entities/user.js";
+import type { UserKeypair } from "@/models/entities/user-keypair.js";
 import { Cache } from "./cache.js";
 
 const cache = new Cache<UserKeypair>("keypairStore", 60 * 30);

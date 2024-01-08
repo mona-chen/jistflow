@@ -1,5 +1,5 @@
-import { AccessTokens, Apps } from "@/models/index.js";
 import define from "@/server/api/define.js";
+import { AccessTokens, Apps } from "@/models/index.js";
 
 export const meta = {
 	requireCredential: true,

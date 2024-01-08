@@ -1,14 +1,14 @@
 import config from "@/config/index.js";
-import { genId } from "@/misc/gen-id.js";
-import { IdentifiableError } from "@/misc/identifiable-error.js";
-import type { Note } from "@/models/entities/note.js";
-import type { UserNotePining } from "@/models/entities/user-note-pining.js";
-import type { User } from "@/models/entities/user.js";
-import { Notes, UserNotePinings, Users } from "@/models/index.js";
-import { deliverToFollowers } from "@/remote/activitypub/deliver-manager.js";
 import renderAdd from "@/remote/activitypub/renderer/add.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
 import renderRemove from "@/remote/activitypub/renderer/remove.js";
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import { IdentifiableError } from "@/misc/identifiable-error.js";
+import type { User } from "@/models/entities/user.js";
+import type { Note } from "@/models/entities/note.js";
+import { Notes, UserNotePinings, Users } from "@/models/index.js";
+import type { UserNotePining } from "@/models/entities/user-note-pining.js";
+import { genId } from "@/misc/gen-id.js";
+import { deliverToFollowers } from "@/remote/activitypub/deliver-manager.js";
 import { deliverToRelays } from "@/services/relay.js";
 
 /**
@@ -57,7 +57,11 @@ export async function addPinned(
 	} as UserNotePining);
 
 	// Deliver to remote followers
-	if (Users.isLocalUser(user)) {
+	if (
+		Users.isLocalUser(user) &&
+		!note.localOnly &&
+		["public", "home"].includes(note.visibility)
+	) {
 		deliverPinnedChange(user.id, note.id, true);
 	}
 }
@@ -90,7 +94,11 @@ export async function removePinned(
 	});
 
 	// Deliver to remote followers
-	if (Users.isLocalUser(user)) {
+	if (
+		Users.isLocalUser(user) &&
+		!note.localOnly &&
+		["public", "home"].includes(note.visibility)
+	) {
 		deliverPinnedChange(user.id, noteId, false);
 	}
 }

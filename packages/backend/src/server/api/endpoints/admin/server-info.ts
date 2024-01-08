@@ -1,8 +1,8 @@
 import * as os from "node:os";
-import { db } from "@/db/postgre.js";
-import { redisClient } from "@/db/redis.js";
-import define from "@/server/api/define.js";
 import si from "systeminformation";
+import define from "@/server/api/define.js";
+import { redisClient } from "@/db/redis.js";
+import { db } from "@/db/postgre.js";
 
 export const meta = {
 	requireCredential: true,

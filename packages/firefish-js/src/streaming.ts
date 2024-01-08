@@ -27,9 +27,9 @@ export function urlQuery(
 	const params = Object.entries(obj)
 		.filter(([, v]) => (Array.isArray(v) ? v.length : v !== undefined))
 		.reduce(
-			// biome-ignore lint/suspicious/noAssignInExpressions: <Used for key assigning>
-			// biome-ignore lint/style/noNonNullAssertion: <>
-			// biome-ignore lint/style/noCommaOperator: <>
+			// rome-ignore lint/suspicious/noAssignInExpressions: <Used for key assigning>
+			// rome-ignore lint/style/noNonNullAssertion: <>
+			// rome-ignore lint/style/noCommaOperator: <>
 			(a, [k, v]) => ((a[k] = v!), a),
 			{} as Record<string, string | number | boolean>,
 		);

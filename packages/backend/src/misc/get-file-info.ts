@@ -1,17 +1,17 @@
-import * as crypto from "node:crypto";
 import * as fs from "node:fs";
+import * as crypto from "node:crypto";
 import { join } from "node:path";
 import * as stream from "node:stream";
 import * as util from "node:util";
-import { detectSensitive } from "@/services/detect-sensitive.js";
-import { encode } from "blurhash";
 import { FSWatcher } from "chokidar";
 import { fileTypeFromFile } from "file-type";
+import probeImageSize from "probe-image-size";
 import FFmpeg from "fluent-ffmpeg";
 import isSvg from "is-svg";
 import { type predictionType } from "nsfwjs";
-import probeImageSize from "probe-image-size";
 import sharp from "sharp";
+import { encode } from "blurhash";
+import { detectSensitive } from "@/services/detect-sensitive.js";
 import { createTempDir } from "./create-temp.js";
 
 const pipeline = util.promisify(stream.pipeline);

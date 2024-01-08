@@ -1,23 +1,23 @@
 import config from "@/config/index.js";
-import { extractDbHost, isSelfHost } from "@/misc/convert-host.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
 import { getJson } from "@/misc/fetch.js";
-import { shouldBlockInstance } from "@/misc/should-block-instance.js";
 import type { ILocalUser } from "@/models/entities/user.js";
-import { NoteReactions, Notes, Polls, Users } from "@/models/index.js";
-import { apLogger } from "@/remote/activitypub/logger.js";
-import renderCreate from "@/remote/activitypub/renderer/create.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import { renderLike } from "@/remote/activitypub/renderer/like.js";
+import { getInstanceActor } from "@/services/instance-actor.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import { extractDbHost, isSelfHost } from "@/misc/convert-host.js";
+import { signedGet } from "./request.js";
+import type { IObject, ICollection, IOrderedCollection } from "./type.js";
+import { isCollectionOrOrderedCollection, getApId } from "./type.js";
+import { Notes, NoteReactions, Polls, Users } from "@/models/index.js";
+import { parseUri } from "./db-resolver.js";
 import renderNote from "@/remote/activitypub/renderer/note.js";
+import { renderLike } from "@/remote/activitypub/renderer/like.js";
 import { renderPerson } from "@/remote/activitypub/renderer/person.js";
 import renderQuestion from "@/remote/activitypub/renderer/question.js";
-import { getInstanceActor } from "@/services/instance-actor.js";
-import { parseUri } from "./db-resolver.js";
-import { signedGet } from "./request.js";
-import type { ICollection, IObject, IOrderedCollection } from "./type.js";
-import { getApId, isCollectionOrOrderedCollection } from "./type.js";
+import renderCreate from "@/remote/activitypub/renderer/create.js";
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import renderFollow from "@/remote/activitypub/renderer/follow.js";
+import { shouldBlockInstance } from "@/misc/should-block-instance.js";
+import { apLogger } from "@/remote/activitypub/logger.js";
 
 export default class Resolver {
 	private history: Set<string>;

@@ -1,10 +1,10 @@
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { normalizeForSearch } from "@/misc/normalize-for-search.js";
-import { safeForSql } from "@/misc/safe-for-sql.js";
-import type { Note } from "@/models/entities/note.js";
-import { Notes } from "@/models/index.js";
-import define from "@/server/api/define.js";
 import { Brackets } from "typeorm";
+import define from "@/server/api/define.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import { Notes } from "@/models/index.js";
+import type { Note } from "@/models/entities/note.js";
+import { safeForSql } from "@/misc/safe-for-sql.js";
+import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 
 /*
 トレンドに載るためには「『直近a分間のユニーク投稿数が今からa分前～今からb分前の間のユニーク投稿数のn倍以上』のハッシュタグの上位5位以内に入る」ことが必要

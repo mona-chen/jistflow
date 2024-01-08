@@ -1,8 +1,8 @@
 import type { Note } from "@/models/entities/note.js";
 import { Notes } from "@/models/index.js";
-import { getNote } from "@/server/api/common/getters.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import { getNote } from "@/server/api/common/getters.js";
 
 export const meta = {
 	tags: ["notes"],

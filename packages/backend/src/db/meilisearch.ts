@@ -1,9 +1,9 @@
 import { Health, Index, MeiliSearch, Stats } from "meilisearch";
 import { dbLogger } from "./logger.js";
 
-import * as url from "url";
 import config from "@/config/index.js";
 import { Note } from "@/models/entities/note.js";
+import * as url from "url";
 import { ILocalUser } from "@/models/entities/user.js";
 import { Followings, Users } from "@/models/index.js";
 
@@ -154,7 +154,7 @@ function timestampToUnix(timestamp: string) {
 	if (unix === 0) {
 		// Try to parse the timestamp as JavaScript Date
 		const date = Date.parse(timestamp);
-		if (isNaN(date)) return 0;
+		if (Number.isNaN(date)) return 0;
 		unix = date / 1000;
 	}
 

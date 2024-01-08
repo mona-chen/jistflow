@@ -1,8 +1,8 @@
-import { toPuny } from "@/misc/convert-host.js";
-import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
-import { Emojis } from "@/models/index.js";
-import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import define from "@/server/api/define.js";
+import { Emojis } from "@/models/index.js";
+import { toPuny } from "@/misc/convert-host.js";
+import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
+import { sqlLikeEscape } from "@/misc/sql-like-escape.js";
 
 export const meta = {
 	tags: ["admin"],

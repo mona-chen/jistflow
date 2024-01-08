@@ -1,7 +1,7 @@
 import { NoteReactions, UserProfiles } from "@/models/index.js";
-import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
-import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
 import define from "@/server/api/define.js";
+import { makePaginationQuery } from "@/server/api/common/make-pagination-query.js";
+import { generateVisibilityQuery } from "@/server/api/common/generate-visibility-query.js";
 import { ApiError } from "@/server/api/error.js";
 
 export const meta = {

@@ -1,27 +1,27 @@
+import { Brackets, In } from "typeorm";
+import { publishNoteStream } from "@/services/stream.js";
+import renderDelete from "@/remote/activitypub/renderer/delete.js";
+import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
+import renderUndo from "@/remote/activitypub/renderer/undo.js";
+import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import renderTombstone from "@/remote/activitypub/renderer/tombstone.js";
 import config from "@/config/index.js";
-import meilisearch from "@/db/meilisearch.js";
-import { countSameRenotes } from "@/misc/count-same-renotes.js";
-import type { IMentionedRemoteUsers, Note } from "@/models/entities/note.js";
-import type { ILocalUser, IRemoteUser, User } from "@/models/entities/user.js";
-import { Instances, Notes, Users } from "@/models/index.js";
+import type { User, ILocalUser, IRemoteUser } from "@/models/entities/user.js";
+import type { Note, IMentionedRemoteUsers } from "@/models/entities/note.js";
+import { Notes, Users, Instances } from "@/models/index.js";
+import {
+	notesChart,
+	perUserNotesChart,
+	instanceChart,
+} from "@/services/chart/index.js";
 import {
 	deliverToFollowers,
 	deliverToUser,
 } from "@/remote/activitypub/deliver-manager.js";
-import renderAnnounce from "@/remote/activitypub/renderer/announce.js";
-import renderDelete from "@/remote/activitypub/renderer/delete.js";
-import { renderActivity } from "@/remote/activitypub/renderer/index.js";
-import renderTombstone from "@/remote/activitypub/renderer/tombstone.js";
-import renderUndo from "@/remote/activitypub/renderer/undo.js";
-import {
-	instanceChart,
-	notesChart,
-	perUserNotesChart,
-} from "@/services/chart/index.js";
+import { countSameRenotes } from "@/misc/count-same-renotes.js";
 import { registerOrFetchInstanceDoc } from "@/services/register-or-fetch-instance-doc.js";
 import { deliverToRelays } from "@/services/relay.js";
-import { publishNoteStream } from "@/services/stream.js";
-import { Brackets, In } from "typeorm";
+import meilisearch from "@/db/meilisearch.js";
 
 /**
  * 投稿を削除します。

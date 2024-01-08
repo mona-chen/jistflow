@@ -1,18 +1,18 @@
-import { db } from "@/db/postgre.js";
-import { aggregateNoteEmojis, prefetchEmojis } from "@/misc/populate-emojis.js";
-import type { Packed } from "@/misc/schema.js";
-import type { NoteReaction } from "@/models/entities/note-reaction.js";
-import type { Note } from "@/models/entities/note.js";
-import { Notification } from "@/models/entities/notification.js";
-import type { User } from "@/models/entities/user.js";
-import { awaitAll } from "@/prelude/await-all.js";
 import { In } from "typeorm";
+import { Notification } from "@/models/entities/notification.js";
+import { awaitAll } from "@/prelude/await-all.js";
+import type { Packed } from "@/misc/schema.js";
+import type { Note } from "@/models/entities/note.js";
+import type { NoteReaction } from "@/models/entities/note-reaction.js";
+import type { User } from "@/models/entities/user.js";
+import { aggregateNoteEmojis, prefetchEmojis } from "@/misc/populate-emojis.js";
+import { db } from "@/db/postgre.js";
 import {
-	AccessTokens,
-	NoteReactions,
+	Users,
 	Notes,
 	UserGroupInvitations,
-	Users,
+	AccessTokens,
+	NoteReactions,
 } from "../index.js";
 
 export const NotificationRepository = db.getRepository(Notification).extend({

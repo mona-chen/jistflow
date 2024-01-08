@@ -1,15 +1,15 @@
-import config from "@/config/index.js";
-import { comparePassword } from "@/misc/password.js";
+import { decode } from "cbor-x";
+import define from "@/server/api/define.js";
 import {
-	AttestationChallenges,
 	UserProfiles,
 	UserSecurityKeys,
+	AttestationChallenges,
 	Users,
 } from "@/models/index.js";
-import { hash, procedures } from "@/server/api/2fa.js";
-import define from "@/server/api/define.js";
+import config from "@/config/index.js";
+import { procedures, hash } from "@/server/api/2fa.js";
 import { publishMainStream } from "@/services/stream.js";
-import { decode } from "cbor-x";
+import { comparePassword } from "@/misc/password.js";
 
 const rpIdHashReal = hash(Buffer.from(config.hostname, "utf-8"));
 
@@ -79,7 +79,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	const credentialIdLength = authData.readUInt16BE(53);
 	const credentialId = authData.slice(55, 55 + credentialIdLength);
 	const publicKeyData = authData.slice(55 + credentialIdLength);
-	const publicKey: Map<number, any> = new Map(
+	const publicKey: Map<Number, any> = new Map(
 		Object.entries(decode(publicKeyData)).map(([key, value]) => [
 			Number(key),
 			value,

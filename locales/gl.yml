@@ -355,3 +355,24 @@ driveFileDeleteConfirm: Tes a certeza de querer eliminar o ficheiro "{name}"? Va
   ser retirado de todas as publicacións nas que estea como anexo.
 inputNewFolderName: Escribe o novo nome do cartafol
 hasChildFilesOrFolders: Como o cartafol non está baleiro, non pode ser eliminado.
+dayX: '{day}'
+reloadConfirm: Queres actualizar a cronoloxía?
+watch: Ver
+normal: Normal
+monthX: '{month}'
+instanceDescription: Descrición do servidor
+disconnectedFromServer: Perdeuse a conexión co servidor
+enableLocalTimeline: Activar cronoloxía local
+reload: Actualizar
+doNothing: Ignorar
+instanceName: Nome do servidor
+yearX: '{year}'
+thisYear: Ano
+unwatch: Deixar de ver
+tosUrl: URL dos Termos do Servizo
+thisMonth: Mes
+pages: Páxinas
+reject: Rexeitar
+accept: Aceptar
+maintainerName: Mantido por
+today: Hoxe

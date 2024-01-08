@@ -1,8 +1,8 @@
-import config from "@/config/index.js";
-import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
-import { intersperse } from "@/prelude/array.js";
 import { Window } from "happy-dom";
 import type * as mfm from "mfm-js";
+import config from "@/config/index.js";
+import { intersperse } from "@/prelude/array.js";
+import type { IMentionedRemoteUsers } from "@/models/entities/note.js";
 
 export function toHtml(
 	nodes: mfm.MfmNode[] | null,

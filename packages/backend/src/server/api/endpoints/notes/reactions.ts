@@ -1,9 +1,9 @@
-import type { NoteReaction } from "@/models/entities/note-reaction.js";
+import type { FindOptionsWhere } from "typeorm";
 import { NoteReactions } from "@/models/index.js";
-import { getNote } from "@/server/api/common/getters.js";
+import type { NoteReaction } from "@/models/entities/note-reaction.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import type { FindOptionsWhere } from "typeorm";
+import { getNote } from "@/server/api/common/getters.js";
 
 export const meta = {
 	tags: ["notes", "reactions"],

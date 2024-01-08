@@ -1,6 +1,6 @@
 import config from "@/config/index.js";
-import type { User } from "@/models/entities/user.js";
 import { Users } from "@/models/index.js";
+import type { User } from "@/models/entities/user.js";
 
 /**
  * Convert (local|remote)(Follower|Followee)ID to URL

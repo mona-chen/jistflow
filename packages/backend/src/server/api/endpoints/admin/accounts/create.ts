@@ -1,6 +1,6 @@
+import define from "@/server/api/define.js";
 import { Users } from "@/models/index.js";
 import { signup } from "@/server/api/common/signup.js";
-import define from "@/server/api/define.js";
 import { IsNull } from "typeorm";
 
 export const meta = {
@@ -30,14 +30,14 @@ export const paramDef = {
 	required: ["username", "password"],
 } as const;
 
-export default define(meta, paramDef, async (ps, _me) => {
+export default define(meta, paramDef, async (ps, _me, token) => {
 	const me = _me ? await Users.findOneByOrFail({ id: _me.id }) : null;
 	const noUsers =
 		(await Users.countBy({
 			host: IsNull(),
-			isAdmin: true,
 		})) === 0;
-	if (!(noUsers || me?.isAdmin)) throw new Error("access denied");
+	if (!noUsers && !me?.isAdmin) throw new Error("access denied");
+	if (token) throw new Error("access denied");
 
 	const { account, secret } = await signup({
 		username: ps.username,

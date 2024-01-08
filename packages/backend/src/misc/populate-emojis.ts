@@ -1,13 +1,13 @@
-import config from "@/config/index.js";
-import { redisClient } from "@/db/redis.js";
+import { In, IsNull } from "typeorm";
+import { Emojis } from "@/models/index.js";
 import type { Emoji } from "@/models/entities/emoji.js";
 import type { Note } from "@/models/entities/note.js";
-import { Emojis } from "@/models/index.js";
-import { query } from "@/prelude/url.js";
-import { In, IsNull } from "typeorm";
 import { Cache } from "./cache.js";
 import { isSelfHost, toPunyNullable } from "./convert-host.js";
 import { decodeReaction } from "./reaction-lib.js";
+import config from "@/config/index.js";
+import { query } from "@/prelude/url.js";
+import { redisClient } from "@/db/redis.js";
 
 const cache = new Cache<Emoji | null>("populateEmojis", 60 * 60 * 12);
 

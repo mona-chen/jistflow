@@ -1,10 +1,10 @@
 // NIRAX --- A lightweight router
 
-import { pleaseLogin } from "@/scripts/please-login";
-import { safeURIDecode } from "@/scripts/safe-uri-decode";
 import { EventEmitter } from "eventemitter3";
 import type { Component, ShallowRef } from "vue";
 import { shallowRef } from "vue";
+import { safeURIDecode } from "@/scripts/safe-uri-decode";
+import { pleaseLogin } from "@/scripts/please-login";
 
 interface RouteDef {
 	path: string;

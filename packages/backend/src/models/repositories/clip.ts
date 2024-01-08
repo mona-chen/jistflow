@@ -1,8 +1,8 @@
 import { db } from "@/db/postgre.js";
-import type { Packed } from "@/misc/schema.js";
 import { Clip } from "@/models/entities/clip.js";
-import { awaitAll } from "@/prelude/await-all.js";
+import type { Packed } from "@/misc/schema.js";
 import { Users } from "../index.js";
+import { awaitAll } from "@/prelude/await-all.js";
 
 export const ClipRepository = db.getRepository(Clip).extend({
 	async pack(src: Clip["id"] | Clip): Promise<Packed<"Clip">> {

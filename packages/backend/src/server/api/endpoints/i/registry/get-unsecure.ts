@@ -1,6 +1,6 @@
-import { RegistryItems } from "@/models/index.js";
-import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
+import define from "@/server/api/define.js";
+import { RegistryItems } from "@/models/index.js";
 
 export const meta = {
 	requireCredential: true,

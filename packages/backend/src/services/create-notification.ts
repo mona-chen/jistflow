@@ -1,18 +1,18 @@
-import { genId } from "@/misc/gen-id.js";
-import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
-import type { Notification } from "@/models/entities/notification.js";
-import type { User } from "@/models/entities/user.js";
+import { publishMainStream } from "@/services/stream.js";
+import { pushNotification } from "@/services/push-notification.js";
 import {
-	Followings,
+	Notifications,
 	Mutings,
 	NoteThreadMutings,
-	Notifications,
 	UserProfiles,
 	Users,
+	Followings,
 } from "@/models/index.js";
-import { pushNotification } from "@/services/push-notification.js";
-import { publishMainStream } from "@/services/stream.js";
+import { genId } from "@/misc/gen-id.js";
+import type { User } from "@/models/entities/user.js";
+import type { Notification } from "@/models/entities/notification.js";
 import { sendEmailNotification } from "./send-email-notification.js";
+import { shouldSilenceInstance } from "@/misc/should-block-instance.js";
 
 export async function createNotification(
 	notifieeId: User["id"],

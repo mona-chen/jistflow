@@ -2,37 +2,37 @@ import * as fs from "node:fs";
 
 import { v4 as uuid } from "uuid";
 
-import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
-import { contentDisposition } from "@/misc/content-disposition.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { genId } from "@/misc/gen-id.js";
-import { getFileInfo } from "@/misc/get-file-info.js";
-import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
-import { DriveFile } from "@/models/entities/drive-file.js";
-import type { IRemoteUser, User } from "@/models/entities/user.js";
-import {
-	DriveFiles,
-	DriveFolders,
-	UserProfiles,
-	Users,
-} from "@/models/index.js";
-import {
-	driveChart,
-	instanceChart,
-	perUserDriveChart,
-} from "@/services/chart/index.js";
-import { publishDriveStream, publishMainStream } from "@/services/stream.js";
 import type S3 from "aws-sdk/clients/s3.js"; // TODO: migrate to SDK v3
 import sharp from "sharp";
 import { IsNull } from "typeorm";
-import { deleteFile } from "./delete-file.js";
-import { GenerateVideoThumbnail } from "./generate-video-thumbnail.js";
+import { publishMainStream, publishDriveStream } from "@/services/stream.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import { contentDisposition } from "@/misc/content-disposition.js";
+import { getFileInfo } from "@/misc/get-file-info.js";
+import {
+	DriveFiles,
+	DriveFolders,
+	Users,
+	UserProfiles,
+} from "@/models/index.js";
+import { DriveFile } from "@/models/entities/drive-file.js";
+import type { IRemoteUser, User } from "@/models/entities/user.js";
+import {
+	driveChart,
+	perUserDriveChart,
+	instanceChart,
+} from "@/services/chart/index.js";
+import { genId } from "@/misc/gen-id.js";
+import { isDuplicateKeyValueError } from "@/misc/is-duplicate-key-value-error.js";
+import { FILE_TYPE_BROWSERSAFE } from "@/const.js";
+import { IdentifiableError } from "@/misc/identifiable-error.js";
+import { getS3 } from "./s3.js";
+import { InternalStorage } from "./internal-storage.js";
 import type { IImage } from "./image-processor.js";
 import { convertSharpToWebp } from "./image-processor.js";
-import { InternalStorage } from "./internal-storage.js";
 import { driveLogger } from "./logger.js";
-import { getS3 } from "./s3.js";
+import { GenerateVideoThumbnail } from "./generate-video-thumbnail.js";
+import { deleteFile } from "./delete-file.js";
 
 const logger = driveLogger.createSubLogger("register", "yellow");
 

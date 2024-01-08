@@ -1,12 +1,12 @@
-import { IdentifiableError } from "@/misc/identifiable-error.js";
-import type { CacheableUser, User } from "@/models/entities/user.js";
-import { FollowRequests, Users } from "@/models/index.js";
-import { deliver } from "@/queue/index.js";
-import renderAccept from "@/remote/activitypub/renderer/accept.js";
-import renderFollow from "@/remote/activitypub/renderer/follow.js";
 import { renderActivity } from "@/remote/activitypub/renderer/index.js";
+import renderFollow from "@/remote/activitypub/renderer/follow.js";
+import renderAccept from "@/remote/activitypub/renderer/accept.js";
+import { deliver } from "@/queue/index.js";
 import { publishMainStream } from "@/services/stream.js";
 import { insertFollowingDoc } from "../create.js";
+import type { User, CacheableUser } from "@/models/entities/user.js";
+import { FollowRequests, Users } from "@/models/index.js";
+import { IdentifiableError } from "@/misc/identifiable-error.js";
 
 export default async function (
 	followee: {

@@ -1,7 +1,7 @@
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import follow from "@/services/following/create.js";
-import DbResolver from "../db-resolver.js";
 import type { IFollow } from "../type.js";
+import DbResolver from "../db-resolver.js";
 
 export default async (
 	actor: CacheableRemoteUser,

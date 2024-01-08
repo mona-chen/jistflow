@@ -3,32 +3,32 @@ import { v4 as uuid } from "uuid";
 
 import config from "@/config/index.js";
 import type { DriveFile } from "@/models/entities/drive-file.js";
-import type { Webhook, webhookEventTypes } from "@/models/entities/webhook.js";
 import type { IActivity } from "@/remote/activitypub/type.js";
+import type { Webhook, webhookEventTypes } from "@/models/entities/webhook.js";
 import { envOption } from "../env.js";
 
-import { Note } from "@/models/entities/note.js";
-import { getJobInfo } from "./get-job-info.js";
-import { queueLogger } from "./logger.js";
-import processBackground from "./processors/background/index.js";
-import processDb from "./processors/db/index.js";
 import processDeliver from "./processors/deliver.js";
-import { endedPollNotification } from "./processors/ended-poll-notification.js";
 import processInbox from "./processors/inbox.js";
+import processDb from "./processors/db/index.js";
 import processObjectStorage from "./processors/object-storage/index.js";
 import processSystemQueue from "./processors/system/index.js";
 import processWebhookDeliver from "./processors/webhook-deliver.js";
+import processBackground from "./processors/background/index.js";
+import { endedPollNotification } from "./processors/ended-poll-notification.js";
+import { queueLogger } from "./logger.js";
+import { getJobInfo } from "./get-job-info.js";
 import {
-	backgroundQueue,
+	systemQueue,
 	dbQueue,
 	deliverQueue,
-	endedPollNotificationQueue,
 	inboxQueue,
 	objectStorageQueue,
-	systemQueue,
+	endedPollNotificationQueue,
 	webhookDeliverQueue,
+	backgroundQueue,
 } from "./queues.js";
 import type { ThinUser } from "./types.js";
+import { Note } from "@/models/entities/note.js";
 
 function renderError(e: Error): any {
 	return {

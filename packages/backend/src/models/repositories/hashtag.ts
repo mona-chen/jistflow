@@ -1,6 +1,6 @@
 import { db } from "@/db/postgre.js";
-import type { Packed } from "@/misc/schema.js";
 import { Hashtag } from "@/models/entities/hashtag.js";
+import type { Packed } from "@/misc/schema.js";
 
 export const HashtagRepository = db.getRepository(Hashtag).extend({
 	async pack(src: Hashtag): Promise<Packed<"Hashtag">> {

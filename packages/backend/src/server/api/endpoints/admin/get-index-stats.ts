@@ -1,5 +1,5 @@
-import { db } from "@/db/postgre.js";
 import define from "@/server/api/define.js";
+import { db } from "@/db/postgre.js";
 
 export const meta = {
 	requireCredential: true,

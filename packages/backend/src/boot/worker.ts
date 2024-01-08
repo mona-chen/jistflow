@@ -1,6 +1,6 @@
 import cluster from "node:cluster";
-import os from "node:os";
 import { initDb } from "@/db/postgre.js";
+import os from "node:os";
 
 /**
  * Init worker process

@@ -1,6 +1,6 @@
-import { UserProfiles, Users } from "@/models/index.js";
-import { publishMainStream } from "@/services/stream.js";
 import type Koa from "koa";
+import { Users, UserProfiles } from "@/models/index.js";
+import { publishMainStream } from "@/services/stream.js";
 
 export default async (ctx: Koa.Context) => {
 	const body = ctx.request.body;

@@ -1,15 +1,15 @@
-import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 import {
-	Column,
+	PrimaryColumn,
 	Entity,
 	Index,
 	JoinColumn,
+	Column,
 	ManyToOne,
-	PrimaryColumn,
 } from "typeorm";
 import { id } from "../id.js";
-import { DriveFolder } from "./drive-folder.js";
 import { User } from "./user.js";
+import { DriveFolder } from "./drive-folder.js";
+import { DB_MAX_IMAGE_COMMENT_LENGTH } from "@/misc/hard-limits.js";
 
 @Entity()
 @Index(["userId", "folderId", "id"])

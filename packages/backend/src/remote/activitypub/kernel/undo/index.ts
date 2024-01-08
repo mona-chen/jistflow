@@ -1,20 +1,20 @@
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import { apLogger } from "../../logger.js";
-import Resolver from "../../resolver.js";
 import type { IUndo } from "../../type.js";
 import {
+	isFollow,
+	isBlock,
+	isLike,
+	isAnnounce,
 	getApType,
 	isAccept,
-	isAnnounce,
-	isBlock,
-	isFollow,
-	isLike,
 } from "../../type.js";
+import unfollow from "./follow.js";
+import unblock from "./block.js";
+import undoLike from "./like.js";
 import undoAccept from "./accept.js";
 import { undoAnnounce } from "./announce.js";
-import unblock from "./block.js";
-import unfollow from "./follow.js";
-import undoLike from "./like.js";
+import Resolver from "../../resolver.js";
+import { apLogger } from "../../logger.js";
 
 const logger = apLogger;
 

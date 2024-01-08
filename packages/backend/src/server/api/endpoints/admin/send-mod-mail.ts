@@ -1,9 +1,9 @@
-import { UserProfiles, Users } from "@/models/index.js";
-import define from "@/server/api/define.js";
-import { ApiError } from "@/server/api/error.js";
-import { createNotification } from "@/services/create-notification.js";
-import { sendEmail } from "@/services/send-email.js";
 import sanitizeHtml from "sanitize-html";
+import define from "@/server/api/define.js";
+import { Users, UserProfiles } from "@/models/index.js";
+import { ApiError } from "@/server/api/error.js";
+import { sendEmail } from "@/services/send-email.js";
+import { createNotification } from "@/services/create-notification.js";
 
 export const meta = {
 	tags: ["users"],

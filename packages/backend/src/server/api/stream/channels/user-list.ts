@@ -1,8 +1,8 @@
+import Channel from "../channel.js";
+import { UserListJoinings, UserLists } from "@/models/index.js";
+import type { User } from "@/models/entities/user.js";
 import { isUserRelated } from "@/misc/is-user-related.js";
 import type { Packed } from "@/misc/schema.js";
-import type { User } from "@/models/entities/user.js";
-import { UserListJoinings, UserLists } from "@/models/index.js";
-import Channel from "../channel.js";
 
 export default class extends Channel {
 	public readonly chName = "userList";

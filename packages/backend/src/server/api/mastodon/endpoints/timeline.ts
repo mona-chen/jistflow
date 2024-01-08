@@ -1,16 +1,16 @@
-import { ParsedUrlQuery } from "querystring";
-import { IdType, convertId } from "@/server/api/index.js";
 import Router from "@koa/router";
 import { getClient } from "../ApiMastodonCompatibleService.js";
+import { ParsedUrlQuery } from "querystring";
 import {
 	convertAccount,
 	convertConversation,
 	convertList,
 	convertStatus,
 } from "../converters.js";
+import { convertId, IdType } from "@/server/api/index.js";
 
 export function limitToInt(q: ParsedUrlQuery) {
-	const object: any = q;
+	let object: any = q;
 	if (q.limit)
 		if (typeof q.limit === "string") object.limit = parseInt(q.limit, 10);
 	if (q.offset)
@@ -27,7 +27,7 @@ export function argsToBools(q: ParsedUrlQuery) {
 	// - https://docs.joinmastodon.org/methods/accounts/#statuses
 	// - https://docs.joinmastodon.org/methods/timelines/#public
 	// - https://docs.joinmastodon.org/methods/timelines/#tag
-	const object: any = q;
+	let object: any = q;
 	if (q.only_media)
 		if (typeof q.only_media === "string")
 			object.only_media = toBoolean(q.only_media);

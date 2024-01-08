@@ -6,7 +6,7 @@
 		"type": "git",
 		"url": "https://git.joinfirefish.org/firefish/firefish.git"
 	},
-	"packageManager": "pnpm@8.11.0",
+	"packageManager": "pnpm@8.13.1",
 	"private": true,
 	"scripts": {
 		"rebuild": "pnpm run clean && pnpm run build",
@@ -64,7 +64,7 @@
 		"gulp-replace": "1.1.4",
 		"gulp-terser": "2.1.0",
 		"install-peers": "^1.0.4",
-		"pnpm": "8.11.0",
+		"pnpm": "8.13.1",
 		"start-server-and-test": "2.0.3",
 		"typescript": "5.2.2"
 	}

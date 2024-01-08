@@ -1,10 +1,10 @@
-import { HOUR } from "@/const.js";
-import { IdentifiableError } from "@/misc/identifiable-error.js";
-import { Followings, Users } from "@/models/index.js";
-import { getUser } from "@/server/api/common/getters.js";
+import create from "@/services/following/create.js";
 import define from "@/server/api/define.js";
 import { ApiError } from "@/server/api/error.js";
-import create from "@/services/following/create.js";
+import { getUser } from "@/server/api/common/getters.js";
+import { Followings, Users } from "@/models/index.js";
+import { IdentifiableError } from "@/misc/identifiable-error.js";
+import { HOUR } from "@/const.js";
 
 export const meta = {
 	tags: ["following", "users"],

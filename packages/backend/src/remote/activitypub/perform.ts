@@ -1,7 +1,7 @@
+import type { IObject } from "./type.js";
 import type { CacheableRemoteUser } from "@/models/entities/user.js";
 import { performActivity } from "./kernel/index.js";
 import { updatePerson } from "./models/person.js";
-import type { IObject } from "./type.js";
 
 export default async (
 	actor: CacheableRemoteUser,

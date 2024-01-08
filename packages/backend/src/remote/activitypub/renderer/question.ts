@@ -1,7 +1,7 @@
 import config from "@/config/index.js";
+import type { User } from "@/models/entities/user.js";
 import type { Note } from "@/models/entities/note.js";
 import type { Poll } from "@/models/entities/poll.js";
-import type { User } from "@/models/entities/user.js";
 
 export default async function renderQuestion(
 	user: { id: User["id"] },

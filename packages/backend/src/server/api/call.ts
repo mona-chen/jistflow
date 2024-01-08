@@ -1,15 +1,15 @@
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { getIpHash } from "@/misc/get-ip-hash.js";
-import type { AccessToken } from "@/models/entities/access-token.js";
-import type { CacheableLocalUser } from "@/models/entities/user.js";
-import type Koa from "koa";
 import { performance } from "perf_hooks";
-import compatibility from "./compatibility.js";
+import type Koa from "koa";
+import type { CacheableLocalUser } from "@/models/entities/user.js";
+import type { AccessToken } from "@/models/entities/access-token.js";
+import { getIpHash } from "@/misc/get-ip-hash.js";
+import { limiter } from "./limiter.js";
 import type { IEndpointMeta } from "./endpoints.js";
 import endpoints from "./endpoints.js";
+import compatibility from "./compatibility.js";
 import { ApiError } from "./error.js";
-import { limiter } from "./limiter.js";
 import { apiLogger } from "./logger.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
 
 const accessDenied = {
 	message: "Access denied.",
@@ -127,6 +127,18 @@ export default async (
 			code: "CREDENTIAL_REQUIRED",
 			id: "1384574d-a912-4b81-8601-c7b1c4085df1",
 			httpStatusCode: 401,
+		});
+	}
+
+	if (token && ep.meta.requireAdmin) {
+		throw new ApiError(accessDenied, {
+			reason: "Apps cannot use admin privileges.",
+		});
+	}
+
+	if (token && ep.meta.requireModerator) {
+		throw new ApiError(accessDenied, {
+			reason: "Apps cannot use moderator privileges.",
 		});
 	}
 

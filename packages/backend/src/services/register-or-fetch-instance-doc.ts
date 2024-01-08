@@ -1,8 +1,8 @@
-import { Cache } from "@/misc/cache.js";
-import { toPuny } from "@/misc/convert-host.js";
-import { genId } from "@/misc/gen-id.js";
 import type { Instance } from "@/models/entities/instance.js";
 import { Instances } from "@/models/index.js";
+import { genId } from "@/misc/gen-id.js";
+import { toPuny } from "@/misc/convert-host.js";
+import { Cache } from "@/misc/cache.js";
 
 const cache = new Cache<Instance>("registerOrFetchInstanceDoc", 60 * 60);
 

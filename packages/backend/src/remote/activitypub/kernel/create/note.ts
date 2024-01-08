@@ -1,11 +1,11 @@
+import type Resolver from "../../resolver.js";
+import type { CacheableRemoteUser } from "@/models/entities/user.js";
+import { createNote, fetchNote } from "../../models/note.js";
+import type { IObject, ICreate } from "../../type.js";
+import { getApId } from "../../type.js";
 import { getApLock } from "@/misc/app-lock.js";
 import { extractDbHost } from "@/misc/convert-host.js";
 import { StatusError } from "@/misc/fetch.js";
-import type { CacheableRemoteUser } from "@/models/entities/user.js";
-import { createNote, fetchNote } from "../../models/note.js";
-import type Resolver from "../../resolver.js";
-import type { ICreate, IObject } from "../../type.js";
-import { getApId } from "../../type.js";
 
 /**
  * Handle post creation activity

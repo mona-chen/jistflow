@@ -1,8 +1,8 @@
-import meilisearch from "@/db/meilisearch.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import * as osUtils from "os-utils";
 import si from "systeminformation";
 import Xev from "xev";
+import * as osUtils from "os-utils";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import meilisearch from "@/db/meilisearch.js";
 
 const ev = new Xev();
 

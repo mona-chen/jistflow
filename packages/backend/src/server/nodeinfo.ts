@@ -1,10 +1,10 @@
-import config from "@/config/index.js";
-import { MAX_CAPTION_TEXT_LENGTH, MAX_NOTE_TEXT_LENGTH } from "@/const.js";
-import { Cache } from "@/misc/cache.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
-import { Notes, Users } from "@/models/index.js";
 import Router from "@koa/router";
+import config from "@/config/index.js";
+import { fetchMeta } from "@/misc/fetch-meta.js";
+import { Users, Notes } from "@/models/index.js";
 import { IsNull, MoreThan } from "typeorm";
+import { MAX_NOTE_TEXT_LENGTH, MAX_CAPTION_TEXT_LENGTH } from "@/const.js";
+import { Cache } from "@/misc/cache.js";
 
 const router = new Router();
 
@@ -114,6 +114,7 @@ router.get(nodeinfo2_0path, async (ctx) => {
 
 	// @ts-ignore
 	base.software.repository = undefined;
+	base.software.homepage = undefined;
 
 	ctx.body = { version: "2.0", ...base };
 	ctx.set("Cache-Control", "public, max-age=600");
