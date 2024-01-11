@@ -1,6 +1,5 @@
 pub mod error;
 
-use cfg_if::cfg_if;
 use error::Error;
 use sea_orm::{Database, DbConn};
 
@@ -14,17 +13,6 @@ pub async fn init_database(conn_uri: impl Into<String>) -> Result<(), Error> {
 
 pub fn get_database() -> Result<&'static DbConn, Error> {
     DB_CONN.get().ok_or(Error::Uninitialized)
-}
-
-cfg_if! {
-    if #[cfg(feature = "napi")] {
-        use napi_derive::napi;
-
-        #[napi]
-        pub async fn native_init_database(conn_uri: String) -> napi::Result<()> {
-            init_database(conn_uri).await.map_err(Into::into)
-        }
-    }
 }
 
 #[cfg(test)]
