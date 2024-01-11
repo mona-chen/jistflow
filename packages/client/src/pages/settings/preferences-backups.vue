@@ -65,7 +65,7 @@ import * as os from "@/os";
 import { ColdDeviceStorage, defaultStore } from "@/store";
 import { unisonReload } from "@/scripts/unison-reload";
 import { stream } from "@/stream";
-import { $i } from "@/reactiveAccount";
+import { isSignedIn } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { host, version } from "@/config";
 import { definePageMetadata } from "@/scripts/page-metadata";
@@ -163,7 +163,7 @@ interface Profile {
 	};
 }
 
-const connection = $i && stream.useChannel("main");
+const connection = isSignedIn && stream.useChannel("main");
 
 const profiles = ref<Record<string, Profile> | null>(null);
 

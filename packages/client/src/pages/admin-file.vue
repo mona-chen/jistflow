@@ -119,7 +119,7 @@
 				</swiper-slide>
 				<swiper-slide>
 					<div v-if="info" class="_formRoot">
-						<MkInfo v-if="!iAmAdmin" warn>{{
+						<MkInfo v-if="!isAdmin" warn>{{
 							i18n.ts.requireAdminForView
 						}}</MkInfo>
 						<MkKeyValue
@@ -172,14 +172,14 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
-import { iAmAdmin, iAmModerator } from "@/account";
+import { isAdmin, isModerator } from "@/reactiveAccount";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
 const tabs = ["overview"];
-if (iAmModerator) tabs.push("ip");
+if (isModerator) tabs.push("ip");
 tabs.push("raw");
 const tab = ref(tabs[0]);
 watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
@@ -238,7 +238,7 @@ const headerTabs = computed(() => [
 		title: i18n.ts.overview,
 		icon: `${icon("ph-info")}`,
 	},
-	iAmModerator
+	isModerator
 		? {
 				key: "ip",
 				title: "IP",

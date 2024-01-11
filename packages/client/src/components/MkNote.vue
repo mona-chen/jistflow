@@ -225,7 +225,7 @@
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
 						v-if="
-							$i != null &&
+							isSignedIn &&
 							isForeignLanguage &&
 							translation == null
 						"
@@ -294,7 +294,7 @@ import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { defaultStore, noteViewInterruptors } from "@/store";
 import { reactionPicker } from "@/scripts/reaction-picker";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { getNoteMenu } from "@/scripts/get-note-menu";
 import { useNoteCapture } from "@/scripts/use-note-capture";
@@ -353,7 +353,7 @@ const reactButton = ref<HTMLElement>();
 const appearNote = computed(() =>
 	isRenote ? (note.value.renote as firefish.entities.Note) : note.value,
 );
-const isMyRenote = $i && $i.id === note.value.userId;
+const isMyRenote = isSignedIn && $i.id === note.value.userId;
 const showContent = ref(false);
 const isDeleted = ref(false);
 const muted = ref(

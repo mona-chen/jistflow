@@ -22,7 +22,7 @@ import { swInject } from "./sw-inject";
 import { popup, popups } from "@/os";
 import { uploads } from "@/scripts/upload";
 import * as sound from "@/scripts/sound";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn } from "@/reactiveAccount";
 import { stream } from "@/stream";
 
 const XStreamIndicator = defineAsyncComponent(
@@ -55,7 +55,7 @@ const onNotification = (notification) => {
 	sound.play("notification");
 };
 
-if ($i) {
+if (isSignedIn) {
 	const connection = stream.useChannel("main", null, "UI");
 	connection.on("notification", onNotification);
 

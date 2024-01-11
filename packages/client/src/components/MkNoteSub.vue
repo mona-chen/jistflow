@@ -126,7 +126,7 @@
 					<XQuoteButton class="button" :note="appearNote" />
 					<button
 						v-if="
-							$i != null &&
+							isSignedIn &&
 							isForeignLanguage &&
 							translation == null
 						"
@@ -210,7 +210,7 @@ import { useRouter } from "@/router";
 import { userPage } from "@/filters/user";
 import * as os from "@/os";
 import { reactionPicker } from "@/scripts/reaction-picker";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { useNoteCapture } from "@/scripts/use-note-capture";
 import { defaultStore } from "@/store";

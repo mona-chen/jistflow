@@ -58,7 +58,9 @@
 								</div>
 								<div class="other">
 									<button
-										v-if="$i && $i.id === post.user.id"
+										v-if="
+											isSignedIn && $i.id === post.user.id
+										"
 										v-tooltip="i18n.ts.edit"
 										v-click-anime
 										class="_button"
@@ -161,6 +163,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { shareAvailable } from "@/scripts/share-available";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
+import { isSignedIn } from "@/reactiveAccount";
 
 const router = useRouter();
 
@@ -350,8 +353,5 @@ definePageMetadata(
 	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 	grid-gap: 12px;
 	margin: var(--margin);
-
-	> .post {
-	}
 }
 </style>
