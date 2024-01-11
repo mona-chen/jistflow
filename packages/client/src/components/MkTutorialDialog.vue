@@ -211,19 +211,15 @@ import MkPushNotificationAllowButton from "@/components/MkPushNotificationAllowB
 import FormSwitch from "@/components/form/switch.vue";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
-import { $i } from "@/reactiveAccount";
+import { isModerator } from "@/reactiveAccount";
 import { instance } from "@/instance";
 import icon from "@/scripts/icon";
 
-const isLocalTimelineAvailable =
-	!instance.disableLocalTimeline ||
-	($i != null && ($i.isModerator || $i.isAdmin));
+const isLocalTimelineAvailable = !instance.disableLocalTimeline || isModerator;
 const isRecommendedTimelineAvailable =
-	!instance.disableRecommendedTimeline ||
-	($i != null && ($i.isModerator || $i.isAdmin));
+	!instance.disableRecommendedTimeline || isModerator;
 const isGlobalTimelineAvailable =
-	!instance.disableGlobalTimeline ||
-	($i != null && ($i.isModerator || $i.isAdmin));
+	!instance.disableGlobalTimeline || isModerator;
 
 const timelines = ["home"];
 

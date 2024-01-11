@@ -159,13 +159,13 @@
 			<MkKeyValue oneline style="margin: 1em 0">
 				<template #key>isModerator</template>
 				<template #value>{{
-					$i.isModerator ? i18n.ts.yes : i18n.ts.no
+					isModerator ? i18n.ts.yes : i18n.ts.no
 				}}</template>
 			</MkKeyValue>
 			<MkKeyValue oneline style="margin: 1em 0">
 				<template #key>isAdmin</template>
 				<template #value>{{
-					$i.isAdmin ? i18n.ts.yes : i18n.ts.no
+					isAdmin ? i18n.ts.yes : i18n.ts.no
 				}}</template>
 			</MkKeyValue>
 		</FormSection>
@@ -179,7 +179,7 @@ import MkKeyValue from "@/components/MkKeyValue.vue";
 import * as os from "@/os";
 import number from "@/filters/number";
 import bytes from "@/filters/bytes";
-import { $i } from "@/reactiveAccount";
+import { $i, isAdmin, isModerator } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";

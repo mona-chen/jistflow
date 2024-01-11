@@ -8,7 +8,7 @@
 		<i :class="icon('ph-dots-three-outline')"></i>
 	</button>
 	<button
-		v-if="$i != null && $i.id != user.id"
+		v-if="isSignedIn && $i.id != user.id"
 		v-tooltip="full ? null : `${state} ${user.name || user.username}`"
 		class="kpoogebi _button follow-button"
 		:class="{
@@ -66,7 +66,7 @@ import type * as firefish from "firefish-js";
 import * as os from "@/os";
 import { stream } from "@/stream";
 import { i18n } from "@/i18n";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn } from "@/reactiveAccount";
 import { getUserMenu } from "@/scripts/get-user-menu";
 import { useRouter } from "@/router";
 import { vibrate } from "@/scripts/vibrate";

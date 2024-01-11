@@ -12,9 +12,6 @@ import { reloadChannel, unisonReload } from "@/scripts/unison-reload";
 
 export type Account = firefish.entities.MeDetailed;
 
-export const iAmModerator = $i != null && ($i.isAdmin || $i.isModerator);
-export const iAmAdmin = $i?.isAdmin;
-
 export async function signout() {
 	waiting();
 	localStorage.removeItem("account");

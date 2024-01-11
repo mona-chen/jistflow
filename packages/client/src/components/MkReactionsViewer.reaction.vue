@@ -28,7 +28,7 @@ import XDetails from "@/components/MkReactionsViewer.details.vue";
 import XReactionIcon from "@/components/MkReactionIcon.vue";
 import * as os from "@/os";
 import { useTooltip } from "@/scripts/use-tooltip";
-import { $i } from "@/reactiveAccount";
+import { isSignedIn } from "@/reactiveAccount";
 
 const props = defineProps<{
 	reaction: string;
@@ -43,7 +43,7 @@ const emit = defineEmits<{
 
 const buttonRef = ref<HTMLElement>();
 
-const canToggle = computed(() => !props.reaction.match(/@\w/) && $i);
+const canToggle = computed(() => isSignedIn && !props.reaction.match(/@\w/));
 
 const toggleReaction = () => {
 	if (!canToggle.value) return;

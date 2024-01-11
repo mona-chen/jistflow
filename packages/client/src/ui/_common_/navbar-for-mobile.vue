@@ -71,7 +71,7 @@
 				</template>
 				<div class="divider"></div>
 				<MkA
-					v-if="$i.isAdmin || $i.isModerator"
+					v-if="isModerator"
 					v-click-anime
 					class="item"
 					active-class="active"
@@ -130,6 +130,7 @@ import { computed, defineAsyncComponent, toRef } from "vue";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
 import { openAccountMenu as openAccountMenu_ } from "@/account";
+import { $i, isModerator } from "@/reactiveAccount";
 import { openHelpMenu_ } from "@/scripts/helpMenu";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";

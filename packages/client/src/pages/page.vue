@@ -51,7 +51,9 @@
 										><i :class="icon('ph-code')"
 									/></MkA>
 									<template
-										v-if="$i && $i.id === page.userId"
+										v-if="
+											isSignedIn && $i.id === page.userId
+										"
 									>
 										<MkA
 											v-tooltip="i18n.ts._pages.editPage"
@@ -159,7 +161,7 @@
 						</div>
 						<!-- <div class="links">
 						<MkA :to="`/@${username}/pages/${pageName}/view-source`" class="link">{{ i18n.ts._pages.viewSource }}</MkA>
-						<template v-if="$i && $i.id === page.userId">
+						<template v-if="isSignedIn && $i.id === page.userId">
 							<MkA :to="`/pages/edit/${page.id}`" class="link">{{ i18n.ts._pages.editThisPage }}</MkA>
 							<button v-if="$i.pinnedPageId === page.id" class="link _textButton" @click="pin(false)">{{ i18n.ts.unpin }}</button>
 							<button v-else class="link _textButton" @click="pin(true)">{{ i18n.ts.pin }}</button>
@@ -213,6 +215,7 @@ import { definePageMetadata } from "@/scripts/page-metadata";
 import { shareAvailable } from "@/scripts/share-available";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
+import { isSignedIn } from "@/reactiveAccount";
 
 const props = defineProps<{
 	pageName: string;
