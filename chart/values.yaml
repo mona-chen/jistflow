@@ -42,7 +42,18 @@ iceshrimp:
     prefix: files
     endpoint: "" # e.g. "nyc3.digitaloceanspaces.com:443"
     region: "" # e.g. "nyc3"
-
+  
+  localStorage:
+    enabled: true
+    claimName: null
+    accessModes:
+    - ReadWriteOnce
+    labels: {}
+    class:
+    annotations:
+      helm.sh/resource-policy: keep
+    size: 10Gi
+  
   # -- If you want to allow iceshrimp to connect to private ips, enter the cidrs here.
   allowedPrivateNetworks: []
   # - "10.0.0.0/8"

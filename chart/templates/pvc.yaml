@@ -1,0 +1,23 @@
+{{- if .Values.iceshrimp.localStorage.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "iceshrimp.datapvc" . }}
+  labels:
+	{{- include "iceshrimp.labels" . | nindent 4 }}
+  annotations:
+    {{- .Values.iceshrimp.localStorage.annotations | toYaml | nindent 4}}
+spec:
+  accessModes:
+    {{- .Values.iceshrimp.localStorage.accessModes | toYaml | nindent 4 }}
+  volumeMode: Filesystem
+  {{- if .Values.iceshrimp.localStorage.class }}
+  storageClassName: {{ .Values.iceshrimp.localStorage.class }}
+  {{- end }}
+  {{- with .Values.iceshrimp.localStorage.volumeName }}
+  volumeName: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.iceshrimp.localStorage.size }}
+{{- end }}

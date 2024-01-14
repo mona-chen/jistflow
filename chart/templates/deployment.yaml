@@ -29,9 +29,16 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
-        - name: config-volume
-          secret:
-            secretName: {{ template "iceshrimp.fullname" . }}-config
+      - name: config-volume
+        secret:
+          secretName: {{ template "iceshrimp.fullname" . }}-config
+      - name: data-volume
+        {{- if .Values.iceshrimp.localStorage.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ include "iceshrimp.datapvc" . }}
+        {{- else }}
+        emptyDir:
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -41,13 +48,15 @@ spec:
           command:
             - yarn
             - run
-            - migrateandstart
+            - start
           env:
             - name: "NODE_ENV"
               value: "production"
           volumeMounts:
             - name: config-volume
               mountPath: /iceshrimp/.config
+            - name: data-volume
+              mountPath: /iceshrimp/files
           ports:
             - name: http
               containerPort: 3000

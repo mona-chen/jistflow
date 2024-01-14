@@ -38,7 +38,7 @@ spec:
           command:
             - yarn
             - run
-            - migrateandstart
+            - migrate
           env:
             - name: "NODE_ENV"
               value: "production"

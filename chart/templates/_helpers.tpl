@@ -325,3 +325,8 @@ objectStorage:
 # Seriously. Do NOT fill out the above settings if you're self-hosting.
 # They're much better off being set from the control panel.
 {{- end }}
+
+
+{{- define "iceshrimp.datapvc" -}}
+{{- default (printf "%s-data-pvc" (include "iceshrimp.fullname" .) ) .Values.iceshrimp.localStorage.claimName }}
+{{- end }}
