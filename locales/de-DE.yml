@@ -154,9 +154,9 @@ cacheRemoteFilesDescription: "Ist diese Einstellung deaktiviert, so werden Datei
   mehr Bandbreite benötigt."
 flagAsBot: "Dieses Nutzerkonto als Bot kennzeichnen"
 flagAsBotDescription: "Aktiviere diese Option, falls dieses Nutzerkonto durch ein
-  Programm gesteuert wird. Falls aktiviert, agiert es als Flag für andere Entwickler
-  zur Verhinderung von endlosen Kettenreaktionen mit anderen Bots und lässt Firefishs
-  interne Systeme dieses Nutzerkonto als Bot behandeln."
+  Programm (Bot) gesteuert wird. Wenn aktiviert, agiert es als Flag für Entwickler
+  zur Verhinderung von endlosen Kettenreaktionen mit anderen Bots. Firefishs interne
+  Systeme behandelt dieses Nutzerkonto als Bot."
 flagAsCat: "Bist du eine Katze? 😺"
 flagAsCatDescription: "Du bekommst Katzenohren und sprichst wie eine Katze!"
 flagShowTimelineReplies: "Antworten in der Timeline anzeigen"
@@ -2082,7 +2082,7 @@ customMOTDDescription: Benutzerdefinierte Meldungen für die Meldung des Tages (
   werden, wenn ein Benutzer die Seite (neu) lädt.
 recommendedInstancesDescription: Empfohlene Server, die durch Zeilenumbrüche getrennt
   sind, werden in der "Favoriten"-Timeline angezeigt.
-sendModMail: Moderationshinweis senden
+sendModMail: Moderation kontaktieren
 moveFromDescription: 'Dadurch wird ein Alias Ihres alten Nutzerkontos festgelegt,
   sodass Sie von ihrem bisherigen Konto zu diesem Nutzerkonto wechseln können. Tun
   Sie dies, BEVOR Sie von Ihrem bisherigen Nutzerkonto hierhin wechseln. Bitte geben
@@ -2149,7 +2149,7 @@ _filters:
   notesBefore: Beiträge vor
   followingOnly: Nur Folgende
   followersOnly: Nur Follower
-isBot: Dieses Konto ist ein automatisiert
+isBot: Dieses Konto ist ein Bot
 isModerator: Moderator
 isAdmin: Administrator
 _dialog:
@@ -2227,3 +2227,9 @@ _iconSets:
   bold: Fett
   light: Hell
 moreUrls: Angeheftete Seiten
+iconSet: Icon Satz
+renotes: Boosts
+quotes: Zitate
+useEmojiCdn: Hole Twemoji von einem CDN
+useEmojiCdnDescription: Benutze Twemoji von einem JSDelivr CDN anstelle der servereigenen
+  Assets.
