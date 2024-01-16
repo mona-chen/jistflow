@@ -1182,7 +1182,7 @@ _mfm:
   rotateDescription: "Dreht den Inhalt um einen angegebenen Winkel."
   fade: "Ein-/Ausblenden"
   fadeDescription: "Blended Inhalt ein and aus."
-  plain: "Schlicht"
+  plain: "Unbearbeitet"
   plainDescription: "Deaktiviert jegliche MFM-Syntax, die sich innerhalb dieses MFM-Effekts
     befindet."
   foreground: Vordergrundfarbe
@@ -1191,7 +1191,7 @@ _mfm:
   position: Position
   cropDescription: Inhalt zuschneiden.
   crop: Zuschneiden
-  scale: Maßstab
+  scale: Skalieren
   scaleDescription: Skaliere den Inhalt um einen bestimmten Betrag.
   foregroundDescription: Vordergrundfarbe des Texts ändern.
   backgroundDescription: Hintergrundfarbe des Texts ändern.
@@ -1247,6 +1247,7 @@ _wordMute:
   muteLangsDescription: Mit Leerzeichen oder Zeilenumbrüchen trennen für ODER-Kondition.
   muteLangsDescription2: Sprachcode verwenden, z.B. en, fr, ja, zh..
   lang: Sprache
+  langDescription: Beiträge in der angegebenen Sprache in der Timeline ausblenden.
 _instanceMute:
   instanceMuteDescription: "Schaltet alle Beiträge/Boosts stumm, die von den gelisteten
     Servern stammen, inklusive Antworten von Nutzern an einen Nutzer eines stummgeschalteten
@@ -2225,7 +2226,10 @@ replies: Antworten
 reactions: Reaktionen
 _iconSets:
   bold: Fett
-  light: Hell
+  light: Leicht
+  fill: Gefüllt
+  duotone: Zweifarbig
+  regular: Normal
 moreUrls: Angeheftete Seiten
 iconSet: Icon Satz
 renotes: Boosts
@@ -2233,3 +2237,5 @@ quotes: Zitate
 useEmojiCdn: Hole Twemoji von einem CDN
 useEmojiCdnDescription: Benutze Twemoji von einem JSDelivr CDN anstelle der servereigenen
   Assets.
+moreUrlsDescription: "Die Seiten, welche angepinnt werde sollen, im Hilfe-Menü in
+  der unteren linken Ecke in folgender Notation angeben:\n\"Anzeigename\": https://example.com/"
