@@ -147,7 +147,7 @@ cacheRemoteFiles: "Mantener en cache los archivos remotos"
 cacheRemoteFilesDescription: "Si desactiva esta configuración, los archivos remotos
   se cargarán desde el servidor remoto sin usar la caché. Con eso se puede ahorrar
   almacenamiento del servidor, pero eso aumentará el tráfico al no crear miniaturas."
-flagAsBot: "Esta cuenta es un bot"
+flagAsBot: "Marcar esta cuenta como automatizada / robot"
 flagAsBotDescription: "En caso de que esta cuenta fuera usada por un programa, active
   esta opción. Al hacerlo, esta opción servirá para otros desarrolladores para evitar
   cadenas infinitas de reacciones, y ajustará los sistemas internos de Firefish para
