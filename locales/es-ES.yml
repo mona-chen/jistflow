@@ -147,7 +147,7 @@ cacheRemoteFiles: "Mantener en cache los archivos remotos"
 cacheRemoteFilesDescription: "Si desactiva esta configuración, los archivos remotos
   se cargarán desde el servidor remoto sin usar la caché. Con eso se puede ahorrar
   almacenamiento del servidor, pero eso aumentará el tráfico al no crear miniaturas."
-flagAsBot: "Esta cuenta es un bot"
+flagAsBot: "Marcar esta cuenta como automatizada / robot"
 flagAsBotDescription: "En caso de que esta cuenta fuera usada por un programa, active
   esta opción. Al hacerlo, esta opción servirá para otros desarrolladores para evitar
   cadenas infinitas de reacciones, y ajustará los sistemas internos de Firefish para
@@ -1009,12 +1009,13 @@ _accountDelete:
     subidos."
   sendEmail: "Cuando se termine de borrar la cuenta, se enviará un correo a la dirección
     usada para el registro."
-  requestAccountDelete: "Pedir la eliminación de la cuenta."
+  requestAccountDelete: "Solicitar la eliminación de su cuenta"
   started: "El proceso de eliminación ha comenzado."
-  inProgress: "La eliminación está en proceso."
+  inProgress: "La eliminación está en proceso"
 _ad:
   back: "Deseleccionar"
-  reduceFrequencyOfThisAd: "Mostrar menos este anuncio."
+  reduceFrequencyOfThisAd: "mostrar este anuncio con menos frecuencia"
+  adsBy: 'Este Banner de la comunidad fue creado por : {by}'
 _forgotPassword:
   enterEmail: "Ingrese el correo usado para registrar la cuenta. Se enviará un link
     para resetear la contraseña."
@@ -1025,7 +1026,7 @@ _forgotPassword:
 _gallery:
   my: "Mi galería"
   liked: "Publicaciones que me gustan"
-  like: "¡Muy bien!"
+  like: "Me gusta"
   unlike: "Quitar me gusta"
 _email:
   _follow:
@@ -1034,7 +1035,8 @@ _email:
     title: "Has recibido una solicitud de seguimiento"
 _plugin:
   install: "Instalar plugins"
-  installWarn: "Por favor no instale plugins que no son de confianza"
+  installWarn: "Por favor no instale plugins (Extenciones externales) que no son de
+    confianza."
   manage: "Gestionar plugins"
 _preferencesBackups:
   list: "Respaldos creados"
@@ -1044,15 +1046,15 @@ _preferencesBackups:
   save: "Guardar cambios"
   inputName: "Por favor, ingresa un nombre para este respaldo"
   cannotSave: "Fallo al guardar"
-  nameAlreadyExists: "Un respaldo llamado \"{name}\" ya existe. Por favor ingresa
-    un nombre diferente"
-  applyConfirm: "¿Realmente quieres aplicar los cambios desde el archivo \"{name}\"\
-    \ a este dispositivo? Las configuraciones existentes serán sobreescritas. "
+  nameAlreadyExists: "Un respaldo llamado \"{name}\" ya existe. Por favor ingrese
+    un nombre diferente."
+  applyConfirm: "¿Estas seguro que quieres aplicar los cambios desde el archivo \"\
+    {name}\" a este dispositivo? Las configuraciones existentes serán sobreescritas."
   saveConfirm: "¿Guardar respaldo como \"{name}\"?"
   deleteConfirm: "¿Borrar el respaldo \"{name}\"?"
   renameConfirm: "¿Renombrar este respaldo de \"{old}\" a \"{new}\"?"
-  noBackups: "No existen respaldos. Deberás respaldar las configuraciones del cliente
-    en este servidor usando \"Crear nuevo respaldo\""
+  noBackups: "No existen respaldos. Puedes respaldar las configuraciones de tu cliente
+    en este servidor usando el boton,\"Crear nuevo respaldo\"."
   createdAt: "Creado: {date} {time}"
   updatedAt: "Actualizado: {date} {time}"
   cannotLoad: "La carga falló"
@@ -2181,3 +2183,23 @@ openServerInfo: Mostrar información del servidor al presionar el simbolo del se
   en una publicación
 languageForTranslation: Traducción de publicaciones
 confirm: Confirmar
+moreUrls: páginas fijada
+attachedToNotes: Publicaciones con este archivo
+showAttachedNotes: Mostrar publicaciones con este archivo
+indexable: Indexable
+_iconSets:
+  bold: Marcado
+  regular: Regúlar
+  fill: Relleno
+  duotone: Doble tono (Doble color)
+  light: Brillante
+replies: Respuestas
+renotes: Impulsos
+iconSet: Conjunto de iconos
+useEmojiCdn: Obtenga Twemoji desde un CDN
+useEmojiCdnDescription: Utilice Twemoji desde JSDelivr CDN en lugar de los assetos
+  proporcionados del servidor.
+moreUrlsDescription: 'Ingrese los enlaces de las páginas que desea Fijar en el menú
+  de ayuda, ubicado en la esquina inferior izquierda, usando este formato de notación:
+  ["Nombre para mostrar": https://su-enlace.com/]'
+quotes: Citaciónes

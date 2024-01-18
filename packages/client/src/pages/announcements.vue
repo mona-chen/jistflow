@@ -17,7 +17,7 @@
 				>
 					<div class="_title">
 						<h3>
-							<span v-if="$i && !announcement.isRead">
+							<span v-if="isSignedIn && !announcement.isRead">
 								🆕&nbsp;
 							</span>
 							{{ announcement.title }}
@@ -36,7 +36,10 @@
 							:src="announcement.imageUrl"
 						/>
 					</div>
-					<div v-if="$i && !announcement.isRead" class="_footer">
+					<div
+						v-if="isSignedIn && !announcement.isRead"
+						class="_footer"
+					>
 						<MkButton primary @click="read(announcement.id)"
 							><i :class="icon('ph-check')"></i>
 							{{ i18n.ts.gotIt }}</MkButton
@@ -56,6 +59,7 @@ import * as os from "@/os";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import icon from "@/scripts/icon";
+import { isSignedIn } from "@/reactiveAccount";
 
 const pagination = {
 	endpoint: "announcements" as const,

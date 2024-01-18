@@ -1,15 +1,15 @@
 import type { Theme } from "./scripts/theme";
 import { api } from "@/os";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn } from "@/reactiveAccount";
 
-const lsCacheKey = $i ? `themes:${$i.id}` : "";
+const lsCacheKey = isSignedIn ? `themes:${$i.id}` : "";
 
 export function getThemes(): Theme[] {
 	return JSON.parse(localStorage.getItem(lsCacheKey) || "[]");
 }
 
 export async function fetchThemes(): Promise<void> {
-	if ($i == null) return;
+	if (!isSignedIn) return;
 
 	try {
 		const themes = await api("i/registry/get", {

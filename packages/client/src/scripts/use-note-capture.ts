@@ -2,7 +2,7 @@ import type { Ref } from "vue";
 import { onUnmounted } from "vue";
 import type * as firefish from "firefish-js";
 import { stream } from "@/stream";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn } from "@/reactiveAccount";
 import * as os from "@/os";
 
 export function useNoteCapture(props: {
@@ -11,7 +11,7 @@ export function useNoteCapture(props: {
 	isDeletedRef: Ref<boolean>;
 }) {
 	const note = props.note;
-	const connection = $i ? stream : null;
+	const connection = isSignedIn ? stream : null;
 
 	async function onStreamNoteUpdated(noteData): Promise<void> {
 		const { type, id, body } = noteData;
@@ -34,7 +34,7 @@ export function useNoteCapture(props: {
 
 				note.value.reactions[reaction] = currentCount + 1;
 
-				if ($i && body.userId === $i.id) {
+				if (isSignedIn && body.userId === $i.id) {
 					note.value.myReaction = reaction;
 				}
 				break;
@@ -48,7 +48,7 @@ export function useNoteCapture(props: {
 
 				note.value.reactions[reaction] = Math.max(0, currentCount - 1);
 
-				if ($i && body.userId === $i.id) {
+				if (isSignedIn && body.userId === $i.id) {
 					note.value.myReaction = undefined;
 				}
 				break;
@@ -62,7 +62,7 @@ export function useNoteCapture(props: {
 					choices[choice] = {
 						...choices[choice],
 						votes: choices[choice].votes + 1,
-						...($i && body.userId === $i.id
+						...(isSignedIn && body.userId === $i.id
 							? {
 									isVoted: true,
 							  }

@@ -33,7 +33,7 @@ import XNotes from "@/components/MkNotes.vue";
 import MkInfo from "@/components/MkInfo.vue";
 import { stream } from "@/stream";
 import * as sound from "@/scripts/sound";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
@@ -67,7 +67,7 @@ const prepend = (note) => {
 	emit("note");
 
 	if (props.sound) {
-		sound.play($i && note.userId === $i.id ? "noteMy" : "note");
+		sound.play(isSignedIn && note.userId === $i.id ? "noteMy" : "note");
 	}
 };
 

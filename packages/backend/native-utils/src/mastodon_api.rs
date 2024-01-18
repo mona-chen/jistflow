@@ -1,4 +1,4 @@
-use napi::{bindgen_prelude::*, Error, Status};
+use napi::{Error, Status};
 use napi_derive::napi;
 
 static CHAR_COLLECTION: &str = "0123456789abcdefghijklmnopqrstuvwxyz";

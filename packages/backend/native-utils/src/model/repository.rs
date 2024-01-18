@@ -1,5 +1,3 @@
-pub mod antenna;
-
 use async_trait::async_trait;
 use schemars::JsonSchema;
 

@@ -84,7 +84,7 @@
 							}}</template>
 						</MkKeyValue>
 
-						<FormSection v-if="iAmAdmin">
+						<FormSection v-if="isAdmin">
 							<template #label>Moderation</template>
 							<FormSuspense :p="init">
 								<FormSwitch
@@ -346,11 +346,10 @@ import MkLink from "@/components/MkLink.vue";
 import MkButton from "@/components/MkButton.vue";
 import FormSection from "@/components/form/section.vue";
 import MkKeyValue from "@/components/MkKeyValue.vue";
-import MkSelect from "@/components/form/select.vue";
 import FormSwitch from "@/components/form/switch.vue";
 import * as os from "@/os";
 import number from "@/filters/number";
-import { iAmAdmin } from "@/account";
+import { isAdmin } from "@/reactiveAccount";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
 import { defaultStore } from "@/store";
@@ -376,7 +375,7 @@ const props = defineProps<{
 }>();
 
 const tabs = ["overview"];
-if (iAmAdmin) tabs.push("chart", "users", "raw");
+if (isAdmin) tabs.push("chart", "users", "raw");
 const tab = ref(tabs[0]);
 watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
 
@@ -389,7 +388,7 @@ const isSilenced = ref(false);
 const faviconUrl = ref(null);
 
 const usersPagination = {
-	endpoint: iAmAdmin ? "admin/show-users" : ("users" as const),
+	endpoint: isAdmin ? "admin/show-users" : ("users" as const),
 	limit: 10,
 	params: {
 		sort: "+updatedAt",
@@ -400,7 +399,7 @@ const usersPagination = {
 };
 
 async function fetch() {
-	if (iAmAdmin)
+	if (isAdmin)
 		meta.value = (await os.api("admin/meta")) as AugmentedInstanceMetadata;
 	instance.value = (await os.api("federation/show-instance", {
 		host: props.host,
@@ -485,7 +484,7 @@ const theTabs = [
 	},
 ];
 
-if (iAmAdmin) {
+if (isAdmin) {
 	theTabs.push(
 		{
 			key: "chart",

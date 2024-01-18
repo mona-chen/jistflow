@@ -72,7 +72,7 @@
 				</template>
 				<div class="divider"></div>
 				<MkA
-					v-if="$i.isAdmin || $i.isModerator"
+					v-if="isModerator"
 					v-click-anime
 					v-tooltip.noDelay.right="i18n.ts.controlPanel"
 					class="item _button"
@@ -150,7 +150,7 @@ import { computed, defineAsyncComponent, ref, watch } from "vue";
 import * as os from "@/os";
 import { navbarItemDef } from "@/navbar";
 import { openAccountMenu as openAccountMenu_ } from "@/account";
-import { $i } from "@/reactiveAccount";
+import { $i, isAdmin, isModerator } from "@/reactiveAccount";
 import { openHelpMenu_ } from "@/scripts/helpMenu";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
@@ -195,7 +195,7 @@ const noEmailServer = !instance.enableEmail;
 const thereIsUnresolvedAbuseReport = ref(false);
 const updateAvailable = ref(false);
 
-if ($i?.isAdmin) {
+if (isAdmin) {
 	os.api("admin/abuse-user-reports", {
 		state: "unresolved",
 		limit: 1,

@@ -190,7 +190,7 @@ import number from "@/filters/number";
 import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
-import { iAmModerator } from "@/account";
+import { isModerator } from "@/reactiveAccount";
 import { instance } from "@/instance";
 import { defaultStore } from "@/store";
 import icon from "@/scripts/icon";
@@ -215,7 +215,7 @@ const tabs = ["overview", "emojis", "charts"];
 const tab = ref(tabs[0]);
 watch(tab, () => syncSlide(tabs.indexOf(tab.value)));
 
-if (iAmModerator) tabs.push("federation");
+if (isModerator) tabs.push("federation");
 
 const initStats = () =>
 	os.api("stats", {}).then((res) => {
@@ -242,7 +242,7 @@ const theTabs = [
 	},
 ];
 
-if (iAmModerator) {
+if (isModerator) {
 	theTabs.push({
 		key: "federation",
 		title: i18n.ts.federation,

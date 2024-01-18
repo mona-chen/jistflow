@@ -1,21 +1,9 @@
 import type { AsyncComponentLoader } from "vue";
 import { defineAsyncComponent, inject } from "vue";
-import { iAmModerator } from "@/account";
+import { $i, isModerator } from "@/reactiveAccount";
 import { Router } from "@/nirax";
 import MkError from "@/pages/_error_.vue";
 import MkLoading from "@/pages/_loading_.vue";
-import { $i } from "@/reactiveAccount";
-// import { api } from "@/os";
-
-// function getGuestTimelineStatus() {
-// 	api("meta", {
-// 		detail: false,
-// 	}).then((meta) => {
-// 		return meta.enableGuestTimeline;
-// 	});
-// }
-
-// const guestTimeline = getGuestTimelineStatus();
 
 const page = (loader: AsyncComponentLoader<any>) =>
 	defineAsyncComponent({
@@ -430,13 +418,13 @@ export const routes = [
 	},
 	{
 		path: "/admin/file/:fileId",
-		component: iAmModerator
+		component: isModerator
 			? page(() => import("./pages/admin-file.vue"))
 			: page(() => import("./pages/not-found.vue")),
 	},
 	{
 		path: "/admin",
-		component: iAmModerator
+		component: isModerator
 			? page(() => import("./pages/admin/index.vue"))
 			: page(() => import("./pages/not-found.vue")),
 		children: [

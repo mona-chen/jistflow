@@ -2,7 +2,7 @@ import { computed, reactive } from "vue";
 import { ui } from "@/config";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn } from "@/reactiveAccount";
 import icon from "@/scripts/icon";
 import { search } from "@/scripts/search";
 import { unisonReload } from "@/scripts/unison-reload";
@@ -11,21 +11,21 @@ export const navbarItemDef = reactive({
 	notifications: {
 		title: "notifications",
 		icon: `${icon("ph-bell")}`,
-		show: computed(() => $i != null),
+		show: computed(() => isSignedIn),
 		indicated: computed(() => $i?.hasUnreadNotification),
 		to: "/my/notifications",
 	},
 	messaging: {
 		title: "messaging",
 		icon: `${icon("ph-chats-teardrop")}`,
-		show: computed(() => $i != null),
+		show: computed(() => isSignedIn),
 		indicated: computed(() => $i?.hasUnreadMessagingMessage),
 		to: "/my/messaging",
 	},
 	drive: {
 		title: "drive",
 		icon: `${icon("ph-cloud")}`,
-		show: computed(() => $i != null),
+		show: computed(() => isSignedIn),
 		to: "/my/drive",
 	},
 	followRequests: {
@@ -54,19 +54,19 @@ export const navbarItemDef = reactive({
 	lists: {
 		title: "lists",
 		icon: `${icon("ph-list-bullets")}`,
-		show: computed(() => $i != null),
+		show: computed(() => isSignedIn),
 		to: "/my/lists",
 	},
 	antennas: {
 		title: "antennas",
 		icon: `${icon("ph-flying-saucer")}`,
-		show: computed(() => $i != null),
+		show: computed(() => isSignedIn),
 		to: "/my/antennas",
 	},
 	favorites: {
 		title: "favorites",
 		icon: `${icon("ph-bookmark-simple")}`,
-		show: computed(() => $i != null),
+		show: computed(() => isSignedIn),
 		to: "/my/favorites",
 	},
 	pages: {
@@ -82,7 +82,7 @@ export const navbarItemDef = reactive({
 	clips: {
 		title: "clips",
 		icon: `${icon("ph-paperclip")}`,
-		show: computed(() => $i != null),
+		show: computed(() => isSignedIn),
 		to: "/my/clips",
 	},
 	channels: {

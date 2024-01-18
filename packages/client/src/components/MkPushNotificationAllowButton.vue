@@ -16,7 +16,7 @@
 	<MkButton
 		v-else-if="
 			!showOnlyToRegister &&
-			($i ? pushRegistrationInServer : pushSubscription)
+			(isSignedIn ? pushRegistrationInServer : pushSubscription)
 		"
 		type="button"
 		:primary="false"
@@ -31,7 +31,7 @@
 		{{ i18n.ts.unsubscribePushNotification }}
 	</MkButton>
 	<MkButton
-		v-else-if="$i && pushRegistrationInServer"
+		v-else-if="isSignedIn && pushRegistrationInServer"
 		disabled
 		:rounded="rounded"
 		:inline="inline"
@@ -56,7 +56,7 @@
 import { ref } from "vue";
 
 import { getAccounts } from "@/account";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn } from "@/reactiveAccount";
 import MkButton from "@/components/MkButton.vue";
 import { instance } from "@/instance";
 import { api, apiWithDialog, promiseDialog } from "@/os";
@@ -147,7 +147,7 @@ async function unsubscribe() {
 
 	pushRegistrationInServer.value = undefined;
 
-	if ($i && accounts.length >= 2) {
+	if (isSignedIn && accounts.length >= 2) {
 		apiWithDialog("sw/unregister", {
 			i: $i.token,
 			endpoint,
@@ -193,7 +193,12 @@ if (navigator.serviceWorker == null) {
 		pushSubscription.value =
 			await registration.value.pushManager.getSubscription();
 
-		if (instance.swPublickey && "PushManager" in window && $i && $i.token) {
+		if (
+			instance.swPublickey &&
+			"PushManager" in window &&
+			isSignedIn &&
+			$i.token
+		) {
 			supported.value = true;
 
 			if (pushSubscription.value) {

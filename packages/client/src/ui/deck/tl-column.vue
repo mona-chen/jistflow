@@ -50,7 +50,7 @@ import type { Column } from "./deck-store";
 import { removeColumn, updateColumn } from "./deck-store";
 import XTimeline from "@/components/MkTimeline.vue";
 import * as os from "@/os";
-import { $i } from "@/reactiveAccount";
+import { isSignedIn, isModerator } from "@/reactiveAccount";
 import { instance } from "@/instance";
 import { i18n } from "@/i18n";
 import icon from "@/scripts/icon";
@@ -72,10 +72,9 @@ const columnActive = ref(true);
 onMounted(() => {
 	if (props.column.tl == null) {
 		setType();
-	} else if ($i) {
+	} else if (isSignedIn) {
 		disabled.value =
-			!$i.isModerator &&
-			!$i.isAdmin &&
+			!isModerator &&
 			((instance.disableLocalTimeline &&
 				["local", "social"].includes(props.column.tl)) ||
 				(instance.disableRecommendedTimeline &&

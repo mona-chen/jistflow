@@ -115,7 +115,7 @@ you: "Du"
 clickToShow: "Zum Anzeigen anklicken"
 sensitive: "NSFW"
 add: "Hinzufügen"
-reaction: "Reaktionen"
+reaction: "Reaktion"
 reactionSetting: "Reaktionen, die in der Reaktionsauswahl angezeigt werden sollen"
 reactionSettingDescription2: "Ziehen Sie, um neu zu ordnen, klicken Sie, um zu löschen,
   drücken Sie \"+\", um hinzuzufügen."
@@ -154,9 +154,9 @@ cacheRemoteFilesDescription: "Ist diese Einstellung deaktiviert, so werden Datei
   mehr Bandbreite benötigt."
 flagAsBot: "Dieses Nutzerkonto als Bot kennzeichnen"
 flagAsBotDescription: "Aktiviere diese Option, falls dieses Nutzerkonto durch ein
-  Programm gesteuert wird. Falls aktiviert, agiert es als Flag für andere Entwickler
-  zur Verhinderung von endlosen Kettenreaktionen mit anderen Bots und lässt Firefishs
-  interne Systeme dieses Nutzerkonto als Bot behandeln."
+  Programm (Bot) gesteuert wird. Wenn aktiviert, agiert es als Flag für Entwickler
+  zur Verhinderung von endlosen Kettenreaktionen mit anderen Bots. Firefishs interne
+  Systeme behandelt dieses Nutzerkonto als Bot."
 flagAsCat: "Bist du eine Katze? 😺"
 flagAsCatDescription: "Du bekommst Katzenohren und sprichst wie eine Katze!"
 flagShowTimelineReplies: "Antworten in der Timeline anzeigen"
@@ -286,7 +286,7 @@ agreeTo: "Ich stimme {0} zu"
 tos: "Nutzungsbedingungen"
 start: "Beginnen Sie"
 home: "Home"
-remoteUserCaution: "Informationen von Nutzern anderer Server sind möglicherweise unvollständig."
+remoteUserCaution: "Informationen von Nutzern anderer Server sind unvollständig."
 activity: "Aktivität"
 images: "Bilder"
 birthday: "Geburtstag"
@@ -651,7 +651,7 @@ emptyToDisableSmtpAuth: "Nutzername und Passwort leer lassen, um SMTP-Verifizier
 smtpSecure: "Für SMTP-Verbindungen implizit SSL/TLS verwenden"
 smtpSecureInfo: "Schalte dies aus, falls du STARTTLS verwendest"
 testEmail: "Emailversand testen"
-wordMute: "Wortfilter"
+wordMute: "Wort- und Sprache-Filter"
 regexpError: "Fehler in einem regulären Ausdruck"
 regexpErrorDescription: "Im regulären Ausdruck deines {tab}en Wortfilters ist ein
   Fehler aufgetreten:"
@@ -1035,7 +1035,7 @@ _accountDelete:
   inProgress: "Löschung in Bearbeitung"
 _ad:
   back: "Zurück"
-  reduceFrequencyOfThisAd: "Diese Werbeanzeige weniger anzeigen"
+  reduceFrequencyOfThisAd: "Diese Anzeige weniger anzeigen"
   adsBy: Community-Banner von {by}
 _forgotPassword:
   enterEmail: "Gib die Email-Adresse ein, mit der du dich registriert hast. An diese
@@ -1182,7 +1182,7 @@ _mfm:
   rotateDescription: "Dreht den Inhalt um einen angegebenen Winkel."
   fade: "Ein-/Ausblenden"
   fadeDescription: "Blended Inhalt ein and aus."
-  plain: "Schlicht"
+  plain: "Unbearbeitet"
   plainDescription: "Deaktiviert jegliche MFM-Syntax, die sich innerhalb dieses MFM-Effekts
     befindet."
   foreground: Vordergrundfarbe
@@ -1191,7 +1191,7 @@ _mfm:
   position: Position
   cropDescription: Inhalt zuschneiden.
   crop: Zuschneiden
-  scale: Maßstab
+  scale: Skalieren
   scaleDescription: Skaliere den Inhalt um einen bestimmten Betrag.
   foregroundDescription: Vordergrundfarbe des Texts ändern.
   backgroundDescription: Hintergrundfarbe des Texts ändern.
@@ -1244,6 +1244,10 @@ _wordMute:
   hard: "Schwer"
   mutedNotes: "Stummgeschaltete Beiträge"
   muteLangs: Stummgeschaltete Sprachen
+  muteLangsDescription: Mit Leerzeichen oder Zeilenumbrüchen trennen für ODER-Kondition.
+  muteLangsDescription2: Sprachcode verwenden, z.B. en, fr, ja, zh..
+  lang: Sprache
+  langDescription: Beiträge in der angegebenen Sprache in der Timeline ausblenden.
 _instanceMute:
   instanceMuteDescription: "Schaltet alle Beiträge/Boosts stumm, die von den gelisteten
     Servern stammen, inklusive Antworten von Nutzern an einen Nutzer eines stummgeschalteten
@@ -2079,7 +2083,7 @@ customMOTDDescription: Benutzerdefinierte Meldungen für die Meldung des Tages (
   werden, wenn ein Benutzer die Seite (neu) lädt.
 recommendedInstancesDescription: Empfohlene Server, die durch Zeilenumbrüche getrennt
   sind, werden in der "Favoriten"-Timeline angezeigt.
-sendModMail: Moderationshinweis senden
+sendModMail: Moderation kontaktieren
 moveFromDescription: 'Dadurch wird ein Alias Ihres alten Nutzerkontos festgelegt,
   sodass Sie von ihrem bisherigen Konto zu diesem Nutzerkonto wechseln können. Tun
   Sie dies, BEVOR Sie von Ihrem bisherigen Nutzerkonto hierhin wechseln. Bitte geben
@@ -2219,3 +2223,19 @@ openServerInfo: Anzeigen von Serverinformationen durch Anklicken des Server-Tick
 vibrate: Vibrationen abspielen
 clickToShowPatterns: Klicken um Modul-Muster anzuzeigen
 replies: Antworten
+reactions: Reaktionen
+_iconSets:
+  bold: Fett
+  light: Leicht
+  fill: Gefüllt
+  duotone: Zweifarbig
+  regular: Normal
+moreUrls: Angeheftete Seiten
+iconSet: Icon Satz
+renotes: Boosts
+quotes: Zitate
+useEmojiCdn: Hole Twemoji von einem CDN
+useEmojiCdnDescription: Benutze Twemoji von einem JSDelivr CDN anstelle der servereigenen
+  Assets.
+moreUrlsDescription: "Die Seiten, welche angepinnt werde sollen, im Hilfe-Menü in
+  der unteren linken Ecke in folgender Notation angeben:\n\"Anzeigename\": https://example.com/"

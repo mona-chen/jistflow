@@ -1,0 +1,6 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "packages/backend/native-utils/Cargo.toml",
+        "packages/backend/native-utils/migration/Cargo.toml"
+    ]
+}

@@ -31,7 +31,7 @@
 import { computed, provide, ref, watch } from "vue";
 import type * as firefish from "firefish-js";
 import XNotes from "@/components/MkNotes.vue";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn } from "@/reactiveAccount";
 import { i18n } from "@/i18n";
 import * as os from "@/os";
 import { definePageMetadata } from "@/scripts/page-metadata";
@@ -51,7 +51,7 @@ const pagination = {
 };
 
 const isOwned: boolean | null = computed<boolean | null>(
-	() => $i && clip.value && $i.id === clip.value.userId,
+	() => isSignedIn && clip.value && $i.id === clip.value.userId,
 );
 
 watch(

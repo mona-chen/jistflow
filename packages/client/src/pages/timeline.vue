@@ -74,24 +74,28 @@ import * as os from "@/os";
 import { defaultStore } from "@/store";
 import { i18n } from "@/i18n";
 import { instance } from "@/instance";
-import { $i } from "@/reactiveAccount";
+import { $i, isSignedIn, isModerator } from "@/reactiveAccount";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { deviceKind } from "@/scripts/device-kind";
 import icon from "@/scripts/icon";
 import "swiper/scss";
 import "swiper/scss/virtual";
 
-if (defaultStore.reactiveState.tutorial.value !== -1) {
+if (isSignedIn && defaultStore.reactiveState.tutorial.value !== -1) {
 	os.popup(XTutorial, {}, {}, "closed");
 }
 
 const isLocalTimelineAvailable =
-	!instance.disableLocalTimeline ||
-	($i != null && ($i.isModerator || $i.isAdmin));
-const isRecommendedTimelineAvailable = !instance.disableRecommendedTimeline;
+	(!instance.disableLocalTimeline &&
+		(isSignedIn || instance.enableGuestTimeline)) ||
+	isModerator;
+const isSocialTimelineAvailable = isLocalTimelineAvailable && isSignedIn;
+const isRecommendedTimelineAvailable =
+	!instance.disableRecommendedTimeline && isSignedIn;
 const isGlobalTimelineAvailable =
-	!instance.disableGlobalTimeline ||
-	($i != null && ($i.isModerator || $i.isAdmin));
+	(!instance.disableGlobalTimeline &&
+		(isSignedIn || instance.enableGuestTimeline)) ||
+	isModerator;
 const keymap = {
 	t: focus,
 };
