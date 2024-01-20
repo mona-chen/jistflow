@@ -3,6 +3,17 @@
 It was forked from <del>Calckey</del> Firefish (itself a fork of Misskey) in mid-2023, to focus on stability, performance and usability instead of new features.</p>
 
 ---
+
+> **Note**
+> This project is **not** inactive.
+> 
+> Most of our current development resources are going into the [rewrite](/iceshrimp/iceshrimp-rewrite), to further our goal of increasing stability and performance.
+> 
+> This means that major changes to the JS codebase (this project), and especially to the database schema, are on hold for the time being. Bugs will of course still be fixed, and support is still available on the usual channels.
+> 
+> Once the rewrite is finished, there will be an easy upgrade path for existing Iceshrimp instances.
+
+---
 - Highlighted changes:
 	- First-class Mastodon client API support
 	- Significantly improved database performance
