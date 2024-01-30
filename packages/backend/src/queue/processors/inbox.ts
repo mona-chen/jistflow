@@ -194,6 +194,27 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 		federationChart.inbox(i.host);
 	});
 
+	const inbox = authUser.user.sharedInbox ?? authUser.user.inbox;
+	if (inbox !== null) {
+		const { host: inboxHost } = new URL(inbox);
+
+		if (inboxHost !== authUser.user.host) {
+			registerOrFetchInstanceDoc(inboxHost).then((i) => {
+				Instances.update(i.id, {
+					latestRequestReceivedAt: new Date(),
+					lastCommunicatedAt: new Date(),
+					isNotResponding: false,
+				});
+
+				fetchInstanceMetadata(i);
+
+				instanceChart.requestReceived(i.host);
+				apRequestChart.inbox();
+				federationChart.inbox(i.host);
+			});
+		}
+	}
+
 	// アクティビティを処理
 	await perform(authUser.user, activity);
 	return "ok";
