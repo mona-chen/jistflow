@@ -40,7 +40,10 @@ export async function skippedInstances(
 			.andWhere(
 				new Brackets((qb) => {
 					qb.where("instance.isSuspended")
-						.orWhere("instance.lastCommunicatedAt < :deadTime", { deadTime });
+						.orWhere(new Brackets((qb) => {
+							qb.where("instance.isNotResponding")
+								.andWhere("instance.lastCommunicatedAt < :deadTime", { deadTime });
+						}));
 				}),
 			)
 			.select("host")
