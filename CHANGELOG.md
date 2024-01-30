@@ -1,3 +1,24 @@
+## v2023.12.2
+### Release notes
+This release contains minor fixes and improvements. Upgrading is recommended, especially if you have a lot of delayed jobs in your deliver queue.
+
+### Highlights
+- Deliver jobs to dead/unresponsive instances will no longer get stuck in the deliver queue after 7 days of them being unresponsive
+
+### Backend
+- Emojis that contain special characters now work properly
+
+### Miscellaneous
+- Podman installation docs have been added
+- The helm chart has been updated
+- Locale files that were named incorrectly have been fixed
+- Various translation updates
+
+### Attribution
+This release was made possible by project contributors: Daks, Jeder, Laura Hausmann, Salif Mehmed, corite & jolupa
+
+It also includes cherry-picked contributions from external contributors: Johann150
+
 ## v2023.12.1
 ### Release notes
 This release contains performance improvements and minor bugfixes. Upgrading is recommended, especially if you are still experiencing performance issues with notifications and/or the home timeline.
