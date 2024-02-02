@@ -47,7 +47,7 @@ iceshrimp:
     enabled: true
     claimName: null
     accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
     labels: {}
     class:
     annotations:
