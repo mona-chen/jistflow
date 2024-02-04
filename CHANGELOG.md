@@ -1,3 +1,24 @@
+## v2023.12.3
+### Release notes
+This is a security release. Upgrading is strongly recommended, as is adding an instance-wide announcement informing your users that if they previously imported posts from Mastodon, they should check their imported post history for DMs and follower-only posts that should not be public.
+
+### Vulnerability explanation
+The Mastodon post import feature (that has been untouched since Iceshrimp was forked from Firefish last year) did not correctly validate/set post visibility on imported posts. Due to the nature of the vulnerability, it's impossible to reconstruct which posts have been imported, and therefore we cannot restrict access to them in an update.
+
+### Backend
+- Post imports have been disabled
+- Existing posts that have the "hidden" visibility are now only accessible to the author
+
+### Frontend
+- The UI for post imports has been removed
+
+### Miscellaneous
+- The yarn version was updated to 4.1.0
+- The helm chart was updated
+
+### Attribution
+This release was made possible by project contributors: Laura Hausmann & corite
+
 ## v2023.12.2
 ### Release notes
 This release contains minor fixes and improvements. Upgrading is recommended, especially if you have a lot of delayed jobs in your deliver queue.
