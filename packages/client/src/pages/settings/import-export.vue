@@ -16,24 +16,6 @@
 					{{ i18n.ts.export }}</MkButton
 				>
 			</FormFolder>
-			<FormFolder class="_formBlock">
-				<template #label>{{ i18n.ts.import }}</template>
-				<template #icon
-					><i class="ph-upload-simple ph-bold ph-lg"></i
-				></template>
-				<FormRadios v-model="importType" class="_formBlock">
-					<option value="iceshrimp">Iceshrimp/Misskey</option>
-					<option value="mastodon">Mastodon/Akkoma/Pleroma</option>
-				</FormRadios>
-				<MkButton
-					primary
-					:class="$style.button"
-					inline
-					@click="importPosts($event)"
-					><i class="ph-upload-simple ph-bold ph-lg"></i>
-					{{ i18n.ts.import }}</MkButton
-				>
-			</FormFolder>
 		</FormSection>
 		<FormSection>
 			<template #label>{{
@@ -211,16 +193,6 @@ const onError = (ev) => {
 
 const exportNotes = () => {
 	os.api("i/export-notes", {}).then(onExportSuccess).catch(onError);
-};
-
-const importPosts = async (ev) => {
-	const file = await selectFile(ev.currentTarget ?? ev.target);
-	os.api("i/import-posts", {
-		fileId: file.id,
-		signatureCheck: false,
-	})
-		.then(onImportSuccess)
-		.catch(onError);
 };
 
 const exportFollowing = () => {

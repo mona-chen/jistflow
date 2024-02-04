@@ -1,9 +1,6 @@
 import define from "../../define.js";
-import { createImportPostsJob } from "@/queue/index.js";
 import { ApiError } from "../../error.js";
-import { DriveFiles } from "@/models/index.js";
 import { DAY } from "@/const.js";
-import { fetchMeta } from "@/misc/fetch-meta.js";
 
 export const meta = {
 	secure: true,
@@ -26,7 +23,7 @@ export const meta = {
 		},
 
 		importsDisabled: {
-			message: "Post imports are disabled.",
+			message: "Post imports are disabled for security reasons.",
 			code: "IMPORTS_DISABLED",
 			id: " bc9227e4-fb82-11ed-be56-0242ac120002",
 		},
@@ -43,13 +40,5 @@ export const paramDef = {
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
-	const file = await DriveFiles.findOneBy({ id: ps.fileId });
-
-	const instanceMeta = await fetchMeta();
-	if (instanceMeta.experimentalFeatures?.postImports === false)
-		throw new ApiError(meta.errors.importsDisabled);
-
-	if (file == null) throw new ApiError(meta.errors.noSuchFile);
-	if (file.size === 0) throw new ApiError(meta.errors.emptyFile);
-	createImportPostsJob(user, file.id, ps.signatureCheck);
+	throw new ApiError(meta.errors.importsDisabled);
 });
