@@ -57,6 +57,12 @@ export function generateVisibilityQuery(
 			}),
 		);
 
+		q.andWhere(new Brackets((qb) => {
+			qb.where(`note.visibility != 'hidden'`).orWhere(
+				`note.userId = :meId`,
+			);
+		}));
+
 		q.setParameters({ meId: me.id });
 	}
 }
