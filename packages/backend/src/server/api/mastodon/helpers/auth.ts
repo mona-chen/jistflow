@@ -213,8 +213,8 @@ export class AuthHelpers {
                 res.push(...this.writeScopes);
             else if (scope === "follow")
                 res.push(...this.followScopes);
-            else
-                res.push(scope);
+
+			res.push(scope);
         }
 
         return unique(res);
