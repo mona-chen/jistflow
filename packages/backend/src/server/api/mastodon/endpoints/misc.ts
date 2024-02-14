@@ -70,7 +70,7 @@ export function setupEndpointsMisc(router: Router): void {
     );
 
     router.get("/v2/suggestions",
-        auth(true, ['read']),
+        auth(true, ['read:accounts']),
         async (ctx) => {
             const args = limitToInt(ctx.query);
             ctx.body = await MiscHelpers.getFollowSuggestions(args.limit, ctx);
