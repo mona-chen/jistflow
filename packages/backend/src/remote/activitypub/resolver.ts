@@ -121,11 +121,12 @@ export default class Resolver {
 		apLogger.debug("Getting object from remote, authenticated as user:");
 		apLogger.debug(JSON.stringify(this.user, null, 2));
 
-		const object = (
+		const res = (
 			this.user
 				? await signedGet(value, this.user)
 				: await getJsonActivity(value)
-		) as IObject;
+		);
+		const object = res.content as IObject;
 
 		if (
 			object == null ||
@@ -137,6 +138,9 @@ export default class Resolver {
 		) {
 			throw new Error("invalid response");
 		}
+
+		if (object.id != null && new URL(res.finalUrl).host != new URL(object.id).host)
+			throw new Error("Object ID host doesn't match final url host");
 
 		return object;
 	}

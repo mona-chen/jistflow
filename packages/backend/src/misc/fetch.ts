@@ -51,7 +51,10 @@ export async function getJsonActivity(
 	if (contentType == null || (contentType !== 'application/activity+json' && !contentType.startsWith('application/activity+json;') && contentType !== 'application/ld+json' && !contentType.startsWith('application/ld+json;')))
 		throw new Error(`getJsonActivity response had unexpected content-type: ${contentType}`);
 
-	return await res.json();
+	return {
+		finalUrl: res.url,
+		content: await res.json()
+	}
 }
 
 export async function getHtml(
