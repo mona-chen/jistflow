@@ -1,5 +1,5 @@
 import config from "@/config/index.js";
-import { getJson } from "@/misc/fetch.js";
+import { getJsonActivity } from "@/misc/fetch.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { getInstanceActor } from "@/services/instance-actor.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
@@ -124,7 +124,7 @@ export default class Resolver {
 		const object = (
 			this.user
 				? await signedGet(value, this.user)
-				: await getJson(value, "application/activity+json, application/ld+json")
+				: await getJsonActivity(value)
 		) as IObject;
 
 		if (

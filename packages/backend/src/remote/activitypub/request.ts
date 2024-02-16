@@ -65,5 +65,9 @@ export async function signedGet(url: string, user: { id: User["id"] }, redirects
 		return signedGet(newUrl, user, false);
 	}
 
+	const contentType = res.headers.get('content-type');
+	if (contentType == null || (contentType !== 'application/activity+json' && !contentType.startsWith('application/activity+json;') && contentType !== 'application/ld+json' && !contentType.startsWith('application/ld+json;')))
+		throw new Error(`signedGet response had unexpected content-type: ${contentType}`);
+
 	return await res.json();
 }
