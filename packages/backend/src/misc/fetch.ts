@@ -48,7 +48,9 @@ export async function getJsonActivity(
 	});
 
 	const contentType = res.headers.get('content-type');
-	if (contentType == null || (contentType !== 'application/activity+json' && !contentType.startsWith('application/activity+json;') && contentType !== 'application/ld+json' && !contentType.startsWith('application/ld+json;')))
+	if (contentType == null ||
+		(contentType !== 'application/activity+json' && !contentType.startsWith('application/activity+json;') &&
+		(!contentType.startsWith('application/ld+json;') || !contentType.includes('profile="https://www.w3.org/ns/activitystreams"'))))
 		throw new Error(`getJsonActivity response had unexpected content-type: ${contentType}`);
 
 	return {
