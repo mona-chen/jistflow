@@ -2063,7 +2063,7 @@ silencedInstancesDescription: Wypisz nazwy hostów serwerów, które chcesz wyci
 cannotUploadBecauseExceedsFileSizeLimit: Ten plik nie mógł być przesłany, ponieważ
   jego wielkość przekracza dozwolony limit.
 sendModMail: Wyślij Powiadomienie Moderacyjne
-searchPlaceholder: Szukaj Iceshrimp
+searchPlaceholder: Przeszukaj Fediwersum
 jumpToPrevious: Przejdź do poprzedniej sekcji
 listsDesc: Listy umożliwiają tworzenie osi czasu z określonymi użytkownikami. Dostęp
   do nich można uzyskać na stronie osi czasu.
