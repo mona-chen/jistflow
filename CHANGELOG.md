@@ -1,3 +1,13 @@
+## v2023.12.5
+This is a followup security release. Upgrading is recommended.
+
+### Backend
+- When fetching activities, the JSON-LD profile is now enforced for responses with application/ld+json content type
+- Incoming note edits with attachment and no alt text no get silently dropped
+
+### Attribution
+This release was made possible by project contributors: Laura Hausmann
+
 ## v2023.12.4
 This is a security release. Upgrading is therefore strongly recommended.
 
