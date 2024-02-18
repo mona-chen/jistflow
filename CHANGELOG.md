@@ -3,7 +3,7 @@ This is a followup security release. Upgrading is recommended.
 
 ### Backend
 - When fetching activities, the JSON-LD profile is now enforced for responses with application/ld+json content type
-- Incoming note edits with attachment and no alt text no get silently dropped
+- Incoming note edits with attachment and no alt text no longer get silently dropped
 
 ### Attribution
 This release was made possible by project contributors: Laura Hausmann
