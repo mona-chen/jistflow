@@ -1,3 +1,36 @@
+## v2023.12.5
+This is a followup security release. Upgrading is recommended.
+
+### Backend
+- When fetching activities, the JSON-LD profile is now enforced for responses with application/ld+json content type
+- Incoming note edits with attachment and no alt text no longer get silently dropped
+
+### Attribution
+This release was made possible by project contributors: Laura Hausmann
+
+## v2023.12.4
+This is a security release. Upgrading is therefore strongly recommended.
+
+### Backend
+- The content type of fetched activities is now enforced
+- Fetched activities' IDs must now match the hostname of the final request URL (after redirects)
+- A typo in the activity audience parser was fixed, fixing federation of public posts with JSON-LD compliant remote instances
+
+### Mastodon client API
+- The quote_id parameter is now supported when creating new posts
+- The /v2/suggestions endpoint now requires the same scope as Mastodon (which differs from their API documentation)
+- Full OAuth scopes (read/write/follow) are now also registered when expanding the authorized scopes list
+
+### Frontend
+- Migrating from/to the same account twice no longer breaks the migration page
+
+### Miscellaneous
+- The packaged yarn version (for NixOS) was updated to 4.1.0
+- Various translation updates
+
+### Attribution
+This release was made possible by project contributors: Laura Hausmann, Pyrox & tournesol
+
 ## v2023.12.3
 ### Release notes
 This is a security release. Upgrading is strongly recommended, as is adding an instance-wide announcement informing your users that if they previously imported posts from Mastodon, they should check their imported post history for DMs and follower-only posts that should not be public.

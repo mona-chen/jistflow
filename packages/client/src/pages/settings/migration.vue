@@ -60,6 +60,7 @@ import { i18n } from "@/i18n";
 import { definePageMetadata } from "@/scripts/page-metadata";
 import { $i } from "@/account";
 import { toString } from "iceshrimp-js/built/acct";
+import { unique } from "@/scripts/array.js";
 
 let moveToAccount = $ref("");
 let accountAlias = $ref([""]);
@@ -68,7 +69,7 @@ await init();
 
 async function init() {
 	if ($i?.alsoKnownAs && $i.alsoKnownAs.length > 0) {
-		const aka = await os.api("users/show", { userIds: $i.alsoKnownAs });
+		const aka = await os.api("users/show", { userIds: unique($i.alsoKnownAs) });
 		accountAlias =
 			aka && aka.length > 0
 				? aka.map((user) => `@${toString(user)}`)

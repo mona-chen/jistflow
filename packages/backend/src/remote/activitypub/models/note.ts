@@ -604,7 +604,7 @@ export async function updateNote(value: string | IObject, resolver?: Resolver) {
 						const file = await resolveImage(actor, x);
 						const update: Partial<DriveFile> = {};
 
-						const altText = truncate(x.name, DB_MAX_IMAGE_COMMENT_LENGTH);
+						const altText = truncate(x.name, DB_MAX_IMAGE_COMMENT_LENGTH) ?? null;
 						if (file.comment !== altText) {
 							update.comment = altText;
 						}

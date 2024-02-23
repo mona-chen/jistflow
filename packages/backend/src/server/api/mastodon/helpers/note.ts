@@ -291,7 +291,8 @@ export class NoteHelpers {
             ? DriveFiles.findByIds(request.media_ids)
             : [];
 
-        const reply = request.in_reply_to_id ? await getNote(request.in_reply_to_id, user) : undefined;
+		const reply = request.in_reply_to_id ? await getNote(request.in_reply_to_id, user) : undefined;
+		const renote = request.quote_id ? await getNote(request.quote_id, user) : undefined;
         const visibility = request.visibility ?? UserHelpers.getDefaultNoteVisibility(ctx);
 
         const data = {
@@ -306,6 +307,7 @@ export class NoteHelpers {
                 : undefined,
             text: request.text,
             reply: reply,
+			renote: renote,
             cw: request.spoiler_text,
             visibility: visibility,
             visibleUsers: Promise.resolve(visibility).then(p => p === 'specified' ? this.extractMentions(request.text ?? '', ctx) : undefined)
@@ -356,6 +358,8 @@ export class NoteHelpers {
             result.scheduled_at = new Date(Date.parse(body.scheduled_at));
         if (body.in_reply_to_id)
             result.in_reply_to_id = body.in_reply_to_id;
+		if (body.quote_id)
+			result.quote_id = body.quote_id;
         if (body.media_ids)
             result.media_ids = body.media_ids && body.media_ids.length > 0
                 ? toArray(body.media_ids)

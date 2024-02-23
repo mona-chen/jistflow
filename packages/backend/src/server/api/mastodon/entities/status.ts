@@ -55,6 +55,7 @@ namespace MastodonEntity {
             multiple: boolean
         },
         in_reply_to_id?: string,
+		quote_id?: string,
         sensitive?: boolean,
         spoiler_text?: string,
         visibility?: string,

@@ -28,6 +28,38 @@ export async function getJson(
 	return await res.json();
 }
 
+export async function getJsonActivity(
+	url: string,
+	accept = "application/activity+json, application/ld+json; profile=\"https://www.w3.org/ns/activitystreams\"",
+	timeout = 10000,
+	headers?: Record<string, string>,
+) {
+	const res = await getResponse({
+		url,
+		method: "GET",
+		headers: Object.assign(
+			{
+				"User-Agent": config.userAgent,
+				Accept: accept,
+			},
+			headers || {},
+		),
+		timeout,
+	});
+
+	const contentType = res.headers.get('content-type');
+	if (contentType == null ||
+		(contentType !== 'application/activity+json' && !contentType.startsWith('application/activity+json;') &&
+		(!contentType.startsWith('application/ld+json;') || !contentType.includes('profile="https://www.w3.org/ns/activitystreams"')))) {
+		throw new Error(`getJsonActivity response had unexpected content-type: ${contentType}`);
+	}
+
+	return {
+		finalUrl: res.url,
+		content: await res.json()
+	}
+}
+
 export async function getHtml(
 	url: string,
 	accept = "text/html, */*",

@@ -1,5 +1,5 @@
 import config from "@/config/index.js";
-import { getJson } from "@/misc/fetch.js";
+import { getJsonActivity } from "@/misc/fetch.js";
 import type { ILocalUser } from "@/models/entities/user.js";
 import { getInstanceActor } from "@/services/instance-actor.js";
 import { fetchMeta } from "@/misc/fetch-meta.js";
@@ -121,11 +121,12 @@ export default class Resolver {
 		apLogger.debug("Getting object from remote, authenticated as user:");
 		apLogger.debug(JSON.stringify(this.user, null, 2));
 
-		const object = (
+		const res = (
 			this.user
 				? await signedGet(value, this.user)
-				: await getJson(value, "application/activity+json, application/ld+json")
-		) as IObject;
+				: await getJsonActivity(value)
+		);
+		const object = res.content as IObject;
 
 		if (
 			object == null ||
@@ -137,6 +138,9 @@ export default class Resolver {
 		) {
 			throw new Error("invalid response");
 		}
+
+		if (object.id != null && new URL(res.finalUrl).host != new URL(object.id).host)
+			throw new Error("Object ID host doesn't match final url host");
 
 		return object;
 	}
